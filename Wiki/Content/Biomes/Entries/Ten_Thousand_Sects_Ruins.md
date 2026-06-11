@@ -20,6 +20,17 @@
 - 资源：宗门令、残卷页、断剑残意。
 - NPC：[残卷书灵](../../NPCs/Entries/Archive_Scroll_Spirit.md)。
 
+## 当前美术素材
+
+<!-- ART_SECTION:entry-art:START -->
+
+| 素材 | 名称 | ID | 类型 | 尺寸 |
+| --- | --- | --- | --- | --- |
+| <img src="../../../../Assets/Final/sect_ruin_brick/sect_ruin_brick__tile__v01.png" alt="宗门石砖 tile" width="64"> | 宗门石砖 | `sect_ruin_brick` | `tile` | 16x16 |
+| <img src="../../../../Assets/Final/sword_tablet/sword_tablet__object__v01.png" alt="剑碑 object" width="64"> | 剑碑 | `sword_tablet` | `object` | 32x48 |
+
+<!-- ART_SECTION:entry-art:END -->
+
 ## 美术资源
 
 - Tile：`sect_ruin_brick`，16x16，灰白石砖、淡金裂纹。

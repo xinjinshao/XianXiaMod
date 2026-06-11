@@ -20,6 +20,17 @@
 - 资源：灵草、青木根、药露。
 - NPC：[药宗遗徒](../../NPCs/Entries/Herb_Sect_Apprentice.md)。
 
+## 当前美术素材
+
+<!-- ART_SECTION:entry-art:START -->
+
+| 素材 | 名称 | ID | 类型 | 尺寸 |
+| --- | --- | --- | --- | --- |
+| <img src="../../../../Assets/Final/greenwood_soil_tile/greenwood_soil_tile__tile__v01.png" alt="青木土 tile" width="64"> | 青木土 | `greenwood_soil_tile` | `tile` | 16x16 |
+| <img src="../../../../Assets/Final/spirit_herb/spirit_herb__tile__v01.png" alt="灵草 tile" width="64"> | 灵草 | `spirit_herb` | `tile` | 16x24 |
+
+<!-- ART_SECTION:entry-art:END -->
+
 ## 美术资源
 
 - Tile：`greenwood_soil_tile`，16x16，深土与青根纹理。

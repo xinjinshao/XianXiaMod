@@ -20,6 +20,17 @@
 - 资源：天道碎片、残天玉、破损法旨。
 - NPC：[坠天信使](../../NPCs/Entries/Fallen_Heaven_Messenger.md)。
 
+## 当前美术素材
+
+<!-- ART_SECTION:entry-art:START -->
+
+| 素材 | 名称 | ID | 类型 | 尺寸 |
+| --- | --- | --- | --- | --- |
+| <img src="../../../../Assets/Final/fallen_heaven_jade_tile/fallen_heaven_jade_tile__tile__v01.png" alt="坠天玉砖 tile" width="64"> | 坠天玉砖 | `fallen_heaven_jade_tile` | `tile` | 16x16 |
+| <img src="../../../../Assets/Final/broken_heaven_tablet/broken_heaven_tablet__object__v01.png" alt="破损天碑 object" width="64"> | 破损天碑 | `broken_heaven_tablet` | `object` | 32x64 |
+
+<!-- ART_SECTION:entry-art:END -->
+
 ## 美术资源
 
 - Tile：`fallen_heaven_jade_tile`，16x16，白玉砖、残金边线。

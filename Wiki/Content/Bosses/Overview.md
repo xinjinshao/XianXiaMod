@@ -42,6 +42,39 @@
 - Post-Moon Lord Boss 可以引入多阶段、多机制和路线选择。
 - Boss 条目必须同步维护 [Boss 数值与掉落表](Boss_Stats.md)。
 
+## Boss 美术素材
+
+<!-- ART_SECTION:boss-art:START -->
+
+| 素材 | 名称 | ID | 类型 | 尺寸 |
+| --- | --- | --- | --- | --- |
+| <img src="../../../Assets/Final/spirit_vein_wyrm/spirit_vein_wyrm__body__v01.png" alt="灵脉蠕虫 body" width="96"> | 灵脉蠕虫 | `spirit_vein_wyrm` | `body` | 96x32 |
+| <img src="../../../Assets/Final/spirit_vein_wyrm/spirit_vein_wyrm__boss_head__v01.png" alt="灵脉蠕虫 boss_head" width="96"> | 灵脉蠕虫 | `spirit_vein_wyrm` | `boss_head` | 32x32 |
+| <img src="../../../Assets/Final/garden_warden/garden_warden__body__v01.png" alt="药宗守园人 body" width="96"> | 药宗守园人 | `garden_warden` | `body` | 96x96 |
+| <img src="../../../Assets/Final/garden_warden/garden_warden__boss_head__v01.png" alt="药宗守园人 boss_head" width="96"> | 药宗守园人 | `garden_warden` | `boss_head` | 32x32 |
+| <img src="../../../Assets/Final/black_furnace_iron_golem/black_furnace_iron_golem__body__v01.png" alt="玄炉铁傀 body" width="96"> | 玄炉铁傀 | `black_furnace_iron_golem` | `body` | 112x112 |
+| <img src="../../../Assets/Final/black_furnace_iron_golem/black_furnace_iron_golem__boss_head__v01.png" alt="玄炉铁傀 boss_head" width="96"> | 玄炉铁傀 | `black_furnace_iron_golem` | `boss_head` | 32x32 |
+| <img src="../../../Assets/Final/tribulation_cloud_avatar/tribulation_cloud_avatar__body__v01.png" alt="劫云化身 body" width="96"> | 劫云化身 | `tribulation_cloud_avatar` | `body` | 128x96 |
+| <img src="../../../Assets/Final/tribulation_cloud_avatar/tribulation_cloud_avatar__boss_head__v01.png" alt="劫云化身 boss_head" width="96"> | 劫云化身 | `tribulation_cloud_avatar` | `boss_head` | 32x32 |
+| <img src="../../../Assets/Final/thunder_marsh_jiao/thunder_marsh_jiao__body__v01.png" alt="雷泽蛟 body" width="96"> | 雷泽蛟 | `thunder_marsh_jiao` | `body` | 160x96 |
+| <img src="../../../Assets/Final/thunder_marsh_jiao/thunder_marsh_jiao__boss_head__v01.png" alt="雷泽蛟 boss_head" width="96"> | 雷泽蛟 | `thunder_marsh_jiao` | `boss_head` | 48x48 |
+| <img src="../../../Assets/Final/abyssal_star_womb/abyssal_star_womb__body__v01.png" alt="星渊胎主 body" width="96"> | 星渊胎主 | `abyssal_star_womb` | `body` | 128x128 |
+| <img src="../../../Assets/Final/abyssal_star_womb/abyssal_star_womb__boss_head__v01.png" alt="星渊胎主 boss_head" width="96"> | 星渊胎主 | `abyssal_star_womb` | `boss_head` | 32x32 |
+| <img src="../../../Assets/Final/formless_sword_soul/formless_sword_soul__body__v01.png" alt="无相剑魄 body" width="96"> | 无相剑魄 | `formless_sword_soul` | `body` | 96x96 |
+| <img src="../../../Assets/Final/formless_sword_soul/formless_sword_soul__boss_head__v01.png" alt="无相剑魄 boss_head" width="96"> | 无相剑魄 | `formless_sword_soul` | `boss_head` | 32x32 |
+| <img src="../../../Assets/Final/greenwood_medicine_king_echo/greenwood_medicine_king_echo__body__v01.png" alt="青木药王残影 body" width="96"> | 青木药王残影 | `greenwood_medicine_king_echo` | `body` | 112x112 |
+| <img src="../../../Assets/Final/greenwood_medicine_king_echo/greenwood_medicine_king_echo__boss_head__v01.png" alt="青木药王残影 boss_head" width="96"> | 青木药王残影 | `greenwood_medicine_king_echo` | `boss_head` | 32x32 |
+| <img src="../../../Assets/Final/heaven_tablet_guardian/heaven_tablet_guardian__body__v01.png" alt="天碑守御 body" width="96"> | 天碑守御 | `heaven_tablet_guardian` | `body` | 96x160 |
+| <img src="../../../Assets/Final/heaven_tablet_guardian/heaven_tablet_guardian__boss_head__v01.png" alt="天碑守御 boss_head" width="96"> | 天碑守御 | `heaven_tablet_guardian` | `boss_head` | 32x32 |
+| <img src="../../../Assets/Final/broken_heaven_inspector/broken_heaven_inspector__body__v01.png" alt="残天监察使 body" width="96"> | 残天监察使 | `broken_heaven_inspector` | `body` | 128x128 |
+| <img src="../../../Assets/Final/broken_heaven_inspector/broken_heaven_inspector__boss_head__v01.png" alt="残天监察使 boss_head" width="96"> | 残天监察使 | `broken_heaven_inspector` | `boss_head` | 32x32 |
+| <img src="../../../Assets/Final/moonbone_immortal/moonbone_immortal__body__v01.png" alt="月骸仙君 body" width="96"> | 月骸仙君 | `moonbone_immortal` | `body` | 180x180 |
+| <img src="../../../Assets/Final/moonbone_immortal/moonbone_immortal__boss_head__v01.png" alt="月骸仙君 boss_head" width="96"> | 月骸仙君 | `moonbone_immortal` | `boss_head` | 48x48 |
+| <img src="../../../Assets/Final/old_heaven_dao_core/old_heaven_dao_core__body__v01.png" alt="旧天道核心 body" width="96"> | 旧天道核心 | `old_heaven_dao_core` | `body` | 192x192 |
+| <img src="../../../Assets/Final/old_heaven_dao_core/old_heaven_dao_core__boss_head__v01.png" alt="旧天道核心 boss_head" width="96"> | 旧天道核心 | `old_heaven_dao_core` | `boss_head` | 48x48 |
+
+<!-- ART_SECTION:boss-art:END -->
+
 相关页面：
 
 - [整体进度](../../Progression/Overview.md)

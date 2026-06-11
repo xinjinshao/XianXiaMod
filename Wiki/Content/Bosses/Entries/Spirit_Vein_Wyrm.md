@@ -31,6 +31,17 @@
 
 它不是妖兽，而是一截被唤醒的灵脉。击败它后，世界承认玩家可以接触灵气。
 
+## 当前美术素材
+
+<!-- ART_SECTION:entry-art:START -->
+
+| 素材 | 名称 | ID | 类型 | 尺寸 |
+| --- | --- | --- | --- | --- |
+| <img src="../../../../Assets/Final/spirit_vein_wyrm/spirit_vein_wyrm__body__v01.png" alt="灵脉蠕虫 body" width="96"> | 灵脉蠕虫 | `spirit_vein_wyrm` | `body` | 96x32 |
+| <img src="../../../../Assets/Final/spirit_vein_wyrm/spirit_vein_wyrm__boss_head__v01.png" alt="灵脉蠕虫 boss_head" width="96"> | 灵脉蠕虫 | `spirit_vein_wyrm` | `boss_head` | 32x32 |
+
+<!-- ART_SECTION:entry-art:END -->
+
 ## 美术资源
 
 - 主体：96x32 分段蠕虫，4 到 6 节，青玉发光核心，深绿外轮廓。

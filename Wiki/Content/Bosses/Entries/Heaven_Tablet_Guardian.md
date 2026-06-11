@@ -31,6 +31,17 @@
 
 天碑是旧天道的离线数据库。它不理解玩家，只能把玩家归类为未登记修士。
 
+## 当前美术素材
+
+<!-- ART_SECTION:entry-art:START -->
+
+| 素材 | 名称 | ID | 类型 | 尺寸 |
+| --- | --- | --- | --- | --- |
+| <img src="../../../../Assets/Final/heaven_tablet_guardian/heaven_tablet_guardian__body__v01.png" alt="天碑守御 body" width="96"> | 天碑守御 | `heaven_tablet_guardian` | `body` | 96x160 |
+| <img src="../../../../Assets/Final/heaven_tablet_guardian/heaven_tablet_guardian__boss_head__v01.png" alt="天碑守御 boss_head" width="96"> | 天碑守御 | `heaven_tablet_guardian` | `boss_head` | 32x32 |
+
+<!-- ART_SECTION:entry-art:END -->
+
 ## 美术资源
 
 - 主体：96x160，竖直白玉碑，裂纹、残金碑文、悬浮碎片。

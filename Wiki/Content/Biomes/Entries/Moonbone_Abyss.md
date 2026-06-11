@@ -19,6 +19,17 @@
 - Boss：[月骸仙君](../../Bosses/Entries/Moonbone_Immortal.md)、[旧天道核心](../../Bosses/Entries/Old_Heaven_Dao_Core.md)。
 - 资源：月骸骨、星灾灵核、斩道尘。
 
+## 当前美术素材
+
+<!-- ART_SECTION:entry-art:START -->
+
+| 素材 | 名称 | ID | 类型 | 尺寸 |
+| --- | --- | --- | --- | --- |
+| <img src="../../../../Assets/Final/moonbone_tile/moonbone_tile__tile__v01.png" alt="月骸骨岩 tile" width="64"> | 月骸骨岩 | `moonbone_tile` | `tile` | 16x16 |
+| <img src="../../../../Assets/Final/archive_light_pillar/archive_light_pillar__object__v01.png" alt="归档光柱 object" width="64"> | 归档光柱 | `archive_light_pillar` | `object` | 32x96 |
+
+<!-- ART_SECTION:entry-art:END -->
+
 ## 美术资源
 
 - Tile：`moonbone_tile`，16x16，月白骨质岩、冷蓝裂光。

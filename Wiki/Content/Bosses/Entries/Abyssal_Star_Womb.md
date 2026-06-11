@@ -31,6 +31,17 @@
 
 胎主不是星渊的源头，而是裂隙在玄垣界中长出的第一枚器官。
 
+## 当前美术素材
+
+<!-- ART_SECTION:entry-art:START -->
+
+| 素材 | 名称 | ID | 类型 | 尺寸 |
+| --- | --- | --- | --- | --- |
+| <img src="../../../../Assets/Final/abyssal_star_womb/abyssal_star_womb__body__v01.png" alt="星渊胎主 body" width="96"> | 星渊胎主 | `abyssal_star_womb` | `body` | 128x128 |
+| <img src="../../../../Assets/Final/abyssal_star_womb/abyssal_star_womb__boss_head__v01.png" alt="星渊胎主 boss_head" width="96"> | 星渊胎主 | `abyssal_star_womb` | `boss_head` | 32x32 |
+
+<!-- ART_SECTION:entry-art:END -->
+
 ## 美术资源
 
 - 主体：128x128，暗蓝胚胎核心、晶刺外壳、紫黑液体边缘。

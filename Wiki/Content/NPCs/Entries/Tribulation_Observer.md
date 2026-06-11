@@ -22,6 +22,17 @@
 - 中期：暗示残天司已无法区分修士和怪物。
 - 后期：鼓励玩家决定是否还要接受这样的天道。
 
+## 当前美术素材
+
+<!-- ART_SECTION:entry-art:START -->
+
+| 素材 | 名称 | ID | 类型 | 尺寸 |
+| --- | --- | --- | --- | --- |
+| <img src="../../../../Assets/Final/tribulation_observer/tribulation_observer__body__v01.png" alt="观劫道人 body" width="72"> | 观劫道人 | `tribulation_observer` | `body` | 40x56 |
+| <img src="../../../../Assets/Final/tribulation_observer/tribulation_observer__head__v01.png" alt="观劫道人 head" width="72"> | 观劫道人 | `tribulation_observer` | `head` | 32x32 |
+
+<!-- ART_SECTION:entry-art:END -->
+
 ## 美术资源
 
 - 主体：40x56，灰蓝道袍、背负破伞、袖口有雷纹。

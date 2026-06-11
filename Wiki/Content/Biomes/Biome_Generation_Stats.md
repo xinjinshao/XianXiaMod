@@ -57,3 +57,33 @@
 - 小型生态可重复生成，大型结构每世界 1 到 2 个。
 - Hardmode 后生成的生态需要给玩家明确提示。
 - 所有发光 Tile 必须控制亮度，避免破坏洞穴阅读性。
+
+## Tile / Object / UI 美术素材
+
+<!-- ART_SECTION:tile-ui-art:START -->
+
+| 素材 | 名称 | ID | 类型 | 尺寸 |
+| --- | --- | --- | --- | --- |
+| <img src="../../../Assets/Final/spirit_ore_tile/spirit_ore_tile__tile__v01.png" alt="灵石矿 tile" width="64"> | 灵石矿 | `spirit_ore_tile` | `tile` | 16x16 |
+| <img src="../../../Assets/Final/spirit_moss/spirit_moss__tile__v01.png" alt="灵苔 tile" width="64"> | 灵苔 | `spirit_moss` | `tile` | 16x16 |
+| <img src="../../../Assets/Final/greenwood_soil_tile/greenwood_soil_tile__tile__v01.png" alt="青木土 tile" width="64"> | 青木土 | `greenwood_soil_tile` | `tile` | 16x16 |
+| <img src="../../../Assets/Final/spirit_herb/spirit_herb__tile__v01.png" alt="灵草 tile" width="64"> | 灵草 | `spirit_herb` | `tile` | 16x24 |
+| <img src="../../../Assets/Final/furnace_slag_tile/furnace_slag_tile__tile__v01.png" alt="炉渣石 tile" width="64"> | 炉渣石 | `furnace_slag_tile` | `tile` | 16x16 |
+| <img src="../../../Assets/Final/black_furnace_wall/black_furnace_wall__wall__v01.png" alt="玄炉墙 wall" width="64"> | 玄炉墙 | `black_furnace_wall` | `wall` | 16x16 |
+| <img src="../../../Assets/Final/thunder_cloud_tile/thunder_cloud_tile__tile__v01.png" alt="雷云块 tile" width="64"> | 雷云块 | `thunder_cloud_tile` | `tile` | 16x16 |
+| <img src="../../../Assets/Final/singing_thunder_stone/singing_thunder_stone__object__v01.png" alt="鸣雷石 object" width="64"> | 鸣雷石 | `singing_thunder_stone` | `object` | 24x32 |
+| <img src="../../../Assets/Final/star_abyss_crystal_tile/star_abyss_crystal_tile__tile__v01.png" alt="星渊晶岩 tile" width="64"> | 星渊晶岩 | `star_abyss_crystal_tile` | `tile` | 16x16 |
+| <img src="../../../Assets/Final/rift_membrane/rift_membrane__object__v01.png" alt="裂隙膜 object" width="64"> | 裂隙膜 | `rift_membrane` | `object` | 32x32 |
+| <img src="../../../Assets/Final/sect_ruin_brick/sect_ruin_brick__tile__v01.png" alt="宗门石砖 tile" width="64"> | 宗门石砖 | `sect_ruin_brick` | `tile` | 16x16 |
+| <img src="../../../Assets/Final/sword_tablet/sword_tablet__object__v01.png" alt="剑碑 object" width="64"> | 剑碑 | `sword_tablet` | `object` | 32x48 |
+| <img src="../../../Assets/Final/fallen_heaven_jade_tile/fallen_heaven_jade_tile__tile__v01.png" alt="坠天玉砖 tile" width="64"> | 坠天玉砖 | `fallen_heaven_jade_tile` | `tile` | 16x16 |
+| <img src="../../../Assets/Final/broken_heaven_tablet/broken_heaven_tablet__object__v01.png" alt="破损天碑 object" width="64"> | 破损天碑 | `broken_heaven_tablet` | `object` | 32x64 |
+| <img src="../../../Assets/Final/moonbone_tile/moonbone_tile__tile__v01.png" alt="月骸骨岩 tile" width="64"> | 月骸骨岩 | `moonbone_tile` | `tile` | 16x16 |
+| <img src="../../../Assets/Final/archive_light_pillar/archive_light_pillar__object__v01.png" alt="归档光柱 object" width="64"> | 归档光柱 | `archive_light_pillar` | `object` | 32x96 |
+| <img src="../../../Assets/Final/spiritual_energy_bar_frame/spiritual_energy_bar_frame__ui__v01.png" alt="灵气条框 ui" width="64"> | 灵气条框 | `spiritual_energy_bar_frame` | `ui` | 164x16 |
+| <img src="../../../Assets/Final/spiritual_energy_bar_fill/spiritual_energy_bar_fill__ui__v01.png" alt="灵气条填充 ui" width="64"> | 灵气条填充 | `spiritual_energy_bar_fill` | `ui` | 160x12 |
+| <img src="../../../Assets/Final/pressure_warning_icon/pressure_warning_icon__ui__v01.png" alt="灵压警告图标 ui" width="64"> | 灵压警告图标 | `pressure_warning_icon` | `ui` | 32x32 |
+| <img src="../../../Assets/Final/artifact_slot_frame/artifact_slot_frame__ui__v01.png" alt="法宝槽 ui" width="64"> | 法宝槽 | `artifact_slot_frame` | `ui` | 40x40 |
+| <img src="../../../Assets/Final/tribulation_warning_line/tribulation_warning_line__ui__v01.png" alt="天劫预警线 ui" width="64"> | 天劫预警线 | `tribulation_warning_line` | `ui` | 16x4 |
+
+<!-- ART_SECTION:tile-ui-art:END -->

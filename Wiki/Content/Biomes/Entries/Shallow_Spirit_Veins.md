@@ -20,6 +20,17 @@
 - 资源：下品灵石、灵气凝胶、灵苔。
 - 制作引导：引气符、木纹飞剑、聚气坠。
 
+## 当前美术素材
+
+<!-- ART_SECTION:entry-art:START -->
+
+| 素材 | 名称 | ID | 类型 | 尺寸 |
+| --- | --- | --- | --- | --- |
+| <img src="../../../../Assets/Final/spirit_ore_tile/spirit_ore_tile__tile__v01.png" alt="灵石矿 tile" width="64"> | 灵石矿 | `spirit_ore_tile` | `tile` | 16x16 |
+| <img src="../../../../Assets/Final/spirit_moss/spirit_moss__tile__v01.png" alt="灵苔 tile" width="64"> | 灵苔 | `spirit_moss` | `tile` | 16x16 |
+
+<!-- ART_SECTION:entry-art:END -->
+
 ## 美术资源
 
 - Tile：`spirit_ore_tile`，16x16，灰石底、青玉矿脉、浅青高光。

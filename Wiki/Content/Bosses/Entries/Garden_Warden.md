@@ -31,6 +31,17 @@
 
 守园人是药宗留下的护园傀儡，仍把所有采药者视作入侵者。击败后，它把玩家误认为药宗新弟子。
 
+## 当前美术素材
+
+<!-- ART_SECTION:entry-art:START -->
+
+| 素材 | 名称 | ID | 类型 | 尺寸 |
+| --- | --- | --- | --- | --- |
+| <img src="../../../../Assets/Final/garden_warden/garden_warden__body__v01.png" alt="药宗守园人 body" width="96"> | 药宗守园人 | `garden_warden` | `body` | 96x96 |
+| <img src="../../../../Assets/Final/garden_warden/garden_warden__boss_head__v01.png" alt="药宗守园人 boss_head" width="96"> | 药宗守园人 | `garden_warden` | `boss_head` | 32x32 |
+
+<!-- ART_SECTION:entry-art:END -->
+
 ## 美术资源
 
 - 主体：96x96，人形木傀儡，背负药篓，藤蔓手臂，深绿外轮廓。

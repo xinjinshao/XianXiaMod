@@ -24,6 +24,17 @@
 - 中期：提示药王残影仍困在药园深处。
 - 后期：质疑旧天道是否有资格判定众生药性。
 
+## 当前美术素材
+
+<!-- ART_SECTION:entry-art:START -->
+
+| 素材 | 名称 | ID | 类型 | 尺寸 |
+| --- | --- | --- | --- | --- |
+| <img src="../../../../Assets/Final/herb_sect_apprentice/herb_sect_apprentice__body__v01.png" alt="药宗遗徒 body" width="72"> | 药宗遗徒 | `herb_sect_apprentice` | `body` | 40x56 |
+| <img src="../../../../Assets/Final/herb_sect_apprentice/herb_sect_apprentice__head__v01.png" alt="药宗遗徒 head" width="72"> | 药宗遗徒 | `herb_sect_apprentice` | `head` | 32x32 |
+
+<!-- ART_SECTION:entry-art:END -->
+
 ## 美术资源
 
 - 主体：40x56，青绿短袍、药篓、发簪像嫩芽。

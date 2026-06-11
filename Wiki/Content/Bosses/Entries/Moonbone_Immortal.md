@@ -31,6 +31,17 @@
 
 月骸仙君曾是天庭打开高位面之门的主持者。它没有死亡，而是被星渊和月亮残骸共同保存成一具会思考的遗物。
 
+## 当前美术素材
+
+<!-- ART_SECTION:entry-art:START -->
+
+| 素材 | 名称 | ID | 类型 | 尺寸 |
+| --- | --- | --- | --- | --- |
+| <img src="../../../../Assets/Final/moonbone_immortal/moonbone_immortal__body__v01.png" alt="月骸仙君 body" width="96"> | 月骸仙君 | `moonbone_immortal` | `body` | 180x180 |
+| <img src="../../../../Assets/Final/moonbone_immortal/moonbone_immortal__boss_head__v01.png" alt="月骸仙君 boss_head" width="96"> | 月骸仙君 | `moonbone_immortal` | `boss_head` | 48x48 |
+
+<!-- ART_SECTION:entry-art:END -->
+
 ## 美术资源
 
 - 主体：180x180，月白骨甲仙人，胸口暗蓝星核，破碎光环。

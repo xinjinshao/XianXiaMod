@@ -31,6 +31,17 @@
 
 旧天道核心不是神，而是被仙人误认为神的系统。它曾保护世界，也筛选、牺牲和归档了无数生命。
 
+## 当前美术素材
+
+<!-- ART_SECTION:entry-art:START -->
+
+| 素材 | 名称 | ID | 类型 | 尺寸 |
+| --- | --- | --- | --- | --- |
+| <img src="../../../../Assets/Final/old_heaven_dao_core/old_heaven_dao_core__body__v01.png" alt="旧天道核心 body" width="96"> | 旧天道核心 | `old_heaven_dao_core` | `body` | 192x192 |
+| <img src="../../../../Assets/Final/old_heaven_dao_core/old_heaven_dao_core__boss_head__v01.png" alt="旧天道核心 boss_head" width="96"> | 旧天道核心 | `old_heaven_dao_core` | `boss_head` | 48x48 |
+
+<!-- ART_SECTION:entry-art:END -->
+
 ## 美术资源
 
 - 主体：192x192，悬浮玉色机械核心，三层环形法阵，金色归档线，中心黑白裂隙。

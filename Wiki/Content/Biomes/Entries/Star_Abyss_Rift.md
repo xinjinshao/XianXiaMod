@@ -20,6 +20,17 @@
 - 资源：星蚀晶、渊尘、暗蓝灵液。
 - 装备：星渊眼、星蚀弩机。
 
+## 当前美术素材
+
+<!-- ART_SECTION:entry-art:START -->
+
+| 素材 | 名称 | ID | 类型 | 尺寸 |
+| --- | --- | --- | --- | --- |
+| <img src="../../../../Assets/Final/star_abyss_crystal_tile/star_abyss_crystal_tile__tile__v01.png" alt="星渊晶岩 tile" width="64"> | 星渊晶岩 | `star_abyss_crystal_tile` | `tile` | 16x16 |
+| <img src="../../../../Assets/Final/rift_membrane/rift_membrane__object__v01.png" alt="裂隙膜 object" width="64"> | 裂隙膜 | `rift_membrane` | `object` | 32x32 |
+
+<!-- ART_SECTION:entry-art:END -->
+
 ## 美术资源
 
 - Tile：`star_abyss_crystal_tile`，16x16，紫黑岩底、深蓝星晶。

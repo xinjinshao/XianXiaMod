@@ -31,6 +31,17 @@
 
 它是一名无名散修留下的剑意。它不守宗门规矩，只承认能在剑阵中活下来的人。
 
+## 当前美术素材
+
+<!-- ART_SECTION:entry-art:START -->
+
+| 素材 | 名称 | ID | 类型 | 尺寸 |
+| --- | --- | --- | --- | --- |
+| <img src="../../../../Assets/Final/formless_sword_soul/formless_sword_soul__body__v01.png" alt="无相剑魄 body" width="96"> | 无相剑魄 | `formless_sword_soul` | `body` | 96x96 |
+| <img src="../../../../Assets/Final/formless_sword_soul/formless_sword_soul__boss_head__v01.png" alt="无相剑魄 boss_head" width="96"> | 无相剑魄 | `formless_sword_soul` | `boss_head` | 32x32 |
+
+<!-- ART_SECTION:entry-art:END -->
+
 ## 美术资源
 
 - 主体：96x96，半透明剑修残影，中心是一把清晰飞剑。

@@ -20,6 +20,17 @@
 - 资源：炉渣铁、玄炉炭、器胚碎片。
 - NPC：[游方器师](../../NPCs/Entries/Wandering_Artificer.md)。
 
+## 当前美术素材
+
+<!-- ART_SECTION:entry-art:START -->
+
+| 素材 | 名称 | ID | 类型 | 尺寸 |
+| --- | --- | --- | --- | --- |
+| <img src="../../../../Assets/Final/furnace_slag_tile/furnace_slag_tile__tile__v01.png" alt="炉渣石 tile" width="64"> | 炉渣石 | `furnace_slag_tile` | `tile` | 16x16 |
+| <img src="../../../../Assets/Final/black_furnace_wall/black_furnace_wall__wall__v01.png" alt="玄炉墙 wall" width="64"> | 玄炉墙 | `black_furnace_wall` | `wall` | 16x16 |
+
+<!-- ART_SECTION:entry-art:END -->
+
 ## 美术资源
 
 - Tile：`furnace_slag_tile`，16x16，暗灰矿渣、橙红裂光。

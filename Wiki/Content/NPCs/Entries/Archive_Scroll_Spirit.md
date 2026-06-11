@@ -22,6 +22,17 @@
 - 中期：逐渐拼出坠天之夜真相。
 - 后期：承认自己其实是万宗弟子的合并记忆。
 
+## 当前美术素材
+
+<!-- ART_SECTION:entry-art:START -->
+
+| 素材 | 名称 | ID | 类型 | 尺寸 |
+| --- | --- | --- | --- | --- |
+| <img src="../../../../Assets/Final/archive_scroll_spirit/archive_scroll_spirit__body__v01.png" alt="残卷书灵 body" width="72"> | 残卷书灵 | `archive_scroll_spirit` | `body` | 36x48 |
+| <img src="../../../../Assets/Final/archive_scroll_spirit/archive_scroll_spirit__head__v01.png" alt="残卷书灵 head" width="72"> | 残卷书灵 | `archive_scroll_spirit` | `head` | 32x32 |
+
+<!-- ART_SECTION:entry-art:END -->
+
 ## 美术资源
 
 - 主体：36x48，漂浮书卷，卷轴中露出小型光灵。

@@ -31,6 +31,17 @@
 
 雷泽蛟是天劫系统泄漏出的自然妖兽。它既被残天司追捕，也在吞食残余劫雷成长。
 
+## 当前美术素材
+
+<!-- ART_SECTION:entry-art:START -->
+
+| 素材 | 名称 | ID | 类型 | 尺寸 |
+| --- | --- | --- | --- | --- |
+| <img src="../../../../Assets/Final/thunder_marsh_jiao/thunder_marsh_jiao__body__v01.png" alt="雷泽蛟 body" width="96"> | 雷泽蛟 | `thunder_marsh_jiao` | `body` | 160x96 |
+| <img src="../../../../Assets/Final/thunder_marsh_jiao/thunder_marsh_jiao__boss_head__v01.png" alt="雷泽蛟 boss_head" width="96"> | 雷泽蛟 | `thunder_marsh_jiao` | `boss_head` | 48x48 |
+
+<!-- ART_SECTION:entry-art:END -->
+
 ## 美术资源
 
 - 主体：160x96，长身蛟龙，雷角、须、分段鳞片，雷紫和闪蓝色板。

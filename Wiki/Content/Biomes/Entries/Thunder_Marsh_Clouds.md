@@ -20,6 +20,17 @@
 - 资源：雷纹羽、劫云露、鸣雷石。
 - 机制：[天劫](../../../Systems/Tribulation.md)。
 
+## 当前美术素材
+
+<!-- ART_SECTION:entry-art:START -->
+
+| 素材 | 名称 | ID | 类型 | 尺寸 |
+| --- | --- | --- | --- | --- |
+| <img src="../../../../Assets/Final/thunder_cloud_tile/thunder_cloud_tile__tile__v01.png" alt="雷云块 tile" width="64"> | 雷云块 | `thunder_cloud_tile` | `tile` | 16x16 |
+| <img src="../../../../Assets/Final/singing_thunder_stone/singing_thunder_stone__object__v01.png" alt="鸣雷石 object" width="64"> | 鸣雷石 | `singing_thunder_stone` | `object` | 24x32 |
+
+<!-- ART_SECTION:entry-art:END -->
+
 ## 美术资源
 
 - Tile：`thunder_cloud_tile`，16x16，深紫云块、闪蓝裂纹，边缘像素清楚。

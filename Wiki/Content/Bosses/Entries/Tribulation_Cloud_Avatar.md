@@ -31,6 +31,17 @@
 
 劫云化身不是有意识的敌人，而是残天司从旧天道规则中抽出的测试程序。
 
+## 当前美术素材
+
+<!-- ART_SECTION:entry-art:START -->
+
+| 素材 | 名称 | ID | 类型 | 尺寸 |
+| --- | --- | --- | --- | --- |
+| <img src="../../../../Assets/Final/tribulation_cloud_avatar/tribulation_cloud_avatar__body__v01.png" alt="劫云化身 body" width="96"> | 劫云化身 | `tribulation_cloud_avatar` | `body` | 128x96 |
+| <img src="../../../../Assets/Final/tribulation_cloud_avatar/tribulation_cloud_avatar__boss_head__v01.png" alt="劫云化身 boss_head" width="96"> | 劫云化身 | `tribulation_cloud_avatar` | `boss_head` | 32x32 |
+
+<!-- ART_SECTION:entry-art:END -->
+
 ## 美术资源
 
 - 主体：128x96，深紫雷云中露出模糊玉面，不要真实云雾糊边。

@@ -22,6 +22,17 @@
 - 中期：承认残天司内部也有冲突。
 - 后期：询问玩家想修复天道，还是让它第一次真正沉默。
 
+## 当前美术素材
+
+<!-- ART_SECTION:entry-art:START -->
+
+| 素材 | 名称 | ID | 类型 | 尺寸 |
+| --- | --- | --- | --- | --- |
+| <img src="../../../../Assets/Final/fallen_heaven_messenger/fallen_heaven_messenger__body__v01.png" alt="坠天信使 body" width="72"> | 坠天信使 | `fallen_heaven_messenger` | `body` | 42x60 |
+| <img src="../../../../Assets/Final/fallen_heaven_messenger/fallen_heaven_messenger__head__v01.png" alt="坠天信使 head" width="72"> | 坠天信使 | `fallen_heaven_messenger` | `head` | 32x32 |
+
+<!-- ART_SECTION:entry-art:END -->
+
 ## 美术资源
 
 - 主体：42x60，破损白玉羽衣、半张金色面具、悬浮法旨碎片。

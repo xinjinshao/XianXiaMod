@@ -29,6 +29,8 @@
 - [美术资源规格索引](Asset_Specs.md)
 - [条目参数模板](Content/Parameter_Templates.md)
 - [设计状态](Design_Status.md)
+- [美术素材审计](Art_Audit.md)
+- [美术素材图库](Art_Gallery.md)
 
 ## 项目文档
 
