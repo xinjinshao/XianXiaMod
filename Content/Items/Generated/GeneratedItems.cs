@@ -76,10 +76,21 @@ public class StarEclipseCrystal : ModItem
     {
         Item.width = 32;
         Item.height = 32;
-        Item.maxStack = 9999;
+        Item.maxStack = 30;
         Item.value = Item.buyPrice(silver: 10);
         Item.rare = ItemRarityID.LightRed;
 
+        Item.useStyle = ItemUseStyleID.DrinkLiquid;
+        Item.useTime = 20;
+        Item.useAnimation = 20;
+        Item.UseSound = SoundID.Item3;
+        Item.consumable = true;
+    }
+
+    public override bool? UseItem(Player player)
+    {
+        player.GetModPlayer<global::XianXia.Common.Players.XianXiaPlayer>().TryAdvanceCultivation(global::XianXia.Common.Players.CultivationStage.GoldenCore);
+        return true;
     }
 
 }
@@ -108,10 +119,21 @@ public class HeavenDaoFragment : ModItem
     {
         Item.width = 32;
         Item.height = 32;
-        Item.maxStack = 9999;
+        Item.maxStack = 30;
         Item.value = Item.buyPrice(silver: 10);
         Item.rare = ItemRarityID.Red;
 
+        Item.useStyle = ItemUseStyleID.DrinkLiquid;
+        Item.useTime = 20;
+        Item.useAnimation = 20;
+        Item.UseSound = SoundID.Item3;
+        Item.consumable = true;
+    }
+
+    public override bool? UseItem(Player player)
+    {
+        player.GetModPlayer<global::XianXia.Common.Players.XianXiaPlayer>().TryAdvanceCultivation(global::XianXia.Common.Players.CultivationStage.SpiritSevering);
+        return true;
     }
 
 }
@@ -124,10 +146,21 @@ public class Moonbone : ModItem
     {
         Item.width = 32;
         Item.height = 32;
-        Item.maxStack = 9999;
+        Item.maxStack = 30;
         Item.value = Item.buyPrice(silver: 10);
         Item.rare = ItemRarityID.Red;
 
+        Item.useStyle = ItemUseStyleID.DrinkLiquid;
+        Item.useTime = 20;
+        Item.useAnimation = 20;
+        Item.UseSound = SoundID.Item3;
+        Item.consumable = true;
+    }
+
+    public override bool? UseItem(Player player)
+    {
+        player.GetModPlayer<global::XianXia.Common.Players.XianXiaPlayer>().TryAdvanceCultivation(global::XianXia.Common.Players.CultivationStage.Tribulation);
+        return true;
     }
 
 }
@@ -140,10 +173,21 @@ public class DaoSeveringDust : ModItem
     {
         Item.width = 32;
         Item.height = 32;
-        Item.maxStack = 9999;
+        Item.maxStack = 30;
         Item.value = Item.buyPrice(silver: 10);
         Item.rare = ItemRarityID.Red;
 
+        Item.useStyle = ItemUseStyleID.DrinkLiquid;
+        Item.useTime = 20;
+        Item.useAnimation = 20;
+        Item.UseSound = SoundID.Item3;
+        Item.consumable = true;
+    }
+
+    public override bool? UseItem(Player player)
+    {
+        player.GetModPlayer<global::XianXia.Common.Players.XianXiaPlayer>().TryAdvanceCultivation(global::XianXia.Common.Players.CultivationStage.DaoSevering);
+        return true;
     }
 
 }
@@ -669,6 +713,11 @@ public class OldHeavenDaoScroll : ModItem
         Item.value = Item.buyPrice(silver: 10);
         Item.rare = ItemRarityID.Red;
 
+        Item.useStyle = ItemUseStyleID.DrinkLiquid;
+        Item.useTime = 20;
+        Item.useAnimation = 20;
+        Item.UseSound = SoundID.Item3;
+        Item.consumable = true;
         Item.damage = 110;
         Item.knockBack = 3.5f;
         Item.DamageType = DamageClass.Generic;

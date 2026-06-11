@@ -334,6 +334,11 @@ def generate_materials(existing: set[str]) -> None:
         "foundation_pill",
         "tribulation_resisting_pill",
         "star_abyss_forbidden_talisman",
+        "star_eclipse_crystal",
+        "old_heaven_dao_scroll",
+        "heaven_dao_fragment",
+        "moonbone",
+        "dao_severing_dust",
     }
     accessories = {
         "qi_gathering_pendant",
@@ -419,6 +424,46 @@ def generate_materials(existing: set[str]) -> None:
     public override bool? UseItem(Player player)
     {
         player.AddBuff(ModContent.BuffType<global::XianXia.Content.Buffs.TribulationResistanceBuff>(), 60 * 90);
+        return true;
+    }
+"""
+        elif asset_id == "star_eclipse_crystal":
+            use_item = """
+    public override bool? UseItem(Player player)
+    {
+        player.GetModPlayer<global::XianXia.Common.Players.XianXiaPlayer>().TryAdvanceCultivation(global::XianXia.Common.Players.CultivationStage.GoldenCore);
+        return true;
+    }
+"""
+        elif asset_id == "old_heaven_dao_scroll":
+            use_item = """
+    public override bool? UseItem(Player player)
+    {
+        player.GetModPlayer<global::XianXia.Common.Players.XianXiaPlayer>().TryAdvanceCultivation(global::XianXia.Common.Players.CultivationStage.NascentSoul);
+        return true;
+    }
+"""
+        elif asset_id == "heaven_dao_fragment":
+            use_item = """
+    public override bool? UseItem(Player player)
+    {
+        player.GetModPlayer<global::XianXia.Common.Players.XianXiaPlayer>().TryAdvanceCultivation(global::XianXia.Common.Players.CultivationStage.SpiritSevering);
+        return true;
+    }
+"""
+        elif asset_id == "moonbone":
+            use_item = """
+    public override bool? UseItem(Player player)
+    {
+        player.GetModPlayer<global::XianXia.Common.Players.XianXiaPlayer>().TryAdvanceCultivation(global::XianXia.Common.Players.CultivationStage.Tribulation);
+        return true;
+    }
+"""
+        elif asset_id == "dao_severing_dust":
+            use_item = """
+    public override bool? UseItem(Player player)
+    {
+        player.GetModPlayer<global::XianXia.Common.Players.XianXiaPlayer>().TryAdvanceCultivation(global::XianXia.Common.Players.CultivationStage.DaoSevering);
         return true;
     }
 """

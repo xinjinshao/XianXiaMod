@@ -108,6 +108,11 @@ public class XianXiaPlayer : ModPlayer
             return false;
         }
 
+        if ((int)targetStage != (int)cultivationStage + 1)
+        {
+            return false;
+        }
+
         cultivationStage = targetStage;
         maxSpiritualEnergy = GetMaxSpiritualEnergy(cultivationStage);
         RestoreSpiritualEnergy(maxSpiritualEnergy / 3);
