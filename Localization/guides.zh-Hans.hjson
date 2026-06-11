@@ -1,0 +1,23 @@
+Mods: {
+	XianXia: {
+		Items: {
+			SectLedger: {
+				DisplayName: 宗门玉简
+				Tooltip: 使用后读取旧宗门记录的下一项修行目标。
+				Guidance: {
+					AwakenQi: 玉简指向浅层灵脉：制作或使用引气符，唤醒灵气感知。
+					SpiritVeinWyrm: 第一笔旧账埋在地下：制作灵脉香，击败灵脉蠕虫。
+					Foundation: 经脉已开，但根基未稳：炼制进阶丹药，突破至筑基。
+					GardenWarden: 旧页浮出草木药香：探索青木药园，挑战守园人。
+					BlackFurnace: 墨迹遇矿而热：进入沉炉矿脉，击败玄炉铁傀。
+					GoldenCore: 玉简圈出星蚀结丹法：收集核心材料，凝成金丹。
+					SwordSoul: 试炼令已醒：使用宗门试炼令，击败无相剑魂。
+					NascentSoul: 残破天令回应你的名字：使用旧天道残卷，凝成元婴。
+					HeavenTablet: 坠天宫阙的尘灰落在页上：挑战天碑守卫。
+					DaoSevering: "当前宗门声望：{0}。继续讨伐主要威胁，承受天劫，并准备斩道。"
+					Endgame: "当前宗门声望：{0}。玉简几乎空白，旧天道核心仍在破天之后等待。"
+				}
+			}
+		}
+	}
+}

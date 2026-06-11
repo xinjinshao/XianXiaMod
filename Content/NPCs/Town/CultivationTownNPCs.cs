@@ -9,6 +9,7 @@ using XianXia.Content.Items.BossSummons;
 using XianXia.Content.Items.BossSummons.Generated;
 using XianXia.Content.Items.Consumables;
 using XianXia.Content.Items.Generated;
+using XianXia.Content.Items.Guides;
 using XianXia.Content.Items.Materials;
 using XianXia.Content.Items.Stations;
 using XianXia.Content.Items.Weapons;
@@ -274,6 +275,7 @@ public class ArchiveScrollSpirit : CultivationTownNPC
     public override void AddShops()
     {
         NPCShop shop = new(Type);
+        shop.Add<SectLedger>();
         shop.Add<SectTrialToken>();
         shop.Add<OldHeavenDaoScroll>();
         shop.Add<FormlessSwordWheel>();
