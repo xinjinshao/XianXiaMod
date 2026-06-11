@@ -6,6 +6,11 @@ Mods: {
 			TribulationObserver: 沉默的雷兆旁观者。他向敢于，或鲁莽到敢于，引来天雷的修士出售护符与丹药。
 			ArchiveScrollSpirit: 栖身旧宗门残卷之间的残存灵智，记录试炼、声望，以及被毁宗门留下的旧债。
 			FallenHeavenMessenger: 来自坠落天宫的使者。它的话语像迟到的敕令，总在封印破裂之后才抵达。
+			WanderingSpiritSlime: 被浅层灵气泡胀的史莱姆。它并不强，但体内凝胶是新修士最早用得上的材料。
+			TalismanBat: 缠着失败符纸的洞穴蝙蝠，乱飞时会把灵气残渣洒进浅层灵脉。
+			ShatteredJadeWorm: 啃食碎玉与灵石屑的小虫。矿工常把它钻出的孔洞视作附近有灵脉的征兆。
+			SpiritVeinWyrm: 盘踞浅层灵脉的第一只守护兽。伤到它时，灵石会被震落，碎玉幼节也会被唤来护体。
+			ShatteredJadeWyrmMinion: 灵脉蠕虫在灵压下开裂后脱落的碎玉幼节。
 		}
 	}
 }

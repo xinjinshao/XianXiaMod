@@ -1,5 +1,6 @@
 using Microsoft.Xna.Framework;
 using Terraria;
+using Terraria.GameContent.Bestiary;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -8,6 +9,11 @@ namespace XianXia.Content.NPCs.Bosses;
 public class ShatteredJadeWyrmMinion : ModNPC
 {
     public override string Texture => "XianXia/Content/NPCs/Enemies/ShatteredJadeWorm";
+
+    public override void SetBestiary(BestiaryDatabase database, BestiaryEntry bestiaryEntry)
+    {
+        bestiaryEntry.Info.Add(new FlavorTextBestiaryInfoElement("Mods.XianXia.Bestiary.ShatteredJadeWyrmMinion"));
+    }
 
     public override void SetDefaults()
     {

@@ -6,6 +6,11 @@ Mods: {
 			TribulationObserver: A quiet watcher of thunder omens. He sells wards and pills to cultivators who are brave enough, or foolish enough, to invite heavenly lightning.
 			ArchiveScrollSpirit: A remnant mind living between old sect pages. It records trials, reputations, and the debts left by destroyed lineages.
 			FallenHeavenMessenger: A messenger from the ruined sky palaces. Its words arrive like decrees after the seal has already broken.
+			WanderingSpiritSlime: A shallow-vein slime swollen with loose spiritual energy. It is weak, but its gel is the first useful reagent for new cultivators.
+			TalismanBat: A cave bat tangled in failed paper charms. Its erratic flight scatters spiritual residue through shallow veins.
+			ShatteredJadeWorm: A small worm chewing through broken jade and spirit stone flakes. Miners treat its tunnels as signs of nearby veins.
+			SpiritVeinWyrm: The first guardian coiled around the shallow spirit veins. Wounding it shakes loose spirit stones and calls smaller jade segments to its side.
+			ShatteredJadeWyrmMinion: A fragment shed from the Spirit Vein Wyrm after its body cracks under pressure.
 		}
 	}
 }

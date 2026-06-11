@@ -1,5 +1,6 @@
 using Microsoft.Xna.Framework;
 using Terraria;
+using Terraria.GameContent.Bestiary;
 using Terraria.GameContent.ItemDropRules;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -16,6 +17,11 @@ public class SpiritVeinWyrm : ModNPC
     public override void SetStaticDefaults()
     {
         Main.npcFrameCount[Type] = 1;
+    }
+
+    public override void SetBestiary(BestiaryDatabase database, BestiaryEntry bestiaryEntry)
+    {
+        bestiaryEntry.Info.Add(new FlavorTextBestiaryInfoElement("Mods.XianXia.Bestiary.SpiritVeinWyrm"));
     }
 
     public override void SetDefaults()

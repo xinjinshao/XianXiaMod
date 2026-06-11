@@ -1,4 +1,5 @@
 using Terraria;
+using Terraria.GameContent.Bestiary;
 using Terraria.GameContent.ItemDropRules;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -9,6 +10,11 @@ namespace XianXia.Content.NPCs.Enemies;
 
 public class ShatteredJadeWorm : ModNPC
 {
+    public override void SetBestiary(BestiaryDatabase database, BestiaryEntry bestiaryEntry)
+    {
+        bestiaryEntry.Info.Add(new FlavorTextBestiaryInfoElement("Mods.XianXia.Bestiary.ShatteredJadeWorm"));
+    }
+
     public override void SetDefaults()
     {
         NPC.width = 44;

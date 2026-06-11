@@ -1,4 +1,5 @@
 using Terraria;
+using Terraria.GameContent.Bestiary;
 using Terraria.GameContent.ItemDropRules;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -12,6 +13,11 @@ public class WanderingSpiritSlime : ModNPC
     public override void SetStaticDefaults()
     {
         Main.npcFrameCount[Type] = Main.npcFrameCount[NPCID.BlueSlime];
+    }
+
+    public override void SetBestiary(BestiaryDatabase database, BestiaryEntry bestiaryEntry)
+    {
+        bestiaryEntry.Info.Add(new FlavorTextBestiaryInfoElement("Mods.XianXia.Bestiary.WanderingSpiritSlime"));
     }
 
     public override void SetDefaults()
