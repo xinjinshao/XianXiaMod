@@ -1,0 +1,89 @@
+id: spirit_vein_wyrm
+type: boss
+display_name_zh: 灵脉蠕虫
+display_name_en: Spirit Vein Wyrm
+progression: pre_boss
+wiki: ../../Wiki/Content/Bosses/Entries/Spirit_Vein_Wyrm.md
+source:
+  generated_chromakey: ../../Generated/Spirit_Vein_Wyrm/spirit_vein_wyrm_asset_sheet_chromakey_v01.png
+  cleaned_alpha: ../../Cleaned/Spirit_Vein_Wyrm/spirit_vein_wyrm_asset_sheet_alpha_v01.png
+style:
+  medium: Terraria-like 2D pixel art
+  lighting: left-top
+  outline: strong dark teal outline
+  palette:
+    - jade green
+    - pale cyan glow
+    - dark teal outline
+    - muted gray-green shadow
+    - small white highlights
+  constraints:
+    - transparent background for final PNG
+    - no text
+    - no UI
+    - no watermark
+    - no scene background
+    - limited palette
+    - crisp pixel edges
+outputs:
+  body_base:
+    target_canvas: 96x32
+    source_sheet_region: top-left full wyrm sprite
+    purpose: main boss body concept
+    notes:
+      - 4 to 6 segmented body pieces
+      - rounded head with jade mouthparts
+      - cyan spirit-vein glyphs across body
+  boss_head:
+    target_canvas: 32x32
+    source_sheet_region: top-right head sprite
+    purpose: map and boss head icon concept
+    notes:
+      - crop around head silhouette
+      - keep cyan eye and mandibles readable
+  move_frames:
+    target_canvas_each: 96x32
+    source_sheet_region: second row four wyrm frames
+    frame_count: 4
+    purpose: movement animation draft
+    notes:
+      - align head and core height before spritesheet export
+      - may need manual cleanup after downscale
+  hit_frames:
+    target_canvas_each: 96x32
+    source_sheet_region: third row bright wyrm frames
+    frame_count: 2
+    purpose: hit flash animation draft
+    notes:
+      - use as overlay or separate flash frames
+  larvae:
+    target_canvas_each: 24x16
+    source_sheet_region: third row right small larvae
+    frame_count: 2
+    purpose: split segment or minion concept
+  spirit_dust_projectile:
+    target_canvas_each: 16x16
+    source_sheet_region: bottom row cyan spirit dust sprites
+    frame_count: 3
+    purpose: boss projectile or ambient dust concept
+generation:
+  mode: built_in_image_gen
+  transparent_method: chroma_key_removed_locally
+  chroma_key_requested: "#ff00ff"
+  detected_key_color: "#fa03f7"
+  generated_size: 1536x1024
+  prompt_summary: >
+    Terraria-like pixel art asset sheet for a jade spirit wyrm boss on a flat
+    chroma-key background, including body, boss head, movement frames, hit
+    frames, larvae, and spirit dust projectiles.
+postprocess:
+  tool: C:/Users/jerem/.codex/skills/.system/imagegen/scripts/remove_chroma_key.py
+  transparent_pixels: 1231896
+  partially_transparent_pixels: 15693
+  total_pixels: 1572864
+next_steps:
+  - manually slice source sheet into individual sprites
+  - downscale or redraw to target logical canvases with nearest-neighbor
+  - clean edges and align movement frames
+  - export final sprites into Assets/Final/Spirit_Vein_Wyrm/
+  - copy approved final PNGs into Content/NPCs/Bosses/Spirit_Vein_Wyrm/
