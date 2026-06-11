@@ -1,0 +1,11 @@
+Mods: {
+	XianXia: {
+		Bestiary: {
+			HerbSectApprentice: 破落药宗的年轻丹徒，能凭气味分辨灵压浮动，并为初入修行者备下最早期的丹药。
+			WanderingArtificer: 四处游走的炼器匠，把每条矿脉都当成未写完的器经。他售卖炉渣、器胚和早期法器所需的工具。
+			TribulationObserver: 沉默的雷兆旁观者。他向敢于，或鲁莽到敢于，引来天雷的修士出售护符与丹药。
+			ArchiveScrollSpirit: 栖身旧宗门残卷之间的残存灵智，记录试炼、声望，以及被毁宗门留下的旧债。
+			FallenHeavenMessenger: 来自坠落天宫的使者。它的话语像迟到的敕令，总在封印破裂之后才抵达。
+		}
+	}
+}

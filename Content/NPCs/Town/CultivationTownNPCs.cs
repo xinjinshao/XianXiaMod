@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using Terraria;
+using Terraria.GameContent.Bestiary;
 using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -96,11 +97,21 @@ public abstract class CultivationTownNPC : ModNPC
             }
         }
     }
+
+    protected static void AddTownBestiaryFlavor(BestiaryEntry bestiaryEntry, string key)
+    {
+        bestiaryEntry.Info.Add(new FlavorTextBestiaryInfoElement($"Mods.XianXia.Bestiary.{key}"));
+    }
 }
 
 [AutoloadHead]
 public class HerbSectApprentice : CultivationTownNPC
 {
+    public override void SetBestiary(BestiaryDatabase database, BestiaryEntry bestiaryEntry)
+    {
+        AddTownBestiaryFlavor(bestiaryEntry, nameof(HerbSectApprentice));
+    }
+
     public override bool CanTownNPCSpawn(int numTownNPCs)
     {
         return AnyPlayerHasItem<GreenwoodRoot>() || AnyPlayerAtStage(CultivationStage.QiAwakening);
@@ -148,6 +159,11 @@ public class HerbSectApprentice : CultivationTownNPC
 [AutoloadHead]
 public class WanderingArtificer : CultivationTownNPC
 {
+    public override void SetBestiary(BestiaryDatabase database, BestiaryEntry bestiaryEntry)
+    {
+        AddTownBestiaryFlavor(bestiaryEntry, nameof(WanderingArtificer));
+    }
+
     public override bool CanTownNPCSpawn(int numTownNPCs)
     {
         return AnyPlayerHasItem<FurnaceSlagIron>() || DownedBossSystem.DownedSpiritVeinWyrm;
@@ -200,6 +216,11 @@ public class WanderingArtificer : CultivationTownNPC
 [AutoloadHead]
 public class TribulationObserver : CultivationTownNPC
 {
+    public override void SetBestiary(BestiaryDatabase database, BestiaryEntry bestiaryEntry)
+    {
+        AddTownBestiaryFlavor(bestiaryEntry, nameof(TribulationObserver));
+    }
+
     public override bool CanTownNPCSpawn(int numTownNPCs)
     {
         return AnyPlayerAtStage(CultivationStage.Foundation) || AnyPlayerHasItem<TribulationCloudDew>();
@@ -245,6 +266,11 @@ public class TribulationObserver : CultivationTownNPC
 [AutoloadHead]
 public class ArchiveScrollSpirit : CultivationTownNPC
 {
+    public override void SetBestiary(BestiaryDatabase database, BestiaryEntry bestiaryEntry)
+    {
+        AddTownBestiaryFlavor(bestiaryEntry, nameof(ArchiveScrollSpirit));
+    }
+
     public override bool CanTownNPCSpawn(int numTownNPCs)
     {
         return AnyPlayerAtStage(CultivationStage.GoldenCore) || AnyPlayerHasItem<SectTrialToken>();
@@ -301,6 +327,11 @@ public class ArchiveScrollSpirit : CultivationTownNPC
 [AutoloadHead]
 public class FallenHeavenMessenger : CultivationTownNPC
 {
+    public override void SetBestiary(BestiaryDatabase database, BestiaryEntry bestiaryEntry)
+    {
+        AddTownBestiaryFlavor(bestiaryEntry, nameof(FallenHeavenMessenger));
+    }
+
     public override bool CanTownNPCSpawn(int numTownNPCs)
     {
         return AnyPlayerAtStage(CultivationStage.NascentSoul) || DownedBossSystem.DownedBosses.Contains("heaven_tablet_guardian");

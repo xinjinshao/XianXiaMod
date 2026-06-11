@@ -1,0 +1,11 @@
+Mods: {
+	XianXia: {
+		Bestiary: {
+			HerbSectApprentice: A young alchemist from a broken herb lineage. She recognizes spirit pressure by scent and keeps the earliest pills within reach of new cultivators.
+			WanderingArtificer: A traveling smith who treats every ore vein as an unfinished scripture. He trades in furnace slag, spirit blanks, and tools for shaping early artifacts.
+			TribulationObserver: A quiet watcher of thunder omens. He sells wards and pills to cultivators who are brave enough, or foolish enough, to invite heavenly lightning.
+			ArchiveScrollSpirit: A remnant mind living between old sect pages. It records trials, reputations, and the debts left by destroyed lineages.
+			FallenHeavenMessenger: A messenger from the ruined sky palaces. Its words arrive like decrees after the seal has already broken.
+		}
+	}
+}
