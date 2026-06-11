@@ -38,6 +38,8 @@ public class XianXiaPlayer : ModPlayer
         spiritualEnergyRegenBonus = 0;
         spiritualEnergyCostMultiplier = 1f;
 
+        ApplyCultivationStageBonuses();
+
         if (spiritualEnergy > maxSpiritualEnergy)
         {
             spiritualEnergy = maxSpiritualEnergy;
@@ -209,6 +211,37 @@ public class XianXiaPlayer : ModPlayer
             CultivationStage.DaoSevering => 660,
             _ => BaseMaxSpiritualEnergy
         };
+    }
+
+    private void ApplyCultivationStageBonuses()
+    {
+        if (cultivationStage < CultivationStage.QiAwakening)
+        {
+            return;
+        }
+
+        int stage = (int)cultivationStage;
+        Player.GetDamage(DamageClass.Generic) += 0.02f * stage;
+        Player.statDefense += stage;
+        Player.moveSpeed += 0.01f * stage;
+        spiritualEnergyCostMultiplier *= MathF.Max(0.72f, 1f - stage * 0.025f);
+
+        if (cultivationStage >= CultivationStage.GoldenCore)
+        {
+            Player.GetCritChance(DamageClass.Generic) += 2;
+        }
+
+        if (cultivationStage >= CultivationStage.NascentSoul)
+        {
+            Player.endurance += 0.03f;
+            spiritualEnergyRegenBonus += 1;
+        }
+
+        if (cultivationStage >= CultivationStage.Tribulation)
+        {
+            Player.GetCritChance(DamageClass.Generic) += 3;
+            Player.endurance += 0.02f;
+        }
     }
 
     public override void SaveData(TagCompound tag)
