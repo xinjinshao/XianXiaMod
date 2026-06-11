@@ -7,12 +7,15 @@
 - Manifest 条目：130
 - `Assets/Final/<asset_id>/` 下最终素材 PNG：130
 - 预览/审计 PNG：总览 contact sheet、分类 contact sheets、Tile 平铺预览另行生成，不计入最终素材数量。
-- 已检查：文件存在、RGBA 格式、目标尺寸、非 Tile/Wall 透明角。
+- 已检查：文件存在、RGBA 格式、目标尺寸、非 Tile/Wall 透明角、主体外侧分离残留。
 - 当前机器检查：通过。
 - 已修复：Wiki 页面已插入素材图片，不再只依赖路径定位。
 - 已修复：美术图库使用中文名称、ID、类型、尺寸同表展示，便于对照。
 - 已修复：总览 contact sheet 现由 `Tools/create_art_previews.py` 按 manifest 顺序重建，避免替换单个素材后总览图滞后。
 - 已修复：清理最终 PNG 中与主体分离的源图标签/色点残留；Tile/Wall 贴边为平铺需求，不按截断处理。
+- 已修复：`tiles_ui_sheet_chromakey_v01.png` 改用内容行带裁切，避免 row3 UI 素材混入上一行内容。
+- 已修复：`archive_light_pillar`、石碑类 object、Tile/UI 分类图中的源图标签残留。
+- 已修复：灵气条框、灵气条填充、天劫预警线改为确定性像素绘制版本，尺寸稳定且不再受源图裁切污染。
 
 ## 语义一致性检查
 

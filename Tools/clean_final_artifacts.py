@@ -8,14 +8,18 @@ from pathlib import Path
 from PIL import Image
 
 
-def final_paths(manifest: Path, final_dir: Path) -> list[Path]:
-    paths: list[Path] = []
+def final_rows(manifest: Path, final_dir: Path) -> list[dict[str, str | Path]]:
+    rows: list[dict[str, str | Path]] = []
     with manifest.open(encoding="utf-8-sig", newline="") as f:
         for row in csv.DictReader(f):
             path = final_dir / row["asset_id"] / f"{row['asset_id']}__{row['output_type']}__v01.png"
             if path.exists():
-                paths.append(path)
-    return paths
+                rows.append({**row, "path": path})
+    return rows
+
+
+def final_paths(manifest: Path, final_dir: Path) -> list[Path]:
+    return [row["path"] for row in final_rows(manifest, final_dir) if isinstance(row["path"], Path)]
 
 
 def components(alpha: Image.Image) -> list[dict[str, int]]:
@@ -72,20 +76,34 @@ def clean_image(path: Path) -> int:
     if len(parts) < 2:
         return 0
 
-    total_area = sum(part["area"] for part in parts)
-    major_threshold = max(16, int(total_area * 0.04))
-    major_parts = [part for part in parts if part["area"] >= major_threshold]
-    if not major_parts:
+    anchor = max(parts, key=lambda part: part["area"])
+    anchor_threshold = max(16, int(anchor["area"] * 0.2))
+    anchor_parts = [part for part in parts if part["area"] >= anchor_threshold]
+    if not anchor_parts:
         return 0
-    major_bottom = max(part["max_y"] for part in major_parts)
-    tiny_threshold = max(16, int(total_area * 0.06))
+    anchor_box = {
+        "min_x": min(part["min_x"] for part in anchor_parts),
+        "max_x": max(part["max_x"] for part in anchor_parts),
+        "min_y": min(part["min_y"] for part in anchor_parts),
+        "max_y": max(part["max_y"] for part in anchor_parts),
+    }
+    fragment_threshold = max(16, int(anchor["area"] * 0.35))
 
     remove: list[dict[str, int]] = []
     for part in parts:
-        separated_below = part["min_y"] > major_bottom + 1
-        low_tiny = part["max_y"] >= rgba.height - 6 and part["area"] <= tiny_threshold
-        text_like = part["height"] <= 10 and part["width"] <= max(24, rgba.width // 3)
-        if part["area"] <= tiny_threshold and text_like and (separated_below or low_tiny):
+        if part in anchor_parts:
+            continue
+        separated_outside = (
+            part["max_y"] < anchor_box["min_y"] - 1
+            or part["min_y"] > anchor_box["max_y"] + 1
+            or part["max_x"] < anchor_box["min_x"] - 1
+            or part["min_x"] > anchor_box["max_x"] + 1
+        )
+        low_edge = part["max_y"] >= rgba.height - 6
+        high_edge = part["min_y"] <= 6
+        thin_fragment = part["height"] <= 10 or part["width"] <= 10
+        compact_fragment = part["area"] <= fragment_threshold
+        if compact_fragment and thin_fragment and (separated_outside or low_edge or high_edge):
             remove.append(part)
 
     if not remove:
@@ -104,17 +122,48 @@ def clean_image(path: Path) -> int:
     return removed_pixels
 
 
+def normalize_tile_or_wall(path: Path, width: int, height: int) -> bool:
+    if height != 16:
+        return False
+    with Image.open(path) as src:
+        rgba = src.convert("RGBA")
+    bbox = rgba.getchannel("A").getbbox()
+    if bbox is None:
+        return False
+    cropped = rgba.crop(bbox)
+    if cropped.size == (width, height) and bbox == (0, 0, width, height):
+        return False
+    normalized = cropped.resize((width, height), Image.Resampling.NEAREST)
+    normalized.save(path)
+    return True
+
+
 def main() -> None:
     manifest = Path("Assets/Specs/art_asset_manifest.csv")
     final_dir = Path("Assets/Final")
+    skip_clean = {"spiritual_energy_bar_frame", "spiritual_energy_bar_fill", "tribulation_warning_line"}
     changed = 0
     removed = 0
-    for path in final_paths(manifest, final_dir):
+    normalized = 0
+    for row in final_rows(manifest, final_dir):
+        path = row["path"]
+        if not isinstance(path, Path):
+            continue
+        if row["output_type"] in {"tile", "wall"} and normalize_tile_or_wall(path, int(row["width"]), int(row["height"])):
+            normalized += 1
+        if row["asset_id"] in skip_clean:
+            continue
         removed_pixels = clean_image(path)
         if removed_pixels:
             changed += 1
             removed += removed_pixels
-    print(json.dumps({"changed_files": changed, "removed_pixels": removed}, ensure_ascii=False, indent=2))
+    print(
+        json.dumps(
+            {"changed_files": changed, "removed_pixels": removed, "normalized_tile_wall": normalized},
+            ensure_ascii=False,
+            indent=2,
+        )
+    )
 
 
 if __name__ == "__main__":

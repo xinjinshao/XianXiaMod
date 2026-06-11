@@ -96,6 +96,16 @@ def fit_canvas(image: Image.Image, size: tuple[int, int], reserved_padding: int 
     return canvas
 
 
+def stretch_canvas(image: Image.Image, size: tuple[int, int]) -> Image.Image:
+    target_w, target_h = size
+    trimmed = trim_alpha(image, padding=0)
+    if trimmed.size != size:
+        trimmed = trimmed.resize(size, Image.Resampling.NEAREST)
+    canvas = Image.new("RGBA", (target_w, target_h), (0, 0, 0, 0))
+    canvas.alpha_composite(trimmed, (0, 0))
+    return canvas
+
+
 def cell_box(sheet: Image.Image, row: AssetRow) -> tuple[int, int, int, int]:
     custom = custom_cell_box(sheet, row)
     if custom is not None:
@@ -133,6 +143,17 @@ def custom_cell_box(sheet: Image.Image, row: AssetRow) -> tuple[int, int, int, i
         }
         y0, y1 = bands[row.row]
         return (x0, y0, x1, y1)
+    if row.sheet == "tiles_ui_sheet_chromakey_v01.png" and row.cols == 6 and row.rows == 6 and row.row <= 3:
+        x0 = round(row.col * width / 6)
+        x1 = round((row.col + 1) * width / 6)
+        bands = {
+            0: (round(height * 0.03), round(height * 0.22)),
+            1: (round(height * 0.22), round(height * 0.42)),
+            2: (round(height * 0.40), round(height * 0.62)),
+            3: (round(height * 0.58), round(height * 0.76)),
+        }
+        y0, y1 = bands[row.row]
+        return (x0, y0, x1, y1)
     return None
 
 
@@ -151,8 +172,11 @@ def process(manifest: Path, generated_dir: Path, final_dir: Path) -> dict[str, i
                 sheet_cache[row.sheet] = remove_chroma_key(raw)
         rgba = sheet_cache[row.sheet]
         crop = rgba.crop(cell_box(rgba, row))
-        reserved_padding = 0 if row.output_type in {"tile", "wall"} else 2
-        final = fit_canvas(crop, (row.width, row.height), reserved_padding=reserved_padding)
+        if row.asset_id in {"spiritual_energy_bar_frame", "spiritual_energy_bar_fill", "tribulation_warning_line"}:
+            final = stretch_canvas(crop, (row.width, row.height))
+        else:
+            reserved_padding = 0 if row.output_type in {"tile", "wall"} else 2
+            final = fit_canvas(crop, (row.width, row.height), reserved_padding=reserved_padding)
         out_dir = final_dir / row.asset_id
         out_dir.mkdir(parents=True, exist_ok=True)
         final.save(out_dir / row.output_name)
