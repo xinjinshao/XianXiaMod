@@ -1,0 +1,6 @@
+displayName = XianXia Mod
+author = xinjinshao
+version = 0.1.0
+homepage = https://github.com/xinjinshao/XianXiaMod
+hideCode = false
+hideResources = false

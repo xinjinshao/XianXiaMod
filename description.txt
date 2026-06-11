@@ -1,0 +1,4 @@
+Xianxia-themed content mod for Terraria/tModLoader.
+
+Current build: MVP playable slice with spiritual energy, shallow spirit veins,
+early materials, starter weapons, starter enemies, and Spirit Vein Wyrm.

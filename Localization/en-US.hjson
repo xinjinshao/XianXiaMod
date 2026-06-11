@@ -1,0 +1,49 @@
+Mods: {
+	XianXia: {
+		Items: {
+			LowGradeSpiritStone: {
+				DisplayName: Low-Grade Spirit Stone
+				Tooltip: A weak spirit stone condensed in shallow spirit veins. Picking it up awakens spiritual energy awareness.
+			}
+			SpiritGel: {
+				DisplayName: Spirit Gel
+				Tooltip: Spiritual gel left inside wandering spirit slimes.
+			}
+			QiDrawingTalisman: {
+				DisplayName: Qi-Drawing Talisman
+				Tooltip: Use to enter Qi Awakening and restore a little spiritual energy.
+				Awakened: You feel a thread of spiritual energy moving through your meridians.
+			}
+			WoodgrainFlyingSword: {
+				DisplayName: Woodgrain Flying Sword
+				Tooltip: Costs 4 spiritual energy to release a returning wooden flying sword.
+			}
+			SpiritwoodCrossbow: {
+				DisplayName: Spiritwood Crossbow
+				Tooltip: Costs 2 spiritual energy to fire a spirit bolt.
+			}
+			SpiritVeinIncense: {
+				DisplayName: Spirit Vein Incense
+				Tooltip: Summons the Spirit Vein Wyrm.
+			}
+		}
+		Projectiles: {
+			WoodgrainSwordProjectile.DisplayName: Woodgrain Flying Sword
+			SpiritBoltProjectile.DisplayName: Spirit Bolt
+		}
+		NPCs: {
+			WanderingSpiritSlime.DisplayName: Wandering Spirit Slime
+			TalismanBat.DisplayName: Talisman Bat
+			ShatteredJadeWorm.DisplayName: Shattered Jade Worm
+			SpiritVeinWyrm.DisplayName: Spirit Vein Wyrm
+			ShatteredJadeWyrmMinion.DisplayName: Spirit Vein Segment
+		}
+		Tiles: {
+			SpiritOreTile.MapEntry: Spirit Ore
+			SpiritMossTile.MapEntry: Spirit Moss
+		}
+		Biomes: {
+			ShallowSpiritVeinsBiome.DisplayName: Shallow Spirit Veins
+		}
+	}
+}

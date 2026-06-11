@@ -1,0 +1,4 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <Import Project="$(USERPROFILE)\Documents\My Games\Terraria\tModLoader\ModSources\tModLoader.targets"
+          Condition="Exists('$(USERPROFILE)\Documents\My Games\Terraria\tModLoader\ModSources\tModLoader.targets')" />
+</Project>

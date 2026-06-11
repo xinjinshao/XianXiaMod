@@ -27,3 +27,14 @@
 - 将生态生成规则转写为 tModLoader worldgen 伪代码。
 - 为物品补充 tModLoader 字段草案。
 - 将美术 spec 导出为 `Assets/Specs/` YAML。
+
+## 代码实现状态
+
+当前已进入 MVP 可玩纵切：
+
+- 已初始化 tModLoader 工程骨架、`build.txt`、`description.txt` 与 `XianXia.csproj`。
+- 已实现灵气玩家状态、引气阶段、灵气 UI、基础网络同步和世界进度记录。
+- 已实现浅层灵脉 worldgen、灵石矿、灵苔、浅层灵脉判定。
+- 已实现下品灵石、灵气凝胶、引气符、木纹飞剑、灵木短弩、灵脉香。
+- 已实现游灵史莱姆、符纸蝠、碎玉虫、灵脉蠕虫及其幼节。
+- 当前构建验证：`dotnet build XianXia.csproj` 通过。

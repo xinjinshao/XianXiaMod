@@ -1,0 +1,49 @@
+Mods: {
+	XianXia: {
+		Items: {
+			LowGradeSpiritStone: {
+				DisplayName: 下品灵石
+				Tooltip: 浅层灵脉中凝成的低阶灵石。拾取后会唤醒灵气感知。
+			}
+			SpiritGel: {
+				DisplayName: 灵气凝胶
+				Tooltip: 游灵史莱姆体内残留的灵气胶质。
+			}
+			QiDrawingTalisman: {
+				DisplayName: 引气符
+				Tooltip: 使用后进入引气阶段，并恢复少量灵气。
+				Awakened: 你感到经脉中有一缕灵气流动。
+			}
+			WoodgrainFlyingSword: {
+				DisplayName: 木纹飞剑
+				Tooltip: 消耗 4 点灵气，放出一柄会折返的木纹飞剑。
+			}
+			SpiritwoodCrossbow: {
+				DisplayName: 灵木短弩
+				Tooltip: 消耗 2 点灵气，射出一枚灵气弹。
+			}
+			SpiritVeinIncense: {
+				DisplayName: 灵脉香
+				Tooltip: 召唤灵脉蠕虫。
+			}
+		}
+		Projectiles: {
+			WoodgrainSwordProjectile.DisplayName: 木纹飞剑
+			SpiritBoltProjectile.DisplayName: 灵气弹
+		}
+		NPCs: {
+			WanderingSpiritSlime.DisplayName: 游灵史莱姆
+			TalismanBat.DisplayName: 符纸蝠
+			ShatteredJadeWorm.DisplayName: 碎玉虫
+			SpiritVeinWyrm.DisplayName: 灵脉蠕虫
+			ShatteredJadeWyrmMinion.DisplayName: 灵脉幼节
+		}
+		Tiles: {
+			SpiritOreTile.MapEntry: 灵石矿
+			SpiritMossTile.MapEntry: 灵苔
+		}
+		Biomes: {
+			ShallowSpiritVeinsBiome.DisplayName: 浅层灵脉
+		}
+	}
+}
