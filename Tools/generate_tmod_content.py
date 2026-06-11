@@ -835,6 +835,18 @@ public class {class_name} : ModNPC
         Vector2 desired = target.Center - NPC.Center;
         bool phaseTwo = NPC.life < NPC.lifeMax / 2;
         bool finalPhase = NPC.life < NPC.lifeMax / 4;
+        if (phaseTwo && NPC.localAI[0] < 1f)
+        {{
+            NPC.localAI[0] = 1f;
+            if (Main.netMode != NetmodeID.Server)
+                CombatText.NewText(NPC.Hitbox, Color.Cyan, "灵压暴涨");
+        }}
+        if (finalPhase && NPC.localAI[0] < 2f)
+        {{
+            NPC.localAI[0] = 2f;
+            if (Main.netMode != NetmodeID.Server)
+                CombatText.NewText(NPC.Hitbox, Color.OrangeRed, "道痕失控");
+        }}
         float speed = finalPhase ? 10.5f : phaseTwo ? 8f : 5.5f;
         NPC.velocity = Vector2.Lerp(NPC.velocity, desired.SafeNormalize(Vector2.UnitY) * speed, phaseTwo ? 0.055f : 0.035f);
         NPC.rotation = NPC.velocity.ToRotation();
