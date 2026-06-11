@@ -355,6 +355,10 @@ Mods: {
 				DisplayName: "回春"
 				Description: "生命恢复提升，并缓慢回补灵气。"
 			}
+			TribulationPressureBuff: {
+				DisplayName: "劫压临身"
+				Description: "天劫锁定了你，造成与承受伤害都会变得更激烈。"
+			}
 			TribulationResistanceBuff: {
 				DisplayName: "抗劫"
 				Description: "降低受到的伤害，并平复灵压。"

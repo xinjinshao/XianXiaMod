@@ -945,12 +945,14 @@ def generate_localization() -> None:
     buff_zh = {
         "QiGatheringBuff": {"DisplayName": "聚气", "Description": "灵气恢复提升，灵气消耗小幅降低。"},
         "SpringReturnBuff": {"DisplayName": "回春", "Description": "生命恢复提升，并缓慢回补灵气。"},
+        "TribulationPressureBuff": {"DisplayName": "劫压临身", "Description": "天劫锁定了你，造成与承受伤害都会变得更激烈。"},
         "TribulationResistanceBuff": {"DisplayName": "抗劫", "Description": "降低受到的伤害，并平复灵压。"},
         "SpiritualPressureDisorderBuff": {"DisplayName": "灵压紊乱", "Description": "防御和移动速度降低。"},
     }
     buff_en = {
         "QiGatheringBuff": {"DisplayName": "Qi Gathering", "Description": "Increases spiritual energy recovery and slightly lowers spiritual energy costs."},
         "SpringReturnBuff": {"DisplayName": "Spring Return", "Description": "Improves life regeneration and slowly restores spiritual energy."},
+        "TribulationPressureBuff": {"DisplayName": "Tribulation Pressure", "Description": "The tribulation has marked you, making damage dealt and received more volatile."},
         "TribulationResistanceBuff": {"DisplayName": "Tribulation Resistance", "Description": "Reduces incoming damage and calms spirit pressure."},
         "SpiritualPressureDisorderBuff": {"DisplayName": "Spiritual Pressure Disorder", "Description": "Reduces defense and movement speed."},
     }

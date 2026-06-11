@@ -13,6 +13,8 @@ public class XianXiaPlayer : ModPlayer
     public int maxSpiritualEnergy;
     public int spiritPressure;
     public int spiritualEnergyRegenBonus;
+    public int tribulationTimer;
+    public int tribulationIntensity;
     public float spiritualEnergyCostMultiplier = 1f;
     public bool discoveredSpiritualEnergy;
     public CultivationStage cultivationStage;
@@ -24,6 +26,8 @@ public class XianXiaPlayer : ModPlayer
         maxSpiritualEnergy = BaseMaxSpiritualEnergy;
         spiritualEnergy = 0;
         spiritPressure = 0;
+        tribulationTimer = 0;
+        tribulationIntensity = 0;
         cultivationStage = CultivationStage.None;
         discoveredSpiritualEnergy = false;
     }
@@ -51,6 +55,8 @@ public class XianXiaPlayer : ModPlayer
         {
             Player.AddBuff(ModContent.BuffType<global::XianXia.Content.Buffs.SpiritualPressureDisorderBuff>(), 2);
         }
+
+        UpdateTribulation();
 
         regenTimer++;
         int interval = cultivationStage >= CultivationStage.QiAwakening ? Math.Max(18, 60 - (int)cultivationStage * 5) : 60;
@@ -117,12 +123,75 @@ public class XianXiaPlayer : ModPlayer
         maxSpiritualEnergy = GetMaxSpiritualEnergy(cultivationStage);
         RestoreSpiritualEnergy(maxSpiritualEnergy / 3);
         spiritPressure = Math.Clamp(spiritPressure + (int)targetStage * 8, 0, 100);
+        BeginTribulation(targetStage);
         return true;
     }
 
     public void ReduceSpiritPressure(int amount)
     {
         spiritPressure = Math.Clamp(spiritPressure - amount, 0, 100);
+    }
+
+    private void BeginTribulation(CultivationStage stage)
+    {
+        if (stage < CultivationStage.Foundation)
+        {
+            return;
+        }
+
+        tribulationIntensity = Math.Clamp((int)stage - 1, 1, 8);
+        tribulationTimer = Math.Max(tribulationTimer, 60 * (18 + tribulationIntensity * 4));
+    }
+
+    private void UpdateTribulation()
+    {
+        if (tribulationTimer <= 0)
+        {
+            tribulationIntensity = 0;
+            return;
+        }
+
+        tribulationTimer--;
+        Player.AddBuff(ModContent.BuffType<global::XianXia.Content.Buffs.TribulationPressureBuff>(), 2);
+
+        if (Player.HasBuff(ModContent.BuffType<global::XianXia.Content.Buffs.TribulationResistanceBuff>()) && Main.GameUpdateCount % 30 == 0)
+        {
+            ReduceSpiritPressure(2);
+        }
+
+        int interval = Math.Max(38, 110 - tribulationIntensity * 8);
+        if (Main.myPlayer == Player.whoAmI && tribulationTimer % interval == 0)
+        {
+            SpawnTribulationLightning();
+        }
+
+        if (tribulationTimer == 0)
+        {
+            ReduceSpiritPressure(20 + tribulationIntensity * 2);
+            RestoreSpiritualEnergy(20 + tribulationIntensity * 8);
+            tribulationIntensity = 0;
+        }
+    }
+
+    private void SpawnTribulationLightning()
+    {
+        if (Main.netMode == Terraria.ID.NetmodeID.MultiplayerClient)
+        {
+            return;
+        }
+
+        float offsetX = Main.rand.NextFloat(-240f, 240f);
+        Microsoft.Xna.Framework.Vector2 position = Player.Center + new Microsoft.Xna.Framework.Vector2(offsetX, -620f);
+        Microsoft.Xna.Framework.Vector2 velocity = new(-offsetX * 0.0025f, 10f + tribulationIntensity * 0.45f);
+        int damage = 18 + tribulationIntensity * 7;
+        Projectile.NewProjectile(
+            Player.GetSource_FromThis(),
+            position,
+            velocity,
+            ModContent.ProjectileType<global::XianXia.Content.Projectiles.TribulationLightningProjectile>(),
+            damage,
+            1.5f,
+            Player.whoAmI);
     }
 
     public static int GetMaxSpiritualEnergy(CultivationStage stage)
@@ -146,6 +215,8 @@ public class XianXiaPlayer : ModPlayer
     {
         tag["spiritualEnergy"] = spiritualEnergy;
         tag["spiritPressure"] = spiritPressure;
+        tag["tribulationTimer"] = tribulationTimer;
+        tag["tribulationIntensity"] = tribulationIntensity;
         tag["discoveredSpiritualEnergy"] = discoveredSpiritualEnergy;
         tag["cultivationStage"] = (int)cultivationStage;
     }
@@ -154,6 +225,8 @@ public class XianXiaPlayer : ModPlayer
     {
         spiritualEnergy = tag.GetInt("spiritualEnergy");
         spiritPressure = tag.GetInt("spiritPressure");
+        tribulationTimer = tag.GetInt("tribulationTimer");
+        tribulationIntensity = tag.GetInt("tribulationIntensity");
         discoveredSpiritualEnergy = tag.GetBool("discoveredSpiritualEnergy");
         cultivationStage = (CultivationStage)tag.GetInt("cultivationStage");
     }
@@ -164,6 +237,8 @@ public class XianXiaPlayer : ModPlayer
         clone.spiritualEnergy = spiritualEnergy;
         clone.maxSpiritualEnergy = maxSpiritualEnergy;
         clone.spiritPressure = spiritPressure;
+        clone.tribulationTimer = tribulationTimer;
+        clone.tribulationIntensity = tribulationIntensity;
         clone.discoveredSpiritualEnergy = discoveredSpiritualEnergy;
         clone.cultivationStage = cultivationStage;
     }

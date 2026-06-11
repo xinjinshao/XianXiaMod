@@ -355,6 +355,10 @@ Mods: {
 				DisplayName: "Spring Return"
 				Description: "Improves life regeneration and slowly restores spiritual energy."
 			}
+			TribulationPressureBuff: {
+				DisplayName: "Tribulation Pressure"
+				Description: "The tribulation has marked you, making damage dealt and received more volatile."
+			}
 			TribulationResistanceBuff: {
 				DisplayName: "Tribulation Resistance"
 				Description: "Reduces incoming damage and calms spirit pressure."
