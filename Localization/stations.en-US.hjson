@@ -14,5 +14,15 @@ Mods: {
 			AlchemyCauldronTile.MapEntry: "Alchemy Cauldron"
 			ArtifactForgeTile.MapEntry: "Artifact Forge"
 		}
+		Buffs: {
+			AlchemyInsightBuff: {
+				DisplayName: "Alchemy Insight"
+				Description: "Spiritual energy recovers faster near an Alchemy Cauldron."
+			}
+			ArtifactResonanceBuff: {
+				DisplayName: "Artifact Resonance"
+				Description: "Spiritual energy costs are slightly reduced near an Artifact Forge."
+			}
+		}
 	}
 }

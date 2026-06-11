@@ -14,5 +14,15 @@ Mods: {
 			AlchemyCauldronTile.MapEntry: "炼丹炉"
 			ArtifactForgeTile.MapEntry: "器胚炉"
 		}
+		Buffs: {
+			AlchemyInsightBuff: {
+				DisplayName: "丹炉温养"
+				Description: "靠近炼丹炉，灵气恢复提升。"
+			}
+			ArtifactResonanceBuff: {
+				DisplayName: "器胚共鸣"
+				Description: "靠近器胚炉，灵气消耗小幅降低。"
+			}
+		}
 	}
 }

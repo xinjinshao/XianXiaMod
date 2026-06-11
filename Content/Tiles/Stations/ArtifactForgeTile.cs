@@ -27,4 +27,12 @@ public class ArtifactForgeTile : ModTile
         DustType = DustID.GemTopaz;
         AddMapEntry(new Color(190, 150, 90), CreateMapEntryName());
     }
+
+    public override void NearbyEffects(int i, int j, bool closer)
+    {
+        if (closer)
+        {
+            Main.LocalPlayer.AddBuff(ModContent.BuffType<global::XianXia.Content.Buffs.ArtifactResonanceBuff>(), 20);
+        }
+    }
 }
