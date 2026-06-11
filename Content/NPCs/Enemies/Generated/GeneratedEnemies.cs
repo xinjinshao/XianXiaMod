@@ -1,4 +1,5 @@
 using Terraria;
+using Terraria.GameContent.Bestiary;
 using Terraria.GameContent.ItemDropRules;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -7,6 +8,11 @@ namespace XianXia.Content.NPCs.Enemies.Generated;
 
 public class HerbGardenVineSpirit : ModNPC
 {
+    public override void SetBestiary(BestiaryDatabase database, BestiaryEntry bestiaryEntry)
+    {
+        bestiaryEntry.Info.Add(new FlavorTextBestiaryInfoElement("Mods.XianXia.Bestiary.HerbGardenVineSpirit.Text"));
+    }
+
     public override void SetDefaults()
     {
         NPC.width = 48;
@@ -37,6 +43,11 @@ public class HerbGardenVineSpirit : ModNPC
 
 public class MiasmaFlowerMoth : ModNPC
 {
+    public override void SetBestiary(BestiaryDatabase database, BestiaryEntry bestiaryEntry)
+    {
+        bestiaryEntry.Info.Add(new FlavorTextBestiaryInfoElement("Mods.XianXia.Bestiary.MiasmaFlowerMoth.Text"));
+    }
+
     public override void SetDefaults()
     {
         NPC.width = 48;
@@ -67,6 +78,11 @@ public class MiasmaFlowerMoth : ModNPC
 
 public class FurnaceAshGolem : ModNPC
 {
+    public override void SetBestiary(BestiaryDatabase database, BestiaryEntry bestiaryEntry)
+    {
+        bestiaryEntry.Info.Add(new FlavorTextBestiaryInfoElement("Mods.XianXia.Bestiary.FurnaceAshGolem.Text"));
+    }
+
     public override void SetDefaults()
     {
         NPC.width = 48;
@@ -96,6 +112,11 @@ public class FurnaceAshGolem : ModNPC
 
 public class IronShardSpirit : ModNPC
 {
+    public override void SetBestiary(BestiaryDatabase database, BestiaryEntry bestiaryEntry)
+    {
+        bestiaryEntry.Info.Add(new FlavorTextBestiaryInfoElement("Mods.XianXia.Bestiary.IronShardSpirit.Text"));
+    }
+
     public override void SetDefaults()
     {
         NPC.width = 48;
@@ -126,6 +147,11 @@ public class IronShardSpirit : ModNPC
 
 public class TribulationCloudling : ModNPC
 {
+    public override void SetBestiary(BestiaryDatabase database, BestiaryEntry bestiaryEntry)
+    {
+        bestiaryEntry.Info.Add(new FlavorTextBestiaryInfoElement("Mods.XianXia.Bestiary.TribulationCloudling.Text"));
+    }
+
     public override void SetDefaults()
     {
         NPC.width = 48;
@@ -156,6 +182,11 @@ public class TribulationCloudling : ModNPC
 
 public class ThunderPatternHawk : ModNPC
 {
+    public override void SetBestiary(BestiaryDatabase database, BestiaryEntry bestiaryEntry)
+    {
+        bestiaryEntry.Info.Add(new FlavorTextBestiaryInfoElement("Mods.XianXia.Bestiary.ThunderPatternHawk.Text"));
+    }
+
     public override void SetDefaults()
     {
         NPC.width = 48;
@@ -186,6 +217,11 @@ public class ThunderPatternHawk : ModNPC
 
 public class StarEclipsedCultivator : ModNPC
 {
+    public override void SetBestiary(BestiaryDatabase database, BestiaryEntry bestiaryEntry)
+    {
+        bestiaryEntry.Info.Add(new FlavorTextBestiaryInfoElement("Mods.XianXia.Bestiary.StarEclipsedCultivator.Text"));
+    }
+
     public override void SetDefaults()
     {
         NPC.width = 48;
@@ -215,6 +251,11 @@ public class StarEclipsedCultivator : ModNPC
 
 public class StarAbyssLarva : ModNPC
 {
+    public override void SetBestiary(BestiaryDatabase database, BestiaryEntry bestiaryEntry)
+    {
+        bestiaryEntry.Info.Add(new FlavorTextBestiaryInfoElement("Mods.XianXia.Bestiary.StarAbyssLarva.Text"));
+    }
+
     public override void SetDefaults()
     {
         NPC.width = 48;
@@ -244,6 +285,11 @@ public class StarAbyssLarva : ModNPC
 
 public class ObsessedSwordCultivator : ModNPC
 {
+    public override void SetBestiary(BestiaryDatabase database, BestiaryEntry bestiaryEntry)
+    {
+        bestiaryEntry.Info.Add(new FlavorTextBestiaryInfoElement("Mods.XianXia.Bestiary.ObsessedSwordCultivator.Text"));
+    }
+
     public override void SetDefaults()
     {
         NPC.width = 48;
@@ -273,6 +319,11 @@ public class ObsessedSwordCultivator : ModNPC
 
 public class ScriptureArchiveEcho : ModNPC
 {
+    public override void SetBestiary(BestiaryDatabase database, BestiaryEntry bestiaryEntry)
+    {
+        bestiaryEntry.Info.Add(new FlavorTextBestiaryInfoElement("Mods.XianXia.Bestiary.ScriptureArchiveEcho.Text"));
+    }
+
     public override void SetDefaults()
     {
         NPC.width = 48;
@@ -303,6 +354,11 @@ public class ScriptureArchiveEcho : ModNPC
 
 public class CelestialPuppet : ModNPC
 {
+    public override void SetBestiary(BestiaryDatabase database, BestiaryEntry bestiaryEntry)
+    {
+        bestiaryEntry.Info.Add(new FlavorTextBestiaryInfoElement("Mods.XianXia.Bestiary.CelestialPuppet.Text"));
+    }
+
     public override void SetDefaults()
     {
         NPC.width = 48;
@@ -332,6 +388,11 @@ public class CelestialPuppet : ModNPC
 
 public class HeavenTabletGuard : ModNPC
 {
+    public override void SetBestiary(BestiaryDatabase database, BestiaryEntry bestiaryEntry)
+    {
+        bestiaryEntry.Info.Add(new FlavorTextBestiaryInfoElement("Mods.XianXia.Bestiary.HeavenTabletGuard.Text"));
+    }
+
     public override void SetDefaults()
     {
         NPC.width = 48;
@@ -361,6 +422,11 @@ public class HeavenTabletGuard : ModNPC
 
 public class MoonboneCultivator : ModNPC
 {
+    public override void SetBestiary(BestiaryDatabase database, BestiaryEntry bestiaryEntry)
+    {
+        bestiaryEntry.Info.Add(new FlavorTextBestiaryInfoElement("Mods.XianXia.Bestiary.MoonboneCultivator.Text"));
+    }
+
     public override void SetDefaults()
     {
         NPC.width = 48;
@@ -390,6 +456,11 @@ public class MoonboneCultivator : ModNPC
 
 public class ArchivedImmortalSoul : ModNPC
 {
+    public override void SetBestiary(BestiaryDatabase database, BestiaryEntry bestiaryEntry)
+    {
+        bestiaryEntry.Info.Add(new FlavorTextBestiaryInfoElement("Mods.XianXia.Bestiary.ArchivedImmortalSoul.Text"));
+    }
+
     public override void SetDefaults()
     {
         NPC.width = 48;

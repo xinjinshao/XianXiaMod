@@ -1,0 +1,81 @@
+Mods: {
+	XianXia: {
+		Bestiary: {
+			AbyssalStarWomb: {
+				Text: "Abyssal Star Womb is a major cultivation trial. Defeating it raises sect reputation and drops Star Eclipse Crystal."
+			}
+			ArchivedImmortalSoul: {
+				Text: "Archived Immortal Soul wanders the Moonbone Abyss and drops Dao Severing Dust."
+			}
+			BlackFurnaceIronGolem: {
+				Text: "Black Furnace Iron Golem is a major cultivation trial. Defeating it raises sect reputation and drops Furnace Slag Iron."
+			}
+			BrokenHeavenInspector: {
+				Text: "Broken Heaven Inspector is a major cultivation trial. Defeating it raises sect reputation and drops Heaven Dao Fragment."
+			}
+			CelestialPuppet: {
+				Text: "Celestial Puppet wanders the Fallen Heaven Palace and drops Heaven Dao Fragment."
+			}
+			FormlessSwordSoul: {
+				Text: "Formless Sword Soul is a major cultivation trial. Defeating it raises sect reputation and drops Sect Trial Token."
+			}
+			FurnaceAshGolem: {
+				Text: "Furnace Ash Golem wanders the Sunken Furnace Vein and drops Furnace Slag Iron."
+			}
+			GardenWarden: {
+				Text: "Garden Warden is a major cultivation trial. Defeating it raises sect reputation and drops Greenwood Root."
+			}
+			GreenwoodMedicineKingEcho: {
+				Text: "Greenwood Medicine King Echo is a major cultivation trial. Defeating it raises sect reputation and drops Greenwood Root."
+			}
+			HeavenTabletGuard: {
+				Text: "Heaven Tablet Guard wanders the Fallen Heaven Palace and drops Heaven Dao Fragment."
+			}
+			HeavenTabletGuardian: {
+				Text: "Heaven Tablet Guardian is a major cultivation trial. Defeating it raises sect reputation and drops Heaven Dao Fragment."
+			}
+			HerbGardenVineSpirit: {
+				Text: "Herb Garden Vine Spirit wanders the Greenwood Herb Garden and drops Greenwood Root."
+			}
+			IronShardSpirit: {
+				Text: "Iron Shard Spirit wanders the Sunken Furnace Vein and drops Artifact Blank Shard."
+			}
+			MiasmaFlowerMoth: {
+				Text: "Miasma Flower Moth wanders the Greenwood Herb Garden and drops Greenwood Root."
+			}
+			MoonboneCultivator: {
+				Text: "Moonbone Cultivator wanders the Moonbone Abyss and drops Moonbone."
+			}
+			MoonboneImmortal: {
+				Text: "Moonbone Immortal is a major cultivation trial. Defeating it raises sect reputation and drops Moonbone."
+			}
+			ObsessedSwordCultivator: {
+				Text: "Obsessed Sword Cultivator wanders the Ten Thousand Sects Ruins and drops Sect Trial Token."
+			}
+			OldHeavenDaoCore: {
+				Text: "Old Heaven Dao Core is a major cultivation trial. Defeating it raises sect reputation and drops Dao Severing Dust."
+			}
+			ScriptureArchiveEcho: {
+				Text: "Scripture Archive Echo wanders the Ten Thousand Sects Ruins and drops Sect Trial Token."
+			}
+			StarAbyssLarva: {
+				Text: "Star Abyss Larva wanders the Star Abyss Rift and drops Star Eclipse Crystal."
+			}
+			StarEclipsedCultivator: {
+				Text: "Star Eclipsed Cultivator wanders the Star Abyss Rift and drops Star Eclipse Crystal."
+			}
+			ThunderMarshJiao: {
+				Text: "Thunder Marsh Jiao is a major cultivation trial. Defeating it raises sect reputation and drops Tribulation Cloud Dew."
+			}
+			ThunderPatternHawk: {
+				Text: "Thunder Pattern Hawk wanders the Thunder Marsh Clouds and drops Tribulation Cloud Dew."
+			}
+			TribulationCloudAvatar: {
+				Text: "Tribulation Cloud Avatar is a major cultivation trial. Defeating it raises sect reputation and drops Tribulation Cloud Dew."
+			}
+			TribulationCloudling: {
+				Text: "Tribulation Cloudling wanders the Thunder Marsh Clouds and drops Tribulation Cloud Dew."
+			}
+		}
+	}
+}

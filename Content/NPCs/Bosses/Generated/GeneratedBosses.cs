@@ -1,6 +1,7 @@
 using System;
 using Microsoft.Xna.Framework;
 using Terraria;
+using Terraria.GameContent.Bestiary;
 using Terraria.GameContent.ItemDropRules;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -11,6 +12,11 @@ namespace XianXia.Content.NPCs.Bosses.Generated;
 [AutoloadBossHead]
 public class GardenWarden : ModNPC
 {
+    public override void SetBestiary(BestiaryDatabase database, BestiaryEntry bestiaryEntry)
+    {
+        bestiaryEntry.Info.Add(new FlavorTextBestiaryInfoElement("Mods.XianXia.Bestiary.GardenWarden.Text"));
+    }
+
     public override void SetDefaults()
     {
         NPC.width = 96;
@@ -102,6 +108,11 @@ public class GardenWarden : ModNPC
 [AutoloadBossHead]
 public class BlackFurnaceIronGolem : ModNPC
 {
+    public override void SetBestiary(BestiaryDatabase database, BestiaryEntry bestiaryEntry)
+    {
+        bestiaryEntry.Info.Add(new FlavorTextBestiaryInfoElement("Mods.XianXia.Bestiary.BlackFurnaceIronGolem.Text"));
+    }
+
     public override void SetDefaults()
     {
         NPC.width = 96;
@@ -193,6 +204,11 @@ public class BlackFurnaceIronGolem : ModNPC
 [AutoloadBossHead]
 public class TribulationCloudAvatar : ModNPC
 {
+    public override void SetBestiary(BestiaryDatabase database, BestiaryEntry bestiaryEntry)
+    {
+        bestiaryEntry.Info.Add(new FlavorTextBestiaryInfoElement("Mods.XianXia.Bestiary.TribulationCloudAvatar.Text"));
+    }
+
     public override void SetDefaults()
     {
         NPC.width = 96;
@@ -284,6 +300,11 @@ public class TribulationCloudAvatar : ModNPC
 [AutoloadBossHead]
 public class ThunderMarshJiao : ModNPC
 {
+    public override void SetBestiary(BestiaryDatabase database, BestiaryEntry bestiaryEntry)
+    {
+        bestiaryEntry.Info.Add(new FlavorTextBestiaryInfoElement("Mods.XianXia.Bestiary.ThunderMarshJiao.Text"));
+    }
+
     public override void SetDefaults()
     {
         NPC.width = 96;
@@ -375,6 +396,11 @@ public class ThunderMarshJiao : ModNPC
 [AutoloadBossHead]
 public class AbyssalStarWomb : ModNPC
 {
+    public override void SetBestiary(BestiaryDatabase database, BestiaryEntry bestiaryEntry)
+    {
+        bestiaryEntry.Info.Add(new FlavorTextBestiaryInfoElement("Mods.XianXia.Bestiary.AbyssalStarWomb.Text"));
+    }
+
     public override void SetDefaults()
     {
         NPC.width = 96;
@@ -466,6 +492,11 @@ public class AbyssalStarWomb : ModNPC
 [AutoloadBossHead]
 public class FormlessSwordSoul : ModNPC
 {
+    public override void SetBestiary(BestiaryDatabase database, BestiaryEntry bestiaryEntry)
+    {
+        bestiaryEntry.Info.Add(new FlavorTextBestiaryInfoElement("Mods.XianXia.Bestiary.FormlessSwordSoul.Text"));
+    }
+
     public override void SetDefaults()
     {
         NPC.width = 96;
@@ -557,6 +588,11 @@ public class FormlessSwordSoul : ModNPC
 [AutoloadBossHead]
 public class GreenwoodMedicineKingEcho : ModNPC
 {
+    public override void SetBestiary(BestiaryDatabase database, BestiaryEntry bestiaryEntry)
+    {
+        bestiaryEntry.Info.Add(new FlavorTextBestiaryInfoElement("Mods.XianXia.Bestiary.GreenwoodMedicineKingEcho.Text"));
+    }
+
     public override void SetDefaults()
     {
         NPC.width = 96;
@@ -648,6 +684,11 @@ public class GreenwoodMedicineKingEcho : ModNPC
 [AutoloadBossHead]
 public class HeavenTabletGuardian : ModNPC
 {
+    public override void SetBestiary(BestiaryDatabase database, BestiaryEntry bestiaryEntry)
+    {
+        bestiaryEntry.Info.Add(new FlavorTextBestiaryInfoElement("Mods.XianXia.Bestiary.HeavenTabletGuardian.Text"));
+    }
+
     public override void SetDefaults()
     {
         NPC.width = 96;
@@ -739,6 +780,11 @@ public class HeavenTabletGuardian : ModNPC
 [AutoloadBossHead]
 public class BrokenHeavenInspector : ModNPC
 {
+    public override void SetBestiary(BestiaryDatabase database, BestiaryEntry bestiaryEntry)
+    {
+        bestiaryEntry.Info.Add(new FlavorTextBestiaryInfoElement("Mods.XianXia.Bestiary.BrokenHeavenInspector.Text"));
+    }
+
     public override void SetDefaults()
     {
         NPC.width = 96;
@@ -830,6 +876,11 @@ public class BrokenHeavenInspector : ModNPC
 [AutoloadBossHead]
 public class MoonboneImmortal : ModNPC
 {
+    public override void SetBestiary(BestiaryDatabase database, BestiaryEntry bestiaryEntry)
+    {
+        bestiaryEntry.Info.Add(new FlavorTextBestiaryInfoElement("Mods.XianXia.Bestiary.MoonboneImmortal.Text"));
+    }
+
     public override void SetDefaults()
     {
         NPC.width = 96;
@@ -921,6 +972,11 @@ public class MoonboneImmortal : ModNPC
 [AutoloadBossHead]
 public class OldHeavenDaoCore : ModNPC
 {
+    public override void SetBestiary(BestiaryDatabase database, BestiaryEntry bestiaryEntry)
+    {
+        bestiaryEntry.Info.Add(new FlavorTextBestiaryInfoElement("Mods.XianXia.Bestiary.OldHeavenDaoCore.Text"));
+    }
+
     public override void SetDefaults()
     {
         NPC.width = 96;

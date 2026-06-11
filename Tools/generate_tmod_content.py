@@ -780,6 +780,11 @@ def generate_enemies(existing: set[str]) -> None:
         classes.append(f"""
 public class {class_name} : ModNPC
 {{
+    public override void SetBestiary(BestiaryDatabase database, BestiaryEntry bestiaryEntry)
+    {{
+        bestiaryEntry.Info.Add(new FlavorTextBestiaryInfoElement("Mods.XianXia.Bestiary.{class_name}.Text"));
+    }}
+
     public override void SetDefaults()
     {{
         NPC.width = 48;
@@ -809,7 +814,7 @@ public class {class_name} : ModNPC
     write(CONTENT / "NPCs" / "Enemies" / "Generated" / "GeneratedEnemies.cs", ENEMY_HEADER + "\n".join(classes))
 
 
-ENEMY_HEADER = """using Terraria;\nusing Terraria.GameContent.ItemDropRules;\nusing Terraria.ID;\nusing Terraria.ModLoader;\n\nnamespace XianXia.Content.NPCs.Enemies.Generated;\n"""
+ENEMY_HEADER = """using Terraria;\nusing Terraria.GameContent.Bestiary;\nusing Terraria.GameContent.ItemDropRules;\nusing Terraria.ID;\nusing Terraria.ModLoader;\n\nnamespace XianXia.Content.NPCs.Enemies.Generated;\n"""
 
 
 def generate_bosses(existing: set[str]) -> None:
@@ -824,6 +829,11 @@ def generate_bosses(existing: set[str]) -> None:
 [AutoloadBossHead]
 public class {class_name} : ModNPC
 {{
+    public override void SetBestiary(BestiaryDatabase database, BestiaryEntry bestiaryEntry)
+    {{
+        bestiaryEntry.Info.Add(new FlavorTextBestiaryInfoElement("Mods.XianXia.Bestiary.{class_name}.Text"));
+    }}
+
     public override void SetDefaults()
     {{
         NPC.width = 96;
@@ -914,7 +924,7 @@ public class {class_name} : ModNPC
     write(CONTENT / "NPCs" / "Bosses" / "Generated" / "GeneratedBosses.cs", BOSS_HEADER + "\n".join(classes))
 
 
-BOSS_HEADER = """using System;\nusing Microsoft.Xna.Framework;\nusing Terraria;\nusing Terraria.GameContent.ItemDropRules;\nusing Terraria.ID;\nusing Terraria.ModLoader;\nusing XianXia.Common.Systems;\n\nnamespace XianXia.Content.NPCs.Bosses.Generated;\n"""
+BOSS_HEADER = """using System;\nusing Microsoft.Xna.Framework;\nusing Terraria;\nusing Terraria.GameContent.Bestiary;\nusing Terraria.GameContent.ItemDropRules;\nusing Terraria.ID;\nusing Terraria.ModLoader;\nusing XianXia.Common.Systems;\n\nnamespace XianXia.Content.NPCs.Bosses.Generated;\n"""
 
 
 def generate_summons(existing: set[str]) -> None:
@@ -1024,6 +1034,28 @@ def generate_localization() -> None:
         npc_zh[class_name] = {"DisplayName": ZH_NAMES[asset_id]}
         npc_en[class_name] = {"DisplayName": EN_NAMES[asset_id]}
 
+    bestiary_zh: dict[str, dict[str, str]] = {}
+    bestiary_en: dict[str, dict[str, str]] = {}
+    biome_label_zh = {class_name: zh for class_name, zh, _, _, _ in BIOMES}
+    biome_label_en = {class_name: en for class_name, _, en, _, _ in BIOMES}
+    for asset_id, (_, _, _, drop) in ENEMY_DATA.items():
+        class_name = pascal(asset_id)
+        biome_class = BIOME_BY_ENEMY[asset_id]
+        bestiary_zh[class_name] = {
+            "Text": f"{ZH_NAMES.get(asset_id, class_name)}徘徊在{biome_label_zh.get(biome_class, biome_class)}，会掉落{ZH_NAMES.get(drop, pascal(drop))}。"
+        }
+        bestiary_en[class_name] = {
+            "Text": f"{EN_NAMES.get(asset_id, class_name)} wanders the {biome_label_en.get(biome_class, biome_class)} and drops {EN_NAMES.get(drop, pascal(drop))}."
+        }
+    for asset_id, (_, _, _, _, _, _, drop) in BOSS_DATA.items():
+        class_name = pascal(asset_id)
+        bestiary_zh[class_name] = {
+            "Text": f"{ZH_NAMES.get(asset_id, class_name)}是旧宗门进度中的主要试炼，击败后会提升宗门声望，并掉落{ZH_NAMES.get(drop, pascal(drop))}。"
+        }
+        bestiary_en[class_name] = {
+            "Text": f"{EN_NAMES.get(asset_id, class_name)} is a major cultivation trial. Defeating it raises sect reputation and drops {EN_NAMES.get(drop, pascal(drop))}."
+        }
+
     tile_names = {
         "GreenwoodSoilTile": ("青木土", "Greenwood Soil"),
         "SpiritHerbTile": ("灵草", "Spirit Herb"),
@@ -1098,6 +1130,21 @@ def generate_localization() -> None:
         tiles=hjson_block(tile_en),
         biomes=hjson_block(biome_en),
         buffs=hjson_block(buff_en),
+    ))
+
+    bestiary_template = """Mods: {{
+\tXianXia: {{
+\t\tBestiary: {{
+{bestiary}
+\t\t}}
+\t}}
+}}
+"""
+    write(ROOT / "Localization" / "generated_bestiary.zh-Hans.hjson", bestiary_template.format(
+        bestiary=hjson_block(bestiary_zh),
+    ))
+    write(ROOT / "Localization" / "generated_bestiary.en-US.hjson", bestiary_template.format(
+        bestiary=hjson_block(bestiary_en),
     ))
 
 
