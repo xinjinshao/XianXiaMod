@@ -5,14 +5,14 @@
 ## 自动检查结果
 
 - Manifest 条目：130
-- `Assets/Final/<asset_id>/` 下最终 PNG：150
+- `Assets/Final/<asset_id>/` 下最终素材 PNG：130
+- 预览/审计 PNG：总览 contact sheet、分类 contact sheets、Tile 平铺预览另行生成，不计入最终素材数量。
 - 已检查：文件存在、RGBA 格式、目标尺寸、非 Tile/Wall 透明角。
 - 当前机器检查：通过。
 - 已修复：Wiki 页面已插入素材图片，不再只依赖路径定位。
 - 已修复：美术图库使用中文名称、ID、类型、尺寸同表展示，便于对照。
-- 已修复：批量源图不完全遵守数学等分网格时，改用内容行带裁切，避免 Boss/NPC 等高素材被上下截断。
-- 已修复：`spirit_vein_wyrm` 最终 body/head 改用已认可的单独生成源表重新裁切。
-- 最新截断检查：非 Tile/Wall/UI 资源边缘不透明像素为 0。
+- 已修复：总览 contact sheet 现由 `Tools/create_art_previews.py` 按 manifest 顺序重建，避免替换单个素材后总览图滞后。
+- 已修复：清理最终 PNG 中与主体分离的源图标签/色点残留；Tile/Wall 贴边为平铺需求，不按截断处理。
 
 ## 语义一致性检查
 

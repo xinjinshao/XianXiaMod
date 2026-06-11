@@ -40,6 +40,32 @@ def make_category_sheets(manifest: Path, final_dir: Path, out_dir: Path) -> None
         sheet.save(out_dir / f"{group}_contact_sheet_v01.png")
 
 
+def iter_manifest_final_paths(manifest: Path, final_dir: Path) -> list[Path]:
+    files: list[Path] = []
+    with manifest.open(encoding="utf-8-sig", newline="") as f:
+        for row in csv.DictReader(f):
+            path = final_dir / row["asset_id"] / f"{row['asset_id']}__{row['output_type']}__v01.png"
+            if path.exists():
+                files.append(path)
+    return files
+
+
+def make_all_contact_sheet(manifest: Path, final_dir: Path, out_path: Path) -> None:
+    files = iter_manifest_final_paths(manifest, final_dir)
+    if not files:
+        return
+    cols = 8
+    thumb = 96
+    rows = (len(files) + cols - 1) // cols
+    sheet = Image.new("RGBA", (cols * thumb, rows * thumb), (24, 24, 24, 255))
+    for i, path in enumerate(files):
+        with Image.open(path) as img:
+            tile = fit_thumb(img, thumb)
+        sheet.alpha_composite(tile, ((i % cols) * thumb, (i // cols) * thumb))
+    out_path.parent.mkdir(parents=True, exist_ok=True)
+    sheet.save(out_path)
+
+
 def make_tile_previews(manifest: Path, final_dir: Path, out_dir: Path) -> None:
     out_dir.mkdir(parents=True, exist_ok=True)
     with manifest.open(encoding="utf-8-sig", newline="") as f:
@@ -61,6 +87,7 @@ def make_tile_previews(manifest: Path, final_dir: Path, out_dir: Path) -> None:
 def main() -> None:
     manifest = Path("Assets/Specs/art_asset_manifest.csv")
     final_dir = Path("Assets/Final")
+    make_all_contact_sheet(manifest, final_dir, Path("Assets/Final/contact_sheet_v01.png"))
     make_category_sheets(manifest, final_dir, Path("Assets/Final/ContactSheets"))
     make_tile_previews(manifest, final_dir, Path("Assets/Final/TilePreviews"))
 
