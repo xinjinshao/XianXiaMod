@@ -1,3 +1,4 @@
+using System;
 using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.GameContent.ItemDropRules;
@@ -42,10 +43,39 @@ public class GardenWarden : ModNPC
             }
         }
         Vector2 desired = target.Center - NPC.Center;
-        float speed = NPC.life < NPC.lifeMax / 2 ? 8f : 5.5f;
-        NPC.velocity = Vector2.Lerp(NPC.velocity, desired.SafeNormalize(Vector2.UnitY) * speed, 0.035f);
+        bool phaseTwo = NPC.life < NPC.lifeMax / 2;
+        bool finalPhase = NPC.life < NPC.lifeMax / 4;
+        float speed = finalPhase ? 10.5f : phaseTwo ? 8f : 5.5f;
+        NPC.velocity = Vector2.Lerp(NPC.velocity, desired.SafeNormalize(Vector2.UnitY) * speed, phaseTwo ? 0.055f : 0.035f);
         NPC.rotation = NPC.velocity.ToRotation();
         Lighting.AddLight(NPC.Center, 0.15f, 0.12f, 0.22f);
+
+        NPC.ai[0]++;
+        int shotInterval = finalPhase ? 72 : phaseTwo ? 110 : 150;
+        if (Main.netMode != NetmodeID.MultiplayerClient && NPC.ai[0] >= shotInterval)
+        {
+            NPC.ai[0] = 0f;
+            Vector2 aim = (target.Center - NPC.Center).SafeNormalize(Vector2.UnitY);
+            int damage = Math.Max(18, NPC.damage / 3);
+            for (int i = -1; i <= 1; i++)
+            {
+                Vector2 velocity = aim.RotatedBy(MathHelper.ToRadians(12f * i)) * (phaseTwo ? 9.5f : 7.5f);
+                Projectile.NewProjectile(
+                    NPC.GetSource_FromAI(),
+                    NPC.Center,
+                    velocity,
+                    ModContent.ProjectileType<global::XianXia.Content.Projectiles.BossSpiritBoltProjectile>(),
+                    damage,
+                    1.5f,
+                    Main.myPlayer);
+            }
+        }
+
+        if (finalPhase && NPC.ai[1]++ > 180f)
+        {
+            NPC.ai[1] = 0f;
+            NPC.velocity = desired.SafeNormalize(Vector2.UnitY) * 14f;
+        }
     }
 
     public override void OnKill() => DownedBossSystem.MarkDowned("garden_warden");
@@ -92,10 +122,39 @@ public class BlackFurnaceIronGolem : ModNPC
             }
         }
         Vector2 desired = target.Center - NPC.Center;
-        float speed = NPC.life < NPC.lifeMax / 2 ? 8f : 5.5f;
-        NPC.velocity = Vector2.Lerp(NPC.velocity, desired.SafeNormalize(Vector2.UnitY) * speed, 0.035f);
+        bool phaseTwo = NPC.life < NPC.lifeMax / 2;
+        bool finalPhase = NPC.life < NPC.lifeMax / 4;
+        float speed = finalPhase ? 10.5f : phaseTwo ? 8f : 5.5f;
+        NPC.velocity = Vector2.Lerp(NPC.velocity, desired.SafeNormalize(Vector2.UnitY) * speed, phaseTwo ? 0.055f : 0.035f);
         NPC.rotation = NPC.velocity.ToRotation();
         Lighting.AddLight(NPC.Center, 0.15f, 0.12f, 0.22f);
+
+        NPC.ai[0]++;
+        int shotInterval = finalPhase ? 72 : phaseTwo ? 110 : 150;
+        if (Main.netMode != NetmodeID.MultiplayerClient && NPC.ai[0] >= shotInterval)
+        {
+            NPC.ai[0] = 0f;
+            Vector2 aim = (target.Center - NPC.Center).SafeNormalize(Vector2.UnitY);
+            int damage = Math.Max(18, NPC.damage / 3);
+            for (int i = -1; i <= 1; i++)
+            {
+                Vector2 velocity = aim.RotatedBy(MathHelper.ToRadians(12f * i)) * (phaseTwo ? 9.5f : 7.5f);
+                Projectile.NewProjectile(
+                    NPC.GetSource_FromAI(),
+                    NPC.Center,
+                    velocity,
+                    ModContent.ProjectileType<global::XianXia.Content.Projectiles.BossSpiritBoltProjectile>(),
+                    damage,
+                    1.5f,
+                    Main.myPlayer);
+            }
+        }
+
+        if (finalPhase && NPC.ai[1]++ > 180f)
+        {
+            NPC.ai[1] = 0f;
+            NPC.velocity = desired.SafeNormalize(Vector2.UnitY) * 14f;
+        }
     }
 
     public override void OnKill() => DownedBossSystem.MarkDowned("black_furnace_iron_golem");
@@ -142,10 +201,39 @@ public class TribulationCloudAvatar : ModNPC
             }
         }
         Vector2 desired = target.Center - NPC.Center;
-        float speed = NPC.life < NPC.lifeMax / 2 ? 8f : 5.5f;
-        NPC.velocity = Vector2.Lerp(NPC.velocity, desired.SafeNormalize(Vector2.UnitY) * speed, 0.035f);
+        bool phaseTwo = NPC.life < NPC.lifeMax / 2;
+        bool finalPhase = NPC.life < NPC.lifeMax / 4;
+        float speed = finalPhase ? 10.5f : phaseTwo ? 8f : 5.5f;
+        NPC.velocity = Vector2.Lerp(NPC.velocity, desired.SafeNormalize(Vector2.UnitY) * speed, phaseTwo ? 0.055f : 0.035f);
         NPC.rotation = NPC.velocity.ToRotation();
         Lighting.AddLight(NPC.Center, 0.15f, 0.12f, 0.22f);
+
+        NPC.ai[0]++;
+        int shotInterval = finalPhase ? 72 : phaseTwo ? 110 : 150;
+        if (Main.netMode != NetmodeID.MultiplayerClient && NPC.ai[0] >= shotInterval)
+        {
+            NPC.ai[0] = 0f;
+            Vector2 aim = (target.Center - NPC.Center).SafeNormalize(Vector2.UnitY);
+            int damage = Math.Max(18, NPC.damage / 3);
+            for (int i = -1; i <= 1; i++)
+            {
+                Vector2 velocity = aim.RotatedBy(MathHelper.ToRadians(12f * i)) * (phaseTwo ? 9.5f : 7.5f);
+                Projectile.NewProjectile(
+                    NPC.GetSource_FromAI(),
+                    NPC.Center,
+                    velocity,
+                    ModContent.ProjectileType<global::XianXia.Content.Projectiles.BossSpiritBoltProjectile>(),
+                    damage,
+                    1.5f,
+                    Main.myPlayer);
+            }
+        }
+
+        if (finalPhase && NPC.ai[1]++ > 180f)
+        {
+            NPC.ai[1] = 0f;
+            NPC.velocity = desired.SafeNormalize(Vector2.UnitY) * 14f;
+        }
     }
 
     public override void OnKill() => DownedBossSystem.MarkDowned("tribulation_cloud_avatar");
@@ -192,10 +280,39 @@ public class ThunderMarshJiao : ModNPC
             }
         }
         Vector2 desired = target.Center - NPC.Center;
-        float speed = NPC.life < NPC.lifeMax / 2 ? 8f : 5.5f;
-        NPC.velocity = Vector2.Lerp(NPC.velocity, desired.SafeNormalize(Vector2.UnitY) * speed, 0.035f);
+        bool phaseTwo = NPC.life < NPC.lifeMax / 2;
+        bool finalPhase = NPC.life < NPC.lifeMax / 4;
+        float speed = finalPhase ? 10.5f : phaseTwo ? 8f : 5.5f;
+        NPC.velocity = Vector2.Lerp(NPC.velocity, desired.SafeNormalize(Vector2.UnitY) * speed, phaseTwo ? 0.055f : 0.035f);
         NPC.rotation = NPC.velocity.ToRotation();
         Lighting.AddLight(NPC.Center, 0.15f, 0.12f, 0.22f);
+
+        NPC.ai[0]++;
+        int shotInterval = finalPhase ? 72 : phaseTwo ? 110 : 150;
+        if (Main.netMode != NetmodeID.MultiplayerClient && NPC.ai[0] >= shotInterval)
+        {
+            NPC.ai[0] = 0f;
+            Vector2 aim = (target.Center - NPC.Center).SafeNormalize(Vector2.UnitY);
+            int damage = Math.Max(18, NPC.damage / 3);
+            for (int i = -1; i <= 1; i++)
+            {
+                Vector2 velocity = aim.RotatedBy(MathHelper.ToRadians(12f * i)) * (phaseTwo ? 9.5f : 7.5f);
+                Projectile.NewProjectile(
+                    NPC.GetSource_FromAI(),
+                    NPC.Center,
+                    velocity,
+                    ModContent.ProjectileType<global::XianXia.Content.Projectiles.BossSpiritBoltProjectile>(),
+                    damage,
+                    1.5f,
+                    Main.myPlayer);
+            }
+        }
+
+        if (finalPhase && NPC.ai[1]++ > 180f)
+        {
+            NPC.ai[1] = 0f;
+            NPC.velocity = desired.SafeNormalize(Vector2.UnitY) * 14f;
+        }
     }
 
     public override void OnKill() => DownedBossSystem.MarkDowned("thunder_marsh_jiao");
@@ -242,10 +359,39 @@ public class AbyssalStarWomb : ModNPC
             }
         }
         Vector2 desired = target.Center - NPC.Center;
-        float speed = NPC.life < NPC.lifeMax / 2 ? 8f : 5.5f;
-        NPC.velocity = Vector2.Lerp(NPC.velocity, desired.SafeNormalize(Vector2.UnitY) * speed, 0.035f);
+        bool phaseTwo = NPC.life < NPC.lifeMax / 2;
+        bool finalPhase = NPC.life < NPC.lifeMax / 4;
+        float speed = finalPhase ? 10.5f : phaseTwo ? 8f : 5.5f;
+        NPC.velocity = Vector2.Lerp(NPC.velocity, desired.SafeNormalize(Vector2.UnitY) * speed, phaseTwo ? 0.055f : 0.035f);
         NPC.rotation = NPC.velocity.ToRotation();
         Lighting.AddLight(NPC.Center, 0.15f, 0.12f, 0.22f);
+
+        NPC.ai[0]++;
+        int shotInterval = finalPhase ? 72 : phaseTwo ? 110 : 150;
+        if (Main.netMode != NetmodeID.MultiplayerClient && NPC.ai[0] >= shotInterval)
+        {
+            NPC.ai[0] = 0f;
+            Vector2 aim = (target.Center - NPC.Center).SafeNormalize(Vector2.UnitY);
+            int damage = Math.Max(18, NPC.damage / 3);
+            for (int i = -1; i <= 1; i++)
+            {
+                Vector2 velocity = aim.RotatedBy(MathHelper.ToRadians(12f * i)) * (phaseTwo ? 9.5f : 7.5f);
+                Projectile.NewProjectile(
+                    NPC.GetSource_FromAI(),
+                    NPC.Center,
+                    velocity,
+                    ModContent.ProjectileType<global::XianXia.Content.Projectiles.BossSpiritBoltProjectile>(),
+                    damage,
+                    1.5f,
+                    Main.myPlayer);
+            }
+        }
+
+        if (finalPhase && NPC.ai[1]++ > 180f)
+        {
+            NPC.ai[1] = 0f;
+            NPC.velocity = desired.SafeNormalize(Vector2.UnitY) * 14f;
+        }
     }
 
     public override void OnKill() => DownedBossSystem.MarkDowned("abyssal_star_womb");
@@ -292,10 +438,39 @@ public class FormlessSwordSoul : ModNPC
             }
         }
         Vector2 desired = target.Center - NPC.Center;
-        float speed = NPC.life < NPC.lifeMax / 2 ? 8f : 5.5f;
-        NPC.velocity = Vector2.Lerp(NPC.velocity, desired.SafeNormalize(Vector2.UnitY) * speed, 0.035f);
+        bool phaseTwo = NPC.life < NPC.lifeMax / 2;
+        bool finalPhase = NPC.life < NPC.lifeMax / 4;
+        float speed = finalPhase ? 10.5f : phaseTwo ? 8f : 5.5f;
+        NPC.velocity = Vector2.Lerp(NPC.velocity, desired.SafeNormalize(Vector2.UnitY) * speed, phaseTwo ? 0.055f : 0.035f);
         NPC.rotation = NPC.velocity.ToRotation();
         Lighting.AddLight(NPC.Center, 0.15f, 0.12f, 0.22f);
+
+        NPC.ai[0]++;
+        int shotInterval = finalPhase ? 72 : phaseTwo ? 110 : 150;
+        if (Main.netMode != NetmodeID.MultiplayerClient && NPC.ai[0] >= shotInterval)
+        {
+            NPC.ai[0] = 0f;
+            Vector2 aim = (target.Center - NPC.Center).SafeNormalize(Vector2.UnitY);
+            int damage = Math.Max(18, NPC.damage / 3);
+            for (int i = -1; i <= 1; i++)
+            {
+                Vector2 velocity = aim.RotatedBy(MathHelper.ToRadians(12f * i)) * (phaseTwo ? 9.5f : 7.5f);
+                Projectile.NewProjectile(
+                    NPC.GetSource_FromAI(),
+                    NPC.Center,
+                    velocity,
+                    ModContent.ProjectileType<global::XianXia.Content.Projectiles.BossSpiritBoltProjectile>(),
+                    damage,
+                    1.5f,
+                    Main.myPlayer);
+            }
+        }
+
+        if (finalPhase && NPC.ai[1]++ > 180f)
+        {
+            NPC.ai[1] = 0f;
+            NPC.velocity = desired.SafeNormalize(Vector2.UnitY) * 14f;
+        }
     }
 
     public override void OnKill() => DownedBossSystem.MarkDowned("formless_sword_soul");
@@ -342,10 +517,39 @@ public class GreenwoodMedicineKingEcho : ModNPC
             }
         }
         Vector2 desired = target.Center - NPC.Center;
-        float speed = NPC.life < NPC.lifeMax / 2 ? 8f : 5.5f;
-        NPC.velocity = Vector2.Lerp(NPC.velocity, desired.SafeNormalize(Vector2.UnitY) * speed, 0.035f);
+        bool phaseTwo = NPC.life < NPC.lifeMax / 2;
+        bool finalPhase = NPC.life < NPC.lifeMax / 4;
+        float speed = finalPhase ? 10.5f : phaseTwo ? 8f : 5.5f;
+        NPC.velocity = Vector2.Lerp(NPC.velocity, desired.SafeNormalize(Vector2.UnitY) * speed, phaseTwo ? 0.055f : 0.035f);
         NPC.rotation = NPC.velocity.ToRotation();
         Lighting.AddLight(NPC.Center, 0.15f, 0.12f, 0.22f);
+
+        NPC.ai[0]++;
+        int shotInterval = finalPhase ? 72 : phaseTwo ? 110 : 150;
+        if (Main.netMode != NetmodeID.MultiplayerClient && NPC.ai[0] >= shotInterval)
+        {
+            NPC.ai[0] = 0f;
+            Vector2 aim = (target.Center - NPC.Center).SafeNormalize(Vector2.UnitY);
+            int damage = Math.Max(18, NPC.damage / 3);
+            for (int i = -1; i <= 1; i++)
+            {
+                Vector2 velocity = aim.RotatedBy(MathHelper.ToRadians(12f * i)) * (phaseTwo ? 9.5f : 7.5f);
+                Projectile.NewProjectile(
+                    NPC.GetSource_FromAI(),
+                    NPC.Center,
+                    velocity,
+                    ModContent.ProjectileType<global::XianXia.Content.Projectiles.BossSpiritBoltProjectile>(),
+                    damage,
+                    1.5f,
+                    Main.myPlayer);
+            }
+        }
+
+        if (finalPhase && NPC.ai[1]++ > 180f)
+        {
+            NPC.ai[1] = 0f;
+            NPC.velocity = desired.SafeNormalize(Vector2.UnitY) * 14f;
+        }
     }
 
     public override void OnKill() => DownedBossSystem.MarkDowned("greenwood_medicine_king_echo");
@@ -392,10 +596,39 @@ public class HeavenTabletGuardian : ModNPC
             }
         }
         Vector2 desired = target.Center - NPC.Center;
-        float speed = NPC.life < NPC.lifeMax / 2 ? 8f : 5.5f;
-        NPC.velocity = Vector2.Lerp(NPC.velocity, desired.SafeNormalize(Vector2.UnitY) * speed, 0.035f);
+        bool phaseTwo = NPC.life < NPC.lifeMax / 2;
+        bool finalPhase = NPC.life < NPC.lifeMax / 4;
+        float speed = finalPhase ? 10.5f : phaseTwo ? 8f : 5.5f;
+        NPC.velocity = Vector2.Lerp(NPC.velocity, desired.SafeNormalize(Vector2.UnitY) * speed, phaseTwo ? 0.055f : 0.035f);
         NPC.rotation = NPC.velocity.ToRotation();
         Lighting.AddLight(NPC.Center, 0.15f, 0.12f, 0.22f);
+
+        NPC.ai[0]++;
+        int shotInterval = finalPhase ? 72 : phaseTwo ? 110 : 150;
+        if (Main.netMode != NetmodeID.MultiplayerClient && NPC.ai[0] >= shotInterval)
+        {
+            NPC.ai[0] = 0f;
+            Vector2 aim = (target.Center - NPC.Center).SafeNormalize(Vector2.UnitY);
+            int damage = Math.Max(18, NPC.damage / 3);
+            for (int i = -1; i <= 1; i++)
+            {
+                Vector2 velocity = aim.RotatedBy(MathHelper.ToRadians(12f * i)) * (phaseTwo ? 9.5f : 7.5f);
+                Projectile.NewProjectile(
+                    NPC.GetSource_FromAI(),
+                    NPC.Center,
+                    velocity,
+                    ModContent.ProjectileType<global::XianXia.Content.Projectiles.BossSpiritBoltProjectile>(),
+                    damage,
+                    1.5f,
+                    Main.myPlayer);
+            }
+        }
+
+        if (finalPhase && NPC.ai[1]++ > 180f)
+        {
+            NPC.ai[1] = 0f;
+            NPC.velocity = desired.SafeNormalize(Vector2.UnitY) * 14f;
+        }
     }
 
     public override void OnKill() => DownedBossSystem.MarkDowned("heaven_tablet_guardian");
@@ -442,10 +675,39 @@ public class BrokenHeavenInspector : ModNPC
             }
         }
         Vector2 desired = target.Center - NPC.Center;
-        float speed = NPC.life < NPC.lifeMax / 2 ? 8f : 5.5f;
-        NPC.velocity = Vector2.Lerp(NPC.velocity, desired.SafeNormalize(Vector2.UnitY) * speed, 0.035f);
+        bool phaseTwo = NPC.life < NPC.lifeMax / 2;
+        bool finalPhase = NPC.life < NPC.lifeMax / 4;
+        float speed = finalPhase ? 10.5f : phaseTwo ? 8f : 5.5f;
+        NPC.velocity = Vector2.Lerp(NPC.velocity, desired.SafeNormalize(Vector2.UnitY) * speed, phaseTwo ? 0.055f : 0.035f);
         NPC.rotation = NPC.velocity.ToRotation();
         Lighting.AddLight(NPC.Center, 0.15f, 0.12f, 0.22f);
+
+        NPC.ai[0]++;
+        int shotInterval = finalPhase ? 72 : phaseTwo ? 110 : 150;
+        if (Main.netMode != NetmodeID.MultiplayerClient && NPC.ai[0] >= shotInterval)
+        {
+            NPC.ai[0] = 0f;
+            Vector2 aim = (target.Center - NPC.Center).SafeNormalize(Vector2.UnitY);
+            int damage = Math.Max(18, NPC.damage / 3);
+            for (int i = -1; i <= 1; i++)
+            {
+                Vector2 velocity = aim.RotatedBy(MathHelper.ToRadians(12f * i)) * (phaseTwo ? 9.5f : 7.5f);
+                Projectile.NewProjectile(
+                    NPC.GetSource_FromAI(),
+                    NPC.Center,
+                    velocity,
+                    ModContent.ProjectileType<global::XianXia.Content.Projectiles.BossSpiritBoltProjectile>(),
+                    damage,
+                    1.5f,
+                    Main.myPlayer);
+            }
+        }
+
+        if (finalPhase && NPC.ai[1]++ > 180f)
+        {
+            NPC.ai[1] = 0f;
+            NPC.velocity = desired.SafeNormalize(Vector2.UnitY) * 14f;
+        }
     }
 
     public override void OnKill() => DownedBossSystem.MarkDowned("broken_heaven_inspector");
@@ -492,10 +754,39 @@ public class MoonboneImmortal : ModNPC
             }
         }
         Vector2 desired = target.Center - NPC.Center;
-        float speed = NPC.life < NPC.lifeMax / 2 ? 8f : 5.5f;
-        NPC.velocity = Vector2.Lerp(NPC.velocity, desired.SafeNormalize(Vector2.UnitY) * speed, 0.035f);
+        bool phaseTwo = NPC.life < NPC.lifeMax / 2;
+        bool finalPhase = NPC.life < NPC.lifeMax / 4;
+        float speed = finalPhase ? 10.5f : phaseTwo ? 8f : 5.5f;
+        NPC.velocity = Vector2.Lerp(NPC.velocity, desired.SafeNormalize(Vector2.UnitY) * speed, phaseTwo ? 0.055f : 0.035f);
         NPC.rotation = NPC.velocity.ToRotation();
         Lighting.AddLight(NPC.Center, 0.15f, 0.12f, 0.22f);
+
+        NPC.ai[0]++;
+        int shotInterval = finalPhase ? 72 : phaseTwo ? 110 : 150;
+        if (Main.netMode != NetmodeID.MultiplayerClient && NPC.ai[0] >= shotInterval)
+        {
+            NPC.ai[0] = 0f;
+            Vector2 aim = (target.Center - NPC.Center).SafeNormalize(Vector2.UnitY);
+            int damage = Math.Max(18, NPC.damage / 3);
+            for (int i = -1; i <= 1; i++)
+            {
+                Vector2 velocity = aim.RotatedBy(MathHelper.ToRadians(12f * i)) * (phaseTwo ? 9.5f : 7.5f);
+                Projectile.NewProjectile(
+                    NPC.GetSource_FromAI(),
+                    NPC.Center,
+                    velocity,
+                    ModContent.ProjectileType<global::XianXia.Content.Projectiles.BossSpiritBoltProjectile>(),
+                    damage,
+                    1.5f,
+                    Main.myPlayer);
+            }
+        }
+
+        if (finalPhase && NPC.ai[1]++ > 180f)
+        {
+            NPC.ai[1] = 0f;
+            NPC.velocity = desired.SafeNormalize(Vector2.UnitY) * 14f;
+        }
     }
 
     public override void OnKill() => DownedBossSystem.MarkDowned("moonbone_immortal");
@@ -542,10 +833,39 @@ public class OldHeavenDaoCore : ModNPC
             }
         }
         Vector2 desired = target.Center - NPC.Center;
-        float speed = NPC.life < NPC.lifeMax / 2 ? 8f : 5.5f;
-        NPC.velocity = Vector2.Lerp(NPC.velocity, desired.SafeNormalize(Vector2.UnitY) * speed, 0.035f);
+        bool phaseTwo = NPC.life < NPC.lifeMax / 2;
+        bool finalPhase = NPC.life < NPC.lifeMax / 4;
+        float speed = finalPhase ? 10.5f : phaseTwo ? 8f : 5.5f;
+        NPC.velocity = Vector2.Lerp(NPC.velocity, desired.SafeNormalize(Vector2.UnitY) * speed, phaseTwo ? 0.055f : 0.035f);
         NPC.rotation = NPC.velocity.ToRotation();
         Lighting.AddLight(NPC.Center, 0.15f, 0.12f, 0.22f);
+
+        NPC.ai[0]++;
+        int shotInterval = finalPhase ? 72 : phaseTwo ? 110 : 150;
+        if (Main.netMode != NetmodeID.MultiplayerClient && NPC.ai[0] >= shotInterval)
+        {
+            NPC.ai[0] = 0f;
+            Vector2 aim = (target.Center - NPC.Center).SafeNormalize(Vector2.UnitY);
+            int damage = Math.Max(18, NPC.damage / 3);
+            for (int i = -1; i <= 1; i++)
+            {
+                Vector2 velocity = aim.RotatedBy(MathHelper.ToRadians(12f * i)) * (phaseTwo ? 9.5f : 7.5f);
+                Projectile.NewProjectile(
+                    NPC.GetSource_FromAI(),
+                    NPC.Center,
+                    velocity,
+                    ModContent.ProjectileType<global::XianXia.Content.Projectiles.BossSpiritBoltProjectile>(),
+                    damage,
+                    1.5f,
+                    Main.myPlayer);
+            }
+        }
+
+        if (finalPhase && NPC.ai[1]++ > 180f)
+        {
+            NPC.ai[1] = 0f;
+            NPC.velocity = desired.SafeNormalize(Vector2.UnitY) * 14f;
+        }
     }
 
     public override void OnKill() => DownedBossSystem.MarkDowned("old_heaven_dao_core");

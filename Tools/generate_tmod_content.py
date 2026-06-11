@@ -789,10 +789,39 @@ public class {class_name} : ModNPC
             }}
         }}
         Vector2 desired = target.Center - NPC.Center;
-        float speed = NPC.life < NPC.lifeMax / 2 ? 8f : 5.5f;
-        NPC.velocity = Vector2.Lerp(NPC.velocity, desired.SafeNormalize(Vector2.UnitY) * speed, 0.035f);
+        bool phaseTwo = NPC.life < NPC.lifeMax / 2;
+        bool finalPhase = NPC.life < NPC.lifeMax / 4;
+        float speed = finalPhase ? 10.5f : phaseTwo ? 8f : 5.5f;
+        NPC.velocity = Vector2.Lerp(NPC.velocity, desired.SafeNormalize(Vector2.UnitY) * speed, phaseTwo ? 0.055f : 0.035f);
         NPC.rotation = NPC.velocity.ToRotation();
         Lighting.AddLight(NPC.Center, 0.15f, 0.12f, 0.22f);
+
+        NPC.ai[0]++;
+        int shotInterval = finalPhase ? 72 : phaseTwo ? 110 : 150;
+        if (Main.netMode != NetmodeID.MultiplayerClient && NPC.ai[0] >= shotInterval)
+        {{
+            NPC.ai[0] = 0f;
+            Vector2 aim = (target.Center - NPC.Center).SafeNormalize(Vector2.UnitY);
+            int damage = Math.Max(18, NPC.damage / 3);
+            for (int i = -1; i <= 1; i++)
+            {{
+                Vector2 velocity = aim.RotatedBy(MathHelper.ToRadians(12f * i)) * (phaseTwo ? 9.5f : 7.5f);
+                Projectile.NewProjectile(
+                    NPC.GetSource_FromAI(),
+                    NPC.Center,
+                    velocity,
+                    ModContent.ProjectileType<global::XianXia.Content.Projectiles.BossSpiritBoltProjectile>(),
+                    damage,
+                    1.5f,
+                    Main.myPlayer);
+            }}
+        }}
+
+        if (finalPhase && NPC.ai[1]++ > 180f)
+        {{
+            NPC.ai[1] = 0f;
+            NPC.velocity = desired.SafeNormalize(Vector2.UnitY) * 14f;
+        }}
     }}
 
     public override void OnKill() => DownedBossSystem.MarkDowned("{asset_id}");
@@ -806,7 +835,7 @@ public class {class_name} : ModNPC
     write(CONTENT / "NPCs" / "Bosses" / "Generated" / "GeneratedBosses.cs", BOSS_HEADER + "\n".join(classes))
 
 
-BOSS_HEADER = """using Microsoft.Xna.Framework;\nusing Terraria;\nusing Terraria.GameContent.ItemDropRules;\nusing Terraria.ID;\nusing Terraria.ModLoader;\nusing XianXia.Common.Systems;\n\nnamespace XianXia.Content.NPCs.Bosses.Generated;\n"""
+BOSS_HEADER = """using System;\nusing Microsoft.Xna.Framework;\nusing Terraria;\nusing Terraria.GameContent.ItemDropRules;\nusing Terraria.ID;\nusing Terraria.ModLoader;\nusing XianXia.Common.Systems;\n\nnamespace XianXia.Content.NPCs.Bosses.Generated;\n"""
 
 
 def generate_summons(existing: set[str]) -> None:
