@@ -71,6 +71,30 @@ public abstract class CultivationTownNPC : ModNPC
 
         return false;
     }
+
+    protected static XianXiaPlayer LocalCultivation => Main.LocalPlayer.GetModPlayer<XianXiaPlayer>();
+
+    protected static bool LocalAtStage(CultivationStage stage)
+    {
+        return LocalCultivation.cultivationStage >= stage;
+    }
+
+    protected static bool Downed(string bossId)
+    {
+        return DownedBossSystem.DownedBosses.Contains(bossId);
+    }
+
+    protected static void HideShopItem<T>(Item[] items) where T : ModItem
+    {
+        int type = ModContent.ItemType<T>();
+        foreach (Item item in items)
+        {
+            if (item is not null && item.type == type)
+            {
+                item.TurnToAir();
+            }
+        }
+    }
 }
 
 [AutoloadHead]
@@ -83,7 +107,21 @@ public class HerbSectApprentice : CultivationTownNPC
 
     public override List<string> SetNPCNameList() => new() { "青萝", "木苓", "药篱" };
 
-    public override string GetChat() => "草木有灵，丹火要慢。若你急着突破，先把灵压压住。";
+    public override string GetChat()
+    {
+        XianXiaPlayer cultivation = LocalCultivation;
+        if (cultivation.spiritPressure >= 70)
+        {
+            return "你的灵压浮在皮肉上，先用回春丹和抗劫丹稳住，别急着再破境。";
+        }
+
+        if (cultivation.cultivationStage < CultivationStage.QiCondensation)
+        {
+            return "青木根能养丹，灵石能引气。先凝住第一口真气，再谈筑基。";
+        }
+
+        return "草木有灵，丹火要慢。筑基之前，丹药只是助缘，不是替你走路。";
+    }
 
     public override void AddShops()
     {
@@ -91,9 +129,18 @@ public class HerbSectApprentice : CultivationTownNPC
         shop.Add<AlchemyCauldron>();
         shop.Add<SpringReturnPill>();
         shop.Add<QiCondensingPill>();
+        shop.Add<FoundationPill>();
         shop.Add<GreenwoodRoot>();
         shop.Add<SpiritwoodCharm>();
         shop.Register();
+    }
+
+    public override void ModifyActiveShop(string shopName, Item[] items)
+    {
+        if (!LocalAtStage(CultivationStage.QiCondensation))
+        {
+            HideShopItem<FoundationPill>(items);
+        }
     }
 }
 
@@ -107,7 +154,20 @@ public class WanderingArtificer : CultivationTownNPC
 
     public override List<string> SetNPCNameList() => new() { "炉叟", "铁照", "游匠" };
 
-    public override string GetChat() => "好材料不是拿来供着的。剑、匣、阵盘，都要先敢用坏。";
+    public override string GetChat()
+    {
+        if (!DownedBossSystem.DownedSpiritVeinWyrm)
+        {
+            return "木剑和短弩够你探灵脉。等灵脉蠕虫伏下，我再教你铸真正的法器。";
+        }
+
+        if (!LocalAtStage(CultivationStage.Foundation))
+        {
+            return "器胚炉已经热了，但你的气还散。筑基后再碰破云剑，别让剑带着你走。";
+        }
+
+        return "好材料不是拿来供着的。剑、匣、阵盘，都要先敢用坏。";
+    }
 
     public override void AddShops()
     {
@@ -119,6 +179,20 @@ public class WanderingArtificer : CultivationTownNPC
         shop.Add<GreenwoodArrayPlate>();
         shop.Add<FurnaceHeartRing>();
         shop.Register();
+    }
+
+    public override void ModifyActiveShop(string shopName, Item[] items)
+    {
+        if (!DownedBossSystem.DownedSpiritVeinWyrm)
+        {
+            HideShopItem<CloudpiercerFlyingSword>(items);
+            HideShopItem<GreenwoodArrayPlate>(items);
+        }
+
+        if (!LocalAtStage(CultivationStage.Foundation))
+        {
+            HideShopItem<FurnaceHeartRing>(items);
+        }
     }
 }
 
@@ -132,7 +206,20 @@ public class TribulationObserver : CultivationTownNPC
 
     public override List<string> SetNPCNameList() => new() { "观劫子", "听雷", "云衡" };
 
-    public override string GetChat() => "天雷不是罚，是账。你欠得越明白，挨得越稳。";
+    public override string GetChat()
+    {
+        if (LocalCultivation.tribulationTimer > 0)
+        {
+            return "别躲进屋里数雷。看清落点，留一口灵气，雷过之后才算你自己的境界。";
+        }
+
+        if (!LocalAtStage(CultivationStage.Foundation))
+        {
+            return "天雷不是罚，是账。筑基之后，这账才会真正写上你的名字。";
+        }
+
+        return "天雷不是罚，是账。你欠得越明白，挨得越稳。";
+    }
 
     public override void AddShops()
     {
@@ -142,6 +229,15 @@ public class TribulationObserver : CultivationTownNPC
         shop.Add<ThunderTalismanArrayPlate>();
         shop.Add<SummonThunderCallingJade>();
         shop.Register();
+    }
+
+    public override void ModifyActiveShop(string shopName, Item[] items)
+    {
+        if (!LocalAtStage(CultivationStage.Foundation))
+        {
+            HideShopItem<ThunderTalismanArrayPlate>(items);
+            HideShopItem<SummonThunderCallingJade>(items);
+        }
     }
 }
 
@@ -155,7 +251,20 @@ public class ArchiveScrollSpirit : CultivationTownNPC
 
     public override List<string> SetNPCNameList() => new() { "卷灵", "残页", "墨守" };
 
-    public override string GetChat() => "宗门毁了，规矩还在。你若想借旧法，就得先付新代价。";
+    public override string GetChat()
+    {
+        if (!LocalAtStage(CultivationStage.GoldenCore))
+        {
+            return "宗门试炼令不是门票，是债券。等你结成金丹，再来翻旧卷。";
+        }
+
+        if (!Downed("formless_sword_soul"))
+        {
+            return "无相剑魂还守着残碑。你若听见剑鸣，不要先拔剑，先听完。";
+        }
+
+        return "宗门毁了，规矩还在。你若想借旧法，就得先付新代价。";
+    }
 
     public override void AddShops()
     {
@@ -165,6 +274,15 @@ public class ArchiveScrollSpirit : CultivationTownNPC
         shop.Add<FormlessSwordWheel>();
         shop.Add<NascentSoulJadeBox>();
         shop.Register();
+    }
+
+    public override void ModifyActiveShop(string shopName, Item[] items)
+    {
+        if (!LocalAtStage(CultivationStage.GoldenCore))
+        {
+            HideShopItem<FormlessSwordWheel>(items);
+            HideShopItem<NascentSoulJadeBox>(items);
+        }
     }
 }
 
@@ -178,7 +296,20 @@ public class FallenHeavenMessenger : CultivationTownNPC
 
     public override List<string> SetNPCNameList() => new() { "坠使", "玄告", "天残" };
 
-    public override string GetChat() => "旧天道不会回答你，但它留下的碎片仍会索取答案。";
+    public override string GetChat()
+    {
+        if (!LocalAtStage(CultivationStage.NascentSoul))
+        {
+            return "你还听不见天碑背面的噪音。等元婴成形，再来问旧天道。";
+        }
+
+        if (!Downed("heaven_tablet_guardian"))
+        {
+            return "天碑守卫仍在。它不恨你，只是不承认你。";
+        }
+
+        return "旧天道不会回答你，但它留下的碎片仍会索取答案。";
+    }
 
     public override void AddShops()
     {
@@ -188,5 +319,19 @@ public class FallenHeavenMessenger : CultivationTownNPC
         shop.Add<BrokenHeavenCrownSeal>();
         shop.Add<DaoSeveringRing>();
         shop.Register();
+    }
+
+    public override void ModifyActiveShop(string shopName, Item[] items)
+    {
+        if (!Downed("heaven_tablet_guardian"))
+        {
+            HideShopItem<BrokenHeavenDecree>(items);
+            HideShopItem<BrokenHeavenCrownSeal>(items);
+        }
+
+        if (!LocalAtStage(CultivationStage.Tribulation))
+        {
+            HideShopItem<DaoSeveringRing>(items);
+        }
     }
 }
