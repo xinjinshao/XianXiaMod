@@ -36,7 +36,7 @@
 | 友好 NPC | 已推进 | 药宗学徒、游方炼器师、观劫客、经阁卷灵、坠天使者、进度商店和状态对话 |
 | 本地化 | 已推进 | 生成内容和手写站点内容的中英文显示名与说明 |
 | 兼容 | 已推进 | 软兼容配置开关与 Calamity Mod 探测入口 |
-| tModLoader 验证 | 已完成 | `Tools/tmodloader_smoke_test.ps1` 可验证构建、打包与 dedicated server 加载 |
+| tModLoader 验证 | 已完成 | 可验证构建、打包、dedicated server 加载与小世界生成 |
 
 ## 下一批开发
 
@@ -53,6 +53,12 @@
 ```powershell
 dotnet build XianXia.csproj
 powershell -ExecutionPolicy Bypass -File Tools\tmodloader_smoke_test.ps1
+```
+
+涉及世界生成的批次还必须通过：
+
+```powershell
+powershell -ExecutionPolicy Bypass -File Tools\tmodloader_worldgen_smoke_test.ps1
 ```
 
 最近一次 tModLoader smoke test 通过：XianXiaMod 能被 tModLoader dedicated server 加载到 `Adding Recipes` 并进入 `Choose World`。

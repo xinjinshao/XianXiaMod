@@ -44,3 +44,9 @@ powershell -ExecutionPolicy Bypass -File Tools\tmodloader_smoke_test.ps1
 ```
 
 `Tools\tmodloader_smoke_test.ps1` 会同步当前仓库到 tModLoader 的 `ModSources\XianXia`，构建并打包 `XianXia.tmod`，再启动 tModLoader dedicated server 确认 XianXiaMod 能完成加载。
+
+涉及世界生成的批次还必须通过：
+
+```powershell
+powershell -ExecutionPolicy Bypass -File Tools\tmodloader_worldgen_smoke_test.ps1
+```
