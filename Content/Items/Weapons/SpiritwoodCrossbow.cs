@@ -4,6 +4,7 @@ using Terraria.ModLoader;
 using XianXia.Common.Players;
 using XianXia.Content.Items.Materials;
 using XianXia.Content.Projectiles;
+using XianXia.Content.Tiles.Stations;
 
 namespace XianXia.Content.Items.Weapons;
 
@@ -50,7 +51,7 @@ public class SpiritwoodCrossbow : ModItem
         CreateRecipe()
             .AddIngredient(ItemID.Wood, 16)
             .AddIngredient<LowGradeSpiritStone>(4)
-            .AddTile(TileID.WorkBenches)
+            .AddTile(ModContent.TileType<ArtifactForgeTile>())
             .Register();
     }
 }

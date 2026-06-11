@@ -1,0 +1,18 @@
+Mods: {
+	XianXia: {
+		Items: {
+			AlchemyCauldron: {
+				DisplayName: "炼丹炉"
+				Tooltip: "用于炼制修行丹药。"
+			}
+			ArtifactForge: {
+				DisplayName: "器胚炉"
+				Tooltip: "用于锻造飞剑、阵盘与其他法器。"
+			}
+		}
+		Tiles: {
+			AlchemyCauldronTile.MapEntry: "炼丹炉"
+			ArtifactForgeTile.MapEntry: "器胚炉"
+		}
+	}
+}

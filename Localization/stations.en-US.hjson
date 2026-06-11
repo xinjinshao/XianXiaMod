@@ -1,0 +1,18 @@
+Mods: {
+	XianXia: {
+		Items: {
+			AlchemyCauldron: {
+				DisplayName: "Alchemy Cauldron"
+				Tooltip: "Used to refine cultivation pills."
+			}
+			ArtifactForge: {
+				DisplayName: "Artifact Forge"
+				Tooltip: "Used to forge flying swords, arrays, and other artifacts."
+			}
+		}
+		Tiles: {
+			AlchemyCauldronTile.MapEntry: "Alchemy Cauldron"
+			ArtifactForgeTile.MapEntry: "Artifact Forge"
+		}
+	}
+}

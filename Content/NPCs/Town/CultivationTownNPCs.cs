@@ -10,6 +10,7 @@ using XianXia.Content.Items.BossSummons.Generated;
 using XianXia.Content.Items.Consumables;
 using XianXia.Content.Items.Generated;
 using XianXia.Content.Items.Materials;
+using XianXia.Content.Items.Stations;
 using XianXia.Content.Items.Weapons;
 
 namespace XianXia.Content.NPCs.Town;
@@ -87,6 +88,7 @@ public class HerbSectApprentice : CultivationTownNPC
     public override void AddShops()
     {
         NPCShop shop = new(Type);
+        shop.Add<AlchemyCauldron>();
         shop.Add<SpringReturnPill>();
         shop.Add<QiCondensingPill>();
         shop.Add<GreenwoodRoot>();
@@ -110,6 +112,7 @@ public class WanderingArtificer : CultivationTownNPC
     public override void AddShops()
     {
         NPCShop shop = new(Type);
+        shop.Add<ArtifactForge>();
         shop.Add<WoodgrainFlyingSword>();
         shop.Add<SpiritwoodCrossbow>();
         shop.Add<CloudpiercerFlyingSword>();

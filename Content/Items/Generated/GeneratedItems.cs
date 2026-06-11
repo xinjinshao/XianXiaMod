@@ -222,7 +222,7 @@ public class SpringReturnPill : ModItem
         CreateRecipe(3)
             .AddIngredient<global::XianXia.Content.Items.Generated.GreenwoodRoot>(2)
             .AddIngredient(ItemID.BottledWater)
-            .AddTile(TileID.Bottles)
+            .AddTile(ModContent.TileType<global::XianXia.Content.Tiles.Stations.AlchemyCauldronTile>())
             .Register();
     }
 
@@ -258,7 +258,7 @@ public class QiCondensingPill : ModItem
         CreateRecipe()
             .AddIngredient<global::XianXia.Content.Items.Generated.GreenwoodRoot>(3)
             .AddIngredient<global::XianXia.Content.Items.Materials.LowGradeSpiritStone>(5)
-            .AddTile(TileID.Bottles)
+            .AddTile(ModContent.TileType<global::XianXia.Content.Tiles.Stations.AlchemyCauldronTile>())
             .Register();
     }
 
@@ -295,7 +295,7 @@ public class FoundationPill : ModItem
             .AddIngredient<global::XianXia.Content.Items.Generated.GreenwoodRoot>(4)
             .AddIngredient<global::XianXia.Content.Items.Generated.FurnaceSlagIron>(4)
             .AddIngredient<global::XianXia.Content.Items.Materials.LowGradeSpiritStone>(10)
-            .AddTile(TileID.Bottles)
+            .AddTile(ModContent.TileType<global::XianXia.Content.Tiles.Stations.AlchemyCauldronTile>())
             .Register();
     }
 

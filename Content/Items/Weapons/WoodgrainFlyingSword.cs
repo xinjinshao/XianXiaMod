@@ -4,6 +4,7 @@ using Terraria.ModLoader;
 using XianXia.Common.Players;
 using XianXia.Content.Items.Materials;
 using XianXia.Content.Projectiles;
+using XianXia.Content.Tiles.Stations;
 
 namespace XianXia.Content.Items.Weapons;
 
@@ -53,7 +54,7 @@ public class WoodgrainFlyingSword : ModItem
             .AddIngredient(ItemID.Wood, 12)
             .AddIngredient<LowGradeSpiritStone>(6)
             .AddIngredient<SpiritGel>(4)
-            .AddTile(TileID.WorkBenches)
+            .AddTile(ModContent.TileType<ArtifactForgeTile>())
             .Register();
     }
 }
