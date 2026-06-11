@@ -17,4 +17,7 @@ public class XianXiaConfig : ModConfig
 
     [DefaultValue(false)]
     public bool DebugDrops { get; set; } = false;
+
+    [DefaultValue(true)]
+    public bool EnableSoftCompatibilityHooks { get; set; } = true;
 }

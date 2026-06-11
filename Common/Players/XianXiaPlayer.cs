@@ -8,7 +8,6 @@ namespace XianXia.Common.Players;
 public class XianXiaPlayer : ModPlayer
 {
     public const int BaseMaxSpiritualEnergy = 60;
-    public const int QiAwakeningBonus = 40;
 
     public int spiritualEnergy;
     public int maxSpiritualEnergy;
@@ -29,11 +28,7 @@ public class XianXiaPlayer : ModPlayer
 
     public override void ResetEffects()
     {
-        maxSpiritualEnergy = BaseMaxSpiritualEnergy;
-        if (cultivationStage >= CultivationStage.QiAwakening)
-        {
-            maxSpiritualEnergy += QiAwakeningBonus;
-        }
+        maxSpiritualEnergy = GetMaxSpiritualEnergy(cultivationStage);
 
         if (spiritualEnergy > maxSpiritualEnergy)
         {
@@ -49,7 +44,7 @@ public class XianXiaPlayer : ModPlayer
         }
 
         regenTimer++;
-        int interval = cultivationStage >= CultivationStage.QiAwakening ? 42 : 60;
+        int interval = cultivationStage >= CultivationStage.QiAwakening ? Math.Max(18, 60 - (int)cultivationStage * 5) : 60;
         if (regenTimer >= interval)
         {
             regenTimer = 0;
@@ -90,9 +85,40 @@ public class XianXiaPlayer : ModPlayer
         if (cultivationStage < CultivationStage.QiAwakening)
         {
             cultivationStage = CultivationStage.QiAwakening;
-            maxSpiritualEnergy = BaseMaxSpiritualEnergy + QiAwakeningBonus;
+            maxSpiritualEnergy = GetMaxSpiritualEnergy(cultivationStage);
         }
         RestoreSpiritualEnergy(30);
+    }
+
+    public bool TryAdvanceCultivation(CultivationStage targetStage)
+    {
+        discoveredSpiritualEnergy = true;
+        if (targetStage <= cultivationStage || targetStage > CultivationStage.DaoSevering)
+        {
+            return false;
+        }
+
+        cultivationStage = targetStage;
+        maxSpiritualEnergy = GetMaxSpiritualEnergy(cultivationStage);
+        RestoreSpiritualEnergy(maxSpiritualEnergy / 3);
+        return true;
+    }
+
+    public static int GetMaxSpiritualEnergy(CultivationStage stage)
+    {
+        return stage switch
+        {
+            CultivationStage.None => BaseMaxSpiritualEnergy,
+            CultivationStage.QiAwakening => 100,
+            CultivationStage.QiCondensation => 140,
+            CultivationStage.Foundation => 190,
+            CultivationStage.GoldenCore => 260,
+            CultivationStage.NascentSoul => 340,
+            CultivationStage.SpiritSevering => 430,
+            CultivationStage.Tribulation => 540,
+            CultivationStage.DaoSevering => 660,
+            _ => BaseMaxSpiritualEnergy
+        };
     }
 
     public override void SaveData(TagCompound tag)

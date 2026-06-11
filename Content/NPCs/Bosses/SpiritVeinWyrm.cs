@@ -72,7 +72,7 @@ public class SpiritVeinWyrm : ModNPC
 
     public override void OnKill()
     {
-        DownedBossSystem.DownedSpiritVeinWyrm = true;
+        DownedBossSystem.MarkDowned("spirit_vein_wyrm");
     }
 
     public override void ModifyNPCLoot(NPCLoot npcLoot)
