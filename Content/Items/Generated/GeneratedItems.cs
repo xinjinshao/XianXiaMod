@@ -326,6 +326,16 @@ public class TribulationResistingPill : ModItem
         return true;
     }
 
+    public override void AddRecipes()
+    {
+        CreateRecipe(2)
+            .AddIngredient<global::XianXia.Content.Items.Generated.TribulationCloudDew>(3)
+            .AddIngredient<global::XianXia.Content.Items.Generated.GreenwoodRoot>(2)
+            .AddIngredient(ItemID.BottledWater)
+            .AddTile(ModContent.TileType<global::XianXia.Content.Tiles.Stations.AlchemyCauldronTile>())
+            .Register();
+    }
+
 }
 
 
@@ -353,6 +363,16 @@ public class StarAbyssForbiddenTalisman : ModItem
         cultivation.RestoreSpiritualEnergy(80);
         cultivation.spiritPressure = Math.Clamp(cultivation.spiritPressure + 25, 0, 100);
         return true;
+    }
+
+    public override void AddRecipes()
+    {
+        CreateRecipe()
+            .AddIngredient<global::XianXia.Content.Items.Generated.StarEclipseCrystal>(6)
+            .AddIngredient<global::XianXia.Content.Items.Generated.StarAbyssMembrane>(2)
+            .AddIngredient<global::XianXia.Content.Items.Materials.LowGradeSpiritStone>(12)
+            .AddTile(TileID.DemonAltar)
+            .Register();
     }
 
 }

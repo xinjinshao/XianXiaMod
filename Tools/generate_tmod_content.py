@@ -593,6 +593,30 @@ def generate_materials(existing: set[str]) -> None:
             .Register();
     }
 """
+        elif asset_id == "tribulation_resisting_pill":
+            recipe = """
+    public override void AddRecipes()
+    {
+        CreateRecipe(2)
+            .AddIngredient<global::XianXia.Content.Items.Generated.TribulationCloudDew>(3)
+            .AddIngredient<global::XianXia.Content.Items.Generated.GreenwoodRoot>(2)
+            .AddIngredient(ItemID.BottledWater)
+            .AddTile(ModContent.TileType<global::XianXia.Content.Tiles.Stations.AlchemyCauldronTile>())
+            .Register();
+    }
+"""
+        elif asset_id == "star_abyss_forbidden_talisman":
+            recipe = """
+    public override void AddRecipes()
+    {
+        CreateRecipe()
+            .AddIngredient<global::XianXia.Content.Items.Generated.StarEclipseCrystal>(6)
+            .AddIngredient<global::XianXia.Content.Items.Generated.StarAbyssMembrane>(2)
+            .AddIngredient<global::XianXia.Content.Items.Materials.LowGradeSpiritStone>(12)
+            .AddTile(TileID.DemonAltar)
+            .Register();
+    }
+"""
         classes.append(f"""
 public class {class_name} : ModItem
 {{
