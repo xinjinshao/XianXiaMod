@@ -243,6 +243,20 @@ BOSS_DATA = {
     "old_heaven_dao_core": ("旧天道核心", "Old Heaven Dao Core", 650000, 220, 100, "moonbone_ritual_talisman", "dao_severing_dust"),
 }
 
+BOSS_STAGE_REQUIREMENTS = {
+    "garden_warden": "QiAwakening",
+    "black_furnace_iron_golem": "QiAwakening",
+    "tribulation_cloud_avatar": "QiCondensation",
+    "thunder_marsh_jiao": "Foundation",
+    "abyssal_star_womb": "Foundation",
+    "formless_sword_soul": "GoldenCore",
+    "greenwood_medicine_king_echo": "GoldenCore",
+    "heaven_tablet_guardian": "NascentSoul",
+    "broken_heaven_inspector": "NascentSoul",
+    "moonbone_immortal": "Tribulation",
+    "old_heaven_dao_core": "DaoSevering",
+}
+
 
 ENEMY_DATA = {
     "herb_garden_vine_spirit": (140, 24, 8, "greenwood_root"),
@@ -762,6 +776,9 @@ def generate_summons(existing: set[str]) -> None:
         if class_name in existing:
             continue
         copy_asset(summon, "item_icon", class_name, CONTENT / "Items" / "BossSummons" / "Generated")
+        required_stage = BOSS_STAGE_REQUIREMENTS[asset_id]
+        spirit_stone_cost = 10 + list(BOSS_DATA).index(asset_id) * 3
+        crafting_tile = "TileID.WorkBenches" if required_stage in {"QiAwakening", "QiCondensation"} else "TileID.DemonAltar"
         classes.append(f"""
 public class {class_name} : ModItem
 {{
@@ -779,13 +796,26 @@ public class {class_name} : ModItem
         Item.rare = ItemRarityID.Green;
     }}
 
-    public override bool CanUseItem(Player player) => !NPC.AnyNPCs(ModContent.NPCType<global::XianXia.Content.NPCs.Bosses.Generated.{boss_class}>());
+    public override bool CanUseItem(Player player)
+    {{
+        return !NPC.AnyNPCs(ModContent.NPCType<global::XianXia.Content.NPCs.Bosses.Generated.{boss_class}>())
+            && player.GetModPlayer<global::XianXia.Common.Players.XianXiaPlayer>().cultivationStage >= global::XianXia.Common.Players.CultivationStage.{required_stage};
+    }}
 
     public override bool? UseItem(Player player)
     {{
         if (Main.netMode != NetmodeID.MultiplayerClient)
             NPC.SpawnOnPlayer(player.whoAmI, ModContent.NPCType<global::XianXia.Content.NPCs.Bosses.Generated.{boss_class}>());
         return true;
+    }}
+
+    public override void AddRecipes()
+    {{
+        CreateRecipe()
+            .AddIngredient<global::XianXia.Content.Items.Generated.{pascal(summon)}>()
+            .AddIngredient<global::XianXia.Content.Items.Materials.LowGradeSpiritStone>({spirit_stone_cost})
+            .AddTile({crafting_tile})
+            .Register();
     }}
 }}
 """)
