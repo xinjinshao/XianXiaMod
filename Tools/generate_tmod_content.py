@@ -515,6 +515,50 @@ def generate_materials(existing: set[str]) -> None:
         return player.GetModPlayer<global::XianXia.Common.Players.XianXiaPlayer>().TryConsumeSpiritualEnergy({energy});
     }}
 """
+            ingredient = {
+                "cloudpiercer_flying_sword": "GreenwoodRoot",
+                "thunder_pattern_sword_case": "TribulationCloudDew",
+                "formless_sword_wheel": "SectTrialToken",
+                "moonbone_dharma_sword": "Moonbone",
+                "cinnabar_talisman_flame_item": "FurnaceSlagIron",
+                "greenwood_array_plate": "GreenwoodRoot",
+                "thunder_talisman_array_plate": "TribulationCloudDew",
+                "broken_heaven_decree": "HeavenDaoFragment",
+                "star_eclipse_arbalest": "StarEclipseCrystal",
+                "old_heaven_dao_scroll": "HeavenDaoFragment",
+            }[asset_id]
+            recipe = f"""
+    public override void AddRecipes()
+    {{
+        CreateRecipe()
+            .AddIngredient<global::XianXia.Content.Items.Generated.ArtifactBlankShard>(2)
+            .AddIngredient<global::XianXia.Content.Items.Generated.{ingredient}>(6)
+            .AddIngredient<global::XianXia.Content.Items.Materials.LowGradeSpiritStone>(12)
+            .AddTile(ModContent.TileType<global::XianXia.Content.Tiles.Stations.ArtifactForgeTile>())
+            .Register();
+    }}
+"""
+        if asset_id in accessories:
+            ingredient = {
+                "qi_gathering_pendant": "GreenwoodRoot",
+                "spiritwood_charm": "GreenwoodRoot",
+                "furnace_heart_ring": "FurnaceSlagIron",
+                "lightning_ward_jade": "TribulationCloudDew",
+                "star_abyss_eye": "StarEclipseCrystal",
+                "nascent_soul_jade_box": "SectTrialToken",
+                "broken_heaven_crown_seal": "HeavenDaoFragment",
+                "dao_severing_ring": "DaoSeveringDust",
+            }[asset_id]
+            recipe = f"""
+    public override void AddRecipes()
+    {{
+        CreateRecipe()
+            .AddIngredient<global::XianXia.Content.Items.Generated.{ingredient}>(5)
+            .AddIngredient<global::XianXia.Content.Items.Materials.LowGradeSpiritStone>(8)
+            .AddTile(ModContent.TileType<global::XianXia.Content.Tiles.Stations.ArtifactForgeTile>())
+            .Register();
+    }}
+"""
         if asset_id == "spring_return_pill":
             recipe = """
     public override void AddRecipes()

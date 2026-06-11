@@ -482,6 +482,16 @@ public class CloudpiercerFlyingSword : ModItem
         return player.GetModPlayer<global::XianXia.Common.Players.XianXiaPlayer>().TryConsumeSpiritualEnergy(12);
     }
 
+    public override void AddRecipes()
+    {
+        CreateRecipe()
+            .AddIngredient<global::XianXia.Content.Items.Generated.ArtifactBlankShard>(2)
+            .AddIngredient<global::XianXia.Content.Items.Generated.GreenwoodRoot>(6)
+            .AddIngredient<global::XianXia.Content.Items.Materials.LowGradeSpiritStone>(12)
+            .AddTile(ModContent.TileType<global::XianXia.Content.Tiles.Stations.ArtifactForgeTile>())
+            .Register();
+    }
+
 }
 
 
@@ -511,6 +521,16 @@ public class ThunderPatternSwordCase : ModItem
     public override bool CanUseItem(Player player)
     {
         return player.GetModPlayer<global::XianXia.Common.Players.XianXiaPlayer>().TryConsumeSpiritualEnergy(18);
+    }
+
+    public override void AddRecipes()
+    {
+        CreateRecipe()
+            .AddIngredient<global::XianXia.Content.Items.Generated.ArtifactBlankShard>(2)
+            .AddIngredient<global::XianXia.Content.Items.Generated.TribulationCloudDew>(6)
+            .AddIngredient<global::XianXia.Content.Items.Materials.LowGradeSpiritStone>(12)
+            .AddTile(ModContent.TileType<global::XianXia.Content.Tiles.Stations.ArtifactForgeTile>())
+            .Register();
     }
 
 }
@@ -544,6 +564,16 @@ public class FormlessSwordWheel : ModItem
         return player.GetModPlayer<global::XianXia.Common.Players.XianXiaPlayer>().TryConsumeSpiritualEnergy(28);
     }
 
+    public override void AddRecipes()
+    {
+        CreateRecipe()
+            .AddIngredient<global::XianXia.Content.Items.Generated.ArtifactBlankShard>(2)
+            .AddIngredient<global::XianXia.Content.Items.Generated.SectTrialToken>(6)
+            .AddIngredient<global::XianXia.Content.Items.Materials.LowGradeSpiritStone>(12)
+            .AddTile(ModContent.TileType<global::XianXia.Content.Tiles.Stations.ArtifactForgeTile>())
+            .Register();
+    }
+
 }
 
 
@@ -573,6 +603,16 @@ public class MoonboneDharmaSword : ModItem
     public override bool CanUseItem(Player player)
     {
         return player.GetModPlayer<global::XianXia.Common.Players.XianXiaPlayer>().TryConsumeSpiritualEnergy(36);
+    }
+
+    public override void AddRecipes()
+    {
+        CreateRecipe()
+            .AddIngredient<global::XianXia.Content.Items.Generated.ArtifactBlankShard>(2)
+            .AddIngredient<global::XianXia.Content.Items.Generated.Moonbone>(6)
+            .AddIngredient<global::XianXia.Content.Items.Materials.LowGradeSpiritStone>(12)
+            .AddTile(ModContent.TileType<global::XianXia.Content.Tiles.Stations.ArtifactForgeTile>())
+            .Register();
     }
 
 }
@@ -606,6 +646,16 @@ public class CinnabarTalismanFlameItem : ModItem
         return player.GetModPlayer<global::XianXia.Common.Players.XianXiaPlayer>().TryConsumeSpiritualEnergy(14);
     }
 
+    public override void AddRecipes()
+    {
+        CreateRecipe()
+            .AddIngredient<global::XianXia.Content.Items.Generated.ArtifactBlankShard>(2)
+            .AddIngredient<global::XianXia.Content.Items.Generated.FurnaceSlagIron>(6)
+            .AddIngredient<global::XianXia.Content.Items.Materials.LowGradeSpiritStone>(12)
+            .AddTile(ModContent.TileType<global::XianXia.Content.Tiles.Stations.ArtifactForgeTile>())
+            .Register();
+    }
+
 }
 
 
@@ -635,6 +685,16 @@ public class GreenwoodArrayPlate : ModItem
     public override bool CanUseItem(Player player)
     {
         return player.GetModPlayer<global::XianXia.Common.Players.XianXiaPlayer>().TryConsumeSpiritualEnergy(20);
+    }
+
+    public override void AddRecipes()
+    {
+        CreateRecipe()
+            .AddIngredient<global::XianXia.Content.Items.Generated.ArtifactBlankShard>(2)
+            .AddIngredient<global::XianXia.Content.Items.Generated.GreenwoodRoot>(6)
+            .AddIngredient<global::XianXia.Content.Items.Materials.LowGradeSpiritStone>(12)
+            .AddTile(ModContent.TileType<global::XianXia.Content.Tiles.Stations.ArtifactForgeTile>())
+            .Register();
     }
 
 }
@@ -668,6 +728,16 @@ public class ThunderTalismanArrayPlate : ModItem
         return player.GetModPlayer<global::XianXia.Common.Players.XianXiaPlayer>().TryConsumeSpiritualEnergy(22);
     }
 
+    public override void AddRecipes()
+    {
+        CreateRecipe()
+            .AddIngredient<global::XianXia.Content.Items.Generated.ArtifactBlankShard>(2)
+            .AddIngredient<global::XianXia.Content.Items.Generated.TribulationCloudDew>(6)
+            .AddIngredient<global::XianXia.Content.Items.Materials.LowGradeSpiritStone>(12)
+            .AddTile(ModContent.TileType<global::XianXia.Content.Tiles.Stations.ArtifactForgeTile>())
+            .Register();
+    }
+
 }
 
 
@@ -697,6 +767,16 @@ public class BrokenHeavenDecree : ModItem
     public override bool CanUseItem(Player player)
     {
         return player.GetModPlayer<global::XianXia.Common.Players.XianXiaPlayer>().TryConsumeSpiritualEnergy(40);
+    }
+
+    public override void AddRecipes()
+    {
+        CreateRecipe()
+            .AddIngredient<global::XianXia.Content.Items.Generated.ArtifactBlankShard>(2)
+            .AddIngredient<global::XianXia.Content.Items.Generated.HeavenDaoFragment>(6)
+            .AddIngredient<global::XianXia.Content.Items.Materials.LowGradeSpiritStone>(12)
+            .AddTile(ModContent.TileType<global::XianXia.Content.Tiles.Stations.ArtifactForgeTile>())
+            .Register();
     }
 
 }
@@ -735,6 +815,16 @@ public class OldHeavenDaoScroll : ModItem
         return player.GetModPlayer<global::XianXia.Common.Players.XianXiaPlayer>().TryConsumeSpiritualEnergy(34);
     }
 
+    public override void AddRecipes()
+    {
+        CreateRecipe()
+            .AddIngredient<global::XianXia.Content.Items.Generated.ArtifactBlankShard>(2)
+            .AddIngredient<global::XianXia.Content.Items.Generated.HeavenDaoFragment>(6)
+            .AddIngredient<global::XianXia.Content.Items.Materials.LowGradeSpiritStone>(12)
+            .AddTile(ModContent.TileType<global::XianXia.Content.Tiles.Stations.ArtifactForgeTile>())
+            .Register();
+    }
+
 }
 
 
@@ -766,6 +856,16 @@ public class StarEclipseArbalest : ModItem
         return player.GetModPlayer<global::XianXia.Common.Players.XianXiaPlayer>().TryConsumeSpiritualEnergy(20);
     }
 
+    public override void AddRecipes()
+    {
+        CreateRecipe()
+            .AddIngredient<global::XianXia.Content.Items.Generated.ArtifactBlankShard>(2)
+            .AddIngredient<global::XianXia.Content.Items.Generated.StarEclipseCrystal>(6)
+            .AddIngredient<global::XianXia.Content.Items.Materials.LowGradeSpiritStone>(12)
+            .AddTile(ModContent.TileType<global::XianXia.Content.Tiles.Stations.ArtifactForgeTile>())
+            .Register();
+    }
+
 }
 
 
@@ -786,6 +886,15 @@ public class QiGatheringPendant : ModItem
     public override void UpdateAccessory(Player player, bool hideVisual)
     {
         player.AddBuff(ModContent.BuffType<global::XianXia.Content.Buffs.QiGatheringBuff>(), 2);
+    }
+
+    public override void AddRecipes()
+    {
+        CreateRecipe()
+            .AddIngredient<global::XianXia.Content.Items.Generated.GreenwoodRoot>(5)
+            .AddIngredient<global::XianXia.Content.Items.Materials.LowGradeSpiritStone>(8)
+            .AddTile(ModContent.TileType<global::XianXia.Content.Tiles.Stations.ArtifactForgeTile>())
+            .Register();
     }
 
 }
@@ -810,6 +919,15 @@ public class SpiritwoodCharm : ModItem
         player.lifeRegen += 2;
     }
 
+    public override void AddRecipes()
+    {
+        CreateRecipe()
+            .AddIngredient<global::XianXia.Content.Items.Generated.GreenwoodRoot>(5)
+            .AddIngredient<global::XianXia.Content.Items.Materials.LowGradeSpiritStone>(8)
+            .AddTile(ModContent.TileType<global::XianXia.Content.Tiles.Stations.ArtifactForgeTile>())
+            .Register();
+    }
+
 }
 
 
@@ -830,6 +948,15 @@ public class FurnaceHeartRing : ModItem
     public override void UpdateAccessory(Player player, bool hideVisual)
     {
         player.statDefense += 3;
+    }
+
+    public override void AddRecipes()
+    {
+        CreateRecipe()
+            .AddIngredient<global::XianXia.Content.Items.Generated.FurnaceSlagIron>(5)
+            .AddIngredient<global::XianXia.Content.Items.Materials.LowGradeSpiritStone>(8)
+            .AddTile(ModContent.TileType<global::XianXia.Content.Tiles.Stations.ArtifactForgeTile>())
+            .Register();
     }
 
 }
@@ -854,6 +981,15 @@ public class LightningWardJade : ModItem
         player.endurance += 0.04f;
     }
 
+    public override void AddRecipes()
+    {
+        CreateRecipe()
+            .AddIngredient<global::XianXia.Content.Items.Generated.TribulationCloudDew>(5)
+            .AddIngredient<global::XianXia.Content.Items.Materials.LowGradeSpiritStone>(8)
+            .AddTile(ModContent.TileType<global::XianXia.Content.Tiles.Stations.ArtifactForgeTile>())
+            .Register();
+    }
+
 }
 
 
@@ -874,6 +1010,15 @@ public class StarAbyssEye : ModItem
     public override void UpdateAccessory(Player player, bool hideVisual)
     {
         player.GetDamage(DamageClass.Generic) += 0.06f;
+    }
+
+    public override void AddRecipes()
+    {
+        CreateRecipe()
+            .AddIngredient<global::XianXia.Content.Items.Generated.StarEclipseCrystal>(5)
+            .AddIngredient<global::XianXia.Content.Items.Materials.LowGradeSpiritStone>(8)
+            .AddTile(ModContent.TileType<global::XianXia.Content.Tiles.Stations.ArtifactForgeTile>())
+            .Register();
     }
 
 }
@@ -898,6 +1043,15 @@ public class NascentSoulJadeBox : ModItem
         player.GetModPlayer<global::XianXia.Common.Players.XianXiaPlayer>().maxSpiritualEnergy += 30;
     }
 
+    public override void AddRecipes()
+    {
+        CreateRecipe()
+            .AddIngredient<global::XianXia.Content.Items.Generated.SectTrialToken>(5)
+            .AddIngredient<global::XianXia.Content.Items.Materials.LowGradeSpiritStone>(8)
+            .AddTile(ModContent.TileType<global::XianXia.Content.Tiles.Stations.ArtifactForgeTile>())
+            .Register();
+    }
+
 }
 
 
@@ -920,6 +1074,15 @@ public class BrokenHeavenCrownSeal : ModItem
         player.GetDamage(DamageClass.Generic) += 0.1f; player.statDefense -= 4;
     }
 
+    public override void AddRecipes()
+    {
+        CreateRecipe()
+            .AddIngredient<global::XianXia.Content.Items.Generated.HeavenDaoFragment>(5)
+            .AddIngredient<global::XianXia.Content.Items.Materials.LowGradeSpiritStone>(8)
+            .AddTile(ModContent.TileType<global::XianXia.Content.Tiles.Stations.ArtifactForgeTile>())
+            .Register();
+    }
+
 }
 
 
@@ -940,6 +1103,15 @@ public class DaoSeveringRing : ModItem
     public override void UpdateAccessory(Player player, bool hideVisual)
     {
         player.GetDamage(DamageClass.Generic) += 0.14f;
+    }
+
+    public override void AddRecipes()
+    {
+        CreateRecipe()
+            .AddIngredient<global::XianXia.Content.Items.Generated.DaoSeveringDust>(5)
+            .AddIngredient<global::XianXia.Content.Items.Materials.LowGradeSpiritStone>(8)
+            .AddTile(ModContent.TileType<global::XianXia.Content.Tiles.Stations.ArtifactForgeTile>())
+            .Register();
     }
 
 }
