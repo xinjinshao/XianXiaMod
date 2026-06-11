@@ -299,9 +299,9 @@ TILE_CLASSES = {
     "spirit_herb": ("SpiritHerbTile", "灵草", "Spirit Herb", "greenwood_root"),
     "furnace_slag_tile": ("FurnaceSlagTile", "炉渣石", "Furnace Slag", "furnace_slag_iron"),
     "black_furnace_wall": ("BlackFurnaceWall", "玄炉墙", "Black Furnace Wall", ""),
-    "thunder_cloud_tile": ("ThunderCloudTile", "雷云块", "Thunder Cloud", ""),
+    "thunder_cloud_tile": ("ThunderCloudTile", "雷云块", "Thunder Cloud", "tribulation_cloud_dew"),
     "star_abyss_crystal_tile": ("StarAbyssCrystalTile", "星渊晶岩", "Star Abyss Crystal", "star_eclipse_crystal"),
-    "sect_ruin_brick": ("SectRuinBrickTile", "宗门石砖", "Sect Ruin Brick", ""),
+    "sect_ruin_brick": ("SectRuinBrickTile", "宗门石砖", "Sect Ruin Brick", "artifact_blank_shard"),
     "fallen_heaven_jade_tile": ("FallenHeavenJadeTile", "坠天玉砖", "Fallen Heaven Jade", "heaven_dao_fragment"),
     "moonbone_tile": ("MoonboneTile", "月骸骨岩", "Moonbone Rock", "moonbone"),
 }

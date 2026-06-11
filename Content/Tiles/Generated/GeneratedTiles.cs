@@ -71,7 +71,7 @@ public class ThunderCloudTile : ModTile
         DustType = DustID.Stone;
         MineResist = 1.1f;
         AddMapEntry(new Color(120, 180, 150), CreateMapEntryName());
-
+        RegisterItemDrop(ModContent.ItemType<global::XianXia.Content.Items.Generated.TribulationCloudDew>());
     }
 }
 
@@ -101,7 +101,7 @@ public class SectRuinBrickTile : ModTile
         DustType = DustID.Stone;
         MineResist = 1.1f;
         AddMapEntry(new Color(120, 180, 150), CreateMapEntryName());
-
+        RegisterItemDrop(ModContent.ItemType<global::XianXia.Content.Items.Generated.ArtifactBlankShard>());
     }
 }
 
