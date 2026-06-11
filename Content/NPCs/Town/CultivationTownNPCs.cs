@@ -263,6 +263,11 @@ public class ArchiveScrollSpirit : CultivationTownNPC
             return "无相剑魂还守着残碑。你若听见剑鸣，不要先拔剑，先听完。";
         }
 
+        if (!DownedBossSystem.HasSectReputation(80))
+        {
+            return $"你的宗门声望已有 {DownedBossSystem.SectReputation}。旧卷认可战绩，也认可耐心。";
+        }
+
         return "宗门毁了，规矩还在。你若想借旧法，就得先付新代价。";
     }
 
@@ -281,6 +286,11 @@ public class ArchiveScrollSpirit : CultivationTownNPC
         if (!LocalAtStage(CultivationStage.GoldenCore))
         {
             HideShopItem<FormlessSwordWheel>(items);
+            HideShopItem<NascentSoulJadeBox>(items);
+        }
+
+        if (!DownedBossSystem.HasSectReputation(80))
+        {
             HideShopItem<NascentSoulJadeBox>(items);
         }
     }
@@ -308,6 +318,11 @@ public class FallenHeavenMessenger : CultivationTownNPC
             return "天碑守卫仍在。它不恨你，只是不承认你。";
         }
 
+        if (!DownedBossSystem.HasSectReputation(160))
+        {
+            return $"天道碎片认得战绩。你的宗门声望是 {DownedBossSystem.SectReputation}，还不足以换取斩道之物。";
+        }
+
         return "旧天道不会回答你，但它留下的碎片仍会索取答案。";
     }
 
@@ -330,6 +345,11 @@ public class FallenHeavenMessenger : CultivationTownNPC
         }
 
         if (!LocalAtStage(CultivationStage.Tribulation))
+        {
+            HideShopItem<DaoSeveringRing>(items);
+        }
+
+        if (!DownedBossSystem.HasSectReputation(160))
         {
             HideShopItem<DaoSeveringRing>(items);
         }
