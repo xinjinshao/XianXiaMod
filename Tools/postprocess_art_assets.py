@@ -97,6 +97,9 @@ def fit_canvas(image: Image.Image, size: tuple[int, int], reserved_padding: int 
 
 
 def cell_box(sheet: Image.Image, row: AssetRow) -> tuple[int, int, int, int]:
+    custom = custom_cell_box(sheet, row)
+    if custom is not None:
+        return custom
     cell_w = sheet.width / row.cols
     cell_h = sheet.height / row.rows
     return (
@@ -105,6 +108,32 @@ def cell_box(sheet: Image.Image, row: AssetRow) -> tuple[int, int, int, int]:
         round((row.col + 1) * cell_w),
         round((row.row + 1) * cell_h),
     )
+
+
+def custom_cell_box(sheet: Image.Image, row: AssetRow) -> tuple[int, int, int, int] | None:
+    width, height = sheet.size
+    # Image generation follows visible rows more than exact mathematical grids.
+    # These bands avoid clipping tall sprites that cross default row boundaries.
+    if row.sheet.startswith("bosses_") and row.cols == 4 and row.rows == 3:
+        x0 = round(row.col * width / 4)
+        x1 = round((row.col + 1) * width / 4)
+        bands = {
+            0: (0, round(height * 0.43)),
+            1: (round(height * 0.36), round(height * 0.72)),
+            2: (round(height * 0.66), height),
+        }
+        y0, y1 = bands[row.row]
+        return (x0, y0, x1, y1)
+    if row.sheet == "npcs_sheet_chromakey_v01.png" and row.cols == 5 and row.rows == 2:
+        x0 = round(row.col * width / 5)
+        x1 = round((row.col + 1) * width / 5)
+        bands = {
+            0: (0, round(height * 0.66)),
+            1: (round(height * 0.54), height),
+        }
+        y0, y1 = bands[row.row]
+        return (x0, y0, x1, y1)
+    return None
 
 
 def process(manifest: Path, generated_dir: Path, final_dir: Path) -> dict[str, int]:
