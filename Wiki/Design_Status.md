@@ -36,7 +36,7 @@
 | 友好 NPC | 已推进 | 药宗学徒、游方炼器师、观劫客、经阁卷灵、坠天使者、进度商店、宗门玉简、状态对话、Bestiary 风味文本和幸福度生态偏好 |
 | 本地化 | 已推进 | 生成内容和手写站点内容的中英文显示名与说明 |
 | 兼容 | 已推进 | 软兼容配置开关与 Calamity Mod 探测入口 |
-| tModLoader 验证 | 已完成 | 可验证构建、打包、dedicated server 加载与小世界生成 |
+| tModLoader 验证 | 已完成 | 可验证 Bestiary 本地化 key、构建、打包、dedicated server 加载与小世界生成 |
 
 ## 下一批开发
 
@@ -51,6 +51,7 @@
 每个开发批次都必须通过：
 
 ```powershell
+python Tools\verify_localization_keys.py
 dotnet build XianXia.csproj
 powershell -ExecutionPolicy Bypass -File Tools\tmodloader_smoke_test.ps1
 ```
