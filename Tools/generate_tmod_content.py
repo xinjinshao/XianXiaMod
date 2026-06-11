@@ -109,6 +109,11 @@ ZH_NAMES = {
     "broken_heaven_inspector": "残天监察使",
     "moonbone_immortal": "月骨仙君",
     "old_heaven_dao_core": "旧天道核心",
+    "herb_sect_apprentice": "药宗学徒",
+    "wandering_artificer": "游方炼器师",
+    "tribulation_observer": "观劫客",
+    "archive_scroll_spirit": "经阁卷灵",
+    "fallen_heaven_messenger": "坠天使者",
 }
 
 EN_NAMES = {
@@ -175,6 +180,11 @@ EN_NAMES = {
     "broken_heaven_inspector": "Broken Heaven Inspector",
     "moonbone_immortal": "Moonbone Immortal",
     "old_heaven_dao_core": "Old Heaven Dao Core",
+    "herb_sect_apprentice": "Herb Sect Apprentice",
+    "wandering_artificer": "Wandering Artificer",
+    "tribulation_observer": "Tribulation Observer",
+    "archive_scroll_spirit": "Archive Scroll Spirit",
+    "fallen_heaven_messenger": "Fallen Heaven Messenger",
 }
 
 DISPLAY = {
@@ -292,6 +302,14 @@ BIOMES = [
     ("FallenHeavenPalaceBiome", "坠天宫阙", "Fallen Heaven Palace", ("FallenHeavenJadeTile",), 160),
     ("MoonboneAbyssBiome", "月骸天渊", "Moonbone Abyss", ("MoonboneTile",), 200),
 ]
+
+TOWN_NPCS = {
+    "herb_sect_apprentice": "HerbSectApprentice",
+    "wandering_artificer": "WanderingArtificer",
+    "tribulation_observer": "TribulationObserver",
+    "archive_scroll_spirit": "ArchiveScrollSpirit",
+    "fallen_heaven_messenger": "FallenHeavenMessenger",
+}
 
 
 def generate_materials(existing: set[str]) -> None:
@@ -819,6 +837,9 @@ def generate_localization() -> None:
 
     npc_zh = {pascal(asset_id): {"DisplayName": ZH_NAMES.get(asset_id, pascal(asset_id))} for asset_id in ENEMY_DATA | BOSS_DATA}
     npc_en = {pascal(asset_id): {"DisplayName": EN_NAMES.get(asset_id, pascal(asset_id))} for asset_id in ENEMY_DATA | BOSS_DATA}
+    for asset_id, class_name in TOWN_NPCS.items():
+        npc_zh[class_name] = {"DisplayName": ZH_NAMES[asset_id]}
+        npc_en[class_name] = {"DisplayName": EN_NAMES[asset_id]}
 
     tile_names = {
         "GreenwoodSoilTile": ("青木土", "Greenwood Soil"),

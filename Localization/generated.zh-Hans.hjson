@@ -202,6 +202,9 @@ Mods: {
 			AbyssalStarWomb: {
 				DisplayName: "星渊胎主"
 			}
+			ArchiveScrollSpirit: {
+				DisplayName: "经阁卷灵"
+			}
 			ArchivedImmortalSoul: {
 				DisplayName: "封卷仙魂"
 			}
@@ -213,6 +216,9 @@ Mods: {
 			}
 			CelestialPuppet: {
 				DisplayName: "天庭傀儡"
+			}
+			FallenHeavenMessenger: {
+				DisplayName: "坠天使者"
 			}
 			FormlessSwordSoul: {
 				DisplayName: "无相剑魂"
@@ -234,6 +240,9 @@ Mods: {
 			}
 			HerbGardenVineSpirit: {
 				DisplayName: "药园藤灵"
+			}
+			HerbSectApprentice: {
+				DisplayName: "药宗学徒"
 			}
 			IronShardSpirit: {
 				DisplayName: "铁屑精"
@@ -273,6 +282,12 @@ Mods: {
 			}
 			TribulationCloudling: {
 				DisplayName: "劫云灵"
+			}
+			TribulationObserver: {
+				DisplayName: "观劫客"
+			}
+			WanderingArtificer: {
+				DisplayName: "游方炼器师"
 			}
 		}
 		Tiles: {

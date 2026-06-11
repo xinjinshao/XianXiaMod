@@ -202,6 +202,9 @@ Mods: {
 			AbyssalStarWomb: {
 				DisplayName: "Abyssal Star Womb"
 			}
+			ArchiveScrollSpirit: {
+				DisplayName: "Archive Scroll Spirit"
+			}
 			ArchivedImmortalSoul: {
 				DisplayName: "Archived Immortal Soul"
 			}
@@ -213,6 +216,9 @@ Mods: {
 			}
 			CelestialPuppet: {
 				DisplayName: "Celestial Puppet"
+			}
+			FallenHeavenMessenger: {
+				DisplayName: "Fallen Heaven Messenger"
 			}
 			FormlessSwordSoul: {
 				DisplayName: "Formless Sword Soul"
@@ -234,6 +240,9 @@ Mods: {
 			}
 			HerbGardenVineSpirit: {
 				DisplayName: "Herb Garden Vine Spirit"
+			}
+			HerbSectApprentice: {
+				DisplayName: "Herb Sect Apprentice"
 			}
 			IronShardSpirit: {
 				DisplayName: "Iron Shard Spirit"
@@ -273,6 +282,12 @@ Mods: {
 			}
 			TribulationCloudling: {
 				DisplayName: "Tribulation Cloudling"
+			}
+			TribulationObserver: {
+				DisplayName: "Tribulation Observer"
+			}
+			WanderingArtificer: {
+				DisplayName: "Wandering Artificer"
 			}
 		}
 		Tiles: {
