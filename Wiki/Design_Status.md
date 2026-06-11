@@ -23,26 +23,35 @@
 | 阶段 | 状态 | 已完成内容 |
 | --- | --- | --- |
 | 项目骨架 | 已完成 | `build.txt`、`description.txt`、`XianXia.csproj`、主 Mod 类 |
-| 玩家系统 | 已完成 | 灵气、最大灵气、灵压、修行境界、逐阶突破、保存与同步 |
+| 玩家系统 | 已完成 | 灵气、最大灵气、灵压、修行境界、逐阶突破、保存与基础同步 |
 | UI | 已完成 | 灵气条 UI 与贴图 |
 | 世界生成 | 已推进 | 浅层灵脉以及青木药园、沉炉矿脉、雷泽云层、星渊裂隙、万宗遗址、坠天宫阙、月骨深渊的生成骨架 |
 | 物品 | 已推进 | 生成材料、丹药、饰品、法器、召唤物和基础配方 |
-| 制作站 | 已推进 | 炼丹炉、器胚炉、丹药配方迁移与早期法器配方迁移 |
-| Buff/Debuff | 已推进 | 聚气、回春、抗劫、灵压紊乱 |
+| 制作站 | 已推进 | 炼丹炉、器胚炉、丹药配方迁移、早期法器配方迁移与站点附近加成 |
+| Buff/Debuff | 已推进 | 聚气、回春、抗劫、灵压紊乱、丹炉温养、器胚共鸣 |
 | 天劫 | 已推进 | 突破后触发短时天劫事件，包含劫压、落雷、抗劫缓解与完成奖励 |
 | 修行进度 | 已推进 | 引气、凝气、筑基、金丹、元婴、斩灵、渡劫、斩道的突破链路 |
 | 敌怪/Boss | 已推进 | 生成敌怪、Boss、掉落、召唤物、召唤配方、境界门槛与通用阶段 AI |
 | 友好 NPC | 已推进 | 药宗学徒、游方炼器师、观劫客、经阁卷灵、坠天使者及基础商店 |
-| 本地化 | 已推进 | 生成内容的中英文显示名与说明 |
-| 兼容 | 已推进 | 已有软兼容配置开关，并接入 Calamity Mod 探测入口 |
+| 本地化 | 已推进 | 生成内容和手写站点内容的中英文显示名与说明 |
+| 兼容 | 已推进 | 软兼容配置开关与 Calamity Mod 探测入口 |
+| tModLoader 验证 | 已完成 | `Tools/tmodloader_smoke_test.ps1` 可验证构建、打包与 dedicated server 加载 |
 
 ## 下一批开发
 
-- 深化 Boss AI 阶段、弹幕与召唤物行为。
-- 补全友好 NPC、商店刷新和对话条件。
+- 深化 Boss AI 阶段、弹幕、召唤物行为和阶段提示。
+- 补全友好 NPC 的商店刷新、对话条件和进度提示。
 - 将更多 Wiki 参数映射到 C# 字段、配方、掉落表和进度门槛。
 - 添加更细的炼丹、炼器、天劫事件与宗门进度系统。
+- 增加更多 tModLoader 可自动验证的 smoke test 场景。
 
-## 验证
+## 验证要求
 
-最近一次验证：`dotnet build XianXia.csproj` 通过，0 警告，0 错误。
+每个开发批次都必须通过：
+
+```powershell
+dotnet build XianXia.csproj
+powershell -ExecutionPolicy Bypass -File Tools\tmodloader_smoke_test.ps1
+```
+
+最近一次 tModLoader smoke test 通过：XianXiaMod 能被 tModLoader dedicated server 加载到 `Adding Recipes` 并进入 `Choose World`。

@@ -1,20 +1,19 @@
 # XianXiaMod
 
-XianXiaMod 是一个 Terraria/tModLoader 仙侠主题内容 Mod。项目目标是在 Terraria 原版探索、采集、制作和战斗循环上扩展“灵气、修行境界、丹药、法器、天劫、宗门遗迹与末法天道”的成长线。
+XianXiaMod 是一个 Terraria/tModLoader 仙侠主题内容 Mod。项目目标是在 Terraria 原版探索、采集、制作和战斗循环上，扩展“灵气、修行境界、丹药、法器、天劫、宗门遗迹与末法天道”的成长线。
 
 ## 当前状态
 
-- tModLoader 项目骨架已建立，可通过 `dotnet build XianXia.csproj` 构建。
-- 已实现灵气玩家状态、灵气 UI、修行境界、灵压、突破与基础网络同步。
+- tModLoader 项目骨架已建立，当前目标是持续推进到完整可玩版本。
+- 已实现灵气玩家状态、灵气 UI、修行境界、灵压、逐阶突破、保存与基础同步。
 - 已实现浅层灵脉与 7 个生成生态的 worldgen 骨架。
-- 已接入素材生成结果，生成材料、丹药、饰品、法器、投射物、敌怪、Boss、Boss 召唤物、Tile、Biome 和本地化。
-- 已实现第一批可玩机制：丹药突破、回春/聚气/抗劫 buff、灵压紊乱 debuff、生成法器灵气消耗。
-- 已实现第一批友好 NPC：药宗学徒、游方炼器师、观劫客、经阁卷灵、坠天使者及基础商店。
-- 已为生成 Boss 召唤物接入配方与最低修行境界门槛。
-- 已接入软兼容探测入口，可检测 Calamity Mod 但不强依赖。
-- 已实现突破后的天劫事件：劫压、落雷、抗劫缓解和完成奖励。
-- 已为生成 Boss 接入通用阶段 AI：追踪强化、三向灵光弹和低血量冲刺。
-- 已新增炼丹炉与器胚炉，并迁移丹药和早期法器配方。
+- 已接入最终美术素材，生成材料、丹药、饰品、法器、投射物、敌怪、Boss、Boss 召唤物、Tile、Biome 和本地化。
+- 已实现丹药突破、回春/聚气/抗劫 buff、灵压紊乱 debuff、突破天劫事件和站点附近加成。
+- 已实现炼丹炉与器胚炉，并迁移丹药和早期法器配方。
+- 已实现 5 个友好 NPC：药宗学徒、游方炼器师、观劫客、经阁卷灵、坠天使者及基础商店。
+- 已为生成 Boss 接入召唤配方、最低修行境界门槛和通用阶段 AI。
+- 已接入 Calamity Mod 软兼容探测入口，但不强依赖 Calamity。
+- 已新增 tModLoader smoke test，用于确认 Mod 能被 tModLoader 实际加载。
 
 ## 设计入口
 
@@ -32,11 +31,15 @@ XianXiaMod 是一个 Terraria/tModLoader 仙侠主题内容 Mod。项目目标�
 - 语言：C#
 - 内容参考：Terraria 原版节奏、Calamity Wiki 的大型内容组织方式，以及仙侠修行题材
 - 兼容策略：不强依赖 Calamity，保留软兼容配置与扩展点
+- 开发节奏：分批开发，每批通过 tModLoader smoke test 后提交并推送
 
 ## 验证
 
-当前验证命令：
+每个开发批次都必须通过：
 
 ```powershell
 dotnet build XianXia.csproj
+powershell -ExecutionPolicy Bypass -File Tools\tmodloader_smoke_test.ps1
 ```
+
+`Tools\tmodloader_smoke_test.ps1` 会同步当前仓库到 tModLoader 的 `ModSources\XianXia`，构建并打包 `XianXia.tmod`，再启动 tModLoader dedicated server 确认 XianXiaMod 能完成加载。
