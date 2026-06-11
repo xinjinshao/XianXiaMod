@@ -360,7 +360,6 @@ def generate_materials(existing: set[str]) -> None:
         "thunder_talisman_array_plate": ("ThunderTalismanArray", 62, 22, "ItemUseStyleID.HoldUp"),
         "broken_heaven_decree": ("DecreeJudgementBeam", 128, 40, "ItemUseStyleID.HoldUp"),
         "star_eclipse_arbalest": ("StarEclipseSplitBolt", 74, 20, "ItemUseStyleID.Shoot"),
-        "old_heaven_dao_scroll": ("SpiritBolt", 110, 34, "ItemUseStyleID.HoldUp"),
     }
     for asset_id, (zh, en) in DISPLAY.items():
         if asset_id in BOSS_DATA:

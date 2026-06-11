@@ -809,7 +809,7 @@ public class OldHeavenDaoScroll : ModItem
     {
         Item.width = 32;
         Item.height = 32;
-        Item.maxStack = 1;
+        Item.maxStack = 30;
         Item.value = Item.buyPrice(silver: 10);
         Item.rare = ItemRarityID.Red;
 
@@ -818,31 +818,12 @@ public class OldHeavenDaoScroll : ModItem
         Item.useAnimation = 20;
         Item.UseSound = SoundID.Item3;
         Item.consumable = true;
-        Item.damage = 110;
-        Item.knockBack = 3.5f;
-        Item.DamageType = DamageClass.Generic;
-        Item.useStyle = ItemUseStyleID.HoldUp;
-        Item.useTime = 28;
-        Item.useAnimation = 28;
-        Item.UseSound = SoundID.Item20;
-        Item.noMelee = true;
-        Item.shoot = ModContent.ProjectileType<global::XianXia.Content.Projectiles.Generated.SpiritBolt>();
-        Item.shootSpeed = 11f;
     }
 
-    public override bool CanUseItem(Player player)
+    public override bool? UseItem(Player player)
     {
-        return player.GetModPlayer<global::XianXia.Common.Players.XianXiaPlayer>().TryConsumeSpiritualEnergy(34);
-    }
-
-    public override void AddRecipes()
-    {
-        CreateRecipe()
-            .AddIngredient<global::XianXia.Content.Items.Generated.ArtifactBlankShard>(2)
-            .AddIngredient<global::XianXia.Content.Items.Generated.HeavenDaoFragment>(6)
-            .AddIngredient<global::XianXia.Content.Items.Materials.LowGradeSpiritStone>(12)
-            .AddTile(ModContent.TileType<global::XianXia.Content.Tiles.Stations.ArtifactForgeTile>())
-            .Register();
+        player.GetModPlayer<global::XianXia.Common.Players.XianXiaPlayer>().TryAdvanceCultivation(global::XianXia.Common.Players.CultivationStage.NascentSoul);
+        return true;
     }
 
 }
