@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using Terraria;
 using Terraria.GameContent.Bestiary;
 using Terraria.GameContent;
+using Terraria.GameContent.Personalities;
 using Terraria.ID;
 using Terraria.ModLoader;
 using XianXia.Common.Players;
@@ -107,6 +108,14 @@ public abstract class CultivationTownNPC : ModNPC
 [AutoloadHead]
 public class HerbSectApprentice : CultivationTownNPC
 {
+    public override void SetStaticDefaults()
+    {
+        base.SetStaticDefaults();
+        NPC.Happiness.SetBiomeAffection<ForestBiome>(AffectionLevel.Like);
+        NPC.Happiness.SetBiomeAffection<JungleBiome>(AffectionLevel.Love);
+        NPC.Happiness.SetBiomeAffection<DesertBiome>(AffectionLevel.Dislike);
+    }
+
     public override void SetBestiary(BestiaryDatabase database, BestiaryEntry bestiaryEntry)
     {
         AddTownBestiaryFlavor(bestiaryEntry, nameof(HerbSectApprentice));
@@ -159,6 +168,14 @@ public class HerbSectApprentice : CultivationTownNPC
 [AutoloadHead]
 public class WanderingArtificer : CultivationTownNPC
 {
+    public override void SetStaticDefaults()
+    {
+        base.SetStaticDefaults();
+        NPC.Happiness.SetBiomeAffection<UndergroundBiome>(AffectionLevel.Love);
+        NPC.Happiness.SetBiomeAffection<ForestBiome>(AffectionLevel.Like);
+        NPC.Happiness.SetBiomeAffection<OceanBiome>(AffectionLevel.Dislike);
+    }
+
     public override void SetBestiary(BestiaryDatabase database, BestiaryEntry bestiaryEntry)
     {
         AddTownBestiaryFlavor(bestiaryEntry, nameof(WanderingArtificer));
@@ -216,6 +233,13 @@ public class WanderingArtificer : CultivationTownNPC
 [AutoloadHead]
 public class TribulationObserver : CultivationTownNPC
 {
+    public override void SetStaticDefaults()
+    {
+        base.SetStaticDefaults();
+        NPC.Happiness.SetBiomeAffection<HallowBiome>(AffectionLevel.Like);
+        NPC.Happiness.SetBiomeAffection<UndergroundBiome>(AffectionLevel.Dislike);
+    }
+
     public override void SetBestiary(BestiaryDatabase database, BestiaryEntry bestiaryEntry)
     {
         AddTownBestiaryFlavor(bestiaryEntry, nameof(TribulationObserver));
@@ -266,6 +290,13 @@ public class TribulationObserver : CultivationTownNPC
 [AutoloadHead]
 public class ArchiveScrollSpirit : CultivationTownNPC
 {
+    public override void SetStaticDefaults()
+    {
+        base.SetStaticDefaults();
+        NPC.Happiness.SetBiomeAffection<ForestBiome>(AffectionLevel.Like);
+        NPC.Happiness.SetBiomeAffection<UndergroundBiome>(AffectionLevel.Dislike);
+    }
+
     public override void SetBestiary(BestiaryDatabase database, BestiaryEntry bestiaryEntry)
     {
         AddTownBestiaryFlavor(bestiaryEntry, nameof(ArchiveScrollSpirit));
@@ -327,6 +358,13 @@ public class ArchiveScrollSpirit : CultivationTownNPC
 [AutoloadHead]
 public class FallenHeavenMessenger : CultivationTownNPC
 {
+    public override void SetStaticDefaults()
+    {
+        base.SetStaticDefaults();
+        NPC.Happiness.SetBiomeAffection<HallowBiome>(AffectionLevel.Love);
+        NPC.Happiness.SetBiomeAffection<ForestBiome>(AffectionLevel.Dislike);
+    }
+
     public override void SetBestiary(BestiaryDatabase database, BestiaryEntry bestiaryEntry)
     {
         AddTownBestiaryFlavor(bestiaryEntry, nameof(FallenHeavenMessenger));
