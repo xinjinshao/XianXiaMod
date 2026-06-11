@@ -1,0 +1,349 @@
+Mods: {
+	XianXia: {
+		Items: {
+			ArtifactBlankShard: {
+				DisplayName: "器胚碎片"
+				Tooltip: "仙侠模组内容，可用于修行、炼制、战斗或突破。"
+			}
+			BrokenHeavenCrownSeal: {
+				DisplayName: "残天冠印"
+				Tooltip: "仙侠模组内容，可用于修行、炼制、战斗或突破。"
+			}
+			BrokenHeavenDecree: {
+				DisplayName: "残天法令"
+				Tooltip: "仙侠模组内容，可用于修行、炼制、战斗或突破。"
+			}
+			CinnabarTalismanFlameItem: {
+				DisplayName: "朱砂符火"
+				Tooltip: "仙侠模组内容，可用于修行、炼制、战斗或突破。"
+			}
+			CloudpiercerFlyingSword: {
+				DisplayName: "破云飞剑"
+				Tooltip: "仙侠模组内容，可用于修行、炼制、战斗或突破。"
+			}
+			DaoSeveringDust: {
+				DisplayName: "斩道尘"
+				Tooltip: "仙侠模组内容，可用于修行、炼制、战斗或突破。"
+			}
+			DaoSeveringRing: {
+				DisplayName: "斩道环"
+				Tooltip: "仙侠模组内容，可用于修行、炼制、战斗或突破。"
+			}
+			FormlessSwordWheel: {
+				DisplayName: "无相剑轮"
+				Tooltip: "仙侠模组内容，可用于修行、炼制、战斗或突破。"
+			}
+			FoundationPill: {
+				DisplayName: "筑基丹"
+				Tooltip: "仙侠模组内容，可用于修行、炼制、战斗或突破。"
+			}
+			FurnaceHeartRing: {
+				DisplayName: "炉心戒"
+				Tooltip: "仙侠模组内容，可用于修行、炼制、战斗或突破。"
+			}
+			FurnaceSlagIron: {
+				DisplayName: "炉渣铁"
+				Tooltip: "仙侠模组内容，可用于修行、炼制、战斗或突破。"
+			}
+			GardenBrokenKey: {
+				DisplayName: "守园残钥"
+				Tooltip: "仙侠模组内容，可用于修行、炼制、战斗或突破。"
+			}
+			GreenwoodArrayPlate: {
+				DisplayName: "青木阵盘"
+				Tooltip: "仙侠模组内容，可用于修行、炼制、战斗或突破。"
+			}
+			GreenwoodRoot: {
+				DisplayName: "青木根"
+				Tooltip: "仙侠模组内容，可用于修行、炼制、战斗或突破。"
+			}
+			HeavenDaoFragment: {
+				DisplayName: "天道碎片"
+				Tooltip: "仙侠模组内容，可用于修行、炼制、战斗或突破。"
+			}
+			HeavenTabletRubbing: {
+				DisplayName: "天碑拓片"
+				Tooltip: "仙侠模组内容，可用于修行、炼制、战斗或突破。"
+			}
+			LightningWardJade: {
+				DisplayName: "避雷玉佩"
+				Tooltip: "仙侠模组内容，可用于修行、炼制、战斗或突破。"
+			}
+			Moonbone: {
+				DisplayName: "月骨"
+				Tooltip: "仙侠模组内容，可用于修行、炼制、战斗或突破。"
+			}
+			MoonboneDharmaSword: {
+				DisplayName: "月骨法剑"
+				Tooltip: "仙侠模组内容，可用于修行、炼制、战斗或突破。"
+			}
+			MoonboneRitualTalisman: {
+				DisplayName: "月骨祭符"
+				Tooltip: "仙侠模组内容，可用于修行、炼制、战斗或突破。"
+			}
+			NascentSoulJadeBox: {
+				DisplayName: "元婴玉匣"
+				Tooltip: "仙侠模组内容，可用于修行、炼制、战斗或突破。"
+			}
+			OldFurnaceEmber: {
+				DisplayName: "旧炉火种"
+				Tooltip: "仙侠模组内容，可用于修行、炼制、战斗或突破。"
+			}
+			OldHeavenDaoScroll: {
+				DisplayName: "旧天道残卷"
+				Tooltip: "仙侠模组内容，可用于修行、炼制、战斗或突破。"
+			}
+			QiCondensingPill: {
+				DisplayName: "凝气丹"
+				Tooltip: "仙侠模组内容，可用于修行、炼制、战斗或突破。"
+			}
+			QiGatheringPendant: {
+				DisplayName: "聚气坠"
+				Tooltip: "仙侠模组内容，可用于修行、炼制、战斗或突破。"
+			}
+			SectTrialToken: {
+				DisplayName: "宗门试炼令"
+				Tooltip: "仙侠模组内容，可用于修行、炼制、战斗或突破。"
+			}
+			SpiritwoodCharm: {
+				DisplayName: "灵木护符"
+				Tooltip: "仙侠模组内容，可用于修行、炼制、战斗或突破。"
+			}
+			SpringReturnPill: {
+				DisplayName: "回春丹"
+				Tooltip: "仙侠模组内容，可用于修行、炼制、战斗或突破。"
+			}
+			StarAbyssEye: {
+				DisplayName: "星渊眼"
+				Tooltip: "仙侠模组内容，可用于修行、炼制、战斗或突破。"
+			}
+			StarAbyssForbiddenTalisman: {
+				DisplayName: "星渊禁符"
+				Tooltip: "仙侠模组内容，可用于修行、炼制、战斗或突破。"
+			}
+			StarAbyssMembrane: {
+				DisplayName: "星渊胎膜"
+				Tooltip: "仙侠模组内容，可用于修行、炼制、战斗或突破。"
+			}
+			StarEclipseArbalest: {
+				DisplayName: "星蚀弩机"
+				Tooltip: "仙侠模组内容，可用于修行、炼制、战斗或突破。"
+			}
+			StarEclipseCrystal: {
+				DisplayName: "星蚀晶"
+				Tooltip: "仙侠模组内容，可用于修行、炼制、战斗或突破。"
+			}
+			SummonGardenBrokenKey: {
+				DisplayName: "守园残钥"
+				Tooltip: "召唤 药园守园人。"
+			}
+			SummonHeavenTabletRubbing: {
+				DisplayName: "天碑拓片"
+				Tooltip: "召唤 天碑守尽。"
+			}
+			SummonHeavenTabletRubbingBrokenHeavenInspector: {
+				DisplayName: "天碑拓片"
+				Tooltip: "召唤 残天监察使。"
+			}
+			SummonMoonboneRitualTalisman: {
+				DisplayName: "月骨祭符"
+				Tooltip: "召唤 月骨仙君。"
+			}
+			SummonMoonboneRitualTalismanOldHeavenDaoCore: {
+				DisplayName: "月骨祭符"
+				Tooltip: "召唤 旧天道核心。"
+			}
+			SummonOldFurnaceEmber: {
+				DisplayName: "旧炉火种"
+				Tooltip: "召唤 玄炉铁傀。"
+			}
+			SummonSectTrialToken: {
+				DisplayName: "宗门试炼令"
+				Tooltip: "召唤 无相剑魂。"
+			}
+			SummonSectTrialTokenGreenwoodMedicineKingEcho: {
+				DisplayName: "宗门试炼令"
+				Tooltip: "召唤 青木药王残影。"
+			}
+			SummonStarAbyssMembrane: {
+				DisplayName: "星渊胎膜"
+				Tooltip: "召唤 星渊胎主。"
+			}
+			SummonThunderCallingJade: {
+				DisplayName: "引雷玉"
+				Tooltip: "召唤 劫云化身。"
+			}
+			SummonThunderCallingJadeThunderMarshJiao: {
+				DisplayName: "引雷玉"
+				Tooltip: "召唤 雷泽蛟。"
+			}
+			ThunderCallingJade: {
+				DisplayName: "引雷玉"
+				Tooltip: "仙侠模组内容，可用于修行、炼制、战斗或突破。"
+			}
+			ThunderPatternSwordCase: {
+				DisplayName: "雷纹剑匣"
+				Tooltip: "仙侠模组内容，可用于修行、炼制、战斗或突破。"
+			}
+			ThunderTalismanArrayPlate: {
+				DisplayName: "雷符阵盘"
+				Tooltip: "仙侠模组内容，可用于修行、炼制、战斗或突破。"
+			}
+			TribulationCloudDew: {
+				DisplayName: "劫云露"
+				Tooltip: "仙侠模组内容，可用于修行、炼制、战斗或突破。"
+			}
+			TribulationResistingPill: {
+				DisplayName: "抗劫丹"
+				Tooltip: "仙侠模组内容，可用于修行、炼制、战斗或突破。"
+			}
+		}
+		NPCs: {
+			AbyssalStarWomb: {
+				DisplayName: "星渊胎主"
+			}
+			ArchivedImmortalSoul: {
+				DisplayName: "封卷仙魂"
+			}
+			BlackFurnaceIronGolem: {
+				DisplayName: "玄炉铁傀"
+			}
+			BrokenHeavenInspector: {
+				DisplayName: "残天监察使"
+			}
+			CelestialPuppet: {
+				DisplayName: "天庭傀儡"
+			}
+			FormlessSwordSoul: {
+				DisplayName: "无相剑魂"
+			}
+			FurnaceAshGolem: {
+				DisplayName: "炉灰石傀"
+			}
+			GardenWarden: {
+				DisplayName: "药园守园人"
+			}
+			GreenwoodMedicineKingEcho: {
+				DisplayName: "青木药王残影"
+			}
+			HeavenTabletGuard: {
+				DisplayName: "天碑守卫"
+			}
+			HeavenTabletGuardian: {
+				DisplayName: "天碑守尽"
+			}
+			HerbGardenVineSpirit: {
+				DisplayName: "药园藤灵"
+			}
+			IronShardSpirit: {
+				DisplayName: "铁屑精"
+			}
+			MiasmaFlowerMoth: {
+				DisplayName: "瘴花蛾"
+			}
+			MoonboneCultivator: {
+				DisplayName: "月骨修士"
+			}
+			MoonboneImmortal: {
+				DisplayName: "月骨仙君"
+			}
+			ObsessedSwordCultivator: {
+				DisplayName: "执剑疯修"
+			}
+			OldHeavenDaoCore: {
+				DisplayName: "旧天道核心"
+			}
+			ScriptureArchiveEcho: {
+				DisplayName: "经阁回声"
+			}
+			StarAbyssLarva: {
+				DisplayName: "星渊幼体"
+			}
+			StarEclipsedCultivator: {
+				DisplayName: "星蚀修士"
+			}
+			ThunderMarshJiao: {
+				DisplayName: "雷泽蛟"
+			}
+			ThunderPatternHawk: {
+				DisplayName: "雷纹隼"
+			}
+			TribulationCloudAvatar: {
+				DisplayName: "劫云化身"
+			}
+			TribulationCloudling: {
+				DisplayName: "劫云灵"
+			}
+		}
+		Tiles: {
+			BlackFurnaceWall: {
+				MapEntry: "玄炉墙"
+			}
+			FallenHeavenJadeTile: {
+				MapEntry: "坠天玉砖"
+			}
+			FurnaceSlagTile: {
+				MapEntry: "炉渣石"
+			}
+			GreenwoodSoilTile: {
+				MapEntry: "青木土"
+			}
+			MoonboneTile: {
+				MapEntry: "月骨岩"
+			}
+			SectRuinBrickTile: {
+				MapEntry: "宗门石砖"
+			}
+			SpiritHerbTile: {
+				MapEntry: "灵草"
+			}
+			StarAbyssCrystalTile: {
+				MapEntry: "星渊晶岩"
+			}
+			ThunderCloudTile: {
+				MapEntry: "雷云块"
+			}
+		}
+		Biomes: {
+			FallenHeavenPalaceBiome: {
+				DisplayName: "坠天宫阙"
+			}
+			GreenwoodHerbGardenBiome: {
+				DisplayName: "青木药园"
+			}
+			MoonboneAbyssBiome: {
+				DisplayName: "月骨深渊"
+			}
+			StarAbyssRiftBiome: {
+				DisplayName: "星渊裂隙"
+			}
+			SunkenFurnaceVeinBiome: {
+				DisplayName: "沉炉矿脉"
+			}
+			TenThousandSectsRuinsBiome: {
+				DisplayName: "万宗遗址"
+			}
+			ThunderMarshCloudsBiome: {
+				DisplayName: "雷泽云层"
+			}
+		}
+		Buffs: {
+			QiGatheringBuff: {
+				DisplayName: "聚气"
+				Description: "灵气恢复提升，灵气消耗小幅降低。"
+			}
+			SpiritualPressureDisorderBuff: {
+				DisplayName: "灵压紊乱"
+				Description: "防御和移动速度降低。"
+			}
+			SpringReturnBuff: {
+				DisplayName: "回春"
+				Description: "生命恢复提升，并缓慢回补灵气。"
+			}
+			TribulationResistanceBuff: {
+				DisplayName: "抗劫"
+				Description: "降低受到的伤害，并平复灵压。"
+			}
+		}
+	}
+}

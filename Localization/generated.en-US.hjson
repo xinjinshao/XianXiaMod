@@ -1,0 +1,349 @@
+Mods: {
+	XianXia: {
+		Items: {
+			ArtifactBlankShard: {
+				DisplayName: "Artifact Blank Shard"
+				Tooltip: "XianxiaMod content used for cultivation, crafting, combat, or breakthroughs."
+			}
+			BrokenHeavenCrownSeal: {
+				DisplayName: "Broken Heaven Crown Seal"
+				Tooltip: "XianxiaMod content used for cultivation, crafting, combat, or breakthroughs."
+			}
+			BrokenHeavenDecree: {
+				DisplayName: "Broken Heaven Decree"
+				Tooltip: "XianxiaMod content used for cultivation, crafting, combat, or breakthroughs."
+			}
+			CinnabarTalismanFlameItem: {
+				DisplayName: "Cinnabar Talisman Flame"
+				Tooltip: "XianxiaMod content used for cultivation, crafting, combat, or breakthroughs."
+			}
+			CloudpiercerFlyingSword: {
+				DisplayName: "Cloudpiercer Flying Sword"
+				Tooltip: "XianxiaMod content used for cultivation, crafting, combat, or breakthroughs."
+			}
+			DaoSeveringDust: {
+				DisplayName: "Dao Severing Dust"
+				Tooltip: "XianxiaMod content used for cultivation, crafting, combat, or breakthroughs."
+			}
+			DaoSeveringRing: {
+				DisplayName: "Dao Severing Ring"
+				Tooltip: "XianxiaMod content used for cultivation, crafting, combat, or breakthroughs."
+			}
+			FormlessSwordWheel: {
+				DisplayName: "Formless Sword Wheel"
+				Tooltip: "XianxiaMod content used for cultivation, crafting, combat, or breakthroughs."
+			}
+			FoundationPill: {
+				DisplayName: "Foundation Pill"
+				Tooltip: "XianxiaMod content used for cultivation, crafting, combat, or breakthroughs."
+			}
+			FurnaceHeartRing: {
+				DisplayName: "Furnace Heart Ring"
+				Tooltip: "XianxiaMod content used for cultivation, crafting, combat, or breakthroughs."
+			}
+			FurnaceSlagIron: {
+				DisplayName: "Furnace Slag Iron"
+				Tooltip: "XianxiaMod content used for cultivation, crafting, combat, or breakthroughs."
+			}
+			GardenBrokenKey: {
+				DisplayName: "Garden Broken Key"
+				Tooltip: "XianxiaMod content used for cultivation, crafting, combat, or breakthroughs."
+			}
+			GreenwoodArrayPlate: {
+				DisplayName: "Greenwood Array Plate"
+				Tooltip: "XianxiaMod content used for cultivation, crafting, combat, or breakthroughs."
+			}
+			GreenwoodRoot: {
+				DisplayName: "Greenwood Root"
+				Tooltip: "XianxiaMod content used for cultivation, crafting, combat, or breakthroughs."
+			}
+			HeavenDaoFragment: {
+				DisplayName: "Heaven Dao Fragment"
+				Tooltip: "XianxiaMod content used for cultivation, crafting, combat, or breakthroughs."
+			}
+			HeavenTabletRubbing: {
+				DisplayName: "Heaven Tablet Rubbing"
+				Tooltip: "XianxiaMod content used for cultivation, crafting, combat, or breakthroughs."
+			}
+			LightningWardJade: {
+				DisplayName: "Lightning Ward Jade"
+				Tooltip: "XianxiaMod content used for cultivation, crafting, combat, or breakthroughs."
+			}
+			Moonbone: {
+				DisplayName: "Moonbone"
+				Tooltip: "XianxiaMod content used for cultivation, crafting, combat, or breakthroughs."
+			}
+			MoonboneDharmaSword: {
+				DisplayName: "Moonbone Dharma Sword"
+				Tooltip: "XianxiaMod content used for cultivation, crafting, combat, or breakthroughs."
+			}
+			MoonboneRitualTalisman: {
+				DisplayName: "Moonbone Ritual Talisman"
+				Tooltip: "XianxiaMod content used for cultivation, crafting, combat, or breakthroughs."
+			}
+			NascentSoulJadeBox: {
+				DisplayName: "Nascent Soul Jade Box"
+				Tooltip: "XianxiaMod content used for cultivation, crafting, combat, or breakthroughs."
+			}
+			OldFurnaceEmber: {
+				DisplayName: "Old Furnace Ember"
+				Tooltip: "XianxiaMod content used for cultivation, crafting, combat, or breakthroughs."
+			}
+			OldHeavenDaoScroll: {
+				DisplayName: "Old Heaven Dao Scroll"
+				Tooltip: "XianxiaMod content used for cultivation, crafting, combat, or breakthroughs."
+			}
+			QiCondensingPill: {
+				DisplayName: "Qi Condensing Pill"
+				Tooltip: "XianxiaMod content used for cultivation, crafting, combat, or breakthroughs."
+			}
+			QiGatheringPendant: {
+				DisplayName: "Qi Gathering Pendant"
+				Tooltip: "XianxiaMod content used for cultivation, crafting, combat, or breakthroughs."
+			}
+			SectTrialToken: {
+				DisplayName: "Sect Trial Token"
+				Tooltip: "XianxiaMod content used for cultivation, crafting, combat, or breakthroughs."
+			}
+			SpiritwoodCharm: {
+				DisplayName: "Spiritwood Charm"
+				Tooltip: "XianxiaMod content used for cultivation, crafting, combat, or breakthroughs."
+			}
+			SpringReturnPill: {
+				DisplayName: "Spring Return Pill"
+				Tooltip: "XianxiaMod content used for cultivation, crafting, combat, or breakthroughs."
+			}
+			StarAbyssEye: {
+				DisplayName: "Star Abyss Eye"
+				Tooltip: "XianxiaMod content used for cultivation, crafting, combat, or breakthroughs."
+			}
+			StarAbyssForbiddenTalisman: {
+				DisplayName: "Star Abyss Forbidden Talisman"
+				Tooltip: "XianxiaMod content used for cultivation, crafting, combat, or breakthroughs."
+			}
+			StarAbyssMembrane: {
+				DisplayName: "Star Abyss Membrane"
+				Tooltip: "XianxiaMod content used for cultivation, crafting, combat, or breakthroughs."
+			}
+			StarEclipseArbalest: {
+				DisplayName: "Star Eclipse Arbalest"
+				Tooltip: "XianxiaMod content used for cultivation, crafting, combat, or breakthroughs."
+			}
+			StarEclipseCrystal: {
+				DisplayName: "Star Eclipse Crystal"
+				Tooltip: "XianxiaMod content used for cultivation, crafting, combat, or breakthroughs."
+			}
+			SummonGardenBrokenKey: {
+				DisplayName: "Garden Broken Key"
+				Tooltip: "Summons Garden Warden."
+			}
+			SummonHeavenTabletRubbing: {
+				DisplayName: "Heaven Tablet Rubbing"
+				Tooltip: "Summons Heaven Tablet Guardian."
+			}
+			SummonHeavenTabletRubbingBrokenHeavenInspector: {
+				DisplayName: "Heaven Tablet Rubbing"
+				Tooltip: "Summons Broken Heaven Inspector."
+			}
+			SummonMoonboneRitualTalisman: {
+				DisplayName: "Moonbone Ritual Talisman"
+				Tooltip: "Summons Moonbone Immortal."
+			}
+			SummonMoonboneRitualTalismanOldHeavenDaoCore: {
+				DisplayName: "Moonbone Ritual Talisman"
+				Tooltip: "Summons Old Heaven Dao Core."
+			}
+			SummonOldFurnaceEmber: {
+				DisplayName: "Old Furnace Ember"
+				Tooltip: "Summons Black Furnace Iron Golem."
+			}
+			SummonSectTrialToken: {
+				DisplayName: "Sect Trial Token"
+				Tooltip: "Summons Formless Sword Soul."
+			}
+			SummonSectTrialTokenGreenwoodMedicineKingEcho: {
+				DisplayName: "Sect Trial Token"
+				Tooltip: "Summons Greenwood Medicine King Echo."
+			}
+			SummonStarAbyssMembrane: {
+				DisplayName: "Star Abyss Membrane"
+				Tooltip: "Summons Abyssal Star Womb."
+			}
+			SummonThunderCallingJade: {
+				DisplayName: "Thunder Calling Jade"
+				Tooltip: "Summons Tribulation Cloud Avatar."
+			}
+			SummonThunderCallingJadeThunderMarshJiao: {
+				DisplayName: "Thunder Calling Jade"
+				Tooltip: "Summons Thunder Marsh Jiao."
+			}
+			ThunderCallingJade: {
+				DisplayName: "Thunder Calling Jade"
+				Tooltip: "XianxiaMod content used for cultivation, crafting, combat, or breakthroughs."
+			}
+			ThunderPatternSwordCase: {
+				DisplayName: "Thunder Pattern Sword Case"
+				Tooltip: "XianxiaMod content used for cultivation, crafting, combat, or breakthroughs."
+			}
+			ThunderTalismanArrayPlate: {
+				DisplayName: "Thunder Talisman Array Plate"
+				Tooltip: "XianxiaMod content used for cultivation, crafting, combat, or breakthroughs."
+			}
+			TribulationCloudDew: {
+				DisplayName: "Tribulation Cloud Dew"
+				Tooltip: "XianxiaMod content used for cultivation, crafting, combat, or breakthroughs."
+			}
+			TribulationResistingPill: {
+				DisplayName: "Tribulation Resisting Pill"
+				Tooltip: "XianxiaMod content used for cultivation, crafting, combat, or breakthroughs."
+			}
+		}
+		NPCs: {
+			AbyssalStarWomb: {
+				DisplayName: "Abyssal Star Womb"
+			}
+			ArchivedImmortalSoul: {
+				DisplayName: "Archived Immortal Soul"
+			}
+			BlackFurnaceIronGolem: {
+				DisplayName: "Black Furnace Iron Golem"
+			}
+			BrokenHeavenInspector: {
+				DisplayName: "Broken Heaven Inspector"
+			}
+			CelestialPuppet: {
+				DisplayName: "Celestial Puppet"
+			}
+			FormlessSwordSoul: {
+				DisplayName: "Formless Sword Soul"
+			}
+			FurnaceAshGolem: {
+				DisplayName: "Furnace Ash Golem"
+			}
+			GardenWarden: {
+				DisplayName: "Garden Warden"
+			}
+			GreenwoodMedicineKingEcho: {
+				DisplayName: "Greenwood Medicine King Echo"
+			}
+			HeavenTabletGuard: {
+				DisplayName: "Heaven Tablet Guard"
+			}
+			HeavenTabletGuardian: {
+				DisplayName: "Heaven Tablet Guardian"
+			}
+			HerbGardenVineSpirit: {
+				DisplayName: "Herb Garden Vine Spirit"
+			}
+			IronShardSpirit: {
+				DisplayName: "Iron Shard Spirit"
+			}
+			MiasmaFlowerMoth: {
+				DisplayName: "Miasma Flower Moth"
+			}
+			MoonboneCultivator: {
+				DisplayName: "Moonbone Cultivator"
+			}
+			MoonboneImmortal: {
+				DisplayName: "Moonbone Immortal"
+			}
+			ObsessedSwordCultivator: {
+				DisplayName: "Obsessed Sword Cultivator"
+			}
+			OldHeavenDaoCore: {
+				DisplayName: "Old Heaven Dao Core"
+			}
+			ScriptureArchiveEcho: {
+				DisplayName: "Scripture Archive Echo"
+			}
+			StarAbyssLarva: {
+				DisplayName: "Star Abyss Larva"
+			}
+			StarEclipsedCultivator: {
+				DisplayName: "Star Eclipsed Cultivator"
+			}
+			ThunderMarshJiao: {
+				DisplayName: "Thunder Marsh Jiao"
+			}
+			ThunderPatternHawk: {
+				DisplayName: "Thunder Pattern Hawk"
+			}
+			TribulationCloudAvatar: {
+				DisplayName: "Tribulation Cloud Avatar"
+			}
+			TribulationCloudling: {
+				DisplayName: "Tribulation Cloudling"
+			}
+		}
+		Tiles: {
+			BlackFurnaceWall: {
+				MapEntry: "Black Furnace Wall"
+			}
+			FallenHeavenJadeTile: {
+				MapEntry: "Fallen Heaven Jade"
+			}
+			FurnaceSlagTile: {
+				MapEntry: "Furnace Slag"
+			}
+			GreenwoodSoilTile: {
+				MapEntry: "Greenwood Soil"
+			}
+			MoonboneTile: {
+				MapEntry: "Moonbone Rock"
+			}
+			SectRuinBrickTile: {
+				MapEntry: "Sect Ruin Brick"
+			}
+			SpiritHerbTile: {
+				MapEntry: "Spirit Herb"
+			}
+			StarAbyssCrystalTile: {
+				MapEntry: "Star Abyss Crystal"
+			}
+			ThunderCloudTile: {
+				MapEntry: "Thunder Cloud"
+			}
+		}
+		Biomes: {
+			FallenHeavenPalaceBiome: {
+				DisplayName: "Fallen Heaven Palace"
+			}
+			GreenwoodHerbGardenBiome: {
+				DisplayName: "Greenwood Herb Garden"
+			}
+			MoonboneAbyssBiome: {
+				DisplayName: "Moonbone Abyss"
+			}
+			StarAbyssRiftBiome: {
+				DisplayName: "Star Abyss Rift"
+			}
+			SunkenFurnaceVeinBiome: {
+				DisplayName: "Sunken Furnace Vein"
+			}
+			TenThousandSectsRuinsBiome: {
+				DisplayName: "Ten Thousand Sects Ruins"
+			}
+			ThunderMarshCloudsBiome: {
+				DisplayName: "Thunder Marsh Clouds"
+			}
+		}
+		Buffs: {
+			QiGatheringBuff: {
+				DisplayName: "Qi Gathering"
+				Description: "Increases spiritual energy recovery and slightly lowers spiritual energy costs."
+			}
+			SpiritualPressureDisorderBuff: {
+				DisplayName: "Spiritual Pressure Disorder"
+				Description: "Reduces defense and movement speed."
+			}
+			SpringReturnBuff: {
+				DisplayName: "Spring Return"
+				Description: "Improves life regeneration and slowly restores spiritual energy."
+			}
+			TribulationResistanceBuff: {
+				DisplayName: "Tribulation Resistance"
+				Description: "Reduces incoming damage and calms spirit pressure."
+			}
+		}
+	}
+}

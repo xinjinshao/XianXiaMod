@@ -12,6 +12,8 @@ public class XianXiaPlayer : ModPlayer
     public int spiritualEnergy;
     public int maxSpiritualEnergy;
     public int spiritPressure;
+    public int spiritualEnergyRegenBonus;
+    public float spiritualEnergyCostMultiplier = 1f;
     public bool discoveredSpiritualEnergy;
     public CultivationStage cultivationStage;
 
@@ -29,6 +31,8 @@ public class XianXiaPlayer : ModPlayer
     public override void ResetEffects()
     {
         maxSpiritualEnergy = GetMaxSpiritualEnergy(cultivationStage);
+        spiritualEnergyRegenBonus = 0;
+        spiritualEnergyCostMultiplier = 1f;
 
         if (spiritualEnergy > maxSpiritualEnergy)
         {
@@ -43,12 +47,17 @@ public class XianXiaPlayer : ModPlayer
             return;
         }
 
+        if (spiritPressure >= 80)
+        {
+            Player.AddBuff(ModContent.BuffType<global::XianXia.Content.Buffs.SpiritualPressureDisorderBuff>(), 2);
+        }
+
         regenTimer++;
         int interval = cultivationStage >= CultivationStage.QiAwakening ? Math.Max(18, 60 - (int)cultivationStage * 5) : 60;
         if (regenTimer >= interval)
         {
             regenTimer = 0;
-            spiritualEnergy = Math.Clamp(spiritualEnergy + 1, 0, maxSpiritualEnergy);
+            spiritualEnergy = Math.Clamp(spiritualEnergy + 1 + spiritualEnergyRegenBonus, 0, maxSpiritualEnergy);
             if (spiritPressure > 0)
             {
                 spiritPressure--;
@@ -58,6 +67,7 @@ public class XianXiaPlayer : ModPlayer
 
     public bool TryConsumeSpiritualEnergy(int amount)
     {
+        amount = (int)MathF.Ceiling(amount * spiritualEnergyCostMultiplier);
         if (amount <= 0)
         {
             return true;
@@ -101,7 +111,13 @@ public class XianXiaPlayer : ModPlayer
         cultivationStage = targetStage;
         maxSpiritualEnergy = GetMaxSpiritualEnergy(cultivationStage);
         RestoreSpiritualEnergy(maxSpiritualEnergy / 3);
+        spiritPressure = Math.Clamp(spiritPressure + (int)targetStage * 8, 0, 100);
         return true;
+    }
+
+    public void ReduceSpiritPressure(int amount)
+    {
+        spiritPressure = Math.Clamp(spiritPressure - amount, 0, 100);
     }
 
     public static int GetMaxSpiritualEnergy(CultivationStage stage)

@@ -1,36 +1,36 @@
 # XianXiaMod
 
-XianXiaMod 是一个 Terraria/tModLoader 仙侠主题内容 Mod 项目。当前仓库已经从前期设计进入 MVP 可玩纵切阶段：先实现浅层灵脉、灵气资源、首批物品/敌怪和灵脉蠕虫 Boss，再逐步扩展完整修行进度。
+XianXiaMod 是一个 Terraria/tModLoader 仙侠主题内容 Mod。项目目标是在 Terraria 原版探索、采集、制作和战斗循环上扩展“灵气、修行境界、丹药、法器、天劫、宗门遗迹与末法天道”的成长线。
+
+## 当前状态
+
+- tModLoader 项目骨架已建立，可通过 `dotnet build XianXia.csproj` 构建。
+- 已实现灵气玩家状态、灵气 UI、修行境界、灵压、突破与基础网络同步。
+- 已实现浅层灵脉与 7 个生成生态的 worldgen 骨架。
+- 已接入素材生成结果，生成材料、丹药、饰品、法器、投射物、敌怪、Boss、Boss 召唤物、Tile、Biome 和本地化。
+- 已实现第一批可玩机制：丹药突破、回春/聚气/抗劫 buff、灵压紊乱 debuff、生成法器灵气消耗。
 
 ## 设计入口
 
 - [Wiki 首页](Wiki/Home.md)
 - [设计状态](Wiki/Design_Status.md)
-- [条目参数模板](Wiki/Content/Parameter_Templates.md)
+- [内容进度](Wiki/Progression/Overview.md)
+- [机制总览](Wiki/Systems/Overview.md)
+- [素材总览](Wiki/Art_Gallery.md)
 - [项目约束](Docs/PROJECT_CONSTRAINTS.md)
 - [美术资源生成方案](Docs/ART_ASSET_GENERATION_PLAN.md)
 
-## 当前内容
+## 开发目标
 
-- 完整世界观与历史背景。
-- 修行、灵气、天劫、炼丹、炼器等核心机制。
-- Boss、敌怪、NPC、生态、物品、武器、饰品、配方的 Wiki 规格。
-- 面向 Terraria 像素风的美术资源尺寸、Prompt 和验收规范。
-- tModLoader MVP 代码骨架，包括灵气玩家状态、灵气 UI、浅层灵脉 worldgen、早期材料、初级武器、三种早期敌怪和灵脉蠕虫 Boss。
+- 平台：tModLoader stable
+- 语言：C#
+- 内容参考：Terraria 原版节奏、Calamity Wiki 的大型内容组织方式，以及仙侠修行题材
+- 兼容策略：不强依赖 Calamity，保留软兼容配置与扩展点
 
-## 技术目标
+## 验证
 
-- 平台：tModLoader stable。
-- 语言：C#。
-- 内容方向：在 Terraria 原版探索、采集、制作和战斗循环上扩展仙侠修行成长线。
-- 兼容方向：默认不强依赖 Calamity Mod，但参考大型内容 Mod 的 Wiki 组织、进度结构和参数化条目写法。
+当前验证命令：
 
-## 状态
-
-当前代码纵切目标是能在 tModLoader 中构建并加载，验证第一条玩法闭环：
-
-1. 探索浅层灵脉。
-2. 获得下品灵石并唤醒灵气。
-3. 使用引气符进入引气阶段。
-4. 制作木纹飞剑或灵木短弩。
-5. 使用灵脉香召唤并击败灵脉蠕虫。
+```powershell
+dotnet build XianXia.csproj
+```
