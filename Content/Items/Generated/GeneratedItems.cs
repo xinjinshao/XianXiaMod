@@ -536,12 +536,13 @@ public class CloudpiercerFlyingSword : ModItem
         Item.value = Item.buyPrice(silver: 10);
         Item.rare = ItemRarityID.White;
 
-        Item.damage = 42;
+        Item.damage = 28;
         Item.knockBack = 3.5f;
+        Item.crit = 4;
         Item.DamageType = DamageClass.Generic;
         Item.useStyle = ItemUseStyleID.Swing;
-        Item.useTime = 28;
-        Item.useAnimation = 28;
+        Item.useTime = 25;
+        Item.useAnimation = 25;
         Item.UseSound = SoundID.Item20;
         Item.noMelee = true;
         Item.shoot = ModContent.ProjectileType<global::XianXia.Content.Projectiles.Generated.CloudpiercerSwordProjectile>();
@@ -551,7 +552,7 @@ public class CloudpiercerFlyingSword : ModItem
     public override bool CanUseItem(Player player)
     {
         return player.GetModPlayer<global::XianXia.Common.Players.XianXiaPlayer>()
-            .TryConsumeSpiritualEnergy(HasArtifactAwakening(player) ? 10 : 12);
+            .TryConsumeSpiritualEnergy(HasArtifactAwakening(player) ? 5 : 6);
     }
 
     private static bool HasArtifactAwakening(Player player)
@@ -576,7 +577,7 @@ public class CloudpiercerFlyingSword : ModItem
         tooltips.Add(new TooltipLine(
             Mod,
             "XianXiaArtifactAwakening",
-            Terraria.Localization.Language.GetTextValue(key, "GoldenCore", 32, 10, 10)));
+            Terraria.Localization.Language.GetTextValue(key, "GoldenCore", 32, 5, 10)));
     }
 
     public override void AddRecipes()
@@ -603,22 +604,23 @@ public class ThunderPatternSwordCase : ModItem
         Item.value = Item.buyPrice(silver: 10);
         Item.rare = ItemRarityID.LightRed;
 
-        Item.damage = 56;
-        Item.knockBack = 3.5f;
+        Item.damage = 54;
+        Item.knockBack = 3.0f;
+        Item.crit = 6;
         Item.DamageType = DamageClass.Generic;
         Item.useStyle = ItemUseStyleID.HoldUp;
-        Item.useTime = 28;
-        Item.useAnimation = 28;
+        Item.useTime = 22;
+        Item.useAnimation = 22;
         Item.UseSound = SoundID.Item20;
         Item.noMelee = true;
         Item.shoot = ModContent.ProjectileType<global::XianXia.Content.Projectiles.Generated.ThunderSwordProjectile>();
-        Item.shootSpeed = 11f;
+        Item.shootSpeed = 13f;
     }
 
     public override bool CanUseItem(Player player)
     {
         return player.GetModPlayer<global::XianXia.Common.Players.XianXiaPlayer>()
-            .TryConsumeSpiritualEnergy(HasArtifactAwakening(player) ? 15 : 18);
+            .TryConsumeSpiritualEnergy(HasArtifactAwakening(player) ? 7 : 9);
     }
 
     private static bool HasArtifactAwakening(Player player)
@@ -643,7 +645,7 @@ public class ThunderPatternSwordCase : ModItem
         tooltips.Add(new TooltipLine(
             Mod,
             "XianXiaArtifactAwakening",
-            Terraria.Localization.Language.GetTextValue(key, "GoldenCore", 40, 15, 12)));
+            Terraria.Localization.Language.GetTextValue(key, "GoldenCore", 40, 7, 12)));
     }
 
     public override void AddRecipes()
@@ -670,22 +672,23 @@ public class FormlessSwordWheel : ModItem
         Item.value = Item.buyPrice(silver: 10);
         Item.rare = ItemRarityID.White;
 
-        Item.damage = 88;
-        Item.knockBack = 3.5f;
+        Item.damage = 92;
+        Item.knockBack = 4.0f;
+        Item.crit = 8;
         Item.DamageType = DamageClass.Generic;
         Item.useStyle = ItemUseStyleID.Swing;
-        Item.useTime = 28;
-        Item.useAnimation = 28;
+        Item.useTime = 20;
+        Item.useAnimation = 20;
         Item.UseSound = SoundID.Item20;
         Item.noMelee = true;
         Item.shoot = ModContent.ProjectileType<global::XianXia.Content.Projectiles.Generated.FormlessSwordWheelProjectile>();
-        Item.shootSpeed = 11f;
+        Item.shootSpeed = 8f;
     }
 
     public override bool CanUseItem(Player player)
     {
         return player.GetModPlayer<global::XianXia.Common.Players.XianXiaPlayer>()
-            .TryConsumeSpiritualEnergy(HasArtifactAwakening(player) ? 22 : 28);
+            .TryConsumeSpiritualEnergy(HasArtifactAwakening(player) ? 11 : 14);
     }
 
     private static bool HasArtifactAwakening(Player player)
@@ -710,7 +713,7 @@ public class FormlessSwordWheel : ModItem
         tooltips.Add(new TooltipLine(
             Mod,
             "XianXiaArtifactAwakening",
-            Terraria.Localization.Language.GetTextValue(key, "NascentSoul", 56, 22, 14)));
+            Terraria.Localization.Language.GetTextValue(key, "NascentSoul", 56, 11, 14)));
     }
 
     public override void AddRecipes()
@@ -737,22 +740,23 @@ public class MoonboneDharmaSword : ModItem
         Item.value = Item.buyPrice(silver: 10);
         Item.rare = ItemRarityID.Red;
 
-        Item.damage = 145;
-        Item.knockBack = 3.5f;
+        Item.damage = 220;
+        Item.knockBack = 4.5f;
+        Item.crit = 10;
         Item.DamageType = DamageClass.Generic;
         Item.useStyle = ItemUseStyleID.Swing;
-        Item.useTime = 28;
-        Item.useAnimation = 28;
+        Item.useTime = 18;
+        Item.useAnimation = 18;
         Item.UseSound = SoundID.Item20;
         Item.noMelee = true;
         Item.shoot = ModContent.ProjectileType<global::XianXia.Content.Projectiles.Generated.MoonboneShardProjectile>();
-        Item.shootSpeed = 11f;
+        Item.shootSpeed = 14f;
     }
 
     public override bool CanUseItem(Player player)
     {
         return player.GetModPlayer<global::XianXia.Common.Players.XianXiaPlayer>()
-            .TryConsumeSpiritualEnergy(HasArtifactAwakening(player) ? 27 : 36);
+            .TryConsumeSpiritualEnergy(HasArtifactAwakening(player) ? 17 : 22);
     }
 
     private static bool HasArtifactAwakening(Player player)
@@ -777,7 +781,7 @@ public class MoonboneDharmaSword : ModItem
         tooltips.Add(new TooltipLine(
             Mod,
             "XianXiaArtifactAwakening",
-            Terraria.Localization.Language.GetTextValue(key, "Tribulation", 96, 27, 18)));
+            Terraria.Localization.Language.GetTextValue(key, "Tribulation", 96, 17, 18)));
     }
 
     public override void AddRecipes()
@@ -804,22 +808,23 @@ public class CinnabarTalismanFlameItem : ModItem
         Item.value = Item.buyPrice(silver: 10);
         Item.rare = ItemRarityID.White;
 
-        Item.damage = 38;
-        Item.knockBack = 3.5f;
+        Item.damage = 24;
+        Item.knockBack = 2.0f;
+        Item.crit = 4;
         Item.DamageType = DamageClass.Generic;
         Item.useStyle = ItemUseStyleID.HoldUp;
-        Item.useTime = 28;
-        Item.useAnimation = 28;
+        Item.useTime = 24;
+        Item.useAnimation = 24;
         Item.UseSound = SoundID.Item20;
         Item.noMelee = true;
         Item.shoot = ModContent.ProjectileType<global::XianXia.Content.Projectiles.Generated.CinnabarTalismanFlame>();
-        Item.shootSpeed = 11f;
+        Item.shootSpeed = 7f;
     }
 
     public override bool CanUseItem(Player player)
     {
         return player.GetModPlayer<global::XianXia.Common.Players.XianXiaPlayer>()
-            .TryConsumeSpiritualEnergy(HasArtifactAwakening(player) ? 12 : 14);
+            .TryConsumeSpiritualEnergy(HasArtifactAwakening(player) ? 4 : 5);
     }
 
     private static bool HasArtifactAwakening(Player player)
@@ -844,7 +849,7 @@ public class CinnabarTalismanFlameItem : ModItem
         tooltips.Add(new TooltipLine(
             Mod,
             "XianXiaArtifactAwakening",
-            Terraria.Localization.Language.GetTextValue(key, "Foundation", 24, 12, 10)));
+            Terraria.Localization.Language.GetTextValue(key, "Foundation", 24, 4, 10)));
     }
 
     public override void AddRecipes()
@@ -871,22 +876,23 @@ public class GreenwoodArrayPlate : ModItem
         Item.value = Item.buyPrice(silver: 10);
         Item.rare = ItemRarityID.White;
 
-        Item.damage = 30;
-        Item.knockBack = 3.5f;
+        Item.damage = 18;
+        Item.knockBack = 0f;
+        Item.crit = 4;
         Item.DamageType = DamageClass.Generic;
         Item.useStyle = ItemUseStyleID.HoldUp;
-        Item.useTime = 28;
-        Item.useAnimation = 28;
+        Item.useTime = 36;
+        Item.useAnimation = 36;
         Item.UseSound = SoundID.Item20;
         Item.noMelee = true;
         Item.shoot = ModContent.ProjectileType<global::XianXia.Content.Projectiles.Generated.GreenwoodArrayField>();
-        Item.shootSpeed = 11f;
+        Item.shootSpeed = 0f;
     }
 
     public override bool CanUseItem(Player player)
     {
         return player.GetModPlayer<global::XianXia.Common.Players.XianXiaPlayer>()
-            .TryConsumeSpiritualEnergy(HasArtifactAwakening(player) ? 17 : 20);
+            .TryConsumeSpiritualEnergy(HasArtifactAwakening(player) ? 14 : 16);
     }
 
     private static bool HasArtifactAwakening(Player player)
@@ -911,7 +917,7 @@ public class GreenwoodArrayPlate : ModItem
         tooltips.Add(new TooltipLine(
             Mod,
             "XianXiaArtifactAwakening",
-            Terraria.Localization.Language.GetTextValue(key, "Foundation", 24, 17, 10)));
+            Terraria.Localization.Language.GetTextValue(key, "Foundation", 24, 14, 10)));
     }
 
     public override void AddRecipes()
@@ -938,22 +944,23 @@ public class ThunderTalismanArrayPlate : ModItem
         Item.value = Item.buyPrice(silver: 10);
         Item.rare = ItemRarityID.LightRed;
 
-        Item.damage = 62;
-        Item.knockBack = 3.5f;
+        Item.damage = 46;
+        Item.knockBack = 0f;
+        Item.crit = 6;
         Item.DamageType = DamageClass.Generic;
         Item.useStyle = ItemUseStyleID.HoldUp;
-        Item.useTime = 28;
-        Item.useAnimation = 28;
+        Item.useTime = 34;
+        Item.useAnimation = 34;
         Item.UseSound = SoundID.Item20;
         Item.noMelee = true;
         Item.shoot = ModContent.ProjectileType<global::XianXia.Content.Projectiles.Generated.ThunderTalismanArray>();
-        Item.shootSpeed = 11f;
+        Item.shootSpeed = 0f;
     }
 
     public override bool CanUseItem(Player player)
     {
         return player.GetModPlayer<global::XianXia.Common.Players.XianXiaPlayer>()
-            .TryConsumeSpiritualEnergy(HasArtifactAwakening(player) ? 18 : 22);
+            .TryConsumeSpiritualEnergy(HasArtifactAwakening(player) ? 20 : 24);
     }
 
     private static bool HasArtifactAwakening(Player player)
@@ -978,7 +985,7 @@ public class ThunderTalismanArrayPlate : ModItem
         tooltips.Add(new TooltipLine(
             Mod,
             "XianXiaArtifactAwakening",
-            Terraria.Localization.Language.GetTextValue(key, "GoldenCore", 44, 18, 12)));
+            Terraria.Localization.Language.GetTextValue(key, "GoldenCore", 44, 20, 12)));
     }
 
     public override void AddRecipes()
@@ -1005,22 +1012,23 @@ public class BrokenHeavenDecree : ModItem
         Item.value = Item.buyPrice(silver: 10);
         Item.rare = ItemRarityID.Yellow;
 
-        Item.damage = 128;
-        Item.knockBack = 3.5f;
+        Item.damage = 165;
+        Item.knockBack = 5.0f;
+        Item.crit = 8;
         Item.DamageType = DamageClass.Generic;
         Item.useStyle = ItemUseStyleID.HoldUp;
-        Item.useTime = 28;
-        Item.useAnimation = 28;
+        Item.useTime = 42;
+        Item.useAnimation = 42;
         Item.UseSound = SoundID.Item20;
         Item.noMelee = true;
         Item.shoot = ModContent.ProjectileType<global::XianXia.Content.Projectiles.Generated.DecreeJudgementBeam>();
-        Item.shootSpeed = 11f;
+        Item.shootSpeed = 0f;
     }
 
     public override bool CanUseItem(Player player)
     {
         return player.GetModPlayer<global::XianXia.Common.Players.XianXiaPlayer>()
-            .TryConsumeSpiritualEnergy(HasArtifactAwakening(player) ? 31 : 40);
+            .TryConsumeSpiritualEnergy(HasArtifactAwakening(player) ? 25 : 32);
     }
 
     private static bool HasArtifactAwakening(Player player)
@@ -1045,7 +1053,7 @@ public class BrokenHeavenDecree : ModItem
         tooltips.Add(new TooltipLine(
             Mod,
             "XianXiaArtifactAwakening",
-            Terraria.Localization.Language.GetTextValue(key, "NascentSoul", 72, 31, 16)));
+            Terraria.Localization.Language.GetTextValue(key, "NascentSoul", 72, 25, 16)));
     }
 
     public override void AddRecipes()
@@ -1105,22 +1113,23 @@ public class StarEclipseArbalest : ModItem
         Item.value = Item.buyPrice(silver: 10);
         Item.rare = ItemRarityID.LightRed;
 
-        Item.damage = 74;
-        Item.knockBack = 3.5f;
+        Item.damage = 68;
+        Item.knockBack = 2.5f;
+        Item.crit = 6;
         Item.DamageType = DamageClass.Generic;
         Item.useStyle = ItemUseStyleID.Shoot;
-        Item.useTime = 28;
-        Item.useAnimation = 28;
+        Item.useTime = 24;
+        Item.useAnimation = 24;
         Item.UseSound = SoundID.Item20;
         Item.noMelee = true;
         Item.shoot = ModContent.ProjectileType<global::XianXia.Content.Projectiles.Generated.StarEclipseSplitBolt>();
-        Item.shootSpeed = 11f;
+        Item.shootSpeed = 12f;
     }
 
     public override bool CanUseItem(Player player)
     {
         return player.GetModPlayer<global::XianXia.Common.Players.XianXiaPlayer>()
-            .TryConsumeSpiritualEnergy(HasArtifactAwakening(player) ? 16 : 20);
+            .TryConsumeSpiritualEnergy(HasArtifactAwakening(player) ? 13 : 16);
     }
 
     private static bool HasArtifactAwakening(Player player)
@@ -1145,7 +1154,7 @@ public class StarEclipseArbalest : ModItem
         tooltips.Add(new TooltipLine(
             Mod,
             "XianXiaArtifactAwakening",
-            Terraria.Localization.Language.GetTextValue(key, "GoldenCore", 48, 16, 12)));
+            Terraria.Localization.Language.GetTextValue(key, "GoldenCore", 48, 13, 12)));
     }
 
     public override void AddRecipes()

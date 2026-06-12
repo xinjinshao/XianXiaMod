@@ -337,6 +337,20 @@ BOSS_STAGE_REQUIREMENTS = {
     "old_heaven_dao_core": "DaoSevering",
 }
 
+BOSS_PHASES = {
+    "garden_warden": (0.65, 0.35),
+    "black_furnace_iron_golem": (0.60, 0.30),
+    "tribulation_cloud_avatar": (0.70, 0.40),
+    "thunder_marsh_jiao": (0.70, 0.35),
+    "abyssal_star_womb": (0.65, 0.30),
+    "formless_sword_soul": (0.75, 0.35),
+    "greenwood_medicine_king_echo": (0.70, 0.40),
+    "heaven_tablet_guardian": (0.75, 0.35),
+    "broken_heaven_inspector": (0.70, 0.35),
+    "moonbone_immortal": (0.70, 0.35),
+    "old_heaven_dao_core": (0.75, 0.35),
+}
+
 BOSS_UNLOCK_REQUIREMENTS = {
     "garden_warden": "spirit_vein_wyrm",
     "black_furnace_iron_golem": "spirit_vein_wyrm",
@@ -453,16 +467,17 @@ def generate_materials(existing: set[str]) -> None:
         "broken_heaven_crown_seal",
         "dao_severing_ring",
     }
+    # (projectile, damage, useTime, energy, knockback, crit, shootSpeed, use_style)
     weapons = {
-        "cloudpiercer_flying_sword": ("CloudpiercerSwordProjectile", 42, 12, "ItemUseStyleID.Swing"),
-        "thunder_pattern_sword_case": ("ThunderSwordProjectile", 56, 18, "ItemUseStyleID.HoldUp"),
-        "formless_sword_wheel": ("FormlessSwordWheelProjectile", 88, 28, "ItemUseStyleID.Swing"),
-        "moonbone_dharma_sword": ("MoonboneShardProjectile", 145, 36, "ItemUseStyleID.Swing"),
-        "cinnabar_talisman_flame_item": ("CinnabarTalismanFlame", 38, 14, "ItemUseStyleID.HoldUp"),
-        "greenwood_array_plate": ("GreenwoodArrayField", 30, 20, "ItemUseStyleID.HoldUp"),
-        "thunder_talisman_array_plate": ("ThunderTalismanArray", 62, 22, "ItemUseStyleID.HoldUp"),
-        "broken_heaven_decree": ("DecreeJudgementBeam", 128, 40, "ItemUseStyleID.HoldUp"),
-        "star_eclipse_arbalest": ("StarEclipseSplitBolt", 74, 20, "ItemUseStyleID.Shoot"),
+        "cloudpiercer_flying_sword": ("CloudpiercerSwordProjectile", 28, 25, 6, 3.5, 4, 11, "ItemUseStyleID.Swing"),
+        "thunder_pattern_sword_case": ("ThunderSwordProjectile", 54, 22, 9, 3.0, 6, 13, "ItemUseStyleID.HoldUp"),
+        "formless_sword_wheel": ("FormlessSwordWheelProjectile", 92, 20, 14, 4.0, 8, 8, "ItemUseStyleID.Swing"),
+        "moonbone_dharma_sword": ("MoonboneShardProjectile", 220, 18, 22, 4.5, 10, 14, "ItemUseStyleID.Swing"),
+        "cinnabar_talisman_flame_item": ("CinnabarTalismanFlame", 24, 24, 5, 2.0, 4, 7, "ItemUseStyleID.HoldUp"),
+        "greenwood_array_plate": ("GreenwoodArrayField", 18, 36, 16, 0, 4, 0, "ItemUseStyleID.HoldUp"),
+        "thunder_talisman_array_plate": ("ThunderTalismanArray", 46, 34, 24, 0, 6, 0, "ItemUseStyleID.HoldUp"),
+        "broken_heaven_decree": ("DecreeJudgementBeam", 165, 42, 32, 5.0, 8, 0, "ItemUseStyleID.HoldUp"),
+        "star_eclipse_arbalest": ("StarEclipseSplitBolt", 68, 24, 16, 2.5, 6, 12, "ItemUseStyleID.Shoot"),
     }
     awakening_thresholds = {
         "cloudpiercer_flying_sword": ("GoldenCore", 32, 0.10, 0.85),
@@ -636,20 +651,21 @@ def generate_materials(existing: set[str]) -> None:
     }}
 """
         if asset_id in weapons:
-            projectile, damage, energy, use_style = weapons[asset_id]
+            projectile, damage, use_time, energy, knockback, crit, shoot_speed, use_style = weapons[asset_id]
             stage, reputation, damage_bonus, cost_multiplier = awakening_thresholds[asset_id]
             awakened_energy = max(1, int(round(energy * cost_multiplier)))
             use_setup += f"""
         Item.damage = {damage};
-        Item.knockBack = 3.5f;
+        Item.knockBack = {knockback}f;
+        Item.crit = {crit};
         Item.DamageType = DamageClass.Generic;
         Item.useStyle = {use_style};
-        Item.useTime = 28;
-        Item.useAnimation = 28;
+        Item.useTime = {use_time};
+        Item.useAnimation = {use_time};
         Item.UseSound = SoundID.Item20;
         Item.noMelee = true;
         Item.shoot = ModContent.ProjectileType<global::XianXia.Content.Projectiles.Generated.{projectile}>();
-        Item.shootSpeed = 11f;"""
+        Item.shootSpeed = {shoot_speed}f;"""
             use_item = f"""
     public override bool CanUseItem(Player player)
     {{
@@ -1745,8 +1761,10 @@ public class {class_name} : ModNPC
             }}
         }}
         Vector2 desired = target.Center - NPC.Center;
-        bool phaseTwo = NPC.life < NPC.lifeMax / 2;
-        bool finalPhase = NPC.life < NPC.lifeMax / 4;
+        float p2 = {BOSS_PHASES.get(asset_id, (0.5, 0.25))[0]}f;
+        float p3 = {BOSS_PHASES.get(asset_id, (0.5, 0.25))[1]}f;
+        bool phaseTwo = NPC.life < (int)(NPC.lifeMax * p2);
+        bool finalPhase = NPC.life < (int)(NPC.lifeMax * p3);
         if (phaseTwo && NPC.localAI[0] < 1f)
         {{
             NPC.localAI[0] = 1f;

@@ -54,8 +54,10 @@ public class GardenWarden : ModNPC
             }
         }
         Vector2 desired = target.Center - NPC.Center;
-        bool phaseTwo = NPC.life < NPC.lifeMax / 2;
-        bool finalPhase = NPC.life < NPC.lifeMax / 4;
+        float p2 = 0.65f;
+        float p3 = 0.35f;
+        bool phaseTwo = NPC.life < (int)(NPC.lifeMax * p2);
+        bool finalPhase = NPC.life < (int)(NPC.lifeMax * p3);
         if (phaseTwo && NPC.localAI[0] < 1f)
         {
             NPC.localAI[0] = 1f;
@@ -176,8 +178,10 @@ public class BlackFurnaceIronGolem : ModNPC
             }
         }
         Vector2 desired = target.Center - NPC.Center;
-        bool phaseTwo = NPC.life < NPC.lifeMax / 2;
-        bool finalPhase = NPC.life < NPC.lifeMax / 4;
+        float p2 = 0.6f;
+        float p3 = 0.3f;
+        bool phaseTwo = NPC.life < (int)(NPC.lifeMax * p2);
+        bool finalPhase = NPC.life < (int)(NPC.lifeMax * p3);
         if (phaseTwo && NPC.localAI[0] < 1f)
         {
             NPC.localAI[0] = 1f;
@@ -300,8 +304,10 @@ public class TribulationCloudAvatar : ModNPC
             }
         }
         Vector2 desired = target.Center - NPC.Center;
-        bool phaseTwo = NPC.life < NPC.lifeMax / 2;
-        bool finalPhase = NPC.life < NPC.lifeMax / 4;
+        float p2 = 0.7f;
+        float p3 = 0.4f;
+        bool phaseTwo = NPC.life < (int)(NPC.lifeMax * p2);
+        bool finalPhase = NPC.life < (int)(NPC.lifeMax * p3);
         if (phaseTwo && NPC.localAI[0] < 1f)
         {
             NPC.localAI[0] = 1f;
@@ -426,8 +432,10 @@ public class ThunderMarshJiao : ModNPC
             }
         }
         Vector2 desired = target.Center - NPC.Center;
-        bool phaseTwo = NPC.life < NPC.lifeMax / 2;
-        bool finalPhase = NPC.life < NPC.lifeMax / 4;
+        float p2 = 0.7f;
+        float p3 = 0.35f;
+        bool phaseTwo = NPC.life < (int)(NPC.lifeMax * p2);
+        bool finalPhase = NPC.life < (int)(NPC.lifeMax * p3);
         if (phaseTwo && NPC.localAI[0] < 1f)
         {
             NPC.localAI[0] = 1f;
@@ -549,8 +557,10 @@ public class AbyssalStarWomb : ModNPC
             }
         }
         Vector2 desired = target.Center - NPC.Center;
-        bool phaseTwo = NPC.life < NPC.lifeMax / 2;
-        bool finalPhase = NPC.life < NPC.lifeMax / 4;
+        float p2 = 0.65f;
+        float p3 = 0.3f;
+        bool phaseTwo = NPC.life < (int)(NPC.lifeMax * p2);
+        bool finalPhase = NPC.life < (int)(NPC.lifeMax * p3);
         if (phaseTwo && NPC.localAI[0] < 1f)
         {
             NPC.localAI[0] = 1f;
@@ -672,8 +682,10 @@ public class FormlessSwordSoul : ModNPC
             }
         }
         Vector2 desired = target.Center - NPC.Center;
-        bool phaseTwo = NPC.life < NPC.lifeMax / 2;
-        bool finalPhase = NPC.life < NPC.lifeMax / 4;
+        float p2 = 0.75f;
+        float p3 = 0.35f;
+        bool phaseTwo = NPC.life < (int)(NPC.lifeMax * p2);
+        bool finalPhase = NPC.life < (int)(NPC.lifeMax * p3);
         if (phaseTwo && NPC.localAI[0] < 1f)
         {
             NPC.localAI[0] = 1f;
@@ -800,8 +812,10 @@ public class GreenwoodMedicineKingEcho : ModNPC
             }
         }
         Vector2 desired = target.Center - NPC.Center;
-        bool phaseTwo = NPC.life < NPC.lifeMax / 2;
-        bool finalPhase = NPC.life < NPC.lifeMax / 4;
+        float p2 = 0.7f;
+        float p3 = 0.4f;
+        bool phaseTwo = NPC.life < (int)(NPC.lifeMax * p2);
+        bool finalPhase = NPC.life < (int)(NPC.lifeMax * p3);
         if (phaseTwo && NPC.localAI[0] < 1f)
         {
             NPC.localAI[0] = 1f;
@@ -924,8 +938,10 @@ public class HeavenTabletGuardian : ModNPC
             }
         }
         Vector2 desired = target.Center - NPC.Center;
-        bool phaseTwo = NPC.life < NPC.lifeMax / 2;
-        bool finalPhase = NPC.life < NPC.lifeMax / 4;
+        float p2 = 0.75f;
+        float p3 = 0.35f;
+        bool phaseTwo = NPC.life < (int)(NPC.lifeMax * p2);
+        bool finalPhase = NPC.life < (int)(NPC.lifeMax * p3);
         if (phaseTwo && NPC.localAI[0] < 1f)
         {
             NPC.localAI[0] = 1f;
@@ -1047,8 +1063,10 @@ public class BrokenHeavenInspector : ModNPC
             }
         }
         Vector2 desired = target.Center - NPC.Center;
-        bool phaseTwo = NPC.life < NPC.lifeMax / 2;
-        bool finalPhase = NPC.life < NPC.lifeMax / 4;
+        float p2 = 0.7f;
+        float p3 = 0.35f;
+        bool phaseTwo = NPC.life < (int)(NPC.lifeMax * p2);
+        bool finalPhase = NPC.life < (int)(NPC.lifeMax * p3);
         if (phaseTwo && NPC.localAI[0] < 1f)
         {
             NPC.localAI[0] = 1f;
@@ -1175,8 +1193,10 @@ public class MoonboneImmortal : ModNPC
             }
         }
         Vector2 desired = target.Center - NPC.Center;
-        bool phaseTwo = NPC.life < NPC.lifeMax / 2;
-        bool finalPhase = NPC.life < NPC.lifeMax / 4;
+        float p2 = 0.7f;
+        float p3 = 0.35f;
+        bool phaseTwo = NPC.life < (int)(NPC.lifeMax * p2);
+        bool finalPhase = NPC.life < (int)(NPC.lifeMax * p3);
         if (phaseTwo && NPC.localAI[0] < 1f)
         {
             NPC.localAI[0] = 1f;
@@ -1304,8 +1324,10 @@ public class OldHeavenDaoCore : ModNPC
             }
         }
         Vector2 desired = target.Center - NPC.Center;
-        bool phaseTwo = NPC.life < NPC.lifeMax / 2;
-        bool finalPhase = NPC.life < NPC.lifeMax / 4;
+        float p2 = 0.75f;
+        float p3 = 0.35f;
+        bool phaseTwo = NPC.life < (int)(NPC.lifeMax * p2);
+        bool finalPhase = NPC.life < (int)(NPC.lifeMax * p3);
         if (phaseTwo && NPC.localAI[0] < 1f)
         {
             NPC.localAI[0] = 1f;
