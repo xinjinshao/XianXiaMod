@@ -1,6 +1,7 @@
 Xianxia-themed content mod for Terraria/tModLoader.
 
-v0.1.0 - Core cultivation system with 9 realms, spiritual energy,
-tribulation (Minor + Heart Demon), 12 bosses with unique AI, 17 enemies
-with custom behaviors, 8 biomes with ambient effects, 5 town NPCs with
-shops/commissions, pill quality RNG, expert/master scaling, en-US/zh-Hans.
+v0.2.0 - Full wiki alignment. 9 cultivation realms, 4 tribulation types,
+12 bosses (unique AI, 6-tier loot, rare drops), 17 enemies (unique AI,
+dual drops), 9 crafting stations, 8 biomes (objects+effects), 5 NPCs
+(20+ shop items), 50+ weapons/accessories, pill quality, inscription
+items, summon contracts, expert/master scaling, en-US/zh-Hans.
