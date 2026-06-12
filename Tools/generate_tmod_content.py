@@ -1824,9 +1824,11 @@ public class {class_name} : ModNPC
 
     public override void ModifyNPCLoot(NPCLoot npcLoot)
     {{
-        npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<global::XianXia.Content.Items.Generated.{pascal(drop)}>(), 1, 12, 24));
-        npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<global::XianXia.Content.Items.Generated.{pascal(drop2)}>(), 1, 6, 14));
-        npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<global::XianXia.Content.Items.Materials.LowGradeSpiritStone>(), 1, 5, 10));
+        npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<global::XianXia.Content.Items.Generated.{pascal(drop)}>(), 1, 16, 28));
+        npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<global::XianXia.Content.Items.Generated.{pascal(drop2)}>(), 1, 8, 16));
+        npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<global::XianXia.Content.Items.Materials.LowGradeSpiritStone>(), 1, 8, 16));
+        npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<global::XianXia.Content.Items.Materials.SpiritGel>(), 4, 3, 8));
+        npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<global::XianXia.Content.Items.Generated.ArtifactBlankShard>(), 8, 1, 3));
     }}
 }}
 """)
