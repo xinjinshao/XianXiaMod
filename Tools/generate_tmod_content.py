@@ -1735,7 +1735,8 @@ public class {class_name} : ModItem
             .CanUseBossSummon(
                 ModContent.NPCType<global::XianXia.Content.NPCs.Bosses.Generated.{boss_class}>(),
                 global::XianXia.Common.Players.CultivationStage.{required_stage},
-                "{required_boss}");
+                "{required_boss}")
+            && global::XianXia.Common.Systems.BossSummonRules.CanUseGeneratedBossSummon(player, "{asset_id}");
     }}
 
     public override bool? UseItem(Player player)

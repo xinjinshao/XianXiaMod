@@ -26,6 +26,7 @@ def require_text(path: str, *patterns: str) -> None:
 def main() -> None:
     required_files = [
         "Content/Projectiles/BossArrayFieldProjectile.cs",
+        "Common/Systems/BossSummonRules.cs",
         "Content/Projectiles/Generated/ThunderTalismanArray.png",
         "Content/NPCs/Bosses/Generated/GeneratedBosses.cs",
         "Content/Items/Generated/GeneratedItems.cs",
@@ -41,6 +42,14 @@ def main() -> None:
         "public class BossArrayFieldProjectile",
         "SpiritualPressureDisorderBuff",
         "CanDamage()",
+    )
+    require_text(
+        "Common/Systems/BossSummonRules.cs",
+        "CanUseGeneratedBossSummon",
+        "BossSummonSiteRequired",
+        "BossSummonNightRequired",
+        "GreenwoodHerbGardenBiome",
+        "MoonboneAbyssBiome",
     )
     require_text(
         "Content/NPCs/Bosses/Generated/GeneratedBosses.cs",
@@ -91,6 +100,7 @@ def main() -> None:
         "spirit_vein_wyrm",
         "moonbone_immortal",
         "CanUseBossSummon",
+        "CanUseGeneratedBossSummon",
     )
     require_text(
         "Content/NPCs/Town/CultivationTownNPCs.cs",
@@ -143,6 +153,8 @@ def main() -> None:
         "ArtifactAwakeningReady",
         "ArtifactAwakeningLocked",
         "BossPrerequisiteRequired",
+        "BossSummonSiteRequired",
+        "BossSummonNightRequired",
         "TribulationComprehensionGained",
     )
     require_text(
@@ -150,6 +162,8 @@ def main() -> None:
         "ArtifactAwakeningReady",
         "ArtifactAwakeningLocked",
         "BossPrerequisiteRequired",
+        "BossSummonSiteRequired",
+        "BossSummonNightRequired",
         "TribulationComprehensionGained",
     )
     require_text(

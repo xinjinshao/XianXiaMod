@@ -6,6 +6,8 @@ Mods: {
 			BossAlreadyPresent: This trial has already been invoked. Finish the current battle first.
 			BossStageRequired: "Insufficient cultivation realm: requires at least {0}."
 			BossPrerequisiteRequired: "This trial is still sealed. Complete the prerequisite trial first: {0}."
+			BossSummonSiteRequired: "This summon must be used at its matching trial site: {0}."
+			BossSummonNightRequired: This summon must be used at night.
 			TribulationStarted: "Tribulation begins: {0} thunder has marked you."
 			TribulationCompleted: "Tribulation survived. Spiritual energy restored: {0}."
 			TribulationComprehensionGained: "Tribulation comprehension gained. Permanent spiritual energy bonus: +{0}."
@@ -16,6 +18,15 @@ Mods: {
 				DaoScarUnstable: Dao Scar Unstable
 				SpiritVeinTremor: Spirit Vein Tremor
 				ShatteredJadeRampage: Shattered Jade Rampage
+			}
+			SummonSites: {
+				GreenwoodHerbGarden: Greenwood Herb Garden
+				SunkenFurnaceVein: Sunken Furnace Vein
+				ThunderMarshClouds: Thunder Marsh Clouds
+				StarAbyssRift: Star Abyss Rift
+				TenThousandSectsRuins: Ten Thousand Sects Ruins
+				FallenHeavenPalace: Fallen Heaven Palace
+				MoonboneAbyss: Moonbone Abyss
 			}
 		}
 	}

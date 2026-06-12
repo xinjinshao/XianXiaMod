@@ -26,7 +26,8 @@ public class SummonGardenBrokenKey : ModItem
             .CanUseBossSummon(
                 ModContent.NPCType<global::XianXia.Content.NPCs.Bosses.Generated.GardenWarden>(),
                 global::XianXia.Common.Players.CultivationStage.QiAwakening,
-                "spirit_vein_wyrm");
+                "spirit_vein_wyrm")
+            && global::XianXia.Common.Systems.BossSummonRules.CanUseGeneratedBossSummon(player, "garden_warden");
     }
 
     public override bool? UseItem(Player player)
@@ -69,7 +70,8 @@ public class SummonOldFurnaceEmber : ModItem
             .CanUseBossSummon(
                 ModContent.NPCType<global::XianXia.Content.NPCs.Bosses.Generated.BlackFurnaceIronGolem>(),
                 global::XianXia.Common.Players.CultivationStage.QiAwakening,
-                "spirit_vein_wyrm");
+                "spirit_vein_wyrm")
+            && global::XianXia.Common.Systems.BossSummonRules.CanUseGeneratedBossSummon(player, "black_furnace_iron_golem");
     }
 
     public override bool? UseItem(Player player)
@@ -112,7 +114,8 @@ public class SummonThunderCallingJade : ModItem
             .CanUseBossSummon(
                 ModContent.NPCType<global::XianXia.Content.NPCs.Bosses.Generated.TribulationCloudAvatar>(),
                 global::XianXia.Common.Players.CultivationStage.QiCondensation,
-                "garden_warden");
+                "garden_warden")
+            && global::XianXia.Common.Systems.BossSummonRules.CanUseGeneratedBossSummon(player, "tribulation_cloud_avatar");
     }
 
     public override bool? UseItem(Player player)
@@ -155,7 +158,8 @@ public class SummonThunderCallingJadeThunderMarshJiao : ModItem
             .CanUseBossSummon(
                 ModContent.NPCType<global::XianXia.Content.NPCs.Bosses.Generated.ThunderMarshJiao>(),
                 global::XianXia.Common.Players.CultivationStage.Foundation,
-                "tribulation_cloud_avatar");
+                "tribulation_cloud_avatar")
+            && global::XianXia.Common.Systems.BossSummonRules.CanUseGeneratedBossSummon(player, "thunder_marsh_jiao");
     }
 
     public override bool? UseItem(Player player)
@@ -198,7 +202,8 @@ public class SummonStarAbyssMembrane : ModItem
             .CanUseBossSummon(
                 ModContent.NPCType<global::XianXia.Content.NPCs.Bosses.Generated.AbyssalStarWomb>(),
                 global::XianXia.Common.Players.CultivationStage.Foundation,
-                "black_furnace_iron_golem");
+                "black_furnace_iron_golem")
+            && global::XianXia.Common.Systems.BossSummonRules.CanUseGeneratedBossSummon(player, "abyssal_star_womb");
     }
 
     public override bool? UseItem(Player player)
@@ -241,7 +246,8 @@ public class SummonSectTrialToken : ModItem
             .CanUseBossSummon(
                 ModContent.NPCType<global::XianXia.Content.NPCs.Bosses.Generated.FormlessSwordSoul>(),
                 global::XianXia.Common.Players.CultivationStage.GoldenCore,
-                "thunder_marsh_jiao");
+                "thunder_marsh_jiao")
+            && global::XianXia.Common.Systems.BossSummonRules.CanUseGeneratedBossSummon(player, "formless_sword_soul");
     }
 
     public override bool? UseItem(Player player)
@@ -284,7 +290,8 @@ public class SummonSectTrialTokenGreenwoodMedicineKingEcho : ModItem
             .CanUseBossSummon(
                 ModContent.NPCType<global::XianXia.Content.NPCs.Bosses.Generated.GreenwoodMedicineKingEcho>(),
                 global::XianXia.Common.Players.CultivationStage.GoldenCore,
-                "garden_warden");
+                "garden_warden")
+            && global::XianXia.Common.Systems.BossSummonRules.CanUseGeneratedBossSummon(player, "greenwood_medicine_king_echo");
     }
 
     public override bool? UseItem(Player player)
@@ -327,7 +334,8 @@ public class SummonHeavenTabletRubbing : ModItem
             .CanUseBossSummon(
                 ModContent.NPCType<global::XianXia.Content.NPCs.Bosses.Generated.HeavenTabletGuardian>(),
                 global::XianXia.Common.Players.CultivationStage.NascentSoul,
-                "formless_sword_soul");
+                "formless_sword_soul")
+            && global::XianXia.Common.Systems.BossSummonRules.CanUseGeneratedBossSummon(player, "heaven_tablet_guardian");
     }
 
     public override bool? UseItem(Player player)
@@ -370,7 +378,8 @@ public class SummonHeavenTabletRubbingBrokenHeavenInspector : ModItem
             .CanUseBossSummon(
                 ModContent.NPCType<global::XianXia.Content.NPCs.Bosses.Generated.BrokenHeavenInspector>(),
                 global::XianXia.Common.Players.CultivationStage.NascentSoul,
-                "heaven_tablet_guardian");
+                "heaven_tablet_guardian")
+            && global::XianXia.Common.Systems.BossSummonRules.CanUseGeneratedBossSummon(player, "broken_heaven_inspector");
     }
 
     public override bool? UseItem(Player player)
@@ -413,7 +422,8 @@ public class SummonMoonboneRitualTalisman : ModItem
             .CanUseBossSummon(
                 ModContent.NPCType<global::XianXia.Content.NPCs.Bosses.Generated.MoonboneImmortal>(),
                 global::XianXia.Common.Players.CultivationStage.Tribulation,
-                "broken_heaven_inspector");
+                "broken_heaven_inspector")
+            && global::XianXia.Common.Systems.BossSummonRules.CanUseGeneratedBossSummon(player, "moonbone_immortal");
     }
 
     public override bool? UseItem(Player player)
@@ -456,7 +466,8 @@ public class SummonMoonboneRitualTalismanOldHeavenDaoCore : ModItem
             .CanUseBossSummon(
                 ModContent.NPCType<global::XianXia.Content.NPCs.Bosses.Generated.OldHeavenDaoCore>(),
                 global::XianXia.Common.Players.CultivationStage.DaoSevering,
-                "moonbone_immortal");
+                "moonbone_immortal")
+            && global::XianXia.Common.Systems.BossSummonRules.CanUseGeneratedBossSummon(player, "old_heaven_dao_core");
     }
 
     public override bool? UseItem(Player player)

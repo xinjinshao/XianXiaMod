@@ -6,6 +6,8 @@ Mods: {
 			BossAlreadyPresent: 此试炼已被引动，先结束当前战斗。
 			BossStageRequired: "境界不足：需要至少 {0}。"
 			BossPrerequisiteRequired: "此试炼仍被封存。请先完成前置试炼：{0}。"
+			BossSummonSiteRequired: "此召唤物需要在对应试炼场所使用：{0}。"
+			BossSummonNightRequired: 此召唤物需要在夜晚使用。
 			TribulationStarted: "天劫临身：{0} 雷劫已锁定你。"
 			TribulationCompleted: "天劫已过。灵气恢复：{0}。"
 			TribulationComprehensionGained: "天劫感悟已成。永久灵气上限加成：+{0}。"
@@ -16,6 +18,15 @@ Mods: {
 				DaoScarUnstable: 道痕失控
 				SpiritVeinTremor: 灵脉震荡
 				ShatteredJadeRampage: 碎玉暴走
+			}
+			SummonSites: {
+				GreenwoodHerbGarden: 青木药园
+				SunkenFurnaceVein: 沉炉矿脉
+				ThunderMarshClouds: 雷泽云层
+				StarAbyssRift: 星渊裂隙
+				TenThousandSectsRuins: 万宗遗址
+				FallenHeavenPalace: 坠天宫阙
+				MoonboneAbyss: 月骸天渊
 			}
 		}
 	}
