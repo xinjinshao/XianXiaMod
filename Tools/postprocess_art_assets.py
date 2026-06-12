@@ -157,11 +157,124 @@ def custom_cell_box(sheet: Image.Image, row: AssetRow) -> tuple[int, int, int, i
     return None
 
 
+def component_boxes(image: Image.Image, min_pixels: int = 8) -> list[tuple[int, int, int, int]]:
+    alpha = image.getchannel("A")
+    width, height = image.size
+    pixels = alpha.load()
+    seen = bytearray(width * height)
+    boxes: list[tuple[int, int, int, int]] = []
+
+    for y in range(height):
+        for x in range(width):
+            offset = y * width + x
+            if seen[offset] or pixels[x, y] == 0:
+                continue
+
+            stack = [(x, y)]
+            seen[offset] = 1
+            count = 0
+            min_x = max_x = x
+            min_y = max_y = y
+
+            while stack:
+                cx, cy = stack.pop()
+                count += 1
+                min_x = min(min_x, cx)
+                max_x = max(max_x, cx)
+                min_y = min(min_y, cy)
+                max_y = max(max_y, cy)
+
+                for ny in range(max(0, cy - 1), min(height, cy + 2)):
+                    for nx in range(max(0, cx - 1), min(width, cx + 2)):
+                        n_offset = ny * width + nx
+                        if not seen[n_offset] and pixels[nx, ny] != 0:
+                            seen[n_offset] = 1
+                            stack.append((nx, ny))
+
+            if count >= min_pixels:
+                boxes.append((min_x, min_y, max_x + 1, max_y + 1))
+
+    return boxes
+
+
+def expanded(box: tuple[int, int, int, int], amount: int, width: int, height: int) -> tuple[int, int, int, int]:
+    left, top, right, bottom = box
+    return (
+        max(0, left - amount),
+        max(0, top - amount),
+        min(width, right + amount),
+        min(height, bottom + amount),
+    )
+
+
+def center(box: tuple[int, int, int, int]) -> tuple[float, float]:
+    left, top, right, bottom = box
+    return ((left + right) / 2, (top + bottom) / 2)
+
+
+def contains(box: tuple[int, int, int, int], point: tuple[float, float]) -> bool:
+    left, top, right, bottom = box
+    x, y = point
+    return left <= x < right and top <= y < bottom
+
+
+def smart_cell_box(
+    sheet: Image.Image,
+    row: AssetRow,
+    sheet_rows: list[AssetRow],
+    components: list[tuple[int, int, int, int]],
+) -> tuple[int, int, int, int]:
+    base = cell_box(sheet, row)
+    smart_assets = {
+        "moonbone_immortal",
+        "old_heaven_dao_core",
+        "greenwood_array_field",
+        "thunder_talisman_array",
+        "decree_judgement_beam",
+        "formless_sword_wheel_proj",
+        "star_eclipse_split_bolt",
+    }
+    if row.output_type in {"tile", "wall", "ui"} or row.asset_id not in smart_assets:
+        return base
+
+    base_w = base[2] - base[0]
+    base_h = base[3] - base[1]
+    search = expanded(base, max(24, round(max(base_w, base_h) * 0.18)), sheet.width, sheet.height)
+    row_centers = [(candidate, center(cell_box(sheet, candidate))) for candidate in sheet_rows]
+
+    owned: list[tuple[int, int, int, int]] = []
+    for comp in components:
+        comp_center = center(comp)
+        if not contains(search, comp_center):
+            continue
+
+        nearest, _ = min(
+            row_centers,
+            key=lambda item: (comp_center[0] - item[1][0]) ** 2 + (comp_center[1] - item[1][1]) ** 2,
+        )
+        if nearest == row:
+            owned.append(comp)
+
+    if not owned:
+        return base
+
+    left = min(box[0] for box in owned)
+    top = min(box[1] for box in owned)
+    right = max(box[2] for box in owned)
+    bottom = max(box[3] for box in owned)
+    return expanded((left, top, right, bottom), 8, sheet.width, sheet.height)
+
+
 def process(manifest: Path, generated_dir: Path, final_dir: Path) -> dict[str, int]:
     rows = load_manifest(manifest)
     final_dir.mkdir(parents=True, exist_ok=True)
     stats = {"processed": 0, "missing_sheets": 0}
     sheet_cache: dict[str, Image.Image] = {}
+    rows_by_sheet: dict[str, list[AssetRow]] = {}
+    components_by_sheet: dict[str, list[tuple[int, int, int, int]]] = {}
+    for row in rows:
+        rows_by_sheet.setdefault(row.sheet, []).append(row)
+
     for row in rows:
         sheet_path = generated_dir / row.sheet
         if not sheet_path.exists():
@@ -171,7 +284,9 @@ def process(manifest: Path, generated_dir: Path, final_dir: Path) -> dict[str, i
             with Image.open(sheet_path) as raw:
                 sheet_cache[row.sheet] = remove_chroma_key(raw)
         rgba = sheet_cache[row.sheet]
-        crop = rgba.crop(cell_box(rgba, row))
+        if row.sheet not in components_by_sheet:
+            components_by_sheet[row.sheet] = component_boxes(rgba)
+        crop = rgba.crop(smart_cell_box(rgba, row, rows_by_sheet[row.sheet], components_by_sheet[row.sheet]))
         if row.asset_id in {"spiritual_energy_bar_frame", "spiritual_energy_bar_fill", "tribulation_warning_line"}:
             final = stretch_canvas(crop, (row.width, row.height))
         else:

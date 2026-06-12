@@ -252,6 +252,7 @@ def write_audit(data: list[dict[str, str]]) -> None:
         "- 已修复：总览 contact sheet 由 `Tools/create_art_previews.py` 按 manifest 顺序重建，避免替换素材后总览图滞后。",
         "- 已修复：非 Tile/Wall/UI 的独立精灵已通过 `Tools/repair_asset_safe_margins.py` 统一补足安全透明边距，降低游戏缩放和 Wiki 预览中的截断风险。",
         "- 已修复：`old_heaven_dao_core`、`woodgrain_flying_sword` 等点名素材已同步刷新到 `Assets/Final`、`Content`、总览图与 Wiki 页面。",
+        "- 已修复：`Tools/repair_split_sheet_assets.py` 对跨格碎片素材执行定向重裁，避免素材局部被切到相邻格；总览图已加入格间距便于检查。",
         "",
         "## 语义一致性检查",
         "",

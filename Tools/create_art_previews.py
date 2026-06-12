@@ -33,10 +33,11 @@ def make_category_sheets(manifest: Path, final_dir: Path, out_dir: Path) -> None
         cols = 8
         thumb = 96
         rows = (len(files) + cols - 1) // cols
-        sheet = Image.new("RGBA", (cols * thumb, rows * thumb), (18, 18, 18, 255))
+        gap = 8
+        sheet = Image.new("RGBA", (cols * thumb + (cols - 1) * gap, rows * thumb + (rows - 1) * gap), (12, 12, 12, 255))
         for i, path in enumerate(files):
             tile = fit_thumb(Image.open(path), thumb)
-            sheet.alpha_composite(tile, ((i % cols) * thumb, (i // cols) * thumb))
+            sheet.alpha_composite(tile, ((i % cols) * (thumb + gap), (i // cols) * (thumb + gap)))
         sheet.save(out_dir / f"{group}_contact_sheet_v01.png")
 
 
@@ -57,11 +58,12 @@ def make_all_contact_sheet(manifest: Path, final_dir: Path, out_path: Path) -> N
     cols = 8
     thumb = 96
     rows = (len(files) + cols - 1) // cols
-    sheet = Image.new("RGBA", (cols * thumb, rows * thumb), (24, 24, 24, 255))
+    gap = 8
+    sheet = Image.new("RGBA", (cols * thumb + (cols - 1) * gap, rows * thumb + (rows - 1) * gap), (12, 12, 12, 255))
     for i, path in enumerate(files):
         with Image.open(path) as img:
             tile = fit_thumb(img, thumb)
-        sheet.alpha_composite(tile, ((i % cols) * thumb, (i // cols) * thumb))
+        sheet.alpha_composite(tile, ((i % cols) * (thumb + gap), (i // cols) * (thumb + gap)))
     out_path.parent.mkdir(parents=True, exist_ok=True)
     sheet.save(out_path)
 
