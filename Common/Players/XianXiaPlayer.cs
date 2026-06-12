@@ -1,4 +1,6 @@
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using Terraria;
 using Terraria.Localization;
 using Terraria.ModLoader;
@@ -17,11 +19,14 @@ public class XianXiaPlayer : ModPlayer
     public int spiritualEnergyRegenBonus;
     public int tribulationTimer;
     public int tribulationIntensity;
+    public int tribulationStage;
+    public int tribulationComprehension;
     public float spiritualEnergyCostMultiplier = 1f;
     public bool discoveredSpiritualEnergy;
     public CultivationStage cultivationStage;
 
     private int regenTimer;
+    private readonly HashSet<int> clearedTribulationStages = new();
 
     public override void Initialize()
     {
@@ -30,13 +35,16 @@ public class XianXiaPlayer : ModPlayer
         spiritPressure = 0;
         tribulationTimer = 0;
         tribulationIntensity = 0;
+        tribulationStage = 0;
+        tribulationComprehension = 0;
+        clearedTribulationStages.Clear();
         cultivationStage = CultivationStage.None;
         discoveredSpiritualEnergy = false;
     }
 
     public override void ResetEffects()
     {
-        maxSpiritualEnergy = GetMaxSpiritualEnergy(cultivationStage);
+        maxSpiritualEnergy = GetMaxSpiritualEnergy(cultivationStage) + tribulationComprehension * 5;
         spiritualEnergyRegenBonus = 0;
         spiritualEnergyCostMultiplier = 1f;
 
@@ -196,6 +204,7 @@ public class XianXiaPlayer : ModPlayer
         }
 
         tribulationIntensity = Math.Clamp((int)stage - 1, 1, 8);
+        tribulationStage = (int)stage;
         tribulationTimer = Math.Max(tribulationTimer, 60 * (18 + tribulationIntensity * 4));
         if (Main.myPlayer == Player.whoAmI)
         {
@@ -229,13 +238,25 @@ public class XianXiaPlayer : ModPlayer
         {
             int pressureReduced = 20 + tribulationIntensity * 2;
             int energyRestored = 20 + tribulationIntensity * 8;
+            int completedStage = tribulationStage;
             ReduceSpiritPressure(pressureReduced);
             RestoreSpiritualEnergy(energyRestored);
+            bool gainedComprehension = completedStage > 0 && clearedTribulationStages.Add(completedStage);
+            if (gainedComprehension)
+            {
+                tribulationComprehension++;
+                maxSpiritualEnergy = GetMaxSpiritualEnergy(cultivationStage) + tribulationComprehension * 5;
+            }
             if (Main.myPlayer == Player.whoAmI)
             {
                 Main.NewText(Language.GetTextValue("Mods.XianXia.Progression.TribulationCompleted", energyRestored), 120, 245, 220);
+                if (gainedComprehension)
+                {
+                    Main.NewText(Language.GetTextValue("Mods.XianXia.Progression.TribulationComprehensionGained", tribulationComprehension * 5), 160, 210, 255);
+                }
             }
             tribulationIntensity = 0;
+            tribulationStage = 0;
         }
     }
 
@@ -315,6 +336,9 @@ public class XianXiaPlayer : ModPlayer
         tag["spiritPressure"] = spiritPressure;
         tag["tribulationTimer"] = tribulationTimer;
         tag["tribulationIntensity"] = tribulationIntensity;
+        tag["tribulationStage"] = tribulationStage;
+        tag["tribulationComprehension"] = tribulationComprehension;
+        tag["clearedTribulationStages"] = clearedTribulationStages.ToList();
         tag["discoveredSpiritualEnergy"] = discoveredSpiritualEnergy;
         tag["cultivationStage"] = (int)cultivationStage;
     }
@@ -325,6 +349,13 @@ public class XianXiaPlayer : ModPlayer
         spiritPressure = tag.GetInt("spiritPressure");
         tribulationTimer = tag.GetInt("tribulationTimer");
         tribulationIntensity = tag.GetInt("tribulationIntensity");
+        tribulationStage = tag.GetInt("tribulationStage");
+        tribulationComprehension = tag.GetInt("tribulationComprehension");
+        clearedTribulationStages.Clear();
+        foreach (int stage in tag.GetList<int>("clearedTribulationStages"))
+        {
+            clearedTribulationStages.Add(stage);
+        }
         discoveredSpiritualEnergy = tag.GetBool("discoveredSpiritualEnergy");
         cultivationStage = (CultivationStage)tag.GetInt("cultivationStage");
     }
@@ -337,6 +368,13 @@ public class XianXiaPlayer : ModPlayer
         clone.spiritPressure = spiritPressure;
         clone.tribulationTimer = tribulationTimer;
         clone.tribulationIntensity = tribulationIntensity;
+        clone.tribulationStage = tribulationStage;
+        clone.tribulationComprehension = tribulationComprehension;
+        clone.clearedTribulationStages.Clear();
+        foreach (int stage in clearedTribulationStages)
+        {
+            clone.clearedTribulationStages.Add(stage);
+        }
         clone.discoveredSpiritualEnergy = discoveredSpiritualEnergy;
         clone.cultivationStage = cultivationStage;
     }

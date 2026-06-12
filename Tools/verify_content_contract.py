@@ -97,6 +97,17 @@ def main() -> None:
         "DownedBossSystem.SectReputation",
     )
     require_text(
+        "Common/Players/XianXiaPlayer.cs",
+        "tribulationComprehension",
+        "clearedTribulationStages",
+        "TribulationComprehensionGained",
+    )
+    require_text(
+        "Content/Items/Guides/TribulationGauge.cs",
+        "Comprehension",
+        "tribulationComprehension",
+    )
+    require_text(
         "Tools/generate_tmod_content.py",
         "awakening_thresholds",
         "HasArtifactAwakening",
@@ -107,12 +118,22 @@ def main() -> None:
         "ArtifactAwakeningReady",
         "ArtifactAwakeningLocked",
         "BossPrerequisiteRequired",
+        "TribulationComprehensionGained",
     )
     require_text(
         "Localization/progression.en-US.hjson",
         "ArtifactAwakeningReady",
         "ArtifactAwakeningLocked",
         "BossPrerequisiteRequired",
+        "TribulationComprehensionGained",
+    )
+    require_text(
+        "Localization/guides.zh-Hans.hjson",
+        "Comprehension",
+    )
+    require_text(
+        "Localization/guides.en-US.hjson",
+        "Comprehension",
     )
     require_text(
         "Localization/zh-Hans.hjson",

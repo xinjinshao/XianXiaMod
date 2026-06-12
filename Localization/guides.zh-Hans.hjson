@@ -31,6 +31,7 @@ Mods: {
 				Gauge: {
 					Pressure: "当前灵压：{0}。"
 					Active: "天劫进行中：剩余 {0} 秒，强度 {1}。"
+					Comprehension: "天劫感悟加成：灵气上限 +{0}。"
 					Danger: 灵压危险。先服用抗劫丹或等待平复，再继续突破。
 					Warning: 灵压正在升高。引雷之前请准备抗劫手段。
 					Stable: 灵压稳定。

@@ -31,6 +31,7 @@ Mods: {
 				Gauge: {
 					Pressure: "Spirit pressure: {0}."
 					Active: "Tribulation active: {0}s remaining, intensity {1}."
+					Comprehension: "Tribulation comprehension bonus: +{0} max spiritual energy."
 					Danger: The pressure is dangerous. Use warding pills or wait before advancing.
 					Warning: The pressure is rising. Prepare resistance before inviting thunder.
 					Stable: The pressure is stable.

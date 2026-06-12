@@ -8,6 +8,7 @@ Mods: {
 			BossPrerequisiteRequired: "This trial is still sealed. Complete the prerequisite trial first: {0}."
 			TribulationStarted: "Tribulation begins: {0} thunder has marked you."
 			TribulationCompleted: "Tribulation survived. Spiritual energy restored: {0}."
+			TribulationComprehensionGained: "Tribulation comprehension gained. Permanent spiritual energy bonus: +{0}."
 			ArtifactAwakeningReady: "Artifact awakened: spiritual energy cost {2}, damage +{3}%."
 			ArtifactAwakeningLocked: "Artifact awakening: requires {0} realm and {1} sect reputation."
 			BossPhase: {

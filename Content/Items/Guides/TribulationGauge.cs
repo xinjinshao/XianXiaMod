@@ -53,24 +53,25 @@ public class TribulationGauge : ModItem
     {
         XianXiaPlayer cultivation = player.GetModPlayer<XianXiaPlayer>();
         string pressure = Gauge("Pressure").Format(cultivation.spiritPressure);
+        string comprehension = Gauge("Comprehension").Format(cultivation.tribulationComprehension * 5);
 
         if (cultivation.tribulationTimer > 0)
         {
             int seconds = (int)MathF.Ceiling(cultivation.tribulationTimer / 60f);
-            return $"{pressure} {Gauge("Active").Format(seconds, cultivation.tribulationIntensity)}";
+            return $"{pressure} {Gauge("Active").Format(seconds, cultivation.tribulationIntensity)} {comprehension}";
         }
 
         if (cultivation.spiritPressure >= 80)
         {
-            return $"{pressure} {GaugeValue("Danger")}";
+            return $"{pressure} {GaugeValue("Danger")} {comprehension}";
         }
 
         if (cultivation.spiritPressure >= 50)
         {
-            return $"{pressure} {GaugeValue("Warning")}";
+            return $"{pressure} {GaugeValue("Warning")} {comprehension}";
         }
 
-        return $"{pressure} {GaugeValue("Stable")}";
+        return $"{pressure} {GaugeValue("Stable")} {comprehension}";
     }
 
     private static LocalizedText Gauge(string key)
