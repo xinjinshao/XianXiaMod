@@ -24,7 +24,7 @@ Mods: {
 			}
 			SpiritVeinIncense: {
 				DisplayName: Spirit Vein Incense
-				Tooltip: Summons the Spirit Vein Wyrm.
+				Tooltip: Summons the Spirit Vein Wyrm. This is the first cultivation trial.
 			}
 		}
 		Projectiles: {

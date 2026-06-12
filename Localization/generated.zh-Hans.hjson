@@ -135,47 +135,47 @@ Mods: {
 			}
 			SummonGardenBrokenKey: {
 				DisplayName: "守园残钥"
-				Tooltip: "召唤 药园守园人。"
+				Tooltip: "召唤 药园守园人。需要至少 QiAwakening 境界。"
 			}
 			SummonHeavenTabletRubbing: {
 				DisplayName: "天碑拓片"
-				Tooltip: "召唤 天碑守尽。"
+				Tooltip: "召唤 天碑守尽。需要至少 NascentSoul 境界。"
 			}
 			SummonHeavenTabletRubbingBrokenHeavenInspector: {
 				DisplayName: "天碑拓片"
-				Tooltip: "召唤 残天监察使。"
+				Tooltip: "召唤 残天监察使。需要至少 NascentSoul 境界。"
 			}
 			SummonMoonboneRitualTalisman: {
 				DisplayName: "月骨祭符"
-				Tooltip: "召唤 月骨仙君。"
+				Tooltip: "召唤 月骨仙君。需要至少 Tribulation 境界。"
 			}
 			SummonMoonboneRitualTalismanOldHeavenDaoCore: {
 				DisplayName: "月骨祭符"
-				Tooltip: "召唤 旧天道核心。"
+				Tooltip: "召唤 旧天道核心。需要至少 DaoSevering 境界。"
 			}
 			SummonOldFurnaceEmber: {
 				DisplayName: "旧炉火种"
-				Tooltip: "召唤 玄炉铁傀。"
+				Tooltip: "召唤 玄炉铁傀。需要至少 QiAwakening 境界。"
 			}
 			SummonSectTrialToken: {
 				DisplayName: "宗门试炼令"
-				Tooltip: "召唤 无相剑魂。"
+				Tooltip: "召唤 无相剑魂。需要至少 GoldenCore 境界。"
 			}
 			SummonSectTrialTokenGreenwoodMedicineKingEcho: {
 				DisplayName: "宗门试炼令"
-				Tooltip: "召唤 青木药王残影。"
+				Tooltip: "召唤 青木药王残影。需要至少 GoldenCore 境界。"
 			}
 			SummonStarAbyssMembrane: {
 				DisplayName: "星渊胎膜"
-				Tooltip: "召唤 星渊胎主。"
+				Tooltip: "召唤 星渊胎主。需要至少 Foundation 境界。"
 			}
 			SummonThunderCallingJade: {
 				DisplayName: "引雷玉"
-				Tooltip: "召唤 劫云化身。"
+				Tooltip: "召唤 劫云化身。需要至少 QiCondensation 境界。"
 			}
 			SummonThunderCallingJadeThunderMarshJiao: {
 				DisplayName: "引雷玉"
-				Tooltip: "召唤 雷泽蛟。"
+				Tooltip: "召唤 雷泽蛟。需要至少 Foundation 境界。"
 			}
 			ThunderCallingJade: {
 				DisplayName: "引雷玉"

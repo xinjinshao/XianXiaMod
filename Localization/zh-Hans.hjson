@@ -24,7 +24,7 @@ Mods: {
 			}
 			SpiritVeinIncense: {
 				DisplayName: 灵脉香
-				Tooltip: 召唤灵脉蠕虫。
+				Tooltip: 召唤灵脉蠕虫。这是第一场修行试炼。
 			}
 		}
 		Projectiles: {

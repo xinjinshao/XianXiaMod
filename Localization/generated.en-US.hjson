@@ -135,47 +135,47 @@ Mods: {
 			}
 			SummonGardenBrokenKey: {
 				DisplayName: "Garden Broken Key"
-				Tooltip: "Summons Garden Warden."
+				Tooltip: "Summons Garden Warden. Requires at least QiAwakening."
 			}
 			SummonHeavenTabletRubbing: {
 				DisplayName: "Heaven Tablet Rubbing"
-				Tooltip: "Summons Heaven Tablet Guardian."
+				Tooltip: "Summons Heaven Tablet Guardian. Requires at least NascentSoul."
 			}
 			SummonHeavenTabletRubbingBrokenHeavenInspector: {
 				DisplayName: "Heaven Tablet Rubbing"
-				Tooltip: "Summons Broken Heaven Inspector."
+				Tooltip: "Summons Broken Heaven Inspector. Requires at least NascentSoul."
 			}
 			SummonMoonboneRitualTalisman: {
 				DisplayName: "Moonbone Ritual Talisman"
-				Tooltip: "Summons Moonbone Immortal."
+				Tooltip: "Summons Moonbone Immortal. Requires at least Tribulation."
 			}
 			SummonMoonboneRitualTalismanOldHeavenDaoCore: {
 				DisplayName: "Moonbone Ritual Talisman"
-				Tooltip: "Summons Old Heaven Dao Core."
+				Tooltip: "Summons Old Heaven Dao Core. Requires at least DaoSevering."
 			}
 			SummonOldFurnaceEmber: {
 				DisplayName: "Old Furnace Ember"
-				Tooltip: "Summons Black Furnace Iron Golem."
+				Tooltip: "Summons Black Furnace Iron Golem. Requires at least QiAwakening."
 			}
 			SummonSectTrialToken: {
 				DisplayName: "Sect Trial Token"
-				Tooltip: "Summons Formless Sword Soul."
+				Tooltip: "Summons Formless Sword Soul. Requires at least GoldenCore."
 			}
 			SummonSectTrialTokenGreenwoodMedicineKingEcho: {
 				DisplayName: "Sect Trial Token"
-				Tooltip: "Summons Greenwood Medicine King Echo."
+				Tooltip: "Summons Greenwood Medicine King Echo. Requires at least GoldenCore."
 			}
 			SummonStarAbyssMembrane: {
 				DisplayName: "Star Abyss Membrane"
-				Tooltip: "Summons Abyssal Star Womb."
+				Tooltip: "Summons Abyssal Star Womb. Requires at least Foundation."
 			}
 			SummonThunderCallingJade: {
 				DisplayName: "Thunder Calling Jade"
-				Tooltip: "Summons Tribulation Cloud Avatar."
+				Tooltip: "Summons Tribulation Cloud Avatar. Requires at least QiCondensation."
 			}
 			SummonThunderCallingJadeThunderMarshJiao: {
 				DisplayName: "Thunder Calling Jade"
-				Tooltip: "Summons Thunder Marsh Jiao."
+				Tooltip: "Summons Thunder Marsh Jiao. Requires at least Foundation."
 			}
 			ThunderCallingJade: {
 				DisplayName: "Thunder Calling Jade"

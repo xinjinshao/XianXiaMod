@@ -1040,13 +1040,14 @@ def generate_localization() -> None:
         class_name = f"Summon{pascal(summon)}"
         if class_name in item_zh:
             class_name = f"{class_name}{pascal(boss_id)}"
+        required_stage = BOSS_STAGE_REQUIREMENTS[boss_id]
         item_zh[class_name] = {
             "DisplayName": f"{ZH_NAMES.get(summon, class_name)}",
-            "Tooltip": f"召唤 {ZH_NAMES.get(boss_id, pascal(boss_id))}。",
+            "Tooltip": f"召唤 {ZH_NAMES.get(boss_id, pascal(boss_id))}。需要至少 {required_stage} 境界。",
         }
         item_en[class_name] = {
             "DisplayName": f"{EN_NAMES.get(summon, class_name)}",
-            "Tooltip": f"Summons {EN_NAMES.get(boss_id, pascal(boss_id))}.",
+            "Tooltip": f"Summons {EN_NAMES.get(boss_id, pascal(boss_id))}. Requires at least {required_stage}.",
         }
 
     npc_zh = {pascal(asset_id): {"DisplayName": ZH_NAMES.get(asset_id, pascal(asset_id))} for asset_id in ENEMY_DATA | BOSS_DATA}
