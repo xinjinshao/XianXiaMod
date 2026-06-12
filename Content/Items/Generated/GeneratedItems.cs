@@ -14,7 +14,7 @@ public class GreenwoodRoot : ModItem
         Item.height = 32;
         Item.maxStack = 9999;
         Item.value = Item.buyPrice(silver: 10);
-        Item.rare = ItemRarityID.White;
+        Item.rare = ItemRarityID.Blue;
 
     }
 
@@ -30,7 +30,7 @@ public class FurnaceSlagIron : ModItem
         Item.height = 32;
         Item.maxStack = 9999;
         Item.value = Item.buyPrice(silver: 10);
-        Item.rare = ItemRarityID.White;
+        Item.rare = ItemRarityID.Blue;
 
     }
 
@@ -46,7 +46,7 @@ public class ArtifactBlankShard : ModItem
         Item.height = 32;
         Item.maxStack = 9999;
         Item.value = Item.buyPrice(silver: 10);
-        Item.rare = ItemRarityID.White;
+        Item.rare = ItemRarityID.Green;
 
     }
 
@@ -78,7 +78,7 @@ public class StarEclipseCrystal : ModItem
         Item.height = 32;
         Item.maxStack = 30;
         Item.value = Item.buyPrice(silver: 10);
-        Item.rare = ItemRarityID.LightRed;
+        Item.rare = ItemRarityID.Pink;
 
         Item.useStyle = ItemUseStyleID.DrinkLiquid;
         Item.useTime = 20;
@@ -114,7 +114,7 @@ public class SectTrialToken : ModItem
         Item.height = 32;
         Item.maxStack = 9999;
         Item.value = Item.buyPrice(silver: 10);
-        Item.rare = ItemRarityID.White;
+        Item.rare = ItemRarityID.Lime;
 
     }
 
@@ -130,7 +130,7 @@ public class HeavenDaoFragment : ModItem
         Item.height = 32;
         Item.maxStack = 30;
         Item.value = Item.buyPrice(silver: 10);
-        Item.rare = ItemRarityID.Red;
+        Item.rare = ItemRarityID.Yellow;
 
         Item.useStyle = ItemUseStyleID.DrinkLiquid;
         Item.useTime = 20;
@@ -196,7 +196,7 @@ public class DaoSeveringDust : ModItem
         Item.height = 32;
         Item.maxStack = 30;
         Item.value = Item.buyPrice(silver: 10);
-        Item.rare = ItemRarityID.Red;
+        Item.rare = ItemRarityID.Purple;
 
         Item.useStyle = ItemUseStyleID.DrinkLiquid;
         Item.useTime = 20;
@@ -1078,7 +1078,7 @@ public class OldHeavenDaoScroll : ModItem
         Item.height = 32;
         Item.maxStack = 30;
         Item.value = Item.buyPrice(silver: 10);
-        Item.rare = ItemRarityID.Red;
+        Item.rare = ItemRarityID.Yellow;
 
         Item.useStyle = ItemUseStyleID.DrinkLiquid;
         Item.useTime = 20;
@@ -1248,7 +1248,7 @@ public class FurnaceHeartRing : ModItem
 
     public override void UpdateAccessory(Player player, bool hideVisual)
     {
-        player.statDefense += 3;
+        player.GetDamage(DamageClass.Generic) += 0.06f;
     }
 
     public override void AddRecipes()
@@ -1279,7 +1279,7 @@ public class LightningWardJade : ModItem
 
     public override void UpdateAccessory(Player player, bool hideVisual)
     {
-        player.endurance += 0.04f; if (Main.GameUpdateCount % 120 == 0) player.GetModPlayer<global::XianXia.Common.Players.XianXiaPlayer>().ReduceSpiritPressure(1);
+        player.endurance += 0.06f; if (Main.GameUpdateCount % 120 == 0) player.GetModPlayer<global::XianXia.Common.Players.XianXiaPlayer>().ReduceSpiritPressure(1);
     }
 
     public override void AddRecipes()
@@ -1310,7 +1310,7 @@ public class StarAbyssEye : ModItem
 
     public override void UpdateAccessory(Player player, bool hideVisual)
     {
-        player.GetDamage(DamageClass.Generic) += 0.06f;
+        player.GetDamage(DamageClass.Generic) += 0.08f; player.GetModPlayer<global::XianXia.Common.Players.XianXiaPlayer>().spiritualEnergyCostMultiplier *= 1.08f;
     }
 
     public override void AddRecipes()
@@ -1341,7 +1341,7 @@ public class NascentSoulJadeBox : ModItem
 
     public override void UpdateAccessory(Player player, bool hideVisual)
     {
-        player.GetModPlayer<global::XianXia.Common.Players.XianXiaPlayer>().maxSpiritualEnergy += 30;
+        player.maxMinions += 1; player.GetDamage(DamageClass.Summon) += 0.08f;
     }
 
     public override void AddRecipes()

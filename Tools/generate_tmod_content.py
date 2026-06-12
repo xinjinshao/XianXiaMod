@@ -525,11 +525,28 @@ def generate_materials(existing: set[str]) -> None:
             continue
         copy_asset(asset_id, "item_icon", class_name, CONTENT / "Items" / "Generated")
         rare = "ItemRarityID.White"
-        if any(k in asset_id for k in ["thunder", "star", "tribulation"]):
+        # Material-specific overrides matching wiki rarities
+        if asset_id in ("greenwood_root", "furnace_slag_iron", "spirit_gel"):
+            rare = "ItemRarityID.Blue"
+        elif asset_id == "artifact_blank_shard":
+            rare = "ItemRarityID.Green"
+        elif asset_id == "tribulation_cloud_dew":
             rare = "ItemRarityID.LightRed"
-        if any(k in asset_id for k in ["heaven", "broken"]):
+        elif asset_id == "star_eclipse_crystal":
+            rare = "ItemRarityID.Pink"
+        elif asset_id == "sect_trial_token":
+            rare = "ItemRarityID.Lime"
+        elif asset_id == "heaven_dao_fragment":
             rare = "ItemRarityID.Yellow"
-        if any(k in asset_id for k in ["moon", "dao", "old_heaven"]):
+        elif asset_id == "moonbone":
+            rare = "ItemRarityID.Red"
+        elif asset_id == "dao_severing_dust":
+            rare = "ItemRarityID.Purple"
+        elif any(k in asset_id for k in ["thunder", "star", "tribulation"]) and asset_id not in ("star_eclipse_crystal",):
+            rare = "ItemRarityID.LightRed"
+        elif any(k in asset_id for k in ["heaven", "broken"]) and asset_id != "heaven_dao_fragment":
+            rare = "ItemRarityID.Yellow"
+        elif any(k in asset_id for k in ["moon", "dao", "old_heaven"]) and asset_id not in ("moonbone", "dao_severing_dust"):
             rare = "ItemRarityID.Red"
         stack = 999 if any(k in asset_id for k in ["summon", "incense", "key", "ember", "jade", "membrane", "rubbing", "talisman"]) else 9999
         if asset_id in consumables:
@@ -661,10 +678,10 @@ def generate_materials(existing: set[str]) -> None:
             effects = {
                 "qi_gathering_pendant": "player.AddBuff(ModContent.BuffType<global::XianXia.Content.Buffs.QiGatheringBuff>(), 2);",
                 "spiritwood_charm": "player.lifeRegen += 2;",
-                "furnace_heart_ring": "player.statDefense += 3;",
-                "lightning_ward_jade": "player.endurance += 0.04f; if (Main.GameUpdateCount % 120 == 0) player.GetModPlayer<global::XianXia.Common.Players.XianXiaPlayer>().ReduceSpiritPressure(1);",
-                "star_abyss_eye": "player.GetDamage(DamageClass.Generic) += 0.06f;",
-                "nascent_soul_jade_box": "player.GetModPlayer<global::XianXia.Common.Players.XianXiaPlayer>().maxSpiritualEnergy += 30;",
+                "furnace_heart_ring": "player.GetDamage(DamageClass.Generic) += 0.06f;",
+                "lightning_ward_jade": "player.endurance += 0.06f; if (Main.GameUpdateCount % 120 == 0) player.GetModPlayer<global::XianXia.Common.Players.XianXiaPlayer>().ReduceSpiritPressure(1);",
+                "star_abyss_eye": "player.GetDamage(DamageClass.Generic) += 0.08f; player.GetModPlayer<global::XianXia.Common.Players.XianXiaPlayer>().spiritualEnergyCostMultiplier *= 1.08f;",
+                "nascent_soul_jade_box": "player.maxMinions += 1; player.GetDamage(DamageClass.Summon) += 0.08f;",
                 "broken_heaven_crown_seal": "player.GetDamage(DamageClass.Generic) += 0.1f; player.statDefense -= 4;",
                 "dao_severing_ring": "global::XianXia.Common.Players.XianXiaPlayer cultivation = player.GetModPlayer<global::XianXia.Common.Players.XianXiaPlayer>(); player.GetDamage(DamageClass.Generic) += 0.14f; cultivation.spiritualEnergyCostMultiplier *= 1.08f;",
             }
