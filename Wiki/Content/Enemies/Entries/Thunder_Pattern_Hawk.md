@@ -1,19 +1,6 @@
-﻿# 雷纹鹰
-[返回敌怪总览](../Overview.md)
-## 定位
-- ID: 	hunder_pattern_hawk | 阶段: Hardmode | 生态: [雷泽云层](../../Biomes/Entries/Thunder_Marsh_Clouds.md)
-## 数值
-| 属性 | 值 |
-|------|-----|
-| 生命 | 300 | 伤害 | 48 | 防御 | 18 | 击退抗性 | 35% | AI | Dive flyer |
-## 行为
-- 每140tick高空盘旋后俯冲，短暂停顿后再次俯冲。高速移动时留下电弧粒子。
-## 掉落
-| 物品 | 概率 | 数量 |
-|------|------|------|
-| 劫云露 | 50% | 1-2 |
-| 器胚碎片 | 33% | 1-2 |
-## 美术
-- 64x48，鹰形，羽毛有蓝色雷纹。Prompt: hawk with blue lightning feather patterns, side-view flying
-## 代码实现
-- ✅ 数值对齐 | ✅ AI（盘旋俯冲+电弧） | ✅ 掉落表
+﻿# 雷纹鹰 | [返回](../Overview.md)
+## 定位: ID 	hunder_pattern_hawk | Hardmode | [雷泽云层](../../Biomes/Entries/Thunder_Marsh_Clouds.md)
+## 美术 | <img src="../../../../Assets/Final/thunder_pattern_hawk/thunder_pattern_hawk__base__v01.png" width="72"> | base | 64x48
+## 生成: 雷泽云层 18% | 数值: HP 300 / 伤害 48 / 防御 18 / 击退 35% / AI Dive flyer
+## 行为: 每140tick俯冲(移速15)，30tick后减速停顿，再俯冲。高速时释放Electric电弧粒子。
+## 掉落: 劫云露 50% 1-2 / 器胚碎片 33% 1-2 | ✅ 代码完整

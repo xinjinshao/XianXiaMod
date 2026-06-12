@@ -1,14 +1,8 @@
-﻿# 月骸法剑
-[返回装备总览](../Overview.md)
-## 定位
-- ID: moonbone_dharma_sword | 阶段: Post-Moon Lord | 类型: 近战/灵气
-## 数值
-伤害:220 | 攻速:18 | 击退:4.5 | 暴击:10% | 灵耗:22 | 射速:14 | 稀有:Red
-## 效果
-弹片命中后减速，贯穿两次。法器觉醒(渡劫+96声望):伤害+18%灵耗降至17。
-## 配方
-器胚碎片x2 + 月骨x6 + 灵石x12 @ 器胚炉
-## 美术
-64x64月白骨剑暗蓝核心残月护手。Prompt: moonbone magic sword, white lunar bone blade, dark star core
-## 代码
-✅ 数值对齐 | ✅ 双贯穿+减速 | ✅ 法器觉醒
+﻿# 月骸法剑 | [返回](../Overview.md)
+## 定位: ID moonbone_dharma_sword | Post-Moon Lord | 近战/灵气
+## 美术 | <img src="../../../../Assets/Final/moonbone_dharma_sword/moonbone_dharma_sword__item_icon__v01.png" width="64"> | item_icon | 64x64
+## 数值: 伤害220 / 攻速18 / 击退4.5 / 暴击10% / 灵耗22(觉醒17) / 射速14 / 稀有Red
+## 效果: 穿透2次，命中减速(移速x0.2持续24tick)。觉醒(渡劫+96声望):伤害+18%灵耗x0.76。
+## 配方: 器胚碎片x2 + 月骨x6 + 下品灵石x12 @ 器胚炉
+## 投射物 | <img src="../../../../Assets/Final/moonbone_shard_proj/moonbone_shard_proj__projectile__v01.png" width="64"> | projectile | 24x16
+## 代码: ✅ 数值/觉醒/配方

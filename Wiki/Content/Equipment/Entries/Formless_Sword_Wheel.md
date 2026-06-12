@@ -1,14 +1,7 @@
-﻿# 无相剑轮
-[返回装备总览](../Overview.md)
-## 定位
-- ID: formless_sword_wheel | 阶段: Post-Plantera | 类型: 近战/灵气
-## 数值
-伤害:92 | 攻速:20 | 击退:4.0 | 暴击:8% | 灵耗:14 | 射速:8 | 稀有:Lime
-## 效果
-旋转剑阵穿透多敌，局部无敌帧12tick。法器觉醒(元婴+56声望):伤害+14%灵耗降至11。
-## 配方
-器胚碎片x2 + 宗门试炼令x6 + 灵石x12 @ 器胚炉
-## 美术
-64x64环形剑轮中心空洞青白剑影。Prompt: circular wheel of flying swords, formless cyan sword aura
-## 代码
-✅ 数值对齐 | ✅ 穿透+无敌帧 | ✅ 法器觉醒
+﻿# 无相剑轮 | [返回](../Overview.md)
+## 定位: ID ormless_sword_wheel | Post-Plantera | 近战/灵气
+## 美术 | <img src="../../../../Assets/Final/formless_sword_wheel/formless_sword_wheel__item_icon__v01.png" width="64"> | item_icon | 64x64
+## 数值: 伤害92 / 攻速20 / 击退4.0 / 暴击8% / 灵耗14(觉醒11) / 射速8 / 稀有Lime
+## 效果: 穿透5敌+12tick局部无敌。跟随玩家移动方向。觉醒(元婴+56声望):伤害+14%灵耗x0.80。
+## 配方: 器胚碎片x2 + 宗门试炼令x6 + 下品灵石x12 @ 器胚炉
+## 代码: ✅ 数值/觉醒/配方
