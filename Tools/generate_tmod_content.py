@@ -980,8 +980,10 @@ public class {class_name} : ModItem
 
     public override bool CanUseItem(Player player)
     {{
-        return !NPC.AnyNPCs(ModContent.NPCType<global::XianXia.Content.NPCs.Bosses.Generated.{boss_class}>())
-            && player.GetModPlayer<global::XianXia.Common.Players.XianXiaPlayer>().cultivationStage >= global::XianXia.Common.Players.CultivationStage.{required_stage};
+        return player.GetModPlayer<global::XianXia.Common.Players.XianXiaPlayer>()
+            .CanUseBossSummon(
+                ModContent.NPCType<global::XianXia.Content.NPCs.Bosses.Generated.{boss_class}>(),
+                global::XianXia.Common.Players.CultivationStage.{required_stage});
     }}
 
     public override bool? UseItem(Player player)

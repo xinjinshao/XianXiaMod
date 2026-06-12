@@ -146,6 +146,31 @@ public class XianXiaPlayer : ModPlayer
         return canAdvance;
     }
 
+    public bool CanUseBossSummon(int bossType, CultivationStage requiredStage = CultivationStage.None)
+    {
+        if (NPC.AnyNPCs(bossType))
+        {
+            if (Main.myPlayer == Player.whoAmI)
+            {
+                Main.NewText("此试炼已被引动，先结束当前战斗。", 255, 210, 120);
+            }
+
+            return false;
+        }
+
+        if (cultivationStage < requiredStage)
+        {
+            if (Main.myPlayer == Player.whoAmI)
+            {
+                Main.NewText($"境界不足：需要至少 {requiredStage}。", 255, 210, 120);
+            }
+
+            return false;
+        }
+
+        return true;
+    }
+
     public void ReduceSpiritPressure(int amount)
     {
         spiritPressure = Math.Clamp(spiritPressure - amount, 0, 100);

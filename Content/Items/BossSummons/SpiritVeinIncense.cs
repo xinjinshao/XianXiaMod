@@ -1,6 +1,7 @@
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
+using XianXia.Common.Players;
 using XianXia.Content.Items.Materials;
 using XianXia.Content.NPCs.Bosses;
 
@@ -29,7 +30,7 @@ public class SpiritVeinIncense : ModItem
 
     public override bool CanUseItem(Player player)
     {
-        return !NPC.AnyNPCs(ModContent.NPCType<SpiritVeinWyrm>());
+        return player.GetModPlayer<XianXiaPlayer>().CanUseBossSummon(ModContent.NPCType<SpiritVeinWyrm>());
     }
 
     public override bool? UseItem(Player player)
