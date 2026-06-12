@@ -12,6 +12,9 @@ public class DownedBossSystem : ModSystem
     public static HashSet<string> ClaimedCommissions { get; } = new();
     public static int SectReputation { get; private set; }
 
+    public enum EndgameRoute { None = 0, RebuildHeaven = 1, SeverHeaven = 2, AcceptStarAbyss = 3 }
+    public static EndgameRoute ChosenRoute { get; set; }
+
     private static readonly Dictionary<string, int> ReputationByBoss = new()
     {
         ["spirit_vein_wyrm"] = 5,
@@ -43,6 +46,7 @@ public class DownedBossSystem : ModSystem
         DownedBosses.Clear();
         ClaimedCommissions.Clear();
         SectReputation = 0;
+        ChosenRoute = EndgameRoute.None;
     }
 
     public override void SaveWorldData(TagCompound tag)
@@ -51,6 +55,7 @@ public class DownedBossSystem : ModSystem
         tag["downedBosses"] = DownedBosses.ToList();
         tag["claimedCommissions"] = ClaimedCommissions.ToList();
         tag["sectReputation"] = SectReputation;
+        tag["chosenRoute"] = (int)ChosenRoute;
     }
 
     public override void LoadWorldData(TagCompound tag)
@@ -70,6 +75,7 @@ public class DownedBossSystem : ModSystem
         {
             DownedBosses.Add("spirit_vein_wyrm");
         }
+        ChosenRoute = (EndgameRoute)tag.GetInt("chosenRoute");
         RecalculateSectReputation();
     }
 

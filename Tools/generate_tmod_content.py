@@ -1713,8 +1713,12 @@ public class {class_name} : ModNPC
     {{
         NPC.width = 96;
         NPC.height = 96;
-        NPC.lifeMax = {life};
-        NPC.damage = {damage};
+        int baseLife = {life};
+        int baseDamage = {damage};
+        if (Main.expertMode) {{ baseLife = (int)(baseLife * 1.45f); baseDamage = (int)(baseDamage * 1.25f); }}
+        if (Main.masterMode) {{ baseLife = (int)(baseLife * 1.85f); baseDamage = (int)(baseDamage * 1.45f); }}
+        NPC.lifeMax = baseLife;
+        NPC.damage = baseDamage;
         NPC.defense = {defense};
         NPC.knockBackResist = 0f;
         NPC.value = Item.buyPrice(gold: 1);

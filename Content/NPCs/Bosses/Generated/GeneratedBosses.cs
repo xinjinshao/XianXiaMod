@@ -22,8 +22,12 @@ public class GardenWarden : ModNPC
     {
         NPC.width = 96;
         NPC.height = 96;
-        NPC.lifeMax = 2800;
-        NPC.damage = 28;
+        int baseLife = 2800;
+        int baseDamage = 28;
+        if (Main.expertMode) { baseLife = (int)(baseLife * 1.45f); baseDamage = (int)(baseDamage * 1.25f); }
+        if (Main.masterMode) { baseLife = (int)(baseLife * 1.85f); baseDamage = (int)(baseDamage * 1.45f); }
+        NPC.lifeMax = baseLife;
+        NPC.damage = baseDamage;
         NPC.defense = 10;
         NPC.knockBackResist = 0f;
         NPC.value = Item.buyPrice(gold: 1);
@@ -140,8 +144,12 @@ public class BlackFurnaceIronGolem : ModNPC
     {
         NPC.width = 96;
         NPC.height = 96;
-        NPC.lifeMax = 3200;
-        NPC.damage = 34;
+        int baseLife = 3200;
+        int baseDamage = 34;
+        if (Main.expertMode) { baseLife = (int)(baseLife * 1.45f); baseDamage = (int)(baseDamage * 1.25f); }
+        if (Main.masterMode) { baseLife = (int)(baseLife * 1.85f); baseDamage = (int)(baseDamage * 1.45f); }
+        NPC.lifeMax = baseLife;
+        NPC.damage = baseDamage;
         NPC.defense = 18;
         NPC.knockBackResist = 0f;
         NPC.value = Item.buyPrice(gold: 1);
@@ -260,8 +268,12 @@ public class TribulationCloudAvatar : ModNPC
     {
         NPC.width = 96;
         NPC.height = 96;
-        NPC.lifeMax = 4200;
-        NPC.damage = 30;
+        int baseLife = 4200;
+        int baseDamage = 30;
+        if (Main.expertMode) { baseLife = (int)(baseLife * 1.45f); baseDamage = (int)(baseDamage * 1.25f); }
+        if (Main.masterMode) { baseLife = (int)(baseLife * 1.85f); baseDamage = (int)(baseDamage * 1.45f); }
+        NPC.lifeMax = baseLife;
+        NPC.damage = baseDamage;
         NPC.defense = 12;
         NPC.knockBackResist = 0f;
         NPC.value = Item.buyPrice(gold: 1);
@@ -382,8 +394,12 @@ public class ThunderMarshJiao : ModNPC
     {
         NPC.width = 96;
         NPC.height = 96;
-        NPC.lifeMax = 18000;
-        NPC.damage = 58;
+        int baseLife = 18000;
+        int baseDamage = 58;
+        if (Main.expertMode) { baseLife = (int)(baseLife * 1.45f); baseDamage = (int)(baseDamage * 1.25f); }
+        if (Main.masterMode) { baseLife = (int)(baseLife * 1.85f); baseDamage = (int)(baseDamage * 1.45f); }
+        NPC.lifeMax = baseLife;
+        NPC.damage = baseDamage;
         NPC.defense = 26;
         NPC.knockBackResist = 0f;
         NPC.value = Item.buyPrice(gold: 1);
@@ -501,8 +517,12 @@ public class AbyssalStarWomb : ModNPC
     {
         NPC.width = 96;
         NPC.height = 96;
-        NPC.lifeMax = 21000;
-        NPC.damage = 54;
+        int baseLife = 21000;
+        int baseDamage = 54;
+        if (Main.expertMode) { baseLife = (int)(baseLife * 1.45f); baseDamage = (int)(baseDamage * 1.25f); }
+        if (Main.masterMode) { baseLife = (int)(baseLife * 1.85f); baseDamage = (int)(baseDamage * 1.45f); }
+        NPC.lifeMax = baseLife;
+        NPC.damage = baseDamage;
         NPC.defense = 30;
         NPC.knockBackResist = 0f;
         NPC.value = Item.buyPrice(gold: 1);
@@ -620,8 +640,12 @@ public class FormlessSwordSoul : ModNPC
     {
         NPC.width = 96;
         NPC.height = 96;
-        NPC.lifeMax = 48000;
-        NPC.damage = 72;
+        int baseLife = 48000;
+        int baseDamage = 72;
+        if (Main.expertMode) { baseLife = (int)(baseLife * 1.45f); baseDamage = (int)(baseDamage * 1.25f); }
+        if (Main.masterMode) { baseLife = (int)(baseLife * 1.85f); baseDamage = (int)(baseDamage * 1.45f); }
+        NPC.lifeMax = baseLife;
+        NPC.damage = baseDamage;
         NPC.defense = 38;
         NPC.knockBackResist = 0f;
         NPC.value = Item.buyPrice(gold: 1);
@@ -744,8 +768,12 @@ public class GreenwoodMedicineKingEcho : ModNPC
     {
         NPC.width = 96;
         NPC.height = 96;
-        NPC.lifeMax = 52000;
-        NPC.damage = 66;
+        int baseLife = 52000;
+        int baseDamage = 66;
+        if (Main.expertMode) { baseLife = (int)(baseLife * 1.45f); baseDamage = (int)(baseDamage * 1.25f); }
+        if (Main.masterMode) { baseLife = (int)(baseLife * 1.85f); baseDamage = (int)(baseDamage * 1.45f); }
+        NPC.lifeMax = baseLife;
+        NPC.damage = baseDamage;
         NPC.defense = 34;
         NPC.knockBackResist = 0f;
         NPC.value = Item.buyPrice(gold: 1);
@@ -864,8 +892,12 @@ public class HeavenTabletGuardian : ModNPC
     {
         NPC.width = 96;
         NPC.height = 96;
-        NPC.lifeMax = 86000;
-        NPC.damage = 82;
+        int baseLife = 86000;
+        int baseDamage = 82;
+        if (Main.expertMode) { baseLife = (int)(baseLife * 1.45f); baseDamage = (int)(baseDamage * 1.25f); }
+        if (Main.masterMode) { baseLife = (int)(baseLife * 1.85f); baseDamage = (int)(baseDamage * 1.45f); }
+        NPC.lifeMax = baseLife;
+        NPC.damage = baseDamage;
         NPC.defense = 48;
         NPC.knockBackResist = 0f;
         NPC.value = Item.buyPrice(gold: 1);
@@ -983,8 +1015,12 @@ public class BrokenHeavenInspector : ModNPC
     {
         NPC.width = 96;
         NPC.height = 96;
-        NPC.lifeMax = 96000;
-        NPC.damage = 92;
+        int baseLife = 96000;
+        int baseDamage = 92;
+        if (Main.expertMode) { baseLife = (int)(baseLife * 1.45f); baseDamage = (int)(baseDamage * 1.25f); }
+        if (Main.masterMode) { baseLife = (int)(baseLife * 1.85f); baseDamage = (int)(baseDamage * 1.45f); }
+        NPC.lifeMax = baseLife;
+        NPC.damage = baseDamage;
         NPC.defense = 42;
         NPC.knockBackResist = 0f;
         NPC.value = Item.buyPrice(gold: 1);
@@ -1107,8 +1143,12 @@ public class MoonboneImmortal : ModNPC
     {
         NPC.width = 96;
         NPC.height = 96;
-        NPC.lifeMax = 420000;
-        NPC.damage = 180;
+        int baseLife = 420000;
+        int baseDamage = 180;
+        if (Main.expertMode) { baseLife = (int)(baseLife * 1.45f); baseDamage = (int)(baseDamage * 1.25f); }
+        if (Main.masterMode) { baseLife = (int)(baseLife * 1.85f); baseDamage = (int)(baseDamage * 1.45f); }
+        NPC.lifeMax = baseLife;
+        NPC.damage = baseDamage;
         NPC.defense = 80;
         NPC.knockBackResist = 0f;
         NPC.value = Item.buyPrice(gold: 1);
@@ -1232,8 +1272,12 @@ public class OldHeavenDaoCore : ModNPC
     {
         NPC.width = 96;
         NPC.height = 96;
-        NPC.lifeMax = 650000;
-        NPC.damage = 220;
+        int baseLife = 650000;
+        int baseDamage = 220;
+        if (Main.expertMode) { baseLife = (int)(baseLife * 1.45f); baseDamage = (int)(baseDamage * 1.25f); }
+        if (Main.masterMode) { baseLife = (int)(baseLife * 1.85f); baseDamage = (int)(baseDamage * 1.45f); }
+        NPC.lifeMax = baseLife;
+        NPC.damage = baseDamage;
         NPC.defense = 100;
         NPC.knockBackResist = 0f;
         NPC.value = Item.buyPrice(gold: 1);
