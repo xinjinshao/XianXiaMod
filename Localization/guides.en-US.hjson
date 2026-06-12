@@ -5,6 +5,7 @@ Mods: {
 				DisplayName: Sect Ledger
 				Tooltip: Use to read the next cultivation objective recorded by the fallen sect.
 				Guidance: {
+					SectReputation: "Sect reputation: {0}."
 					AwakenQi: The ledger points to shallow spirit veins: craft or use a Qi-Drawing Talisman to awaken spiritual energy.
 					SpiritVeinWyrm: The first debt is under the earth: craft Spirit Vein Incense and defeat the Spirit Vein Wyrm.
 					Foundation: Your meridians are open, but your base is loose: refine advancement pills and reach Foundation.

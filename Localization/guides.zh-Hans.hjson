@@ -5,6 +5,7 @@ Mods: {
 				DisplayName: 宗门玉简
 				Tooltip: 使用后读取旧宗门记录的下一项修行目标。
 				Guidance: {
+					SectReputation: "当前宗门声望：{0}。"
 					AwakenQi: 玉简指向浅层灵脉：制作或使用引气符，唤醒灵气感知。
 					SpiritVeinWyrm: 第一笔旧账埋在地下：制作灵脉香，击败灵脉蠕虫。
 					Foundation: 经脉已开，但根基未稳：炼制进阶丹药，突破至筑基。

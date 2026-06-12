@@ -51,58 +51,59 @@ public class SectLedger : ModItem
     private static string GetNextGuidance(Player player)
     {
         XianXiaPlayer cultivation = player.GetModPlayer<XianXiaPlayer>();
+        string reputation = Guidance("SectReputation").Format(DownedBossSystem.SectReputation);
 
         if (cultivation.cultivationStage < CultivationStage.QiAwakening)
         {
-            return GuidanceValue("AwakenQi");
+            return $"{reputation} {GuidanceValue("AwakenQi")}";
         }
 
         if (!DownedBossSystem.DownedSpiritVeinWyrm)
         {
-            return GuidanceValue("SpiritVeinWyrm");
+            return $"{reputation} {GuidanceValue("SpiritVeinWyrm")}";
         }
 
         if (cultivation.cultivationStage < CultivationStage.Foundation)
         {
-            return GuidanceValue("Foundation");
+            return $"{reputation} {GuidanceValue("Foundation")}";
         }
 
         if (!DownedBossSystem.DownedBosses.Contains("garden_warden"))
         {
-            return GuidanceValue("GardenWarden");
+            return $"{reputation} {GuidanceValue("GardenWarden")}";
         }
 
         if (!DownedBossSystem.DownedBosses.Contains("black_furnace_iron_golem"))
         {
-            return GuidanceValue("BlackFurnace");
+            return $"{reputation} {GuidanceValue("BlackFurnace")}";
         }
 
         if (cultivation.cultivationStage < CultivationStage.GoldenCore)
         {
-            return GuidanceValue("GoldenCore");
+            return $"{reputation} {GuidanceValue("GoldenCore")}";
         }
 
         if (!DownedBossSystem.DownedBosses.Contains("formless_sword_soul"))
         {
-            return GuidanceValue("SwordSoul");
+            return $"{reputation} {GuidanceValue("SwordSoul")}";
         }
 
         if (cultivation.cultivationStage < CultivationStage.NascentSoul)
         {
-            return GuidanceValue("NascentSoul");
+            return $"{reputation} {GuidanceValue("NascentSoul")}";
         }
 
         if (!DownedBossSystem.DownedBosses.Contains("heaven_tablet_guardian"))
         {
-            return GuidanceValue("HeavenTablet");
+            return $"{reputation} {GuidanceValue("HeavenTablet")}";
         }
 
         if (cultivation.cultivationStage < CultivationStage.DaoSevering)
         {
-            return Guidance("DaoSevering").Format(DownedBossSystem.SectReputation);
+            return $"{reputation} {Guidance("DaoSevering").Format(DownedBossSystem.SectReputation)}";
         }
 
-        return Guidance("Endgame").Format(DownedBossSystem.SectReputation);
+        return $"{reputation} {Guidance("Endgame").Format(DownedBossSystem.SectReputation)}";
     }
 
     private static LocalizedText Guidance(string key)
