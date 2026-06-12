@@ -340,6 +340,15 @@ def generate_materials(existing: set[str]) -> None:
         "moonbone",
         "dao_severing_dust",
     }
+    breakthrough_targets = {
+        "qi_condensing_pill": "QiCondensation",
+        "foundation_pill": "Foundation",
+        "star_eclipse_crystal": "GoldenCore",
+        "old_heaven_dao_scroll": "NascentSoul",
+        "heaven_dao_fragment": "SpiritSevering",
+        "moonbone": "Tribulation",
+        "dao_severing_dust": "DaoSevering",
+    }
     accessories = {
         "qi_gathering_pendant",
         "spiritwood_charm",
@@ -384,6 +393,7 @@ def generate_materials(existing: set[str]) -> None:
         if asset_id in accessories or asset_id in weapons:
             stack = 1
         use_setup = ""
+        can_use_item = ""
         use_item = ""
         accessory = ""
         recipe = ""
@@ -394,6 +404,15 @@ def generate_materials(existing: set[str]) -> None:
         Item.useAnimation = 20;
         Item.UseSound = SoundID.Item3;
         Item.consumable = true;"""
+        if asset_id in breakthrough_targets:
+            target = breakthrough_targets[asset_id]
+            can_use_item = f"""
+    public override bool CanUseItem(Player player)
+    {{
+        return player.GetModPlayer<global::XianXia.Common.Players.XianXiaPlayer>()
+            .CanUseBreakthroughItem(global::XianXia.Common.Players.CultivationStage.{target});
+    }}
+"""
         if asset_id == "spring_return_pill":
             use_item = """
     public override bool? UseItem(Player player)
@@ -629,7 +648,7 @@ public class {class_name} : ModItem
         Item.rare = {rare};
 {use_setup}
     }}
-{use_item}{accessory}{recipe}
+{can_use_item}{use_item}{accessory}{recipe}
 }}
 """)
     write(CONTENT / "Items" / "Generated" / "GeneratedItems.cs", ITEMS_HEADER + "\n".join(classes))

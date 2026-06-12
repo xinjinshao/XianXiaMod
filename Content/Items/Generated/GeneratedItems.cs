@@ -87,6 +87,12 @@ public class StarEclipseCrystal : ModItem
         Item.consumable = true;
     }
 
+    public override bool CanUseItem(Player player)
+    {
+        return player.GetModPlayer<global::XianXia.Common.Players.XianXiaPlayer>()
+            .CanUseBreakthroughItem(global::XianXia.Common.Players.CultivationStage.GoldenCore);
+    }
+
     public override bool? UseItem(Player player)
     {
         player.GetModPlayer<global::XianXia.Common.Players.XianXiaPlayer>().TryAdvanceCultivation(global::XianXia.Common.Players.CultivationStage.GoldenCore);
@@ -130,6 +136,12 @@ public class HeavenDaoFragment : ModItem
         Item.consumable = true;
     }
 
+    public override bool CanUseItem(Player player)
+    {
+        return player.GetModPlayer<global::XianXia.Common.Players.XianXiaPlayer>()
+            .CanUseBreakthroughItem(global::XianXia.Common.Players.CultivationStage.SpiritSevering);
+    }
+
     public override bool? UseItem(Player player)
     {
         player.GetModPlayer<global::XianXia.Common.Players.XianXiaPlayer>().TryAdvanceCultivation(global::XianXia.Common.Players.CultivationStage.SpiritSevering);
@@ -157,6 +169,12 @@ public class Moonbone : ModItem
         Item.consumable = true;
     }
 
+    public override bool CanUseItem(Player player)
+    {
+        return player.GetModPlayer<global::XianXia.Common.Players.XianXiaPlayer>()
+            .CanUseBreakthroughItem(global::XianXia.Common.Players.CultivationStage.Tribulation);
+    }
+
     public override bool? UseItem(Player player)
     {
         player.GetModPlayer<global::XianXia.Common.Players.XianXiaPlayer>().TryAdvanceCultivation(global::XianXia.Common.Players.CultivationStage.Tribulation);
@@ -182,6 +200,12 @@ public class DaoSeveringDust : ModItem
         Item.useAnimation = 20;
         Item.UseSound = SoundID.Item3;
         Item.consumable = true;
+    }
+
+    public override bool CanUseItem(Player player)
+    {
+        return player.GetModPlayer<global::XianXia.Common.Players.XianXiaPlayer>()
+            .CanUseBreakthroughItem(global::XianXia.Common.Players.CultivationStage.DaoSevering);
     }
 
     public override bool? UseItem(Player player)
@@ -247,6 +271,12 @@ public class QiCondensingPill : ModItem
         Item.consumable = true;
     }
 
+    public override bool CanUseItem(Player player)
+    {
+        return player.GetModPlayer<global::XianXia.Common.Players.XianXiaPlayer>()
+            .CanUseBreakthroughItem(global::XianXia.Common.Players.CultivationStage.QiCondensation);
+    }
+
     public override bool? UseItem(Player player)
     {
         player.GetModPlayer<global::XianXia.Common.Players.XianXiaPlayer>().TryAdvanceCultivation(global::XianXia.Common.Players.CultivationStage.QiCondensation);
@@ -281,6 +311,12 @@ public class FoundationPill : ModItem
         Item.useAnimation = 20;
         Item.UseSound = SoundID.Item3;
         Item.consumable = true;
+    }
+
+    public override bool CanUseItem(Player player)
+    {
+        return player.GetModPlayer<global::XianXia.Common.Players.XianXiaPlayer>()
+            .CanUseBreakthroughItem(global::XianXia.Common.Players.CultivationStage.Foundation);
     }
 
     public override bool? UseItem(Player player)
@@ -818,6 +854,12 @@ public class OldHeavenDaoScroll : ModItem
         Item.useAnimation = 20;
         Item.UseSound = SoundID.Item3;
         Item.consumable = true;
+    }
+
+    public override bool CanUseItem(Player player)
+    {
+        return player.GetModPlayer<global::XianXia.Common.Players.XianXiaPlayer>()
+            .CanUseBreakthroughItem(global::XianXia.Common.Players.CultivationStage.NascentSoul);
     }
 
     public override bool? UseItem(Player player)

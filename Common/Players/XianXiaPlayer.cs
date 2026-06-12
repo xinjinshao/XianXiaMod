@@ -111,12 +111,7 @@ public class XianXiaPlayer : ModPlayer
     public bool TryAdvanceCultivation(CultivationStage targetStage)
     {
         discoveredSpiritualEnergy = true;
-        if (targetStage <= cultivationStage || targetStage > CultivationStage.DaoSevering)
-        {
-            return false;
-        }
-
-        if ((int)targetStage != (int)cultivationStage + 1)
+        if (!CanAdvanceCultivation(targetStage))
         {
             return false;
         }
@@ -126,7 +121,29 @@ public class XianXiaPlayer : ModPlayer
         RestoreSpiritualEnergy(maxSpiritualEnergy / 3);
         spiritPressure = Math.Clamp(spiritPressure + (int)targetStage * 8, 0, 100);
         BeginTribulation(targetStage);
+        if (Main.myPlayer == Player.whoAmI)
+        {
+            Main.NewText($"境界突破：{targetStage}", 120, 245, 220);
+        }
         return true;
+    }
+
+    public bool CanAdvanceCultivation(CultivationStage targetStage)
+    {
+        return targetStage > cultivationStage
+            && targetStage <= CultivationStage.DaoSevering
+            && (int)targetStage == (int)cultivationStage + 1;
+    }
+
+    public bool CanUseBreakthroughItem(CultivationStage targetStage)
+    {
+        bool canAdvance = CanAdvanceCultivation(targetStage);
+        if (!canAdvance && Main.myPlayer == Player.whoAmI)
+        {
+            Main.NewText("此物只适合下一重境界突破。先稳住当前境界，再按顺序进阶。", 255, 210, 120);
+        }
+
+        return canAdvance;
     }
 
     public void ReduceSpiritPressure(int amount)
