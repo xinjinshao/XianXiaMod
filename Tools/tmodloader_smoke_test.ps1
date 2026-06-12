@@ -29,6 +29,9 @@ if ($LASTEXITCODE -ge 8) {
 Push-Location $modSource
 try {
     dotnet build XianXia.csproj
+    if ($LASTEXITCODE -ne 0) {
+        throw "tModLoader ModSources build failed with exit code $LASTEXITCODE"
+    }
 }
 finally {
     Pop-Location
