@@ -80,6 +80,7 @@ public class HerbGardenVineSpirit : ModNPC
     public override void ModifyNPCLoot(NPCLoot npcLoot)
     {
         npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<global::XianXia.Content.Items.Generated.GreenwoodRoot>(), 2, 1, 2));
+        npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<global::XianXia.Content.Items.Generated.GreenwoodRoot>(), 3, 1, 2));
     }
 }
 
@@ -140,6 +141,7 @@ public class MiasmaFlowerMoth : ModNPC
     public override void ModifyNPCLoot(NPCLoot npcLoot)
     {
         npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<global::XianXia.Content.Items.Generated.GreenwoodRoot>(), 2, 1, 2));
+        npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<global::XianXia.Content.Items.Generated.ArtifactBlankShard>(), 4, 1, 2));
     }
 }
 
@@ -194,6 +196,7 @@ public class FurnaceAshGolem : ModNPC
     public override void ModifyNPCLoot(NPCLoot npcLoot)
     {
         npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<global::XianXia.Content.Items.Generated.FurnaceSlagIron>(), 2, 1, 2));
+        npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<global::XianXia.Content.Items.Generated.ArtifactBlankShard>(), 3, 1, 2));
     }
 }
 
@@ -257,6 +260,7 @@ public class IronShardSpirit : ModNPC
     public override void ModifyNPCLoot(NPCLoot npcLoot)
     {
         npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<global::XianXia.Content.Items.Generated.ArtifactBlankShard>(), 2, 1, 2));
+        npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<global::XianXia.Content.Items.Generated.FurnaceSlagIron>(), 4, 1, 2));
     }
 }
 
@@ -319,6 +323,7 @@ public class TribulationCloudling : ModNPC
     public override void ModifyNPCLoot(NPCLoot npcLoot)
     {
         npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<global::XianXia.Content.Items.Generated.TribulationCloudDew>(), 2, 1, 2));
+        npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<global::XianXia.Content.Items.Generated.ArtifactBlankShard>(), 3, 1, 2));
     }
 }
 
@@ -389,6 +394,7 @@ public class ThunderPatternHawk : ModNPC
     public override void ModifyNPCLoot(NPCLoot npcLoot)
     {
         npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<global::XianXia.Content.Items.Generated.TribulationCloudDew>(), 2, 1, 2));
+        npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<global::XianXia.Content.Items.Generated.ArtifactBlankShard>(), 3, 1, 2));
     }
 }
 
@@ -465,6 +471,7 @@ public class StarEclipsedCultivator : ModNPC
     public override void ModifyNPCLoot(NPCLoot npcLoot)
     {
         npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<global::XianXia.Content.Items.Generated.StarEclipseCrystal>(), 2, 1, 2));
+        npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<global::XianXia.Content.Items.Generated.ArtifactBlankShard>(), 4, 1, 2));
     }
 }
 
@@ -529,6 +536,7 @@ public class StarAbyssLarva : ModNPC
     public override void ModifyNPCLoot(NPCLoot npcLoot)
     {
         npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<global::XianXia.Content.Items.Generated.StarEclipseCrystal>(), 2, 1, 2));
+        npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<global::XianXia.Content.Items.Generated.ArtifactBlankShard>(), 3, 1, 2));
     }
 }
 
@@ -611,6 +619,7 @@ public class ObsessedSwordCultivator : ModNPC
     public override void ModifyNPCLoot(NPCLoot npcLoot)
     {
         npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<global::XianXia.Content.Items.Generated.SectTrialToken>(), 2, 1, 2));
+        npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<global::XianXia.Content.Items.Generated.ArtifactBlankShard>(), 3, 1, 2));
     }
 }
 
@@ -691,6 +700,7 @@ public class ScriptureArchiveEcho : ModNPC
     public override void ModifyNPCLoot(NPCLoot npcLoot)
     {
         npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<global::XianXia.Content.Items.Generated.SectTrialToken>(), 2, 1, 2));
+        npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<global::XianXia.Content.Items.Generated.SectTrialToken>(), 4, 1, 2));
     }
 }
 
@@ -758,6 +768,7 @@ public class CelestialPuppet : ModNPC
     public override void ModifyNPCLoot(NPCLoot npcLoot)
     {
         npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<global::XianXia.Content.Items.Generated.HeavenDaoFragment>(), 2, 1, 2));
+        npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<global::XianXia.Content.Items.Generated.HeavenDaoFragment>(), 3, 1, 2));
     }
 }
 
@@ -834,6 +845,7 @@ public class HeavenTabletGuard : ModNPC
     public override void ModifyNPCLoot(NPCLoot npcLoot)
     {
         npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<global::XianXia.Content.Items.Generated.HeavenDaoFragment>(), 2, 1, 2));
+        npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<global::XianXia.Content.Items.Generated.ArtifactBlankShard>(), 4, 1, 2));
     }
 }
 
@@ -901,6 +913,7 @@ public class MoonboneCultivator : ModNPC
     public override void ModifyNPCLoot(NPCLoot npcLoot)
     {
         npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<global::XianXia.Content.Items.Generated.Moonbone>(), 2, 1, 2));
+        npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<global::XianXia.Content.Items.Generated.DaoSeveringDust>(), 4, 1, 2));
     }
 }
 
@@ -971,5 +984,6 @@ public class ArchivedImmortalSoul : ModNPC
     public override void ModifyNPCLoot(NPCLoot npcLoot)
     {
         npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<global::XianXia.Content.Items.Generated.DaoSeveringDust>(), 2, 1, 2));
+        npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<global::XianXia.Content.Items.Generated.Moonbone>(), 4, 1, 2));
     }
 }
