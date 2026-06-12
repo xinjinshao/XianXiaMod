@@ -4,6 +4,7 @@ using Terraria.GameContent.Bestiary;
 using Terraria.GameContent;
 using Terraria.GameContent.Personalities;
 using Terraria.ID;
+using Terraria.Localization;
 using Terraria.ModLoader;
 using XianXia.Common.Players;
 using XianXia.Common.Systems;
@@ -103,6 +104,47 @@ public abstract class CultivationTownNPC : ModNPC
     {
         bestiaryEntry.Info.Add(new FlavorTextBestiaryInfoElement($"Mods.XianXia.Bestiary.{key}"));
     }
+
+    public override void SetChatButtons(ref string button, ref string button2)
+    {
+        button = Language.GetTextValue("LegacyInterface.28");
+        button2 = Language.GetTextValue("Mods.XianXia.NPCs.Commission.Button");
+    }
+
+    public override void OnChatButtonClicked(bool firstButton, ref string shopName)
+    {
+        if (firstButton)
+        {
+            shopName = "Shop";
+            return;
+        }
+
+        Main.npcChatText = TryClaimCommission(Main.LocalPlayer, out string text)
+            ? text
+            : text;
+    }
+
+    protected virtual bool TryClaimCommission(Player player, out string text)
+    {
+        text = Language.GetTextValue("Mods.XianXia.NPCs.Commission.Unavailable");
+        return false;
+    }
+
+    protected bool ClaimCommission(Player player, string key, int reputation, string textKey, params (int Type, int Stack)[] rewards)
+    {
+        if (!DownedBossSystem.TryClaimCommission(key, reputation))
+        {
+            return false;
+        }
+
+        foreach ((int type, int stack) in rewards)
+        {
+            player.QuickSpawnItem(NPC.GetSource_FromThis(), type, stack);
+        }
+
+        Main.npcChatText = Language.GetTextValue(textKey, reputation, DownedBossSystem.SectReputation);
+        return true;
+    }
 }
 
 [AutoloadHead]
@@ -162,6 +204,29 @@ public class HerbSectApprentice : CultivationTownNPC
         {
             HideShopItem<FoundationPill>(items);
         }
+    }
+
+    protected override bool TryClaimCommission(Player player, out string text)
+    {
+        if (!Downed("garden_warden"))
+        {
+            text = Language.GetTextValue("Mods.XianXia.NPCs.Commission.HerbSectApprentice.Locked");
+            return false;
+        }
+
+        bool claimed = ClaimCommission(
+            player,
+            "herb_sect_apprentice_garden",
+            8,
+            "Mods.XianXia.NPCs.Commission.HerbSectApprentice.Claimed",
+            (ModContent.ItemType<GreenwoodRoot>(), 10),
+            (ModContent.ItemType<SpringReturnPill>(), 3));
+        text = Main.npcChatText;
+        if (!claimed)
+        {
+            text = Language.GetTextValue("Mods.XianXia.NPCs.Commission.AlreadyClaimed");
+        }
+        return claimed;
     }
 }
 
@@ -228,6 +293,29 @@ public class WanderingArtificer : CultivationTownNPC
             HideShopItem<FurnaceHeartRing>(items);
         }
     }
+
+    protected override bool TryClaimCommission(Player player, out string text)
+    {
+        if (!Downed("black_furnace_iron_golem"))
+        {
+            text = Language.GetTextValue("Mods.XianXia.NPCs.Commission.WanderingArtificer.Locked");
+            return false;
+        }
+
+        bool claimed = ClaimCommission(
+            player,
+            "wandering_artificer_furnace",
+            8,
+            "Mods.XianXia.NPCs.Commission.WanderingArtificer.Claimed",
+            (ModContent.ItemType<FurnaceSlagIron>(), 10),
+            (ModContent.ItemType<ArtifactBlankShard>(), 3));
+        text = Main.npcChatText;
+        if (!claimed)
+        {
+            text = Language.GetTextValue("Mods.XianXia.NPCs.Commission.AlreadyClaimed");
+        }
+        return claimed;
+    }
 }
 
 [AutoloadHead]
@@ -285,6 +373,29 @@ public class TribulationObserver : CultivationTownNPC
             HideShopItem<ThunderTalismanArrayPlate>(items);
             HideShopItem<SummonThunderCallingJade>(items);
         }
+    }
+
+    protected override bool TryClaimCommission(Player player, out string text)
+    {
+        if (!Downed("thunder_marsh_jiao"))
+        {
+            text = Language.GetTextValue("Mods.XianXia.NPCs.Commission.TribulationObserver.Locked");
+            return false;
+        }
+
+        bool claimed = ClaimCommission(
+            player,
+            "tribulation_observer_thunder",
+            12,
+            "Mods.XianXia.NPCs.Commission.TribulationObserver.Claimed",
+            (ModContent.ItemType<TribulationCloudDew>(), 8),
+            (ModContent.ItemType<TribulationResistingPill>(), 3));
+        text = Main.npcChatText;
+        if (!claimed)
+        {
+            text = Language.GetTextValue("Mods.XianXia.NPCs.Commission.AlreadyClaimed");
+        }
+        return claimed;
     }
 }
 
@@ -353,6 +464,29 @@ public class ArchiveScrollSpirit : CultivationTownNPC
         {
             HideShopItem<NascentSoulJadeBox>(items);
         }
+    }
+
+    protected override bool TryClaimCommission(Player player, out string text)
+    {
+        if (!Downed("formless_sword_soul"))
+        {
+            text = Language.GetTextValue("Mods.XianXia.NPCs.Commission.ArchiveScrollSpirit.Locked");
+            return false;
+        }
+
+        bool claimed = ClaimCommission(
+            player,
+            "archive_scroll_spirit_trial",
+            16,
+            "Mods.XianXia.NPCs.Commission.ArchiveScrollSpirit.Claimed",
+            (ModContent.ItemType<SectTrialToken>(), 2),
+            (ModContent.ItemType<OldHeavenDaoScroll>(), 1));
+        text = Main.npcChatText;
+        if (!claimed)
+        {
+            text = Language.GetTextValue("Mods.XianXia.NPCs.Commission.AlreadyClaimed");
+        }
+        return claimed;
     }
 }
 
@@ -425,5 +559,28 @@ public class FallenHeavenMessenger : CultivationTownNPC
         {
             HideShopItem<DaoSeveringRing>(items);
         }
+    }
+
+    protected override bool TryClaimCommission(Player player, out string text)
+    {
+        if (!Downed("heaven_tablet_guardian"))
+        {
+            text = Language.GetTextValue("Mods.XianXia.NPCs.Commission.FallenHeavenMessenger.Locked");
+            return false;
+        }
+
+        bool claimed = ClaimCommission(
+            player,
+            "fallen_heaven_messenger_tablet",
+            24,
+            "Mods.XianXia.NPCs.Commission.FallenHeavenMessenger.Claimed",
+            (ModContent.ItemType<HeavenDaoFragment>(), 6),
+            (ModContent.ItemType<BrokenHeavenDecree>(), 1));
+        text = Main.npcChatText;
+        if (!claimed)
+        {
+            text = Language.GetTextValue("Mods.XianXia.NPCs.Commission.AlreadyClaimed");
+        }
+        return claimed;
     }
 }

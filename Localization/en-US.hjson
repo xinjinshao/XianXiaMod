@@ -37,6 +37,31 @@ Mods: {
 			ShatteredJadeWorm.DisplayName: Shattered Jade Worm
 			SpiritVeinWyrm.DisplayName: Spirit Vein Wyrm
 			ShatteredJadeWyrmMinion.DisplayName: Spirit Vein Segment
+			Commission: {
+				Button: Commission
+				Unavailable: There is no suitable commission for you right now.
+				AlreadyClaimed: This commission has already been settled. The fallen sect records slowly, but accurately.
+				HerbSectApprentice: {
+					Locked: The old garden trouble still stands. Defeat the Garden Warden, then I can release the herb sect's share.
+					Claimed: "The garden roots are recorded. Sect reputation +{0}; current reputation {1}."
+				}
+				WanderingArtificer: {
+					Locked: The black furnace is still ringing. Defeat the Black Furnace Iron Golem before I hand over its lower-forge materials.
+					Claimed: "The furnace debt is settled. Sect reputation +{0}; current reputation {1}."
+				}
+				TribulationObserver: {
+					Locked: The Thunder Marsh Jiao has not fallen, so the lightning debt is not written yet. Walk the thunder clouds first.
+					Claimed: "The lightning debt is recorded. Sect reputation +{0}; current reputation {1}."
+				}
+				ArchiveScrollSpirit: {
+					Locked: The Formless Sword Soul still guards the old scrolls. The archive will not open before the trial is passed.
+					Claimed: "The old scrolls accept your sword marks. Sect reputation +{0}; current reputation {1}."
+				}
+				FallenHeavenMessenger: {
+					Locked: The Heaven Tablet Guardian has not stepped aside. Make the old court hear your name first.
+					Claimed: "The tablet debt is sealed. Sect reputation +{0}; current reputation {1}."
+				}
+			}
 		}
 		Tiles: {
 			SpiritOreTile.MapEntry: Spirit Ore

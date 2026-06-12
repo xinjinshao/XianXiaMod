@@ -9,6 +9,7 @@ public class DownedBossSystem : ModSystem
 {
     public static bool DownedSpiritVeinWyrm { get; set; }
     public static HashSet<string> DownedBosses { get; } = new();
+    public static HashSet<string> ClaimedCommissions { get; } = new();
     public static int SectReputation { get; private set; }
 
     private static readonly Dictionary<string, int> ReputationByBoss = new()
@@ -27,10 +28,20 @@ public class DownedBossSystem : ModSystem
         ["old_heaven_dao_core"] = 80,
     };
 
+    private static readonly Dictionary<string, int> ReputationByCommission = new()
+    {
+        ["herb_sect_apprentice_garden"] = 8,
+        ["wandering_artificer_furnace"] = 8,
+        ["tribulation_observer_thunder"] = 12,
+        ["archive_scroll_spirit_trial"] = 16,
+        ["fallen_heaven_messenger_tablet"] = 24,
+    };
+
     public override void ClearWorld()
     {
         DownedSpiritVeinWyrm = false;
         DownedBosses.Clear();
+        ClaimedCommissions.Clear();
         SectReputation = 0;
     }
 
@@ -38,6 +49,7 @@ public class DownedBossSystem : ModSystem
     {
         tag["downedSpiritVeinWyrm"] = DownedSpiritVeinWyrm;
         tag["downedBosses"] = DownedBosses.ToList();
+        tag["claimedCommissions"] = ClaimedCommissions.ToList();
         tag["sectReputation"] = SectReputation;
     }
 
@@ -48,6 +60,11 @@ public class DownedBossSystem : ModSystem
         foreach (string boss in tag.GetList<string>("downedBosses"))
         {
             DownedBosses.Add(boss);
+        }
+        ClaimedCommissions.Clear();
+        foreach (string commission in tag.GetList<string>("claimedCommissions"))
+        {
+            ClaimedCommissions.Add(commission);
         }
         if (DownedSpiritVeinWyrm)
         {
@@ -74,12 +91,30 @@ public class DownedBossSystem : ModSystem
         return SectReputation >= required;
     }
 
+    public static bool TryClaimCommission(string commissionId, int reputation)
+    {
+        if (!ClaimedCommissions.Add(commissionId))
+        {
+            return false;
+        }
+
+        SectReputation += reputation;
+        return true;
+    }
+
     private static void RecalculateSectReputation()
     {
         SectReputation = 0;
         foreach (string bossId in DownedBosses)
         {
             if (ReputationByBoss.TryGetValue(bossId, out int value))
+            {
+                SectReputation += value;
+            }
+        }
+        foreach (string commissionId in ClaimedCommissions)
+        {
+            if (ReputationByCommission.TryGetValue(commissionId, out int value))
             {
                 SectReputation += value;
             }

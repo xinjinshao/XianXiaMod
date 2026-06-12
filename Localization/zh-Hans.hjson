@@ -37,6 +37,31 @@ Mods: {
 			ShatteredJadeWorm.DisplayName: 碎玉虫
 			SpiritVeinWyrm.DisplayName: 灵脉蠕虫
 			ShatteredJadeWyrmMinion.DisplayName: 灵脉幼节
+			Commission: {
+				Button: 委托
+				Unavailable: 现在还没有适合你的委托。
+				AlreadyClaimed: 这项委托已经结清。旧宗门记账很慢，但不会记错。
+				HerbSectApprentice: {
+					Locked: 药园旧患未平。等守园人倒下，我再把药宗欠你的那份补上。
+					Claimed: "药园的灵根归了账。宗门声望 +{0}，当前声望 {1}。"
+				}
+				WanderingArtificer: {
+					Locked: 玄炉还在响。先击败玄炉铁傀，我才敢把炉底材料交给你。
+					Claimed: "炉底账清了。宗门声望 +{0}，当前声望 {1}。"
+				}
+				TribulationObserver: {
+					Locked: 雷泽蛟未伏，雷账还没落笔。先去雷泽云层走一遭。
+					Claimed: "雷账已记。宗门声望 +{0}，当前声望 {1}。"
+				}
+				ArchiveScrollSpirit: {
+					Locked: 无相剑魂仍守着旧卷。试炼未过，卷宗不开。
+					Claimed: "旧卷承认你的剑痕。宗门声望 +{0}，当前声望 {1}。"
+				}
+				FallenHeavenMessenger: {
+					Locked: 天碑守卫尚未让路。先让旧天庭听见你的名字。
+					Claimed: "天碑残账已落印。宗门声望 +{0}，当前声望 {1}。"
+				}
+			}
 		}
 		Tiles: {
 			SpiritOreTile.MapEntry: 灵石矿
