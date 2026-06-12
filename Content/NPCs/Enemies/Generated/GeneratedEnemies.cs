@@ -40,7 +40,8 @@ public class HerbGardenVineSpirit : ModNPC
     public override void PostAI()
     {
         Player target = Main.player[NPC.target];
-        if (target.active && !target.dead && Vector2.Distance(NPC.Center, target.Center) < 160f)
+        float distance = Vector2.Distance(NPC.Center, target.Center);
+        if (target.active && !target.dead && distance < 160f)
         {
             NPC.velocity *= 0.92f;
         }
@@ -58,6 +59,21 @@ public class HerbGardenVineSpirit : ModNPC
             {
                 Dust.NewDust(NPC.position, NPC.width, NPC.height, DustID.Grass, 0f, -0.6f);
             }
+        }
+
+        NPC.localAI[1]++;
+        if (Main.netMode != NetmodeID.MultiplayerClient && target.active && !target.dead
+            && NPC.localAI[1] >= 130f && distance > 160f && distance < 480f)
+        {
+            NPC.localAI[1] = 0f;
+            Vector2 velocity = (target.Center - NPC.Center).SafeNormalize(Vector2.UnitY) * 6f;
+            Projectile.NewProjectile(
+                NPC.GetSource_FromAI(),
+                NPC.Center,
+                velocity,
+                ModContent.ProjectileType<global::XianXia.Content.Projectiles.SpiritBoltProjectile>(),
+                Math.Max(1, NPC.damage / 3),
+                0.8f);
         }
     }
 
@@ -101,23 +117,23 @@ public class MiasmaFlowerMoth : ModNPC
     {
         NPC.velocity *= 0.985f;
         NPC.localAI[0]++;
-        if (NPC.localAI[0] < 45f)
+        if (NPC.localAI[0] >= 45f)
         {
-            return;
-        }
-
-        NPC.localAI[0] = 0f;
-        foreach (Player player in Main.ActivePlayers)
-        {
-            if (Vector2.Distance(player.Center, NPC.Center) <= 128f)
+            NPC.localAI[0] = 0f;
+            foreach (Player player in Main.ActivePlayers)
             {
-                player.AddBuff(BuffID.Poisoned, 90);
+                if (Vector2.Distance(player.Center, NPC.Center) <= 128f)
+                {
+                    player.AddBuff(BuffID.Poisoned, 90);
+                }
             }
-        }
 
-        for (int i = 0; i < 8; i++)
-        {
-            Dust.NewDust(NPC.position, NPC.width, NPC.height, DustID.Poisoned, Main.rand.NextFloat(-1f, 1f), Main.rand.NextFloat(-1f, 1f));
+            for (int i = 0; i < 10; i++)
+            {
+                float angle = MathHelper.TwoPi * i / 10f;
+                Vector2 offset = new Vector2((float)Math.Cos(angle), (float)Math.Sin(angle)) * 48f;
+                Dust.NewDust(NPC.Center + offset, 4, 4, DustID.Poisoned, offset.X * 0.03f, offset.Y * 0.03f, 100, default, 0.7f);
+            }
         }
     }
 
@@ -155,6 +171,11 @@ public class FurnaceAshGolem : ModNPC
     public override float SpawnChance(NPCSpawnInfo spawnInfo)
     {
         return spawnInfo.Player.InModBiome<global::XianXia.Content.Biomes.SunkenFurnaceVeinBiome>() ? 0.18f : 0f;
+    }
+
+    public override void PostAI()
+    {
+        NPC.defense = NPC.velocity.LengthSquared() < 0.1f ? 22 : 14;
     }
 
     public override void OnHitPlayer(Player target, Player.HurtInfo hurtInfo)
@@ -219,8 +240,14 @@ public class IronShardSpirit : ModNPC
         if (target.active && !target.dead && NPC.localAI[0] >= 75f)
         {
             NPC.localAI[0] = 0f;
+            float swarmBonus = 1f;
+            foreach (NPC other in Main.ActiveNPCs)
+            {
+                if (other.whoAmI != NPC.whoAmI && other.type == NPC.type && Vector2.Distance(NPC.Center, other.Center) < 200f)
+                    swarmBonus += 0.25f;
+            }
             Vector2 direction = (target.Center - NPC.Center).SafeNormalize(Vector2.UnitX);
-            NPC.velocity = direction * 11f;
+            NPC.velocity = direction * (11f * swarmBonus);
             NPC.netUpdate = true;
         }
 
@@ -276,10 +303,11 @@ public class TribulationCloudling : ModNPC
         if (Main.netMode != NetmodeID.MultiplayerClient && target.active && !target.dead && NPC.localAI[0] >= 150f)
         {
             NPC.localAI[0] = 0f;
-            NPC.Center = target.Center + new Vector2(Main.rand.NextFloat(-180f, 180f), Main.rand.NextFloat(-160f, -80f));
+            Vector2 predicted = target.Center + target.velocity * 30f;
+            NPC.Center = predicted + new Vector2(Main.rand.NextFloat(-120f, 120f), Main.rand.NextFloat(-160f, -80f));
             Projectile.NewProjectile(
                 NPC.GetSource_FromAI(),
-                target.Center + new Vector2(0f, -340f),
+                predicted + new Vector2(0f, -340f),
                 Vector2.UnitY * 8f,
                 ModContent.ProjectileType<global::XianXia.Content.Projectiles.TribulationWarningLineProjectile>(),
                 Math.Max(1, NPC.damage / 2),
@@ -334,11 +362,21 @@ public class ThunderPatternHawk : ModNPC
         }
 
         NPC.localAI[0]++;
-        if (target.active && !target.dead && NPC.localAI[0] >= 110f)
+        bool diving = NPC.localAI[1] > 0f;
+        if (target.active && !target.dead && NPC.localAI[0] >= (diving ? 30f : 140f))
         {
             NPC.localAI[0] = 0f;
-            Vector2 direction = (target.Center - NPC.Center).SafeNormalize(Vector2.UnitY);
-            NPC.velocity = direction * 13f;
+            if (diving)
+            {
+                NPC.localAI[1] = 0f;
+                NPC.velocity *= 0.3f;
+            }
+            else
+            {
+                NPC.localAI[1] = 1f;
+                Vector2 direction = (target.Center - NPC.Center).SafeNormalize(Vector2.UnitY);
+                NPC.velocity = direction * 15f;
+            }
             NPC.netUpdate = true;
         }
 
@@ -398,9 +436,15 @@ public class StarEclipsedCultivator : ModNPC
         }
 
         float distance = Vector2.Distance(target.Center, NPC.Center);
-        if (distance < 180f)
+        if (distance < 240f)
         {
             NPC.velocity += (NPC.Center - target.Center).SafeNormalize(Vector2.Zero) * 0.12f;
+        }
+
+        if (NPC.life < NPC.lifeMax * 0.4f && NPC.localAI[1]++ > 180f)
+        {
+            NPC.localAI[1] = 0f;
+            NPC.velocity += (NPC.Center - target.Center).SafeNormalize(Vector2.Zero) * 6f;
         }
 
         NPC.localAI[0]++;
@@ -463,12 +507,21 @@ public class StarAbyssLarva : ModNPC
         }
 
         NPC.localAI[0]++;
-        if (target.active && !target.dead && NPC.localAI[0] >= 90f && Vector2.Distance(target.Center, NPC.Center) < 260f)
+        if (NPC.localAI[1] > 0f)
+        {
+            NPC.localAI[1]--;
+            if (target.active && !target.dead && Vector2.Distance(target.Center, NPC.Center) < 40f)
+            {
+                target.velocity *= 0.6f;
+            }
+        }
+        else if (target.active && !target.dead && NPC.localAI[0] >= 90f && Vector2.Distance(target.Center, NPC.Center) < 260f)
         {
             NPC.localAI[0] = 0f;
             Vector2 leap = (target.Center - NPC.Center).SafeNormalize(Vector2.UnitX) * 8f;
             leap.Y -= 4f;
             NPC.velocity = leap;
+            NPC.localAI[1] = 90f;
             NPC.netUpdate = true;
         }
     }
@@ -518,7 +571,8 @@ public class ObsessedSwordCultivator : ModNPC
             target = Main.player[NPC.target];
         }
 
-        if (target.active && !target.dead && Math.Abs(target.Center.X - NPC.Center.X) < 96f)
+        bool guarding = target.active && !target.dead && Math.Abs(target.Center.X - NPC.Center.X) < 96f;
+        if (guarding)
         {
             NPC.velocity.X *= 0.65f;
             NPC.defense = 42;
@@ -532,8 +586,25 @@ public class ObsessedSwordCultivator : ModNPC
         if (target.active && !target.dead && NPC.localAI[0] >= 120f)
         {
             NPC.localAI[0] = 0f;
-            NPC.velocity.X = Math.Sign(target.Center.X - NPC.Center.X) * 9f;
+            if (guarding && NPC.localAI[1] > 0f)
+            {
+                NPC.localAI[1] = 0f;
+                NPC.velocity = (target.Center - NPC.Center).SafeNormalize(Vector2.UnitX) * 12f;
+                NPC.damage = (int)(NPC.damage * 1.3f);
+            }
+            else
+            {
+                NPC.velocity.X = Math.Sign(target.Center.X - NPC.Center.X) * 9f;
+            }
             NPC.netUpdate = true;
+        }
+    }
+
+    public override void OnHitByProjectile(Projectile projectile, NPC.HitInfo hit, int damageDone)
+    {
+        if (Math.Abs(Main.player[projectile.owner].Center.X - NPC.Center.X) < 96f)
+        {
+            NPC.localAI[1] = 1f;
         }
     }
 
@@ -586,6 +657,18 @@ public class ScriptureArchiveEcho : ModNPC
         if (Main.netMode != NetmodeID.MultiplayerClient && target.active && !target.dead && NPC.localAI[0] >= 105f)
         {
             NPC.localAI[0] = 0f;
+            NPC.localAI[1]++;
+            if (NPC.localAI[1] % 3 == 0)
+            {
+                NPC.localAI[1] = 0f;
+                NPC.defense = 72;
+                for (int j = 0; j < 12; j++)
+                    Dust.NewDust(NPC.position, NPC.width, NPC.height, DustID.GoldCoin, 0f, -2f, 100, default, 0.6f);
+            }
+            else
+            {
+                NPC.defense = NPC.life < NPC.lifeMax / 2 ? 36 : 28;
+            }
             for (int i = -1; i <= 1; i++)
             {
                 Vector2 velocity = (target.Center - NPC.Center).SafeNormalize(Vector2.UnitY).RotatedBy(MathHelper.ToRadians(12f * i)) * 6.5f;
@@ -599,9 +682,9 @@ public class ScriptureArchiveEcho : ModNPC
             }
         }
 
-        if (NPC.life < NPC.lifeMax / 2)
+        if (NPC.defense == 72 && NPC.localAI[0] > 30f)
         {
-            NPC.defense = 36;
+            NPC.defense = NPC.life < NPC.lifeMax / 2 ? 36 : 28;
         }
     }
 
@@ -644,11 +727,30 @@ public class CelestialPuppet : ModNPC
     public override void PostAI()
     {
         NPC.localAI[0]++;
-        if (NPC.localAI[0] >= 80f)
+        int phase = (int)(NPC.localAI[0] / 130f) % 3;
+        if (NPC.localAI[0] >= 130f)
         {
             NPC.localAI[0] = 0f;
-            NPC.velocity.Y -= 5f;
-            NPC.velocity.X *= -0.65f;
+            Player target = Main.player[NPC.target];
+            switch (phase)
+            {
+                case 0:
+                    NPC.velocity.X = Math.Sign(target.Center.X - NPC.Center.X) * 7f;
+                    break;
+                case 1:
+                    NPC.velocity.Y -= 8f;
+                    if (Main.netMode != NetmodeID.MultiplayerClient)
+                    {
+                        Vector2 aim = (target.Center - NPC.Center).SafeNormalize(Vector2.UnitY) * 7f;
+                        Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center, aim,
+                            ModContent.ProjectileType<global::XianXia.Content.Projectiles.BossSpiritBoltProjectile>(),
+                            Math.Max(1, NPC.damage / 3), 0.5f);
+                    }
+                    break;
+                case 2:
+                    NPC.velocity = (target.Center - NPC.Center).SafeNormalize(Vector2.UnitY) * 10f;
+                    break;
+            }
             NPC.netUpdate = true;
         }
     }
@@ -698,19 +800,34 @@ public class HeavenTabletGuard : ModNPC
             target = Main.player[NPC.target];
         }
 
-        NPC.defense = NPC.velocity.X == 0f ? 62 : 54;
-        NPC.localAI[0]++;
-        if (Main.netMode != NetmodeID.MultiplayerClient && target.active && !target.dead && NPC.localAI[0] >= 150f)
+        bool pushing = target.active && !target.dead && NPC.localAI[1] > 0f;
+        if (pushing)
         {
-            NPC.localAI[0] = 0f;
-            Vector2 velocity = (target.Center - NPC.Center).SafeNormalize(Vector2.UnitX) * 8f;
-            Projectile.NewProjectile(
-                NPC.GetSource_FromAI(),
-                NPC.Center,
-                velocity,
-                ModContent.ProjectileType<global::XianXia.Content.Projectiles.BossSpiritBoltProjectile>(),
-                Math.Max(1, NPC.damage / 3),
-                1f);
+            NPC.localAI[1]--;
+            NPC.defense = 82;
+            NPC.velocity.X = Math.Sign(target.Center.X - NPC.Center.X) * 3f;
+            if (Main.netMode != NetmodeID.MultiplayerClient && NPC.localAI[1] % 45 == 0)
+            {
+                Vector2 bolt = (target.Center - NPC.Center).SafeNormalize(Vector2.UnitX) * 6f;
+                Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center, bolt,
+                    ModContent.ProjectileType<global::XianXia.Content.Projectiles.BossSpiritBoltProjectile>(),
+                    Math.Max(1, NPC.damage / 3), 1f);
+            }
+            if (Vector2.Distance(NPC.Center, target.Center) < 48f)
+            {
+                target.velocity += (target.Center - NPC.Center).SafeNormalize(Vector2.UnitX) * 2f;
+                NPC.localAI[1] = 0f;
+            }
+        }
+        else
+        {
+            NPC.defense = NPC.velocity.X == 0f ? 62 : 54;
+            NPC.localAI[0]++;
+            if (NPC.localAI[0] >= 160f)
+            {
+                NPC.localAI[0] = 0f;
+                NPC.localAI[1] = 180f;
+            }
         }
     }
 
@@ -762,6 +879,18 @@ public class MoonboneCultivator : ModNPC
         if (target.active && !target.dead && NPC.localAI[0] >= 70f)
         {
             NPC.localAI[0] = 0f;
+            if (Main.netMode != NetmodeID.MultiplayerClient)
+            {
+                Vector2 predicted = target.Center + target.velocity * 18f;
+                Vector2 velocity = (predicted - NPC.Center).SafeNormalize(Vector2.UnitY) * 9f;
+                Projectile.NewProjectile(
+                    NPC.GetSource_FromAI(),
+                    NPC.Center,
+                    velocity,
+                    ModContent.ProjectileType<global::XianXia.Content.Projectiles.BossSpiritBoltProjectile>(),
+                    Math.Max(1, NPC.damage / 2),
+                    1f);
+            }
             NPC.velocity = (target.Center - NPC.Center).SafeNormalize(Vector2.UnitX) * 12f;
             NPC.netUpdate = true;
         }
@@ -805,6 +934,9 @@ public class ArchivedImmortalSoul : ModNPC
         return spawnInfo.Player.InModBiome<global::XianXia.Content.Biomes.MoonboneAbyssBiome>() ? 0.18f : 0f;
     }
 
+    private Vector2[] recentPositions = new Vector2[20];
+    private int positionIndex;
+
     public override void PostAI()
     {
         Player target = Main.player[NPC.target];
@@ -814,18 +946,25 @@ public class ArchivedImmortalSoul : ModNPC
             target = Main.player[NPC.target];
         }
 
+        recentPositions[positionIndex % recentPositions.Length] = target.Center;
+        positionIndex++;
+
         NPC.localAI[0]++;
         if (Main.netMode != NetmodeID.MultiplayerClient && target.active && !target.dead && NPC.localAI[0] >= 95f)
         {
             NPC.localAI[0] = 0f;
-            Vector2 mirrored = new Vector2(-target.velocity.X, target.velocity.Y).SafeNormalize(Vector2.UnitY) * 7f;
-            Projectile.NewProjectile(
-                NPC.GetSource_FromAI(),
-                NPC.Center,
-                mirrored,
-                ModContent.ProjectileType<global::XianXia.Content.Projectiles.BossSpiritBoltProjectile>(),
-                Math.Max(1, NPC.damage / 3),
-                1f);
+            Vector2 oldPos = recentPositions[(positionIndex - 18 + recentPositions.Length) % recentPositions.Length];
+            if (oldPos != Vector2.Zero)
+            {
+                Vector2 velocity = (target.Center - oldPos).SafeNormalize(Vector2.UnitY) * 7f;
+                Projectile.NewProjectile(
+                    NPC.GetSource_FromAI(),
+                    NPC.Center,
+                    velocity,
+                    ModContent.ProjectileType<global::XianXia.Content.Projectiles.BossSpiritBoltProjectile>(),
+                    Math.Max(1, NPC.damage / 3),
+                    1f);
+            }
         }
     }
 
