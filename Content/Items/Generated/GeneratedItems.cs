@@ -550,7 +550,33 @@ public class CloudpiercerFlyingSword : ModItem
 
     public override bool CanUseItem(Player player)
     {
-        return player.GetModPlayer<global::XianXia.Common.Players.XianXiaPlayer>().TryConsumeSpiritualEnergy(12);
+        return player.GetModPlayer<global::XianXia.Common.Players.XianXiaPlayer>()
+            .TryConsumeSpiritualEnergy(HasArtifactAwakening(player) ? 10 : 12);
+    }
+
+    private static bool HasArtifactAwakening(Player player)
+    {
+        global::XianXia.Common.Players.XianXiaPlayer cultivation = player.GetModPlayer<global::XianXia.Common.Players.XianXiaPlayer>();
+        return cultivation.cultivationStage >= global::XianXia.Common.Players.CultivationStage.GoldenCore
+            && global::XianXia.Common.Systems.DownedBossSystem.SectReputation >= 32;
+    }
+
+    public override void ModifyWeaponDamage(Player player, ref StatModifier damage)
+    {
+        if (HasArtifactAwakening(player))
+            damage += 0.1f;
+    }
+
+    public override void ModifyTooltips(System.Collections.Generic.List<TooltipLine> tooltips)
+    {
+        Player player = Main.LocalPlayer;
+        string key = HasArtifactAwakening(player)
+            ? "Mods.XianXia.Progression.ArtifactAwakeningReady"
+            : "Mods.XianXia.Progression.ArtifactAwakeningLocked";
+        tooltips.Add(new TooltipLine(
+            Mod,
+            "XianXiaArtifactAwakening",
+            Terraria.Localization.Language.GetTextValue(key, "GoldenCore", 32, 10, 10)));
     }
 
     public override void AddRecipes()
@@ -591,7 +617,33 @@ public class ThunderPatternSwordCase : ModItem
 
     public override bool CanUseItem(Player player)
     {
-        return player.GetModPlayer<global::XianXia.Common.Players.XianXiaPlayer>().TryConsumeSpiritualEnergy(18);
+        return player.GetModPlayer<global::XianXia.Common.Players.XianXiaPlayer>()
+            .TryConsumeSpiritualEnergy(HasArtifactAwakening(player) ? 15 : 18);
+    }
+
+    private static bool HasArtifactAwakening(Player player)
+    {
+        global::XianXia.Common.Players.XianXiaPlayer cultivation = player.GetModPlayer<global::XianXia.Common.Players.XianXiaPlayer>();
+        return cultivation.cultivationStage >= global::XianXia.Common.Players.CultivationStage.GoldenCore
+            && global::XianXia.Common.Systems.DownedBossSystem.SectReputation >= 40;
+    }
+
+    public override void ModifyWeaponDamage(Player player, ref StatModifier damage)
+    {
+        if (HasArtifactAwakening(player))
+            damage += 0.12f;
+    }
+
+    public override void ModifyTooltips(System.Collections.Generic.List<TooltipLine> tooltips)
+    {
+        Player player = Main.LocalPlayer;
+        string key = HasArtifactAwakening(player)
+            ? "Mods.XianXia.Progression.ArtifactAwakeningReady"
+            : "Mods.XianXia.Progression.ArtifactAwakeningLocked";
+        tooltips.Add(new TooltipLine(
+            Mod,
+            "XianXiaArtifactAwakening",
+            Terraria.Localization.Language.GetTextValue(key, "GoldenCore", 40, 15, 12)));
     }
 
     public override void AddRecipes()
@@ -632,7 +684,33 @@ public class FormlessSwordWheel : ModItem
 
     public override bool CanUseItem(Player player)
     {
-        return player.GetModPlayer<global::XianXia.Common.Players.XianXiaPlayer>().TryConsumeSpiritualEnergy(28);
+        return player.GetModPlayer<global::XianXia.Common.Players.XianXiaPlayer>()
+            .TryConsumeSpiritualEnergy(HasArtifactAwakening(player) ? 22 : 28);
+    }
+
+    private static bool HasArtifactAwakening(Player player)
+    {
+        global::XianXia.Common.Players.XianXiaPlayer cultivation = player.GetModPlayer<global::XianXia.Common.Players.XianXiaPlayer>();
+        return cultivation.cultivationStage >= global::XianXia.Common.Players.CultivationStage.NascentSoul
+            && global::XianXia.Common.Systems.DownedBossSystem.SectReputation >= 56;
+    }
+
+    public override void ModifyWeaponDamage(Player player, ref StatModifier damage)
+    {
+        if (HasArtifactAwakening(player))
+            damage += 0.14f;
+    }
+
+    public override void ModifyTooltips(System.Collections.Generic.List<TooltipLine> tooltips)
+    {
+        Player player = Main.LocalPlayer;
+        string key = HasArtifactAwakening(player)
+            ? "Mods.XianXia.Progression.ArtifactAwakeningReady"
+            : "Mods.XianXia.Progression.ArtifactAwakeningLocked";
+        tooltips.Add(new TooltipLine(
+            Mod,
+            "XianXiaArtifactAwakening",
+            Terraria.Localization.Language.GetTextValue(key, "NascentSoul", 56, 22, 14)));
     }
 
     public override void AddRecipes()
@@ -673,7 +751,33 @@ public class MoonboneDharmaSword : ModItem
 
     public override bool CanUseItem(Player player)
     {
-        return player.GetModPlayer<global::XianXia.Common.Players.XianXiaPlayer>().TryConsumeSpiritualEnergy(36);
+        return player.GetModPlayer<global::XianXia.Common.Players.XianXiaPlayer>()
+            .TryConsumeSpiritualEnergy(HasArtifactAwakening(player) ? 27 : 36);
+    }
+
+    private static bool HasArtifactAwakening(Player player)
+    {
+        global::XianXia.Common.Players.XianXiaPlayer cultivation = player.GetModPlayer<global::XianXia.Common.Players.XianXiaPlayer>();
+        return cultivation.cultivationStage >= global::XianXia.Common.Players.CultivationStage.Tribulation
+            && global::XianXia.Common.Systems.DownedBossSystem.SectReputation >= 96;
+    }
+
+    public override void ModifyWeaponDamage(Player player, ref StatModifier damage)
+    {
+        if (HasArtifactAwakening(player))
+            damage += 0.18f;
+    }
+
+    public override void ModifyTooltips(System.Collections.Generic.List<TooltipLine> tooltips)
+    {
+        Player player = Main.LocalPlayer;
+        string key = HasArtifactAwakening(player)
+            ? "Mods.XianXia.Progression.ArtifactAwakeningReady"
+            : "Mods.XianXia.Progression.ArtifactAwakeningLocked";
+        tooltips.Add(new TooltipLine(
+            Mod,
+            "XianXiaArtifactAwakening",
+            Terraria.Localization.Language.GetTextValue(key, "Tribulation", 96, 27, 18)));
     }
 
     public override void AddRecipes()
@@ -714,7 +818,33 @@ public class CinnabarTalismanFlameItem : ModItem
 
     public override bool CanUseItem(Player player)
     {
-        return player.GetModPlayer<global::XianXia.Common.Players.XianXiaPlayer>().TryConsumeSpiritualEnergy(14);
+        return player.GetModPlayer<global::XianXia.Common.Players.XianXiaPlayer>()
+            .TryConsumeSpiritualEnergy(HasArtifactAwakening(player) ? 12 : 14);
+    }
+
+    private static bool HasArtifactAwakening(Player player)
+    {
+        global::XianXia.Common.Players.XianXiaPlayer cultivation = player.GetModPlayer<global::XianXia.Common.Players.XianXiaPlayer>();
+        return cultivation.cultivationStage >= global::XianXia.Common.Players.CultivationStage.Foundation
+            && global::XianXia.Common.Systems.DownedBossSystem.SectReputation >= 24;
+    }
+
+    public override void ModifyWeaponDamage(Player player, ref StatModifier damage)
+    {
+        if (HasArtifactAwakening(player))
+            damage += 0.1f;
+    }
+
+    public override void ModifyTooltips(System.Collections.Generic.List<TooltipLine> tooltips)
+    {
+        Player player = Main.LocalPlayer;
+        string key = HasArtifactAwakening(player)
+            ? "Mods.XianXia.Progression.ArtifactAwakeningReady"
+            : "Mods.XianXia.Progression.ArtifactAwakeningLocked";
+        tooltips.Add(new TooltipLine(
+            Mod,
+            "XianXiaArtifactAwakening",
+            Terraria.Localization.Language.GetTextValue(key, "Foundation", 24, 12, 10)));
     }
 
     public override void AddRecipes()
@@ -755,7 +885,33 @@ public class GreenwoodArrayPlate : ModItem
 
     public override bool CanUseItem(Player player)
     {
-        return player.GetModPlayer<global::XianXia.Common.Players.XianXiaPlayer>().TryConsumeSpiritualEnergy(20);
+        return player.GetModPlayer<global::XianXia.Common.Players.XianXiaPlayer>()
+            .TryConsumeSpiritualEnergy(HasArtifactAwakening(player) ? 17 : 20);
+    }
+
+    private static bool HasArtifactAwakening(Player player)
+    {
+        global::XianXia.Common.Players.XianXiaPlayer cultivation = player.GetModPlayer<global::XianXia.Common.Players.XianXiaPlayer>();
+        return cultivation.cultivationStage >= global::XianXia.Common.Players.CultivationStage.Foundation
+            && global::XianXia.Common.Systems.DownedBossSystem.SectReputation >= 24;
+    }
+
+    public override void ModifyWeaponDamage(Player player, ref StatModifier damage)
+    {
+        if (HasArtifactAwakening(player))
+            damage += 0.1f;
+    }
+
+    public override void ModifyTooltips(System.Collections.Generic.List<TooltipLine> tooltips)
+    {
+        Player player = Main.LocalPlayer;
+        string key = HasArtifactAwakening(player)
+            ? "Mods.XianXia.Progression.ArtifactAwakeningReady"
+            : "Mods.XianXia.Progression.ArtifactAwakeningLocked";
+        tooltips.Add(new TooltipLine(
+            Mod,
+            "XianXiaArtifactAwakening",
+            Terraria.Localization.Language.GetTextValue(key, "Foundation", 24, 17, 10)));
     }
 
     public override void AddRecipes()
@@ -796,7 +952,33 @@ public class ThunderTalismanArrayPlate : ModItem
 
     public override bool CanUseItem(Player player)
     {
-        return player.GetModPlayer<global::XianXia.Common.Players.XianXiaPlayer>().TryConsumeSpiritualEnergy(22);
+        return player.GetModPlayer<global::XianXia.Common.Players.XianXiaPlayer>()
+            .TryConsumeSpiritualEnergy(HasArtifactAwakening(player) ? 18 : 22);
+    }
+
+    private static bool HasArtifactAwakening(Player player)
+    {
+        global::XianXia.Common.Players.XianXiaPlayer cultivation = player.GetModPlayer<global::XianXia.Common.Players.XianXiaPlayer>();
+        return cultivation.cultivationStage >= global::XianXia.Common.Players.CultivationStage.GoldenCore
+            && global::XianXia.Common.Systems.DownedBossSystem.SectReputation >= 44;
+    }
+
+    public override void ModifyWeaponDamage(Player player, ref StatModifier damage)
+    {
+        if (HasArtifactAwakening(player))
+            damage += 0.12f;
+    }
+
+    public override void ModifyTooltips(System.Collections.Generic.List<TooltipLine> tooltips)
+    {
+        Player player = Main.LocalPlayer;
+        string key = HasArtifactAwakening(player)
+            ? "Mods.XianXia.Progression.ArtifactAwakeningReady"
+            : "Mods.XianXia.Progression.ArtifactAwakeningLocked";
+        tooltips.Add(new TooltipLine(
+            Mod,
+            "XianXiaArtifactAwakening",
+            Terraria.Localization.Language.GetTextValue(key, "GoldenCore", 44, 18, 12)));
     }
 
     public override void AddRecipes()
@@ -837,7 +1019,33 @@ public class BrokenHeavenDecree : ModItem
 
     public override bool CanUseItem(Player player)
     {
-        return player.GetModPlayer<global::XianXia.Common.Players.XianXiaPlayer>().TryConsumeSpiritualEnergy(40);
+        return player.GetModPlayer<global::XianXia.Common.Players.XianXiaPlayer>()
+            .TryConsumeSpiritualEnergy(HasArtifactAwakening(player) ? 31 : 40);
+    }
+
+    private static bool HasArtifactAwakening(Player player)
+    {
+        global::XianXia.Common.Players.XianXiaPlayer cultivation = player.GetModPlayer<global::XianXia.Common.Players.XianXiaPlayer>();
+        return cultivation.cultivationStage >= global::XianXia.Common.Players.CultivationStage.NascentSoul
+            && global::XianXia.Common.Systems.DownedBossSystem.SectReputation >= 72;
+    }
+
+    public override void ModifyWeaponDamage(Player player, ref StatModifier damage)
+    {
+        if (HasArtifactAwakening(player))
+            damage += 0.16f;
+    }
+
+    public override void ModifyTooltips(System.Collections.Generic.List<TooltipLine> tooltips)
+    {
+        Player player = Main.LocalPlayer;
+        string key = HasArtifactAwakening(player)
+            ? "Mods.XianXia.Progression.ArtifactAwakeningReady"
+            : "Mods.XianXia.Progression.ArtifactAwakeningLocked";
+        tooltips.Add(new TooltipLine(
+            Mod,
+            "XianXiaArtifactAwakening",
+            Terraria.Localization.Language.GetTextValue(key, "NascentSoul", 72, 31, 16)));
     }
 
     public override void AddRecipes()
@@ -911,7 +1119,33 @@ public class StarEclipseArbalest : ModItem
 
     public override bool CanUseItem(Player player)
     {
-        return player.GetModPlayer<global::XianXia.Common.Players.XianXiaPlayer>().TryConsumeSpiritualEnergy(20);
+        return player.GetModPlayer<global::XianXia.Common.Players.XianXiaPlayer>()
+            .TryConsumeSpiritualEnergy(HasArtifactAwakening(player) ? 16 : 20);
+    }
+
+    private static bool HasArtifactAwakening(Player player)
+    {
+        global::XianXia.Common.Players.XianXiaPlayer cultivation = player.GetModPlayer<global::XianXia.Common.Players.XianXiaPlayer>();
+        return cultivation.cultivationStage >= global::XianXia.Common.Players.CultivationStage.GoldenCore
+            && global::XianXia.Common.Systems.DownedBossSystem.SectReputation >= 48;
+    }
+
+    public override void ModifyWeaponDamage(Player player, ref StatModifier damage)
+    {
+        if (HasArtifactAwakening(player))
+            damage += 0.12f;
+    }
+
+    public override void ModifyTooltips(System.Collections.Generic.List<TooltipLine> tooltips)
+    {
+        Player player = Main.LocalPlayer;
+        string key = HasArtifactAwakening(player)
+            ? "Mods.XianXia.Progression.ArtifactAwakeningReady"
+            : "Mods.XianXia.Progression.ArtifactAwakeningLocked";
+        tooltips.Add(new TooltipLine(
+            Mod,
+            "XianXiaArtifactAwakening",
+            Terraria.Localization.Language.GetTextValue(key, "GoldenCore", 48, 16, 12)));
     }
 
     public override void AddRecipes()

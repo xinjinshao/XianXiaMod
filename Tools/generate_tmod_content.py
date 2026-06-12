@@ -370,6 +370,17 @@ def generate_materials(existing: set[str]) -> None:
         "broken_heaven_decree": ("DecreeJudgementBeam", 128, 40, "ItemUseStyleID.HoldUp"),
         "star_eclipse_arbalest": ("StarEclipseSplitBolt", 74, 20, "ItemUseStyleID.Shoot"),
     }
+    awakening_thresholds = {
+        "cloudpiercer_flying_sword": ("GoldenCore", 32, 0.10, 0.85),
+        "thunder_pattern_sword_case": ("GoldenCore", 40, 0.12, 0.82),
+        "formless_sword_wheel": ("NascentSoul", 56, 0.14, 0.80),
+        "moonbone_dharma_sword": ("Tribulation", 96, 0.18, 0.76),
+        "cinnabar_talisman_flame_item": ("Foundation", 24, 0.10, 0.86),
+        "greenwood_array_plate": ("Foundation", 24, 0.10, 0.86),
+        "thunder_talisman_array_plate": ("GoldenCore", 44, 0.12, 0.82),
+        "broken_heaven_decree": ("NascentSoul", 72, 0.16, 0.78),
+        "star_eclipse_arbalest": ("GoldenCore", 48, 0.12, 0.82),
+    }
     for asset_id, (zh, en) in DISPLAY.items():
         if asset_id in BOSS_DATA:
             continue
@@ -396,6 +407,7 @@ def generate_materials(existing: set[str]) -> None:
         can_use_item = ""
         use_item = ""
         accessory = ""
+        awakening = ""
         recipe = ""
         if asset_id in consumables:
             use_setup = """
@@ -531,6 +543,8 @@ def generate_materials(existing: set[str]) -> None:
 """
         if asset_id in weapons:
             projectile, damage, energy, use_style = weapons[asset_id]
+            stage, reputation, damage_bonus, cost_multiplier = awakening_thresholds[asset_id]
+            awakened_energy = max(1, int(round(energy * cost_multiplier)))
             use_setup += f"""
         Item.damage = {damage};
         Item.knockBack = 3.5f;
@@ -545,7 +559,34 @@ def generate_materials(existing: set[str]) -> None:
             use_item = f"""
     public override bool CanUseItem(Player player)
     {{
-        return player.GetModPlayer<global::XianXia.Common.Players.XianXiaPlayer>().TryConsumeSpiritualEnergy({energy});
+        return player.GetModPlayer<global::XianXia.Common.Players.XianXiaPlayer>()
+            .TryConsumeSpiritualEnergy(HasArtifactAwakening(player) ? {awakened_energy} : {energy});
+    }}
+"""
+            awakening = f"""
+    private static bool HasArtifactAwakening(Player player)
+    {{
+        global::XianXia.Common.Players.XianXiaPlayer cultivation = player.GetModPlayer<global::XianXia.Common.Players.XianXiaPlayer>();
+        return cultivation.cultivationStage >= global::XianXia.Common.Players.CultivationStage.{stage}
+            && global::XianXia.Common.Systems.DownedBossSystem.SectReputation >= {reputation};
+    }}
+
+    public override void ModifyWeaponDamage(Player player, ref StatModifier damage)
+    {{
+        if (HasArtifactAwakening(player))
+            damage += {damage_bonus}f;
+    }}
+
+    public override void ModifyTooltips(System.Collections.Generic.List<TooltipLine> tooltips)
+    {{
+        Player player = Main.LocalPlayer;
+        string key = HasArtifactAwakening(player)
+            ? "Mods.XianXia.Progression.ArtifactAwakeningReady"
+            : "Mods.XianXia.Progression.ArtifactAwakeningLocked";
+        tooltips.Add(new TooltipLine(
+            Mod,
+            "XianXiaArtifactAwakening",
+            Terraria.Localization.Language.GetTextValue(key, "{stage}", {reputation}, {awakened_energy}, {int(round(damage_bonus * 100))})));
     }}
 """
             ingredient = {
@@ -663,7 +704,7 @@ public class {class_name} : ModItem
         Item.rare = {rare};
 {use_setup}
     }}
-{can_use_item}{use_item}{accessory}{recipe}
+{can_use_item}{use_item}{accessory}{awakening}{recipe}
 }}
 """)
     write(CONTENT / "Items" / "Generated" / "GeneratedItems.cs", ITEMS_HEADER + "\n".join(classes))

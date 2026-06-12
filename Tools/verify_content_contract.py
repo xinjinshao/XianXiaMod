@@ -79,6 +79,25 @@ def main() -> None:
         "ReduceSpiritPressure",
         "SpiritualPressureDisorderBuff",
         "spiritualEnergyCostMultiplier *= 1.08f",
+        "HasArtifactAwakening",
+        "ArtifactAwakeningReady",
+        "DownedBossSystem.SectReputation",
+    )
+    require_text(
+        "Tools/generate_tmod_content.py",
+        "awakening_thresholds",
+        "HasArtifactAwakening",
+        "ArtifactAwakeningLocked",
+    )
+    require_text(
+        "Localization/progression.zh-Hans.hjson",
+        "ArtifactAwakeningReady",
+        "ArtifactAwakeningLocked",
+    )
+    require_text(
+        "Localization/progression.en-US.hjson",
+        "ArtifactAwakeningReady",
+        "ArtifactAwakeningLocked",
     )
     require_text(
         "Localization/zh-Hans.hjson",

@@ -7,6 +7,8 @@ Mods: {
 			BossStageRequired: "境界不足：需要至少 {0}。"
 			TribulationStarted: "天劫临身：{0} 雷劫已锁定你。"
 			TribulationCompleted: "天劫已过。灵气恢复：{0}。"
+			ArtifactAwakeningReady: "法器已觉醒：灵气消耗 {2}，伤害 +{3}%。"
+			ArtifactAwakeningLocked: "法器觉醒：需要 {0} 境界与 {1} 宗门声望。"
 			BossPhase: {
 				SpiritPressureSurge: 灵压暴涨
 				DaoScarUnstable: 道痕失控

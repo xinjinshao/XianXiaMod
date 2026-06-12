@@ -7,6 +7,8 @@ Mods: {
 			BossStageRequired: "Insufficient cultivation realm: requires at least {0}."
 			TribulationStarted: "Tribulation begins: {0} thunder has marked you."
 			TribulationCompleted: "Tribulation survived. Spiritual energy restored: {0}."
+			ArtifactAwakeningReady: "Artifact awakened: spiritual energy cost {2}, damage +{3}%."
+			ArtifactAwakeningLocked: "Artifact awakening: requires {0} realm and {1} sect reputation."
 			BossPhase: {
 				SpiritPressureSurge: Spirit Pressure Surge
 				DaoScarUnstable: Dao Scar Unstable
