@@ -29,7 +29,7 @@ XianXiaMod 是一个 Terraria/tModLoader 仙侠主题内容 Mod。项目目标�
 - 已接入调试掉落配置：开启 `DebugDrops` 时，XianXia 敌怪和 Boss 会额外掉落测试材料，方便本地验证。
 - 已为服务器配置项补充中英文名称和说明。
 - 已新增 tModLoader smoke test，用于确认 Mod 能被 tModLoader 实际加载。
-- 已新增本地化 key 校验脚本，减少图鉴与进度提示缺失文本的回归。
+- 已新增本地化 key 校验脚本，减少图鉴、进度提示与配置项缺失文本的回归。
 
 ## 设计入口
 

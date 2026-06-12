@@ -16,11 +16,19 @@ def localization_keys_from_code() -> set[str]:
     keys: set[str] = set()
     bestiary_pattern = re.compile(r'FlavorTextBestiaryInfoElement\("Mods\.XianXia\.Bestiary\.([^"]+)"\)')
     language_pattern = re.compile(r'Language\.GetTextValue\("Mods\.XianXia\.([^"]+)"')
+    config_class_pattern = re.compile(r"class\s+([A-Za-z0-9_]+)\s*:\s*ModConfig\b")
+    config_member_pattern = re.compile(r"public\s+(?:[A-Za-z0-9_<>,.?]+)\s+([A-Za-z0-9_]+)\s*\{\s*get;\s*set;\s*\}")
     for path, text in read_all("*.cs"):
         if "FlavorTextBestiaryInfoElement" in text:
             keys.update(f"Bestiary.{key}" for key in bestiary_pattern.findall(text))
         if "Language.GetTextValue" in text:
             keys.update(language_pattern.findall(text))
+        if ": ModConfig" in text:
+            for config_name in config_class_pattern.findall(text):
+                keys.add(f"Configs.{config_name}.DisplayName")
+                for member_name in config_member_pattern.findall(text):
+                    keys.add(f"Configs.{config_name}.{member_name}.Label")
+                    keys.add(f"Configs.{config_name}.{member_name}.Tooltip")
     return keys
 
 
