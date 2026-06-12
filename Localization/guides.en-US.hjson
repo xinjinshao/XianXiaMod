@@ -17,6 +17,12 @@ Mods: {
 					HeavenTablet: Fallen palace dust stains the page: challenge the Heaven Tablet Guardian.
 					DaoSevering: "Sect reputation: {0}. Continue defeating major threats, withstand tribulation, and prepare to sever your dao."
 					Endgame: "Sect reputation: {0}. The ledger is nearly blank; only the Old Heaven Dao Core still waits beyond the ruined sky."
+					CommissionHerbReady: "Commission available: the Herb Sect Apprentice is ready to settle the garden account."
+					CommissionFurnaceReady: "Commission available: the Wandering Artificer is waiting for the furnace materials account."
+					CommissionThunderReady: "Commission available: the Tribulation Observer has recorded the thunder marsh aftermath."
+					CommissionArchiveReady: "Commission available: the Archive Scroll Spirit will release an old trial record."
+					CommissionHeavenReady: "Commission available: the Fallen Heaven Messenger has prepared the tablet remnant account."
+					CommissionNoneReady: "No sect commissions are ready to claim."
 				}
 			}
 			TribulationGauge: {

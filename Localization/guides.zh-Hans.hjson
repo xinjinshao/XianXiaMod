@@ -17,6 +17,12 @@ Mods: {
 					HeavenTablet: 坠天宫阙的尘灰落在页上：挑战天碑守卫。
 					DaoSevering: "当前宗门声望：{0}。继续讨伐主要威胁，承受天劫，并准备斩道。"
 					Endgame: "当前宗门声望：{0}。玉简几乎空白，旧天道核心仍在破天之后等待。"
+					CommissionHerbReady: "可领取委托：药宗学徒正在清点药园旧账。"
+					CommissionFurnaceReady: "可领取委托：游方炼器师正在等待玄炉材料账。"
+					CommissionThunderReady: "可领取委托：观劫客已记下雷泽余账。"
+					CommissionArchiveReady: "可领取委托：经阁卷灵愿意交出试炼旧卷。"
+					CommissionHeavenReady: "可领取委托：坠天使者已备好天碑残账。"
+					CommissionNoneReady: "当前没有待领取宗门委托。"
 				}
 			}
 			TribulationGauge: {

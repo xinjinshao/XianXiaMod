@@ -61,6 +61,13 @@ def main() -> None:
         "ClaimCommission",
     )
     require_text(
+        "Content/Items/Guides/SectLedger.cs",
+        "GetCommissionGuidance",
+        "CanClaimCommission",
+        "ClaimedCommissions",
+        "CommissionHerbReady",
+    )
+    require_text(
         "Common/Systems/DownedBossSystem.cs",
         "ClaimedCommissions",
         "ReputationByCommission",
@@ -78,6 +85,16 @@ def main() -> None:
         "Commission",
         "AlreadyClaimed",
         "HerbSectApprentice",
+    )
+    require_text(
+        "Localization/guides.zh-Hans.hjson",
+        "CommissionHerbReady",
+        "CommissionNoneReady",
+    )
+    require_text(
+        "Localization/guides.en-US.hjson",
+        "CommissionHerbReady",
+        "CommissionNoneReady",
     )
     require_text(
         "Localization/en-US.hjson",

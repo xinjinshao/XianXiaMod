@@ -55,55 +55,96 @@ public class SectLedger : ModItem
 
         if (cultivation.cultivationStage < CultivationStage.QiAwakening)
         {
-            return $"{reputation} {GuidanceValue("AwakenQi")}";
+            return WithCommission($"{reputation} {GuidanceValue("AwakenQi")}");
         }
 
         if (!DownedBossSystem.DownedSpiritVeinWyrm)
         {
-            return $"{reputation} {GuidanceValue("SpiritVeinWyrm")}";
+            return WithCommission($"{reputation} {GuidanceValue("SpiritVeinWyrm")}");
         }
 
         if (cultivation.cultivationStage < CultivationStage.Foundation)
         {
-            return $"{reputation} {GuidanceValue("Foundation")}";
+            return WithCommission($"{reputation} {GuidanceValue("Foundation")}");
         }
 
         if (!DownedBossSystem.DownedBosses.Contains("garden_warden"))
         {
-            return $"{reputation} {GuidanceValue("GardenWarden")}";
+            return WithCommission($"{reputation} {GuidanceValue("GardenWarden")}");
         }
 
         if (!DownedBossSystem.DownedBosses.Contains("black_furnace_iron_golem"))
         {
-            return $"{reputation} {GuidanceValue("BlackFurnace")}";
+            return WithCommission($"{reputation} {GuidanceValue("BlackFurnace")}");
         }
 
         if (cultivation.cultivationStage < CultivationStage.GoldenCore)
         {
-            return $"{reputation} {GuidanceValue("GoldenCore")}";
+            return WithCommission($"{reputation} {GuidanceValue("GoldenCore")}");
         }
 
         if (!DownedBossSystem.DownedBosses.Contains("formless_sword_soul"))
         {
-            return $"{reputation} {GuidanceValue("SwordSoul")}";
+            return WithCommission($"{reputation} {GuidanceValue("SwordSoul")}");
         }
 
         if (cultivation.cultivationStage < CultivationStage.NascentSoul)
         {
-            return $"{reputation} {GuidanceValue("NascentSoul")}";
+            return WithCommission($"{reputation} {GuidanceValue("NascentSoul")}");
         }
 
         if (!DownedBossSystem.DownedBosses.Contains("heaven_tablet_guardian"))
         {
-            return $"{reputation} {GuidanceValue("HeavenTablet")}";
+            return WithCommission($"{reputation} {GuidanceValue("HeavenTablet")}");
         }
 
         if (cultivation.cultivationStage < CultivationStage.DaoSevering)
         {
-            return $"{reputation} {Guidance("DaoSevering").Format(DownedBossSystem.SectReputation)}";
+            return WithCommission($"{reputation} {Guidance("DaoSevering").Format(DownedBossSystem.SectReputation)}");
         }
 
-        return $"{reputation} {Guidance("Endgame").Format(DownedBossSystem.SectReputation)}";
+        return WithCommission($"{reputation} {Guidance("Endgame").Format(DownedBossSystem.SectReputation)}");
+    }
+
+    private static string WithCommission(string guidance)
+    {
+        return $"{guidance} {GetCommissionGuidance()}";
+    }
+
+    private static string GetCommissionGuidance()
+    {
+        if (CanClaimCommission("herb_sect_apprentice_garden", "garden_warden"))
+        {
+            return GuidanceValue("CommissionHerbReady");
+        }
+
+        if (CanClaimCommission("wandering_artificer_furnace", "black_furnace_iron_golem"))
+        {
+            return GuidanceValue("CommissionFurnaceReady");
+        }
+
+        if (CanClaimCommission("tribulation_observer_thunder", "thunder_marsh_jiao"))
+        {
+            return GuidanceValue("CommissionThunderReady");
+        }
+
+        if (CanClaimCommission("archive_scroll_spirit_trial", "formless_sword_soul"))
+        {
+            return GuidanceValue("CommissionArchiveReady");
+        }
+
+        if (CanClaimCommission("fallen_heaven_messenger_tablet", "heaven_tablet_guardian"))
+        {
+            return GuidanceValue("CommissionHeavenReady");
+        }
+
+        return GuidanceValue("CommissionNoneReady");
+    }
+
+    private static bool CanClaimCommission(string commissionId, string requiredBoss)
+    {
+        return DownedBossSystem.DownedBosses.Contains(requiredBoss)
+            && !DownedBossSystem.ClaimedCommissions.Contains(commissionId);
     }
 
     private static LocalizedText Guidance(string key)
