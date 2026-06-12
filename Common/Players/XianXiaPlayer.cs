@@ -237,16 +237,16 @@ public class XianXiaPlayer : ModPlayer
         }
 
         float offsetX = Main.rand.NextFloat(-240f, 240f);
-        Microsoft.Xna.Framework.Vector2 position = Player.Center + new Microsoft.Xna.Framework.Vector2(offsetX, -620f);
-        Microsoft.Xna.Framework.Vector2 velocity = new(-offsetX * 0.0025f, 10f + tribulationIntensity * 0.45f);
+        Microsoft.Xna.Framework.Vector2 position = Player.Center + new Microsoft.Xna.Framework.Vector2(offsetX, -96f);
+        Microsoft.Xna.Framework.Vector2 velocity = Microsoft.Xna.Framework.Vector2.Zero;
         int damage = 18 + tribulationIntensity * 7;
         Projectile.NewProjectile(
             Player.GetSource_FromThis(),
             position,
             velocity,
-            ModContent.ProjectileType<global::XianXia.Content.Projectiles.TribulationLightningProjectile>(),
+            ModContent.ProjectileType<global::XianXia.Content.Projectiles.TribulationWarningLineProjectile>(),
             damage,
-            1.5f,
+            0f,
             Player.whoAmI);
     }
 
