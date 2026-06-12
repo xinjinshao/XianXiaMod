@@ -1,0 +1,25 @@
+Mods: {
+	XianXia: {
+		Configs: {
+			XianXiaConfig: {
+				DisplayName: XianXia Server Settings
+				EnableWorldGeneration: {
+					Label: Enable World Generation
+					Tooltip: Allows XianXia biomes, shallow spirit veins, ores, and related terrain to generate in new worlds.
+				}
+				PermanentGrowthMultiplier: {
+					Label: Permanent Growth Multiplier
+					Tooltip: Scales permanent cultivation-related growth values. Use lower values while balancing long-term progression.
+				}
+				DebugDrops: {
+					Label: Debug Drops
+					Tooltip: Adds extra XianXia materials to XianXia enemy and boss drops for local testing. Leave disabled for normal play.
+				}
+				EnableSoftCompatibilityHooks: {
+					Label: Enable Soft Compatibility Hooks
+					Tooltip: Enables optional compatibility detection and extension hooks without requiring other mods.
+				}
+			}
+		}
+	}
+}

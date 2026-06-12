@@ -1,0 +1,25 @@
+Mods: {
+	XianXia: {
+		Configs: {
+			XianXiaConfig: {
+				DisplayName: 仙侠服务器设置
+				EnableWorldGeneration: {
+					Label: 启用世界生成
+					Tooltip: 允许新世界生成仙侠生态、浅层灵脉、矿物和相关地形。
+				}
+				PermanentGrowthMultiplier: {
+					Label: 永久成长倍率
+					Tooltip: 调整修行相关永久成长数值。平衡长期进度时可降低该值。
+				}
+				DebugDrops: {
+					Label: 调试掉落
+					Tooltip: 本地测试用。开启后，仙侠敌怪和 Boss 会额外掉落仙侠材料；正常游玩建议关闭。
+				}
+				EnableSoftCompatibilityHooks: {
+					Label: 启用软兼容钩子
+					Tooltip: 启用可选兼容检测和扩展入口，但不会强制依赖其他 Mod。
+				}
+			}
+		}
+	}
+}
