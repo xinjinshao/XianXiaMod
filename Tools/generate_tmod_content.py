@@ -891,13 +891,13 @@ public class {class_name} : ModNPC
         {{
             NPC.localAI[0] = 1f;
             if (Main.netMode != NetmodeID.Server)
-                CombatText.NewText(NPC.Hitbox, Color.Cyan, "灵压暴涨");
+                CombatText.NewText(NPC.Hitbox, Color.Cyan, Language.GetTextValue("Mods.XianXia.Progression.BossPhase.SpiritPressureSurge"));
         }}
         if (finalPhase && NPC.localAI[0] < 2f)
         {{
             NPC.localAI[0] = 2f;
             if (Main.netMode != NetmodeID.Server)
-                CombatText.NewText(NPC.Hitbox, Color.OrangeRed, "道痕失控");
+                CombatText.NewText(NPC.Hitbox, Color.OrangeRed, Language.GetTextValue("Mods.XianXia.Progression.BossPhase.DaoScarUnstable"));
         }}
         float speed = finalPhase ? 10.5f : phaseTwo ? 8f : 5.5f;
         NPC.velocity = Vector2.Lerp(NPC.velocity, desired.SafeNormalize(Vector2.UnitY) * speed, phaseTwo ? 0.055f : 0.035f);
@@ -943,7 +943,7 @@ public class {class_name} : ModNPC
     write(CONTENT / "NPCs" / "Bosses" / "Generated" / "GeneratedBosses.cs", BOSS_HEADER + "\n".join(classes))
 
 
-BOSS_HEADER = """using System;\nusing Microsoft.Xna.Framework;\nusing Terraria;\nusing Terraria.GameContent.Bestiary;\nusing Terraria.GameContent.ItemDropRules;\nusing Terraria.ID;\nusing Terraria.ModLoader;\nusing XianXia.Common.Systems;\n\nnamespace XianXia.Content.NPCs.Bosses.Generated;\n"""
+BOSS_HEADER = """using System;\nusing Microsoft.Xna.Framework;\nusing Terraria;\nusing Terraria.GameContent.Bestiary;\nusing Terraria.GameContent.ItemDropRules;\nusing Terraria.ID;\nusing Terraria.Localization;\nusing Terraria.ModLoader;\nusing XianXia.Common.Systems;\n\nnamespace XianXia.Content.NPCs.Bosses.Generated;\n"""
 
 
 def generate_summons(existing: set[str]) -> None:

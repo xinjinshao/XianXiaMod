@@ -3,6 +3,7 @@ using Terraria;
 using Terraria.GameContent.Bestiary;
 using Terraria.GameContent.ItemDropRules;
 using Terraria.ID;
+using Terraria.Localization;
 using Terraria.ModLoader;
 using XianXia.Common.Systems;
 using XianXia.Content.Items.Materials;
@@ -66,7 +67,7 @@ public class SpiritVeinWyrm : ModNPC
             NPC.localAI[0] = 1f;
             if (Main.netMode != NetmodeID.Server)
             {
-                CombatText.NewText(NPC.Hitbox, Color.Cyan, "灵脉震荡");
+                CombatText.NewText(NPC.Hitbox, Color.Cyan, Language.GetTextValue("Mods.XianXia.Progression.BossPhase.SpiritVeinTremor"));
             }
         }
 
@@ -75,7 +76,7 @@ public class SpiritVeinWyrm : ModNPC
             NPC.localAI[0] = 2f;
             if (Main.netMode != NetmodeID.Server)
             {
-                CombatText.NewText(NPC.Hitbox, Color.OrangeRed, "碎玉暴走");
+                CombatText.NewText(NPC.Hitbox, Color.OrangeRed, Language.GetTextValue("Mods.XianXia.Progression.BossPhase.ShatteredJadeRampage"));
             }
         }
 

@@ -5,6 +5,12 @@ Mods: {
 			InvalidBreakthroughItem: This item is only suitable for the next cultivation breakthrough. Stabilize your current realm and advance in order.
 			BossAlreadyPresent: This trial has already been invoked. Finish the current battle first.
 			BossStageRequired: "Insufficient cultivation realm: requires at least {0}."
+			BossPhase: {
+				SpiritPressureSurge: Spirit Pressure Surge
+				DaoScarUnstable: Dao Scar Unstable
+				SpiritVeinTremor: Spirit Vein Tremor
+				ShatteredJadeRampage: Shattered Jade Rampage
+			}
 		}
 	}
 }

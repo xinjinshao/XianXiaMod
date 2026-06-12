@@ -4,6 +4,7 @@ using Terraria;
 using Terraria.GameContent.Bestiary;
 using Terraria.GameContent.ItemDropRules;
 using Terraria.ID;
+using Terraria.Localization;
 using Terraria.ModLoader;
 using XianXia.Common.Systems;
 
@@ -55,13 +56,13 @@ public class GardenWarden : ModNPC
         {
             NPC.localAI[0] = 1f;
             if (Main.netMode != NetmodeID.Server)
-                CombatText.NewText(NPC.Hitbox, Color.Cyan, "灵压暴涨");
+                CombatText.NewText(NPC.Hitbox, Color.Cyan, Language.GetTextValue("Mods.XianXia.Progression.BossPhase.SpiritPressureSurge"));
         }
         if (finalPhase && NPC.localAI[0] < 2f)
         {
             NPC.localAI[0] = 2f;
             if (Main.netMode != NetmodeID.Server)
-                CombatText.NewText(NPC.Hitbox, Color.OrangeRed, "道痕失控");
+                CombatText.NewText(NPC.Hitbox, Color.OrangeRed, Language.GetTextValue("Mods.XianXia.Progression.BossPhase.DaoScarUnstable"));
         }
         float speed = finalPhase ? 10.5f : phaseTwo ? 8f : 5.5f;
         NPC.velocity = Vector2.Lerp(NPC.velocity, desired.SafeNormalize(Vector2.UnitY) * speed, phaseTwo ? 0.055f : 0.035f);
@@ -151,13 +152,13 @@ public class BlackFurnaceIronGolem : ModNPC
         {
             NPC.localAI[0] = 1f;
             if (Main.netMode != NetmodeID.Server)
-                CombatText.NewText(NPC.Hitbox, Color.Cyan, "灵压暴涨");
+                CombatText.NewText(NPC.Hitbox, Color.Cyan, Language.GetTextValue("Mods.XianXia.Progression.BossPhase.SpiritPressureSurge"));
         }
         if (finalPhase && NPC.localAI[0] < 2f)
         {
             NPC.localAI[0] = 2f;
             if (Main.netMode != NetmodeID.Server)
-                CombatText.NewText(NPC.Hitbox, Color.OrangeRed, "道痕失控");
+                CombatText.NewText(NPC.Hitbox, Color.OrangeRed, Language.GetTextValue("Mods.XianXia.Progression.BossPhase.DaoScarUnstable"));
         }
         float speed = finalPhase ? 10.5f : phaseTwo ? 8f : 5.5f;
         NPC.velocity = Vector2.Lerp(NPC.velocity, desired.SafeNormalize(Vector2.UnitY) * speed, phaseTwo ? 0.055f : 0.035f);
@@ -247,13 +248,13 @@ public class TribulationCloudAvatar : ModNPC
         {
             NPC.localAI[0] = 1f;
             if (Main.netMode != NetmodeID.Server)
-                CombatText.NewText(NPC.Hitbox, Color.Cyan, "灵压暴涨");
+                CombatText.NewText(NPC.Hitbox, Color.Cyan, Language.GetTextValue("Mods.XianXia.Progression.BossPhase.SpiritPressureSurge"));
         }
         if (finalPhase && NPC.localAI[0] < 2f)
         {
             NPC.localAI[0] = 2f;
             if (Main.netMode != NetmodeID.Server)
-                CombatText.NewText(NPC.Hitbox, Color.OrangeRed, "道痕失控");
+                CombatText.NewText(NPC.Hitbox, Color.OrangeRed, Language.GetTextValue("Mods.XianXia.Progression.BossPhase.DaoScarUnstable"));
         }
         float speed = finalPhase ? 10.5f : phaseTwo ? 8f : 5.5f;
         NPC.velocity = Vector2.Lerp(NPC.velocity, desired.SafeNormalize(Vector2.UnitY) * speed, phaseTwo ? 0.055f : 0.035f);
@@ -343,13 +344,13 @@ public class ThunderMarshJiao : ModNPC
         {
             NPC.localAI[0] = 1f;
             if (Main.netMode != NetmodeID.Server)
-                CombatText.NewText(NPC.Hitbox, Color.Cyan, "灵压暴涨");
+                CombatText.NewText(NPC.Hitbox, Color.Cyan, Language.GetTextValue("Mods.XianXia.Progression.BossPhase.SpiritPressureSurge"));
         }
         if (finalPhase && NPC.localAI[0] < 2f)
         {
             NPC.localAI[0] = 2f;
             if (Main.netMode != NetmodeID.Server)
-                CombatText.NewText(NPC.Hitbox, Color.OrangeRed, "道痕失控");
+                CombatText.NewText(NPC.Hitbox, Color.OrangeRed, Language.GetTextValue("Mods.XianXia.Progression.BossPhase.DaoScarUnstable"));
         }
         float speed = finalPhase ? 10.5f : phaseTwo ? 8f : 5.5f;
         NPC.velocity = Vector2.Lerp(NPC.velocity, desired.SafeNormalize(Vector2.UnitY) * speed, phaseTwo ? 0.055f : 0.035f);
@@ -439,13 +440,13 @@ public class AbyssalStarWomb : ModNPC
         {
             NPC.localAI[0] = 1f;
             if (Main.netMode != NetmodeID.Server)
-                CombatText.NewText(NPC.Hitbox, Color.Cyan, "灵压暴涨");
+                CombatText.NewText(NPC.Hitbox, Color.Cyan, Language.GetTextValue("Mods.XianXia.Progression.BossPhase.SpiritPressureSurge"));
         }
         if (finalPhase && NPC.localAI[0] < 2f)
         {
             NPC.localAI[0] = 2f;
             if (Main.netMode != NetmodeID.Server)
-                CombatText.NewText(NPC.Hitbox, Color.OrangeRed, "道痕失控");
+                CombatText.NewText(NPC.Hitbox, Color.OrangeRed, Language.GetTextValue("Mods.XianXia.Progression.BossPhase.DaoScarUnstable"));
         }
         float speed = finalPhase ? 10.5f : phaseTwo ? 8f : 5.5f;
         NPC.velocity = Vector2.Lerp(NPC.velocity, desired.SafeNormalize(Vector2.UnitY) * speed, phaseTwo ? 0.055f : 0.035f);
@@ -535,13 +536,13 @@ public class FormlessSwordSoul : ModNPC
         {
             NPC.localAI[0] = 1f;
             if (Main.netMode != NetmodeID.Server)
-                CombatText.NewText(NPC.Hitbox, Color.Cyan, "灵压暴涨");
+                CombatText.NewText(NPC.Hitbox, Color.Cyan, Language.GetTextValue("Mods.XianXia.Progression.BossPhase.SpiritPressureSurge"));
         }
         if (finalPhase && NPC.localAI[0] < 2f)
         {
             NPC.localAI[0] = 2f;
             if (Main.netMode != NetmodeID.Server)
-                CombatText.NewText(NPC.Hitbox, Color.OrangeRed, "道痕失控");
+                CombatText.NewText(NPC.Hitbox, Color.OrangeRed, Language.GetTextValue("Mods.XianXia.Progression.BossPhase.DaoScarUnstable"));
         }
         float speed = finalPhase ? 10.5f : phaseTwo ? 8f : 5.5f;
         NPC.velocity = Vector2.Lerp(NPC.velocity, desired.SafeNormalize(Vector2.UnitY) * speed, phaseTwo ? 0.055f : 0.035f);
@@ -631,13 +632,13 @@ public class GreenwoodMedicineKingEcho : ModNPC
         {
             NPC.localAI[0] = 1f;
             if (Main.netMode != NetmodeID.Server)
-                CombatText.NewText(NPC.Hitbox, Color.Cyan, "灵压暴涨");
+                CombatText.NewText(NPC.Hitbox, Color.Cyan, Language.GetTextValue("Mods.XianXia.Progression.BossPhase.SpiritPressureSurge"));
         }
         if (finalPhase && NPC.localAI[0] < 2f)
         {
             NPC.localAI[0] = 2f;
             if (Main.netMode != NetmodeID.Server)
-                CombatText.NewText(NPC.Hitbox, Color.OrangeRed, "道痕失控");
+                CombatText.NewText(NPC.Hitbox, Color.OrangeRed, Language.GetTextValue("Mods.XianXia.Progression.BossPhase.DaoScarUnstable"));
         }
         float speed = finalPhase ? 10.5f : phaseTwo ? 8f : 5.5f;
         NPC.velocity = Vector2.Lerp(NPC.velocity, desired.SafeNormalize(Vector2.UnitY) * speed, phaseTwo ? 0.055f : 0.035f);
@@ -727,13 +728,13 @@ public class HeavenTabletGuardian : ModNPC
         {
             NPC.localAI[0] = 1f;
             if (Main.netMode != NetmodeID.Server)
-                CombatText.NewText(NPC.Hitbox, Color.Cyan, "灵压暴涨");
+                CombatText.NewText(NPC.Hitbox, Color.Cyan, Language.GetTextValue("Mods.XianXia.Progression.BossPhase.SpiritPressureSurge"));
         }
         if (finalPhase && NPC.localAI[0] < 2f)
         {
             NPC.localAI[0] = 2f;
             if (Main.netMode != NetmodeID.Server)
-                CombatText.NewText(NPC.Hitbox, Color.OrangeRed, "道痕失控");
+                CombatText.NewText(NPC.Hitbox, Color.OrangeRed, Language.GetTextValue("Mods.XianXia.Progression.BossPhase.DaoScarUnstable"));
         }
         float speed = finalPhase ? 10.5f : phaseTwo ? 8f : 5.5f;
         NPC.velocity = Vector2.Lerp(NPC.velocity, desired.SafeNormalize(Vector2.UnitY) * speed, phaseTwo ? 0.055f : 0.035f);
@@ -823,13 +824,13 @@ public class BrokenHeavenInspector : ModNPC
         {
             NPC.localAI[0] = 1f;
             if (Main.netMode != NetmodeID.Server)
-                CombatText.NewText(NPC.Hitbox, Color.Cyan, "灵压暴涨");
+                CombatText.NewText(NPC.Hitbox, Color.Cyan, Language.GetTextValue("Mods.XianXia.Progression.BossPhase.SpiritPressureSurge"));
         }
         if (finalPhase && NPC.localAI[0] < 2f)
         {
             NPC.localAI[0] = 2f;
             if (Main.netMode != NetmodeID.Server)
-                CombatText.NewText(NPC.Hitbox, Color.OrangeRed, "道痕失控");
+                CombatText.NewText(NPC.Hitbox, Color.OrangeRed, Language.GetTextValue("Mods.XianXia.Progression.BossPhase.DaoScarUnstable"));
         }
         float speed = finalPhase ? 10.5f : phaseTwo ? 8f : 5.5f;
         NPC.velocity = Vector2.Lerp(NPC.velocity, desired.SafeNormalize(Vector2.UnitY) * speed, phaseTwo ? 0.055f : 0.035f);
@@ -919,13 +920,13 @@ public class MoonboneImmortal : ModNPC
         {
             NPC.localAI[0] = 1f;
             if (Main.netMode != NetmodeID.Server)
-                CombatText.NewText(NPC.Hitbox, Color.Cyan, "灵压暴涨");
+                CombatText.NewText(NPC.Hitbox, Color.Cyan, Language.GetTextValue("Mods.XianXia.Progression.BossPhase.SpiritPressureSurge"));
         }
         if (finalPhase && NPC.localAI[0] < 2f)
         {
             NPC.localAI[0] = 2f;
             if (Main.netMode != NetmodeID.Server)
-                CombatText.NewText(NPC.Hitbox, Color.OrangeRed, "道痕失控");
+                CombatText.NewText(NPC.Hitbox, Color.OrangeRed, Language.GetTextValue("Mods.XianXia.Progression.BossPhase.DaoScarUnstable"));
         }
         float speed = finalPhase ? 10.5f : phaseTwo ? 8f : 5.5f;
         NPC.velocity = Vector2.Lerp(NPC.velocity, desired.SafeNormalize(Vector2.UnitY) * speed, phaseTwo ? 0.055f : 0.035f);
@@ -1015,13 +1016,13 @@ public class OldHeavenDaoCore : ModNPC
         {
             NPC.localAI[0] = 1f;
             if (Main.netMode != NetmodeID.Server)
-                CombatText.NewText(NPC.Hitbox, Color.Cyan, "灵压暴涨");
+                CombatText.NewText(NPC.Hitbox, Color.Cyan, Language.GetTextValue("Mods.XianXia.Progression.BossPhase.SpiritPressureSurge"));
         }
         if (finalPhase && NPC.localAI[0] < 2f)
         {
             NPC.localAI[0] = 2f;
             if (Main.netMode != NetmodeID.Server)
-                CombatText.NewText(NPC.Hitbox, Color.OrangeRed, "道痕失控");
+                CombatText.NewText(NPC.Hitbox, Color.OrangeRed, Language.GetTextValue("Mods.XianXia.Progression.BossPhase.DaoScarUnstable"));
         }
         float speed = finalPhase ? 10.5f : phaseTwo ? 8f : 5.5f;
         NPC.velocity = Vector2.Lerp(NPC.velocity, desired.SafeNormalize(Vector2.UnitY) * speed, phaseTwo ? 0.055f : 0.035f);
