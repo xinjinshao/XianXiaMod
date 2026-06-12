@@ -1811,88 +1811,214 @@ BOSS_HEADER = """using System;\nusing Microsoft.Xna.Framework;\nusing Terraria;\
 
 
 def boss_pattern_code(asset_id: str) -> str:
-    warning_type = "global::XianXia.Content.Projectiles.TribulationWarningLineProjectile"
-    bolt_type = "global::XianXia.Content.Projectiles.BossSpiritBoltProjectile"
-    field_type = "global::XianXia.Content.Projectiles.BossArrayFieldProjectile"
-    thunder_ids = {"tribulation_cloud_avatar", "thunder_marsh_jiao", "broken_heaven_inspector", "heaven_tablet_guardian", "old_heaven_dao_core"}
-    ring_ids = {"abyssal_star_womb", "formless_sword_soul", "moonbone_immortal", "old_heaven_dao_core"}
-    field_ids = {"formless_sword_soul", "greenwood_medicine_king_echo", "heaven_tablet_guardian", "broken_heaven_inspector", "moonbone_immortal", "old_heaven_dao_core"}
+    W = "global::XianXia.Content.Projectiles.TribulationWarningLineProjectile"
+    B = "global::XianXia.Content.Projectiles.BossSpiritBoltProjectile"
+    F = "global::XianXia.Content.Projectiles.BossArrayFieldProjectile"
 
-    if asset_id in thunder_ids:
+    if asset_id == "garden_warden":
         return f"""
-            int warningDamage = Math.Max(18, NPC.damage / 3);
+            int dmg = Math.Max(18, NPC.damage / 4);
+            if (phaseTwo) {{
+                Projectile.NewProjectile(NPC.GetSource_FromAI(), target.Center + target.velocity * 16f, Vector2.Zero,
+                    ModContent.ProjectileType<{F}>(), dmg, 1.2f, Main.myPlayer);
+            }}
+            if (finalPhase) {{
+                Vector2 perp = (target.Center - NPC.Center).SafeNormalize(Vector2.UnitY).RotatedBy(MathHelper.PiOver2);
+                for (int j = -1; j <= 1; j += 2)
+                    Projectile.NewProjectile(NPC.GetSource_FromAI(), target.Center + perp * j * 96f, Vector2.Zero,
+                        ModContent.ProjectileType<{F}>(), dmg, 1.2f, Main.myPlayer);
+            }}
+""" + garden_warden_special()
+
+    if asset_id == "black_furnace_iron_golem":
+        return f"""
+            int dmg = Math.Max(18, NPC.damage / 4);
+            if (phaseTwo) {{
+                for (int j = 0; j < 2; j++)
+                    NPC.NewNPC(NPC.GetSource_FromAI(), (int)NPC.Center.X + Main.rand.Next(-60, 61), (int)NPC.Center.Y + Main.rand.Next(-40, 41),
+                        ModContent.NPCType<global::XianXia.Content.NPCs.Enemies.Generated.IronShardSpirit>(), ai0: NPC.whoAmI);
+            }}
+            Vector2 side = (target.Center - NPC.Center).SafeNormalize(Vector2.UnitY).RotatedBy(MathHelper.PiOver2);
+            for (int i = -1; i <= 1; i++)
+            {{
+                Vector2 velocity = (target.Center - (NPC.Center + side * i * 72f)).SafeNormalize(Vector2.UnitY) * (finalPhase ? 9f : 7f);
+                Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center + side * i * 72f, velocity,
+                    ModContent.ProjectileType<{B}>(), dmg, 1.4f, Main.myPlayer);
+            }}
+"""
+
+    if asset_id == "tribulation_cloud_avatar":
+        return f"""
+            int wDmg = Math.Max(18, NPC.damage / 3);
             int lanes = finalPhase ? 5 : phaseTwo ? 3 : 1;
             for (int i = 0; i < lanes; i++)
             {{
                 float offset = (i - (lanes - 1) / 2f) * 112f;
-                Projectile.NewProjectile(
-                    NPC.GetSource_FromAI(),
-                    target.Center + new Vector2(offset, 0f),
-                    Vector2.Zero,
-                    ModContent.ProjectileType<{warning_type}>(),
-                    warningDamage,
-                    1.2f,
-                    Main.myPlayer);
+                Projectile.NewProjectile(NPC.GetSource_FromAI(), target.Center + new Vector2(offset, 0f), Vector2.Zero,
+                    ModContent.ProjectileType<{W}>(), wDmg, 1.2f, Main.myPlayer);
+            }}
+            if (phaseTwo && NPC.ai[3]++ == 0) {{
+                NPC.NewNPC(NPC.GetSource_FromAI(), (int)NPC.Center.X, (int)NPC.Center.Y,
+                    ModContent.NPCType<global::XianXia.Content.NPCs.Enemies.Generated.TribulationCloudling>(), ai0: NPC.whoAmI);
             }}
             if (finalPhase)
+                Projectile.NewProjectile(NPC.GetSource_FromAI(), target.Center, Vector2.Zero,
+                    ModContent.ProjectileType<{F}>(), Math.Max(18, NPC.damage / 4), 1.2f, Main.myPlayer);
+"""
+
+    if asset_id == "thunder_marsh_jiao":
+        return f"""
+            int wDmg = Math.Max(18, NPC.damage / 3);
+            int lanes = finalPhase ? 5 : phaseTwo ? 3 : 1;
+            for (int i = 0; i < lanes; i++)
             {{
-                Projectile.NewProjectile(
-                    NPC.GetSource_FromAI(),
-                    target.Center,
-                    Vector2.Zero,
-                    ModContent.ProjectileType<{field_type}>(),
-                    Math.Max(18, NPC.damage / 4),
-                    1.2f,
-                    Main.myPlayer);
+                float offset = (i - (lanes - 1) / 2f) * 112f;
+                Projectile.NewProjectile(NPC.GetSource_FromAI(), target.Center + new Vector2(offset, 0f), Vector2.Zero,
+                    ModContent.ProjectileType<{W}>(), wDmg, 1.2f, Main.myPlayer);
+            }}
+            if (finalPhase) {{
+                Projectile.NewProjectile(NPC.GetSource_FromAI(), target.Center, Vector2.Zero,
+                    ModContent.ProjectileType<{F}>(), Math.Max(18, NPC.damage / 4), 1.2f, Main.myPlayer);
             }}
 """
 
-    if asset_id in ring_ids:
+    if asset_id == "abyssal_star_womb":
         return f"""
-            int ringDamage = Math.Max(18, NPC.damage / 4);
-            int spokes = finalPhase ? 10 : phaseTwo ? 8 : 6;
-            float baseRotation = Main.GameUpdateCount * 0.025f;
+            int ringDmg = Math.Max(18, NPC.damage / 4);
+            int spokes = finalPhase ? 12 : phaseTwo ? 8 : 6;
+            float rot = Main.GameUpdateCount * 0.03f;
             for (int i = 0; i < spokes; i++)
             {{
-                Vector2 velocity = (MathHelper.TwoPi * i / spokes + baseRotation).ToRotationVector2() * (finalPhase ? 7.8f : 6.2f);
-                Projectile.NewProjectile(
-                    NPC.GetSource_FromAI(),
-                    NPC.Center,
-                    velocity,
-                    ModContent.ProjectileType<{bolt_type}>(),
-                    ringDamage,
-                    1.4f,
-                    Main.myPlayer);
+                Vector2 v = (MathHelper.TwoPi * i / spokes + rot).ToRotationVector2() * (finalPhase ? 8f : 6f);
+                Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center, v,
+                    ModContent.ProjectileType<{B}>(), ringDmg, 1.4f, Main.myPlayer);
+            }}
+            if (phaseTwo && Main.GameUpdateCount % 540 < 30)
+                Projectile.NewProjectile(NPC.GetSource_FromAI(), target.Center + target.velocity * 18f, Vector2.Zero,
+                    ModContent.ProjectileType<{F}>(), ringDmg, 1.2f, Main.myPlayer);
+"""
+
+    if asset_id == "formless_sword_soul":
+        return f"""
+            int ringDmg = Math.Max(18, NPC.damage / 4);
+            if (phaseTwo && NPC.ai[3]++ == 0) {{
+                for (int s = 0; s < 3; s++)
+                    NPC.NewNPC(NPC.GetSource_FromAI(), (int)NPC.Center.X + Main.rand.Next(-80, 81), (int)NPC.Center.Y + Main.rand.Next(-40, 41),
+                        ModContent.NPCType<global::XianXia.Content.NPCs.Enemies.Generated.ObsessedSwordCultivator>(), ai0: NPC.whoAmI);
+            }}
+            int spokes = finalPhase ? 10 : phaseTwo ? 8 : 6;
+            float rot = Main.GameUpdateCount * 0.025f;
+            for (int i = 0; i < spokes; i++)
+            {{
+                Vector2 v = (MathHelper.TwoPi * i / spokes + rot).ToRotationVector2() * (finalPhase ? 8f : 6f);
+                Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center, v,
+                    ModContent.ProjectileType<{B}>(), ringDmg, 1.4f, Main.myPlayer);
             }}
             if (phaseTwo)
-            {{
-                Projectile.NewProjectile(
-                    NPC.GetSource_FromAI(),
-                    target.Center + target.velocity * 18f,
-                    Vector2.Zero,
-                    ModContent.ProjectileType<{field_type}>(),
-                    ringDamage,
-                    1.2f,
-                    Main.myPlayer);
+                Projectile.NewProjectile(NPC.GetSource_FromAI(), target.Center + target.velocity * 18f, Vector2.Zero,
+                    ModContent.ProjectileType<{F}>(), ringDmg, 1.2f, Main.myPlayer);
+"""
+
+    if asset_id == "greenwood_medicine_king_echo":
+        return f"""
+            int fDmg = Math.Max(18, NPC.damage / 4);
+            if (phaseTwo && NPC.ai[3]++ == 0) {{
+                for (int f = 0; f < 3; f++)
+                    NPC.NewNPC(NPC.GetSource_FromAI(), (int)target.Center.X + Main.rand.Next(-120, 121), (int)target.Center.Y - 60,
+                        ModContent.NPCType<global::XianXia.Content.NPCs.Enemies.Generated.HerbGardenVineSpirit>(), ai0: NPC.whoAmI);
+            }}
+            Projectile.NewProjectile(NPC.GetSource_FromAI(), target.Center + target.velocity * 16f, Vector2.Zero,
+                ModContent.ProjectileType<{F}>(), fDmg, 1.2f, Main.myPlayer);
+            if (finalPhase) {{
+                Vector2 up = new Vector2(0, -1);
+                Projectile.NewProjectile(NPC.GetSource_FromAI(), target.Center + up * 80f, Vector2.Zero,
+                    ModContent.ProjectileType<{F}>(), fDmg, 1.2f, Main.myPlayer);
             }}
 """
 
-    if asset_id in field_ids:
+    if asset_id == "heaven_tablet_guardian":
         return f"""
-            int fieldDamage = Math.Max(18, NPC.damage / 4);
-            Projectile.NewProjectile(
-                NPC.GetSource_FromAI(),
-                target.Center + target.velocity * 16f,
-                Vector2.Zero,
-                ModContent.ProjectileType<{field_type}>(),
-                fieldDamage,
-                1.2f,
-                Main.myPlayer);
-            if (finalPhase)
+            if (phaseTwo && NPC.localAI[1] == 0) {{ NPC.localAI[1] = 1f; }}
+            int sDmg = Math.Max(18, NPC.damage / 3);
+            int lanes = finalPhase ? 5 : phaseTwo ? 3 : 1;
+            for (int i = 0; i < lanes; i++)
             {{
-                Vector2 offset = (target.Center - NPC.Center).SafeNormalize(Vector2.UnitY).RotatedBy(MathHelper.PiOver2) * 128f;
-                Projectile.NewProjectile(NPC.GetSource_FromAI(), target.Center + offset, Vector2.Zero, ModContent.ProjectileType<{field_type}>(), fieldDamage, 1.2f, Main.myPlayer);
-                Projectile.NewProjectile(NPC.GetSource_FromAI(), target.Center - offset, Vector2.Zero, ModContent.ProjectileType<{field_type}>(), fieldDamage, 1.2f, Main.myPlayer);
+                float offset = (i - (lanes - 1) / 2f) * 112f;
+                Projectile.NewProjectile(NPC.GetSource_FromAI(), target.Center + new Vector2(offset, 0f), Vector2.Zero,
+                    ModContent.ProjectileType<{W}>(), sDmg, 1.2f, Main.myPlayer);
+            }}
+            if (finalPhase)
+                Projectile.NewProjectile(NPC.GetSource_FromAI(), target.Center, Vector2.Zero,
+                    ModContent.ProjectileType<{F}>(), Math.Max(18, NPC.damage / 4), 1.2f, Main.myPlayer);
+"""
+
+    if asset_id == "broken_heaven_inspector":
+        return f"""
+            if (phaseTwo && NPC.localAI[1] == 0) {{
+                NPC.localAI[1] = 1f;
+                for (int p = 0; p < 2; p++)
+                    NPC.NewNPC(NPC.GetSource_FromAI(), (int)NPC.Center.X + Main.rand.Next(-80, 81), (int)NPC.Center.Y + Main.rand.Next(-40, 41),
+                        ModContent.NPCType<global::XianXia.Content.NPCs.Enemies.Generated.CelestialPuppet>(), ai0: NPC.whoAmI);
+            }}
+            int sDmg = Math.Max(18, NPC.damage / 3);
+            int lanes = finalPhase ? 5 : phaseTwo ? 3 : 1;
+            for (int i = 0; i < lanes; i++)
+            {{
+                float offset = (i - (lanes - 1) / 2f) * 112f;
+                Projectile.NewProjectile(NPC.GetSource_FromAI(), target.Center + new Vector2(offset, 0f), Vector2.Zero,
+                    ModContent.ProjectileType<{W}>(), sDmg, 1.2f, Main.myPlayer);
+            }}
+            if (finalPhase)
+                Projectile.NewProjectile(NPC.GetSource_FromAI(), target.Center, Vector2.Zero,
+                    ModContent.ProjectileType<{F}>(), Math.Max(18, NPC.damage / 4), 1.2f, Main.myPlayer);
+"""
+
+    if asset_id == "moonbone_immortal":
+        return f"""
+            int ringDmg = Math.Max(18, NPC.damage / 4);
+            if (phaseTwo && NPC.localAI[1] == 0) {{
+                NPC.localAI[1] = 1f;
+                for (int a = 0; a < 2; a++)
+                    NPC.NewNPC(NPC.GetSource_FromAI(), (int)NPC.Center.X + Main.rand.Next(-80, 81), (int)NPC.Center.Y + Main.rand.Next(-40, 41),
+                        ModContent.NPCType<global::XianXia.Content.NPCs.Enemies.Generated.ArchivedImmortalSoul>(), ai0: NPC.whoAmI);
+            }}
+            int spokes = finalPhase ? 12 : phaseTwo ? 8 : 6;
+            float rot = Main.GameUpdateCount * 0.025f;
+            for (int i = 0; i < spokes; i++)
+            {{
+                Vector2 v = (MathHelper.TwoPi * i / spokes + rot).ToRotationVector2() * (finalPhase ? 8f : 6f);
+                Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center, v,
+                    ModContent.ProjectileType<{B}>(), ringDmg, 1.4f, Main.myPlayer);
+            }}
+            if (phaseTwo)
+                Projectile.NewProjectile(NPC.GetSource_FromAI(), target.Center + target.velocity * 18f, Vector2.Zero,
+                    ModContent.ProjectileType<{F}>(), ringDmg, 1.2f, Main.myPlayer);
+"""
+
+    if asset_id == "old_heaven_dao_core":
+        return f"""
+            int module = (int)(NPC.localAI[2]++ / 180f) % 3;
+            int sDmg = Math.Max(18, NPC.damage / 3);
+            if (module == 0) {{
+                int lanes = finalPhase ? 5 : phaseTwo ? 3 : 1;
+                for (int i = 0; i < lanes; i++)
+                {{
+                    float offset = (i - (lanes - 1) / 2f) * 112f;
+                    Projectile.NewProjectile(NPC.GetSource_FromAI(), target.Center + new Vector2(offset, 0f), Vector2.Zero,
+                        ModContent.ProjectileType<{W}>(), sDmg, 1.2f, Main.myPlayer);
+                }}
+            }} else if (module == 1) {{
+                int spokes = finalPhase ? 10 : phaseTwo ? 8 : 6;
+                float rot = Main.GameUpdateCount * 0.025f;
+                for (int i = 0; i < spokes; i++)
+                {{
+                    Vector2 v = (MathHelper.TwoPi * i / spokes + rot).ToRotationVector2() * (finalPhase ? 8f : 6f);
+                    Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center, v,
+                        ModContent.ProjectileType<{B}>(), sDmg, 1.4f, Main.myPlayer);
+                }}
+            }} else {{
+                Projectile.NewProjectile(NPC.GetSource_FromAI(), target.Center + target.velocity * 16f, Vector2.Zero,
+                    ModContent.ProjectileType<{F}>(), sDmg, 1.2f, Main.myPlayer);
             }}
 """
 
@@ -1907,12 +2033,17 @@ def boss_pattern_code(asset_id: str) -> str:
                     NPC.GetSource_FromAI(),
                     origin,
                     velocity,
-                    ModContent.ProjectileType<{bolt_type}>(),
+                    ModContent.ProjectileType<{B}>(),
                     burstDamage,
                     1.4f,
                     Main.myPlayer);
             }}
 """
+
+
+def garden_warden_special() -> str:
+    return ""
+
 
 
 def generate_summons(existing: set[str]) -> None:

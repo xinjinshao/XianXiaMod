@@ -96,20 +96,16 @@ public class GardenWarden : ModNPC
         {
             NPC.ai[2] = 0f;
 
-            int burstDamage = Math.Max(18, NPC.damage / 4);
-            Vector2 side = (target.Center - NPC.Center).SafeNormalize(Vector2.UnitY).RotatedBy(MathHelper.PiOver2);
-            for (int i = -1; i <= 1; i++)
-            {
-                Vector2 origin = NPC.Center + side * i * 72f;
-                Vector2 velocity = (target.Center - origin).SafeNormalize(Vector2.UnitY) * (finalPhase ? 8.8f : 7.2f);
-                Projectile.NewProjectile(
-                    NPC.GetSource_FromAI(),
-                    origin,
-                    velocity,
-                    ModContent.ProjectileType<global::XianXia.Content.Projectiles.BossSpiritBoltProjectile>(),
-                    burstDamage,
-                    1.4f,
-                    Main.myPlayer);
+            int dmg = Math.Max(18, NPC.damage / 4);
+            if (phaseTwo) {
+                Projectile.NewProjectile(NPC.GetSource_FromAI(), target.Center + target.velocity * 16f, Vector2.Zero,
+                    ModContent.ProjectileType<global::XianXia.Content.Projectiles.BossArrayFieldProjectile>(), dmg, 1.2f, Main.myPlayer);
+            }
+            if (finalPhase) {
+                Vector2 perp = (target.Center - NPC.Center).SafeNormalize(Vector2.UnitY).RotatedBy(MathHelper.PiOver2);
+                for (int j = -1; j <= 1; j += 2)
+                    Projectile.NewProjectile(NPC.GetSource_FromAI(), target.Center + perp * j * 96f, Vector2.Zero,
+                        ModContent.ProjectileType<global::XianXia.Content.Projectiles.BossArrayFieldProjectile>(), dmg, 1.2f, Main.myPlayer);
             }
 
         }
@@ -216,20 +212,18 @@ public class BlackFurnaceIronGolem : ModNPC
         {
             NPC.ai[2] = 0f;
 
-            int burstDamage = Math.Max(18, NPC.damage / 4);
+            int dmg = Math.Max(18, NPC.damage / 4);
+            if (phaseTwo) {
+                for (int j = 0; j < 2; j++)
+                    NPC.NewNPC(NPC.GetSource_FromAI(), (int)NPC.Center.X + Main.rand.Next(-60, 61), (int)NPC.Center.Y + Main.rand.Next(-40, 41),
+                        ModContent.NPCType<global::XianXia.Content.NPCs.Enemies.Generated.IronShardSpirit>(), ai0: NPC.whoAmI);
+            }
             Vector2 side = (target.Center - NPC.Center).SafeNormalize(Vector2.UnitY).RotatedBy(MathHelper.PiOver2);
             for (int i = -1; i <= 1; i++)
             {
-                Vector2 origin = NPC.Center + side * i * 72f;
-                Vector2 velocity = (target.Center - origin).SafeNormalize(Vector2.UnitY) * (finalPhase ? 8.8f : 7.2f);
-                Projectile.NewProjectile(
-                    NPC.GetSource_FromAI(),
-                    origin,
-                    velocity,
-                    ModContent.ProjectileType<global::XianXia.Content.Projectiles.BossSpiritBoltProjectile>(),
-                    burstDamage,
-                    1.4f,
-                    Main.myPlayer);
+                Vector2 velocity = (target.Center - (NPC.Center + side * i * 72f)).SafeNormalize(Vector2.UnitY) * (finalPhase ? 9f : 7f);
+                Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center + side * i * 72f, velocity,
+                    ModContent.ProjectileType<global::XianXia.Content.Projectiles.BossSpiritBoltProjectile>(), dmg, 1.4f, Main.myPlayer);
             }
 
         }
@@ -336,31 +330,21 @@ public class TribulationCloudAvatar : ModNPC
         {
             NPC.ai[2] = 0f;
 
-            int warningDamage = Math.Max(18, NPC.damage / 3);
+            int wDmg = Math.Max(18, NPC.damage / 3);
             int lanes = finalPhase ? 5 : phaseTwo ? 3 : 1;
             for (int i = 0; i < lanes; i++)
             {
                 float offset = (i - (lanes - 1) / 2f) * 112f;
-                Projectile.NewProjectile(
-                    NPC.GetSource_FromAI(),
-                    target.Center + new Vector2(offset, 0f),
-                    Vector2.Zero,
-                    ModContent.ProjectileType<global::XianXia.Content.Projectiles.TribulationWarningLineProjectile>(),
-                    warningDamage,
-                    1.2f,
-                    Main.myPlayer);
+                Projectile.NewProjectile(NPC.GetSource_FromAI(), target.Center + new Vector2(offset, 0f), Vector2.Zero,
+                    ModContent.ProjectileType<global::XianXia.Content.Projectiles.TribulationWarningLineProjectile>(), wDmg, 1.2f, Main.myPlayer);
+            }
+            if (phaseTwo && NPC.ai[3]++ == 0) {
+                NPC.NewNPC(NPC.GetSource_FromAI(), (int)NPC.Center.X, (int)NPC.Center.Y,
+                    ModContent.NPCType<global::XianXia.Content.NPCs.Enemies.Generated.TribulationCloudling>(), ai0: NPC.whoAmI);
             }
             if (finalPhase)
-            {
-                Projectile.NewProjectile(
-                    NPC.GetSource_FromAI(),
-                    target.Center,
-                    Vector2.Zero,
-                    ModContent.ProjectileType<global::XianXia.Content.Projectiles.BossArrayFieldProjectile>(),
-                    Math.Max(18, NPC.damage / 4),
-                    1.2f,
-                    Main.myPlayer);
-            }
+                Projectile.NewProjectile(NPC.GetSource_FromAI(), target.Center, Vector2.Zero,
+                    ModContent.ProjectileType<global::XianXia.Content.Projectiles.BossArrayFieldProjectile>(), Math.Max(18, NPC.damage / 4), 1.2f, Main.myPlayer);
 
         }
 
@@ -466,30 +450,17 @@ public class ThunderMarshJiao : ModNPC
         {
             NPC.ai[2] = 0f;
 
-            int warningDamage = Math.Max(18, NPC.damage / 3);
+            int wDmg = Math.Max(18, NPC.damage / 3);
             int lanes = finalPhase ? 5 : phaseTwo ? 3 : 1;
             for (int i = 0; i < lanes; i++)
             {
                 float offset = (i - (lanes - 1) / 2f) * 112f;
-                Projectile.NewProjectile(
-                    NPC.GetSource_FromAI(),
-                    target.Center + new Vector2(offset, 0f),
-                    Vector2.Zero,
-                    ModContent.ProjectileType<global::XianXia.Content.Projectiles.TribulationWarningLineProjectile>(),
-                    warningDamage,
-                    1.2f,
-                    Main.myPlayer);
+                Projectile.NewProjectile(NPC.GetSource_FromAI(), target.Center + new Vector2(offset, 0f), Vector2.Zero,
+                    ModContent.ProjectileType<global::XianXia.Content.Projectiles.TribulationWarningLineProjectile>(), wDmg, 1.2f, Main.myPlayer);
             }
-            if (finalPhase)
-            {
-                Projectile.NewProjectile(
-                    NPC.GetSource_FromAI(),
-                    target.Center,
-                    Vector2.Zero,
-                    ModContent.ProjectileType<global::XianXia.Content.Projectiles.BossArrayFieldProjectile>(),
-                    Math.Max(18, NPC.damage / 4),
-                    1.2f,
-                    Main.myPlayer);
+            if (finalPhase) {
+                Projectile.NewProjectile(NPC.GetSource_FromAI(), target.Center, Vector2.Zero,
+                    ModContent.ProjectileType<global::XianXia.Content.Projectiles.BossArrayFieldProjectile>(), Math.Max(18, NPC.damage / 4), 1.2f, Main.myPlayer);
             }
 
         }
@@ -596,32 +567,18 @@ public class AbyssalStarWomb : ModNPC
         {
             NPC.ai[2] = 0f;
 
-            int ringDamage = Math.Max(18, NPC.damage / 4);
-            int spokes = finalPhase ? 10 : phaseTwo ? 8 : 6;
-            float baseRotation = Main.GameUpdateCount * 0.025f;
+            int ringDmg = Math.Max(18, NPC.damage / 4);
+            int spokes = finalPhase ? 12 : phaseTwo ? 8 : 6;
+            float rot = Main.GameUpdateCount * 0.03f;
             for (int i = 0; i < spokes; i++)
             {
-                Vector2 velocity = (MathHelper.TwoPi * i / spokes + baseRotation).ToRotationVector2() * (finalPhase ? 7.8f : 6.2f);
-                Projectile.NewProjectile(
-                    NPC.GetSource_FromAI(),
-                    NPC.Center,
-                    velocity,
-                    ModContent.ProjectileType<global::XianXia.Content.Projectiles.BossSpiritBoltProjectile>(),
-                    ringDamage,
-                    1.4f,
-                    Main.myPlayer);
+                Vector2 v = (MathHelper.TwoPi * i / spokes + rot).ToRotationVector2() * (finalPhase ? 8f : 6f);
+                Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center, v,
+                    ModContent.ProjectileType<global::XianXia.Content.Projectiles.BossSpiritBoltProjectile>(), ringDmg, 1.4f, Main.myPlayer);
             }
-            if (phaseTwo)
-            {
-                Projectile.NewProjectile(
-                    NPC.GetSource_FromAI(),
-                    target.Center + target.velocity * 18f,
-                    Vector2.Zero,
-                    ModContent.ProjectileType<global::XianXia.Content.Projectiles.BossArrayFieldProjectile>(),
-                    ringDamage,
-                    1.2f,
-                    Main.myPlayer);
-            }
+            if (phaseTwo && Main.GameUpdateCount % 540 < 30)
+                Projectile.NewProjectile(NPC.GetSource_FromAI(), target.Center + target.velocity * 18f, Vector2.Zero,
+                    ModContent.ProjectileType<global::XianXia.Content.Projectiles.BossArrayFieldProjectile>(), ringDmg, 1.2f, Main.myPlayer);
 
         }
 
@@ -727,32 +684,23 @@ public class FormlessSwordSoul : ModNPC
         {
             NPC.ai[2] = 0f;
 
-            int ringDamage = Math.Max(18, NPC.damage / 4);
+            int ringDmg = Math.Max(18, NPC.damage / 4);
+            if (phaseTwo && NPC.ai[3]++ == 0) {
+                for (int s = 0; s < 3; s++)
+                    NPC.NewNPC(NPC.GetSource_FromAI(), (int)NPC.Center.X + Main.rand.Next(-80, 81), (int)NPC.Center.Y + Main.rand.Next(-40, 41),
+                        ModContent.NPCType<global::XianXia.Content.NPCs.Enemies.Generated.ObsessedSwordCultivator>(), ai0: NPC.whoAmI);
+            }
             int spokes = finalPhase ? 10 : phaseTwo ? 8 : 6;
-            float baseRotation = Main.GameUpdateCount * 0.025f;
+            float rot = Main.GameUpdateCount * 0.025f;
             for (int i = 0; i < spokes; i++)
             {
-                Vector2 velocity = (MathHelper.TwoPi * i / spokes + baseRotation).ToRotationVector2() * (finalPhase ? 7.8f : 6.2f);
-                Projectile.NewProjectile(
-                    NPC.GetSource_FromAI(),
-                    NPC.Center,
-                    velocity,
-                    ModContent.ProjectileType<global::XianXia.Content.Projectiles.BossSpiritBoltProjectile>(),
-                    ringDamage,
-                    1.4f,
-                    Main.myPlayer);
+                Vector2 v = (MathHelper.TwoPi * i / spokes + rot).ToRotationVector2() * (finalPhase ? 8f : 6f);
+                Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center, v,
+                    ModContent.ProjectileType<global::XianXia.Content.Projectiles.BossSpiritBoltProjectile>(), ringDmg, 1.4f, Main.myPlayer);
             }
             if (phaseTwo)
-            {
-                Projectile.NewProjectile(
-                    NPC.GetSource_FromAI(),
-                    target.Center + target.velocity * 18f,
-                    Vector2.Zero,
-                    ModContent.ProjectileType<global::XianXia.Content.Projectiles.BossArrayFieldProjectile>(),
-                    ringDamage,
-                    1.2f,
-                    Main.myPlayer);
-            }
+                Projectile.NewProjectile(NPC.GetSource_FromAI(), target.Center + target.velocity * 18f, Vector2.Zero,
+                    ModContent.ProjectileType<global::XianXia.Content.Projectiles.BossArrayFieldProjectile>(), ringDmg, 1.2f, Main.myPlayer);
 
         }
 
@@ -858,20 +806,18 @@ public class GreenwoodMedicineKingEcho : ModNPC
         {
             NPC.ai[2] = 0f;
 
-            int fieldDamage = Math.Max(18, NPC.damage / 4);
-            Projectile.NewProjectile(
-                NPC.GetSource_FromAI(),
-                target.Center + target.velocity * 16f,
-                Vector2.Zero,
-                ModContent.ProjectileType<global::XianXia.Content.Projectiles.BossArrayFieldProjectile>(),
-                fieldDamage,
-                1.2f,
-                Main.myPlayer);
-            if (finalPhase)
-            {
-                Vector2 offset = (target.Center - NPC.Center).SafeNormalize(Vector2.UnitY).RotatedBy(MathHelper.PiOver2) * 128f;
-                Projectile.NewProjectile(NPC.GetSource_FromAI(), target.Center + offset, Vector2.Zero, ModContent.ProjectileType<global::XianXia.Content.Projectiles.BossArrayFieldProjectile>(), fieldDamage, 1.2f, Main.myPlayer);
-                Projectile.NewProjectile(NPC.GetSource_FromAI(), target.Center - offset, Vector2.Zero, ModContent.ProjectileType<global::XianXia.Content.Projectiles.BossArrayFieldProjectile>(), fieldDamage, 1.2f, Main.myPlayer);
+            int fDmg = Math.Max(18, NPC.damage / 4);
+            if (phaseTwo && NPC.ai[3]++ == 0) {
+                for (int f = 0; f < 3; f++)
+                    NPC.NewNPC(NPC.GetSource_FromAI(), (int)target.Center.X + Main.rand.Next(-120, 121), (int)target.Center.Y - 60,
+                        ModContent.NPCType<global::XianXia.Content.NPCs.Enemies.Generated.HerbGardenVineSpirit>(), ai0: NPC.whoAmI);
+            }
+            Projectile.NewProjectile(NPC.GetSource_FromAI(), target.Center + target.velocity * 16f, Vector2.Zero,
+                ModContent.ProjectileType<global::XianXia.Content.Projectiles.BossArrayFieldProjectile>(), fDmg, 1.2f, Main.myPlayer);
+            if (finalPhase) {
+                Vector2 up = new Vector2(0, -1);
+                Projectile.NewProjectile(NPC.GetSource_FromAI(), target.Center + up * 80f, Vector2.Zero,
+                    ModContent.ProjectileType<global::XianXia.Content.Projectiles.BossArrayFieldProjectile>(), fDmg, 1.2f, Main.myPlayer);
             }
 
         }
@@ -978,31 +924,18 @@ public class HeavenTabletGuardian : ModNPC
         {
             NPC.ai[2] = 0f;
 
-            int warningDamage = Math.Max(18, NPC.damage / 3);
+            if (phaseTwo && NPC.localAI[1] == 0) { NPC.localAI[1] = 1f; }
+            int sDmg = Math.Max(18, NPC.damage / 3);
             int lanes = finalPhase ? 5 : phaseTwo ? 3 : 1;
             for (int i = 0; i < lanes; i++)
             {
                 float offset = (i - (lanes - 1) / 2f) * 112f;
-                Projectile.NewProjectile(
-                    NPC.GetSource_FromAI(),
-                    target.Center + new Vector2(offset, 0f),
-                    Vector2.Zero,
-                    ModContent.ProjectileType<global::XianXia.Content.Projectiles.TribulationWarningLineProjectile>(),
-                    warningDamage,
-                    1.2f,
-                    Main.myPlayer);
+                Projectile.NewProjectile(NPC.GetSource_FromAI(), target.Center + new Vector2(offset, 0f), Vector2.Zero,
+                    ModContent.ProjectileType<global::XianXia.Content.Projectiles.TribulationWarningLineProjectile>(), sDmg, 1.2f, Main.myPlayer);
             }
             if (finalPhase)
-            {
-                Projectile.NewProjectile(
-                    NPC.GetSource_FromAI(),
-                    target.Center,
-                    Vector2.Zero,
-                    ModContent.ProjectileType<global::XianXia.Content.Projectiles.BossArrayFieldProjectile>(),
-                    Math.Max(18, NPC.damage / 4),
-                    1.2f,
-                    Main.myPlayer);
-            }
+                Projectile.NewProjectile(NPC.GetSource_FromAI(), target.Center, Vector2.Zero,
+                    ModContent.ProjectileType<global::XianXia.Content.Projectiles.BossArrayFieldProjectile>(), Math.Max(18, NPC.damage / 4), 1.2f, Main.myPlayer);
 
         }
 
@@ -1108,31 +1041,23 @@ public class BrokenHeavenInspector : ModNPC
         {
             NPC.ai[2] = 0f;
 
-            int warningDamage = Math.Max(18, NPC.damage / 3);
+            if (phaseTwo && NPC.localAI[1] == 0) {
+                NPC.localAI[1] = 1f;
+                for (int p = 0; p < 2; p++)
+                    NPC.NewNPC(NPC.GetSource_FromAI(), (int)NPC.Center.X + Main.rand.Next(-80, 81), (int)NPC.Center.Y + Main.rand.Next(-40, 41),
+                        ModContent.NPCType<global::XianXia.Content.NPCs.Enemies.Generated.CelestialPuppet>(), ai0: NPC.whoAmI);
+            }
+            int sDmg = Math.Max(18, NPC.damage / 3);
             int lanes = finalPhase ? 5 : phaseTwo ? 3 : 1;
             for (int i = 0; i < lanes; i++)
             {
                 float offset = (i - (lanes - 1) / 2f) * 112f;
-                Projectile.NewProjectile(
-                    NPC.GetSource_FromAI(),
-                    target.Center + new Vector2(offset, 0f),
-                    Vector2.Zero,
-                    ModContent.ProjectileType<global::XianXia.Content.Projectiles.TribulationWarningLineProjectile>(),
-                    warningDamage,
-                    1.2f,
-                    Main.myPlayer);
+                Projectile.NewProjectile(NPC.GetSource_FromAI(), target.Center + new Vector2(offset, 0f), Vector2.Zero,
+                    ModContent.ProjectileType<global::XianXia.Content.Projectiles.TribulationWarningLineProjectile>(), sDmg, 1.2f, Main.myPlayer);
             }
             if (finalPhase)
-            {
-                Projectile.NewProjectile(
-                    NPC.GetSource_FromAI(),
-                    target.Center,
-                    Vector2.Zero,
-                    ModContent.ProjectileType<global::XianXia.Content.Projectiles.BossArrayFieldProjectile>(),
-                    Math.Max(18, NPC.damage / 4),
-                    1.2f,
-                    Main.myPlayer);
-            }
+                Projectile.NewProjectile(NPC.GetSource_FromAI(), target.Center, Vector2.Zero,
+                    ModContent.ProjectileType<global::XianXia.Content.Projectiles.BossArrayFieldProjectile>(), Math.Max(18, NPC.damage / 4), 1.2f, Main.myPlayer);
 
         }
 
@@ -1238,32 +1163,24 @@ public class MoonboneImmortal : ModNPC
         {
             NPC.ai[2] = 0f;
 
-            int ringDamage = Math.Max(18, NPC.damage / 4);
-            int spokes = finalPhase ? 10 : phaseTwo ? 8 : 6;
-            float baseRotation = Main.GameUpdateCount * 0.025f;
+            int ringDmg = Math.Max(18, NPC.damage / 4);
+            if (phaseTwo && NPC.localAI[1] == 0) {
+                NPC.localAI[1] = 1f;
+                for (int a = 0; a < 2; a++)
+                    NPC.NewNPC(NPC.GetSource_FromAI(), (int)NPC.Center.X + Main.rand.Next(-80, 81), (int)NPC.Center.Y + Main.rand.Next(-40, 41),
+                        ModContent.NPCType<global::XianXia.Content.NPCs.Enemies.Generated.ArchivedImmortalSoul>(), ai0: NPC.whoAmI);
+            }
+            int spokes = finalPhase ? 12 : phaseTwo ? 8 : 6;
+            float rot = Main.GameUpdateCount * 0.025f;
             for (int i = 0; i < spokes; i++)
             {
-                Vector2 velocity = (MathHelper.TwoPi * i / spokes + baseRotation).ToRotationVector2() * (finalPhase ? 7.8f : 6.2f);
-                Projectile.NewProjectile(
-                    NPC.GetSource_FromAI(),
-                    NPC.Center,
-                    velocity,
-                    ModContent.ProjectileType<global::XianXia.Content.Projectiles.BossSpiritBoltProjectile>(),
-                    ringDamage,
-                    1.4f,
-                    Main.myPlayer);
+                Vector2 v = (MathHelper.TwoPi * i / spokes + rot).ToRotationVector2() * (finalPhase ? 8f : 6f);
+                Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center, v,
+                    ModContent.ProjectileType<global::XianXia.Content.Projectiles.BossSpiritBoltProjectile>(), ringDmg, 1.4f, Main.myPlayer);
             }
             if (phaseTwo)
-            {
-                Projectile.NewProjectile(
-                    NPC.GetSource_FromAI(),
-                    target.Center + target.velocity * 18f,
-                    Vector2.Zero,
-                    ModContent.ProjectileType<global::XianXia.Content.Projectiles.BossArrayFieldProjectile>(),
-                    ringDamage,
-                    1.2f,
-                    Main.myPlayer);
-            }
+                Projectile.NewProjectile(NPC.GetSource_FromAI(), target.Center + target.velocity * 18f, Vector2.Zero,
+                    ModContent.ProjectileType<global::XianXia.Content.Projectiles.BossArrayFieldProjectile>(), ringDmg, 1.2f, Main.myPlayer);
 
         }
 
@@ -1369,30 +1286,28 @@ public class OldHeavenDaoCore : ModNPC
         {
             NPC.ai[2] = 0f;
 
-            int warningDamage = Math.Max(18, NPC.damage / 3);
-            int lanes = finalPhase ? 5 : phaseTwo ? 3 : 1;
-            for (int i = 0; i < lanes; i++)
-            {
-                float offset = (i - (lanes - 1) / 2f) * 112f;
-                Projectile.NewProjectile(
-                    NPC.GetSource_FromAI(),
-                    target.Center + new Vector2(offset, 0f),
-                    Vector2.Zero,
-                    ModContent.ProjectileType<global::XianXia.Content.Projectiles.TribulationWarningLineProjectile>(),
-                    warningDamage,
-                    1.2f,
-                    Main.myPlayer);
-            }
-            if (finalPhase)
-            {
-                Projectile.NewProjectile(
-                    NPC.GetSource_FromAI(),
-                    target.Center,
-                    Vector2.Zero,
-                    ModContent.ProjectileType<global::XianXia.Content.Projectiles.BossArrayFieldProjectile>(),
-                    Math.Max(18, NPC.damage / 4),
-                    1.2f,
-                    Main.myPlayer);
+            int module = (int)(NPC.localAI[2]++ / 180f) % 3;
+            int sDmg = Math.Max(18, NPC.damage / 3);
+            if (module == 0) {
+                int lanes = finalPhase ? 5 : phaseTwo ? 3 : 1;
+                for (int i = 0; i < lanes; i++)
+                {
+                    float offset = (i - (lanes - 1) / 2f) * 112f;
+                    Projectile.NewProjectile(NPC.GetSource_FromAI(), target.Center + new Vector2(offset, 0f), Vector2.Zero,
+                        ModContent.ProjectileType<global::XianXia.Content.Projectiles.TribulationWarningLineProjectile>(), sDmg, 1.2f, Main.myPlayer);
+                }
+            } else if (module == 1) {
+                int spokes = finalPhase ? 10 : phaseTwo ? 8 : 6;
+                float rot = Main.GameUpdateCount * 0.025f;
+                for (int i = 0; i < spokes; i++)
+                {
+                    Vector2 v = (MathHelper.TwoPi * i / spokes + rot).ToRotationVector2() * (finalPhase ? 8f : 6f);
+                    Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center, v,
+                        ModContent.ProjectileType<global::XianXia.Content.Projectiles.BossSpiritBoltProjectile>(), sDmg, 1.4f, Main.myPlayer);
+                }
+            } else {
+                Projectile.NewProjectile(NPC.GetSource_FromAI(), target.Center + target.velocity * 16f, Vector2.Zero,
+                    ModContent.ProjectileType<global::XianXia.Content.Projectiles.BossArrayFieldProjectile>(), sDmg, 1.2f, Main.myPlayer);
             }
 
         }
