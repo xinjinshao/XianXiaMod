@@ -1,3 +1,5 @@
+using System;
+using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.GameContent.Bestiary;
 using Terraria.GameContent.ItemDropRules;
@@ -39,6 +41,27 @@ public class TalismanBat : ModNPC
     public override float SpawnChance(NPCSpawnInfo spawnInfo)
     {
         return spawnInfo.Player.InModBiome<ShallowSpiritVeinsBiome>() ? 0.18f : 0f;
+    }
+
+    public override void PostAI()
+    {
+        Player target = Main.player[NPC.target];
+        if (!target.active || target.dead)
+            return;
+
+        NPC.localAI[0]++;
+        if (Main.netMode != NetmodeID.MultiplayerClient && NPC.localAI[0] >= 120f && Main.rand.NextFloat() < 0.15f)
+        {
+            NPC.localAI[0] = 0f;
+            Vector2 velocity = (target.Center - NPC.Center).SafeNormalize(Vector2.UnitY) * 5f;
+            Projectile.NewProjectile(
+                NPC.GetSource_FromAI(),
+                NPC.Center,
+                velocity,
+                ModContent.ProjectileType<global::XianXia.Content.Projectiles.SpiritBoltProjectile>(),
+                Math.Max(1, NPC.damage / 3),
+                0.5f);
+        }
     }
 
     public override void ModifyNPCLoot(NPCLoot npcLoot)

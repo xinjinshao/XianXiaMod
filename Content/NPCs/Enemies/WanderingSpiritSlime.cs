@@ -40,6 +40,14 @@ public class WanderingSpiritSlime : ModNPC
         return spawnInfo.Player.InModBiome<ShallowSpiritVeinsBiome>() ? 0.28f : 0f;
     }
 
+    public override void HitEffect(NPC.HitInfo hit)
+    {
+        for (int i = 0; i < 6; i++)
+        {
+            Dust.NewDust(NPC.position, NPC.width, NPC.height, DustID.MagicMirror, hit.HitDirection * 0.8f, -1.2f, 100, default, 0.8f);
+        }
+    }
+
     public override void ModifyNPCLoot(NPCLoot npcLoot)
     {
         npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<SpiritGel>(), 1, 1, 3));
