@@ -1,4 +1,6 @@
 Xianxia-themed content mod for Terraria/tModLoader.
 
-Current build: MVP playable slice with spiritual energy, shallow spirit veins,
-early materials, starter weapons, starter enemies, and Spirit Vein Wyrm.
+v0.1.0 - Core cultivation system with 9 realms, spiritual energy,
+tribulation (Minor + Heart Demon), 12 bosses with unique AI, 17 enemies
+with custom behaviors, 8 biomes with ambient effects, 5 town NPCs with
+shops/commissions, pill quality RNG, expert/master scaling, en-US/zh-Hans.
