@@ -11,11 +11,19 @@ Mods: {
 					Foundation: 经脉已开，但根基未稳：炼制进阶丹药，突破至筑基。
 					GardenWarden: 旧页浮出草木药香：探索青木药园，挑战守园人。
 					BlackFurnace: 墨迹遇矿而热：进入沉炉矿脉，击败玄炉铁傀。
+					TribulationCloud: 雷文在页顶聚拢：在雷泽云层使用鸣雷玉，击败劫云化身。
+					ThunderJiao: 同一枚玉会引来更深的雷：回到雷泽云层，挑战雷泽蛟。
+					StarWomb: 暗星污迹压住页角：夜晚在星渊裂隙使用星渊胎膜，击败星渊胎主。
 					GoldenCore: 玉简圈出星蚀结丹法：收集核心材料，凝成金丹。
 					SwordSoul: 试炼令已醒：使用宗门试炼令，击败无相剑魂。
+					MedicineKing: 旧药烟从字缝里升起：回到青木药园，回应青木药王残影。
 					NascentSoul: 残破天令回应你的名字：使用旧天道残卷，凝成元婴。
 					HeavenTablet: 坠天宫阙的尘灰落在页上：挑战天碑守卫。
+					BrokenInspector: 天碑已经点名巡察：留在坠天宫阙，面对残天监察使。
+					TribulationStage: 元婴已成，但道基还没经住风雷：炼制渡劫突破物，突破至渡劫。
+					MoonboneImmortal: 月骸文字只在入夜后展开：夜晚在月骸天渊使用月骸祭符。
 					DaoSevering: "当前宗门声望：{0}。继续讨伐主要威胁，承受天劫，并准备斩道。"
+					OldHeavenCore: 最后一行指向月骸封印之后：夜晚在月骸天渊唤起旧天道核心。
 					Endgame: "当前宗门声望：{0}。玉简几乎空白，旧天道核心仍在破天之后等待。"
 					CommissionHerbReady: "可领取委托：药宗学徒正在清点药园旧账。"
 					CommissionFurnaceReady: "可领取委托：游方炼器师正在等待玄炉材料账。"

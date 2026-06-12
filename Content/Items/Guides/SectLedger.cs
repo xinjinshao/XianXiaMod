@@ -78,6 +78,21 @@ public class SectLedger : ModItem
             return WithCommission($"{reputation} {GuidanceValue("BlackFurnace")}");
         }
 
+        if (!DownedBossSystem.DownedBosses.Contains("tribulation_cloud_avatar"))
+        {
+            return WithCommission($"{reputation} {GuidanceValue("TribulationCloud")}");
+        }
+
+        if (!DownedBossSystem.DownedBosses.Contains("thunder_marsh_jiao"))
+        {
+            return WithCommission($"{reputation} {GuidanceValue("ThunderJiao")}");
+        }
+
+        if (!DownedBossSystem.DownedBosses.Contains("abyssal_star_womb"))
+        {
+            return WithCommission($"{reputation} {GuidanceValue("StarWomb")}");
+        }
+
         if (cultivation.cultivationStage < CultivationStage.GoldenCore)
         {
             return WithCommission($"{reputation} {GuidanceValue("GoldenCore")}");
@@ -86,6 +101,11 @@ public class SectLedger : ModItem
         if (!DownedBossSystem.DownedBosses.Contains("formless_sword_soul"))
         {
             return WithCommission($"{reputation} {GuidanceValue("SwordSoul")}");
+        }
+
+        if (!DownedBossSystem.DownedBosses.Contains("greenwood_medicine_king_echo"))
+        {
+            return WithCommission($"{reputation} {GuidanceValue("MedicineKing")}");
         }
 
         if (cultivation.cultivationStage < CultivationStage.NascentSoul)
@@ -98,9 +118,29 @@ public class SectLedger : ModItem
             return WithCommission($"{reputation} {GuidanceValue("HeavenTablet")}");
         }
 
+        if (!DownedBossSystem.DownedBosses.Contains("broken_heaven_inspector"))
+        {
+            return WithCommission($"{reputation} {GuidanceValue("BrokenInspector")}");
+        }
+
+        if (cultivation.cultivationStage < CultivationStage.Tribulation)
+        {
+            return WithCommission($"{reputation} {GuidanceValue("TribulationStage")}");
+        }
+
+        if (!DownedBossSystem.DownedBosses.Contains("moonbone_immortal"))
+        {
+            return WithCommission($"{reputation} {GuidanceValue("MoonboneImmortal")}");
+        }
+
         if (cultivation.cultivationStage < CultivationStage.DaoSevering)
         {
             return WithCommission($"{reputation} {Guidance("DaoSevering").Format(DownedBossSystem.SectReputation)}");
+        }
+
+        if (!DownedBossSystem.DownedBosses.Contains("old_heaven_dao_core"))
+        {
+            return WithCommission($"{reputation} {GuidanceValue("OldHeavenCore")}");
         }
 
         return WithCommission($"{reputation} {Guidance("Endgame").Format(DownedBossSystem.SectReputation)}");

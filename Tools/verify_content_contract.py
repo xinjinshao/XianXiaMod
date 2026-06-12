@@ -114,6 +114,10 @@ def main() -> None:
         "CanClaimCommission",
         "ClaimedCommissions",
         "CommissionHerbReady",
+        "TribulationCloud",
+        "StarWomb",
+        "MoonboneImmortal",
+        "OldHeavenCore",
     )
     require_text(
         "Common/Systems/DownedBossSystem.cs",
@@ -184,11 +188,19 @@ def main() -> None:
         "Localization/guides.zh-Hans.hjson",
         "CommissionHerbReady",
         "CommissionNoneReady",
+        "TribulationCloud",
+        "StarWomb",
+        "MoonboneImmortal",
+        "OldHeavenCore",
     )
     require_text(
         "Localization/guides.en-US.hjson",
         "CommissionHerbReady",
         "CommissionNoneReady",
+        "TribulationCloud",
+        "StarWomb",
+        "MoonboneImmortal",
+        "OldHeavenCore",
     )
     require_text(
         "Localization/en-US.hjson",
