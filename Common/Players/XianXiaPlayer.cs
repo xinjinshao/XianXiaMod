@@ -3,6 +3,7 @@ using Terraria;
 using Terraria.Localization;
 using Terraria.ModLoader;
 using Terraria.ModLoader.IO;
+using XianXia.Common.Systems;
 
 namespace XianXia.Common.Players;
 
@@ -264,26 +265,27 @@ public class XianXiaPlayer : ModPlayer
         }
 
         int stage = (int)cultivationStage;
-        Player.GetDamage(DamageClass.Generic) += 0.02f * stage;
-        Player.statDefense += stage;
-        Player.moveSpeed += 0.01f * stage;
-        spiritualEnergyCostMultiplier *= MathF.Max(0.72f, 1f - stage * 0.025f);
+        float growthMultiplier = ModContent.GetInstance<XianXiaConfig>().PermanentGrowthMultiplier;
+        Player.GetDamage(DamageClass.Generic) += 0.02f * stage * growthMultiplier;
+        Player.statDefense += (int)MathF.Round(stage * growthMultiplier);
+        Player.moveSpeed += 0.01f * stage * growthMultiplier;
+        spiritualEnergyCostMultiplier *= MathF.Max(0.72f, 1f - stage * 0.025f * growthMultiplier);
 
         if (cultivationStage >= CultivationStage.GoldenCore)
         {
-            Player.GetCritChance(DamageClass.Generic) += 2;
+            Player.GetCritChance(DamageClass.Generic) += (int)MathF.Round(2f * growthMultiplier);
         }
 
         if (cultivationStage >= CultivationStage.NascentSoul)
         {
-            Player.endurance += 0.03f;
-            spiritualEnergyRegenBonus += 1;
+            Player.endurance += 0.03f * growthMultiplier;
+            spiritualEnergyRegenBonus += Math.Max(0, (int)MathF.Round(growthMultiplier));
         }
 
         if (cultivationStage >= CultivationStage.Tribulation)
         {
-            Player.GetCritChance(DamageClass.Generic) += 3;
-            Player.endurance += 0.02f;
+            Player.GetCritChance(DamageClass.Generic) += (int)MathF.Round(3f * growthMultiplier);
+            Player.endurance += 0.02f * growthMultiplier;
         }
     }
 
