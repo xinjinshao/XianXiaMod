@@ -53,6 +53,7 @@
 ```powershell
 python Tools\verify_localization_keys.py
 python Tools\verify_png_assets.py
+python Tools\verify_content_contract.py
 powershell -ExecutionPolicy Bypass -File Tools\verify_generated_content_fresh.ps1
 dotnet build XianXia.csproj
 powershell -ExecutionPolicy Bypass -File Tools\tmodloader_smoke_test.ps1
