@@ -187,6 +187,10 @@ public class XianXiaPlayer : ModPlayer
 
         tribulationIntensity = Math.Clamp((int)stage - 1, 1, 8);
         tribulationTimer = Math.Max(tribulationTimer, 60 * (18 + tribulationIntensity * 4));
+        if (Main.myPlayer == Player.whoAmI)
+        {
+            Main.NewText(Language.GetTextValue("Mods.XianXia.Progression.TribulationStarted", stage), 160, 210, 255);
+        }
     }
 
     private void UpdateTribulation()
@@ -213,8 +217,14 @@ public class XianXiaPlayer : ModPlayer
 
         if (tribulationTimer == 0)
         {
-            ReduceSpiritPressure(20 + tribulationIntensity * 2);
-            RestoreSpiritualEnergy(20 + tribulationIntensity * 8);
+            int pressureReduced = 20 + tribulationIntensity * 2;
+            int energyRestored = 20 + tribulationIntensity * 8;
+            ReduceSpiritPressure(pressureReduced);
+            RestoreSpiritualEnergy(energyRestored);
+            if (Main.myPlayer == Player.whoAmI)
+            {
+                Main.NewText(Language.GetTextValue("Mods.XianXia.Progression.TribulationCompleted", energyRestored), 120, 245, 220);
+            }
             tribulationIntensity = 0;
         }
     }

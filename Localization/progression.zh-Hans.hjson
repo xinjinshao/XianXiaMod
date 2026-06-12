@@ -5,6 +5,8 @@ Mods: {
 			InvalidBreakthroughItem: 此物只适合下一重境界突破。先稳住当前境界，再按顺序进阶。
 			BossAlreadyPresent: 此试炼已被引动，先结束当前战斗。
 			BossStageRequired: "境界不足：需要至少 {0}。"
+			TribulationStarted: "天劫临身：{0} 雷劫已锁定你。"
+			TribulationCompleted: "天劫已过。灵气恢复：{0}。"
 			BossPhase: {
 				SpiritPressureSurge: 灵压暴涨
 				DaoScarUnstable: 道痕失控
