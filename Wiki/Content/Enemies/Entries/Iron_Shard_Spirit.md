@@ -40,12 +40,6 @@
 | 器胚碎片 | 50% | 1-2 |
 | 炉渣铁 | 25% | 1-2 |
 
-## 代码实现
-
-- ✅ 数值与wiki完全对齐
-- ✅ 独特AI行为
-- ✅ 双重掉落表
-
 ## 当前美术素材
 
 <!-- ART_SECTION:entry-art:START -->
@@ -61,3 +55,9 @@
 - 主体：32x32，漂浮铁片和小火光。
 - 动画：`spin` 4帧。
 - Prompt：`floating iron shard spirit, tiny ember core`
+## 代码实现
+
+- ✅ 数值与wiki完全对齐
+- ✅ 独特AI行为
+- ✅ 双重掉落表
+

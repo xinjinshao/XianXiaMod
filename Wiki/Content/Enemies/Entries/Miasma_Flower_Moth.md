@@ -40,12 +40,6 @@
 | 青木根 | 50% | 1-2 |
 | 器胚碎片 | 25% | 1-2 |
 
-## 代码实现
-
-- ✅ 数值与wiki对齐
-- ✅ 瘴毒环AI
-- ✅ 双重掉落表
-
 ## 当前美术素材
 
 <!-- ART_SECTION:entry-art:START -->
@@ -61,3 +55,9 @@
 - 主体：48x48，蝶翼带花纹，药绿和淡紫色板。
 - 动画：`fly` 6帧，`miasma` 3帧。
 - Prompt：`flower moth with herbal miasma, green and pale purple wings, clean pixel outline`
+## 代码实现
+
+- ✅ 数值与wiki对齐
+- ✅ 瘴毒环AI
+- ✅ 双重掉落表
+

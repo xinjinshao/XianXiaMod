@@ -39,12 +39,6 @@
 | 劫云露 | 50% | 1-2 |
 | 器胚碎片 | 33% | 1-2 |
 
-## 代码实现
-
-- ✅ 数值与wiki完全对齐
-- ✅ 独特AI行为
-- ✅ 双重掉落表
-
 ## 当前美术素材
 
 <!-- ART_SECTION:entry-art:START -->
@@ -60,3 +54,9 @@
 - 主体：64x48，鹰形，羽毛有蓝色雷纹。
 - 动画：`fly` 6帧，`dive` 3帧。
 - Prompt：`hawk with blue lightning feather patterns, side-view flying`
+## 代码实现
+
+- ✅ 数值与wiki完全对齐
+- ✅ 独特AI行为
+- ✅ 双重掉落表
+

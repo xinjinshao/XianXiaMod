@@ -39,12 +39,6 @@
 | 天道碎片 | 50% | 1-2 |
 | 器胚碎片 | 25% | 1-2 |
 
-## 代码实现
-
-- ✅ 数值与wiki完全对齐
-- ✅ 独特AI行为
-- ✅ 双重掉落表
-
 ## 当前美术素材
 
 <!-- ART_SECTION:entry-art:START -->
@@ -60,3 +54,9 @@
 - 主体：64x80，碑甲卫士，盾像小天碑。
 - 动画：`guard` 4帧，`blast` 4帧。
 - Prompt：`jade tablet shield guardian, golden decree armor, crisp pixel silhouette`
+## 代码实现
+
+- ✅ 数值与wiki完全对齐
+- ✅ 独特AI行为
+- ✅ 双重掉落表
+

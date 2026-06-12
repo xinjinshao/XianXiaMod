@@ -39,12 +39,6 @@
 | 劫云露 | 50% | 1-2 |
 | 器胚碎片 | 33% | 1-2 |
 
-## 代码实现
-
-- ✅ 数值与wiki完全对齐
-- ✅ 独特AI行为
-- ✅ 双重掉落表
-
 ## 当前美术素材
 
 <!-- ART_SECTION:entry-art:START -->
@@ -60,3 +54,9 @@
 - 主体：48x48，紫色小雷云，有玉色面具碎片。
 - 动画：`float` 6帧。
 - Prompt：`small tribulation cloud spirit, jade mask shard, purple lightning`
+## 代码实现
+
+- ✅ 数值与wiki完全对齐
+- ✅ 独特AI行为
+- ✅ 双重掉落表
+

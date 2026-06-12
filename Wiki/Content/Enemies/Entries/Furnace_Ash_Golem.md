@@ -40,12 +40,6 @@
 | 炉渣铁 | 50% | 1-2 |
 | 器胚碎片 | 33% | 1-2 |
 
-## 代码实现
-
-- ✅ 数值与wiki完全对齐
-- ✅ 独特AI行为
-- ✅ 双重掉落表
-
 ## 当前美术素材
 
 <!-- ART_SECTION:entry-art:START -->
@@ -61,3 +55,9 @@
 - 主体：64x64，灰黑小傀儡，胸口暗红煤火。
 - 动画：`walk` 4帧，`punch` 4帧。
 - Prompt：`small ash furnace golem, ember chest, black iron outline`
+## 代码实现
+
+- ✅ 数值与wiki完全对齐
+- ✅ 独特AI行为
+- ✅ 双重掉落表
+

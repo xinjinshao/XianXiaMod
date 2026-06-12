@@ -1,4 +1,4 @@
-# 药园藤妖
+﻿# 药园藤妖
 
 [返回敌怪总览](../Overview.md)
 
@@ -41,12 +41,6 @@
 | 青木根 | 50% | 1-2 |
 | 器胚碎片 | 25% | 1-2 |
 
-## 代码实现
-
-- ✅ 数值与wiki对齐
-- ✅ 自愈+藤鞭AI
-- ✅ 双重掉落表
-
 ## 当前美术素材
 
 <!-- ART_SECTION:entry-art:START -->
@@ -62,3 +56,9 @@
 - 主体：64x64，藤蔓人形，叶冠，根须腿。
 - 动画：`idle` 4帧，`whip` 5帧。
 - Prompt：`vine spirit enemy, herbal garden roots, leafy head, Terraria pixel art`
+## 代码实现
+
+- ✅ 数值与wiki对齐
+- ✅ 自愈+藤鞭AI
+- ✅ 双重掉落表
+

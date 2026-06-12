@@ -40,12 +40,6 @@
 | 星蚀晶 | 50% | 1-2 |
 | 器胚碎片 | 25% | 1-2 |
 
-## 代码实现
-
-- ✅ 数值与wiki完全对齐
-- ✅ 独特AI行为
-- ✅ 双重掉落表
-
 ## 当前美术素材
 
 <!-- ART_SECTION:entry-art:START -->
@@ -61,3 +55,9 @@
 - 主体：64x64，人形修士，暗蓝斗篷，星晶侵蚀半身。
 - 动画：`cast` 5帧。
 - Prompt：`star-infected cultivator, dark blue robe, crystal corruption`
+## 代码实现
+
+- ✅ 数值与wiki完全对齐
+- ✅ 独特AI行为
+- ✅ 双重掉落表
+

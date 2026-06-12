@@ -40,12 +40,6 @@
 | 宗门试炼令 | 50% | 1-2 |
 | 宗门试炼令 | 25% | 1-2 |
 
-## 代码实现
-
-- ✅ 数值与wiki完全对齐
-- ✅ 独特AI行为
-- ✅ 双重掉落表
-
 ## 当前美术素材
 
 <!-- ART_SECTION:entry-art:START -->
@@ -61,3 +55,9 @@
 - 主体：64x64，漂浮书卷和人形残影。
 - 动画：`cast` 6帧。
 - Prompt：`floating scripture scroll echo, ancient pages, golden faded runes`
+## 代码实现
+
+- ✅ 数值与wiki完全对齐
+- ✅ 独特AI行为
+- ✅ 双重掉落表
+

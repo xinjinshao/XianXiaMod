@@ -39,12 +39,6 @@
 | 月骨 | 50% | 1-2 |
 | 斩道尘 | 25% | 1-2 |
 
-## 代码实现
-
-- ✅ 数值与wiki完全对齐
-- ✅ 独特AI行为
-- ✅ 双重掉落表
-
 ## 当前美术素材
 
 <!-- ART_SECTION:entry-art:START -->
@@ -60,3 +54,9 @@
 - 主体：72x80，月白骨甲，残月披肩。
 - 动画：`dash` 4帧，`cast` 5帧。
 - Prompt：`moonbone armored cultivator, white lunar bone armor, cold blue cracks`
+## 代码实现
+
+- ✅ 数值与wiki完全对齐
+- ✅ 独特AI行为
+- ✅ 双重掉落表
+

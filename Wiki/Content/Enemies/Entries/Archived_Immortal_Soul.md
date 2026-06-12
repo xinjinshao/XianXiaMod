@@ -39,12 +39,6 @@
 | 斩道尘 | 50% | 1-2 |
 | 月骨 | 25% | 1-2 |
 
-## 代码实现
-
-- ✅ 数值与wiki完全对齐
-- ✅ 独特AI行为
-- ✅ 双重掉落表
-
 ## 当前美术素材
 
 <!-- ART_SECTION:entry-art:START -->
@@ -60,3 +54,9 @@
 - 主体：72x72，半透明仙魂，环形归档线，中心空洞。
 - 动画：`float` 6帧，`copy` 4帧。
 - Prompt：`archived immortal soul, circular archive lines, hollow glowing core`
+## 代码实现
+
+- ✅ 数值与wiki完全对齐
+- ✅ 独特AI行为
+- ✅ 双重掉落表
+

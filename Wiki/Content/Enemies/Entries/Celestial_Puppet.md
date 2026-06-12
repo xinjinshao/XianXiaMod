@@ -40,12 +40,6 @@
 | 天道碎片 | 50% | 1-2 |
 | 天道碎片 | 33% | 1-2 |
 
-## 代码实现
-
-- ✅ 数值与wiki完全对齐
-- ✅ 独特AI行为
-- ✅ 双重掉落表
-
 ## 当前美术素材
 
 <!-- ART_SECTION:entry-art:START -->
@@ -61,3 +55,9 @@
 - 主体：64x80，白玉傀儡，金线关节，无脸。
 - 动画：`walk` 4帧，`attack` 5帧。
 - Prompt：`white jade celestial puppet, golden joints, faceless divine automaton`
+## 代码实现
+
+- ✅ 数值与wiki完全对齐
+- ✅ 独特AI行为
+- ✅ 双重掉落表
+

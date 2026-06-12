@@ -39,12 +39,6 @@
 | 星蚀晶 | 50% | 1-2 |
 | 器胚碎片 | 33% | 1-2 |
 
-## 代码实现
-
-- ✅ 数值与wiki完全对齐
-- ✅ 独特AI行为
-- ✅ 双重掉落表
-
 ## 当前美术素材
 
 <!-- ART_SECTION:entry-art:START -->
@@ -60,3 +54,9 @@
 - 主体：48x32，深蓝寄生幼体，星点眼。
 - 动画：`crawl` 6帧，`leap` 3帧。
 - Prompt：`dark blue star abyss larva, parasitic shape, bright tiny star eyes`
+## 代码实现
+
+- ✅ 数值与wiki完全对齐
+- ✅ 独特AI行为
+- ✅ 双重掉落表
+
