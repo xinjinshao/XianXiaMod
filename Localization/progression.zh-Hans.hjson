@@ -9,8 +9,12 @@ Mods: {
 			BossSummonSiteRequired: "此召唤物需要在对应试炼场所使用：{0}。"
 			BossSummonNightRequired: 此召唤物需要在夜晚使用。
 			TribulationStarted: "天劫临身：{0} 雷劫已锁定你。"
+			TribulationStartedHeartDemon: "心魔劫起：{0} 内在阴影已显形。"
 			TribulationCompleted: "天劫已过。灵气恢复：{0}。"
 			TribulationComprehensionGained: "天劫感悟已成。永久灵气上限加成：+{0}。"
+			TribulationFailed: 天劫击溃了你。境界未降，但突破丹药已失。虚弱残留。
+			TribulationInsightHint: 过往的失败磨砺了你的心志。下一次挑战将略有缓和。
+			TribulationInsightActive: "劫后感悟生效中（{0} 次尝试）。天劫时长缩短。"
 			ArtifactAwakeningReady: "法器已觉醒：灵气消耗 {2}，伤害 +{3}%。"
 			ArtifactAwakeningLocked: "法器觉醒：需要 {0} 境界与 {1} 宗门声望。"
 			BossPhase: {

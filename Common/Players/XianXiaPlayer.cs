@@ -2,6 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Terraria;
+using Terraria.DataStructures;
+using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader;
 using Terraria.ModLoader.IO;
@@ -54,6 +56,13 @@ public class XianXiaPlayer : ModPlayer
         {
             spiritualEnergy = maxSpiritualEnergy;
         }
+    }
+
+    public override bool PreKill(double damage, int hitDirection, bool pvp, ref bool playSound, ref bool genDust, ref PlayerDeathReason damageSource)
+    {
+        if (tribulationTimer > 0)
+            HandleTribulationFailure();
+        return true;
     }
 
     public override void PostUpdate()
@@ -196,6 +205,16 @@ public class XianXiaPlayer : ModPlayer
         spiritPressure = Math.Clamp(spiritPressure - amount, 0, 100);
     }
 
+    public enum TribulationKind
+    {
+        None = 0,
+        Minor = 1,
+        HeartDemon = 2,
+    }
+
+    public TribulationKind tribulationKind;
+    public int tribulationAttempts;
+
     private void BeginTribulation(CultivationStage stage)
     {
         if (stage < CultivationStage.Foundation)
@@ -203,12 +222,22 @@ public class XianXiaPlayer : ModPlayer
             return;
         }
 
+        tribulationKind = stage >= CultivationStage.NascentSoul ? TribulationKind.HeartDemon : TribulationKind.Minor;
         tribulationIntensity = Math.Clamp((int)stage - 1, 1, 8);
         tribulationStage = (int)stage;
-        tribulationTimer = Math.Max(tribulationTimer, 60 * (18 + tribulationIntensity * 4));
+        tribulationTimer = 60 * (tribulationKind == TribulationKind.HeartDemon ? 30 + tribulationIntensity * 3 : 18 + tribulationIntensity * 4);
+        if (tribulationAttempts > 0)
+        {
+            tribulationTimer = (int)(tribulationTimer * Math.Max(0.7f, 1f - tribulationAttempts * 0.1f));
+            if (Main.myPlayer == Player.whoAmI)
+                Main.NewText(Language.GetTextValue("Mods.XianXia.Progression.TribulationInsightActive", tribulationAttempts), 180, 220, 255);
+        }
         if (Main.myPlayer == Player.whoAmI)
         {
-            Main.NewText(Language.GetTextValue("Mods.XianXia.Progression.TribulationStarted", stage), 160, 210, 255);
+            string msg = tribulationKind == TribulationKind.HeartDemon
+                ? Language.GetTextValue("Mods.XianXia.Progression.TribulationStartedHeartDemon", stage)
+                : Language.GetTextValue("Mods.XianXia.Progression.TribulationStarted", stage);
+            Main.NewText(msg, 160, 210, 255);
         }
     }
 
@@ -228,35 +257,95 @@ public class XianXiaPlayer : ModPlayer
             ReduceSpiritPressure(2);
         }
 
-        int interval = Math.Max(38, 110 - tribulationIntensity * 8);
-        if (Main.myPlayer == Player.whoAmI && tribulationTimer % interval == 0)
+        if (tribulationKind == TribulationKind.HeartDemon)
         {
-            SpawnTribulationLightning();
+            int hdInterval = Math.Max(90, 350 - tribulationIntensity * 25);
+            if (Main.myPlayer == Player.whoAmI && tribulationTimer % hdInterval == 0)
+            {
+                SpawnHeartDemonEnemy();
+            }
+        }
+        else
+        {
+            int interval = Math.Max(38, 110 - tribulationIntensity * 8);
+            if (Main.myPlayer == Player.whoAmI && tribulationTimer % interval == 0)
+            {
+                SpawnTribulationLightning();
+            }
         }
 
         if (tribulationTimer == 0)
         {
-            int pressureReduced = 20 + tribulationIntensity * 2;
-            int energyRestored = 20 + tribulationIntensity * 8;
-            int completedStage = tribulationStage;
-            ReduceSpiritPressure(pressureReduced);
-            RestoreSpiritualEnergy(energyRestored);
-            bool gainedComprehension = completedStage > 0 && clearedTribulationStages.Add(completedStage);
+            CompleteTribulation();
+        }
+    }
+
+    private void CompleteTribulation()
+    {
+        int pressureReduced = 20 + tribulationIntensity * 2;
+        int energyRestored = 20 + tribulationIntensity * 8;
+        int completedStage = tribulationStage;
+        ReduceSpiritPressure(pressureReduced);
+        RestoreSpiritualEnergy(energyRestored);
+        tribulationAttempts = 0;
+        bool gainedComprehension = completedStage > 0 && clearedTribulationStages.Add(completedStage);
+        if (gainedComprehension)
+        {
+            tribulationComprehension++;
+            maxSpiritualEnergy = GetMaxSpiritualEnergy(cultivationStage) + tribulationComprehension * 5;
+        }
+        if (Main.myPlayer == Player.whoAmI)
+        {
+            Main.NewText(Language.GetTextValue("Mods.XianXia.Progression.TribulationCompleted", energyRestored), 120, 245, 220);
             if (gainedComprehension)
             {
-                tribulationComprehension++;
-                maxSpiritualEnergy = GetMaxSpiritualEnergy(cultivationStage) + tribulationComprehension * 5;
+                Main.NewText(Language.GetTextValue("Mods.XianXia.Progression.TribulationComprehensionGained", tribulationComprehension * 5), 160, 210, 255);
             }
-            if (Main.myPlayer == Player.whoAmI)
+        }
+        tribulationIntensity = 0;
+        tribulationStage = 0;
+        tribulationKind = TribulationKind.None;
+    }
+
+    public void HandleTribulationFailure()
+    {
+        if (tribulationTimer <= 0)
+            return;
+
+        tribulationTimer = 0;
+        tribulationAttempts++;
+        RestoreSpiritualEnergy(maxSpiritualEnergy / 4);
+        ReduceSpiritPressure(10);
+        Player.AddBuff(BuffID.Weak, 60 * 60 * 3);
+        Player.AddBuff(ModContent.BuffType<global::XianXia.Content.Buffs.SpiritualPressureDisorderBuff>(), 60 * 2);
+
+        if (Main.myPlayer == Player.whoAmI)
+        {
+            Main.NewText(Language.GetTextValue("Mods.XianXia.Progression.TribulationFailed"), 255, 180, 140);
+            if (tribulationAttempts >= 2)
             {
-                Main.NewText(Language.GetTextValue("Mods.XianXia.Progression.TribulationCompleted", energyRestored), 120, 245, 220);
-                if (gainedComprehension)
-                {
-                    Main.NewText(Language.GetTextValue("Mods.XianXia.Progression.TribulationComprehensionGained", tribulationComprehension * 5), 160, 210, 255);
-                }
+                Main.NewText(Language.GetTextValue("Mods.XianXia.Progression.TribulationInsightHint"), 200, 220, 255);
             }
-            tribulationIntensity = 0;
-            tribulationStage = 0;
+        }
+    }
+
+    private void SpawnHeartDemonEnemy()
+    {
+        if (Main.netMode == Terraria.ID.NetmodeID.MultiplayerClient)
+            return;
+
+        float offsetX = Main.rand.NextFloat(-200f, 200f);
+        float offsetY = Main.rand.NextFloat(-200f, -120f);
+        int npcType = tribulationStage >= 5
+            ? ModContent.NPCType<global::XianXia.Content.NPCs.Enemies.Generated.StarEclipsedCultivator>()
+            : ModContent.NPCType<global::XianXia.Content.NPCs.Enemies.Generated.TribulationCloudling>();
+        int id = NPC.NewNPC(Player.GetSource_FromThis(), (int)(Player.Center.X + offsetX), (int)(Player.Center.Y + offsetY),
+            npcType);
+        if (id < Main.maxNPCs)
+        {
+            Main.npc[id].lifeMax = (int)(Main.npc[id].lifeMax * 0.5f);
+            Main.npc[id].life = Main.npc[id].lifeMax;
+            Main.npc[id].damage = Math.Max(1, Main.npc[id].damage * 2 / 3);
         }
     }
 
@@ -338,6 +427,8 @@ public class XianXiaPlayer : ModPlayer
         tag["tribulationIntensity"] = tribulationIntensity;
         tag["tribulationStage"] = tribulationStage;
         tag["tribulationComprehension"] = tribulationComprehension;
+        tag["tribulationKind"] = (int)tribulationKind;
+        tag["tribulationAttempts"] = tribulationAttempts;
         tag["clearedTribulationStages"] = clearedTribulationStages.ToList();
         tag["discoveredSpiritualEnergy"] = discoveredSpiritualEnergy;
         tag["cultivationStage"] = (int)cultivationStage;
@@ -351,6 +442,8 @@ public class XianXiaPlayer : ModPlayer
         tribulationIntensity = tag.GetInt("tribulationIntensity");
         tribulationStage = tag.GetInt("tribulationStage");
         tribulationComprehension = tag.GetInt("tribulationComprehension");
+        tribulationKind = (TribulationKind)tag.GetInt("tribulationKind");
+        tribulationAttempts = tag.GetInt("tribulationAttempts");
         clearedTribulationStages.Clear();
         foreach (int stage in tag.GetList<int>("clearedTribulationStages"))
         {
