@@ -195,6 +195,8 @@ public class HerbSectApprentice : CultivationTownNPC
         shop.Add<FoundationPill>();
         shop.Add<GreenwoodRoot>();
         shop.Add<SpiritwoodCharm>();
+        shop.Add<QiGatheringPendant>();
+        shop.Add<LowGradeSpiritStone>();
         shop.Register();
     }
 
@@ -277,6 +279,9 @@ public class WanderingArtificer : CultivationTownNPC
         shop.Add<CloudpiercerFlyingSword>();
         shop.Add<GreenwoodArrayPlate>();
         shop.Add<FurnaceHeartRing>();
+        shop.Add<ArtifactBlankShard>();
+        shop.Add<FurnaceSlagIron>();
+        shop.Add<LowGradeSpiritStone>();
         shop.Register();
     }
 
@@ -363,6 +368,8 @@ public class TribulationObserver : CultivationTownNPC
         shop.Add<LightningWardJade>();
         shop.Add<ThunderTalismanArrayPlate>();
         shop.Add<SummonThunderCallingJade>();
+        shop.Add<TribulationCloudDew>();
+        shop.Add<LowGradeSpiritStone>();
         shop.Register();
     }
 
@@ -449,6 +456,8 @@ public class ArchiveScrollSpirit : CultivationTownNPC
         shop.Add<OldHeavenDaoScroll>();
         shop.Add<FormlessSwordWheel>();
         shop.Add<NascentSoulJadeBox>();
+        shop.Add<ArtifactBlankShard>();
+        shop.Add<LowGradeSpiritStone>();
         shop.Register();
     }
 
@@ -539,6 +548,8 @@ public class FallenHeavenMessenger : CultivationTownNPC
         shop.Add<BrokenHeavenDecree>();
         shop.Add<BrokenHeavenCrownSeal>();
         shop.Add<DaoSeveringRing>();
+        shop.Add<HeavenDaoFragment>();
+        shop.Add<LowGradeSpiritStone>();
         shop.Register();
     }
 
