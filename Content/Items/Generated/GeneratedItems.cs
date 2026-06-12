@@ -652,7 +652,7 @@ public class ThunderPatternSwordCase : ModItem
     {
         CreateRecipe()
             .AddIngredient<global::XianXia.Content.Items.Generated.ArtifactBlankShard>(2)
-            .AddIngredient<global::XianXia.Content.Items.Generated.TribulationCloudDew>(6)
+            .AddIngredient<global::XianXia.Content.Items.HandGenerated.ThunderPatternFeather>(12)
             .AddIngredient<global::XianXia.Content.Items.Materials.LowGradeSpiritStone>(12)
             .AddTile(ModContent.TileType<global::XianXia.Content.Tiles.Stations.ArtifactForgeTile>())
             .Register();
@@ -720,7 +720,7 @@ public class FormlessSwordWheel : ModItem
     {
         CreateRecipe()
             .AddIngredient<global::XianXia.Content.Items.Generated.ArtifactBlankShard>(2)
-            .AddIngredient<global::XianXia.Content.Items.Generated.SectTrialToken>(6)
+            .AddIngredient<global::XianXia.Content.Items.HandGenerated.BrokenSwordIntent>(12)
             .AddIngredient<global::XianXia.Content.Items.Materials.LowGradeSpiritStone>(12)
             .AddTile(ModContent.TileType<global::XianXia.Content.Tiles.Stations.ArtifactForgeTile>())
             .Register();
@@ -788,7 +788,7 @@ public class MoonboneDharmaSword : ModItem
     {
         CreateRecipe()
             .AddIngredient<global::XianXia.Content.Items.Generated.ArtifactBlankShard>(2)
-            .AddIngredient<global::XianXia.Content.Items.Generated.Moonbone>(6)
+            .AddIngredient<global::XianXia.Content.Items.Generated.Moonbone>(20)
             .AddIngredient<global::XianXia.Content.Items.Materials.LowGradeSpiritStone>(12)
             .AddTile(ModContent.TileType<global::XianXia.Content.Tiles.Stations.ArtifactForgeTile>())
             .Register();
@@ -1161,7 +1161,7 @@ public class StarEclipseArbalest : ModItem
     {
         CreateRecipe()
             .AddIngredient<global::XianXia.Content.Items.Generated.ArtifactBlankShard>(2)
-            .AddIngredient<global::XianXia.Content.Items.Generated.StarEclipseCrystal>(6)
+            .AddIngredient<global::XianXia.Content.Items.Generated.StarEclipseCrystal>(15)
             .AddIngredient<global::XianXia.Content.Items.Materials.LowGradeSpiritStone>(12)
             .AddTile(ModContent.TileType<global::XianXia.Content.Tiles.Stations.ArtifactForgeTile>())
             .Register();

@@ -53,8 +53,8 @@ public class WoodgrainFlyingSword : ModItem
         CreateRecipe()
             .AddIngredient(ItemID.Wood, 12)
             .AddIngredient<LowGradeSpiritStone>(6)
-            .AddIngredient<SpiritGel>(4)
-            .AddTile(ModContent.TileType<ArtifactForgeTile>())
+            .AddIngredient<SpiritGel>(10)
+            .AddTile(TileID.WorkBenches)
             .Register();
     }
 }

@@ -742,8 +742,8 @@ def generate_materials(existing: set[str]) -> None:
 """
             ingredient = {
                 "cloudpiercer_flying_sword": "GreenwoodRoot",
-                "thunder_pattern_sword_case": "TribulationCloudDew",
-                "formless_sword_wheel": "SectTrialToken",
+                "thunder_pattern_sword_case": "ThunderPatternFeather",
+                "formless_sword_wheel": "BrokenSwordIntent",
                 "moonbone_dharma_sword": "Moonbone",
                 "cinnabar_talisman_flame_item": "FurnaceSlagIron",
                 "greenwood_array_plate": "GreenwoodRoot",
@@ -752,12 +752,28 @@ def generate_materials(existing: set[str]) -> None:
                 "star_eclipse_arbalest": "StarEclipseCrystal",
                 "old_heaven_dao_scroll": "HeavenDaoFragment",
             }[asset_id]
+            # Wiki-specified tier material count (not uniform)
+            tier_count = {
+                "cloudpiercer_flying_sword": 6,
+                "thunder_pattern_sword_case": 12,
+                "formless_sword_wheel": 12,
+                "moonbone_dharma_sword": 20,
+                "cinnabar_talisman_flame_item": 6,
+                "greenwood_array_plate": 6,
+                "thunder_talisman_array_plate": 6,
+                "broken_heaven_decree": 6,
+                "star_eclipse_arbalest": 15,
+                "old_heaven_dao_scroll": 6,
+            }.get(asset_id, 6)
+            # Check if using HandGenerated items
+            hg_weapon_mats = {"ThunderPatternFeather", "BrokenSwordIntent"}
+            ing_ns = "HandGenerated" if ingredient in hg_weapon_mats else "Generated"
             recipe = f"""
     public override void AddRecipes()
     {{
         CreateRecipe()
             .AddIngredient<global::XianXia.Content.Items.Generated.ArtifactBlankShard>(2)
-            .AddIngredient<global::XianXia.Content.Items.Generated.{ingredient}>(6)
+            .AddIngredient<global::XianXia.Content.Items.{ing_ns}.{ingredient}>({tier_count})
             .AddIngredient<global::XianXia.Content.Items.Materials.LowGradeSpiritStone>(12)
             .AddTile(ModContent.TileType<global::XianXia.Content.Tiles.Stations.ArtifactForgeTile>())
             .Register();
