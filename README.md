@@ -24,7 +24,7 @@ XianXiaMod 是一个 Terraria/tModLoader 仙侠主题内容 Mod。项目目标�
 - 已新增宗门玉简：玩家可使用它读取当前世界和自身修行对应的下一步目标。
 - 已接入 Calamity Mod 软兼容探测入口，但不强依赖 Calamity。
 - 已新增 tModLoader smoke test，用于确认 Mod 能被 tModLoader 实际加载。
-- 已新增 Bestiary 本地化 key 校验脚本，减少图鉴缺失文本的回归。
+- 已新增本地化 key 校验脚本，减少图鉴与进度提示缺失文本的回归。
 
 ## 设计入口
 

@@ -12,40 +12,59 @@ def read_all(pattern: str) -> list[tuple[Path, str]]:
     return [(path, path.read_text(encoding="utf-8")) for path in ROOT.rglob(pattern)]
 
 
-def bestiary_keys_from_code() -> set[str]:
+def localization_keys_from_code() -> set[str]:
     keys: set[str] = set()
-    pattern = re.compile(r'FlavorTextBestiaryInfoElement\("Mods\.XianXia\.Bestiary\.([^"]+)"\)')
+    bestiary_pattern = re.compile(r'FlavorTextBestiaryInfoElement\("Mods\.XianXia\.Bestiary\.([^"]+)"\)')
+    language_pattern = re.compile(r'Language\.GetTextValue\("Mods\.XianXia\.([^"]+)"')
     for path, text in read_all("*.cs"):
-        if "FlavorTextBestiaryInfoElement" not in text:
-            continue
-        keys.update(pattern.findall(text))
+        if "FlavorTextBestiaryInfoElement" in text:
+            keys.update(f"Bestiary.{key}" for key in bestiary_pattern.findall(text))
+        if "Language.GetTextValue" in text:
+            keys.update(language_pattern.findall(text))
     return keys
 
 
-def hjson_text() -> str:
-    return "\n".join(text for _, text in read_all("*.hjson"))
+def localization_keys() -> set[str]:
+    keys: set[str] = set()
+    key_pattern = re.compile(r"^\s*([A-Za-z0-9_.-]+)\s*:\s*(.*)$")
 
+    for _, text in read_all("*.hjson"):
+        stack: list[str] = []
+        for raw_line in text.splitlines():
+            line = raw_line.strip()
+            if not line or line.startswith("#"):
+                continue
+            if line.startswith("}"):
+                if stack:
+                    stack.pop()
+                continue
 
-def has_hjson_key(text: str, key: str) -> bool:
-    parts = key.split(".")
-    if len(parts) == 1:
-        return re.search(rf"(?m)^\s*{re.escape(parts[0])}\s*:", text) is not None
+            match = key_pattern.match(raw_line)
+            if match is None:
+                continue
 
-    parent = re.escape(parts[0])
-    child = re.escape(parts[1])
-    return re.search(rf"(?s)(?m)^\s*{parent}\s*:\s*\{{.*?^\s*{child}\s*:", text) is not None
+            key, value = match.groups()
+            if value.strip().startswith("{"):
+                stack.append(key)
+                continue
+
+            full_key = ".".join(stack + [key])
+            if full_key.startswith("Mods.XianXia."):
+                keys.add(full_key.removeprefix("Mods.XianXia."))
+
+    return keys
 
 
 def main() -> int:
-    localization = hjson_text()
-    missing = sorted(key for key in bestiary_keys_from_code() if not has_hjson_key(localization, key))
+    available = localization_keys()
+    missing = sorted(key for key in localization_keys_from_code() if key not in available)
     if missing:
-        print("Missing Bestiary localization keys:")
+        print("Missing localization keys:")
         for key in missing:
-            print(f"  Mods.XianXia.Bestiary.{key}")
+            print(f"  Mods.XianXia.{key}")
         return 1
 
-    print("Bestiary localization keys verified.")
+    print("Localization keys verified.")
     return 0
 
 
