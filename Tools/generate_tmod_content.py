@@ -972,8 +972,10 @@ BOSS_HEADER = """using System;\nusing Microsoft.Xna.Framework;\nusing Terraria;\
 def boss_pattern_code(asset_id: str) -> str:
     warning_type = "global::XianXia.Content.Projectiles.TribulationWarningLineProjectile"
     bolt_type = "global::XianXia.Content.Projectiles.BossSpiritBoltProjectile"
+    field_type = "global::XianXia.Content.Projectiles.BossArrayFieldProjectile"
     thunder_ids = {"tribulation_cloud_avatar", "thunder_marsh_jiao", "broken_heaven_inspector", "heaven_tablet_guardian", "old_heaven_dao_core"}
     ring_ids = {"abyssal_star_womb", "formless_sword_soul", "moonbone_immortal", "old_heaven_dao_core"}
+    field_ids = {"formless_sword_soul", "greenwood_medicine_king_echo", "heaven_tablet_guardian", "broken_heaven_inspector", "moonbone_immortal", "old_heaven_dao_core"}
 
     if asset_id in thunder_ids:
         return f"""
@@ -988,6 +990,17 @@ def boss_pattern_code(asset_id: str) -> str:
                     Vector2.Zero,
                     ModContent.ProjectileType<{warning_type}>(),
                     warningDamage,
+                    1.2f,
+                    Main.myPlayer);
+            }}
+            if (finalPhase)
+            {{
+                Projectile.NewProjectile(
+                    NPC.GetSource_FromAI(),
+                    target.Center,
+                    Vector2.Zero,
+                    ModContent.ProjectileType<{field_type}>(),
+                    Math.Max(18, NPC.damage / 4),
                     1.2f,
                     Main.myPlayer);
             }}
@@ -1009,6 +1022,36 @@ def boss_pattern_code(asset_id: str) -> str:
                     ringDamage,
                     1.4f,
                     Main.myPlayer);
+            }}
+            if (phaseTwo)
+            {{
+                Projectile.NewProjectile(
+                    NPC.GetSource_FromAI(),
+                    target.Center + target.velocity * 18f,
+                    Vector2.Zero,
+                    ModContent.ProjectileType<{field_type}>(),
+                    ringDamage,
+                    1.2f,
+                    Main.myPlayer);
+            }}
+"""
+
+    if asset_id in field_ids:
+        return f"""
+            int fieldDamage = Math.Max(18, NPC.damage / 4);
+            Projectile.NewProjectile(
+                NPC.GetSource_FromAI(),
+                target.Center + target.velocity * 16f,
+                Vector2.Zero,
+                ModContent.ProjectileType<{field_type}>(),
+                fieldDamage,
+                1.2f,
+                Main.myPlayer);
+            if (finalPhase)
+            {{
+                Vector2 offset = (target.Center - NPC.Center).SafeNormalize(Vector2.UnitY).RotatedBy(MathHelper.PiOver2) * 128f;
+                Projectile.NewProjectile(NPC.GetSource_FromAI(), target.Center + offset, Vector2.Zero, ModContent.ProjectileType<{field_type}>(), fieldDamage, 1.2f, Main.myPlayer);
+                Projectile.NewProjectile(NPC.GetSource_FromAI(), target.Center - offset, Vector2.Zero, ModContent.ProjectileType<{field_type}>(), fieldDamage, 1.2f, Main.myPlayer);
             }}
 """
 
