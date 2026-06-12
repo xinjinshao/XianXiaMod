@@ -33,6 +33,7 @@ XianXiaMod 是一个 Terraria/tModLoader 仙侠主题内容 Mod。项目目标�
 - 已为服务器配置项补充中英文名称和说明。
 - 已新增 tModLoader smoke test，用于确认 Mod 能被 tModLoader 实际加载。
 - 已新增本地化 key 校验脚本，减少图鉴、进度提示与配置项缺失文本的回归。
+- 已新增 PNG 素材校验脚本，检查素材文件签名和尺寸。
 
 ## 设计入口
 
@@ -58,6 +59,7 @@ XianXiaMod 是一个 Terraria/tModLoader 仙侠主题内容 Mod。项目目标�
 
 ```powershell
 python Tools\verify_localization_keys.py
+python Tools\verify_png_assets.py
 dotnet build XianXia.csproj
 powershell -ExecutionPolicy Bypass -File Tools\tmodloader_smoke_test.ps1
 ```
