@@ -265,7 +265,7 @@ public class XianXiaPlayer : ModPlayer
         }
 
         int stage = (int)cultivationStage;
-        float growthMultiplier = ModContent.GetInstance<XianXiaConfig>().PermanentGrowthMultiplier;
+        float growthMultiplier = Math.Clamp(ModContent.GetInstance<XianXiaConfig>().PermanentGrowthMultiplier, 0f, 2f);
         Player.GetDamage(DamageClass.Generic) += 0.02f * stage * growthMultiplier;
         Player.statDefense += (int)MathF.Round(stage * growthMultiplier);
         Player.moveSpeed += 0.01f * stage * growthMultiplier;
