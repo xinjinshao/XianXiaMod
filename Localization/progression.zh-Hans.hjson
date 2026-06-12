@@ -1,0 +1,10 @@
+Mods: {
+	XianXia: {
+		Progression: {
+			Advanced: "境界突破：{0}"
+			InvalidBreakthroughItem: 此物只适合下一重境界突破。先稳住当前境界，再按顺序进阶。
+			BossAlreadyPresent: 此试炼已被引动，先结束当前战斗。
+			BossStageRequired: "境界不足：需要至少 {0}。"
+		}
+	}
+}

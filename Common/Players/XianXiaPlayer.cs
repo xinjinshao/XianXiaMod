@@ -1,5 +1,6 @@
 using System;
 using Terraria;
+using Terraria.Localization;
 using Terraria.ModLoader;
 using Terraria.ModLoader.IO;
 
@@ -123,7 +124,7 @@ public class XianXiaPlayer : ModPlayer
         BeginTribulation(targetStage);
         if (Main.myPlayer == Player.whoAmI)
         {
-            Main.NewText($"境界突破：{targetStage}", 120, 245, 220);
+            Main.NewText(Language.GetTextValue("Mods.XianXia.Progression.Advanced", targetStage), 120, 245, 220);
         }
         return true;
     }
@@ -140,7 +141,7 @@ public class XianXiaPlayer : ModPlayer
         bool canAdvance = CanAdvanceCultivation(targetStage);
         if (!canAdvance && Main.myPlayer == Player.whoAmI)
         {
-            Main.NewText("此物只适合下一重境界突破。先稳住当前境界，再按顺序进阶。", 255, 210, 120);
+            Main.NewText(Language.GetTextValue("Mods.XianXia.Progression.InvalidBreakthroughItem"), 255, 210, 120);
         }
 
         return canAdvance;
@@ -152,7 +153,7 @@ public class XianXiaPlayer : ModPlayer
         {
             if (Main.myPlayer == Player.whoAmI)
             {
-                Main.NewText("此试炼已被引动，先结束当前战斗。", 255, 210, 120);
+                Main.NewText(Language.GetTextValue("Mods.XianXia.Progression.BossAlreadyPresent"), 255, 210, 120);
             }
 
             return false;
@@ -162,7 +163,7 @@ public class XianXiaPlayer : ModPlayer
         {
             if (Main.myPlayer == Player.whoAmI)
             {
-                Main.NewText($"境界不足：需要至少 {requiredStage}。", 255, 210, 120);
+                Main.NewText(Language.GetTextValue("Mods.XianXia.Progression.BossStageRequired", requiredStage), 255, 210, 120);
             }
 
             return false;
