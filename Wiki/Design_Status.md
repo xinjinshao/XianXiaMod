@@ -57,6 +57,7 @@ python Tools\verify_content_contract.py
 powershell -ExecutionPolicy Bypass -File Tools\verify_generated_content_fresh.ps1
 dotnet build XianXia.csproj
 powershell -ExecutionPolicy Bypass -File Tools\tmodloader_smoke_test.ps1
+powershell -ExecutionPolicy Bypass -File Tools\tmodloader_client_smoke_test.ps1
 ```
 
 涉及世界生成的批次还必须通过：

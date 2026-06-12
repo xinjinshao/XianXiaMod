@@ -3,6 +3,7 @@ from __future__ import annotations
 import struct
 import sys
 from pathlib import Path
+import re
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -41,6 +42,21 @@ def main() -> int:
                     raise ValueError(f"invalid dimensions {width}x{height}")
             except Exception as exc:
                 invalid.append(f"{path.relative_to(ROOT)}: {exc}")
+
+    buff_dir = ROOT / "Content" / "Buffs"
+    for source in buff_dir.glob("*.cs"):
+        text = source.read_text(encoding="utf-8")
+        if "ModBuff" not in text:
+            continue
+
+        match = re.search(r"public\s+class\s+(\w+)\s*:\s*ModBuff", text)
+        if not match:
+            invalid.append(f"{source.relative_to(ROOT)}: could not find ModBuff class name")
+            continue
+
+        texture = buff_dir / f"{match.group(1)}.png"
+        if not texture.exists():
+            invalid.append(f"{source.relative_to(ROOT)}: missing client buff texture {texture.relative_to(ROOT)}")
 
     if invalid:
         print("Invalid PNG assets:")
