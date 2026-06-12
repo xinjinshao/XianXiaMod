@@ -1049,6 +1049,7 @@ def generate_enemies(existing: set[str]) -> None:
             continue
         copy_asset(asset_id, "base", class_name, CONTENT / "NPCs" / "Enemies" / "Generated")
         biome = BIOME_BY_ENEMY[asset_id]
+        extra_defaults, extra_methods = enemy_behavior_code(asset_id)
         ai = "NPCAIStyleID.Fighter"
         flags = ""
         if any(k in asset_id for k in ["moth", "spirit", "hawk", "echo", "soul", "cloud"]):
@@ -1075,13 +1076,14 @@ public class {class_name} : ModNPC
         NPC.DeathSound = SoundID.NPCDeath1;
         NPC.aiStyle = {ai};
         AIType = NPCID.CaveBat;
-{flags}    }}
+{flags}{extra_defaults}
+    }}
 
     public override float SpawnChance(NPCSpawnInfo spawnInfo)
     {{
         return spawnInfo.Player.InModBiome<global::XianXia.Content.Biomes.{biome}>() ? 0.18f : 0f;
     }}
-
+{extra_methods}
     public override void ModifyNPCLoot(NPCLoot npcLoot)
     {{
         npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<global::XianXia.Content.Items.Generated.{pascal(drop)}>(), 2, 1, 2));
@@ -1091,7 +1093,384 @@ public class {class_name} : ModNPC
     write(CONTENT / "NPCs" / "Enemies" / "Generated" / "GeneratedEnemies.cs", ENEMY_HEADER + "\n".join(classes))
 
 
-ENEMY_HEADER = """using Terraria;\nusing Terraria.GameContent.Bestiary;\nusing Terraria.GameContent.ItemDropRules;\nusing Terraria.ID;\nusing Terraria.ModLoader;\n\nnamespace XianXia.Content.NPCs.Enemies.Generated;\n"""
+def enemy_behavior_code(asset_id: str) -> tuple[str, str]:
+    if asset_id == "herb_garden_vine_spirit":
+        return ("", """
+    public override void PostAI()
+    {
+        Player target = Main.player[NPC.target];
+        if (target.active && !target.dead && Vector2.Distance(NPC.Center, target.Center) < 160f)
+        {
+            NPC.velocity *= 0.92f;
+        }
+
+        NPC.localAI[0]++;
+        if (NPC.localAI[0] >= 90f)
+        {
+            NPC.localAI[0] = 0f;
+            if (NPC.life < NPC.lifeMax)
+            {
+                NPC.life += Math.Min(4, NPC.lifeMax - NPC.life);
+            }
+
+            for (int i = 0; i < 6; i++)
+            {
+                Dust.NewDust(NPC.position, NPC.width, NPC.height, DustID.Grass, 0f, -0.6f);
+            }
+        }
+    }
+""")
+
+    if asset_id == "miasma_flower_moth":
+        return ("", """
+    public override void PostAI()
+    {
+        NPC.velocity *= 0.985f;
+        NPC.localAI[0]++;
+        if (NPC.localAI[0] < 45f)
+        {
+            return;
+        }
+
+        NPC.localAI[0] = 0f;
+        foreach (Player player in Main.ActivePlayers)
+        {
+            if (Vector2.Distance(player.Center, NPC.Center) <= 128f)
+            {
+                player.AddBuff(BuffID.Poisoned, 90);
+            }
+        }
+
+        for (int i = 0; i < 8; i++)
+        {
+            Dust.NewDust(NPC.position, NPC.width, NPC.height, DustID.Poisoned, Main.rand.NextFloat(-1f, 1f), Main.rand.NextFloat(-1f, 1f));
+        }
+    }
+""")
+
+    if asset_id == "furnace_ash_golem":
+        return ("""
+        NPC.knockBackResist = 0.2f;""", """
+    public override void OnHitPlayer(Player target, Player.HurtInfo hurtInfo)
+    {
+        target.AddBuff(BuffID.OnFire3, 180);
+    }
+
+    public override void HitEffect(NPC.HitInfo hit)
+    {
+        for (int i = 0; i < 6; i++)
+        {
+            Dust.NewDust(NPC.position, NPC.width, NPC.height, DustID.Torch, hit.HitDirection * 1.2f, -1.4f);
+        }
+    }
+""")
+
+    if asset_id == "iron_shard_spirit":
+        return ("", """
+    public override void PostAI()
+    {
+        Player target = Main.player[NPC.target];
+        if (!target.active || target.dead)
+        {
+            NPC.TargetClosest(false);
+            target = Main.player[NPC.target];
+        }
+
+        NPC.localAI[0]++;
+        if (target.active && !target.dead && NPC.localAI[0] >= 75f)
+        {
+            NPC.localAI[0] = 0f;
+            Vector2 direction = (target.Center - NPC.Center).SafeNormalize(Vector2.UnitX);
+            NPC.velocity = direction * 11f;
+            NPC.netUpdate = true;
+        }
+
+        NPC.rotation = NPC.velocity.X * 0.04f;
+    }
+""")
+
+    if asset_id == "tribulation_cloudling":
+        return ("", """
+    public override void PostAI()
+    {
+        Player target = Main.player[NPC.target];
+        if (!target.active || target.dead)
+        {
+            NPC.TargetClosest(false);
+            target = Main.player[NPC.target];
+        }
+
+        NPC.localAI[0]++;
+        if (Main.netMode != NetmodeID.MultiplayerClient && target.active && !target.dead && NPC.localAI[0] >= 150f)
+        {
+            NPC.localAI[0] = 0f;
+            NPC.Center = target.Center + new Vector2(Main.rand.NextFloat(-180f, 180f), Main.rand.NextFloat(-160f, -80f));
+            Projectile.NewProjectile(
+                NPC.GetSource_FromAI(),
+                target.Center + new Vector2(0f, -340f),
+                Vector2.UnitY * 8f,
+                ModContent.ProjectileType<global::XianXia.Content.Projectiles.TribulationWarningLineProjectile>(),
+                Math.Max(1, NPC.damage / 2),
+                0f);
+            NPC.netUpdate = true;
+        }
+    }
+""")
+
+    if asset_id == "thunder_pattern_hawk":
+        return ("", """
+    public override void PostAI()
+    {
+        Player target = Main.player[NPC.target];
+        if (!target.active || target.dead)
+        {
+            NPC.TargetClosest(false);
+            target = Main.player[NPC.target];
+        }
+
+        NPC.localAI[0]++;
+        if (target.active && !target.dead && NPC.localAI[0] >= 110f)
+        {
+            NPC.localAI[0] = 0f;
+            Vector2 direction = (target.Center - NPC.Center).SafeNormalize(Vector2.UnitY);
+            NPC.velocity = direction * 13f;
+            NPC.netUpdate = true;
+        }
+
+        if (NPC.velocity.LengthSquared() > 80f)
+        {
+            Dust.NewDust(NPC.position, NPC.width, NPC.height, DustID.Electric, -NPC.velocity.X * 0.1f, -NPC.velocity.Y * 0.1f);
+        }
+    }
+""")
+
+    if asset_id == "star_eclipsed_cultivator":
+        return ("", """
+    public override void PostAI()
+    {
+        Player target = Main.player[NPC.target];
+        if (!target.active || target.dead)
+        {
+            NPC.TargetClosest(false);
+            target = Main.player[NPC.target];
+        }
+
+        if (!target.active || target.dead)
+        {
+            return;
+        }
+
+        float distance = Vector2.Distance(target.Center, NPC.Center);
+        if (distance < 180f)
+        {
+            NPC.velocity += (NPC.Center - target.Center).SafeNormalize(Vector2.Zero) * 0.12f;
+        }
+
+        NPC.localAI[0]++;
+        if (Main.netMode != NetmodeID.MultiplayerClient && NPC.localAI[0] >= 135f)
+        {
+            NPC.localAI[0] = 0f;
+            Vector2 velocity = (target.Center - NPC.Center).SafeNormalize(Vector2.UnitY) * 7.5f;
+            Projectile.NewProjectile(
+                NPC.GetSource_FromAI(),
+                NPC.Center,
+                velocity,
+                ModContent.ProjectileType<global::XianXia.Content.Projectiles.BossSpiritBoltProjectile>(),
+                Math.Max(1, NPC.damage / 3),
+                1f);
+        }
+    }
+""")
+
+    if asset_id == "star_abyss_larva":
+        return ("", """
+    public override void PostAI()
+    {
+        Player target = Main.player[NPC.target];
+        if (!target.active || target.dead)
+        {
+            NPC.TargetClosest(false);
+            target = Main.player[NPC.target];
+        }
+
+        NPC.localAI[0]++;
+        if (target.active && !target.dead && NPC.localAI[0] >= 90f && Vector2.Distance(target.Center, NPC.Center) < 260f)
+        {
+            NPC.localAI[0] = 0f;
+            Vector2 leap = (target.Center - NPC.Center).SafeNormalize(Vector2.UnitX) * 8f;
+            leap.Y -= 4f;
+            NPC.velocity = leap;
+            NPC.netUpdate = true;
+        }
+    }
+""")
+
+    if asset_id == "obsessed_sword_cultivator":
+        return ("""
+        NPC.knockBackResist = 0.25f;""", """
+    public override void PostAI()
+    {
+        Player target = Main.player[NPC.target];
+        if (!target.active || target.dead)
+        {
+            NPC.TargetClosest(false);
+            target = Main.player[NPC.target];
+        }
+
+        if (target.active && !target.dead && Math.Abs(target.Center.X - NPC.Center.X) < 96f)
+        {
+            NPC.velocity.X *= 0.65f;
+            NPC.defense = 42;
+        }
+        else
+        {
+            NPC.defense = 34;
+        }
+
+        NPC.localAI[0]++;
+        if (target.active && !target.dead && NPC.localAI[0] >= 120f)
+        {
+            NPC.localAI[0] = 0f;
+            NPC.velocity.X = Math.Sign(target.Center.X - NPC.Center.X) * 9f;
+            NPC.netUpdate = true;
+        }
+    }
+""")
+
+    if asset_id == "scripture_archive_echo":
+        return ("", """
+    public override void PostAI()
+    {
+        Player target = Main.player[NPC.target];
+        if (!target.active || target.dead)
+        {
+            NPC.TargetClosest(false);
+            target = Main.player[NPC.target];
+        }
+
+        NPC.localAI[0]++;
+        if (Main.netMode != NetmodeID.MultiplayerClient && target.active && !target.dead && NPC.localAI[0] >= 105f)
+        {
+            NPC.localAI[0] = 0f;
+            for (int i = -1; i <= 1; i++)
+            {
+                Vector2 velocity = (target.Center - NPC.Center).SafeNormalize(Vector2.UnitY).RotatedBy(MathHelper.ToRadians(12f * i)) * 6.5f;
+                Projectile.NewProjectile(
+                    NPC.GetSource_FromAI(),
+                    NPC.Center,
+                    velocity,
+                    ModContent.ProjectileType<global::XianXia.Content.Projectiles.BossSpiritBoltProjectile>(),
+                    Math.Max(1, NPC.damage / 4),
+                    0.5f);
+            }
+        }
+
+        if (NPC.life < NPC.lifeMax / 2)
+        {
+            NPC.defense = 36;
+        }
+    }
+""")
+
+    if asset_id == "celestial_puppet":
+        return ("""
+        NPC.knockBackResist = 0.15f;""", """
+    public override void PostAI()
+    {
+        NPC.localAI[0]++;
+        if (NPC.localAI[0] >= 80f)
+        {
+            NPC.localAI[0] = 0f;
+            NPC.velocity.Y -= 5f;
+            NPC.velocity.X *= -0.65f;
+            NPC.netUpdate = true;
+        }
+    }
+""")
+
+    if asset_id == "heaven_tablet_guard":
+        return ("""
+        NPC.knockBackResist = 0.1f;""", """
+    public override void PostAI()
+    {
+        Player target = Main.player[NPC.target];
+        if (!target.active || target.dead)
+        {
+            NPC.TargetClosest(false);
+            target = Main.player[NPC.target];
+        }
+
+        NPC.defense = NPC.velocity.X == 0f ? 62 : 54;
+        NPC.localAI[0]++;
+        if (Main.netMode != NetmodeID.MultiplayerClient && target.active && !target.dead && NPC.localAI[0] >= 150f)
+        {
+            NPC.localAI[0] = 0f;
+            Vector2 velocity = (target.Center - NPC.Center).SafeNormalize(Vector2.UnitX) * 8f;
+            Projectile.NewProjectile(
+                NPC.GetSource_FromAI(),
+                NPC.Center,
+                velocity,
+                ModContent.ProjectileType<global::XianXia.Content.Projectiles.BossSpiritBoltProjectile>(),
+                Math.Max(1, NPC.damage / 3),
+                1f);
+        }
+    }
+""")
+
+    if asset_id == "moonbone_cultivator":
+        return ("", """
+    public override void PostAI()
+    {
+        Player target = Main.player[NPC.target];
+        if (!target.active || target.dead)
+        {
+            NPC.TargetClosest(false);
+            target = Main.player[NPC.target];
+        }
+
+        NPC.localAI[0]++;
+        if (target.active && !target.dead && NPC.localAI[0] >= 70f)
+        {
+            NPC.localAI[0] = 0f;
+            NPC.velocity = (target.Center - NPC.Center).SafeNormalize(Vector2.UnitX) * 12f;
+            NPC.netUpdate = true;
+        }
+
+        Lighting.AddLight(NPC.Center, 0.08f, 0.18f, 0.24f);
+    }
+""")
+
+    if asset_id == "archived_immortal_soul":
+        return ("", """
+    public override void PostAI()
+    {
+        Player target = Main.player[NPC.target];
+        if (!target.active || target.dead)
+        {
+            NPC.TargetClosest(false);
+            target = Main.player[NPC.target];
+        }
+
+        NPC.localAI[0]++;
+        if (Main.netMode != NetmodeID.MultiplayerClient && target.active && !target.dead && NPC.localAI[0] >= 95f)
+        {
+            NPC.localAI[0] = 0f;
+            Vector2 mirrored = new Vector2(-target.velocity.X, target.velocity.Y).SafeNormalize(Vector2.UnitY) * 7f;
+            Projectile.NewProjectile(
+                NPC.GetSource_FromAI(),
+                NPC.Center,
+                mirrored,
+                ModContent.ProjectileType<global::XianXia.Content.Projectiles.BossSpiritBoltProjectile>(),
+                Math.Max(1, NPC.damage / 3),
+                1f);
+        }
+    }
+""")
+
+    return ("", "")
+
+
+ENEMY_HEADER = """using System;\nusing Microsoft.Xna.Framework;\nusing Terraria;\nusing Terraria.GameContent.Bestiary;\nusing Terraria.GameContent.ItemDropRules;\nusing Terraria.ID;\nusing Terraria.ModLoader;\n\nnamespace XianXia.Content.NPCs.Enemies.Generated;\n"""
 
 
 def generate_bosses(existing: set[str]) -> None:

@@ -57,6 +57,19 @@ def main() -> None:
         "def projectile_behavior_code",
         "CloudpiercerSwordProjectile",
         "StarEclipseSplitBolt",
+        "def enemy_behavior_code",
+        "tribulation_cloudling",
+        "archived_immortal_soul",
+    )
+    require_text(
+        "Content/NPCs/Enemies/Generated/GeneratedEnemies.cs",
+        "PostAI()",
+        "BuffID.Poisoned",
+        "BuffID.OnFire3",
+        "TribulationWarningLineProjectile",
+        "BossSpiritBoltProjectile",
+        "SafeNormalize",
+        "Main.ActivePlayers",
     )
     require_text(
         "Content/Projectiles/Generated/GeneratedProjectiles.cs",
