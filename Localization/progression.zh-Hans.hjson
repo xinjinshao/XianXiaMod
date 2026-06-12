@@ -10,6 +10,8 @@ Mods: {
 			BossSummonNightRequired: 此召唤物需要在夜晚使用。
 			TribulationStarted: "天劫临身：{0} 雷劫已锁定你。"
 			TribulationStartedHeartDemon: "心魔劫起：{0} 内在阴影已显形。"
+		TribulationStartedHeavenTablet: "天碑劫降临：{0} 神印已显现。"
+		TribulationStartedDaoSevering: "斩道劫撕裂现世：{0} 归档场正在压缩。"
 			TribulationCompleted: "天劫已过。灵气恢复：{0}。"
 			TribulationComprehensionGained: "天劫感悟已成。永久灵气上限加成：+{0}。"
 			PillQualityFine: "良丹——效果提升。"

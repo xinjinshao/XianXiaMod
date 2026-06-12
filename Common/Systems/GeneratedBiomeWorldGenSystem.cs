@@ -7,6 +7,7 @@ using Terraria.IO;
 using Terraria.ModLoader;
 using Terraria.WorldBuilding;
 using XianXia.Content.Tiles.Generated;
+using XianXia.Content.Tiles;
 
 namespace XianXia.Common.Systems;
 
@@ -39,6 +40,30 @@ public class GeneratedBiomeWorldGenSystem : ModSystem
         GenerateGroundPatches(ModContent.TileType<SectRuinBrickTile>(), ModContent.TileType<SectRuinBrickTile>(), 2, (int)Main.rockLayer - 80, Main.maxTilesY - 360, 50, 18);
         GenerateGroundPatches(ModContent.TileType<FallenHeavenJadeTile>(), ModContent.TileType<FallenHeavenJadeTile>(), 2, Main.maxTilesY - 520, Main.maxTilesY - 260, 44, 24);
         GenerateGroundPatches(ModContent.TileType<MoonboneTile>(), ModContent.TileType<MoonboneTile>(), 2, Main.maxTilesY - 360, Main.maxTilesY - 140, 54, 28);
+        PlaceObjects(ModContent.TileType<SwordTabletTile>(), 4, (int)Main.rockLayer - 80, Main.maxTilesY - 360);
+        PlaceObjects(ModContent.TileType<SingingThunderStoneTile>(), 3, 160, (int)Main.worldSurface - 160);
+        PlaceObjects(ModContent.TileType<RiftMembraneTile>(), 3, Main.maxTilesY - 420, Main.maxTilesY - 180);
+        PlaceObjects(ModContent.TileType<BrokenHeavenTabletTile>(), 2, Main.maxTilesY - 520, Main.maxTilesY - 260);
+        PlaceObjects(ModContent.TileType<ArchiveLightPillarTile>(), 2, Main.maxTilesY - 520, Main.maxTilesY - 260);
+    }
+
+    private static void PlaceObjects(int tileType, int count, int minY, int maxY)
+    {
+        for (int i = 0; i < count; i++)
+        {
+            int x = WorldGen.genRand.Next(200, Main.maxTilesX - 200);
+            int y = NextWorldY(minY, maxY);
+            for (int attempt = 0; attempt < 60; attempt++)
+            {
+                if (WorldGen.InWorld(x, y, 10) && Main.tile[x, y].HasTile && Main.tile[x, y].TileType != tileType)
+                {
+                    WorldGen.PlaceTile(x, y - 1, tileType, true, true);
+                    break;
+                }
+                x += WorldGen.genRand.Next(-3, 4);
+                y += WorldGen.genRand.Next(-2, 3);
+            }
+        }
     }
 
     private static void GenerateGroundPatches(int primaryTile, int accentTileOrWall, int patches, int minY, int maxY, int radiusX, int radiusY)

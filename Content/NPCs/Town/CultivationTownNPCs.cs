@@ -12,6 +12,7 @@ using XianXia.Content.Items.BossSummons;
 using XianXia.Content.Items.BossSummons.Generated;
 using XianXia.Content.Items.Consumables;
 using XianXia.Content.Items.Generated;
+using XianXia.Content.Items.HandGenerated;
 using XianXia.Content.Items.Guides;
 using XianXia.Content.Items.Materials;
 using XianXia.Content.Items.Stations;

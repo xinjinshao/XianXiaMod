@@ -337,6 +337,21 @@ BOSS_STAGE_REQUIREMENTS = {
     "old_heaven_dao_core": "DaoSevering",
 }
 
+BOSS_RARE_DROPS = {
+    "spirit_vein_wyrm": ("SpiritVeinWyrmTrophy", 10),
+    "garden_warden": ("GardenWardenMask", 7),
+    "black_furnace_iron_golem": ("BlackFurnaceIronGolemPet", 20),
+    "tribulation_cloud_avatar": ("TribulationCloudBottle", 10),
+    "thunder_marsh_jiao": ("ThunderMarshJiaoWing", 12),
+    "abyssal_star_womb": ("AbyssalStarWombLamp", 12),
+    "formless_sword_soul": ("FormlessSwordSoulCostume", 10),
+    "greenwood_medicine_king_echo": ("MedicineKingCauldronDecoration", 10),
+    "heaven_tablet_guardian": ("SmallTabletPet", 20),
+    "broken_heaven_inspector": ("InspectorMask", 7),
+    "moonbone_immortal": ("MoonboneImmortalWingAccessory", 16),
+    "old_heaven_dao_core": ("SilentTabletDecoration", 1),
+}
+
 BOSS_PHASES = {
     "garden_warden": (0.65, 0.35),
     "black_furnace_iron_golem": (0.60, 0.30),
@@ -1829,6 +1844,7 @@ public class {class_name} : ModNPC
         npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<global::XianXia.Content.Items.Materials.LowGradeSpiritStone>(), 1, 8, 16));
         npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<global::XianXia.Content.Items.Materials.SpiritGel>(), 4, 3, 8));
         npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<global::XianXia.Content.Items.Generated.ArtifactBlankShard>(), 8, 1, 3));
+        npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<global::XianXia.Content.Items.HandGenerated.{BOSS_RARE_DROPS.get(asset_id, ("ArtifactBlankShard", 100))[0]}>(), {BOSS_RARE_DROPS.get(asset_id, ("ArtifactBlankShard", 100))[1]}, 1, 1));
     }}
 }}
 """)

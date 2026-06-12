@@ -1,0 +1,25 @@
+Mods: {
+	XianXia: {
+		Items: {
+			SpiritVeinWyrmTrophy: { DisplayName: "Spirit Vein Wyrm Trophy" Tooltip: "" }
+			GardenWardenMask: { DisplayName: "Garden Warden Mask" Tooltip: "" }
+			BlackFurnaceIronGolemPet: { DisplayName: "Black Furnace Iron Golem Pet" Tooltip: "" }
+			TribulationCloudBottle: { DisplayName: "Tribulation Cloud in a Bottle" Tooltip: "" }
+			ThunderMarshJiaoWing: { DisplayName: "Thunder Marsh Jiao Wing" Tooltip: "" }
+			AbyssalStarWombLamp: { DisplayName: "Abyssal Star Womb Lamp" Tooltip: "" }
+			FormlessSwordSoulCostume: { DisplayName: "Formless Sword Soul Costume" Tooltip: "" }
+			MedicineKingCauldronDecoration: { DisplayName: "Medicine King Cauldron" Tooltip: "" }
+			SmallTabletPet: { DisplayName: "Small Tablet Pet" Tooltip: "" }
+			InspectorMask: { DisplayName: "Broken Heaven Inspector Mask" Tooltip: "" }
+			MoonboneImmortalWingAccessory: { DisplayName: "Moonbone Immortal Wing" Tooltip: "" }
+			SilentTabletDecoration: { DisplayName: "Silent Heavenly Tablet" Tooltip: "100% drop on first Old Heaven Dao Core kill." }
+		}
+		Tiles: {
+			SwordTabletTile.MapEntry: "Sword Tablet"
+			BrokenHeavenTabletTile.MapEntry: "Broken Heaven Tablet"
+			ArchiveLightPillarTile.MapEntry: "Archive Light Pillar"
+			SingingThunderStoneTile.MapEntry: "Singing Thunder Stone"
+			RiftMembraneTile.MapEntry: "Rift Membrane"
+		}
+	}
+}

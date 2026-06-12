@@ -1,0 +1,25 @@
+Mods: {
+	XianXia: {
+		Items: {
+			SpiritVeinWyrmTrophy: { DisplayName: "灵脉蠕虫战旗" Tooltip: "" }
+			GardenWardenMask: { DisplayName: "守园人面具" Tooltip: "" }
+			BlackFurnaceIronGolemPet: { DisplayName: "玄炉铁傀宠物" Tooltip: "" }
+			TribulationCloudBottle: { DisplayName: "劫云瓶" Tooltip: "" }
+			ThunderMarshJiaoWing: { DisplayName: "雷泽蛟翼" Tooltip: "" }
+			AbyssalStarWombLamp: { DisplayName: "星渊胎主灯" Tooltip: "" }
+			FormlessSwordSoulCostume: { DisplayName: "无相剑魄时装" Tooltip: "" }
+			MedicineKingCauldronDecoration: { DisplayName: "药王鼎" Tooltip: "" }
+			SmallTabletPet: { DisplayName: "小天碑宠物" Tooltip: "" }
+			InspectorMask: { DisplayName: "监察使面具" Tooltip: "" }
+			MoonboneImmortalWingAccessory: { DisplayName: "月骸仙君翅饰" Tooltip: "" }
+			SilentTabletDecoration: { DisplayName: "沉默天碑" Tooltip: "首次击败旧天道核心 100% 掉落。" }
+		}
+		Tiles: {
+			SwordTabletTile.MapEntry: "剑碑"
+			BrokenHeavenTabletTile.MapEntry: "破损天碑"
+			ArchiveLightPillarTile.MapEntry: "归档光柱"
+			SingingThunderStoneTile.MapEntry: "鸣雷石"
+			RiftMembraneTile.MapEntry: "裂隙膜"
+		}
+	}
+}

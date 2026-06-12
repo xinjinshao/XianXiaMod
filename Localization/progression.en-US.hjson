@@ -10,6 +10,8 @@ Mods: {
 			BossSummonNightRequired: This summon must be used at night.
 			TribulationStarted: "Tribulation begins: {0} thunder has marked you."
 			TribulationStartedHeartDemon: "Heart demon tribulation begins: {0} inner shadows manifest."
+		TribulationStartedHeavenTablet: "Heaven tablet tribulation descends: {0} divine seals manifest."
+		TribulationStartedDaoSevering: "Dao severing tribulation tears reality: {0} archive fields compress."
 			TribulationCompleted: "Tribulation survived. Spiritual energy restored: {0}."
 			TribulationComprehensionGained: "Tribulation comprehension gained. Permanent spiritual energy bonus: +{0}."
 			PillQualityFine: "Fine pill — increased effect."

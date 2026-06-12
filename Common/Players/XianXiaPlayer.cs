@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.DataStructures;
 using Terraria.ID;
@@ -210,6 +211,8 @@ public class XianXiaPlayer : ModPlayer
         None = 0,
         Minor = 1,
         HeartDemon = 2,
+        HeavenTablet = 3,
+        DaoSevering = 4,
     }
 
     public TribulationKind tribulationKind;
@@ -222,10 +225,22 @@ public class XianXiaPlayer : ModPlayer
             return;
         }
 
-        tribulationKind = stage >= CultivationStage.NascentSoul ? TribulationKind.HeartDemon : TribulationKind.Minor;
+        tribulationKind = stage switch
+        {
+            CultivationStage.Foundation or CultivationStage.GoldenCore => TribulationKind.Minor,
+            CultivationStage.NascentSoul => TribulationKind.HeartDemon,
+            CultivationStage.SpiritSevering => TribulationKind.HeavenTablet,
+            _ => TribulationKind.DaoSevering,
+        };
         tribulationIntensity = Math.Clamp((int)stage - 1, 1, 8);
         tribulationStage = (int)stage;
-        tribulationTimer = 60 * (tribulationKind == TribulationKind.HeartDemon ? 30 + tribulationIntensity * 3 : 18 + tribulationIntensity * 4);
+        tribulationTimer = tribulationKind switch
+        {
+            TribulationKind.HeavenTablet => 60 * (40 + tribulationIntensity * 3),
+            TribulationKind.DaoSevering => 60 * (50 + tribulationIntensity * 4),
+            TribulationKind.HeartDemon => 60 * (30 + tribulationIntensity * 3),
+            _ => 60 * (18 + tribulationIntensity * 4),
+        };
         if (tribulationAttempts > 0)
         {
             tribulationTimer = (int)(tribulationTimer * Math.Max(0.7f, 1f - tribulationAttempts * 0.1f));
@@ -234,9 +249,13 @@ public class XianXiaPlayer : ModPlayer
         }
         if (Main.myPlayer == Player.whoAmI)
         {
-            string msg = tribulationKind == TribulationKind.HeartDemon
-                ? Language.GetTextValue("Mods.XianXia.Progression.TribulationStartedHeartDemon", stage)
-                : Language.GetTextValue("Mods.XianXia.Progression.TribulationStarted", stage);
+            string msg = tribulationKind switch
+            {
+                TribulationKind.HeavenTablet => Language.GetTextValue("Mods.XianXia.Progression.TribulationStartedHeavenTablet", stage),
+                TribulationKind.DaoSevering => Language.GetTextValue("Mods.XianXia.Progression.TribulationStartedDaoSevering", stage),
+                TribulationKind.HeartDemon => Language.GetTextValue("Mods.XianXia.Progression.TribulationStartedHeartDemon", stage),
+                _ => Language.GetTextValue("Mods.XianXia.Progression.TribulationStarted", stage),
+            };
             Main.NewText(msg, 160, 210, 255);
         }
     }
@@ -257,7 +276,24 @@ public class XianXiaPlayer : ModPlayer
             ReduceSpiritPressure(2);
         }
 
-        if (tribulationKind == TribulationKind.HeartDemon)
+        if (tribulationKind == TribulationKind.HeavenTablet)
+        {
+            int htInterval = Math.Max(60, 200 - tribulationIntensity * 15);
+            if (Main.myPlayer == Player.whoAmI && tribulationTimer % htInterval == 0)
+            {
+                SpawnHeavenTabletSeal();
+            }
+        }
+        else if (tribulationKind == TribulationKind.DaoSevering)
+        {
+            if (Main.myPlayer == Player.whoAmI)
+            {
+                Player.AddBuff(ModContent.BuffType<global::XianXia.Content.Buffs.ArchiveLockBuff>(), 3);
+                if (tribulationTimer % Math.Max(70, 280 - tribulationIntensity * 20) == 0)
+                    SpawnDaoSeveringField();
+            }
+        }
+        else if (tribulationKind == TribulationKind.HeartDemon)
         {
             int hdInterval = Math.Max(90, 350 - tribulationIntensity * 25);
             if (Main.myPlayer == Player.whoAmI && tribulationTimer % hdInterval == 0)
@@ -346,6 +382,41 @@ public class XianXiaPlayer : ModPlayer
             Main.npc[id].lifeMax = (int)(Main.npc[id].lifeMax * 0.5f);
             Main.npc[id].life = Main.npc[id].lifeMax;
             Main.npc[id].damage = Math.Max(1, Main.npc[id].damage * 2 / 3);
+        }
+    }
+
+    private void SpawnHeavenTabletSeal()
+    {
+        if (Main.netMode == Terraria.ID.NetmodeID.MultiplayerClient)
+            return;
+
+        for (int i = 0; i < 4; i++)
+        {
+            float angle = MathHelper.PiOver2 * i;
+            Vector2 pos = Player.Center + new Vector2((float)Math.Cos(angle), (float)Math.Sin(angle)) * 160f;
+            int dmg = 22 + tribulationIntensity * 8;
+            Projectile.NewProjectile(Player.GetSource_FromThis(), pos, Vector2.Zero,
+                ModContent.ProjectileType<global::XianXia.Content.Projectiles.BossArrayFieldProjectile>(),
+                dmg, 1f, Player.whoAmI);
+        }
+        if (tribulationIntensity >= 5)
+            Projectile.NewProjectile(Player.GetSource_FromThis(),
+                Player.Center + new Vector2(0f, -400f), Vector2.UnitY * 10f,
+                ModContent.ProjectileType<global::XianXia.Content.Projectiles.TribulationLightningProjectile>(),
+                30 + tribulationIntensity * 6, 1.5f, Player.whoAmI);
+    }
+
+    private void SpawnDaoSeveringField()
+    {
+        if (Main.netMode == Terraria.ID.NetmodeID.MultiplayerClient)
+            return;
+
+        for (int i = 0; i < 3; i++)
+        {
+            Vector2 pos = Player.Center + new Vector2(Main.rand.NextFloat(-200f, 200f), Main.rand.NextFloat(-160f, -80f));
+            Projectile.NewProjectile(Player.GetSource_FromThis(), pos, Vector2.Zero,
+                ModContent.ProjectileType<global::XianXia.Content.Projectiles.BossArrayFieldProjectile>(),
+                28 + tribulationIntensity * 6, 1f, Player.whoAmI);
         }
     }
 
