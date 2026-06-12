@@ -270,6 +270,7 @@ public class TribulationObserver : CultivationTownNPC
     public override void AddShops()
     {
         NPCShop shop = new(Type);
+        shop.Add<TribulationGauge>();
         shop.Add<TribulationResistingPill>();
         shop.Add<LightningWardJade>();
         shop.Add<ThunderTalismanArrayPlate>();

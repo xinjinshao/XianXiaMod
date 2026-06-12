@@ -18,6 +18,17 @@ Mods: {
 					Endgame: "当前宗门声望：{0}。玉简几乎空白，旧天道核心仍在破天之后等待。"
 				}
 			}
+			TribulationGauge: {
+				DisplayName: 观劫盘
+				Tooltip: 使用后读取当前灵压与天劫状态。
+				Gauge: {
+					Pressure: "当前灵压：{0}。"
+					Active: "天劫进行中：剩余 {0} 秒，强度 {1}。"
+					Danger: 灵压危险。先服用抗劫丹或等待平复，再继续突破。
+					Warning: 灵压正在升高。引雷之前请准备抗劫手段。
+					Stable: 灵压稳定。
+				}
+			}
 		}
 	}
 }
