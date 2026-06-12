@@ -148,7 +148,7 @@ public class XianXiaPlayer : ModPlayer
         return canAdvance;
     }
 
-    public bool CanUseBossSummon(int bossType, CultivationStage requiredStage = CultivationStage.None)
+    public bool CanUseBossSummon(int bossType, CultivationStage requiredStage = CultivationStage.None, string requiredDownedBoss = "")
     {
         if (NPC.AnyNPCs(bossType))
         {
@@ -165,6 +165,16 @@ public class XianXiaPlayer : ModPlayer
             if (Main.myPlayer == Player.whoAmI)
             {
                 Main.NewText(Language.GetTextValue("Mods.XianXia.Progression.BossStageRequired", requiredStage), 255, 210, 120);
+            }
+
+            return false;
+        }
+
+        if (!string.IsNullOrWhiteSpace(requiredDownedBoss) && !DownedBossSystem.DownedBosses.Contains(requiredDownedBoss))
+        {
+            if (Main.myPlayer == Player.whoAmI)
+            {
+                Main.NewText(Language.GetTextValue("Mods.XianXia.Progression.BossPrerequisiteRequired", requiredDownedBoss), 255, 210, 120);
             }
 
             return false;

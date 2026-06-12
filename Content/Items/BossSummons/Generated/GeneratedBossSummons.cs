@@ -25,7 +25,8 @@ public class SummonGardenBrokenKey : ModItem
         return player.GetModPlayer<global::XianXia.Common.Players.XianXiaPlayer>()
             .CanUseBossSummon(
                 ModContent.NPCType<global::XianXia.Content.NPCs.Bosses.Generated.GardenWarden>(),
-                global::XianXia.Common.Players.CultivationStage.QiAwakening);
+                global::XianXia.Common.Players.CultivationStage.QiAwakening,
+                "spirit_vein_wyrm");
     }
 
     public override bool? UseItem(Player player)
@@ -67,7 +68,8 @@ public class SummonOldFurnaceEmber : ModItem
         return player.GetModPlayer<global::XianXia.Common.Players.XianXiaPlayer>()
             .CanUseBossSummon(
                 ModContent.NPCType<global::XianXia.Content.NPCs.Bosses.Generated.BlackFurnaceIronGolem>(),
-                global::XianXia.Common.Players.CultivationStage.QiAwakening);
+                global::XianXia.Common.Players.CultivationStage.QiAwakening,
+                "spirit_vein_wyrm");
     }
 
     public override bool? UseItem(Player player)
@@ -109,7 +111,8 @@ public class SummonThunderCallingJade : ModItem
         return player.GetModPlayer<global::XianXia.Common.Players.XianXiaPlayer>()
             .CanUseBossSummon(
                 ModContent.NPCType<global::XianXia.Content.NPCs.Bosses.Generated.TribulationCloudAvatar>(),
-                global::XianXia.Common.Players.CultivationStage.QiCondensation);
+                global::XianXia.Common.Players.CultivationStage.QiCondensation,
+                "garden_warden");
     }
 
     public override bool? UseItem(Player player)
@@ -151,7 +154,8 @@ public class SummonThunderCallingJadeThunderMarshJiao : ModItem
         return player.GetModPlayer<global::XianXia.Common.Players.XianXiaPlayer>()
             .CanUseBossSummon(
                 ModContent.NPCType<global::XianXia.Content.NPCs.Bosses.Generated.ThunderMarshJiao>(),
-                global::XianXia.Common.Players.CultivationStage.Foundation);
+                global::XianXia.Common.Players.CultivationStage.Foundation,
+                "tribulation_cloud_avatar");
     }
 
     public override bool? UseItem(Player player)
@@ -193,7 +197,8 @@ public class SummonStarAbyssMembrane : ModItem
         return player.GetModPlayer<global::XianXia.Common.Players.XianXiaPlayer>()
             .CanUseBossSummon(
                 ModContent.NPCType<global::XianXia.Content.NPCs.Bosses.Generated.AbyssalStarWomb>(),
-                global::XianXia.Common.Players.CultivationStage.Foundation);
+                global::XianXia.Common.Players.CultivationStage.Foundation,
+                "black_furnace_iron_golem");
     }
 
     public override bool? UseItem(Player player)
@@ -235,7 +240,8 @@ public class SummonSectTrialToken : ModItem
         return player.GetModPlayer<global::XianXia.Common.Players.XianXiaPlayer>()
             .CanUseBossSummon(
                 ModContent.NPCType<global::XianXia.Content.NPCs.Bosses.Generated.FormlessSwordSoul>(),
-                global::XianXia.Common.Players.CultivationStage.GoldenCore);
+                global::XianXia.Common.Players.CultivationStage.GoldenCore,
+                "thunder_marsh_jiao");
     }
 
     public override bool? UseItem(Player player)
@@ -277,7 +283,8 @@ public class SummonSectTrialTokenGreenwoodMedicineKingEcho : ModItem
         return player.GetModPlayer<global::XianXia.Common.Players.XianXiaPlayer>()
             .CanUseBossSummon(
                 ModContent.NPCType<global::XianXia.Content.NPCs.Bosses.Generated.GreenwoodMedicineKingEcho>(),
-                global::XianXia.Common.Players.CultivationStage.GoldenCore);
+                global::XianXia.Common.Players.CultivationStage.GoldenCore,
+                "garden_warden");
     }
 
     public override bool? UseItem(Player player)
@@ -319,7 +326,8 @@ public class SummonHeavenTabletRubbing : ModItem
         return player.GetModPlayer<global::XianXia.Common.Players.XianXiaPlayer>()
             .CanUseBossSummon(
                 ModContent.NPCType<global::XianXia.Content.NPCs.Bosses.Generated.HeavenTabletGuardian>(),
-                global::XianXia.Common.Players.CultivationStage.NascentSoul);
+                global::XianXia.Common.Players.CultivationStage.NascentSoul,
+                "formless_sword_soul");
     }
 
     public override bool? UseItem(Player player)
@@ -361,7 +369,8 @@ public class SummonHeavenTabletRubbingBrokenHeavenInspector : ModItem
         return player.GetModPlayer<global::XianXia.Common.Players.XianXiaPlayer>()
             .CanUseBossSummon(
                 ModContent.NPCType<global::XianXia.Content.NPCs.Bosses.Generated.BrokenHeavenInspector>(),
-                global::XianXia.Common.Players.CultivationStage.NascentSoul);
+                global::XianXia.Common.Players.CultivationStage.NascentSoul,
+                "heaven_tablet_guardian");
     }
 
     public override bool? UseItem(Player player)
@@ -403,7 +412,8 @@ public class SummonMoonboneRitualTalisman : ModItem
         return player.GetModPlayer<global::XianXia.Common.Players.XianXiaPlayer>()
             .CanUseBossSummon(
                 ModContent.NPCType<global::XianXia.Content.NPCs.Bosses.Generated.MoonboneImmortal>(),
-                global::XianXia.Common.Players.CultivationStage.Tribulation);
+                global::XianXia.Common.Players.CultivationStage.Tribulation,
+                "broken_heaven_inspector");
     }
 
     public override bool? UseItem(Player player)
@@ -445,7 +455,8 @@ public class SummonMoonboneRitualTalismanOldHeavenDaoCore : ModItem
         return player.GetModPlayer<global::XianXia.Common.Players.XianXiaPlayer>()
             .CanUseBossSummon(
                 ModContent.NPCType<global::XianXia.Content.NPCs.Bosses.Generated.OldHeavenDaoCore>(),
-                global::XianXia.Common.Players.CultivationStage.DaoSevering);
+                global::XianXia.Common.Players.CultivationStage.DaoSevering,
+                "moonbone_immortal");
     }
 
     public override bool? UseItem(Player player)

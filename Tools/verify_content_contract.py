@@ -53,6 +53,19 @@ def main() -> None:
         "def boss_pattern_code",
         "BossArrayFieldProjectile",
         "field_ids",
+        "BOSS_UNLOCK_REQUIREMENTS",
+    )
+    require_text(
+        "Common/Players/XianXiaPlayer.cs",
+        "BossPrerequisiteRequired",
+        "requiredDownedBoss",
+        "DownedBossSystem.DownedBosses.Contains",
+    )
+    require_text(
+        "Content/Items/BossSummons/Generated/GeneratedBossSummons.cs",
+        "spirit_vein_wyrm",
+        "moonbone_immortal",
+        "CanUseBossSummon",
     )
     require_text(
         "Content/NPCs/Town/CultivationTownNPCs.cs",
@@ -93,11 +106,13 @@ def main() -> None:
         "Localization/progression.zh-Hans.hjson",
         "ArtifactAwakeningReady",
         "ArtifactAwakeningLocked",
+        "BossPrerequisiteRequired",
     )
     require_text(
         "Localization/progression.en-US.hjson",
         "ArtifactAwakeningReady",
         "ArtifactAwakeningLocked",
+        "BossPrerequisiteRequired",
     )
     require_text(
         "Localization/zh-Hans.hjson",

@@ -257,6 +257,20 @@ BOSS_STAGE_REQUIREMENTS = {
     "old_heaven_dao_core": "DaoSevering",
 }
 
+BOSS_UNLOCK_REQUIREMENTS = {
+    "garden_warden": "spirit_vein_wyrm",
+    "black_furnace_iron_golem": "spirit_vein_wyrm",
+    "tribulation_cloud_avatar": "garden_warden",
+    "thunder_marsh_jiao": "tribulation_cloud_avatar",
+    "abyssal_star_womb": "black_furnace_iron_golem",
+    "formless_sword_soul": "thunder_marsh_jiao",
+    "greenwood_medicine_king_echo": "garden_warden",
+    "heaven_tablet_guardian": "formless_sword_soul",
+    "broken_heaven_inspector": "heaven_tablet_guardian",
+    "moonbone_immortal": "broken_heaven_inspector",
+    "old_heaven_dao_core": "moonbone_immortal",
+}
+
 
 ENEMY_DATA = {
     "herb_garden_vine_spirit": (140, 24, 8, "greenwood_root"),
@@ -1128,6 +1142,7 @@ def generate_summons(existing: set[str]) -> None:
             continue
         copy_asset(summon, "item_icon", class_name, CONTENT / "Items" / "BossSummons" / "Generated")
         required_stage = BOSS_STAGE_REQUIREMENTS[asset_id]
+        required_boss = BOSS_UNLOCK_REQUIREMENTS.get(asset_id, "")
         spirit_stone_cost = 10 + list(BOSS_DATA).index(asset_id) * 3
         crafting_tile = "TileID.WorkBenches" if required_stage in {"QiAwakening", "QiCondensation"} else "TileID.DemonAltar"
         classes.append(f"""
@@ -1152,7 +1167,8 @@ public class {class_name} : ModItem
         return player.GetModPlayer<global::XianXia.Common.Players.XianXiaPlayer>()
             .CanUseBossSummon(
                 ModContent.NPCType<global::XianXia.Content.NPCs.Bosses.Generated.{boss_class}>(),
-                global::XianXia.Common.Players.CultivationStage.{required_stage});
+                global::XianXia.Common.Players.CultivationStage.{required_stage},
+                "{required_boss}");
     }}
 
     public override bool? UseItem(Player player)
