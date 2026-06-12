@@ -3,135 +3,135 @@ Mods: {
 		Items: {
 			ArtifactBlankShard: {
 				DisplayName: "器胚碎片"
-				Tooltip: "仙侠模组内容，可用于修行、炼制、战斗或突破。"
+				Tooltip: "未完成的法器胚胎。在器胚炉处用于铸造飞剑、阵盘和饰品。"
 			}
 			BrokenHeavenCrownSeal: {
 				DisplayName: "残天冠印"
-				Tooltip: "仙侠模组内容，可用于修行、炼制、战斗或突破。"
+				Tooltip: "旧天庭的破裂冠印。佩戴后大幅提升伤害，但会降低防御。"
 			}
 			BrokenHeavenDecree: {
 				DisplayName: "残天法令"
-				Tooltip: "仙侠模组内容，可用于修行、炼制、战斗或突破。"
+				Tooltip: "仍带有审判之力的天庭法令。释放可穿透方块的裁决光束。"
 			}
 			CinnabarTalismanFlameItem: {
 				DisplayName: "朱砂符火"
-				Tooltip: "仙侠模组内容，可用于修行、炼制、战斗或突破。"
+				Tooltip: "燃烧朱砂的符箓。命中敌人时施加灼热烈焰。"
 			}
 			CloudpiercerFlyingSword: {
 				DisplayName: "破云飞剑"
-				Tooltip: "仙侠模组内容，可用于修行、炼制、战斗或突破。"
+				Tooltip: "穿云而过的飞剑。撞击后释放次级云气弹。"
 			}
 			DaoSeveringDust: {
 				DisplayName: "斩道尘"
-				Tooltip: "仙侠模组内容，可用于修行、炼制、战斗或突破。"
+				Tooltip: "大道被切断后留下的细尘。用于尝试最终突破至斩道境。"
 			}
 			DaoSeveringRing: {
 				DisplayName: "斩道环"
-				Tooltip: "仙侠模组内容，可用于修行、炼制、战斗或突破。"
+				Tooltip: "斩断旧道羁绊的戒指。大幅提升伤害，但灵气消耗略增。"
 			}
 			FormlessSwordWheel: {
 				DisplayName: "无相剑轮"
-				Tooltip: "仙侠模组内容，可用于修行、炼制、战斗或突破。"
+				Tooltip: "无形无相的旋转剑阵。可穿透多个敌人，拥有局部无敌帧。"
 			}
 			FoundationPill: {
 				DisplayName: "筑基丹"
-				Tooltip: "仙侠模组内容，可用于修行、炼制、战斗或突破。"
+				Tooltip: "稳固根基的丹药。用于尝试突破至筑基境。"
 			}
 			FurnaceHeartRing: {
 				DisplayName: "炉心戒"
-				Tooltip: "仙侠模组内容，可用于修行、炼制、战斗或突破。"
+				Tooltip: "以炉心锻造的戒指。提供额外防御。"
 			}
 			FurnaceSlagIron: {
 				DisplayName: "炉渣铁"
-				Tooltip: "仙侠模组内容，可用于修行、炼制、战斗或突破。"
+				Tooltip: "在黑炉中淬炼的铁渣。法器铸造与炼器的核心材料。"
 			}
 			GardenBrokenKey: {
 				DisplayName: "守园残钥"
-				Tooltip: "仙侠模组内容，可用于修行、炼制、战斗或突破。"
+				Tooltip: "药园中寻得的断裂钥匙。与灵石合成可铸造Boss召唤物。"
 			}
 			GreenwoodArrayPlate: {
 				DisplayName: "青木阵盘"
-				Tooltip: "仙侠模组内容，可用于修行、炼制、战斗或突破。"
+				Tooltip: "以青木雕刻的阵法盘。部署一个恢复领域，为范围内友方回复生命与灵气。"
 			}
 			GreenwoodRoot: {
 				DisplayName: "青木根"
-				Tooltip: "仙侠模组内容，可用于修行、炼制、战斗或突破。"
+				Tooltip: "饱含草木精华的根茎。炼丹与法器铸造的基础材料。"
 			}
 			HeavenDaoFragment: {
 				DisplayName: "天道碎片"
-				Tooltip: "仙侠模组内容，可用于修行、炼制、战斗或突破。"
+				Tooltip: "旧天道的碎片。用于尝试突破至斩灵境。"
 			}
 			HeavenTabletRubbing: {
 				DisplayName: "天碑拓片"
-				Tooltip: "仙侠模组内容，可用于修行、炼制、战斗或突破。"
+				Tooltip: "坠天碑文的拓印。与灵石合成可铸造Boss召唤物。"
 			}
 			LightningWardJade: {
 				DisplayName: "避雷玉佩"
-				Tooltip: "仙侠模组内容，可用于修行、炼制、战斗或突破。"
+				Tooltip: "避雷护身的玉佩。提升耐力，并随时间缓慢降低灵压。"
 			}
 			Moonbone: {
 				DisplayName: "月骨"
-				Tooltip: "仙侠模组内容，可用于修行、炼制、战斗或突破。"
+				Tooltip: "月骸天渊中的骨片。用于尝试突破至渡劫境。"
 			}
 			MoonboneDharmaSword: {
 				DisplayName: "月骨法剑"
-				Tooltip: "仙侠模组内容，可用于修行、炼制、战斗或突破。"
+				Tooltip: "以月骨锻造的法剑。弹片命中后减速，可贯穿两次。"
 			}
 			MoonboneRitualTalisman: {
 				DisplayName: "月骨祭符"
-				Tooltip: "仙侠模组内容，可用于修行、炼制、战斗或突破。"
+				Tooltip: "月骨仪式所用的符箓。与灵石合成可铸造Boss召唤物。"
 			}
 			NascentSoulJadeBox: {
 				DisplayName: "元婴玉匣"
-				Tooltip: "仙侠模组内容，可用于修行、炼制、战斗或突破。"
+				Tooltip: "温养元婴的玉匣。灵气上限提升30点。"
 			}
 			OldFurnaceEmber: {
 				DisplayName: "旧炉火种"
-				Tooltip: "仙侠模组内容，可用于修行、炼制、战斗或突破。"
+				Tooltip: "古炉中未熄的火种。与灵石合成可铸造Boss召唤物。"
 			}
 			OldHeavenDaoScroll: {
 				DisplayName: "旧天道残卷"
-				Tooltip: "仙侠模组内容，可用于修行、炼制、战斗或突破。"
+				Tooltip: "字迹仍在变化的旧天道卷轴。用于尝试突破至元婴境。"
 			}
 			QiCondensingPill: {
 				DisplayName: "凝气丹"
-				Tooltip: "仙侠模组内容，可用于修行、炼制、战斗或突破。"
+				Tooltip: "帮助凝聚灵气的丹药。用于尝试突破至凝气境。"
 			}
 			QiGatheringPendant: {
 				DisplayName: "聚气坠"
-				Tooltip: "仙侠模组内容，可用于修行、炼制、战斗或突破。"
+				Tooltip: "汇聚周围灵气的吊坠。提升灵气恢复速度，灵气消耗上限降至90%。"
 			}
 			SectTrialToken: {
 				DisplayName: "宗门试炼令"
-				Tooltip: "仙侠模组内容，可用于修行、炼制、战斗或突破。"
+				Tooltip: "进入宗门试炼的令牌。与灵石合成可铸造Boss召唤物。"
 			}
 			SpiritwoodCharm: {
 				DisplayName: "灵木护符"
-				Tooltip: "仙侠模组内容，可用于修行、炼制、战斗或突破。"
+				Tooltip: "以灵木雕刻的护符。提升生命恢复速度。"
 			}
 			SpringReturnPill: {
 				DisplayName: "回春丹"
-				Tooltip: "仙侠模组内容，可用于修行、炼制、战斗或突破。"
+				Tooltip: "让身体重回春天的丹药。大幅提升生命与灵气恢复，持续60分钟，并降低灵压。"
 			}
 			StarAbyssEye: {
 				DisplayName: "星渊眼"
-				Tooltip: "仙侠模组内容，可用于修行、炼制、战斗或突破。"
+				Tooltip: "从星渊中取出的眼睛。提升通用伤害。"
 			}
 			StarAbyssForbiddenTalisman: {
 				DisplayName: "星渊禁符"
-				Tooltip: "仙侠模组内容，可用于修行、炼制、战斗或突破。"
+				Tooltip: "星渊的禁忌符箓。立即恢复80点灵气，但灵压增加25。有灵压紊乱的风险。"
 			}
 			StarAbyssMembrane: {
 				DisplayName: "星渊胎膜"
-				Tooltip: "仙侠模组内容，可用于修行、炼制、战斗或突破。"
+				Tooltip: "星渊生物褪下的膜。与灵石合成可铸造Boss召唤物。"
 			}
 			StarEclipseArbalest: {
 				DisplayName: "星蚀弩机"
-				Tooltip: "仙侠模组内容，可用于修行、炼制、战斗或突破。"
+				Tooltip: "发射星蚀裂弹的弩机。首次命中敌人后分裂为两枚灵弹。"
 			}
 			StarEclipseCrystal: {
 				DisplayName: "星蚀晶"
-				Tooltip: "仙侠模组内容，可用于修行、炼制、战斗或突破。"
+				Tooltip: "星蚀中凝结的晶体。用于尝试突破至金丹境。"
 			}
 			SummonGardenBrokenKey: {
 				DisplayName: "守园残钥"
@@ -179,23 +179,23 @@ Mods: {
 			}
 			ThunderCallingJade: {
 				DisplayName: "引雷玉"
-				Tooltip: "仙侠模组内容，可用于修行、炼制、战斗或突破。"
+				Tooltip: "从云中召唤雷电的玉石。与灵石合成可铸造Boss召唤物。"
 			}
 			ThunderPatternSwordCase: {
 				DisplayName: "雷纹剑匣"
-				Tooltip: "仙侠模组内容，可用于修行、炼制、战斗或突破。"
+				Tooltip: "刻有雷纹的剑匣。释放穿透剑刃，命中后有概率召唤天雷。"
 			}
 			ThunderTalismanArrayPlate: {
 				DisplayName: "雷符阵盘"
-				Tooltip: "仙侠模组内容，可用于修行、炼制、战斗或突破。"
+				Tooltip: "铭刻雷符的阵法盘。部署一个雷电领域，定期降下雷霆。"
 			}
 			TribulationCloudDew: {
 				DisplayName: "劫云露"
-				Tooltip: "仙侠模组内容，可用于修行、炼制、战斗或突破。"
+				Tooltip: "劫云中凝结的露水。炼制抗劫丹和雷系装备的关键材料。"
 			}
 			TribulationResistingPill: {
 				DisplayName: "抗劫丹"
-				Tooltip: "仙侠模组内容，可用于修行、炼制、战斗或突破。"
+				Tooltip: "抵抗天劫的丹药。获得90分钟的抗劫状态，并降低灵压。"
 			}
 		}
 		NPCs: {
@@ -343,6 +343,14 @@ Mods: {
 			}
 		}
 		Buffs: {
+			AlchemyInsightBuff: {
+				DisplayName: "丹炉温养"
+				Description: "在炼丹炉附近，感受草木温养。灵气恢复速度提升。"
+			}
+			ArtifactResonanceBuff: {
+				DisplayName: "器胚共鸣"
+				Description: "在器胚炉附近，与法器共鸣。灵气恢复速度提升。"
+			}
 			QiGatheringBuff: {
 				DisplayName: "聚气"
 				Description: "灵气恢复提升，灵气消耗小幅降低。"

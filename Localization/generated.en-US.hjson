@@ -3,135 +3,135 @@ Mods: {
 		Items: {
 			ArtifactBlankShard: {
 				DisplayName: "Artifact Blank Shard"
-				Tooltip: "XianxiaMod content used for cultivation, crafting, combat, or breakthroughs."
+				Tooltip: "An unfinished artifact embryo. Used at the Artifact Forge to craft flying swords, array plates, and accessories."
 			}
 			BrokenHeavenCrownSeal: {
 				DisplayName: "Broken Heaven Crown Seal"
-				Tooltip: "XianxiaMod content used for cultivation, crafting, combat, or breakthroughs."
+				Tooltip: "A cracked seal from the Old Heaven Court. Equip to gain a significant damage boost at the cost of defense."
 			}
 			BrokenHeavenDecree: {
 				DisplayName: "Broken Heaven Decree"
-				Tooltip: "XianxiaMod content used for cultivation, crafting, combat, or breakthroughs."
+				Tooltip: "A divine decree that still carries judgment. Unleashes piercing judgment beams that ignore tile collision."
 			}
 			CinnabarTalismanFlameItem: {
 				DisplayName: "Cinnabar Talisman Flame"
-				Tooltip: "XianxiaMod content used for cultivation, crafting, combat, or breakthroughs."
+				Tooltip: "A talisman that burns with cinnabar fire. Ignites enemies with searing flames on hit."
 			}
 			CloudpiercerFlyingSword: {
 				DisplayName: "Cloudpiercer Flying Sword"
-				Tooltip: "XianxiaMod content used for cultivation, crafting, combat, or breakthroughs."
+				Tooltip: "A flying sword that pierces clouds. Releases a secondary cloud wisp projectile on impact."
 			}
 			DaoSeveringDust: {
 				DisplayName: "Dao Severing Dust"
-				Tooltip: "XianxiaMod content used for cultivation, crafting, combat, or breakthroughs."
+				Tooltip: "Fine dust left where the Dao has been cut. Use to attempt the final cultivation breakthrough to Dao Severing."
 			}
 			DaoSeveringRing: {
 				DisplayName: "Dao Severing Ring"
-				Tooltip: "XianxiaMod content used for cultivation, crafting, combat, or breakthroughs."
+				Tooltip: "A ring that severs attachment to the old Dao. Greatly increases damage but makes spiritual energy costs slightly higher."
 			}
 			FormlessSwordWheel: {
 				DisplayName: "Formless Sword Wheel"
-				Tooltip: "XianxiaMod content used for cultivation, crafting, combat, or breakthroughs."
+				Tooltip: "A spinning sword formation with no fixed form. Passes through multiple enemies with local immunity frames."
 			}
 			FoundationPill: {
 				DisplayName: "Foundation Pill"
-				Tooltip: "XianxiaMod content used for cultivation, crafting, combat, or breakthroughs."
+				Tooltip: "A pill that solidifies the cultivator's foundation. Use to attempt the breakthrough to Foundation stage."
 			}
 			FurnaceHeartRing: {
 				DisplayName: "Furnace Heart Ring"
-				Tooltip: "XianxiaMod content used for cultivation, crafting, combat, or breakthroughs."
+				Tooltip: "A ring forged from a furnace core. Grants bonus defense."
 			}
 			FurnaceSlagIron: {
 				DisplayName: "Furnace Slag Iron"
-				Tooltip: "XianxiaMod content used for cultivation, crafting, combat, or breakthroughs."
+				Tooltip: "Iron slag tempered in the Black Furnace. A core material for artifact forging and refining."
 			}
 			GardenBrokenKey: {
 				DisplayName: "Garden Broken Key"
-				Tooltip: "XianxiaMod content used for cultivation, crafting, combat, or breakthroughs."
+				Tooltip: "A broken key found in the herb garden. Combine with spirit stones to forge a boss summoning item."
 			}
 			GreenwoodArrayPlate: {
 				DisplayName: "Greenwood Array Plate"
-				Tooltip: "XianxiaMod content used for cultivation, crafting, combat, or breakthroughs."
+				Tooltip: "A formation plate carved from greenwood. Deploys a healing array field that restores life and spiritual energy to allies inside."
 			}
 			GreenwoodRoot: {
 				DisplayName: "Greenwood Root"
-				Tooltip: "XianxiaMod content used for cultivation, crafting, combat, or breakthroughs."
+				Tooltip: "A root saturated with herbal essence. A foundational material for alchemy and artifact crafting."
 			}
 			HeavenDaoFragment: {
 				DisplayName: "Heaven Dao Fragment"
-				Tooltip: "XianxiaMod content used for cultivation, crafting, combat, or breakthroughs."
+				Tooltip: "A shard of the old Heavenly Dao. Use to attempt the breakthrough to Spirit Severing stage."
 			}
 			HeavenTabletRubbing: {
 				DisplayName: "Heaven Tablet Rubbing"
-				Tooltip: "XianxiaMod content used for cultivation, crafting, combat, or breakthroughs."
+				Tooltip: "An ink rubbing of a fallen heaven tablet. Combine with spirit stones to forge a boss summoning item."
 			}
 			LightningWardJade: {
 				DisplayName: "Lightning Ward Jade"
-				Tooltip: "XianxiaMod content used for cultivation, crafting, combat, or breakthroughs."
+				Tooltip: "A jade talisman that wards off lightning. Increases endurance and slowly reduces spirit pressure over time."
 			}
 			Moonbone: {
 				DisplayName: "Moonbone"
-				Tooltip: "XianxiaMod content used for cultivation, crafting, combat, or breakthroughs."
+				Tooltip: "Bone fragments from the Moonbone Abyss. Use to attempt the breakthrough to Tribulation stage."
 			}
 			MoonboneDharmaSword: {
 				DisplayName: "Moonbone Dharma Sword"
-				Tooltip: "XianxiaMod content used for cultivation, crafting, combat, or breakthroughs."
+				Tooltip: "A dharma sword forged from moonbone. Shards slow on impact, piercing twice before fading."
 			}
 			MoonboneRitualTalisman: {
 				DisplayName: "Moonbone Ritual Talisman"
-				Tooltip: "XianxiaMod content used for cultivation, crafting, combat, or breakthroughs."
+				Tooltip: "A talisman used in moonbone rituals. Combine with spirit stones to forge a boss summoning item."
 			}
 			NascentSoulJadeBox: {
 				DisplayName: "Nascent Soul Jade Box"
-				Tooltip: "XianxiaMod content used for cultivation, crafting, combat, or breakthroughs."
+				Tooltip: "A jade box that nurtures the nascent soul. Increases maximum spiritual energy by 30."
 			}
 			OldFurnaceEmber: {
 				DisplayName: "Old Furnace Ember"
-				Tooltip: "XianxiaMod content used for cultivation, crafting, combat, or breakthroughs."
+				Tooltip: "A still-glowing ember from an ancient furnace. Combine with spirit stones to forge a boss summoning item."
 			}
 			OldHeavenDaoScroll: {
 				DisplayName: "Old Heaven Dao Scroll"
-				Tooltip: "XianxiaMod content used for cultivation, crafting, combat, or breakthroughs."
+				Tooltip: "A scroll of the old Dao, its text still shifting. Use to attempt the breakthrough to Nascent Soul stage."
 			}
 			QiCondensingPill: {
 				DisplayName: "Qi Condensing Pill"
-				Tooltip: "XianxiaMod content used for cultivation, crafting, combat, or breakthroughs."
+				Tooltip: "A pill that helps condense spiritual energy. Use to attempt the breakthrough to Qi Condensation stage."
 			}
 			QiGatheringPendant: {
 				DisplayName: "Qi Gathering Pendant"
-				Tooltip: "XianxiaMod content used for cultivation, crafting, combat, or breakthroughs."
+				Tooltip: "A pendant that draws in ambient qi. Increases spiritual energy regen and caps energy costs at 90%."
 			}
 			SectTrialToken: {
 				DisplayName: "Sect Trial Token"
-				Tooltip: "XianxiaMod content used for cultivation, crafting, combat, or breakthroughs."
+				Tooltip: "A token granting entry to sect trials. Combine with spirit stones to forge a boss summoning item."
 			}
 			SpiritwoodCharm: {
 				DisplayName: "Spiritwood Charm"
-				Tooltip: "XianxiaMod content used for cultivation, crafting, combat, or breakthroughs."
+				Tooltip: "A charm carved from spirit-infused wood. Grants increased life regeneration."
 			}
 			SpringReturnPill: {
 				DisplayName: "Spring Return Pill"
-				Tooltip: "XianxiaMod content used for cultivation, crafting, combat, or breakthroughs."
+				Tooltip: "A pill that brings the body back to spring. Greatly increases life regen and spiritual energy recovery for 60 minutes. Also reduces spirit pressure."
 			}
 			StarAbyssEye: {
 				DisplayName: "Star Abyss Eye"
-				Tooltip: "XianxiaMod content used for cultivation, crafting, combat, or breakthroughs."
+				Tooltip: "An eye torn from the star abyss. Grants increased generic damage."
 			}
 			StarAbyssForbiddenTalisman: {
 				DisplayName: "Star Abyss Forbidden Talisman"
-				Tooltip: "XianxiaMod content used for cultivation, crafting, combat, or breakthroughs."
+				Tooltip: "A forbidden talisman from the star abyss. Restores 80 spiritual energy instantly but increases spirit pressure by 25. Risk of spiritual pressure disorder."
 			}
 			StarAbyssMembrane: {
 				DisplayName: "Star Abyss Membrane"
-				Tooltip: "XianxiaMod content used for cultivation, crafting, combat, or breakthroughs."
+				Tooltip: "A membrane shed by star abyss creatures. Combine with spirit stones to forge a boss summoning item."
 			}
 			StarEclipseArbalest: {
 				DisplayName: "Star Eclipse Arbalest"
-				Tooltip: "XianxiaMod content used for cultivation, crafting, combat, or breakthroughs."
+				Tooltip: "An arbalest that fires star-eclipsing bolts. Projectiles split into two spirit bolts on the first enemy hit."
 			}
 			StarEclipseCrystal: {
 				DisplayName: "Star Eclipse Crystal"
-				Tooltip: "XianxiaMod content used for cultivation, crafting, combat, or breakthroughs."
+				Tooltip: "A crystal formed during a star eclipse. Use to attempt the breakthrough to Golden Core stage."
 			}
 			SummonGardenBrokenKey: {
 				DisplayName: "Garden Broken Key"
@@ -179,23 +179,23 @@ Mods: {
 			}
 			ThunderCallingJade: {
 				DisplayName: "Thunder Calling Jade"
-				Tooltip: "XianxiaMod content used for cultivation, crafting, combat, or breakthroughs."
+				Tooltip: "A jade that calls thunder from the clouds. Combine with spirit stones to forge a boss summoning item."
 			}
 			ThunderPatternSwordCase: {
 				DisplayName: "Thunder Pattern Sword Case"
-				Tooltip: "XianxiaMod content used for cultivation, crafting, combat, or breakthroughs."
+				Tooltip: "A sword case etched with thunder patterns. Releases a penetrating sword that calls down lightning bolts on hit."
 			}
 			ThunderTalismanArrayPlate: {
 				DisplayName: "Thunder Talisman Array Plate"
-				Tooltip: "XianxiaMod content used for cultivation, crafting, combat, or breakthroughs."
+				Tooltip: "An array plate inscribed with thunder talismans. Deploys a lightning field that periodically rains thunderbolts."
 			}
 			TribulationCloudDew: {
 				DisplayName: "Tribulation Cloud Dew"
-				Tooltip: "XianxiaMod content used for cultivation, crafting, combat, or breakthroughs."
+				Tooltip: "Dew condensed within tribulation clouds. A key material for tribulation-resisting pills and thunder-element equipment."
 			}
 			TribulationResistingPill: {
 				DisplayName: "Tribulation Resisting Pill"
-				Tooltip: "XianxiaMod content used for cultivation, crafting, combat, or breakthroughs."
+				Tooltip: "A pill that helps resist heavenly tribulation. Grants Tribulation Resistance for 90 minutes and reduces spirit pressure."
 			}
 		}
 		NPCs: {
@@ -343,6 +343,14 @@ Mods: {
 			}
 		}
 		Buffs: {
+			AlchemyInsightBuff: {
+				DisplayName: "Alchemy Insight"
+				Description: "Near an alchemy cauldron, attuning to the herbal warmth. Increases spiritual energy recovery."
+			}
+			ArtifactResonanceBuff: {
+				DisplayName: "Artifact Resonance"
+				Description: "Near an artifact forge, resonating with crafted tools. Increases spiritual energy recovery."
+			}
 			QiGatheringBuff: {
 				DisplayName: "Qi Gathering"
 				Description: "Increases spiritual energy recovery and slightly lowers spiritual energy costs."

@@ -115,6 +115,86 @@ ZH_NAMES = {
     "archive_scroll_spirit": "经阁卷灵",
     "fallen_heaven_messenger": "坠天使者",
 }
+ITEM_TOOLTIPS_ZH = {
+    "greenwood_root": "饱含草木精华的根茎。炼丹与法器铸造的基础材料。",
+    "furnace_slag_iron": "在黑炉中淬炼的铁渣。法器铸造与炼器的核心材料。",
+    "artifact_blank_shard": "未完成的法器胚胎。在器胚炉处用于铸造飞剑、阵盘和饰品。",
+    "tribulation_cloud_dew": "劫云中凝结的露水。炼制抗劫丹和雷系装备的关键材料。",
+    "star_eclipse_crystal": "星蚀中凝结的晶体。用于尝试突破至金丹境。",
+    "sect_trial_token": "进入宗门试炼的令牌。与灵石合成可铸造Boss召唤物。",
+    "heaven_dao_fragment": "旧天道的碎片。用于尝试突破至斩灵境。",
+    "moonbone": "月骸天渊中的骨片。用于尝试突破至渡劫境。",
+    "dao_severing_dust": "大道被切断后留下的细尘。用于尝试最终突破至斩道境。",
+    "spring_return_pill": "让身体重回春天的丹药。大幅提升生命与灵气恢复，持续60分钟，并降低灵压。",
+    "qi_condensing_pill": "帮助凝聚灵气的丹药。用于尝试突破至凝气境。",
+    "foundation_pill": "稳固根基的丹药。用于尝试突破至筑基境。",
+    "tribulation_resisting_pill": "抵抗天劫的丹药。获得90分钟的抗劫状态，并降低灵压。",
+    "star_abyss_forbidden_talisman": "星渊的禁忌符箓。立即恢复80点灵气，但灵压增加25。有灵压紊乱的风险。",
+    "garden_broken_key": "药园中寻得的断裂钥匙。与灵石合成可铸造Boss召唤物。",
+    "old_furnace_ember": "古炉中未熄的火种。与灵石合成可铸造Boss召唤物。",
+    "thunder_calling_jade": "从云中召唤雷电的玉石。与灵石合成可铸造Boss召唤物。",
+    "star_abyss_membrane": "星渊生物褪下的膜。与灵石合成可铸造Boss召唤物。",
+    "heaven_tablet_rubbing": "坠天碑文的拓印。与灵石合成可铸造Boss召唤物。",
+    "moonbone_ritual_talisman": "月骨仪式所用的符箓。与灵石合成可铸造Boss召唤物。",
+    "cloudpiercer_flying_sword": "穿云而过的飞剑。撞击后释放次级云气弹。",
+    "thunder_pattern_sword_case": "刻有雷纹的剑匣。释放穿透剑刃，命中后有概率召唤天雷。",
+    "formless_sword_wheel": "无形无相的旋转剑阵。可穿透多个敌人，拥有局部无敌帧。",
+    "moonbone_dharma_sword": "以月骨锻造的法剑。弹片命中后减速，可贯穿两次。",
+    "cinnabar_talisman_flame_item": "燃烧朱砂的符箓。命中敌人时施加灼热烈焰。",
+    "greenwood_array_plate": "以青木雕刻的阵法盘。部署一个恢复领域，为范围内友方回复生命与灵气。",
+    "thunder_talisman_array_plate": "铭刻雷符的阵法盘。部署一个雷电领域，定期降下雷霆。",
+    "broken_heaven_decree": "仍带有审判之力的天庭法令。释放可穿透方块的裁决光束。",
+    "old_heaven_dao_scroll": "字迹仍在变化的旧天道卷轴。用于尝试突破至元婴境。",
+    "star_eclipse_arbalest": "发射星蚀裂弹的弩机。首次命中敌人后分裂为两枚灵弹。",
+    "qi_gathering_pendant": "汇聚周围灵气的吊坠。提升灵气恢复速度，灵气消耗上限降至90%。",
+    "spiritwood_charm": "以灵木雕刻的护符。提升生命恢复速度。",
+    "furnace_heart_ring": "以炉心锻造的戒指。提供额外防御。",
+    "lightning_ward_jade": "避雷护身的玉佩。提升耐力，并随时间缓慢降低灵压。",
+    "star_abyss_eye": "从星渊中取出的眼睛。提升通用伤害。",
+    "nascent_soul_jade_box": "温养元婴的玉匣。灵气上限提升30点。",
+    "broken_heaven_crown_seal": "旧天庭的破裂冠印。佩戴后大幅提升伤害，但会降低防御。",
+    "dao_severing_ring": "斩断旧道羁绊的戒指。大幅提升伤害，但灵气消耗略增。",
+}
+ITEM_TOOLTIPS_EN = {
+    "greenwood_root": "A root saturated with herbal essence. A foundational material for alchemy and artifact crafting.",
+    "furnace_slag_iron": "Iron slag tempered in the Black Furnace. A core material for artifact forging and refining.",
+    "artifact_blank_shard": "An unfinished artifact embryo. Used at the Artifact Forge to craft flying swords, array plates, and accessories.",
+    "tribulation_cloud_dew": "Dew condensed within tribulation clouds. A key material for tribulation-resisting pills and thunder-element equipment.",
+    "star_eclipse_crystal": "A crystal formed during a star eclipse. Use to attempt the breakthrough to Golden Core stage.",
+    "sect_trial_token": "A token granting entry to sect trials. Combine with spirit stones to forge a boss summoning item.",
+    "heaven_dao_fragment": "A shard of the old Heavenly Dao. Use to attempt the breakthrough to Spirit Severing stage.",
+    "moonbone": "Bone fragments from the Moonbone Abyss. Use to attempt the breakthrough to Tribulation stage.",
+    "dao_severing_dust": "Fine dust left where the Dao has been cut. Use to attempt the final cultivation breakthrough to Dao Severing.",
+    "spring_return_pill": "A pill that brings the body back to spring. Greatly increases life regen and spiritual energy recovery for 60 minutes. Also reduces spirit pressure.",
+    "qi_condensing_pill": "A pill that helps condense spiritual energy. Use to attempt the breakthrough to Qi Condensation stage.",
+    "foundation_pill": "A pill that solidifies the cultivator's foundation. Use to attempt the breakthrough to Foundation stage.",
+    "tribulation_resisting_pill": "A pill that helps resist heavenly tribulation. Grants Tribulation Resistance for 90 minutes and reduces spirit pressure.",
+    "star_abyss_forbidden_talisman": "A forbidden talisman from the star abyss. Restores 80 spiritual energy instantly but increases spirit pressure by 25. Risk of spiritual pressure disorder.",
+    "garden_broken_key": "A broken key found in the herb garden. Combine with spirit stones to forge a boss summoning item.",
+    "old_furnace_ember": "A still-glowing ember from an ancient furnace. Combine with spirit stones to forge a boss summoning item.",
+    "thunder_calling_jade": "A jade that calls thunder from the clouds. Combine with spirit stones to forge a boss summoning item.",
+    "star_abyss_membrane": "A membrane shed by star abyss creatures. Combine with spirit stones to forge a boss summoning item.",
+    "heaven_tablet_rubbing": "An ink rubbing of a fallen heaven tablet. Combine with spirit stones to forge a boss summoning item.",
+    "moonbone_ritual_talisman": "A talisman used in moonbone rituals. Combine with spirit stones to forge a boss summoning item.",
+    "cloudpiercer_flying_sword": "A flying sword that pierces clouds. Releases a secondary cloud wisp projectile on impact.",
+    "thunder_pattern_sword_case": "A sword case etched with thunder patterns. Releases a penetrating sword that calls down lightning bolts on hit.",
+    "formless_sword_wheel": "A spinning sword formation with no fixed form. Passes through multiple enemies with local immunity frames.",
+    "moonbone_dharma_sword": "A dharma sword forged from moonbone. Shards slow on impact, piercing twice before fading.",
+    "cinnabar_talisman_flame_item": "A talisman that burns with cinnabar fire. Ignites enemies with searing flames on hit.",
+    "greenwood_array_plate": "A formation plate carved from greenwood. Deploys a healing array field that restores life and spiritual energy to allies inside.",
+    "thunder_talisman_array_plate": "An array plate inscribed with thunder talismans. Deploys a lightning field that periodically rains thunderbolts.",
+    "broken_heaven_decree": "A divine decree that still carries judgment. Unleashes piercing judgment beams that ignore tile collision.",
+    "old_heaven_dao_scroll": "A scroll of the old Dao, its text still shifting. Use to attempt the breakthrough to Nascent Soul stage.",
+    "star_eclipse_arbalest": "An arbalest that fires star-eclipsing bolts. Projectiles split into two spirit bolts on the first enemy hit.",
+    "qi_gathering_pendant": "A pendant that draws in ambient qi. Increases spiritual energy regen and caps energy costs at 90%.",
+    "spiritwood_charm": "A charm carved from spirit-infused wood. Grants increased life regeneration.",
+    "furnace_heart_ring": "A ring forged from a furnace core. Grants bonus defense.",
+    "lightning_ward_jade": "A jade talisman that wards off lightning. Increases endurance and slowly reduces spirit pressure over time.",
+    "star_abyss_eye": "An eye torn from the star abyss. Grants increased generic damage.",
+    "nascent_soul_jade_box": "A jade box that nurtures the nascent soul. Increases maximum spiritual energy by 30.",
+    "broken_heaven_crown_seal": "A cracked seal from the Old Heaven Court. Equip to gain a significant damage boost at the cost of defense.",
+    "dao_severing_ring": "A ring that severs attachment to the old Dao. Greatly increases damage but makes spiritual energy costs slightly higher.",
+}
 
 EN_NAMES = {
     "greenwood_root": "Greenwood Root",
@@ -1783,11 +1863,11 @@ def generate_localization() -> None:
             continue
         item_zh[class_name] = {
             "DisplayName": ZH_NAMES.get(asset_id, class_name),
-            "Tooltip": "仙侠模组内容，可用于修行、炼制、战斗或突破。",
+            "Tooltip": ITEM_TOOLTIPS_ZH.get(asset_id, "仙侠模组内容，可用于修行、炼制、战斗或突破。"),
         }
         item_en[class_name] = {
             "DisplayName": EN_NAMES.get(asset_id, class_name),
-            "Tooltip": "XianxiaMod content used for cultivation, crafting, combat, or breakthroughs.",
+            "Tooltip": ITEM_TOOLTIPS_EN.get(asset_id, "XianxiaMod content used for cultivation, crafting, combat, or breakthroughs."),
         }
     for boss_id, (_, _, _, _, _, summon, _) in BOSS_DATA.items():
         class_name = f"Summon{pascal(summon)}"
@@ -1858,6 +1938,8 @@ def generate_localization() -> None:
     biome_en = {key: {"DisplayName": value[1]} for key, value in biome_names.items()}
 
     buff_zh = {
+        "AlchemyInsightBuff": {"DisplayName": "丹炉温养", "Description": "在炼丹炉附近，感受草木温养。灵气恢复速度提升。"},
+        "ArtifactResonanceBuff": {"DisplayName": "器胚共鸣", "Description": "在器胚炉附近，与法器共鸣。灵气恢复速度提升。"},
         "QiGatheringBuff": {"DisplayName": "聚气", "Description": "灵气恢复提升，灵气消耗小幅降低。"},
         "SpringReturnBuff": {"DisplayName": "回春", "Description": "生命恢复提升，并缓慢回补灵气。"},
         "TribulationPressureBuff": {"DisplayName": "劫压临身", "Description": "天劫锁定了你，造成与承受伤害都会变得更激烈。"},
@@ -1865,6 +1947,8 @@ def generate_localization() -> None:
         "SpiritualPressureDisorderBuff": {"DisplayName": "灵压紊乱", "Description": "防御和移动速度降低。"},
     }
     buff_en = {
+        "AlchemyInsightBuff": {"DisplayName": "Alchemy Insight", "Description": "Near an alchemy cauldron, attuning to the herbal warmth. Increases spiritual energy recovery."},
+        "ArtifactResonanceBuff": {"DisplayName": "Artifact Resonance", "Description": "Near an artifact forge, resonating with crafted tools. Increases spiritual energy recovery."},
         "QiGatheringBuff": {"DisplayName": "Qi Gathering", "Description": "Increases spiritual energy recovery and slightly lowers spiritual energy costs."},
         "SpringReturnBuff": {"DisplayName": "Spring Return", "Description": "Improves life regeneration and slowly restores spiritual energy."},
         "TribulationPressureBuff": {"DisplayName": "Tribulation Pressure", "Description": "The tribulation has marked you, making damage dealt and received more volatile."},

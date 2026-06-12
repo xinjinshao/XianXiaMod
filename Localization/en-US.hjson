@@ -5,70 +5,592 @@ Mods: {
 				DisplayName: Low-Grade Spirit Stone
 				Tooltip: A weak spirit stone condensed in shallow spirit veins. Picking it up awakens spiritual energy awareness.
 			}
+
 			SpiritGel: {
 				DisplayName: Spirit Gel
 				Tooltip: Spiritual gel left inside wandering spirit slimes.
 			}
+
 			QiDrawingTalisman: {
 				DisplayName: Qi-Drawing Talisman
 				Tooltip: Use to enter Qi Awakening and restore a little spiritual energy.
 				Awakened: You feel a thread of spiritual energy moving through your meridians.
 			}
+
 			WoodgrainFlyingSword: {
 				DisplayName: Woodgrain Flying Sword
 				Tooltip: Costs 4 spiritual energy to release a returning wooden flying sword.
 			}
+
 			SpiritwoodCrossbow: {
 				DisplayName: Spiritwood Crossbow
 				Tooltip: Costs 2 spiritual energy to fire a spirit bolt.
 			}
+
 			SpiritVeinIncense: {
 				DisplayName: Spirit Vein Incense
 				Tooltip: Summons the Spirit Vein Wyrm. This is the first cultivation trial.
 			}
+
+			SummonGardenBrokenKey: {
+				DisplayName: Summon Garden Broken Key
+				Tooltip: ""
+			}
+
+			SummonHeavenTabletRubbing: {
+				DisplayName: Summon Heaven Tablet Rubbing
+				Tooltip: ""
+			}
+
+			SummonHeavenTabletRubbingBrokenHeavenInspector: {
+				DisplayName: Summon Heaven Tablet Rubbing Broken Heaven Inspector
+				Tooltip: ""
+			}
+
+			SummonMoonboneRitualTalisman: {
+				DisplayName: Summon Moonbone Ritual Talisman
+				Tooltip: ""
+			}
+
+			SummonMoonboneRitualTalismanOldHeavenDaoCore: {
+				DisplayName: Summon Moonbone Ritual Talisman Old Heaven Dao Core
+				Tooltip: ""
+			}
+
+			SummonOldFurnaceEmber: {
+				DisplayName: Summon Old Furnace Ember
+				Tooltip: ""
+			}
+
+			SummonSectTrialToken: {
+				DisplayName: Summon Sect Trial Token
+				Tooltip: ""
+			}
+
+			SummonSectTrialTokenGreenwoodMedicineKingEcho: {
+				DisplayName: Summon Sect Trial Token Greenwood Medicine King Echo
+				Tooltip: ""
+			}
+
+			SummonStarAbyssMembrane: {
+				DisplayName: Summon Star Abyss Membrane
+				Tooltip: ""
+			}
+
+			SummonThunderCallingJade: {
+				DisplayName: Summon Thunder Calling Jade
+				Tooltip: ""
+			}
+
+			SummonThunderCallingJadeThunderMarshJiao: {
+				DisplayName: Summon Thunder Calling Jade Thunder Marsh Jiao
+				Tooltip: ""
+			}
+
+			ArtifactBlankShard: {
+				DisplayName: Artifact Blank Shard
+				Tooltip: ""
+			}
+
+			BrokenHeavenCrownSeal: {
+				DisplayName: Broken Heaven Crown Seal
+				Tooltip: ""
+			}
+
+			BrokenHeavenDecree: {
+				DisplayName: Broken Heaven Decree
+				Tooltip: ""
+			}
+
+			CinnabarTalismanFlameItem: {
+				DisplayName: Cinnabar Talisman Flame Item
+				Tooltip: ""
+			}
+
+			CloudpiercerFlyingSword: {
+				DisplayName: Cloudpiercer Flying Sword
+				Tooltip: ""
+			}
+
+			DaoSeveringDust: {
+				DisplayName: Dao Severing Dust
+				Tooltip: ""
+			}
+
+			DaoSeveringRing: {
+				DisplayName: Dao Severing Ring
+				Tooltip: ""
+			}
+
+			FormlessSwordWheel: {
+				DisplayName: Formless Sword Wheel
+				Tooltip: ""
+			}
+
+			FoundationPill: {
+				DisplayName: Foundation Pill
+				Tooltip: ""
+			}
+
+			FurnaceHeartRing: {
+				DisplayName: Furnace Heart Ring
+				Tooltip: ""
+			}
+
+			FurnaceSlagIron: {
+				DisplayName: Furnace Slag Iron
+				Tooltip: ""
+			}
+
+			GardenBrokenKey: {
+				DisplayName: Garden Broken Key
+				Tooltip: ""
+			}
+
+			GreenwoodArrayPlate: {
+				DisplayName: Greenwood Array Plate
+				Tooltip: ""
+			}
+
+			GreenwoodRoot: {
+				DisplayName: Greenwood Root
+				Tooltip: ""
+			}
+
+			HeavenDaoFragment: {
+				DisplayName: Heaven Dao Fragment
+				Tooltip: ""
+			}
+
+			HeavenTabletRubbing: {
+				DisplayName: Heaven Tablet Rubbing
+				Tooltip: ""
+			}
+
+			LightningWardJade: {
+				DisplayName: Lightning Ward Jade
+				Tooltip: ""
+			}
+
+			Moonbone: {
+				DisplayName: Moonbone
+				Tooltip: ""
+			}
+
+			MoonboneDharmaSword: {
+				DisplayName: Moonbone Dharma Sword
+				Tooltip: ""
+			}
+
+			MoonboneRitualTalisman: {
+				DisplayName: Moonbone Ritual Talisman
+				Tooltip: ""
+			}
+
+			NascentSoulJadeBox: {
+				DisplayName: Nascent Soul Jade Box
+				Tooltip: ""
+			}
+
+			OldFurnaceEmber: {
+				DisplayName: Old Furnace Ember
+				Tooltip: ""
+			}
+
+			OldHeavenDaoScroll: {
+				DisplayName: Old Heaven Dao Scroll
+				Tooltip: ""
+			}
+
+			QiCondensingPill: {
+				DisplayName: Qi Condensing Pill
+				Tooltip: ""
+			}
+
+			QiGatheringPendant: {
+				DisplayName: Qi Gathering Pendant
+				Tooltip: ""
+			}
+
+			SectTrialToken: {
+				DisplayName: Sect Trial Token
+				Tooltip: ""
+			}
+
+			SpiritwoodCharm: {
+				DisplayName: Spiritwood Charm
+				Tooltip: ""
+			}
+
+			SpringReturnPill: {
+				DisplayName: Spring Return Pill
+				Tooltip: ""
+			}
+
+			StarAbyssEye: {
+				DisplayName: Star Abyss Eye
+				Tooltip: ""
+			}
+
+			StarAbyssForbiddenTalisman: {
+				DisplayName: Star Abyss Forbidden Talisman
+				Tooltip: ""
+			}
+
+			StarAbyssMembrane: {
+				DisplayName: Star Abyss Membrane
+				Tooltip: ""
+			}
+
+			StarEclipseArbalest: {
+				DisplayName: Star Eclipse Arbalest
+				Tooltip: ""
+			}
+
+			StarEclipseCrystal: {
+				DisplayName: Star Eclipse Crystal
+				Tooltip: ""
+			}
+
+			ThunderCallingJade: {
+				DisplayName: Thunder Calling Jade
+				Tooltip: ""
+			}
+
+			ThunderPatternSwordCase: {
+				DisplayName: Thunder Pattern Sword Case
+				Tooltip: ""
+			}
+
+			ThunderTalismanArrayPlate: {
+				DisplayName: Thunder Talisman Array Plate
+				Tooltip: ""
+			}
+
+			TribulationCloudDew: {
+				DisplayName: Tribulation Cloud Dew
+				Tooltip: ""
+			}
+
+			TribulationResistingPill: {
+				DisplayName: Tribulation Resisting Pill
+				Tooltip: ""
+			}
+
+			SectLedger: {
+				DisplayName: Sect Ledger
+				Tooltip: ""
+			}
+
+			TribulationGauge: {
+				DisplayName: Tribulation Gauge
+				Tooltip: ""
+			}
+
+			AlchemyCauldron: {
+				DisplayName: Alchemy Cauldron
+				Tooltip: ""
+			}
+
+			ArtifactForge: {
+				DisplayName: Artifact Forge
+				Tooltip: ""
+			}
 		}
+
 		Projectiles: {
 			WoodgrainSwordProjectile.DisplayName: Woodgrain Flying Sword
 			SpiritBoltProjectile.DisplayName: Spirit Bolt
+			SpiritBolt.DisplayName: Spirit Bolt
+			BossArrayFieldProjectile.DisplayName: Boss Array Field Projectile
+			BossSpiritBoltProjectile.DisplayName: Boss Spirit Bolt Projectile
+			CinnabarTalismanFlame.DisplayName: Cinnabar Talisman Flame
+			CloudpiercerSwordProjectile.DisplayName: Cloudpiercer Sword Projectile
+			CloudWispProjectile.DisplayName: Cloud Wisp Projectile
+			DecreeJudgementBeam.DisplayName: Decree Judgement Beam
+			FormlessSwordWheelProjectile.DisplayName: Formless Sword Wheel Projectile
+			GreenwoodArrayField.DisplayName: Greenwood Array Field
+			MinorThunderboltProjectile.DisplayName: Minor Thunderbolt Projectile
+			MoonboneShardProjectile.DisplayName: Moonbone Shard Projectile
+			StarEclipseSplitBolt.DisplayName: Star Eclipse Split Bolt
+			ThunderSwordProjectile.DisplayName: Thunder Sword Projectile
+			ThunderTalismanArray.DisplayName: Thunder Talisman Array
+			TribulationLightningProjectile.DisplayName: Tribulation Lightning Projectile
+			TribulationWarningLineProjectile.DisplayName: Tribulation Warning Line Projectile
 		}
+
 		NPCs: {
 			WanderingSpiritSlime.DisplayName: Wandering Spirit Slime
 			TalismanBat.DisplayName: Talisman Bat
 			ShatteredJadeWorm.DisplayName: Shattered Jade Worm
 			SpiritVeinWyrm.DisplayName: Spirit Vein Wyrm
 			ShatteredJadeWyrmMinion.DisplayName: Spirit Vein Segment
+
 			Commission: {
 				Button: Commission
 				Unavailable: There is no suitable commission for you right now.
 				AlreadyClaimed: This commission has already been settled. The fallen sect records slowly, but accurately.
+
 				HerbSectApprentice: {
 					Locked: The old garden trouble still stands. Defeat the Garden Warden, then I can release the herb sect's share.
-					Claimed: "The garden roots are recorded. Sect reputation +{0}; current reputation {1}."
+					Claimed: The garden roots are recorded. Sect reputation +{0}; current reputation {1}.
 				}
+
 				WanderingArtificer: {
 					Locked: The black furnace is still ringing. Defeat the Black Furnace Iron Golem before I hand over its lower-forge materials.
-					Claimed: "The furnace debt is settled. Sect reputation +{0}; current reputation {1}."
+					Claimed: The furnace debt is settled. Sect reputation +{0}; current reputation {1}.
 				}
+
 				TribulationObserver: {
 					Locked: The Thunder Marsh Jiao has not fallen, so the lightning debt is not written yet. Walk the thunder clouds first.
-					Claimed: "The lightning debt is recorded. Sect reputation +{0}; current reputation {1}."
+					Claimed: The lightning debt is recorded. Sect reputation +{0}; current reputation {1}.
 				}
+
 				ArchiveScrollSpirit: {
 					Locked: The Formless Sword Soul still guards the old scrolls. The archive will not open before the trial is passed.
-					Claimed: "The old scrolls accept your sword marks. Sect reputation +{0}; current reputation {1}."
+					Claimed: The old scrolls accept your sword marks. Sect reputation +{0}; current reputation {1}.
 				}
+
 				FallenHeavenMessenger: {
 					Locked: The Heaven Tablet Guardian has not stepped aside. Make the old court hear your name first.
-					Claimed: "The tablet debt is sealed. Sect reputation +{0}; current reputation {1}."
+					Claimed: The tablet debt is sealed. Sect reputation +{0}; current reputation {1}.
+				}
+			}
+
+			AbyssalStarWomb.DisplayName: Abyssal Star Womb
+			BlackFurnaceIronGolem.DisplayName: Black Furnace Iron Golem
+			BrokenHeavenInspector.DisplayName: Broken Heaven Inspector
+			FormlessSwordSoul.DisplayName: Formless Sword Soul
+			GardenWarden.DisplayName: Garden Warden
+			GreenwoodMedicineKingEcho.DisplayName: Greenwood Medicine King Echo
+			HeavenTabletGuardian.DisplayName: Heaven Tablet Guardian
+			HeavenTabletGuard.DisplayName: Heaven Tablet Guard
+			MoonboneImmortal.DisplayName: Moonbone Immortal
+			OldHeavenDaoCore.DisplayName: Old Heaven Dao Core
+			ThunderMarshJiao.DisplayName: Thunder Marsh Jiao
+			TribulationCloudAvatar.DisplayName: Tribulation Cloud Avatar
+			ArchivedImmortalSoul.DisplayName: Archived Immortal Soul
+			CelestialPuppet.DisplayName: Celestial Puppet
+			FurnaceAshGolem.DisplayName: Furnace Ash Golem
+			HerbGardenVineSpirit.DisplayName: Herb Garden Vine Spirit
+			IronShardSpirit.DisplayName: Iron Shard Spirit
+			MiasmaFlowerMoth.DisplayName: Miasma Flower Moth
+			MoonboneCultivator.DisplayName: Moonbone Cultivator
+			ObsessedSwordCultivator.DisplayName: Obsessed Sword Cultivator
+			ScriptureArchiveEcho.DisplayName: Scripture Archive Echo
+			StarAbyssLarva.DisplayName: Star Abyss Larva
+			StarEclipsedCultivator.DisplayName: Star Eclipsed Cultivator
+			ThunderPatternHawk.DisplayName: Thunder Pattern Hawk
+			TribulationCloudling.DisplayName: Tribulation Cloudling
+
+			ArchiveScrollSpirit: {
+				DisplayName: Archive Scroll Spirit
+
+				TownNPCMood: {
+					Content: I am content.
+					NoHome: I hate not having a home.
+					FarFromHome: I am too far from home.
+					LoveSpace: I love having so much space.
+					DislikeCrowded: I dislike how crowded I am.
+					HateCrowded: I hate how crowded I am.
+					LikeBiome: I like {BiomeName}.
+					DislikeBiome: I dislike {BiomeName}.
+					LikeNPC_Princess: I like {NPCName}.
+					Princess_LovesNPC: I like {NPCName}.
+				}
+			}
+
+			FallenHeavenMessenger: {
+				DisplayName: Fallen Heaven Messenger
+
+				TownNPCMood: {
+					Content: I am content.
+					NoHome: I hate not having a home.
+					FarFromHome: I am too far from home.
+					LoveSpace: I love having so much space.
+					DislikeCrowded: I dislike how crowded I am.
+					HateCrowded: I hate how crowded I am.
+					LoveBiome: I love {BiomeName}.
+					DislikeBiome: I dislike {BiomeName}.
+					LikeNPC_Princess: I like {NPCName}.
+					Princess_LovesNPC: I like {NPCName}.
+				}
+			}
+
+			HerbSectApprentice: {
+				DisplayName: Herb Sect Apprentice
+
+				TownNPCMood: {
+					Content: I am content.
+					NoHome: I hate not having a home.
+					FarFromHome: I am too far from home.
+					LoveSpace: I love having so much space.
+					DislikeCrowded: I dislike how crowded I am.
+					HateCrowded: I hate how crowded I am.
+					LoveBiome: I love {BiomeName}.
+					LikeBiome: I like {BiomeName}.
+					DislikeBiome: I dislike {BiomeName}.
+					LikeNPC_Princess: I like {NPCName}.
+					Princess_LovesNPC: I like {NPCName}.
+				}
+			}
+
+			TribulationObserver: {
+				DisplayName: Tribulation Observer
+
+				TownNPCMood: {
+					Content: I am content.
+					NoHome: I hate not having a home.
+					FarFromHome: I am too far from home.
+					LoveSpace: I love having so much space.
+					DislikeCrowded: I dislike how crowded I am.
+					HateCrowded: I hate how crowded I am.
+					LikeBiome: I like {BiomeName}.
+					DislikeBiome: I dislike {BiomeName}.
+					LikeNPC_Princess: I like {NPCName}.
+					Princess_LovesNPC: I like {NPCName}.
+				}
+			}
+
+			WanderingArtificer: {
+				DisplayName: Wandering Artificer
+
+				TownNPCMood: {
+					Content: I am content.
+					NoHome: I hate not having a home.
+					FarFromHome: I am too far from home.
+					LoveSpace: I love having so much space.
+					DislikeCrowded: I dislike how crowded I am.
+					HateCrowded: I hate how crowded I am.
+					LoveBiome: I love {BiomeName}.
+					LikeBiome: I like {BiomeName}.
+					DislikeBiome: I dislike {BiomeName}.
+					LikeNPC_Princess: I like {NPCName}.
+					Princess_LovesNPC: I like {NPCName}.
 				}
 			}
 		}
+
 		Tiles: {
 			SpiritOreTile.MapEntry: Spirit Ore
 			SpiritMossTile.MapEntry: Spirit Moss
+			FallenHeavenJadeTile.MapEntry: Fallen Heaven Jade Tile
+			FurnaceSlagTile.MapEntry: Furnace Slag Tile
+			GreenwoodSoilTile.MapEntry: Greenwood Soil Tile
+			MoonboneTile.MapEntry: Moonbone Tile
+			SectRuinBrickTile.MapEntry: Sect Ruin Brick Tile
+			SpiritHerbTile.MapEntry: Spirit Herb Tile
+			StarAbyssCrystalTile.MapEntry: Star Abyss Crystal Tile
+			ThunderCloudTile.MapEntry: Thunder Cloud Tile
+			AlchemyCauldronTile.MapEntry: Alchemy Cauldron Tile
+			ArtifactForgeTile.MapEntry: Artifact Forge Tile
 		}
+
 		Biomes: {
-			ShallowSpiritVeinsBiome.DisplayName: Shallow Spirit Veins
+			ShallowSpiritVeinsBiome: {
+				DisplayName: Shallow Spirit Veins
+				TownNPCDialogueName: the Shallow Spirit Veins Biome
+			}
+
+			FallenHeavenPalaceBiome: {
+				DisplayName: Fallen Heaven Palace Biome
+				TownNPCDialogueName: the Fallen Heaven Palace Biome
+			}
+
+			GreenwoodHerbGardenBiome: {
+				DisplayName: Greenwood Herb Garden Biome
+				TownNPCDialogueName: the Greenwood Herb Garden Biome
+			}
+
+			MoonboneAbyssBiome: {
+				DisplayName: Moonbone Abyss Biome
+				TownNPCDialogueName: the Moonbone Abyss Biome
+			}
+
+			StarAbyssRiftBiome: {
+				DisplayName: Star Abyss Rift Biome
+				TownNPCDialogueName: the Star Abyss Rift Biome
+			}
+
+			SunkenFurnaceVeinBiome: {
+				DisplayName: Sunken Furnace Vein Biome
+				TownNPCDialogueName: the Sunken Furnace Vein Biome
+			}
+
+			TenThousandSectsRuinsBiome: {
+				DisplayName: Ten Thousand Sects Ruins Biome
+				TownNPCDialogueName: the Ten Thousand Sects Ruins Biome
+			}
+
+			ThunderMarshCloudsBiome: {
+				DisplayName: Thunder Marsh Clouds Biome
+				TownNPCDialogueName: the Thunder Marsh Clouds Biome
+			}
+		}
+
+		Walls.BlackFurnaceWall.MapEntry: Black Furnace Wall
+
+		Buffs: {
+			AlchemyInsightBuff: {
+				DisplayName: Alchemy Insight Buff
+				Description: Near an alchemy cauldron, attuning to the herbal warmth. Increases spiritual energy recovery.
+			}
+
+			ArtifactResonanceBuff: {
+				DisplayName: Artifact Resonance Buff
+				Description: Near an artifact forge, resonating with crafted tools. Increases spiritual energy recovery.
+			}
+
+			QiGatheringBuff: {
+				DisplayName: Qi Gathering Buff
+				Description: Increases spiritual energy recovery and slightly lowers spiritual energy costs.
+			}
+
+			SpiritualPressureDisorderBuff: {
+				DisplayName: Spiritual Pressure Disorder Buff
+				Description: Reduces defense and movement speed.
+			}
+
+			SpringReturnBuff: {
+				DisplayName: Spring Return Buff
+				Description: Improves life regeneration and slowly restores spiritual energy.
+			}
+
+			TribulationPressureBuff: {
+				DisplayName: Tribulation Pressure Buff
+				Description: The tribulation has marked you, making damage dealt and received more volatile.
+			}
+
+			TribulationResistanceBuff: {
+				DisplayName: Tribulation Resistance Buff
+				Description: Reduces incoming damage and calms spirit pressure over time.
+			}
+		}
+
+		Configs: {
+			XianXiaConfig: {
+				DisplayName: Xian Xia Config
+
+				EnableWorldGeneration: {
+					Label: Enable World Generation
+					Tooltip: ""
+				}
+
+				PermanentGrowthMultiplier: {
+					Label: Permanent Growth Multiplier
+					Tooltip: ""
+				}
+
+				DebugDrops: {
+					Label: Debug Drops
+					Tooltip: ""
+				}
+
+				EnableSoftCompatibilityHooks: {
+					Label: Enable Soft Compatibility Hooks
+					Tooltip: ""
+				}
+			}
 		}
 	}
 }
