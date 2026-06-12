@@ -1,0 +1,23 @@
+Mods: {
+	XianXia: {
+		Items: {
+			ShatteredJadeShell: { DisplayName: "Shattered Jade Shell" Tooltip: "Broken shell fragments from a jade worm." }
+			TornTalismanPaper: { DisplayName: "Torn Talisman Paper" Tooltip: "Scrap paper from a talisman bat. Used for basic talisman crafting." }
+			CinnabarPowder: { DisplayName: "Cinnabar Powder" Tooltip: "Fine red powder used in talisman ink." }
+			HerbDew: { DisplayName: "Herb Dew" Tooltip: "Dew collected from spirit herbs. Used in mid-tier alchemy." }
+			FurnaceCharcoal: { DisplayName: "Furnace Charcoal" Tooltip: "Charcoal from the black furnace. Used in refining." }
+			ThunderPatternFeather: { DisplayName: "Thunder Pattern Feather" Tooltip: "A feather etched with lightning patterns. Key material for thunder equipment." }
+			SingingThunderStoneItem: { DisplayName: "Singing Thunder Stone" Tooltip: "A stone that hums with trapped thunder." }
+			AbyssDust: { DisplayName: "Abyss Dust" Tooltip: "Fine dust from the star abyss. Used in high-tier star abyss equipment." }
+			DarkBlueSpiritFluid: { DisplayName: "Dark Blue Spirit Fluid" Tooltip: "Viscous fluid from star abyss creatures." }
+			BrokenSwordIntent: { DisplayName: "Broken Sword Intent" Tooltip: "Residual sword will from an obsessed cultivator. Used for high-tier flying swords." }
+			TornScrollPage: { DisplayName: "Torn Scroll Page" Tooltip: "A page torn from an ancient scripture archive." }
+			BrokenHeavenJade: { DisplayName: "Broken Heaven Jade" Tooltip: "Jade fragments from the fallen heaven palace." }
+			BrokenDecreeItem: { DisplayName: "Broken Decree" Tooltip: "A fragment of a heavenly decree." }
+			ColdMoonDust: { DisplayName: "Cold Moon Dust" Tooltip: "Frozen dust from the moonbone abyss." }
+			ArchiveRemnantLight: { DisplayName: "Archive Remnant Light" Tooltip: "Fading light from an archived immortal soul." }
+			LowGradeSpiritCore: { DisplayName: "Low-Grade Spirit Core" Tooltip: "A condensed core from the Spirit Vein Wyrm. Used for early cultivation breakthroughs." }
+			SpiritVeinScale: { DisplayName: "Spirit Vein Scale" Tooltip: "Scales shed by the Spirit Vein Wyrm. Used for equipment upgrades." }
+		}
+	}
+}

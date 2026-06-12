@@ -14,7 +14,7 @@ Mods: {
 				Text: "Broken Heaven Inspector is a major cultivation trial. Defeating it raises sect reputation and drops Heaven Dao Fragment."
 			}
 			CelestialPuppet: {
-				Text: "Celestial Puppet wanders the Fallen Heaven Palace and drops Heaven Dao Fragment."
+				Text: "Celestial Puppet wanders the Fallen Heaven Palace and drops BrokenHeavenJade."
 			}
 			FormlessSwordSoul: {
 				Text: "Formless Sword Soul is a major cultivation trial. Defeating it raises sect reputation and drops Sect Trial Token."
@@ -29,7 +29,7 @@ Mods: {
 				Text: "Greenwood Medicine King Echo is a major cultivation trial. Defeating it raises sect reputation and drops Greenwood Root."
 			}
 			HeavenTabletGuard: {
-				Text: "Heaven Tablet Guard wanders the Fallen Heaven Palace and drops Heaven Dao Fragment."
+				Text: "Heaven Tablet Guard wanders the Fallen Heaven Palace and drops BrokenDecreeItem."
 			}
 			HeavenTabletGuardian: {
 				Text: "Heaven Tablet Guardian is a major cultivation trial. Defeating it raises sect reputation and drops Heaven Dao Fragment."
@@ -41,7 +41,7 @@ Mods: {
 				Text: "Iron Shard Spirit wanders the Sunken Furnace Vein and drops Artifact Blank Shard."
 			}
 			MiasmaFlowerMoth: {
-				Text: "Miasma Flower Moth wanders the Greenwood Herb Garden and drops Greenwood Root."
+				Text: "Miasma Flower Moth wanders the Greenwood Herb Garden and drops HerbDew."
 			}
 			MoonboneCultivator: {
 				Text: "Moonbone Cultivator wanders the Moonbone Abyss and drops Moonbone."
@@ -50,16 +50,16 @@ Mods: {
 				Text: "Moonbone Immortal is a major cultivation trial. Defeating it raises sect reputation and drops Moonbone."
 			}
 			ObsessedSwordCultivator: {
-				Text: "Obsessed Sword Cultivator wanders the Ten Thousand Sects Ruins and drops Sect Trial Token."
+				Text: "Obsessed Sword Cultivator wanders the Ten Thousand Sects Ruins and drops BrokenSwordIntent."
 			}
 			OldHeavenDaoCore: {
 				Text: "Old Heaven Dao Core is a major cultivation trial. Defeating it raises sect reputation and drops Dao Severing Dust."
 			}
 			ScriptureArchiveEcho: {
-				Text: "Scripture Archive Echo wanders the Ten Thousand Sects Ruins and drops Sect Trial Token."
+				Text: "Scripture Archive Echo wanders the Ten Thousand Sects Ruins and drops TornScrollPage."
 			}
 			StarAbyssLarva: {
-				Text: "Star Abyss Larva wanders the Star Abyss Rift and drops Star Eclipse Crystal."
+				Text: "Star Abyss Larva wanders the Star Abyss Rift and drops AbyssDust."
 			}
 			StarEclipsedCultivator: {
 				Text: "Star Eclipsed Cultivator wanders the Star Abyss Rift and drops Star Eclipse Crystal."
@@ -68,7 +68,7 @@ Mods: {
 				Text: "Thunder Marsh Jiao is a major cultivation trial. Defeating it raises sect reputation and drops Tribulation Cloud Dew."
 			}
 			ThunderPatternHawk: {
-				Text: "Thunder Pattern Hawk wanders the Thunder Marsh Clouds and drops Tribulation Cloud Dew."
+				Text: "Thunder Pattern Hawk wanders the Thunder Marsh Clouds and drops ThunderPatternFeather."
 			}
 			TribulationCloudAvatar: {
 				Text: "Tribulation Cloud Avatar is a major cultivation trial. Defeating it raises sect reputation and drops Tribulation Cloud Dew."

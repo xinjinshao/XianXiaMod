@@ -383,20 +383,28 @@ BOSS_UNLOCK_REQUIREMENTS = {
 
 ENEMY_DATA = {
     # (life, damage, defense, primary_drop, secondary_drop, secondary_chance)
-    "herb_garden_vine_spirit": (140, 24, 8, "greenwood_root", "greenwood_root", 3),
-    "miasma_flower_moth": (90, 20, 4, "greenwood_root", "artifact_blank_shard", 4),
-    "furnace_ash_golem": (180, 28, 14, "furnace_slag_iron", "artifact_blank_shard", 3),
+    "herb_garden_vine_spirit": (140, 24, 8, "greenwood_root", "herb_dew", 3),
+    "miasma_flower_moth": (90, 20, 4, "herb_dew", "cinnabar_powder", 3),
+    "furnace_ash_golem": (180, 28, 14, "furnace_slag_iron", "furnace_charcoal", 4),
     "iron_shard_spirit": (70, 22, 6, "artifact_blank_shard", "furnace_slag_iron", 4),
-    "tribulation_cloudling": (240, 42, 16, "tribulation_cloud_dew", "artifact_blank_shard", 3),
-    "thunder_pattern_hawk": (300, 48, 18, "tribulation_cloud_dew", "artifact_blank_shard", 3),
-    "star_eclipsed_cultivator": (360, 50, 20, "star_eclipse_crystal", "artifact_blank_shard", 4),
-    "star_abyss_larva": (260, 46, 18, "star_eclipse_crystal", "artifact_blank_shard", 3),
-    "obsessed_sword_cultivator": (850, 72, 34, "sect_trial_token", "artifact_blank_shard", 3),
-    "scripture_archive_echo": (720, 66, 28, "sect_trial_token", "sect_trial_token", 4),
-    "celestial_puppet": (1350, 88, 46, "heaven_dao_fragment", "heaven_dao_fragment", 3),
-    "heaven_tablet_guard": (1500, 92, 54, "heaven_dao_fragment", "artifact_blank_shard", 4),
-    "moonbone_cultivator": (4200, 160, 72, "moonbone", "dao_severing_dust", 4),
-    "archived_immortal_soul": (3600, 150, 64, "dao_severing_dust", "moonbone", 4),
+    "tribulation_cloudling": (240, 42, 16, "tribulation_cloud_dew", "singing_thunder_stone_item", 5),
+    "thunder_pattern_hawk": (300, 48, 18, "thunder_pattern_feather", "tribulation_cloud_dew", 5),
+    "star_eclipsed_cultivator": (360, 50, 20, "star_eclipse_crystal", "broken_heaven_jade", 4),
+    "star_abyss_larva": (260, 46, 18, "abyss_dust", "dark_blue_spirit_fluid", 5),
+    "obsessed_sword_cultivator": (850, 72, 34, "broken_sword_intent", "sect_trial_token", 3),
+    "scripture_archive_echo": (720, 66, 28, "torn_scroll_page", "sect_trial_token", 4),
+    "celestial_puppet": (1350, 88, 46, "broken_heaven_jade", "heaven_dao_fragment", 3),
+    "heaven_tablet_guard": (1500, 92, 54, "broken_decree_item", "broken_heaven_jade", 4),
+    "moonbone_cultivator": (4200, 160, 72, "moonbone", "cold_moon_dust", 3),
+    "archived_immortal_soul": (3600, 150, 64, "dao_severing_dust", "archive_remnant_light", 4),
+}
+
+HANDGEN_DROPS = {
+    "herb_dew", "cinnabar_powder", "furnace_charcoal", "singing_thunder_stone_item",
+    "thunder_pattern_feather", "abyss_dust", "dark_blue_spirit_fluid",
+    "broken_sword_intent", "torn_scroll_page", "broken_heaven_jade",
+    "broken_decree_item", "cold_moon_dust", "archive_remnant_light",
+    "low_grade_spirit_core", "spirit_vein_scale",
 }
 
 
@@ -1198,8 +1206,8 @@ public class {class_name} : ModNPC
 {extra_methods}
     public override void ModifyNPCLoot(NPCLoot npcLoot)
     {{
-        npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<global::XianXia.Content.Items.Generated.{pascal(drop)}>(), 2, 1, 2));
-        npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<global::XianXia.Content.Items.Generated.{pascal(drop2)}>(), {drop2_chance}, 1, 2));
+        npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<global::XianXia.Content.Items.{"HandGenerated" if drop in HANDGEN_DROPS else "Generated"}.{pascal(drop)}>(), 2, 1, 2));
+        npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<global::XianXia.Content.Items.{"HandGenerated" if drop2 in HANDGEN_DROPS else "Generated"}.{pascal(drop2)}>(), {drop2_chance}, 1, 2));
     }}
 }}
 """)

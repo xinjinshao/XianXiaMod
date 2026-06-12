@@ -14,7 +14,7 @@ Mods: {
 				Text: "残天监察使是旧宗门进度中的主要试炼，击败后会提升宗门声望，并掉落天道碎片。"
 			}
 			CelestialPuppet: {
-				Text: "天庭傀儡徘徊在坠天宫阙，会掉落天道碎片。"
+				Text: "天庭傀儡徘徊在坠天宫阙，会掉落BrokenHeavenJade。"
 			}
 			FormlessSwordSoul: {
 				Text: "无相剑魂是旧宗门进度中的主要试炼，击败后会提升宗门声望，并掉落宗门试炼令。"
@@ -29,7 +29,7 @@ Mods: {
 				Text: "青木药王残影是旧宗门进度中的主要试炼，击败后会提升宗门声望，并掉落青木根。"
 			}
 			HeavenTabletGuard: {
-				Text: "天碑守卫徘徊在坠天宫阙，会掉落天道碎片。"
+				Text: "天碑守卫徘徊在坠天宫阙，会掉落BrokenDecreeItem。"
 			}
 			HeavenTabletGuardian: {
 				Text: "天碑守尽是旧宗门进度中的主要试炼，击败后会提升宗门声望，并掉落天道碎片。"
@@ -41,7 +41,7 @@ Mods: {
 				Text: "铁屑精徘徊在沉炉矿脉，会掉落器胚碎片。"
 			}
 			MiasmaFlowerMoth: {
-				Text: "瘴花蛾徘徊在青木药园，会掉落青木根。"
+				Text: "瘴花蛾徘徊在青木药园，会掉落HerbDew。"
 			}
 			MoonboneCultivator: {
 				Text: "月骨修士徘徊在月骸天渊，会掉落月骨。"
@@ -50,16 +50,16 @@ Mods: {
 				Text: "月骨仙君是旧宗门进度中的主要试炼，击败后会提升宗门声望，并掉落月骨。"
 			}
 			ObsessedSwordCultivator: {
-				Text: "执剑疯修徘徊在万宗遗址，会掉落宗门试炼令。"
+				Text: "执剑疯修徘徊在万宗遗址，会掉落BrokenSwordIntent。"
 			}
 			OldHeavenDaoCore: {
 				Text: "旧天道核心是旧宗门进度中的主要试炼，击败后会提升宗门声望，并掉落斩道尘。"
 			}
 			ScriptureArchiveEcho: {
-				Text: "经阁回声徘徊在万宗遗址，会掉落宗门试炼令。"
+				Text: "经阁回声徘徊在万宗遗址，会掉落TornScrollPage。"
 			}
 			StarAbyssLarva: {
-				Text: "星渊幼体徘徊在星渊裂隙，会掉落星蚀晶。"
+				Text: "星渊幼体徘徊在星渊裂隙，会掉落AbyssDust。"
 			}
 			StarEclipsedCultivator: {
 				Text: "星蚀修士徘徊在星渊裂隙，会掉落星蚀晶。"
@@ -68,7 +68,7 @@ Mods: {
 				Text: "雷泽蛟是旧宗门进度中的主要试炼，击败后会提升宗门声望，并掉落劫云露。"
 			}
 			ThunderPatternHawk: {
-				Text: "雷纹隼徘徊在雷泽云层，会掉落劫云露。"
+				Text: "雷纹隼徘徊在雷泽云层，会掉落ThunderPatternFeather。"
 			}
 			TribulationCloudAvatar: {
 				Text: "劫云化身是旧宗门进度中的主要试炼，击败后会提升宗门声望，并掉落劫云露。"

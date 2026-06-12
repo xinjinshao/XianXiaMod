@@ -1,0 +1,23 @@
+Mods: {
+	XianXia: {
+		Items: {
+			ShatteredJadeShell: { DisplayName: "碎玉壳" Tooltip: "碎玉虫的断裂壳片。" }
+			TornTalismanPaper: { DisplayName: "残符纸" Tooltip: "符纸蝠掉落的残破符纸。用于基础符箓制作。" }
+			CinnabarPowder: { DisplayName: "朱砂粉" Tooltip: "用于调制符墨的朱砂细粉。" }
+			HerbDew: { DisplayName: "药露" Tooltip: "灵草上凝结的露水。用于中阶炼丹。" }
+			FurnaceCharcoal: { DisplayName: "玄炉炭" Tooltip: "黑炉中烧制的木炭。用于炼器。" }
+			ThunderPatternFeather: { DisplayName: "雷纹羽" Tooltip: "刻有雷纹的羽毛。雷系装备的关键材料。" }
+			SingingThunderStoneItem: { DisplayName: "鸣雷石" Tooltip: "蕴含雷鸣的石头。" }
+			AbyssDust: { DisplayName: "渊尘" Tooltip: "星渊裂隙中的细尘。用于高阶星渊装备。" }
+			DarkBlueSpiritFluid: { DisplayName: "暗蓝灵液" Tooltip: "星渊生物留下的粘稠液体。" }
+			BrokenSwordIntent: { DisplayName: "断剑残意" Tooltip: "执念剑修残留的剑意。用于高阶飞剑。" }
+			TornScrollPage: { DisplayName: "残卷页" Tooltip: "古经阁中撕下的书页。" }
+			BrokenHeavenJade: { DisplayName: "残天玉" Tooltip: "坠天宫阙的玉石碎片。" }
+			BrokenDecreeItem: { DisplayName: "破损法旨" Tooltip: "天界法旨的残片。" }
+			ColdMoonDust: { DisplayName: "冷月尘" Tooltip: "月骸天渊中的冰封细尘。" }
+			ArchiveRemnantLight: { DisplayName: "归档残光" Tooltip: "归档仙魂残留的微光。" }
+			LowGradeSpiritCore: { DisplayName: "下品灵核" Tooltip: "灵脉蠕虫的核心。用于早期修行突破。" }
+			SpiritVeinScale: { DisplayName: "灵脉鳞片" Tooltip: "灵脉蠕虫脱落的鳞片。用于装备升级。" }
+		}
+	}
+}
