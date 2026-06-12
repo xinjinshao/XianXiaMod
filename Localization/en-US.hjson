@@ -296,6 +296,191 @@ Mods: {
 				DisplayName: Artifact Forge
 				Tooltip: ""
 			}
+
+			AbyssalStarWombLamp: {
+				DisplayName: Abyssal Star Womb Lamp
+				Tooltip: ""
+			}
+
+			ArchivedImmortalSoulContract: {
+				DisplayName: Archived Immortal Soul Contract
+				Tooltip: ""
+			}
+
+			BlackFurnaceIronGolemPet: {
+				DisplayName: Black Furnace Iron Golem Pet
+				Tooltip: ""
+			}
+
+			BlankSectScroll: {
+				DisplayName: Blank Sect Scroll
+				Tooltip: ""
+			}
+
+			BrokenHeavenInscriptionNeedle: {
+				DisplayName: Broken Heaven Inscription Needle
+				Tooltip: ""
+			}
+
+			CelestialPuppetToken: {
+				DisplayName: Celestial Puppet Token
+				Tooltip: ""
+			}
+
+			EndgameRouteFrame: {
+				DisplayName: Endgame Route Frame
+				Tooltip: ""
+			}
+
+			FormlessSwordSoulCostume: {
+				DisplayName: Formless Sword Soul Costume
+				Tooltip: ""
+			}
+
+			FurnaceAshSpiritContract: {
+				DisplayName: Furnace Ash Spirit Contract
+				Tooltip: ""
+			}
+
+			FurnaceInscriptionNeedle: {
+				DisplayName: Furnace Inscription Needle
+				Tooltip: ""
+			}
+
+			GardenWardenMask: {
+				DisplayName: Garden Warden Mask
+				Tooltip: ""
+			}
+
+			GreenwoodInscriptionNeedle: {
+				DisplayName: Greenwood Inscription Needle
+				Tooltip: ""
+			}
+
+			HeavenDaoRouteHint: {
+				DisplayName: Heaven Dao Route Hint
+				Tooltip: ""
+			}
+
+			InscriptionRemovalStone: {
+				DisplayName: Inscription Removal Stone
+				Tooltip: ""
+			}
+
+			InspectorMask: {
+				DisplayName: Inspector Mask
+				Tooltip: ""
+			}
+
+			LightningAvoidanceRune: {
+				DisplayName: Lightning Avoidance Rune
+				Tooltip: ""
+			}
+
+			MedicineKingCauldronDecoration: {
+				DisplayName: Medicine King Cauldron Decoration
+				Tooltip: ""
+			}
+
+			MoonboneImmortalWingAccessory: {
+				DisplayName: Moonbone Immortal Wing Accessory
+				Tooltip: ""
+			}
+
+			NascentSoulCloneTalisman: {
+				DisplayName: Nascent Soul Clone Talisman
+				Tooltip: ""
+			}
+
+			SilentTabletDecoration: {
+				DisplayName: Silent Tablet Decoration
+				Tooltip: ""
+			}
+
+			SmallArtifactPendant: {
+				DisplayName: Small Artifact Pendant
+				Tooltip: ""
+			}
+
+			SmallTabletPet: {
+				DisplayName: Small Tablet Pet
+				Tooltip: ""
+			}
+
+			SpiritHerbSeeds: {
+				DisplayName: Spirit Herb Seeds
+				Tooltip: ""
+			}
+
+			SpiritVeinWyrmTrophy: {
+				DisplayName: Spirit Vein Wyrm Trophy
+				Tooltip: ""
+			}
+
+			StarAbyssInscriptionNeedle: {
+				DisplayName: Star Abyss Inscription Needle
+				Tooltip: ""
+			}
+
+			StarAbyssLarvaContract: {
+				DisplayName: Star Abyss Larva Contract
+				Tooltip: ""
+			}
+
+			ThunderInscriptionNeedle: {
+				DisplayName: Thunder Inscription Needle
+				Tooltip: ""
+			}
+
+			ThunderMarshJiaoWing: {
+				DisplayName: Thunder Marsh Jiao Wing
+				Tooltip: ""
+			}
+
+			TribulationCloudBottle: {
+				DisplayName: Tribulation Cloud Bottle
+				Tooltip: ""
+			}
+
+			TribulationTrainingToken: {
+				DisplayName: Tribulation Training Token
+				Tooltip: ""
+			}
+
+			DaoSeveringAltar: {
+				DisplayName: Dao Severing Altar
+				Tooltip: ""
+			}
+
+			EarthClayFurnace: {
+				DisplayName: Earth Clay Furnace
+				Tooltip: ""
+			}
+
+			HeavenFireFurnace: {
+				DisplayName: Heaven Fire Furnace
+				Tooltip: ""
+			}
+
+			SectTrialAltar: {
+				DisplayName: Sect Trial Altar
+				Tooltip: ""
+			}
+
+			SimpleTalismanTable: {
+				DisplayName: Simple Talisman Table
+				Tooltip: ""
+			}
+
+			StarPatternCauldron: {
+				DisplayName: Star Pattern Cauldron
+				Tooltip: ""
+			}
+
+			ThunderPatternForge: {
+				DisplayName: Thunder Pattern Forge
+				Tooltip: ""
+			}
 		}
 
 		Projectiles: {
@@ -484,6 +669,18 @@ Mods: {
 			ThunderCloudTile.MapEntry: Thunder Cloud Tile
 			AlchemyCauldronTile.MapEntry: Alchemy Cauldron Tile
 			ArtifactForgeTile.MapEntry: Artifact Forge Tile
+			ArchiveLightPillarTile.MapEntry: Archive Light Pillar Tile
+			BrokenHeavenTabletTile.MapEntry: Broken Heaven Tablet Tile
+			RiftMembraneTile.MapEntry: Rift Membrane Tile
+			SingingThunderStoneTile.MapEntry: Singing Thunder Stone Tile
+			DaoSeveringAltarTile.MapEntry: Dao Severing Altar Tile
+			EarthClayFurnaceTile.MapEntry: Earth Clay Furnace Tile
+			HeavenFireFurnaceTile.MapEntry: Heaven Fire Furnace Tile
+			SectTrialAltarTile.MapEntry: Sect Trial Altar Tile
+			SimpleTalismanTableTile.MapEntry: Simple Talisman Table Tile
+			StarPatternCauldronTile.MapEntry: Star Pattern Cauldron Tile
+			ThunderPatternForgeTile.MapEntry: Thunder Pattern Forge Tile
+			SwordTabletTile.MapEntry: Sword Tablet Tile
 		}
 
 		Biomes: {
@@ -564,6 +761,21 @@ Mods: {
 			TribulationResistanceBuff: {
 				DisplayName: Tribulation Resistance Buff
 				Description: Reduces incoming damage and calms spirit pressure over time.
+			}
+
+			ArchiveLockBuff: {
+				DisplayName: Archive Lock Buff
+				Description: Mods.XianXia.Buffs.ArchiveLockBuff.Description
+			}
+
+			SpringReturnRegenBuff: {
+				DisplayName: Spring Return Regen Buff
+				Description: Mods.XianXia.Buffs.SpringReturnRegenBuff.Description
+			}
+
+			StarAbyssCorrosionBuff: {
+				DisplayName: Star Abyss Corrosion Buff
+				Description: Mods.XianXia.Buffs.StarAbyssCorrosionBuff.Description
 			}
 		}
 

@@ -34,6 +34,23 @@
 ## 详细条目
 
 - [敌怪详细目录](Enemy_Catalog.md)
+- [游灵史莱姆](Entries/Wandering_Spirit_Slime.md)
+- [碎玉虫](Entries/Shattered_Jade_Worm.md)
+- [符纸蝠](Entries/Talisman_Bat.md)
+- [药园藤妖](Entries/Herb_Garden_Vine_Spirit.md)
+- [花瘴蝶](Entries/Miasma_Flower_Moth.md)
+- [炉灰傀](Entries/Furnace_Ash_Golem.md)
+- [铁屑灵](Entries/Iron_Shard_Spirit.md)
+- [劫云灵](Entries/Tribulation_Cloudling.md)
+- [雷纹鹰](Entries/Thunder_Pattern_Hawk.md)
+- [星蚀修士](Entries/Star_Eclipsed_Cultivator.md)
+- [星渊幼体](Entries/Star_Abyss_Larva.md)
+- [执念剑修](Entries/Obsessed_Sword_Cultivator.md)
+- [藏经残影](Entries/Scripture_Archive_Echo.md)
+- [仙傀](Entries/Celestial_Puppet.md)
+- [天碑卫](Entries/Heaven_Tablet_Guard.md)
+- [月骸修士](Entries/Moonbone_Cultivator.md)
+- [归档仙魂](Entries/Archived_Immortal_Soul.md)
 
 相关页面：
 

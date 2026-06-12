@@ -41,6 +41,13 @@
 
 - [物品详细目录](Item_Catalog.md)
 
+## 详细条目
+
+- [材料详细目录](Entries/Materials.md)
+- [消耗品详细目录](Entries/Consumables.md)
+- [Boss召唤物详细目录](Entries/Boss_Summons.md)
+- [铭刻与契约物品](Entries/Inscriptions_and_Contracts.md)
+
 相关页面：
 
 - [制作与材料链](../Crafting/Overview.md)
