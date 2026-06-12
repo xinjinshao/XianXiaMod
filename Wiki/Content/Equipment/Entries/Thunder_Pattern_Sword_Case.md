@@ -12,3 +12,12 @@
 64x64半开剑匣三把小雷剑。Prompt: sword case holding three lightning flying swords
 ## 代码
 ✅ 数值对齐 | ✅ 天雷概率 | ✅ 法器觉醒
+
+## 代码实现
+
+- ✅ 数值与wiki对齐
+- ✅ 配方/觉醒实现
+
+## 美术资源
+
+- 详见装备总览页面的美术素材表。

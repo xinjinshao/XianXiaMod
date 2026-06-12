@@ -12,3 +12,12 @@
 48x48木质剑身青色灵纹。Prompt: wooden flying sword with jade spirit grain
 ## 代码
 ✅ 数值对齐wiki | ✅ 灵气消耗 | ✅ 配方
+
+## 代码实现
+
+- ✅ 数值与wiki对齐
+- ✅ 配方/觉醒实现
+
+## 美术资源
+
+- 详见装备总览页面的美术素材表。

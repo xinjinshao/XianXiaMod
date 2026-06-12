@@ -9,3 +9,7 @@
 | 抗劫丹 | <img src="../../../../Assets/Final/tribulation_resisting_pill/tribulation_resisting_pill__item_icon__v01.png" width="32"> | 辅助 | 劫云露x3+青木根x2+瓶装水@炼丹炉(产出2) | ✅ |
 | 星渊禁符 | N/A | 辅助 | 星蚀晶x6+胎膜x2+灵石x12@恶魔祭坛 | ✅ |
 ## 代码: ✅ 全部实现，含品质RNG | 美术: ⚠️ 星渊禁符使用占位符
+
+## 代码实现
+
+- ✅ 全部物品实现
