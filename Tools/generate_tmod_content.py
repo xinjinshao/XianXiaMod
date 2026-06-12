@@ -310,17 +310,17 @@ DISPLAY = {
 
 
 BOSS_DATA = {
-    "garden_warden": ("药宗守园人", "Garden Warden", 2800, 28, 10, "garden_broken_key", "greenwood_root"),
-    "black_furnace_iron_golem": ("玄炉铁傀", "Black Furnace Iron Golem", 3200, 34, 18, "old_furnace_ember", "furnace_slag_iron"),
-    "tribulation_cloud_avatar": ("劫云化身", "Tribulation Cloud Avatar", 4200, 30, 12, "thunder_calling_jade", "tribulation_cloud_dew"),
-    "thunder_marsh_jiao": ("雷泽蛟", "Thunder Marsh Jiao", 18000, 58, 26, "thunder_calling_jade", "tribulation_cloud_dew"),
-    "abyssal_star_womb": ("星渊胎主", "Abyssal Star Womb", 21000, 54, 30, "star_abyss_membrane", "star_eclipse_crystal"),
-    "formless_sword_soul": ("无相剑魄", "Formless Sword Soul", 48000, 72, 38, "sect_trial_token", "sect_trial_token"),
-    "greenwood_medicine_king_echo": ("青木药王残影", "Greenwood Medicine King Echo", 52000, 66, 34, "sect_trial_token", "greenwood_root"),
-    "heaven_tablet_guardian": ("天碑守御", "Heaven Tablet Guardian", 86000, 82, 48, "heaven_tablet_rubbing", "heaven_dao_fragment"),
-    "broken_heaven_inspector": ("残天监察使", "Broken Heaven Inspector", 96000, 92, 42, "heaven_tablet_rubbing", "heaven_dao_fragment"),
-    "moonbone_immortal": ("月骸仙君", "Moonbone Immortal", 420000, 180, 80, "moonbone_ritual_talisman", "moonbone"),
-    "old_heaven_dao_core": ("旧天道核心", "Old Heaven Dao Core", 650000, 220, 100, "moonbone_ritual_talisman", "dao_severing_dust"),
+    "garden_warden": ("药宗守园人", "Garden Warden", 2800, 28, 10, "garden_broken_key", "greenwood_root", "greenwood_root"),
+    "black_furnace_iron_golem": ("玄炉铁傀", "Black Furnace Iron Golem", 3200, 34, 18, "old_furnace_ember", "furnace_slag_iron", "artifact_blank_shard"),
+    "tribulation_cloud_avatar": ("劫云化身", "Tribulation Cloud Avatar", 4200, 30, 12, "thunder_calling_jade", "tribulation_cloud_dew", "tribulation_cloud_dew"),
+    "thunder_marsh_jiao": ("雷泽蛟", "Thunder Marsh Jiao", 18000, 58, 26, "thunder_calling_jade", "tribulation_cloud_dew", "tribulation_cloud_dew"),
+    "abyssal_star_womb": ("星渊胎主", "Abyssal Star Womb", 21000, 54, 30, "star_abyss_membrane", "star_eclipse_crystal", "star_eclipse_crystal"),
+    "formless_sword_soul": ("无相剑魄", "Formless Sword Soul", 48000, 72, 38, "sect_trial_token", "sect_trial_token", "artifact_blank_shard"),
+    "greenwood_medicine_king_echo": ("青木药王残影", "Greenwood Medicine King Echo", 52000, 66, 34, "sect_trial_token", "greenwood_root", "spring_return_pill"),
+    "heaven_tablet_guardian": ("天碑守御", "Heaven Tablet Guardian", 86000, 82, 48, "heaven_tablet_rubbing", "heaven_dao_fragment", "heaven_dao_fragment"),
+    "broken_heaven_inspector": ("残天监察使", "Broken Heaven Inspector", 96000, 92, 42, "heaven_tablet_rubbing", "heaven_dao_fragment", "heaven_dao_fragment"),
+    "moonbone_immortal": ("月骸仙君", "Moonbone Immortal", 420000, 180, 80, "moonbone_ritual_talisman", "moonbone", "dao_severing_dust"),
+    "old_heaven_dao_core": ("旧天道核心", "Old Heaven Dao Core", 650000, 220, 100, "moonbone_ritual_talisman", "dao_severing_dust", "dao_severing_dust"),
 }
 
 BOSS_STAGE_REQUIREMENTS = {
@@ -1694,7 +1694,7 @@ ENEMY_HEADER = """using System;\nusing Microsoft.Xna.Framework;\nusing Terraria;
 
 def generate_bosses(existing: set[str]) -> None:
     classes = []
-    for asset_id, (zh, en, life, damage, defense, summon, drop) in BOSS_DATA.items():
+    for asset_id, (zh, en, life, damage, defense, summon, drop, drop2) in BOSS_DATA.items():
         class_name = pascal(asset_id)
         if class_name in existing:
             continue
@@ -1801,6 +1801,8 @@ public class {class_name} : ModNPC
     public override void ModifyNPCLoot(NPCLoot npcLoot)
     {{
         npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<global::XianXia.Content.Items.Generated.{pascal(drop)}>(), 1, 12, 24));
+        npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<global::XianXia.Content.Items.Generated.{pascal(drop2)}>(), 1, 6, 14));
+        npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<global::XianXia.Content.Items.Materials.LowGradeSpiritStone>(), 1, 5, 10));
     }}
 }}
 """)
@@ -2049,7 +2051,7 @@ def garden_warden_special() -> str:
 def generate_summons(existing: set[str]) -> None:
     classes = []
     used: set[str] = set()
-    for asset_id, (_, _, _, _, _, summon, _) in BOSS_DATA.items():
+    for asset_id, (_, _, _, _, _, summon, _, _) in BOSS_DATA.items():
         class_name = f"Summon{pascal(summon)}"
         boss_class = pascal(asset_id)
         if class_name in used:
@@ -2139,7 +2141,7 @@ def generate_localization() -> None:
             "DisplayName": EN_NAMES.get(asset_id, class_name),
             "Tooltip": ITEM_TOOLTIPS_EN.get(asset_id, "XianxiaMod content used for cultivation, crafting, combat, or breakthroughs."),
         }
-    for boss_id, (_, _, _, _, _, summon, _) in BOSS_DATA.items():
+    for boss_id, (_, _, _, _, _, summon, _, _) in BOSS_DATA.items():
         class_name = f"Summon{pascal(summon)}"
         if class_name in item_zh:
             class_name = f"{class_name}{pascal(boss_id)}"
@@ -2172,7 +2174,7 @@ def generate_localization() -> None:
         bestiary_en[class_name] = {
             "Text": f"{EN_NAMES.get(asset_id, class_name)} wanders the {biome_label_en.get(biome_class, biome_class)} and drops {EN_NAMES.get(drop, pascal(drop))}."
         }
-    for asset_id, (_, _, _, _, _, _, drop) in BOSS_DATA.items():
+    for asset_id, (_, _, _, _, _, _, drop, _) in BOSS_DATA.items():
         class_name = pascal(asset_id)
         bestiary_zh[class_name] = {
             "Text": f"{ZH_NAMES.get(asset_id, class_name)}是旧宗门进度中的主要试炼，击败后会提升宗门声望，并掉落{ZH_NAMES.get(drop, pascal(drop))}。"
