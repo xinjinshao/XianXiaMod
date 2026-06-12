@@ -12,7 +12,9 @@ Mods: {
 			TribulationStartedHeartDemon: "Heart demon tribulation begins: {0} inner shadows manifest."
 			TribulationCompleted: "Tribulation survived. Spiritual energy restored: {0}."
 			TribulationComprehensionGained: "Tribulation comprehension gained. Permanent spiritual energy bonus: +{0}."
-			TribulationFailed: Tribulation overwhelmed you. Your realm remains but the breakthrough pill is lost. A weakness lingers.
+			PillQualityFine: "Fine pill — increased effect."
+		PillQualitySpirit: "Spirit pill — greatly increased effect."
+		TribulationFailed: Tribulation overwhelmed you. Your realm remains but the breakthrough pill is lost. A weakness lingers.
 			TribulationInsightHint: Past failures have tempered your resolve. The next attempt will be slightly easier.
 			TribulationInsightActive: "Post-tribulation insight active ({0} attempts). Duration reduced."
 			ArtifactAwakeningReady: "Artifact awakened: spiritual energy cost {2}, damage +{3}%."
