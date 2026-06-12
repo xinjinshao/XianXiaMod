@@ -925,6 +925,14 @@ public class {class_name} : ModNPC
             }}
         }}
 
+        NPC.ai[2]++;
+        int patternInterval = finalPhase ? 150 : phaseTwo ? 210 : 270;
+        if (Main.netMode != NetmodeID.MultiplayerClient && NPC.ai[2] >= patternInterval)
+        {{
+            NPC.ai[2] = 0f;
+{boss_pattern_code(asset_id)}
+        }}
+
         if (finalPhase && NPC.ai[1]++ > 180f)
         {{
             NPC.ai[1] = 0f;
@@ -944,6 +952,68 @@ public class {class_name} : ModNPC
 
 
 BOSS_HEADER = """using System;\nusing Microsoft.Xna.Framework;\nusing Terraria;\nusing Terraria.GameContent.Bestiary;\nusing Terraria.GameContent.ItemDropRules;\nusing Terraria.ID;\nusing Terraria.Localization;\nusing Terraria.ModLoader;\nusing XianXia.Common.Systems;\n\nnamespace XianXia.Content.NPCs.Bosses.Generated;\n"""
+
+
+def boss_pattern_code(asset_id: str) -> str:
+    warning_type = "global::XianXia.Content.Projectiles.TribulationWarningLineProjectile"
+    bolt_type = "global::XianXia.Content.Projectiles.BossSpiritBoltProjectile"
+    thunder_ids = {"tribulation_cloud_avatar", "thunder_marsh_jiao", "broken_heaven_inspector", "heaven_tablet_guardian", "old_heaven_dao_core"}
+    ring_ids = {"abyssal_star_womb", "formless_sword_soul", "moonbone_immortal", "old_heaven_dao_core"}
+
+    if asset_id in thunder_ids:
+        return f"""
+            int warningDamage = Math.Max(18, NPC.damage / 3);
+            int lanes = finalPhase ? 5 : phaseTwo ? 3 : 1;
+            for (int i = 0; i < lanes; i++)
+            {{
+                float offset = (i - (lanes - 1) / 2f) * 112f;
+                Projectile.NewProjectile(
+                    NPC.GetSource_FromAI(),
+                    target.Center + new Vector2(offset, 0f),
+                    Vector2.Zero,
+                    ModContent.ProjectileType<{warning_type}>(),
+                    warningDamage,
+                    1.2f,
+                    Main.myPlayer);
+            }}
+"""
+
+    if asset_id in ring_ids:
+        return f"""
+            int ringDamage = Math.Max(18, NPC.damage / 4);
+            int spokes = finalPhase ? 10 : phaseTwo ? 8 : 6;
+            float baseRotation = Main.GameUpdateCount * 0.025f;
+            for (int i = 0; i < spokes; i++)
+            {{
+                Vector2 velocity = (MathHelper.TwoPi * i / spokes + baseRotation).ToRotationVector2() * (finalPhase ? 7.8f : 6.2f);
+                Projectile.NewProjectile(
+                    NPC.GetSource_FromAI(),
+                    NPC.Center,
+                    velocity,
+                    ModContent.ProjectileType<{bolt_type}>(),
+                    ringDamage,
+                    1.4f,
+                    Main.myPlayer);
+            }}
+"""
+
+    return f"""
+            int burstDamage = Math.Max(18, NPC.damage / 4);
+            Vector2 side = (target.Center - NPC.Center).SafeNormalize(Vector2.UnitY).RotatedBy(MathHelper.PiOver2);
+            for (int i = -1; i <= 1; i++)
+            {{
+                Vector2 origin = NPC.Center + side * i * 72f;
+                Vector2 velocity = (target.Center - origin).SafeNormalize(Vector2.UnitY) * (finalPhase ? 8.8f : 7.2f);
+                Projectile.NewProjectile(
+                    NPC.GetSource_FromAI(),
+                    origin,
+                    velocity,
+                    ModContent.ProjectileType<{bolt_type}>(),
+                    burstDamage,
+                    1.4f,
+                    Main.myPlayer);
+            }}
+"""
 
 
 def generate_summons(existing: set[str]) -> None:
