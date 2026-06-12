@@ -95,7 +95,10 @@ public class StarEclipseCrystal : ModItem
 
     public override bool? UseItem(Player player)
     {
-        player.GetModPlayer<global::XianXia.Common.Players.XianXiaPlayer>().TryAdvanceCultivation(global::XianXia.Common.Players.CultivationStage.GoldenCore);
+        global::XianXia.Common.Players.XianXiaPlayer cultivation = player.GetModPlayer<global::XianXia.Common.Players.XianXiaPlayer>();
+        if (cultivation.TryAdvanceCultivation(global::XianXia.Common.Players.CultivationStage.GoldenCore)
+            && player.HasBuff(ModContent.BuffType<global::XianXia.Content.Buffs.AlchemyInsightBuff>()))
+            cultivation.ReduceSpiritPressure(10);
         return true;
     }
 
@@ -237,7 +240,9 @@ public class SpringReturnPill : ModItem
 
     public override bool? UseItem(Player player)
     {
+        global::XianXia.Common.Players.XianXiaPlayer cultivation = player.GetModPlayer<global::XianXia.Common.Players.XianXiaPlayer>();
         player.AddBuff(ModContent.BuffType<global::XianXia.Content.Buffs.SpringReturnBuff>(), 60 * 60);
+        cultivation.ReduceSpiritPressure(player.HasBuff(ModContent.BuffType<global::XianXia.Content.Buffs.AlchemyInsightBuff>()) ? 8 : 4);
         return true;
     }
 
@@ -279,7 +284,10 @@ public class QiCondensingPill : ModItem
 
     public override bool? UseItem(Player player)
     {
-        player.GetModPlayer<global::XianXia.Common.Players.XianXiaPlayer>().TryAdvanceCultivation(global::XianXia.Common.Players.CultivationStage.QiCondensation);
+        global::XianXia.Common.Players.XianXiaPlayer cultivation = player.GetModPlayer<global::XianXia.Common.Players.XianXiaPlayer>();
+        if (cultivation.TryAdvanceCultivation(global::XianXia.Common.Players.CultivationStage.QiCondensation)
+            && player.HasBuff(ModContent.BuffType<global::XianXia.Content.Buffs.AlchemyInsightBuff>()))
+            cultivation.ReduceSpiritPressure(6);
         return true;
     }
 
@@ -321,7 +329,10 @@ public class FoundationPill : ModItem
 
     public override bool? UseItem(Player player)
     {
-        player.GetModPlayer<global::XianXia.Common.Players.XianXiaPlayer>().TryAdvanceCultivation(global::XianXia.Common.Players.CultivationStage.Foundation);
+        global::XianXia.Common.Players.XianXiaPlayer cultivation = player.GetModPlayer<global::XianXia.Common.Players.XianXiaPlayer>();
+        if (cultivation.TryAdvanceCultivation(global::XianXia.Common.Players.CultivationStage.Foundation)
+            && player.HasBuff(ModContent.BuffType<global::XianXia.Content.Buffs.AlchemyInsightBuff>()))
+            cultivation.ReduceSpiritPressure(8);
         return true;
     }
 
@@ -358,7 +369,9 @@ public class TribulationResistingPill : ModItem
 
     public override bool? UseItem(Player player)
     {
+        global::XianXia.Common.Players.XianXiaPlayer cultivation = player.GetModPlayer<global::XianXia.Common.Players.XianXiaPlayer>();
         player.AddBuff(ModContent.BuffType<global::XianXia.Content.Buffs.TribulationResistanceBuff>(), 60 * 90);
+        cultivation.ReduceSpiritPressure(player.HasBuff(ModContent.BuffType<global::XianXia.Content.Buffs.AlchemyInsightBuff>()) ? 18 : 12);
         return true;
     }
 
@@ -398,6 +411,8 @@ public class StarAbyssForbiddenTalisman : ModItem
         global::XianXia.Common.Players.XianXiaPlayer cultivation = player.GetModPlayer<global::XianXia.Common.Players.XianXiaPlayer>();
         cultivation.RestoreSpiritualEnergy(80);
         cultivation.spiritPressure = Math.Clamp(cultivation.spiritPressure + 25, 0, 100);
+        if (cultivation.spiritPressure >= 80)
+            player.AddBuff(ModContent.BuffType<global::XianXia.Content.Buffs.SpiritualPressureDisorderBuff>(), 60 * 8);
         return true;
     }
 
@@ -1021,7 +1036,7 @@ public class LightningWardJade : ModItem
 
     public override void UpdateAccessory(Player player, bool hideVisual)
     {
-        player.endurance += 0.04f;
+        player.endurance += 0.04f; if (Main.GameUpdateCount % 120 == 0) player.GetModPlayer<global::XianXia.Common.Players.XianXiaPlayer>().ReduceSpiritPressure(1);
     }
 
     public override void AddRecipes()
@@ -1145,7 +1160,7 @@ public class DaoSeveringRing : ModItem
 
     public override void UpdateAccessory(Player player, bool hideVisual)
     {
-        player.GetDamage(DamageClass.Generic) += 0.14f;
+        global::XianXia.Common.Players.XianXiaPlayer cultivation = player.GetModPlayer<global::XianXia.Common.Players.XianXiaPlayer>(); player.GetDamage(DamageClass.Generic) += 0.14f; cultivation.spiritualEnergyCostMultiplier *= 1.08f;
     }
 
     public override void AddRecipes()

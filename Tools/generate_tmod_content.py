@@ -417,7 +417,9 @@ def generate_materials(existing: set[str]) -> None:
             use_item = """
     public override bool? UseItem(Player player)
     {
+        global::XianXia.Common.Players.XianXiaPlayer cultivation = player.GetModPlayer<global::XianXia.Common.Players.XianXiaPlayer>();
         player.AddBuff(ModContent.BuffType<global::XianXia.Content.Buffs.SpringReturnBuff>(), 60 * 60);
+        cultivation.ReduceSpiritPressure(player.HasBuff(ModContent.BuffType<global::XianXia.Content.Buffs.AlchemyInsightBuff>()) ? 8 : 4);
         return true;
     }
 """
@@ -425,7 +427,10 @@ def generate_materials(existing: set[str]) -> None:
             use_item = """
     public override bool? UseItem(Player player)
     {
-        player.GetModPlayer<global::XianXia.Common.Players.XianXiaPlayer>().TryAdvanceCultivation(global::XianXia.Common.Players.CultivationStage.QiCondensation);
+        global::XianXia.Common.Players.XianXiaPlayer cultivation = player.GetModPlayer<global::XianXia.Common.Players.XianXiaPlayer>();
+        if (cultivation.TryAdvanceCultivation(global::XianXia.Common.Players.CultivationStage.QiCondensation)
+            && player.HasBuff(ModContent.BuffType<global::XianXia.Content.Buffs.AlchemyInsightBuff>()))
+            cultivation.ReduceSpiritPressure(6);
         return true;
     }
 """
@@ -433,7 +438,10 @@ def generate_materials(existing: set[str]) -> None:
             use_item = """
     public override bool? UseItem(Player player)
     {
-        player.GetModPlayer<global::XianXia.Common.Players.XianXiaPlayer>().TryAdvanceCultivation(global::XianXia.Common.Players.CultivationStage.Foundation);
+        global::XianXia.Common.Players.XianXiaPlayer cultivation = player.GetModPlayer<global::XianXia.Common.Players.XianXiaPlayer>();
+        if (cultivation.TryAdvanceCultivation(global::XianXia.Common.Players.CultivationStage.Foundation)
+            && player.HasBuff(ModContent.BuffType<global::XianXia.Content.Buffs.AlchemyInsightBuff>()))
+            cultivation.ReduceSpiritPressure(8);
         return true;
     }
 """
@@ -441,7 +449,9 @@ def generate_materials(existing: set[str]) -> None:
             use_item = """
     public override bool? UseItem(Player player)
     {
+        global::XianXia.Common.Players.XianXiaPlayer cultivation = player.GetModPlayer<global::XianXia.Common.Players.XianXiaPlayer>();
         player.AddBuff(ModContent.BuffType<global::XianXia.Content.Buffs.TribulationResistanceBuff>(), 60 * 90);
+        cultivation.ReduceSpiritPressure(player.HasBuff(ModContent.BuffType<global::XianXia.Content.Buffs.AlchemyInsightBuff>()) ? 18 : 12);
         return true;
     }
 """
@@ -449,7 +459,10 @@ def generate_materials(existing: set[str]) -> None:
             use_item = """
     public override bool? UseItem(Player player)
     {
-        player.GetModPlayer<global::XianXia.Common.Players.XianXiaPlayer>().TryAdvanceCultivation(global::XianXia.Common.Players.CultivationStage.GoldenCore);
+        global::XianXia.Common.Players.XianXiaPlayer cultivation = player.GetModPlayer<global::XianXia.Common.Players.XianXiaPlayer>();
+        if (cultivation.TryAdvanceCultivation(global::XianXia.Common.Players.CultivationStage.GoldenCore)
+            && player.HasBuff(ModContent.BuffType<global::XianXia.Content.Buffs.AlchemyInsightBuff>()))
+            cultivation.ReduceSpiritPressure(10);
         return true;
     }
 """
@@ -492,6 +505,8 @@ def generate_materials(existing: set[str]) -> None:
         global::XianXia.Common.Players.XianXiaPlayer cultivation = player.GetModPlayer<global::XianXia.Common.Players.XianXiaPlayer>();
         cultivation.RestoreSpiritualEnergy(80);
         cultivation.spiritPressure = Math.Clamp(cultivation.spiritPressure + 25, 0, 100);
+        if (cultivation.spiritPressure >= 80)
+            player.AddBuff(ModContent.BuffType<global::XianXia.Content.Buffs.SpiritualPressureDisorderBuff>(), 60 * 8);
         return true;
     }
 """
@@ -502,11 +517,11 @@ def generate_materials(existing: set[str]) -> None:
                 "qi_gathering_pendant": "player.AddBuff(ModContent.BuffType<global::XianXia.Content.Buffs.QiGatheringBuff>(), 2);",
                 "spiritwood_charm": "player.lifeRegen += 2;",
                 "furnace_heart_ring": "player.statDefense += 3;",
-                "lightning_ward_jade": "player.endurance += 0.04f;",
+                "lightning_ward_jade": "player.endurance += 0.04f; if (Main.GameUpdateCount % 120 == 0) player.GetModPlayer<global::XianXia.Common.Players.XianXiaPlayer>().ReduceSpiritPressure(1);",
                 "star_abyss_eye": "player.GetDamage(DamageClass.Generic) += 0.06f;",
                 "nascent_soul_jade_box": "player.GetModPlayer<global::XianXia.Common.Players.XianXiaPlayer>().maxSpiritualEnergy += 30;",
                 "broken_heaven_crown_seal": "player.GetDamage(DamageClass.Generic) += 0.1f; player.statDefense -= 4;",
-                "dao_severing_ring": "player.GetDamage(DamageClass.Generic) += 0.14f;",
+                "dao_severing_ring": "global::XianXia.Common.Players.XianXiaPlayer cultivation = player.GetModPlayer<global::XianXia.Common.Players.XianXiaPlayer>(); player.GetDamage(DamageClass.Generic) += 0.14f; cultivation.spiritualEnergyCostMultiplier *= 1.08f;",
             }
             accessory = f"""
     public override void UpdateAccessory(Player player, bool hideVisual)
