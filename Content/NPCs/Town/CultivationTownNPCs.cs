@@ -150,6 +150,8 @@ public abstract class CultivationTownNPC : ModNPC
 [AutoloadHead]
 public class HerbSectApprentice : CultivationTownNPC
 {
+    public override void SetDefaults() { base.SetDefaults(); NPC.defense = 15; }
+
     public override void SetStaticDefaults()
     {
         base.SetStaticDefaults();
@@ -326,6 +328,8 @@ public class WanderingArtificer : CultivationTownNPC
 [AutoloadHead]
 public class TribulationObserver : CultivationTownNPC
 {
+    public override void SetDefaults() { base.SetDefaults(); NPC.defense = 16; }
+
     public override void SetStaticDefaults()
     {
         base.SetStaticDefaults();
@@ -409,6 +413,8 @@ public class TribulationObserver : CultivationTownNPC
 [AutoloadHead]
 public class ArchiveScrollSpirit : CultivationTownNPC
 {
+    public override void SetDefaults() { base.SetDefaults(); NPC.defense = 12; NPC.knockBackResist = 0.75f; NPC.lifeMax = 200; }
+
     public override void SetStaticDefaults()
     {
         base.SetStaticDefaults();
@@ -502,6 +508,8 @@ public class ArchiveScrollSpirit : CultivationTownNPC
 [AutoloadHead]
 public class FallenHeavenMessenger : CultivationTownNPC
 {
+    public override void SetDefaults() { base.SetDefaults(); NPC.defense = 24; NPC.lifeMax = 300; NPC.knockBackResist = 0.6f; }
+
     public override void SetStaticDefaults()
     {
         base.SetStaticDefaults();

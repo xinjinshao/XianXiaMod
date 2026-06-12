@@ -13,7 +13,7 @@ namespace XianXia.Common.Players;
 
 public class XianXiaPlayer : ModPlayer
 {
-    public const int BaseMaxSpiritualEnergy = 60;
+    public const int BaseMaxSpiritualEnergy = 40;
 
     public int spiritualEnergy;
     public int maxSpiritualEnergy;
@@ -375,14 +375,14 @@ public class XianXiaPlayer : ModPlayer
         return stage switch
         {
             CultivationStage.None => BaseMaxSpiritualEnergy,
-            CultivationStage.QiAwakening => 100,
-            CultivationStage.QiCondensation => 140,
-            CultivationStage.Foundation => 190,
-            CultivationStage.GoldenCore => 260,
-            CultivationStage.NascentSoul => 340,
-            CultivationStage.SpiritSevering => 430,
-            CultivationStage.Tribulation => 540,
-            CultivationStage.DaoSevering => 660,
+            CultivationStage.QiAwakening => 40,
+            CultivationStage.QiCondensation => 80,
+            CultivationStage.Foundation => 120,
+            CultivationStage.GoldenCore => 180,
+            CultivationStage.NascentSoul => 240,
+            CultivationStage.SpiritSevering => 320,
+            CultivationStage.Tribulation => 420,
+            CultivationStage.DaoSevering => 500,
             _ => BaseMaxSpiritualEnergy
         };
     }
