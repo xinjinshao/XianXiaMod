@@ -1,42 +1,41 @@
-ï»¿# ç‚‰æ¸£é“
+# Â¯ÔüÌú
 
-[è¿”å›ç‰©å“æ€»è§ˆ](../Overview.md)
+[·µ»ØÎïÆ·×ÜÀÀ](../Overview.md)
 
-## å®šä½
-
-- è‹±æ–‡ IDï¼š`furnace_slag_iron`
-- åˆ†ç±»ï¼šææ–™
-- é˜¶æ®µï¼šPre-Hardmode
-
-## æ¥æº
-
-- æ²‰ç‚‰çŸ¿è„‰é‡‡çŸ¿
-- ç‚‰ç°å‚€æ‰è½ï¼ˆ50%ï¼‰
-- é“å±‘çµæ‰è½ï¼ˆ25%ï¼‰
-
-## ç”¨é€”
-
-- ç‚¼å™¨æ ¸å¿ƒææ–™
-- ç­‘åŸºä¸¹åˆæˆ
-- æ³•å™¨é“¸é€ 
-
-## å½“å‰ç¾æœ¯ç´ æ
+## µ±Ç°ÃÀÊõËØ²Ä
 
 <!-- ART_SECTION:entry-art:START -->
 
-| ç´ æ | ID | å°ºå¯¸ |
+| ËØ²Ä | ID | ³ß´ç |
 | --- | --- | --- |
-| <img src="../../../../Assets/Final/furnace_slag_iron/furnace_slag_iron__item_icon__v01.png" alt="ç‚‰æ¸£é“" width="48"> | furnace_slag_iron | 32x32 |
+| <img src="../../../../Assets/Final/furnace_slag_iron/furnace_slag_iron__item_icon__v01.png" alt="Â¯ÔüÌú" width="48"> | furnace_slag_iron | 32x32 |
 
 <!-- ART_SECTION:entry-art:END -->
 
+## ÃÀÊõ×ÊÔ´
 
-## ç¾æœ¯èµ„æº
+- Ïê¼û [ÎïÆ·×ÜÀÀ](../Overview.md) ÃÀÊõËØ²Ä±í¡£
+- Prompt£ºTerraria pixel art item icon, xianxia theme, transparent background.
 
-- è¯¦è§ [ç‰©å“æ€»è§ˆ](../Overview.md) ç¾æœ¯ç´ æè¡¨ã€‚
-- Promptï¼šTerraria pixel art item icon, xianxia theme, transparent background.
+## ¶¨Î»
 
-## ä»£ç å®ç°
+- Ó¢ÎÄ ID£º`furnace_slag_iron`
+- ·ÖÀà£º²ÄÁÏ
+- ½×¶Î£ºPre-Hardmode
 
-- âœ… ç‰©å“ç±»å®Œæ•´
-- âœ… é…æ–¹/æ‰è½å®ç°
+## À´Ô´
+
+- ³ÁÂ¯¿óÂö²É¿ó
+- Â¯»Ò¿şµôÂä£¨50%£©
+- ÌúĞ¼ÁéµôÂä£¨25%£©
+
+## ÓÃÍ¾
+
+- Á¶Æ÷ºËĞÄ²ÄÁÏ
+- Öş»ùµ¤ºÏ³É
+- ·¨Æ÷ÖıÔì
+
+## ´úÂëÊµÏÖ
+
+- ? ÎïÆ·ÀàÍêÕû
+- ? Åä·½/µôÂäÊµÏÖ

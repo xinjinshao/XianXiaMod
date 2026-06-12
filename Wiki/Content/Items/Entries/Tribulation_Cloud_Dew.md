@@ -1,42 +1,41 @@
-ï»¿# åŠ«äº‘éœ²
+# ½ÙÔÆÂ¶
 
-[è¿”å›ç‰©å“æ€»è§ˆ](../Overview.md)
+[·µ»ØÎïÆ·×ÜÀÀ](../Overview.md)
 
-## å®šä½
-
-- è‹±æ–‡ IDï¼š`tribulation_cloud_dew`
-- åˆ†ç±»ï¼šææ–™
-- é˜¶æ®µï¼šHardmode
-
-## æ¥æº
-
-- åŠ«äº‘çµæ‰è½ï¼ˆ50%ï¼‰
-- é›·çº¹é¹°æ‰è½ï¼ˆ50%ï¼‰
-- è§‚åŠ«é“äººå•†åº—
-
-## ç”¨é€”
-
-- æŠ—åŠ«ä¸¹åˆæˆ
-- é›·ç³»è£…å¤‡ææ–™
-- åŠ«äº‘åŒ–èº«/é›·æ³½è›Ÿæ‰è½
-
-## å½“å‰ç¾æœ¯ç´ æ
+## µ±Ç°ÃÀÊõËØ²Ä
 
 <!-- ART_SECTION:entry-art:START -->
 
-| ç´ æ | ID | å°ºå¯¸ |
+| ËØ²Ä | ID | ³ß´ç |
 | --- | --- | --- |
-| <img src="../../../../Assets/Final/tribulation_cloud_dew/tribulation_cloud_dew__item_icon__v01.png" alt="åŠ«äº‘éœ²" width="48"> | tribulation_cloud_dew | 32x32 |
+| <img src="../../../../Assets/Final/tribulation_cloud_dew/tribulation_cloud_dew__item_icon__v01.png" alt="½ÙÔÆÂ¶" width="48"> | tribulation_cloud_dew | 32x32 |
 
 <!-- ART_SECTION:entry-art:END -->
 
+## ÃÀÊõ×ÊÔ´
 
-## ç¾æœ¯èµ„æº
+- Ïê¼û [ÎïÆ·×ÜÀÀ](../Overview.md) ÃÀÊõËØ²Ä±í¡£
+- Prompt£ºTerraria pixel art item icon, xianxia theme, transparent background.
 
-- è¯¦è§ [ç‰©å“æ€»è§ˆ](../Overview.md) ç¾æœ¯ç´ æè¡¨ã€‚
-- Promptï¼šTerraria pixel art item icon, xianxia theme, transparent background.
+## ¶¨Î»
 
-## ä»£ç å®ç°
+- Ó¢ÎÄ ID£º`tribulation_cloud_dew`
+- ·ÖÀà£º²ÄÁÏ
+- ½×¶Î£ºHardmode
 
-- âœ… ç‰©å“ç±»å®Œæ•´
-- âœ… é…æ–¹/æ‰è½å®ç°
+## À´Ô´
+
+- ½ÙÔÆÁéµôÂä£¨50%£©
+- À×ÎÆÓ¥µôÂä£¨50%£©
+- ¹Û½ÙµÀÈËÉÌµê
+
+## ÓÃÍ¾
+
+- ¿¹½Ùµ¤ºÏ³É
+- À×Ïµ×°±¸²ÄÁÏ
+- ½ÙÔÆ»¯Éí/À×ÔóòÔµôÂä
+
+## ´úÂëÊµÏÖ
+
+- ? ÎïÆ·ÀàÍêÕû
+- ? Åä·½/µôÂäÊµÏÖ

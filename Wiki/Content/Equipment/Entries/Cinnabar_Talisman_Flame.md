@@ -1,62 +1,62 @@
-ï»¿# æœ±ç ‚ç¬¦ç«
+# ÖìÉ°·û»ğ
 
-[è¿”å›è£…å¤‡æ€»è§ˆ](../Overview.md)
+[·µ»Ø×°±¸×ÜÀÀ](../Overview.md)
 
-## å®šä½
-
-- è‹±æ–‡ IDï¼š`cinnabar_talisman_flame_item`
-- é˜¶æ®µï¼šPre-Hardmode
-- ç±»å‹ï¼šé­”æ³•/çµæ°”
-
-## æ•°å€¼
-
-| å±æ€§ | å€¼ |
-|------|-----|
-| ä¼¤å®³ | 24 |
-| ä½¿ç”¨æ—¶é—´ | 24 |
-| å‡»é€€ | 2 |
-| æš´å‡» | 4% |
-| çµæ°”æ¶ˆè€— | 5 |
-| å°„é€Ÿ | 7 |
-| ç¨€æœ‰åº¦ | Green |
-
-## æ•ˆæœ
-
-- æ¶ˆè€—çµæ°”å‘å°„ç‡ƒçƒ§ç¬¦ç«ï¼Œå‘½ä¸­æ–½åŠ ç‹±ç‚ï¼ˆOnFire3ï¼‰ã€‚
-
-## é…æ–¹
-
-å™¨èƒšç¢ç‰‡x2 + ç‚‰æ¸£é“x6 + ä¸‹å“çµçŸ³x12 @ å™¨èƒšç‚‰
-
-## æ³•å™¨è§‰é†’
-
-- å¢ƒç•Œè¦æ±‚ï¼šç­‘åŸº
-- å£°æœ›è¦æ±‚ï¼š24
-- æ•ˆæœï¼šä¼¤å®³+10%ï¼Œçµè€—é™è‡³4
-
-## æŠ•å°„ç‰©
-
-| ç´ æ | ç±»å‹ | å°ºå¯¸ |
-| --- | --- | --- |
-| <img src="../../../../Assets/Final/cinnabar_talisman_flame/cinnabar_talisman_flame__projectile__v01.png" width="64"> | projectile | 24x24 |
-
-## å½“å‰ç¾æœ¯ç´ æ
+## µ±Ç°ÃÀÊõËØ²Ä
 
 <!-- ART_SECTION:entry-art:START -->
 
-| ç´ æ | åç§° | ID | ç±»å‹ | å°ºå¯¸ |
+| ËØ²Ä | Ãû³Æ | ID | ÀàĞÍ | ³ß´ç |
 | --- | --- | --- | --- | --- |
-| <img src="../../../../Assets/Final/cinnabar_talisman_flame_item/cinnabar_talisman_flame_item__item_icon__v01.png" alt="æœ±ç ‚ç¬¦ç« item_icon" width="64"> | æœ±ç ‚ç¬¦ç« | `cinnabar_talisman_flame_item` | `item_icon` | 32x32 |
+| <img src="../../../../Assets/Final/cinnabar_talisman_flame_item/cinnabar_talisman_flame_item__item_icon__v01.png" alt="ÖìÉ°·û»ğ item_icon" width="64"> | ÖìÉ°·û»ğ | `cinnabar_talisman_flame_item` | `item_icon` | 32x32 |
 
 <!-- ART_SECTION:entry-art:END -->
 
-## ç¾æœ¯èµ„æº
+## ÃÀÊõ×ÊÔ´
 
-- è¯¦è§ [æ­¦å™¨ä¸é¥°å“æ€»è§ˆ](../Overview.md) ä¸­çš„ç¾æœ¯ç´ æè¡¨ã€‚
-- Promptï¼šTerraria pixel art weapon icon, xianxia theme.
+- Ïê¼û [ÎäÆ÷ÓëÊÎÆ·×ÜÀÀ](../Overview.md) ÖĞµÄÃÀÊõËØ²Ä±í¡£
+- Prompt£ºTerraria pixel art weapon icon, xianxia theme.
 
-## ä»£ç å®ç°
+## ¶¨Î»
 
-- âœ… æ•°å€¼ä¸wikiå¯¹é½
-- âœ… é…æ–¹å®ç°
-- âœ… æ³•å™¨è§‰é†’æœºåˆ¶
+- Ó¢ÎÄ ID£º`cinnabar_talisman_flame_item`
+- ½×¶Î£ºPre-Hardmode
+- ÀàĞÍ£ºÄ§·¨/ÁéÆø
+
+## ÊıÖµ
+
+| ÊôĞÔ | Öµ |
+|------|-----|
+| ÉËº¦ | 24 |
+| Ê¹ÓÃÊ±¼ä | 24 |
+| »÷ÍË | 2 |
+| ±©»÷ | 4% |
+| ÁéÆøÏûºÄ | 5 |
+| ÉäËÙ | 7 |
+| Ï¡ÓĞ¶È | Green |
+
+## Ğ§¹û
+
+- ÏûºÄÁéÆø·¢ÉäÈ¼ÉÕ·û»ğ£¬ÃüÖĞÊ©¼ÓÓüÑ×£¨OnFire3£©¡£
+
+## Åä·½
+
+Æ÷ÅßËéÆ¬x2 + Â¯ÔüÌúx6 + ÏÂÆ·ÁéÊ¯x12 @ Æ÷ÅßÂ¯
+
+## ·¨Æ÷¾õĞÑ
+
+- ¾³½çÒªÇó£ºÖş»ù
+- ÉùÍûÒªÇó£º24
+- Ğ§¹û£ºÉËº¦+10%£¬ÁéºÄ½µÖÁ4
+
+## Í¶ÉäÎï
+
+| ËØ²Ä | ÀàĞÍ | ³ß´ç |
+| --- | --- | --- |
+| <img src="../../../../Assets/Final/cinnabar_talisman_flame/cinnabar_talisman_flame__projectile__v01.png" width="64"> | projectile | 24x24 |
+
+## ´úÂëÊµÏÖ
+
+- ? ÊıÖµÓëwiki¶ÔÆë
+- ? Åä·½ÊµÏÖ
+- ? ·¨Æ÷¾õĞÑ»úÖÆ

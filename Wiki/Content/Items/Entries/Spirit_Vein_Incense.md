@@ -1,47 +1,47 @@
-ï»¿# çµè„‰é¦™
+# ÁéÂöÏã
 
-[è¿”å›ç‰©å“æ€»è§ˆ](../Overview.md)
+[·µ»ØÎïÆ·×ÜÀÀ](../Overview.md)
 
-## å®šä½
-
-- è‹±æ–‡ IDï¼š`spirit_vein_incense`
-- åˆ†ç±»ï¼šBosså¬å”¤ç‰©
-- é˜¶æ®µï¼šPre-Boss
-
-## æ¥æº
-
-- åˆæˆï¼šä¸‹å“çµçŸ³x8 + çµæ°”å‡èƒ¶x6 @ å·¥ä½œå°
-
-## ç”¨é€”
-
-- åœ¨æµ…å±‚çµè„‰ä½¿ç”¨ï¼Œå¬å”¤çµè„‰è •è™«
-- éœ€è¦å¯çµå¢ƒ
-
-## é…æ–¹
-
-| ææ–™ | æ•°é‡ |
-|------|------|
-| ä¸‹å“çµçŸ³ | 8 |
-| çµæ°”å‡èƒ¶ | 6 |
-
-åˆ¶ä½œç«™ï¼šå·¥ä½œå°
-## å½“å‰ç¾æœ¯ç´ æ
+## µ±Ç°ÃÀÊõËØ²Ä
 
 <!-- ART_SECTION:entry-art:START -->
 
-| ç´ æ | ID | å°ºå¯¸ |
+| ËØ²Ä | ID | ³ß´ç |
 | --- | --- | --- |
-| <img src="../../../../Assets/Final/spirit_vein_incense/spirit_vein_incense__item_icon__v01.png" alt="çµè„‰é¦™" width="48"> | spirit_vein_incense | 32x32 |
+| <img src="../../../../Assets/Final/spirit_vein_incense/spirit_vein_incense__item_icon__v01.png" alt="ÁéÂöÏã" width="48"> | spirit_vein_incense | 32x32 |
 
 <!-- ART_SECTION:entry-art:END -->
 
+## ÃÀÊõ×ÊÔ´
 
-## ç¾æœ¯èµ„æº
+- Ïê¼û [ÎïÆ·×ÜÀÀ](../Overview.md) ÃÀÊõËØ²Ä±í¡£
+- Prompt£ºTerraria pixel art item icon, xianxia theme, transparent background.
 
-- è¯¦è§ [ç‰©å“æ€»è§ˆ](../Overview.md) ç¾æœ¯ç´ æè¡¨ã€‚
-- Promptï¼šTerraria pixel art item icon, xianxia theme, transparent background.
+## ¶¨Î»
 
-## ä»£ç å®ç°
+- Ó¢ÎÄ ID£º`spirit_vein_incense`
+- ·ÖÀà£ºBossÕÙ»½Îï
+- ½×¶Î£ºPre-Boss
 
-- âœ… ç‰©å“ç±»å®Œæ•´
-- âœ… é…æ–¹/æ‰è½å®ç°
+## À´Ô´
+
+- ºÏ³É£ºÏÂÆ·ÁéÊ¯x8 + ÁéÆøÄı½ºx6 @ ¹¤×÷Ì¨
+
+## ÓÃÍ¾
+
+- ÔÚÇ³²ãÁéÂöÊ¹ÓÃ£¬ÕÙ»½ÁéÂöÈä³æ
+- ĞèÒªÆôÁé¾³
+
+## Åä·½
+
+| ²ÄÁÏ | ÊıÁ¿ |
+|------|------|
+| ÏÂÆ·ÁéÊ¯ | 8 |
+| ÁéÆøÄı½º | 6 |
+
+ÖÆ×÷Õ¾£º¹¤×÷Ì¨
+
+## ´úÂëÊµÏÖ
+
+- ? ÎïÆ·ÀàÍêÕû
+- ? Åä·½/µôÂäÊµÏÖ

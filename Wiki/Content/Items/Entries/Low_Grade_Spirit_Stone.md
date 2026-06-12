@@ -1,42 +1,41 @@
-ï»¿# ä¸‹å“çµçŸ³
+# ÏÂÆ·ÁéÊ¯
 
-[è¿”å›ç‰©å“æ€»è§ˆ](../Overview.md)
+[·µ»ØÎïÆ·×ÜÀÀ](../Overview.md)
 
-## å®šä½
-
-- è‹±æ–‡ IDï¼š`low_grade_spirit_stone`
-- åˆ†ç±»ï¼šææ–™
-- é˜¶æ®µï¼šPre-Boss
-
-## æ¥æº
-
-- æµ…å±‚çµè„‰é‡‡çŸ¿
-- æ¸¸çµå²è±å§†æ‰è½ï¼ˆ25%ï¼‰
-- å„NPCå•†åº—å‡ºå”®
-
-## ç”¨é€”
-
-- å¼•æ°”ç¬¦åˆæˆ
-- å¤šæ•°é…æ–¹çš„åŸºç¡€ææ–™
-- é€šç”¨ç‚¼åˆ¶ææ–™
-
-## å½“å‰ç¾æœ¯ç´ æ
+## µ±Ç°ÃÀÊõËØ²Ä
 
 <!-- ART_SECTION:entry-art:START -->
 
-| ç´ æ | ID | å°ºå¯¸ |
+| ËØ²Ä | ID | ³ß´ç |
 | --- | --- | --- |
-| <img src="../../../../Assets/Final/low_grade_spirit_stone/low_grade_spirit_stone__item_icon__v01.png" alt="ä¸‹å“çµçŸ³" width="48"> | low_grade_spirit_stone | 32x32 |
+| <img src="../../../../Assets/Final/low_grade_spirit_stone/low_grade_spirit_stone__item_icon__v01.png" alt="ÏÂÆ·ÁéÊ¯" width="48"> | low_grade_spirit_stone | 32x32 |
 
 <!-- ART_SECTION:entry-art:END -->
 
+## ÃÀÊõ×ÊÔ´
 
-## ç¾æœ¯èµ„æº
+- Ïê¼û [ÎïÆ·×ÜÀÀ](../Overview.md) ÃÀÊõËØ²Ä±í¡£
+- Prompt£ºTerraria pixel art item icon, xianxia theme, transparent background.
 
-- è¯¦è§ [ç‰©å“æ€»è§ˆ](../Overview.md) ç¾æœ¯ç´ æè¡¨ã€‚
-- Promptï¼šTerraria pixel art item icon, xianxia theme, transparent background.
+## ¶¨Î»
 
-## ä»£ç å®ç°
+- Ó¢ÎÄ ID£º`low_grade_spirit_stone`
+- ·ÖÀà£º²ÄÁÏ
+- ½×¶Î£ºPre-Boss
 
-- âœ… ç‰©å“ç±»å®Œæ•´
-- âœ… é…æ–¹/æ‰è½å®ç°
+## À´Ô´
+
+- Ç³²ãÁéÂö²É¿ó
+- ÓÎÁéÊ·À³Ä·µôÂä£¨25%£©
+- ¸÷NPCÉÌµê³öÊÛ
+
+## ÓÃÍ¾
+
+- ÒıÆø·ûºÏ³É
+- ¶àÊıÅä·½µÄ»ù´¡²ÄÁÏ
+- Í¨ÓÃÁ¶ÖÆ²ÄÁÏ
+
+## ´úÂëÊµÏÖ
+
+- ? ÎïÆ·ÀàÍêÕû
+- ? Åä·½/µôÂäÊµÏÖ

@@ -1,42 +1,41 @@
-ï»¿# æ–©é“å°˜
+# Õ¶µÀ³¾
 
-[è¿”å›ç‰©å“æ€»è§ˆ](../Overview.md)
+[·µ»ØÎïÆ·×ÜÀÀ](../Overview.md)
 
-## å®šä½
-
-- è‹±æ–‡ IDï¼š`dao_severing_dust`
-- åˆ†ç±»ï¼šææ–™
-- é˜¶æ®µï¼šEndgame
-
-## æ¥æº
-
-- æœˆéª¸å¤©æ¸Šæ•Œæ€ªæ‰è½
-- å½’æ¡£ä»™é­‚æ‰è½ï¼ˆ50%ï¼‰
-- æ—§å¤©é“æ ¸å¿ƒæ‰è½
-
-## ç”¨é€”
-
-- æ–©é“çªç ´ææ–™
-- ç»ˆå±€è£…å¤‡åˆæˆ
-- æ–©é“å°åˆæˆ
-
-## å½“å‰ç¾æœ¯ç´ æ
+## µ±Ç°ÃÀÊõËØ²Ä
 
 <!-- ART_SECTION:entry-art:START -->
 
-| ç´ æ | ID | å°ºå¯¸ |
+| ËØ²Ä | ID | ³ß´ç |
 | --- | --- | --- |
-| <img src="../../../../Assets/Final/dao_severing_dust/dao_severing_dust__item_icon__v01.png" alt="æ–©é“å°˜" width="48"> | dao_severing_dust | 32x32 |
+| <img src="../../../../Assets/Final/dao_severing_dust/dao_severing_dust__item_icon__v01.png" alt="Õ¶µÀ³¾" width="48"> | dao_severing_dust | 32x32 |
 
 <!-- ART_SECTION:entry-art:END -->
 
+## ÃÀÊõ×ÊÔ´
 
-## ç¾æœ¯èµ„æº
+- Ïê¼û [ÎïÆ·×ÜÀÀ](../Overview.md) ÃÀÊõËØ²Ä±í¡£
+- Prompt£ºTerraria pixel art item icon, xianxia theme, transparent background.
 
-- è¯¦è§ [ç‰©å“æ€»è§ˆ](../Overview.md) ç¾æœ¯ç´ æè¡¨ã€‚
-- Promptï¼šTerraria pixel art item icon, xianxia theme, transparent background.
+## ¶¨Î»
 
-## ä»£ç å®ç°
+- Ó¢ÎÄ ID£º`dao_severing_dust`
+- ·ÖÀà£º²ÄÁÏ
+- ½×¶Î£ºEndgame
 
-- âœ… ç‰©å“ç±»å®Œæ•´
-- âœ… é…æ–¹/æ‰è½å®ç°
+## À´Ô´
+
+- ÔÂº¡ÌìÔ¨µĞ¹ÖµôÂä
+- ¹éµµÏÉ»êµôÂä£¨50%£©
+- ¾ÉÌìµÀºËĞÄµôÂä
+
+## ÓÃÍ¾
+
+- Õ¶µÀÍ»ÆÆ²ÄÁÏ
+- ÖÕ¾Ö×°±¸ºÏ³É
+- Õ¶µÀÌ¨ºÏ³É
+
+## ´úÂëÊµÏÖ
+
+- ? ÎïÆ·ÀàÍêÕû
+- ? Åä·½/µôÂäÊµÏÖ

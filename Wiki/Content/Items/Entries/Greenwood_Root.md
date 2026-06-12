@@ -1,43 +1,42 @@
-ï»¿# é’æœ¨æ ¹
+# ÇàÄ¾¸ù
 
-[è¿”å›žç‰©å“æ€»è§ˆ](../Overview.md)
+[·µ»ØÎïÆ·×ÜÀÀ](../Overview.md)
 
-## å®šä½
-
-- è‹±æ–‡ IDï¼š`greenwood_root`
-- åˆ†ç±»ï¼šææ–™
-- é˜¶æ®µï¼šPre-Hardmode
-
-## æ¥æº
-
-- é’æœ¨è¯å›­é‡‡çŸ¿
-- è¯å›­è—¤å¦–æŽ‰è½ï¼ˆ50%ï¼‰
-- èŠ±ç˜´è¶æŽ‰è½ï¼ˆ50%ï¼‰
-- è¯å®—é—å¾’å•†åº—
-
-## ç”¨é€”
-
-- ç‚¼ä¸¹æ ¸å¿ƒææ–™
-- æ³•å™¨é“¸é€ 
-- å›žæ˜¥ä¸¹/å‡æ°”ä¸¹/ç­‘åŸºä¸¹åˆæˆ
-
-## å½“å‰ç¾Žæœ¯ç´ æ
+## µ±Ç°ÃÀÊõËØ²Ä
 
 <!-- ART_SECTION:entry-art:START -->
 
-| ç´ æ | ID | å°ºå¯¸ |
+| ËØ²Ä | ID | ³ß´ç |
 | --- | --- | --- |
-| <img src="../../../../Assets/Final/greenwood_root/greenwood_root__item_icon__v01.png" alt="é’æœ¨æ ¹" width="48"> | greenwood_root | 32x32 |
+| <img src="../../../../Assets/Final/greenwood_root/greenwood_root__item_icon__v01.png" alt="ÇàÄ¾¸ù" width="48"> | greenwood_root | 32x32 |
 
 <!-- ART_SECTION:entry-art:END -->
 
+## ÃÀÊõ×ÊÔ´
 
-## ç¾Žæœ¯èµ„æº
+- Ïê¼û [ÎïÆ·×ÜÀÀ](../Overview.md) ÃÀÊõËØ²Ä±í¡£
+- Prompt£ºTerraria pixel art item icon, xianxia theme, transparent background.
 
-- è¯¦è§ [ç‰©å“æ€»è§ˆ](../Overview.md) ç¾Žæœ¯ç´ æè¡¨ã€‚
-- Promptï¼šTerraria pixel art item icon, xianxia theme, transparent background.
+## ¶¨Î»
 
-## ä»£ç å®žçŽ°
+- Ó¢ÎÄ ID£º`greenwood_root`
+- ·ÖÀà£º²ÄÁÏ
+- ½×¶Î£ºPre-Hardmode
 
-- âœ… ç‰©å“ç±»å®Œæ•´
-- âœ… é…æ–¹/æŽ‰è½å®žçŽ°
+## À´Ô´
+
+- ÇàÄ¾Ò©Ô°²É¿ó
+- Ò©Ô°ÌÙÑýµôÂä£¨50%£©
+- »¨ÕÎµûµôÂä£¨50%£©
+- Ò©×ÚÒÅÍ½ÉÌµê
+
+## ÓÃÍ¾
+
+- Á¶µ¤ºËÐÄ²ÄÁÏ
+- ·¨Æ÷ÖýÔì
+- »Ø´ºµ¤/ÄýÆøµ¤/Öþ»ùµ¤ºÏ³É
+
+## ´úÂëÊµÏÖ
+
+- ? ÎïÆ·ÀàÍêÕû
+- ? Åä·½/µôÂäÊµÏÖ

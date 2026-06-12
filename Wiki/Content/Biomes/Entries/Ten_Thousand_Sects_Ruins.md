@@ -1,46 +1,46 @@
-ï»¿# ä¸‡å®—é—å€
+# Íò×ÚÒÅÖ·
 
-[è¿”å›ç”Ÿæ€æ€»è§ˆ](../Overview.md)
+[·µ»ØÉúÌ¬×ÜÀÀ](../Overview.md)
 
-## æ¦‚å¿µ
-
-ä¸‡å®—é—å€æ˜¯ Post-Plantera åå¼€å¯çš„ä¸­åæœŸå†…å®¹ä¸­å¿ƒã€‚å®ƒæŠŠå®—é—¨æ®‹å·ã€èŒä¸šåˆ†åŒ–å’Œè¯•ç‚¼ Boss èšåˆèµ·æ¥ã€‚
-
-## ç”Ÿæˆ
-
-- é˜¶æ®µï¼šPost-Planteraã€‚
-- ä½ç½®ï¼šåœ°ç‰¢æ·±å¤„ã€åœ°ä¸‹å¤§ç»“æ„æˆ–ç‰¹æ®Šå…¥å£ã€‚
-- ç»“æ„ï¼šè—ç»é˜ã€å‰‘ç¢‘ã€è¯•ç‚¼å°ã€ç ´æŸå±±é—¨ã€‚
-- è§£é”ï¼šå‡»è´¥ä¸–çºªä¹‹èŠ±åï¼Œæ®‹å·ä¹¦çµæç¤ºå…¥å£ã€‚
-
-## å†…å®¹
-
-- æ•Œæ€ªï¼šæ‰§å¿µå‰‘ä¿®ã€è—ç»æ®‹å½±ã€‚
-- Bossï¼š[æ— ç›¸å‰‘é­„](../../Bosses/Entries/Formless_Sword_Soul.md)ã€[é’æœ¨è¯ç‹æ®‹å½±](../../Bosses/Entries/Greenwood_Medicine_King_Echo.md)ã€‚
-- èµ„æºï¼šå®—é—¨ä»¤ã€æ®‹å·é¡µã€æ–­å‰‘æ®‹æ„ã€‚
-- NPCï¼š[æ®‹å·ä¹¦çµ](../../NPCs/Entries/Archive_Scroll_Spirit.md)ã€‚
-
-## å½“å‰ç¾æœ¯ç´ æ
+## µ±Ç°ÃÀÊõËØ²Ä
 
 <!-- ART_SECTION:entry-art:START -->
 
-| ç´ æ | åç§° | ID | ç±»å‹ | å°ºå¯¸ |
+| ËØ²Ä | Ãû³Æ | ID | ÀàĞÍ | ³ß´ç |
 | --- | --- | --- | --- | --- |
-| <img src="../../../../Assets/Final/sect_ruin_brick/sect_ruin_brick__tile__v01.png" alt="å®—é—¨çŸ³ç – tile" width="64"> | å®—é—¨çŸ³ç – | `sect_ruin_brick` | `tile` | 16x16 |
-| <img src="../../../../Assets/Final/sword_tablet/sword_tablet__object__v01.png" alt="å‰‘ç¢‘ object" width="64"> | å‰‘ç¢‘ | `sword_tablet` | `object` | 32x48 |
+| <img src="../../../../Assets/Final/sect_ruin_brick/sect_ruin_brick__tile__v01.png" alt="×ÚÃÅÊ¯×© tile" width="64"> | ×ÚÃÅÊ¯×© | `sect_ruin_brick` | `tile` | 16x16 |
+| <img src="../../../../Assets/Final/sword_tablet/sword_tablet__object__v01.png" alt="½£±® object" width="64"> | ½£±® | `sword_tablet` | `object` | 32x48 |
 
 <!-- ART_SECTION:entry-art:END -->
 
-## ç¾æœ¯èµ„æº
+## ÃÀÊõ×ÊÔ´
 
-- Tileï¼š`sect_ruin_brick`ï¼Œ16x16ï¼Œç°ç™½çŸ³ç –ã€æ·¡é‡‘è£‚çº¹ã€‚
-- è£…é¥°ï¼š`sword_tablet`ï¼Œ32x48ï¼ŒçŸ³ç¢‘å’Œæ’å‰‘å‰ªå½±ã€‚
-- èƒŒæ™¯å¢™ï¼šè—ç»é˜æœ¨å¢™ 16x16ï¼Œä¹¦æ ¼å›¾æ¡ˆè¦ç®€åŒ–ã€‚
-- Prompt é‡ç‚¹ï¼š`ancient cultivation sect ruins, jade stone bricks, sword tablet, Terraria pixel art`ã€‚
+- Tile£º`sect_ruin_brick`£¬16x16£¬»Ò°×Ê¯×©¡¢µ­½ğÁÑÎÆ¡£
+- ×°ÊÎ£º`sword_tablet`£¬32x48£¬Ê¯±®ºÍ²å½£¼ôÓ°¡£
+- ±³¾°Ç½£º²Ø¾­¸óÄ¾Ç½ 16x16£¬Êé¸ñÍ¼°¸Òª¼ò»¯¡£
+- Prompt ÖØµã£º`ancient cultivation sect ruins, jade stone bricks, sword tablet, Terraria pixel art`¡£
 
-## ä»£ç å®ç°
+## ¸ÅÄî
 
-- âœ… ä¸–ç•Œç”Ÿæˆéª¨æ¶ï¼ˆTileé“ºè®¾+ç‰©ä»¶æ”¾ç½®ï¼‰
-- âœ… æ•Œæ€ªç”Ÿæˆæ± ï¼ˆæƒé‡ä¸wikiå¯¹é½ï¼‰
-- âœ… ç¯å¢ƒæ•ˆæœï¼ˆæ˜Ÿæ¸Šæ±¡æŸ“/é›·æ³½è½é›·/æœˆéª¨çµå‹ç­‰ï¼‰
-- âœ… åˆ¤å®šé˜ˆå€¼ï¼ˆtile count â‰¥ wikiæŒ‡å®šå€¼ï¼‰
+Íò×ÚÒÅÖ·ÊÇ Post-Plantera ºó¿ªÆôµÄÖĞºóÆÚÄÚÈİÖĞĞÄ¡£Ëü°Ñ×ÚÃÅ²Ğ¾í¡¢Ö°Òµ·Ö»¯ºÍÊÔÁ¶ Boss ¾ÛºÏÆğÀ´¡£
+
+## Éú³É
+
+- ½×¶Î£ºPost-Plantera¡£
+- Î»ÖÃ£ºµØÀÎÉî´¦¡¢µØÏÂ´ó½á¹¹»òÌØÊâÈë¿Ú¡£
+- ½á¹¹£º²Ø¾­¸ó¡¢½£±®¡¢ÊÔÁ¶Ì¨¡¢ÆÆËğÉ½ÃÅ¡£
+- ½âËø£º»÷°ÜÊÀ¼ÍÖ®»¨ºó£¬²Ğ¾íÊéÁéÌáÊ¾Èë¿Ú¡£
+
+## ÄÚÈİ
+
+- µĞ¹Ö£ºÖ´Äî½£ĞŞ¡¢²Ø¾­²ĞÓ°¡£
+- Boss£º[ÎŞÏà½£ÆÇ](../../Bosses/Entries/Formless_Sword_Soul.md)¡¢[ÇàÄ¾Ò©Íõ²ĞÓ°](../../Bosses/Entries/Greenwood_Medicine_King_Echo.md)¡£
+- ×ÊÔ´£º×ÚÃÅÁî¡¢²Ğ¾íÒ³¡¢¶Ï½£²ĞÒâ¡£
+- NPC£º[²Ğ¾íÊéÁé](../../NPCs/Entries/Archive_Scroll_Spirit.md)¡£
+
+## ´úÂëÊµÏÖ
+
+- ? ÊÀ½çÉú³É¹Ç¼Ü£¨TileÆÌÉè+Îï¼ş·ÅÖÃ£©
+- ? µĞ¹ÖÉú³É³Ø£¨È¨ÖØÓëwiki¶ÔÆë£©
+- ? »·¾³Ğ§¹û£¨ĞÇÔ¨ÎÛÈ¾/À×ÔóÂäÀ×/ÔÂ¹ÇÁéÑ¹µÈ£©
+- ? ÅĞ¶¨ãĞÖµ£¨tile count ¡İ wikiÖ¸¶¨Öµ£©

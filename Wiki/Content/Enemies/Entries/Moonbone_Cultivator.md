@@ -1,62 +1,62 @@
-﻿# 月骸修士
+# �º���ʿ
 
-[返回敌怪总览](../Overview.md)
+[���صй�����](../Overview.md)
 
-## 定位
-
-- 英文 ID：`moonbone_cultivator`
-- 中文名：月骸修士
-- 阶段：Post-Moon Lord
-- 生态：[月骸天渊](../../Biomes/Entries/Moonbone_Abyss.md)
-
-## 生成条件
-
-| 生态 | 生成概率 | 权重 |
-|------|----------|------|
-| 月骸天渊 | 18% | 0.45 |
-
-## 数值
-
-| 属性 | 值 |
-|------|-----|
-| 生命 | 4200 |
-| 伤害 | 160 |
-| 防御 | 72 |
-| 击退抗性 | 75% |
-| AI 类型 | Dash caster |
-| Banner 击杀数 | 50 |
-
-## 行为
-
-- 高速冲刺+剑气型敌怪。
-- 每70 tick冲刺（移速12）+向预测位置发射`BossSpiritBoltProjectile`月骨剑气（速度9）。
-- 持续冷月光照（`Lighting.AddLight`）。
-
-## 掉落
-
-| 物品 | 概率 | 数量 |
-|------|------|------|
-| 月骨 | 50% | 1-2 |
-| 斩道尘 | 25% | 1-2 |
-
-## 当前美术素材
+## ��ǰ�����ز�
 
 <!-- ART_SECTION:entry-art:START -->
 
-| 素材 | 名称 | ID | 类型 | 尺寸 |
+| �ز� | ���� | ID | ���� | �ߴ� |
 | --- | --- | --- | --- | --- |
-| <img src="../../../../Assets/Final/moonbone_cultivator/moonbone_cultivator__base__v01.png" alt="月骸修士 base" width="72"> | 月骸修士 | `moonbone_cultivator` | `base` | 72x80 |
+| <img src="../../../../Assets/Final/moonbone_cultivator/moonbone_cultivator__base__v01.png" alt="�º���ʿ base" width="72"> | �º���ʿ | `moonbone_cultivator` | `base` | 72x80 |
 
 <!-- ART_SECTION:entry-art:END -->
 
-## 美术资源
+## ������Դ
 
-- 主体：72x80，月白骨甲，残月披肩。
-- 动画：`dash` 4帧，`cast` 5帧。
-- Prompt：`moonbone armored cultivator, white lunar bone armor, cold blue cracks`
-## 代码实现
+- ���壺72x80���°׹Ǽף��������硣
+- ������`dash` 4֡��`cast` 5֡��
+- Prompt��`moonbone armored cultivator, white lunar bone armor, cold blue cracks`
 
-- ✅ 数值与wiki完全对齐
-- ✅ 独特AI行为
-- ✅ 双重掉落表
+## ��λ
 
+- Ӣ�� ID��`moonbone_cultivator`
+- ���������º���ʿ
+- �׶Σ�Post-Moon Lord
+- ��̬��[�º���Ԩ](../../Biomes/Entries/Moonbone_Abyss.md)
+
+## ��������
+
+| ��̬ | ���ɸ��� | Ȩ�� |
+|------|----------|------|
+| �º���Ԩ | 18% | 0.45 |
+
+## ��ֵ
+
+| ���� | ֵ |
+|------|-----|
+| ���� | 4200 |
+| �˺� | 160 |
+| ���� | 72 |
+| ���˿��� | 75% |
+| AI ���� | Dash caster |
+| Banner ��ɱ�� | 50 |
+
+## ��Ϊ
+
+- ���ٳ��+�����͵й֡�
+- ÿ70 tick��̣�����12��+��Ԥ��λ�÷���`BossSpiritBoltProjectile`�¹ǽ������ٶ�9����
+- �������¹��գ�`Lighting.AddLight`����
+
+## ����
+
+| ��Ʒ | ���� | ���� |
+|------|------|------|
+| �¹� | 50% | 1-2 |
+| ն���� | 25% | 1-2 |
+
+## ����ʵ��
+
+- ? ��ֵ��wiki��ȫ����
+- ? ����AI��Ϊ
+- ? ˫�ص����

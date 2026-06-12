@@ -1,46 +1,46 @@
-ï»¿# å å¤©å®«é˜™
+# ×¹Ìì¹¬ãÚ
 
-[è¿”å›ç”Ÿæ€æ€»è§ˆ](../Overview.md)
+[·µ»ØÉúÌ¬×ÜÀÀ](../Overview.md)
 
-## æ¦‚å¿µ
-
-å å¤©å®«é˜™æ˜¯ Post-Golem åçš„å¤©åº­æ®‹éª¸ç”Ÿæ€ã€‚å®ƒå°†æ®‹å¤©å¸ã€åŒ–ç¥å¢ƒå’Œç»ˆå±€è·¯çº¿è¿æ¥èµ·æ¥ã€‚
-
-## ç”Ÿæˆ
-
-- é˜¶æ®µï¼šPost-Golemã€‚
-- ä½ç½®ï¼šé«˜ç©ºç‰¹æ®Šç»“æ„ï¼Œæˆ–é€šè¿‡å¤©ç¢‘ä¼ é€è¿›å…¥ã€‚
-- ç»“æ„ï¼šç ´ç¢ç‰é˜¶ã€æ‚¬æµ®å®«ç –ã€å¤©ç¢‘ç»ˆç«¯ã€æ³•æ—¨æ®‹é¡µã€‚
-- å±é™©ï¼šä»™å‚€å·¡é€»å’Œå®¡åˆ¤å…‰æŸé™·é˜±ã€‚
-
-## å†…å®¹
-
-- æ•Œæ€ªï¼šä»™å‚€ã€å¤©ç¢‘å«ã€‚
-- Bossï¼š[å¤©ç¢‘å®ˆå¾¡](../../Bosses/Entries/Heaven_Tablet_Guardian.md)ã€[æ®‹å¤©ç›‘å¯Ÿä½¿](../../Bosses/Entries/Broken_Heaven_Inspector.md)ã€‚
-- èµ„æºï¼šå¤©é“ç¢ç‰‡ã€æ®‹å¤©ç‰ã€ç ´æŸæ³•æ—¨ã€‚
-- NPCï¼š[å å¤©ä¿¡ä½¿](../../NPCs/Entries/Fallen_Heaven_Messenger.md)ã€‚
-
-## å½“å‰ç¾æœ¯ç´ æ
+## µ±Ç°ÃÀÊõËØ²Ä
 
 <!-- ART_SECTION:entry-art:START -->
 
-| ç´ æ | åç§° | ID | ç±»å‹ | å°ºå¯¸ |
+| ËØ²Ä | Ãû³Æ | ID | ÀàĞÍ | ³ß´ç |
 | --- | --- | --- | --- | --- |
-| <img src="../../../../Assets/Final/fallen_heaven_jade_tile/fallen_heaven_jade_tile__tile__v01.png" alt="å å¤©ç‰ç – tile" width="64"> | å å¤©ç‰ç – | `fallen_heaven_jade_tile` | `tile` | 16x16 |
-| <img src="../../../../Assets/Final/broken_heaven_tablet/broken_heaven_tablet__object__v01.png" alt="ç ´æŸå¤©ç¢‘ object" width="64"> | ç ´æŸå¤©ç¢‘ | `broken_heaven_tablet` | `object` | 32x64 |
+| <img src="../../../../Assets/Final/fallen_heaven_jade_tile/fallen_heaven_jade_tile__tile__v01.png" alt="×¹ÌìÓñ×© tile" width="64"> | ×¹ÌìÓñ×© | `fallen_heaven_jade_tile` | `tile` | 16x16 |
+| <img src="../../../../Assets/Final/broken_heaven_tablet/broken_heaven_tablet__object__v01.png" alt="ÆÆËğÌì±® object" width="64"> | ÆÆËğÌì±® | `broken_heaven_tablet` | `object` | 32x64 |
 
 <!-- ART_SECTION:entry-art:END -->
 
-## ç¾æœ¯èµ„æº
+## ÃÀÊõ×ÊÔ´
 
-- Tileï¼š`fallen_heaven_jade_tile`ï¼Œ16x16ï¼Œç™½ç‰ç –ã€æ®‹é‡‘è¾¹çº¿ã€‚
-- è£…é¥°ï¼š`broken_heaven_tablet`ï¼Œ32x64ï¼Œè£‚ç¢‘å’Œé‡‘è‰²é“­æ–‡ã€‚
-- èƒŒæ™¯ï¼šé«˜ç©ºå®«é˜™å‰ªå½±ï¼Œä½é¥±å’Œé‡‘ç™½ã€‚
-- Prompt é‡ç‚¹ï¼š`fallen celestial palace jade tile, broken golden decree lines, Terraria pixel art`ã€‚
+- Tile£º`fallen_heaven_jade_tile`£¬16x16£¬°×Óñ×©¡¢²Ğ½ğ±ßÏß¡£
+- ×°ÊÎ£º`broken_heaven_tablet`£¬32x64£¬ÁÑ±®ºÍ½ğÉ«ÃúÎÄ¡£
+- ±³¾°£º¸ß¿Õ¹¬ãÚ¼ôÓ°£¬µÍ±¥ºÍ½ğ°×¡£
+- Prompt ÖØµã£º`fallen celestial palace jade tile, broken golden decree lines, Terraria pixel art`¡£
 
-## ä»£ç å®ç°
+## ¸ÅÄî
 
-- âœ… ä¸–ç•Œç”Ÿæˆéª¨æ¶ï¼ˆTileé“ºè®¾+ç‰©ä»¶æ”¾ç½®ï¼‰
-- âœ… æ•Œæ€ªç”Ÿæˆæ± ï¼ˆæƒé‡ä¸wikiå¯¹é½ï¼‰
-- âœ… ç¯å¢ƒæ•ˆæœï¼ˆæ˜Ÿæ¸Šæ±¡æŸ“/é›·æ³½è½é›·/æœˆéª¨çµå‹ç­‰ï¼‰
-- âœ… åˆ¤å®šé˜ˆå€¼ï¼ˆtile count â‰¥ wikiæŒ‡å®šå€¼ï¼‰
+×¹Ìì¹¬ãÚÊÇ Post-Golem ºóµÄÌìÍ¥²Ğº¡ÉúÌ¬¡£Ëü½«²ĞÌìË¾¡¢»¯Éñ¾³ºÍÖÕ¾ÖÂ·ÏßÁ¬½ÓÆğÀ´¡£
+
+## Éú³É
+
+- ½×¶Î£ºPost-Golem¡£
+- Î»ÖÃ£º¸ß¿ÕÌØÊâ½á¹¹£¬»òÍ¨¹ıÌì±®´«ËÍ½øÈë¡£
+- ½á¹¹£ºÆÆËéÓñ½×¡¢Ğü¸¡¹¬×©¡¢Ìì±®ÖÕ¶Ë¡¢·¨Ö¼²ĞÒ³¡£
+- Î£ÏÕ£ºÏÉ¿şÑ²ÂßºÍÉóÅĞ¹âÊøÏİÚå¡£
+
+## ÄÚÈİ
+
+- µĞ¹Ö£ºÏÉ¿ş¡¢Ìì±®ÎÀ¡£
+- Boss£º[Ìì±®ÊØÓù](../../Bosses/Entries/Heaven_Tablet_Guardian.md)¡¢[²ĞÌì¼à²ìÊ¹](../../Bosses/Entries/Broken_Heaven_Inspector.md)¡£
+- ×ÊÔ´£ºÌìµÀËéÆ¬¡¢²ĞÌìÓñ¡¢ÆÆËğ·¨Ö¼¡£
+- NPC£º[×¹ÌìĞÅÊ¹](../../NPCs/Entries/Fallen_Heaven_Messenger.md)¡£
+
+## ´úÂëÊµÏÖ
+
+- ? ÊÀ½çÉú³É¹Ç¼Ü£¨TileÆÌÉè+Îï¼ş·ÅÖÃ£©
+- ? µĞ¹ÖÉú³É³Ø£¨È¨ÖØÓëwiki¶ÔÆë£©
+- ? »·¾³Ğ§¹û£¨ĞÇÔ¨ÎÛÈ¾/À×ÔóÂäÀ×/ÔÂ¹ÇÁéÑ¹µÈ£©
+- ? ÅĞ¶¨ãĞÖµ£¨tile count ¡İ wikiÖ¸¶¨Öµ£©

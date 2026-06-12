@@ -1,37 +1,36 @@
-﻿# 宗门试炼台
+# ��������̨
 
-[返回制作总览](../Overview.md)
+[������������](../Overview.md)
 
-## 定位
-
-- ID: sect_trial_altar | 阶段: Post-Plantera | 获取: 宗门试炼令x4+器胚碎片x8@器胚炉
-
-## 用途
-
-- 职业分化装备、宗门令消耗。获得MythrilAnvil+AlchemyTable功能。
-
-- 64x48 白石台、插剑、玉牌槽。
-
-
-## 当前美术素材
+## ��ǰ�����ز�
 
 <!-- ART_SECTION:entry-art:START -->
 
-| 素材 | 类型 | 尺寸 |
+| �ز� | ���� | �ߴ� |
 | --- | --- | --- |
-| ⚠️ 使用占位符纹理 | tile | — |
+| ?? ʹ��ռλ������ | tile | �� |
 
 <!-- ART_SECTION:entry-art:END -->
 
-## 美术资源
+## ������Դ
 
-- 详见 [制作总览](../Overview.md) 中的制作站规格表。
-- ⚠️ 当前使用共享占位符纹理，等待独立美术素材。
+- ��� [��������](../Overview.md) �е�����վ������
+- ?? ��ǰʹ�ù���ռλ���������ȴ����������زġ�
 
-## 代码实现
+## ��λ
 
-- ✅ 物品+地块类完整
-- ✅ 制作配方
-- ✅ AdjTiles功能集成
+- ID: sect_trial_altar | �׶�: Post-Plantera | ��ȡ: ����������x4+������Ƭx8@����¯
 
-- ✅ 物品+地块类完整 | ✅ 配方 | ✅ AdjTiles=MythrilAnvil+AlchemyTable
+## ��;
+
+- ְҵ�ֻ�װ�������������ġ����MythrilAnvil+AlchemyTable���ܡ�
+
+- 64x48 ��ʯ̨���彣�����Ʋۡ�
+
+## ����ʵ��
+
+- ? ��Ʒ+�ؿ�������
+- ? �����䷽
+- ? AdjTiles���ܼ���
+
+- ? ��Ʒ+�ؿ������� | ? �䷽ | ? AdjTiles=MythrilAnvil+AlchemyTable
