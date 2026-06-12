@@ -1,7 +1,7 @@
 param(
     [string]$TModLoaderDir = "D:\Program Files (x86)\Steam\steamapps\common\tModLoader",
     [string]$SaveDir = "E:\XianXia\.tml-client-test",
-    [int]$LoadWaitSeconds = 50
+    [int]$LoadWaitSeconds = 90
 )
 
 $ErrorActionPreference = "Stop"

@@ -1,4 +1,3 @@
-// TODO: ART_PLACEHOLDER - all items use placeholder sprites. See Docs/ART_TODO.md
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;

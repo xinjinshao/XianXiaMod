@@ -1,4 +1,3 @@
-// TODO: ART_PLACEHOLDER - see Docs/ART_TODO.md
 using Terraria;
 using Terraria.ModLoader;
 

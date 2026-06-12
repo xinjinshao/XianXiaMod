@@ -61,7 +61,7 @@ def main() -> None:
         "Tools/generate_tmod_content.py",
         "def boss_pattern_code",
         "BossArrayFieldProjectile",
-        "field_ids",
+        "global::XianXia.Content.Projectiles.BossArrayFieldProjectile",
         "BOSS_UNLOCK_REQUIREMENTS",
         "def projectile_behavior_code",
         "CloudpiercerSwordProjectile",

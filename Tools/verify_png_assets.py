@@ -43,20 +43,27 @@ def main() -> int:
             except Exception as exc:
                 invalid.append(f"{path.relative_to(ROOT)}: {exc}")
 
-    buff_dir = ROOT / "Content" / "Buffs"
-    for source in buff_dir.glob("*.cs"):
-        text = source.read_text(encoding="utf-8")
-        if "ModBuff" not in text:
-            continue
+    mod_texture_roots = [
+        ("Content/Items", "ModItem"),
+        ("Content/Tiles", "ModTile"),
+        ("Content/Projectiles", "ModProjectile"),
+        ("Content/Buffs", "ModBuff"),
+    ]
+    for folder, base_class in mod_texture_roots:
+        for source in (ROOT / folder).rglob("*.cs"):
+            text = source.read_text(encoding="utf-8")
+            if base_class not in text:
+                continue
 
-        match = re.search(r"public\s+class\s+(\w+)\s*:\s*ModBuff", text)
-        if not match:
-            invalid.append(f"{source.relative_to(ROOT)}: could not find ModBuff class name")
-            continue
+            matches = re.findall(rf"public\s+class\s+(\w+)\s*:\s*{base_class}", text)
+            if not matches:
+                invalid.append(f"{source.relative_to(ROOT)}: could not find {base_class} class name")
+                continue
 
-        texture = buff_dir / f"{match.group(1)}.png"
-        if not texture.exists():
-            invalid.append(f"{source.relative_to(ROOT)}: missing client buff texture {texture.relative_to(ROOT)}")
+            for class_name in matches:
+                texture = source.parent / f"{class_name}.png"
+                if not texture.exists():
+                    invalid.append(f"{source.relative_to(ROOT)}: missing client texture {texture.relative_to(ROOT)}")
 
     if invalid:
         print("Invalid PNG assets:")
