@@ -1,4 +1,4 @@
-# 观劫道人
+﻿# 观劫道人
 
 [返回 NPC 总览](../Overview.md)
 
@@ -39,3 +39,11 @@
 - 头像：32x32，破伞和雷纹眉。
 - 动画：idle 4 帧，point_sky 3 帧，walk 6 帧。
 - Prompt 重点：`tribulation watcher taoist NPC, broken umbrella, blue gray robe, lightning patterns`。
+
+## 代码实现
+
+- ✅ NPC类完整（对话/商店/委托/幸福度）
+- ✅ 防御/生命值与wiki对齐
+- ✅ 商店商品阶段性解锁
+- ✅ 一次性宗门委托奖励
+- ✅ Bestiary风味文本

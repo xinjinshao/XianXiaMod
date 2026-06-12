@@ -1,4 +1,4 @@
-# 灵脉蠕虫
+﻿# 灵脉蠕虫
 
 [返回 Boss 总览](../Overview.md) | [整体进度](../../../Progression/Overview.md)
 
@@ -49,3 +49,11 @@
 - 头像：32x32，突出圆形头部和玉色口器。
 - 投射物：灵气尘 16x16，浅青粒子，不要烟雾糊边。
 - Prompt 重点：`small jade spirit wyrm, segmented body, underground worm boss, readable side-view silhouette`。
+
+## 代码实现
+
+- ✅ 数值与wiki对齐（HP/伤害/防御）
+- ✅ 独特阶段AI机制
+- ✅ 6层掉落表（主/次/灵石/灵胶/法器碎片/稀有装饰）
+- ✅ 专家/大师难度缩放
+- ✅ Boss召唤校验（境界+前置+场地+时间）

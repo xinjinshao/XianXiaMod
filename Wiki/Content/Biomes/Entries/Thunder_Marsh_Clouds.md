@@ -1,4 +1,4 @@
-# 雷泽云层
+﻿# 雷泽云层
 
 [返回生态总览](../Overview.md)
 
@@ -37,3 +37,10 @@
 - 装饰：`singing_thunder_stone`，24x32，竖立雷石。
 - 背景：远雷云，低对比，不干扰弹幕。
 - Prompt 重点：`storm cloud platform tile, purple thunder veins, crisp Terraria pixel art`。
+
+## 代码实现
+
+- ✅ 世界生成骨架（Tile铺设+物件放置）
+- ✅ 敌怪生成池（权重与wiki对齐）
+- ✅ 环境效果（星渊污染/雷泽落雷/月骨灵压等）
+- ✅ 判定阈值（tile count ≥ wiki指定值）

@@ -1,4 +1,4 @@
-# 天碑守御
+﻿# 天碑守御
 
 [返回 Boss 总览](../Overview.md)
 
@@ -49,3 +49,11 @@
 - 头像：32x32，玉碑上半和金色眼状符号。
 - 投射物：碑文弹 16x16，审判光柱 32x128。
 - Prompt 重点：`floating jade heaven tablet, golden decree runes, cracked divine archive boss`。
+
+## 代码实现
+
+- ✅ 数值与wiki对齐（HP/伤害/防御）
+- ✅ 独特阶段AI机制
+- ✅ 6层掉落表（主/次/灵石/灵胶/法器碎片/稀有装饰）
+- ✅ 专家/大师难度缩放
+- ✅ Boss召唤校验（境界+前置+场地+时间）

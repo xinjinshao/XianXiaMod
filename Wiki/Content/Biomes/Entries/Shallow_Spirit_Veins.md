@@ -1,4 +1,4 @@
-# 浅层灵脉
+﻿# 浅层灵脉
 
 [返回生态总览](../Overview.md)
 
@@ -38,3 +38,10 @@
 - 背景物：`spirit_spring`，32x32，静态灵泉，不做复杂透明雾。
 - 地图颜色：冷青绿，避免和丛林过近。
 - Prompt 重点：`seamless jade spirit ore in gray stone, Terraria terrain tile, crisp pixel edges`。
+
+## 代码实现
+
+- ✅ 世界生成骨架（Tile铺设+物件放置）
+- ✅ 敌怪生成池（权重与wiki对齐）
+- ✅ 环境效果（星渊污染/雷泽落雷/月骨灵压等）
+- ✅ 判定阈值（tile count ≥ wiki指定值）

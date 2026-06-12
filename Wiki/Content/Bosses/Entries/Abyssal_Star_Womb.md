@@ -1,4 +1,4 @@
-# 星渊胎主
+﻿# 星渊胎主
 
 [返回 Boss 总览](../Overview.md)
 
@@ -49,3 +49,11 @@
 - 头像：32x32，星形瞳孔和裂隙外壳。
 - 幼体：32x32，深蓝小型寄生体。
 - Prompt 重点：`void star womb boss, crystalline shell, dark blue embryo core, readable horror pixel art`。
+
+## 代码实现
+
+- ✅ 数值与wiki对齐（HP/伤害/防御）
+- ✅ 独特阶段AI机制
+- ✅ 6层掉落表（主/次/灵石/灵胶/法器碎片/稀有装饰）
+- ✅ 专家/大师难度缩放
+- ✅ Boss召唤校验（境界+前置+场地+时间）

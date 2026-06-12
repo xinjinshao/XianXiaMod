@@ -1,4 +1,4 @@
-# 雷泽蛟
+﻿# 雷泽蛟
 
 [返回 Boss 总览](../Overview.md)
 
@@ -49,3 +49,11 @@
 - 头像：48x48，角和须必须清楚。
 - 投射物：电弧 32x16，雷球 24x24。
 - Prompt 重点：`thunder jiao dragon, lightning horns, cloud serpent boss, Terraria-style side-view`。
+
+## 代码实现
+
+- ✅ 数值与wiki对齐（HP/伤害/防御）
+- ✅ 独特阶段AI机制
+- ✅ 6层掉落表（主/次/灵石/灵胶/法器碎片/稀有装饰）
+- ✅ 专家/大师难度缩放
+- ✅ Boss召唤校验（境界+前置+场地+时间）

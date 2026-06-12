@@ -1,4 +1,4 @@
-# 坠天信使
+﻿# 坠天信使
 
 [返回 NPC 总览](../Overview.md)
 
@@ -39,3 +39,11 @@
 - 头像：32x32，半面具和碎法旨。
 - 动画：idle 6 帧，decree 4 帧，walk 6 帧。
 - Prompt 重点：`fallen celestial messenger NPC, broken jade robe, half golden mask, floating decree fragments`。
+
+## 代码实现
+
+- ✅ NPC类完整（对话/商店/委托/幸福度）
+- ✅ 防御/生命值与wiki对齐
+- ✅ 商店商品阶段性解锁
+- ✅ 一次性宗门委托奖励
+- ✅ Bestiary风味文本

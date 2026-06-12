@@ -1,4 +1,4 @@
-# 沉炉矿脉
+﻿# 沉炉矿脉
 
 [返回生态总览](../Overview.md)
 
@@ -37,3 +37,10 @@
 - 装饰：`broken_furnace`，48x48，残破炉口和冷却炉心。
 - 背景墙：`black_furnace_wall`，16x16，烟熏石砖与金属铆钉。
 - Prompt 重点：`sunken forge vein, black iron slag, ember cracks, Terraria cave tile`。
+
+## 代码实现
+
+- ✅ 世界生成骨架（Tile铺设+物件放置）
+- ✅ 敌怪生成池（权重与wiki对齐）
+- ✅ 环境效果（星渊污染/雷泽落雷/月骨灵压等）
+- ✅ 判定阈值（tile count ≥ wiki指定值）

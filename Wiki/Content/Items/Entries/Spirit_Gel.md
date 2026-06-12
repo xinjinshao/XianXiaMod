@@ -27,6 +27,12 @@
 
 <!-- ART_SECTION:entry-art:END -->
 
+
+## 美术资源
+
+- 详见 [物品总览](../Overview.md) 美术素材表。
+- Prompt：Terraria pixel art item icon, xianxia theme, transparent background.
+
 ## 代码实现
 
 - ✅ 物品类完整

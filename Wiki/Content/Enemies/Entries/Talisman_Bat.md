@@ -21,3 +21,24 @@
 |------|------|------|
 | 灵气凝胶 | 50% | 1-2 |
 ## 代码: ✅ 数值/AI/掉落
+
+
+## 当前美术素材
+
+<!-- ART_SECTION:entry-art:START -->
+
+| 素材 | 名称 | ID | 类型 | 尺寸 |
+| --- | --- | --- | --- | --- |
+| <img src="../../../../Assets/Final/talisman_bat/talisman_bat__base__v01.png" alt="符纸蝠 base" width="72"> | 符纸蝠 | `talisman_bat` | `base` | 48x32 |
+
+<!-- ART_SECTION:entry-art:END -->
+
+## 美术资源
+
+- 主体：48x32。Prompt：Terraria pixel enemy, xianxia theme, transparent background.
+
+## 代码实现
+
+- ✅ 数值与wiki对齐
+- ✅ 独特AI行为
+- ✅ 掉落表

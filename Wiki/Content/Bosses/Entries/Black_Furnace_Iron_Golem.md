@@ -1,4 +1,4 @@
-# 玄炉铁傀
+﻿# 玄炉铁傀
 
 [返回 Boss 总览](../Overview.md)
 
@@ -49,3 +49,11 @@
 - 头像：32x32，方形铁面和炉心光。
 - 投射物：炉灰 16x16，火星 8x8。
 - Prompt 重点：`heavy black iron furnace golem, glowing chest furnace, hammer fists, crisp pixel art`。
+
+## 代码实现
+
+- ✅ 数值与wiki对齐（HP/伤害/防御）
+- ✅ 独特阶段AI机制
+- ✅ 6层掉落表（主/次/灵石/灵胶/法器碎片/稀有装饰）
+- ✅ 专家/大师难度缩放
+- ✅ Boss召唤校验（境界+前置+场地+时间）

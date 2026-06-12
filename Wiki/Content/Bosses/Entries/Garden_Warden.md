@@ -1,4 +1,4 @@
-# 药宗守园人
+﻿# 药宗守园人
 
 [返回 Boss 总览](../Overview.md)
 
@@ -49,3 +49,11 @@
 - 头像：32x32，木面具和一片发光药叶。
 - 场地物件：药种 16x16，治疗花 32x32。
 - Prompt 重点：`wooden herbal sect garden guardian, vine arms, medicine basket, Terraria-style boss sprite`。
+
+## 代码实现
+
+- ✅ 数值与wiki对齐（HP/伤害/防御）
+- ✅ 独特阶段AI机制
+- ✅ 6层掉落表（主/次/灵石/灵胶/法器碎片/稀有装饰）
+- ✅ 专家/大师难度缩放
+- ✅ Boss召唤校验（境界+前置+场地+时间）

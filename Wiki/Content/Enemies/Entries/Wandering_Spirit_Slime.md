@@ -22,3 +22,24 @@
 | 灵气凝胶 | 100% | 1-3 |
 | 下品灵石 | 25% | 1-2 |
 ## 代码: ✅ 数值/AI/掉落
+
+
+## 当前美术素材
+
+<!-- ART_SECTION:entry-art:START -->
+
+| 素材 | 名称 | ID | 类型 | 尺寸 |
+| --- | --- | --- | --- | --- |
+| <img src="../../../../Assets/Final/wandering_spirit_slime/wandering_spirit_slime__base__v01.png" alt="游灵史莱姆 base" width="72"> | 游灵史莱姆 | `wandering_spirit_slime` | `base` | 48x48 |
+
+<!-- ART_SECTION:entry-art:END -->
+
+## 美术资源
+
+- 主体：48x48。Prompt：Terraria pixel enemy, xianxia theme, transparent background.
+
+## 代码实现
+
+- ✅ 数值与wiki对齐
+- ✅ 独特AI行为
+- ✅ 掉落表

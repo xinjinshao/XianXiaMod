@@ -1,4 +1,4 @@
-# 旧天道核心
+﻿# 旧天道核心
 
 [返回 Boss 总览](../Overview.md)
 
@@ -49,3 +49,11 @@
 - 头像：48x48，核心裂隙和环形法阵。
 - UI 图标：路线图标各 32x32。
 - Prompt 重点：`ancient heavenly dao core, jade divine machine, circular talisman rings, archive light, final boss`。
+
+## 代码实现
+
+- ✅ 数值与wiki对齐（HP/伤害/防御）
+- ✅ 独特阶段AI机制
+- ✅ 6层掉落表（主/次/灵石/灵胶/法器碎片/稀有装饰）
+- ✅ 专家/大师难度缩放
+- ✅ Boss召唤校验（境界+前置+场地+时间）

@@ -1,4 +1,4 @@
-# 坠天宫阙
+﻿# 坠天宫阙
 
 [返回生态总览](../Overview.md)
 
@@ -37,3 +37,10 @@
 - 装饰：`broken_heaven_tablet`，32x64，裂碑和金色铭文。
 - 背景：高空宫阙剪影，低饱和金白。
 - Prompt 重点：`fallen celestial palace jade tile, broken golden decree lines, Terraria pixel art`。
+
+## 代码实现
+
+- ✅ 世界生成骨架（Tile铺设+物件放置）
+- ✅ 敌怪生成池（权重与wiki对齐）
+- ✅ 环境效果（星渊污染/雷泽落雷/月骨灵压等）
+- ✅ 判定阈值（tile count ≥ wiki指定值）

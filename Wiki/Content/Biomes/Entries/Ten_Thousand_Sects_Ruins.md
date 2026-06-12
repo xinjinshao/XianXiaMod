@@ -1,4 +1,4 @@
-# 万宗遗址
+﻿# 万宗遗址
 
 [返回生态总览](../Overview.md)
 
@@ -37,3 +37,10 @@
 - 装饰：`sword_tablet`，32x48，石碑和插剑剪影。
 - 背景墙：藏经阁木墙 16x16，书格图案要简化。
 - Prompt 重点：`ancient cultivation sect ruins, jade stone bricks, sword tablet, Terraria pixel art`。
+
+## 代码实现
+
+- ✅ 世界生成骨架（Tile铺设+物件放置）
+- ✅ 敌怪生成池（权重与wiki对齐）
+- ✅ 环境效果（星渊污染/雷泽落雷/月骨灵压等）
+- ✅ 判定阈值（tile count ≥ wiki指定值）

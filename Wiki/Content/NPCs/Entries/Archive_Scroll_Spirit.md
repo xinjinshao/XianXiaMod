@@ -1,4 +1,4 @@
-# 残卷书灵
+﻿# 残卷书灵
 
 [返回 NPC 总览](../Overview.md)
 
@@ -39,3 +39,11 @@
 - 头像：32x32，展开卷轴和青白眼光。
 - 动画：float 6 帧，page_turn 4 帧。
 - Prompt 重点：`floating archive scroll spirit NPC, tiny light spirit inside ancient scroll, no readable text`。
+
+## 代码实现
+
+- ✅ NPC类完整（对话/商店/委托/幸福度）
+- ✅ 防御/生命值与wiki对齐
+- ✅ 商店商品阶段性解锁
+- ✅ 一次性宗门委托奖励
+- ✅ Bestiary风味文本

@@ -1,4 +1,4 @@
-# 青木药王残影
+﻿# 青木药王残影
 
 [返回 Boss 总览](../Overview.md)
 
@@ -49,3 +49,11 @@
 - 头像：32x32，药鼎和木纹面容。
 - 场地物件：治疗花 24x24，毒花 24x24。
 - Prompt 重点：`ancient herbal alchemist echo, bronze cauldron, green wood halo, Terraria boss sprite`。
+
+## 代码实现
+
+- ✅ 数值与wiki对齐（HP/伤害/防御）
+- ✅ 独特阶段AI机制
+- ✅ 6层掉落表（主/次/灵石/灵胶/法器碎片/稀有装饰）
+- ✅ 专家/大师难度缩放
+- ✅ Boss召唤校验（境界+前置+场地+时间）

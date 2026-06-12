@@ -1,4 +1,4 @@
-# 月骸天渊
+﻿# 月骸天渊
 
 [返回生态总览](../Overview.md)
 
@@ -36,3 +36,10 @@
 - 装饰：`archive_light_pillar`，32x96，竖直归档光，不遮挡角色。
 - 背景墙：`moon_abyss_wall`，16x16，深空底和骨质纹。
 - Prompt 重点：`moon bone abyss terrain, white lunar bone, dark star cracks, crisp Terraria pixel art`。
+
+## 代码实现
+
+- ✅ 世界生成骨架（Tile铺设+物件放置）
+- ✅ 敌怪生成池（权重与wiki对齐）
+- ✅ 环境效果（星渊污染/雷泽落雷/月骨灵压等）
+- ✅ 判定阈值（tile count ≥ wiki指定值）
