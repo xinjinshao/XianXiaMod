@@ -1,48 +1,50 @@
-# ÄıÆøµ¤
 
-[·µ»ØÎïÆ·×ÜÀÀ](../Overview.md)
 
-## µ±Ç°ÃÀÊõËØ²Ä
+## å½“å‰ç¾æœ¯ç´ æ
 
 <!-- ART_SECTION:entry-art:START -->
 
-| ËØ²Ä | ID | ³ß´ç |
+| ç´ æ | ID | å°ºå¯¸ |
 | --- | --- | --- |
-| <img src="../../../../Assets/Final/qi_condensing_pill/qi_condensing_pill__item_icon__v01.png" alt="ÄıÆøµ¤" width="48"> | qi_condensing_pill | 32x32 |
+| <img src="../../../../Assets/Final/qi_condensing_pill/qi_condensing_pill__item_icon__v01.png" alt="å‡æ°”ä¸¹" width="48"> | qi_condensing_pill | 32x32 |
 
 <!-- ART_SECTION:entry-art:END -->
 
-## ÃÀÊõ×ÊÔ´
+## ç¾æœ¯èµ„æº
 
-- Ïê¼û [ÎïÆ·×ÜÀÀ](../Overview.md) ÃÀÊõËØ²Ä±í¡£
-- Prompt£ºTerraria pixel art item icon, xianxia theme, transparent background.
+- è¯¦è§ [ç‰©å“æ€»è§ˆ](../Overview.md) ç¾æœ¯ç´ æè¡¨ã€‚
+- Promptï¼šTerraria pixel art item icon, xianxia theme, transparent background.
 
-## ¶¨Î»
+# å‡æ°”ä¸¹
 
-- Ó¢ÎÄ ID£º`qi_condensing_pill`
-- ·ÖÀà£ºÏûºÄÆ·
-- ½×¶Î£ºPre-Hardmode
+[è¿”å›ç‰©å“æ€»è§ˆ](../Overview.md)
 
-## À´Ô´
+## å®šä½
 
-- ºÏ³É£ºÇàÄ¾¸ùx3 + ÏÂÆ·ÁéÊ¯x5 @ Á¶µ¤Â¯
-- Ò©×ÚÒÅÍ½ÉÌµê
+- è‹±æ–‡ IDï¼š`qi_condensing_pill`
+- åˆ†ç±»ï¼šæ¶ˆè€—å“
+- é˜¶æ®µï¼šPre-Hardmode
 
-## ÓÃÍ¾
+## æ¥æº
 
-- ÓÃÓÚÍ»ÆÆÖÁÄıÆø¾³
-- Ê¹ÓÃÇ°Ğ£Ñéµ±Ç°¾³½çÎªÆôÁé
+- åˆæˆï¼šé’æœ¨æ ¹x3 + ä¸‹å“çµçŸ³x5 @ ç‚¼ä¸¹ç‚‰
+- è¯å®—é—å¾’å•†åº—
 
-## Åä·½
+## ç”¨é€”
 
-| ²ÄÁÏ | ÊıÁ¿ |
+- ç”¨äºçªç ´è‡³å‡æ°”å¢ƒ
+- ä½¿ç”¨å‰æ ¡éªŒå½“å‰å¢ƒç•Œä¸ºå¯çµ
+
+## é…æ–¹
+
+| ææ–™ | æ•°é‡ |
 |------|------|
-| ÇàÄ¾¸ù | 3 |
-| ÏÂÆ·ÁéÊ¯ | 5 |
+| é’æœ¨æ ¹ | 3 |
+| ä¸‹å“çµçŸ³ | 5 |
 
-ÖÆ×÷Õ¾£ºÁ¶µ¤Â¯
+åˆ¶ä½œç«™ï¼šç‚¼ä¸¹ç‚‰
 
-## ´úÂëÊµÏÖ
+## ä»£ç å®ç°
 
-- ? ÎïÆ·ÀàÍêÕû
-- ? Åä·½/µôÂäÊµÏÖ
+- âœ… ç‰©å“ç±»å®Œæ•´
+- âœ… é…æ–¹/æ‰è½å®ç°

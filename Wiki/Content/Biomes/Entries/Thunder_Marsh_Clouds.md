@@ -1,46 +1,48 @@
-# À×ÔóÔÆ²ã
 
-[·µ»ØÉúÌ¬×ÜÀÀ](../Overview.md)
 
-## µ±Ç°ÃÀÊõËØ²Ä
+## å½“å‰ç¾æœ¯ç´ æ
 
 <!-- ART_SECTION:entry-art:START -->
 
-| ËØ²Ä | Ãû³Æ | ID | ÀàĞÍ | ³ß´ç |
+| ç´ æ | åç§° | ID | ç±»å‹ | å°ºå¯¸ |
 | --- | --- | --- | --- | --- |
-| <img src="../../../../Assets/Final/thunder_cloud_tile/thunder_cloud_tile__tile__v01.png" alt="À×ÔÆ¿é tile" width="64"> | À×ÔÆ¿é | `thunder_cloud_tile` | `tile` | 16x16 |
-| <img src="../../../../Assets/Final/singing_thunder_stone/singing_thunder_stone__object__v01.png" alt="ÃùÀ×Ê¯ object" width="64"> | ÃùÀ×Ê¯ | `singing_thunder_stone` | `object` | 24x32 |
+| <img src="../../../../Assets/Final/thunder_cloud_tile/thunder_cloud_tile__tile__v01.png" alt="é›·äº‘å— tile" width="64"> | é›·äº‘å— | `thunder_cloud_tile` | `tile` | 16x16 |
+| <img src="../../../../Assets/Final/singing_thunder_stone/singing_thunder_stone__object__v01.png" alt="é¸£é›·çŸ³ object" width="64"> | é¸£é›·çŸ³ | `singing_thunder_stone` | `object` | 24x32 |
 
 <!-- ART_SECTION:entry-art:END -->
 
-## ÃÀÊõ×ÊÔ´
+## ç¾æœ¯èµ„æº
 
-- Tile£º`thunder_cloud_tile`£¬16x16£¬Éî×ÏÔÆ¿é¡¢ÉÁÀ¶ÁÑÎÆ£¬±ßÔµÏñËØÇå³ş¡£
-- ×°ÊÎ£º`singing_thunder_stone`£¬24x32£¬ÊúÁ¢À×Ê¯¡£
-- ±³¾°£ºÔ¶À×ÔÆ£¬µÍ¶Ô±È£¬²»¸ÉÈÅµ¯Ä»¡£
-- Prompt ÖØµã£º`storm cloud platform tile, purple thunder veins, crisp Terraria pixel art`¡£
+- Tileï¼š`thunder_cloud_tile`ï¼Œ16x16ï¼Œæ·±ç´«äº‘å—ã€é—ªè“è£‚çº¹ï¼Œè¾¹ç¼˜åƒç´ æ¸…æ¥šã€‚
+- è£…é¥°ï¼š`singing_thunder_stone`ï¼Œ24x32ï¼Œç«–ç«‹é›·çŸ³ã€‚
+- èƒŒæ™¯ï¼šè¿œé›·äº‘ï¼Œä½å¯¹æ¯”ï¼Œä¸å¹²æ‰°å¼¹å¹•ã€‚
+- Prompt é‡ç‚¹ï¼š`storm cloud platform tile, purple thunder veins, crisp Terraria pixel art`ã€‚
 
-## ¸ÅÄî
+# é›·æ³½äº‘å±‚
 
-À×ÔóÔÆ²ãÊÇ Hardmode ºó³öÏÖÔÚ¸ß¿ÕµÄÀ×ÏµÉúÌ¬¡£ËüÌá¹©¿¹½Ù²ÄÁÏºÍ¿ÕÕ½ Boss¡£
+[è¿”å›ç”Ÿæ€æ€»è§ˆ](../Overview.md)
 
-## Éú³É
+## æ¦‚å¿µ
 
-- ½×¶Î£ºHardmode¡£
-- Î»ÖÃ£º¿Õµº¸½½ü»ò¸ß¿ÕÔÆ²ãÇøÓò¡£
-- ½á¹¹£ºÀ×ÔÆÆ½Ì¨¡¢¸¡¿ÕË®Íİ¡¢ÃùÀ×Ê¯´Ø¡£
-- ÌìÆøÁª¶¯£ºÀ×±©Ê±Éú³ÉÂÊºÍµĞ¹ÖÇ¿¶ÈÌá¸ß¡£
+é›·æ³½äº‘å±‚æ˜¯ Hardmode åå‡ºç°åœ¨é«˜ç©ºçš„é›·ç³»ç”Ÿæ€ã€‚å®ƒæä¾›æŠ—åŠ«ææ–™å’Œç©ºæˆ˜ Bossã€‚
 
-## ÄÚÈİ
+## ç”Ÿæˆ
 
-- µĞ¹Ö£ºÀ×ÎÆÓ¥¡¢½ÙÔÆÁé¡£
-- Boss£º[À×ÔóòÔ](../../Bosses/Entries/Thunder_Marsh_Jiao.md)¡£
-- ×ÊÔ´£ºÀ×ÎÆÓğ¡¢½ÙÔÆÂ¶¡¢ÃùÀ×Ê¯¡£
-- »úÖÆ£º[Ìì½Ù](../../../Systems/Tribulation.md)¡£
+- é˜¶æ®µï¼šHardmodeã€‚
+- ä½ç½®ï¼šç©ºå²›é™„è¿‘æˆ–é«˜ç©ºäº‘å±‚åŒºåŸŸã€‚
+- ç»“æ„ï¼šé›·äº‘å¹³å°ã€æµ®ç©ºæ°´æ´¼ã€é¸£é›·çŸ³ç°‡ã€‚
+- å¤©æ°”è”åŠ¨ï¼šé›·æš´æ—¶ç”Ÿæˆç‡å’Œæ•Œæ€ªå¼ºåº¦æé«˜ã€‚
 
-## ´úÂëÊµÏÖ
+## å†…å®¹
 
-- ? ÊÀ½çÉú³É¹Ç¼Ü£¨TileÆÌÉè+Îï¼ş·ÅÖÃ£©
-- ? µĞ¹ÖÉú³É³Ø£¨È¨ÖØÓëwiki¶ÔÆë£©
-- ? »·¾³Ğ§¹û£¨ĞÇÔ¨ÎÛÈ¾/À×ÔóÂäÀ×/ÔÂ¹ÇÁéÑ¹µÈ£©
-- ? ÅĞ¶¨ãĞÖµ£¨tile count ¡İ wikiÖ¸¶¨Öµ£©
+- æ•Œæ€ªï¼šé›·çº¹é¹°ã€åŠ«äº‘çµã€‚
+- Bossï¼š[é›·æ³½è›Ÿ](../../Bosses/Entries/Thunder_Marsh_Jiao.md)ã€‚
+- èµ„æºï¼šé›·çº¹ç¾½ã€åŠ«äº‘éœ²ã€é¸£é›·çŸ³ã€‚
+- æœºåˆ¶ï¼š[å¤©åŠ«](../../../Systems/Tribulation.md)ã€‚
+
+## ä»£ç å®ç°
+
+- âœ… ä¸–ç•Œç”Ÿæˆéª¨æ¶ï¼ˆTileé“ºè®¾+ç‰©ä»¶æ”¾ç½®ï¼‰
+- âœ… æ•Œæ€ªç”Ÿæˆæ± ï¼ˆæƒé‡ä¸wikiå¯¹é½ï¼‰
+- âœ… ç¯å¢ƒæ•ˆæœï¼ˆæ˜Ÿæ¸Šæ±¡æŸ“/é›·æ³½è½é›·/æœˆéª¨çµå‹ç­‰ï¼‰
+- âœ… åˆ¤å®šé˜ˆå€¼ï¼ˆtile count â‰¥ wikiæŒ‡å®šå€¼ï¼‰

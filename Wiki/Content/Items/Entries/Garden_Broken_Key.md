@@ -1,47 +1,49 @@
-# ÊØÔ°²ĞÔ¿
 
-[·µ»ØÎïÆ·×ÜÀÀ](../Overview.md)
 
-## µ±Ç°ÃÀÊõËØ²Ä
+## å½“å‰ç¾æœ¯ç´ æ
 
 <!-- ART_SECTION:entry-art:START -->
 
-| ËØ²Ä | ID | ³ß´ç |
+| ç´ æ | ID | å°ºå¯¸ |
 | --- | --- | --- |
-| <img src="../../../../Assets/Final/garden_broken_key/garden_broken_key__item_icon__v01.png" alt="ÊØÔ°²ĞÔ¿" width="48"> | garden_broken_key | 32x32 |
+| <img src="../../../../Assets/Final/garden_broken_key/garden_broken_key__item_icon__v01.png" alt="å®ˆå›­æ®‹é’¥" width="48"> | garden_broken_key | 32x32 |
 
 <!-- ART_SECTION:entry-art:END -->
 
-## ÃÀÊõ×ÊÔ´
+## ç¾æœ¯èµ„æº
 
-- Ïê¼û [ÎïÆ·×ÜÀÀ](../Overview.md) ÃÀÊõËØ²Ä±í¡£
-- Prompt£ºTerraria pixel art item icon, xianxia theme, transparent background.
+- è¯¦è§ [ç‰©å“æ€»è§ˆ](../Overview.md) ç¾æœ¯ç´ æè¡¨ã€‚
+- Promptï¼šTerraria pixel art item icon, xianxia theme, transparent background.
 
-## ¶¨Î»
+# å®ˆå›­æ®‹é’¥
 
-- Ó¢ÎÄ ID£º`garden_broken_key`
-- ·ÖÀà£ºBossÕÙ»½Îï
-- ½×¶Î£ºPre-Hardmode
+[è¿”å›ç‰©å“æ€»è§ˆ](../Overview.md)
 
-## À´Ô´
+## å®šä½
 
-- ºÏ³É£ºÊØÔ°²ĞÔ¿x1 + ÏÂÆ·ÁéÊ¯x10 @ ¹¤×÷Ì¨
+- è‹±æ–‡ IDï¼š`garden_broken_key`
+- åˆ†ç±»ï¼šBosså¬å”¤ç‰©
+- é˜¶æ®µï¼šPre-Hardmode
 
-## ÓÃÍ¾
+## æ¥æº
 
-- ÔÚÇàÄ¾Ò©Ô°Ê¹ÓÃ£¬ÕÙ»½Ò©×ÚÊØÔ°ÈË
-- ĞèÒªÆôÁé¾³+»÷°ÜÁéÂöÈä³æ
+- åˆæˆï¼šå®ˆå›­æ®‹é’¥x1 + ä¸‹å“çµçŸ³x10 @ å·¥ä½œå°
 
-## Åä·½
+## ç”¨é€”
 
-| ²ÄÁÏ | ÊıÁ¿ |
+- åœ¨é’æœ¨è¯å›­ä½¿ç”¨ï¼Œå¬å”¤è¯å®—å®ˆå›­äºº
+- éœ€è¦å¯çµå¢ƒ+å‡»è´¥çµè„‰è •è™«
+
+## é…æ–¹
+
+| ææ–™ | æ•°é‡ |
 |------|------|
-| ÊØÔ°²ĞÔ¿ | 1 |
-| ÏÂÆ·ÁéÊ¯ | 10 |
+| å®ˆå›­æ®‹é’¥ | 1 |
+| ä¸‹å“çµçŸ³ | 10 |
 
-ÖÆ×÷Õ¾£º¹¤×÷Ì¨
+åˆ¶ä½œç«™ï¼šå·¥ä½œå°
 
-## ´úÂëÊµÏÖ
+## ä»£ç å®ç°
 
-- ? ÎïÆ·ÀàÍêÕû
-- ? Åä·½/µôÂäÊµÏÖ
+- âœ… ç‰©å“ç±»å®Œæ•´
+- âœ… é…æ–¹/æ‰è½å®ç°

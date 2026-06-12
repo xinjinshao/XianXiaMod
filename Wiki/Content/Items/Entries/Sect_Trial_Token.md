@@ -1,40 +1,42 @@
-# ×ÚÃÅÊÔÁ¶Áî
 
-[·µ»ØÎïÆ·×ÜÀÀ](../Overview.md)
 
-## µ±Ç°ÃÀÊõËØ²Ä
+## å½“å‰ç¾æœ¯ç´ æ
 
 <!-- ART_SECTION:entry-art:START -->
 
-| ËØ²Ä | ID | ³ß´ç |
+| ç´ æ | ID | å°ºå¯¸ |
 | --- | --- | --- |
-| <img src="../../../../Assets/Final/sect_trial_token/sect_trial_token__item_icon__v01.png" alt="×ÚÃÅÊÔÁ¶Áî" width="48"> | sect_trial_token | 32x32 |
+| <img src="../../../../Assets/Final/sect_trial_token/sect_trial_token__item_icon__v01.png" alt="å®—é—¨è¯•ç‚¼ä»¤" width="48"> | sect_trial_token | 32x32 |
 
 <!-- ART_SECTION:entry-art:END -->
 
-## ÃÀÊõ×ÊÔ´
+## ç¾æœ¯èµ„æº
 
-- Ïê¼û [ÎïÆ·×ÜÀÀ](../Overview.md) ÃÀÊõËØ²Ä±í¡£
-- Prompt£ºTerraria pixel art item icon, xianxia theme, transparent background.
+- è¯¦è§ [ç‰©å“æ€»è§ˆ](../Overview.md) ç¾æœ¯ç´ æè¡¨ã€‚
+- Promptï¼šTerraria pixel art item icon, xianxia theme, transparent background.
 
-## ¶¨Î»
+# å®—é—¨è¯•ç‚¼ä»¤
 
-- Ó¢ÎÄ ID£º`sect_trial_token`
-- ·ÖÀà£º²ÄÁÏ
-- ½×¶Î£ºPost-Plantera
+[è¿”å›ç‰©å“æ€»è§ˆ](../Overview.md)
 
-## À´Ô´
+## å®šä½
 
-- Íò×ÚÒÅÖ·µĞ¹ÖµôÂä
-- ¾­¸ó¾íÁéÉÌµê
+- è‹±æ–‡ IDï¼š`sect_trial_token`
+- åˆ†ç±»ï¼šææ–™
+- é˜¶æ®µï¼šPost-Plantera
 
-## ÓÃÍ¾
+## æ¥æº
 
-- BossÕÙ»½ÎïºÏ³É
-- ÎŞÏà½£ÆÇ/Ò©Íõ²ĞÓ°ÕÙ»½
-- ×ÚÃÅÊÔÁ¶Ì¨ºÏ³É
+- ä¸‡å®—é—å€æ•Œæ€ªæ‰è½
+- ç»é˜å·çµå•†åº—
 
-## ´úÂëÊµÏÖ
+## ç”¨é€”
 
-- ? ÎïÆ·ÀàÍêÕû
-- ? Åä·½/µôÂäÊµÏÖ
+- Bosså¬å”¤ç‰©åˆæˆ
+- æ— ç›¸å‰‘é­„/è¯ç‹æ®‹å½±å¬å”¤
+- å®—é—¨è¯•ç‚¼å°åˆæˆ
+
+## ä»£ç å®ç°
+
+- âœ… ç‰©å“ç±»å®Œæ•´
+- âœ… é…æ–¹/æ‰è½å®ç°

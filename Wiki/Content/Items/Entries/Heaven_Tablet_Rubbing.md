@@ -1,47 +1,49 @@
-# Ìì±®ÍØÆ¬
 
-[·µ»ØÎïÆ·×ÜÀÀ](../Overview.md)
 
-## µ±Ç°ÃÀÊõËØ²Ä
+## å½“å‰ç¾æœ¯ç´ æ
 
 <!-- ART_SECTION:entry-art:START -->
 
-| ËØ²Ä | ID | ³ß´ç |
+| ç´ æ | ID | å°ºå¯¸ |
 | --- | --- | --- |
-| <img src="../../../../Assets/Final/heaven_tablet_rubbing/heaven_tablet_rubbing__item_icon__v01.png" alt="Ìì±®ÍØÆ¬" width="48"> | heaven_tablet_rubbing | 32x32 |
+| <img src="../../../../Assets/Final/heaven_tablet_rubbing/heaven_tablet_rubbing__item_icon__v01.png" alt="å¤©ç¢‘æ‹“ç‰‡" width="48"> | heaven_tablet_rubbing | 32x32 |
 
 <!-- ART_SECTION:entry-art:END -->
 
-## ÃÀÊõ×ÊÔ´
+## ç¾æœ¯èµ„æº
 
-- Ïê¼û [ÎïÆ·×ÜÀÀ](../Overview.md) ÃÀÊõËØ²Ä±í¡£
-- Prompt£ºTerraria pixel art item icon, xianxia theme, transparent background.
+- è¯¦è§ [ç‰©å“æ€»è§ˆ](../Overview.md) ç¾æœ¯ç´ æè¡¨ã€‚
+- Promptï¼šTerraria pixel art item icon, xianxia theme, transparent background.
 
-## ¶¨Î»
+# å¤©ç¢‘æ‹“ç‰‡
 
-- Ó¢ÎÄ ID£º`heaven_tablet_rubbing`
-- ·ÖÀà£ºBossÕÙ»½Îï
-- ½×¶Î£ºPost-Golem
+[è¿”å›ç‰©å“æ€»è§ˆ](../Overview.md)
 
-## À´Ô´
+## å®šä½
 
-- ºÏ³É£ºÌì±®ÍØÆ¬x1 + ÏÂÆ·ÁéÊ¯x31 @ ¶ñÄ§¼ÀÌ³
+- è‹±æ–‡ IDï¼š`heaven_tablet_rubbing`
+- åˆ†ç±»ï¼šBosså¬å”¤ç‰©
+- é˜¶æ®µï¼šPost-Golem
 
-## ÓÃÍ¾
+## æ¥æº
 
-- ÔÚ×¹Ìì¹¬ãÚÊ¹ÓÃ£¬ÕÙ»½Ìì±®ÊØÓù
-- ¸ü¸ßÅäÖÃ¿ÉÕÙ»½²ĞÌì¼à²ìÊ¹£¨ĞèÔªÓ¤+»÷°ÜÌì±®ÊØÓù£©
+- åˆæˆï¼šå¤©ç¢‘æ‹“ç‰‡x1 + ä¸‹å“çµçŸ³x31 @ æ¶é­”ç¥­å›
 
-## Åä·½
+## ç”¨é€”
 
-| ²ÄÁÏ | ÊıÁ¿ |
+- åœ¨å å¤©å®«é˜™ä½¿ç”¨ï¼Œå¬å”¤å¤©ç¢‘å®ˆå¾¡
+- æ›´é«˜é…ç½®å¯å¬å”¤æ®‹å¤©ç›‘å¯Ÿä½¿ï¼ˆéœ€å…ƒå©´+å‡»è´¥å¤©ç¢‘å®ˆå¾¡ï¼‰
+
+## é…æ–¹
+
+| ææ–™ | æ•°é‡ |
 |------|------|
-| Ìì±®ÍØÆ¬ | 1 |
-| ÏÂÆ·ÁéÊ¯ | 31 |
+| å¤©ç¢‘æ‹“ç‰‡ | 1 |
+| ä¸‹å“çµçŸ³ | 31 |
 
-ÖÆ×÷Õ¾£º¶ñÄ§¼ÀÌ³
+åˆ¶ä½œç«™ï¼šæ¶é­”ç¥­å›
 
-## ´úÂëÊµÏÖ
+## ä»£ç å®ç°
 
-- ? ÎïÆ·ÀàÍêÕû
-- ? Åä·½/µôÂäÊµÏÖ
+- âœ… ç‰©å“ç±»å®Œæ•´
+- âœ… é…æ–¹/æ‰è½å®ç°

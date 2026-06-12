@@ -1,62 +1,64 @@
-# ½ÙÔÆÁé
 
-[·µ»ØµĞ¹Ö×ÜÀÀ](../Overview.md)
 
-## µ±Ç°ÃÀÊõËØ²Ä
+## å½“å‰ç¾æœ¯ç´ æ
 
 <!-- ART_SECTION:entry-art:START -->
 
-| ËØ²Ä | Ãû³Æ | ID | ÀàĞÍ | ³ß´ç |
+| ç´ æ | åç§° | ID | ç±»å‹ | å°ºå¯¸ |
 | --- | --- | --- | --- | --- |
-| <img src="../../../../Assets/Final/tribulation_cloudling/tribulation_cloudling__base__v01.png" alt="½ÙÔÆÁé base" width="72"> | ½ÙÔÆÁé | `tribulation_cloudling` | `base` | 48x48 |
+| <img src="../../../../Assets/Final/tribulation_cloudling/tribulation_cloudling__base__v01.png" alt="åŠ«äº‘çµ base" width="72"> | åŠ«äº‘çµ | `tribulation_cloudling` | `base` | 48x48 |
 
 <!-- ART_SECTION:entry-art:END -->
 
-## ÃÀÊõ×ÊÔ´
+## ç¾æœ¯èµ„æº
 
-- Ö÷Ìå£º48x48£¬×ÏÉ«Ğ¡À×ÔÆ£¬ÓĞÓñÉ«Ãæ¾ßËéÆ¬¡£
-- ¶¯»­£º`float` 6Ö¡¡£
-- Prompt£º`small tribulation cloud spirit, jade mask shard, purple lightning`
+- ä¸»ä½“ï¼š48x48ï¼Œç´«è‰²å°é›·äº‘ï¼Œæœ‰ç‰è‰²é¢å…·ç¢ç‰‡ã€‚
+- åŠ¨ç”»ï¼š`float` 6å¸§ã€‚
+- Promptï¼š`small tribulation cloud spirit, jade mask shard, purple lightning`
 
-## ¶¨Î»
+# åŠ«äº‘çµ
 
-- Ó¢ÎÄ ID£º`tribulation_cloudling`
-- ÖĞÎÄÃû£º½ÙÔÆÁé
-- ½×¶Î£ºHardmode
-- ÉúÌ¬£º[À×ÔóÔÆ²ã](../../Biomes/Entries/Thunder_Marsh_Clouds.md)
+[è¿”å›æ•Œæ€ªæ€»è§ˆ](../Overview.md)
 
-## Éú³ÉÌõ¼ş
+## å®šä½
 
-| ÉúÌ¬ | Éú³É¸ÅÂÊ | È¨ÖØ |
+- è‹±æ–‡ IDï¼š`tribulation_cloudling`
+- ä¸­æ–‡åï¼šåŠ«äº‘çµ
+- é˜¶æ®µï¼šHardmode
+- ç”Ÿæ€ï¼š[é›·æ³½äº‘å±‚](../../Biomes/Entries/Thunder_Marsh_Clouds.md)
+
+## ç”Ÿæˆæ¡ä»¶
+
+| ç”Ÿæ€ | ç”Ÿæˆæ¦‚ç‡ | æƒé‡ |
 |------|----------|------|
-| À×ÔóÔÆ²ã | 18% | 0.45 |
+| é›·æ³½äº‘å±‚ | 18% | 0.45 |
 
-## ÊıÖµ
+## æ•°å€¼
 
-| ÊôĞÔ | Öµ |
+| å±æ€§ | å€¼ |
 |------|-----|
-| ÉúÃü | 240 |
-| ÉËº¦ | 42 |
-| ·ÀÓù | 16 |
-| »÷ÍË¿¹ĞÔ | 40% |
-| AI ÀàĞÍ | Teleport caster |
-| Banner »÷É±Êı | 50 |
+| ç”Ÿå‘½ | 240 |
+| ä¼¤å®³ | 42 |
+| é˜²å¾¡ | 16 |
+| å‡»é€€æŠ—æ€§ | 40% |
+| AI ç±»å‹ | Teleport caster |
+| Banner å‡»æ€æ•° | 50 |
 
-## ĞĞÎª
+## è¡Œä¸º
 
-- ÉÁÏÖÊ©·¨ĞÍµĞ¹Ö¡£
-- Ã¿150 tickÉÁÏÖµ½Íæ¼ÒÔ¤²âÎ»ÖÃ£¨`target.Center + target.velocity * 30f`£©ÉÏ·½Ëæ»úÆ«ÒÆ´¦¡£
-- ÔÚÔ¤²âÎ»ÖÃÉú³É`TribulationWarningLineProjectile`ÂäÀ×Ô¤¾¯Ïß¡£
+- é—ªç°æ–½æ³•å‹æ•Œæ€ªã€‚
+- æ¯150 tické—ªç°åˆ°ç©å®¶é¢„æµ‹ä½ç½®ï¼ˆ`target.Center + target.velocity * 30f`ï¼‰ä¸Šæ–¹éšæœºåç§»å¤„ã€‚
+- åœ¨é¢„æµ‹ä½ç½®ç”Ÿæˆ`TribulationWarningLineProjectile`è½é›·é¢„è­¦çº¿ã€‚
 
-## µôÂä
+## æ‰è½
 
-| ÎïÆ· | ¸ÅÂÊ | ÊıÁ¿ |
+| ç‰©å“ | æ¦‚ç‡ | æ•°é‡ |
 |------|------|------|
-| ½ÙÔÆÂ¶ | 50% | 1-2 |
-| Æ÷ÅßËéÆ¬ | 33% | 1-2 |
+| åŠ«äº‘éœ² | 50% | 1-2 |
+| å™¨èƒšç¢ç‰‡ | 33% | 1-2 |
 
-## ´úÂëÊµÏÖ
+## ä»£ç å®ç°
 
-- ? ÊıÖµÓëwikiÍêÈ«¶ÔÆë
-- ? ¶ÀÌØAIĞĞÎª
-- ? Ë«ÖØµôÂä±í
+- âœ… æ•°å€¼ä¸wikiå®Œå…¨å¯¹é½
+- âœ… ç‹¬ç‰¹AIè¡Œä¸º
+- âœ… åŒé‡æ‰è½è¡¨

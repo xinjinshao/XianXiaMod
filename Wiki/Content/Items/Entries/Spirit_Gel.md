@@ -1,38 +1,40 @@
-# ÁéÆøÄı½º
 
-[·µ»ØÎïÆ·×ÜÀÀ](../Overview.md)
 
-## µ±Ç°ÃÀÊõËØ²Ä
+## å½“å‰ç¾æœ¯ç´ æ
 
 <!-- ART_SECTION:entry-art:START -->
 
-| ËØ²Ä | ID | ³ß´ç |
+| ç´ æ | ID | å°ºå¯¸ |
 | --- | --- | --- |
-| <img src="../../../../Assets/Final/spirit_gel/spirit_gel__item_icon__v01.png" alt="ÁéÆøÄı½º" width="48"> | spirit_gel | 32x32 |
+| <img src="../../../../Assets/Final/spirit_gel/spirit_gel__item_icon__v01.png" alt="çµæ°”å‡èƒ¶" width="48"> | spirit_gel | 32x32 |
 
 <!-- ART_SECTION:entry-art:END -->
 
-## ÃÀÊõ×ÊÔ´
+## ç¾æœ¯èµ„æº
 
-- Ïê¼û [ÎïÆ·×ÜÀÀ](../Overview.md) ÃÀÊõËØ²Ä±í¡£
-- Prompt£ºTerraria pixel art item icon, xianxia theme, transparent background.
+- è¯¦è§ [ç‰©å“æ€»è§ˆ](../Overview.md) ç¾æœ¯ç´ æè¡¨ã€‚
+- Promptï¼šTerraria pixel art item icon, xianxia theme, transparent background.
 
-## ¶¨Î»
+# çµæ°”å‡èƒ¶
 
-- Ó¢ÎÄ ID£º`spirit_gel`
-- ·ÖÀà£º²ÄÁÏ
-- ½×¶Î£ºPre-Boss
+[è¿”å›ç‰©å“æ€»è§ˆ](../Overview.md)
 
-## À´Ô´
+## å®šä½
 
-- ÓÎÁéÊ·À³Ä·µôÂä£¨100%£©
+- è‹±æ–‡ IDï¼š`spirit_gel`
+- åˆ†ç±»ï¼šææ–™
+- é˜¶æ®µï¼šPre-Boss
 
-## ÓÃÍ¾
+## æ¥æº
 
-- ÔçÆÚÅä·½²ÄÁÏ
-- ÁéÂöÏãºÏ³É
+- æ¸¸çµå²è±å§†æ‰è½ï¼ˆ100%ï¼‰
 
-## ´úÂëÊµÏÖ
+## ç”¨é€”
 
-- ? ÎïÆ·ÀàÍêÕû
-- ? Åä·½/µôÂäÊµÏÖ
+- æ—©æœŸé…æ–¹ææ–™
+- çµè„‰é¦™åˆæˆ
+
+## ä»£ç å®ç°
+
+- âœ… ç‰©å“ç±»å®Œæ•´
+- âœ… é…æ–¹/æ‰è½å®ç°

@@ -1,47 +1,49 @@
-# ÒıÆø·û
 
-[·µ»ØÎïÆ·×ÜÀÀ](../Overview.md)
 
-## µ±Ç°ÃÀÊõËØ²Ä
+## å½“å‰ç¾æœ¯ç´ æ
 
 <!-- ART_SECTION:entry-art:START -->
 
-| ËØ²Ä | ID | ³ß´ç |
+| ç´ æ | ID | å°ºå¯¸ |
 | --- | --- | --- |
-| <img src="../../../../Assets/Final/qi_drawing_talisman/qi_drawing_talisman__item_icon__v01.png" alt="ÒıÆø·û" width="48"> | qi_drawing_talisman | 32x32 |
+| <img src="../../../../Assets/Final/qi_drawing_talisman/qi_drawing_talisman__item_icon__v01.png" alt="å¼•æ°”ç¬¦" width="48"> | qi_drawing_talisman | 32x32 |
 
 <!-- ART_SECTION:entry-art:END -->
 
-## ÃÀÊõ×ÊÔ´
+## ç¾æœ¯èµ„æº
 
-- Ïê¼û [ÎïÆ·×ÜÀÀ](../Overview.md) ÃÀÊõËØ²Ä±í¡£
-- Prompt£ºTerraria pixel art item icon, xianxia theme, transparent background.
+- è¯¦è§ [ç‰©å“æ€»è§ˆ](../Overview.md) ç¾æœ¯ç´ æè¡¨ã€‚
+- Promptï¼šTerraria pixel art item icon, xianxia theme, transparent background.
 
-## ¶¨Î»
+# å¼•æ°”ç¬¦
 
-- Ó¢ÎÄ ID£º`qi_drawing_talisman`
-- ·ÖÀà£ºÏûºÄÆ·
-- ½×¶Î£ºPre-Boss
+[è¿”å›ç‰©å“æ€»è§ˆ](../Overview.md)
 
-## À´Ô´
+## å®šä½
 
-- ºÏ³É£ºÏÂÆ·ÁéÊ¯x3 + ÁéÆøÄı½ºx2 @ ¹¤×÷Ì¨
+- è‹±æ–‡ IDï¼š`qi_drawing_talisman`
+- åˆ†ç±»ï¼šæ¶ˆè€—å“
+- é˜¶æ®µï¼šPre-Boss
 
-## ÓÃÍ¾
+## æ¥æº
 
-- Ê¹ÓÃºó½âËøÁéÆøÏµÍ³£¨ÆôÁé¾³£©
-- »Ö¸´30µãÁéÆø
+- åˆæˆï¼šä¸‹å“çµçŸ³x3 + çµæ°”å‡èƒ¶x2 @ å·¥ä½œå°
 
-## Åä·½
+## ç”¨é€”
 
-| ²ÄÁÏ | ÊıÁ¿ |
+- ä½¿ç”¨åè§£é”çµæ°”ç³»ç»Ÿï¼ˆå¯çµå¢ƒï¼‰
+- æ¢å¤30ç‚¹çµæ°”
+
+## é…æ–¹
+
+| ææ–™ | æ•°é‡ |
 |------|------|
-| ÏÂÆ·ÁéÊ¯ | 3 |
-| ÁéÆøÄı½º | 2 |
+| ä¸‹å“çµçŸ³ | 3 |
+| çµæ°”å‡èƒ¶ | 2 |
 
-ÖÆ×÷Õ¾£º¹¤×÷Ì¨
+åˆ¶ä½œç«™ï¼šå·¥ä½œå°
 
-## ´úÂëÊµÏÖ
+## ä»£ç å®ç°
 
-- ? ÎïÆ·ÀàÍêÕû
-- ? Åä·½/µôÂäÊµÏÖ
+- âœ… ç‰©å“ç±»å®Œæ•´
+- âœ… é…æ–¹/æ‰è½å®ç°

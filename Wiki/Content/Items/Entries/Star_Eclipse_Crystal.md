@@ -1,41 +1,43 @@
-# ĞÇÊ´¾§
 
-[·µ»ØÎïÆ·×ÜÀÀ](../Overview.md)
 
-## µ±Ç°ÃÀÊõËØ²Ä
+## å½“å‰ç¾æœ¯ç´ æ
 
 <!-- ART_SECTION:entry-art:START -->
 
-| ËØ²Ä | ID | ³ß´ç |
+| ç´ æ | ID | å°ºå¯¸ |
 | --- | --- | --- |
-| <img src="../../../../Assets/Final/star_eclipse_crystal/star_eclipse_crystal__item_icon__v01.png" alt="ĞÇÊ´¾§" width="48"> | star_eclipse_crystal | 32x32 |
+| <img src="../../../../Assets/Final/star_eclipse_crystal/star_eclipse_crystal__item_icon__v01.png" alt="æ˜Ÿèš€æ™¶" width="48"> | star_eclipse_crystal | 32x32 |
 
 <!-- ART_SECTION:entry-art:END -->
 
-## ÃÀÊõ×ÊÔ´
+## ç¾æœ¯èµ„æº
 
-- Ïê¼û [ÎïÆ·×ÜÀÀ](../Overview.md) ÃÀÊõËØ²Ä±í¡£
-- Prompt£ºTerraria pixel art item icon, xianxia theme, transparent background.
+- è¯¦è§ [ç‰©å“æ€»è§ˆ](../Overview.md) ç¾æœ¯ç´ æè¡¨ã€‚
+- Promptï¼šTerraria pixel art item icon, xianxia theme, transparent background.
 
-## ¶¨Î»
+# æ˜Ÿèš€æ™¶
 
-- Ó¢ÎÄ ID£º`star_eclipse_crystal`
-- ·ÖÀà£º²ÄÁÏ
-- ½×¶Î£ºHardmode
+[è¿”å›ç‰©å“æ€»è§ˆ](../Overview.md)
 
-## À´Ô´
+## å®šä½
 
-- ĞÇÔ¨ÁÑÏ¶²É¿ó
-- ĞÇÊ´ĞŞÊ¿µôÂä£¨50%£©
-- ĞÇÔ¨Ó×ÌåµôÂä£¨50%£©
+- è‹±æ–‡ IDï¼š`star_eclipse_crystal`
+- åˆ†ç±»ï¼šææ–™
+- é˜¶æ®µï¼šHardmode
 
-## ÓÃÍ¾
+## æ¥æº
 
-- ½ğµ¤Í»ÆÆ²ÄÁÏ
-- ĞÇÔ¨×°±¸²ÄÁÏ
-- ĞÇÔ¨½û·ûºÏ³É
+- æ˜Ÿæ¸Šè£‚éš™é‡‡çŸ¿
+- æ˜Ÿèš€ä¿®å£«æ‰è½ï¼ˆ50%ï¼‰
+- æ˜Ÿæ¸Šå¹¼ä½“æ‰è½ï¼ˆ50%ï¼‰
 
-## ´úÂëÊµÏÖ
+## ç”¨é€”
 
-- ? ÎïÆ·ÀàÍêÕû
-- ? Åä·½/µôÂäÊµÏÖ
+- é‡‘ä¸¹çªç ´ææ–™
+- æ˜Ÿæ¸Šè£…å¤‡ææ–™
+- æ˜Ÿæ¸Šç¦ç¬¦åˆæˆ
+
+## ä»£ç å®ç°
+
+- âœ… ç‰©å“ç±»å®Œæ•´
+- âœ… é…æ–¹/æ‰è½å®ç°

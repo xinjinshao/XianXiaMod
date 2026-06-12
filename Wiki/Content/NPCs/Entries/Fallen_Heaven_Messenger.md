@@ -1,49 +1,51 @@
-# ×¹ÌìĞÅÊ¹
 
-[·µ»Ø NPC ×ÜÀÀ](../Overview.md)
 
-## µ±Ç°ÃÀÊõËØ²Ä
+## å½“å‰ç¾æœ¯ç´ æ
 
 <!-- ART_SECTION:entry-art:START -->
 
-| ËØ²Ä | Ãû³Æ | ID | ÀàĞÍ | ³ß´ç |
+| ç´ æ | åç§° | ID | ç±»å‹ | å°ºå¯¸ |
 | --- | --- | --- | --- | --- |
-| <img src="../../../../Assets/Final/fallen_heaven_messenger/fallen_heaven_messenger__body__v01.png" alt="×¹ÌìĞÅÊ¹ body" width="72"> | ×¹ÌìĞÅÊ¹ | `fallen_heaven_messenger` | `body` | 42x60 |
-| <img src="../../../../Assets/Final/fallen_heaven_messenger/fallen_heaven_messenger__head__v01.png" alt="×¹ÌìĞÅÊ¹ head" width="72"> | ×¹ÌìĞÅÊ¹ | `fallen_heaven_messenger` | `head` | 32x32 |
+| <img src="../../../../Assets/Final/fallen_heaven_messenger/fallen_heaven_messenger__body__v01.png" alt="å å¤©ä¿¡ä½¿ body" width="72"> | å å¤©ä¿¡ä½¿ | `fallen_heaven_messenger` | `body` | 42x60 |
+| <img src="../../../../Assets/Final/fallen_heaven_messenger/fallen_heaven_messenger__head__v01.png" alt="å å¤©ä¿¡ä½¿ head" width="72"> | å å¤©ä¿¡ä½¿ | `fallen_heaven_messenger` | `head` | 32x32 |
 
 <!-- ART_SECTION:entry-art:END -->
 
-## ÃÀÊõ×ÊÔ´
+## ç¾æœ¯èµ„æº
 
-- Ö÷Ìå£º42x60£¬ÆÆËğ°×ÓñÓğÒÂ¡¢°ëÕÅ½ğÉ«Ãæ¾ß¡¢Ğü¸¡·¨Ö¼ËéÆ¬¡£
-- Í·Ïñ£º32x32£¬°ëÃæ¾ßºÍËé·¨Ö¼¡£
-- ¶¯»­£ºidle 6 Ö¡£¬decree 4 Ö¡£¬walk 6 Ö¡¡£
-- Prompt ÖØµã£º`fallen celestial messenger NPC, broken jade robe, half golden mask, floating decree fragments`¡£
+- ä¸»ä½“ï¼š42x60ï¼Œç ´æŸç™½ç‰ç¾½è¡£ã€åŠå¼ é‡‘è‰²é¢å…·ã€æ‚¬æµ®æ³•æ—¨ç¢ç‰‡ã€‚
+- å¤´åƒï¼š32x32ï¼ŒåŠé¢å…·å’Œç¢æ³•æ—¨ã€‚
+- åŠ¨ç”»ï¼šidle 6 å¸§ï¼Œdecree 4 å¸§ï¼Œwalk 6 å¸§ã€‚
+- Prompt é‡ç‚¹ï¼š`fallen celestial messenger NPC, broken jade robe, half golden mask, floating decree fragments`ã€‚
 
-## ¶¨Î»
+# å å¤©ä¿¡ä½¿
 
-- Ó¢ÎÄ ID£º`fallen_heaven_messenger`
-- ½âËø£º»÷°Ü[Ìì±®ÊØÓù](../../Bosses/Entries/Heaven_Tablet_Guardian.md)¡£
-- ¹¦ÄÜ£ºÌìÍ¥ÈÎÎñ¡¢ÖÕ¾ÖÂ·ÏßÌáÊ¾¡¢Post-Golem ²ÄÁÏ¶Ò»»¡£
-- ÕóÓª£º²ĞÌìË¾°ëÅÑÀë¸öÌå¡£
+[è¿”å› NPC æ€»è§ˆ](../Overview.md)
 
-## ·şÎñ
+## å®šä½
 
-- ½âÎöÌìÍ¥·¨Ö¼¡£
-- ÓÃ²ĞÌìÓñ¶Ò»»Â·ÏßÌáÊ¾ÎïÆ·¡£
-- Ìá¹©×¹Ìì¹¬ãÚÌôÕ½Èë¿Ú¡£
-- ÔÚ Post-Moon Lord ºó½âÊÍÈıÌõÖÕ¾ÖÂ·Ïß¡£
+- è‹±æ–‡ IDï¼š`fallen_heaven_messenger`
+- è§£é”ï¼šå‡»è´¥[å¤©ç¢‘å®ˆå¾¡](../../Bosses/Entries/Heaven_Tablet_Guardian.md)ã€‚
+- åŠŸèƒ½ï¼šå¤©åº­ä»»åŠ¡ã€ç»ˆå±€è·¯çº¿æç¤ºã€Post-Golem ææ–™å…‘æ¢ã€‚
+- é˜µè¥ï¼šæ®‹å¤©å¸åŠå›ç¦»ä¸ªä½“ã€‚
 
-## ¶Ô»°·½Ïò
+## æœåŠ¡
 
-- ÔçÆÚ£º°ÑÍæ¼Ò³Æ×÷¡°Î´µÇ¼Çµ«Î´±»Ä¨³ıÕß¡±¡£
-- ÖĞÆÚ£º³ĞÈÏ²ĞÌìË¾ÄÚ²¿Ò²ÓĞ³åÍ»¡£
-- ºóÆÚ£ºÑ¯ÎÊÍæ¼ÒÏëĞŞ¸´ÌìµÀ£¬»¹ÊÇÈÃËüµÚÒ»´ÎÕæÕı³ÁÄ¬¡£
+- è§£æå¤©åº­æ³•æ—¨ã€‚
+- ç”¨æ®‹å¤©ç‰å…‘æ¢è·¯çº¿æç¤ºç‰©å“ã€‚
+- æä¾›å å¤©å®«é˜™æŒ‘æˆ˜å…¥å£ã€‚
+- åœ¨ Post-Moon Lord åè§£é‡Šä¸‰æ¡ç»ˆå±€è·¯çº¿ã€‚
 
-## ´úÂëÊµÏÖ
+## å¯¹è¯æ–¹å‘
 
-- ? NPCÀàÍêÕû£¨¶Ô»°/ÉÌµê/Î¯ÍĞ/ĞÒ¸£¶È£©
-- ? ·ÀÓù/ÉúÃüÖµÓëwiki¶ÔÆë
-- ? ÉÌµêÉÌÆ·½×¶ÎĞÔ½âËø
-- ? Ò»´ÎĞÔ×ÚÃÅÎ¯ÍĞ½±Àø
-- ? Bestiary·çÎ¶ÎÄ±¾
+- æ—©æœŸï¼šæŠŠç©å®¶ç§°ä½œâ€œæœªç™»è®°ä½†æœªè¢«æŠ¹é™¤è€…â€ã€‚
+- ä¸­æœŸï¼šæ‰¿è®¤æ®‹å¤©å¸å†…éƒ¨ä¹Ÿæœ‰å†²çªã€‚
+- åæœŸï¼šè¯¢é—®ç©å®¶æƒ³ä¿®å¤å¤©é“ï¼Œè¿˜æ˜¯è®©å®ƒç¬¬ä¸€æ¬¡çœŸæ­£æ²‰é»˜ã€‚
+
+## ä»£ç å®ç°
+
+- âœ… NPCç±»å®Œæ•´ï¼ˆå¯¹è¯/å•†åº—/å§”æ‰˜/å¹¸ç¦åº¦ï¼‰
+- âœ… é˜²å¾¡/ç”Ÿå‘½å€¼ä¸wikiå¯¹é½
+- âœ… å•†åº—å•†å“é˜¶æ®µæ€§è§£é”
+- âœ… ä¸€æ¬¡æ€§å®—é—¨å§”æ‰˜å¥–åŠ±
+- âœ… Bestiaryé£å‘³æ–‡æœ¬

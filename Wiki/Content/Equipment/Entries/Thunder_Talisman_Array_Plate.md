@@ -1,56 +1,58 @@
-# À×·ûÕóÅÌ
 
-[·µ»Ø×°±¸×ÜÀÀ](../Overview.md)
 
-## µ±Ç°ÃÀÊõËØ²Ä
+## å½“å‰ç¾æœ¯ç´ æ
 
 <!-- ART_SECTION:entry-art:START -->
 
-| ËØ²Ä | Ãû³Æ | ID | ÀàĞÍ | ³ß´ç |
+| ç´ æ | åç§° | ID | ç±»å‹ | å°ºå¯¸ |
 | --- | --- | --- | --- | --- |
-| <img src="../../../../Assets/Final/thunder_talisman_array_plate/thunder_talisman_array_plate__item_icon__v01.png" alt="À×·ûÕóÅÌ item_icon" width="64"> | À×·ûÕóÅÌ | `thunder_talisman_array_plate` | `item_icon` | 48x48 |
+| <img src="../../../../Assets/Final/thunder_talisman_array_plate/thunder_talisman_array_plate__item_icon__v01.png" alt="é›·ç¬¦é˜µç›˜ item_icon" width="64"> | é›·ç¬¦é˜µç›˜ | `thunder_talisman_array_plate` | `item_icon` | 48x48 |
 
 <!-- ART_SECTION:entry-art:END -->
 
-## ÃÀÊõ×ÊÔ´
+## ç¾æœ¯èµ„æº
 
-- Ïê¼û [ÎäÆ÷ÓëÊÎÆ·×ÜÀÀ](../Overview.md) ÖĞµÄÃÀÊõËØ²Ä±í¡£
-- Prompt£ºTerraria pixel art weapon icon, xianxia theme.
+- è¯¦è§ [æ­¦å™¨ä¸é¥°å“æ€»è§ˆ](../Overview.md) ä¸­çš„ç¾æœ¯ç´ æè¡¨ã€‚
+- Promptï¼šTerraria pixel art weapon icon, xianxia theme.
 
-## ¶¨Î»
+# é›·ç¬¦é˜µç›˜
 
-- Ó¢ÎÄ ID£º`thunder_talisman_array_plate`
-- ½×¶Î£ºHardmode
-- ÀàĞÍ£ºÄ§·¨/Õó·¨
+[è¿”å›è£…å¤‡æ€»è§ˆ](../Overview.md)
 
-## ÊıÖµ
+## å®šä½
 
-| ÊôĞÔ | Öµ |
+- è‹±æ–‡ IDï¼š`thunder_talisman_array_plate`
+- é˜¶æ®µï¼šHardmode
+- ç±»å‹ï¼šé­”æ³•/é˜µæ³•
+
+## æ•°å€¼
+
+| å±æ€§ | å€¼ |
 |------|-----|
-| ÉËº¦ | 46 |
-| Ê¹ÓÃÊ±¼ä | 34 |
-| »÷ÍË | 0 |
-| ±©»÷ | 6% |
-| ÁéÆøÏûºÄ | 24 |
-| ÉäËÙ | 0 |
-| Ï¡ÓĞ¶È | Light Red |
+| ä¼¤å®³ | 46 |
+| ä½¿ç”¨æ—¶é—´ | 34 |
+| å‡»é€€ | 0 |
+| æš´å‡» | 6% |
+| çµæ°”æ¶ˆè€— | 24 |
+| å°„é€Ÿ | 0 |
+| ç¨€æœ‰åº¦ | Light Red |
 
-## Ğ§¹û
+## æ•ˆæœ
 
-- ²¿Êğ240tickÀ×µçÁìÓò£¬Ã¿45tick½µÏÂMinorThunderboltÌìÀ×¡£
+- éƒ¨ç½²240tické›·ç”µé¢†åŸŸï¼Œæ¯45tické™ä¸‹MinorThunderboltå¤©é›·ã€‚
 
-## Åä·½
+## é…æ–¹
 
-Æ÷ÅßËéÆ¬x2 + ½ÙÔÆÂ¶x6 + ÏÂÆ·ÁéÊ¯x12 @ Æ÷ÅßÂ¯
+å™¨èƒšç¢ç‰‡x2 + åŠ«äº‘éœ²x6 + ä¸‹å“çµçŸ³x12 @ å™¨èƒšç‚‰
 
-## ·¨Æ÷¾õĞÑ
+## æ³•å™¨è§‰é†’
 
-- ¾³½çÒªÇó£º½ğµ¤
-- ÉùÍûÒªÇó£º44
-- Ğ§¹û£ºÉËº¦+12%£¬ÁéºÄ½µÖÁ20
+- å¢ƒç•Œè¦æ±‚ï¼šé‡‘ä¸¹
+- å£°æœ›è¦æ±‚ï¼š44
+- æ•ˆæœï¼šä¼¤å®³+12%ï¼Œçµè€—é™è‡³20
 
-## ´úÂëÊµÏÖ
+## ä»£ç å®ç°
 
-- ? ÊıÖµÓëwiki¶ÔÆë
-- ? Åä·½ÊµÏÖ
-- ? ·¨Æ÷¾õĞÑ»úÖÆ
+- âœ… æ•°å€¼ä¸wikiå¯¹é½
+- âœ… é…æ–¹å®ç°
+- âœ… æ³•å™¨è§‰é†’æœºåˆ¶

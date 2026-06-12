@@ -1,4 +1,4 @@
-﻿# Boss召唤物 | [返回](../Overview.md)
+# Boss召唤物 | [返回](../Overview.md)
 | 召唤物 | 图标 | 目标Boss | 条件 | 场地 | 配方 |
 |--------|------|----------|------|------|------|
 | 灵脉香 | <img src="../../../../Assets/Final/spirit_vein_incense/spirit_vein_incense__item_icon__v01.png" width="32"> | 灵脉蠕虫 | 启灵 | 浅层灵脉 | 灵石x8+灵胶x6@工作台 |

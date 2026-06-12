@@ -1,40 +1,42 @@
-# ÌìµÀËéÆ¬
 
-[·µ»ØÎïÆ·×ÜÀÀ](../Overview.md)
 
-## µ±Ç°ÃÀÊõËØ²Ä
+## å½“å‰ç¾æœ¯ç´ æ
 
 <!-- ART_SECTION:entry-art:START -->
 
-| ËØ²Ä | ID | ³ß´ç |
+| ç´ æ | ID | å°ºå¯¸ |
 | --- | --- | --- |
-| <img src="../../../../Assets/Final/heaven_dao_fragment/heaven_dao_fragment__item_icon__v01.png" alt="ÌìµÀËéÆ¬" width="48"> | heaven_dao_fragment | 32x32 |
+| <img src="../../../../Assets/Final/heaven_dao_fragment/heaven_dao_fragment__item_icon__v01.png" alt="å¤©é“ç¢ç‰‡" width="48"> | heaven_dao_fragment | 32x32 |
 
 <!-- ART_SECTION:entry-art:END -->
 
-## ÃÀÊõ×ÊÔ´
+## ç¾æœ¯èµ„æº
 
-- Ïê¼û [ÎïÆ·×ÜÀÀ](../Overview.md) ÃÀÊõËØ²Ä±í¡£
-- Prompt£ºTerraria pixel art item icon, xianxia theme, transparent background.
+- è¯¦è§ [ç‰©å“æ€»è§ˆ](../Overview.md) ç¾æœ¯ç´ æè¡¨ã€‚
+- Promptï¼šTerraria pixel art item icon, xianxia theme, transparent background.
 
-## ¶¨Î»
+# å¤©é“ç¢ç‰‡
 
-- Ó¢ÎÄ ID£º`heaven_dao_fragment`
-- ·ÖÀà£º²ÄÁÏ
-- ½×¶Î£ºPost-Golem
+[è¿”å›ç‰©å“æ€»è§ˆ](../Overview.md)
 
-## À´Ô´
+## å®šä½
 
-- ×¹Ìì¹¬ãÚµĞ¹ÖµôÂä
-- Ìì±®ÊØÓù/²ĞÌì¼à²ìÊ¹µôÂä
+- è‹±æ–‡ IDï¼š`heaven_dao_fragment`
+- åˆ†ç±»ï¼šææ–™
+- é˜¶æ®µï¼šPost-Golem
 
-## ÓÃÍ¾
+## æ¥æº
 
-- Õ¶ÁéÍ»ÆÆ²ÄÁÏ
-- ÌìµÀ×°±¸²ÄÁÏ
-- Ìì»ğÂ¯ºÏ³É
+- å å¤©å®«é˜™æ•Œæ€ªæ‰è½
+- å¤©ç¢‘å®ˆå¾¡/æ®‹å¤©ç›‘å¯Ÿä½¿æ‰è½
 
-## ´úÂëÊµÏÖ
+## ç”¨é€”
 
-- ? ÎïÆ·ÀàÍêÕû
-- ? Åä·½/µôÂäÊµÏÖ
+- æ–©çµçªç ´ææ–™
+- å¤©é“è£…å¤‡ææ–™
+- å¤©ç«ç‚‰åˆæˆ
+
+## ä»£ç å®ç°
+
+- âœ… ç‰©å“ç±»å®Œæ•´
+- âœ… é…æ–¹/æ‰è½å®ç°

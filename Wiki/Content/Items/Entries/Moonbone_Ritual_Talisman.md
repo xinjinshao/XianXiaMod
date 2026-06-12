@@ -1,47 +1,49 @@
-# �¹Ǽ���
 
-[������Ʒ����](../Overview.md)
 
-## ��ǰ�����ز�
+## 当前美术素材
 
 <!-- ART_SECTION:entry-art:START -->
 
-| �ز� | ID | �ߴ� |
+| 素材 | ID | 尺寸 |
 | --- | --- | --- |
-| <img src="../../../../Assets/Final/moonbone_ritual_talisman/moonbone_ritual_talisman__item_icon__v01.png" alt="�¹Ǽ���" width="48"> | moonbone_ritual_talisman | 32x32 |
+| <img src="../../../../Assets/Final/moonbone_ritual_talisman/moonbone_ritual_talisman__item_icon__v01.png" alt="月骨祭符" width="48"> | moonbone_ritual_talisman | 32x32 |
 
 <!-- ART_SECTION:entry-art:END -->
 
-## ������Դ
+## 美术资源
 
-- ��� [��Ʒ����](../Overview.md) �����زı���
-- Prompt��Terraria pixel art item icon, xianxia theme, transparent background.
+- 详见 [物品总览](../Overview.md) 美术素材表。
+- Prompt：Terraria pixel art item icon, xianxia theme, transparent background.
 
-## ��λ
+# 月骨祭符
 
-- Ӣ�� ID��`moonbone_ritual_talisman`
-- ���ࣺBoss�ٻ���
-- �׶Σ�Post-Moon Lord
+[返回物品总览](../Overview.md)
 
-## ��Դ
+## 定位
 
-- �ϳɣ��¹Ǽ���x1 + ��Ʒ��ʯx37 @ ��ħ��̳
+- 英文 ID：`moonbone_ritual_talisman`
+- 分类：Boss召唤物
+- 阶段：Post-Moon Lord
 
-## ��;
+## 来源
 
-- ���º���Ԩʹ�ã���ҹ�������ٻ��º��ɾ�
-- �������ÿ��ٻ���������ģ���ն��+�����º��ɾ���
+- 合成：月骨祭符x1 + 下品灵石x37 @ 恶魔祭坛
 
-## �䷽
+## 用途
 
-| ���� | ���� |
+- 在月骸天渊使用（需夜晚），召唤月骸仙君
+- 更高配置可召唤旧天道核心（需斩道+击败月骸仙君）
+
+## 配方
+
+| 材料 | 数量 |
 |------|------|
-| �¹Ǽ��� | 1 |
-| ��Ʒ��ʯ | 37 |
+| 月骨祭符 | 1 |
+| 下品灵石 | 37 |
 
-����վ����ħ��̳
+制作站：恶魔祭坛
 
-## ����ʵ��
+## 代码实现
 
-- ? ��Ʒ������
-- ? �䷽/����ʵ��
+- ✅ 物品类完整
+- ✅ 配方/掉落实现

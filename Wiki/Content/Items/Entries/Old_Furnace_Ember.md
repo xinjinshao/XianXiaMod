@@ -1,47 +1,49 @@
-# ¾ÉÂ¯»ğÖÖ
 
-[·µ»ØÎïÆ·×ÜÀÀ](../Overview.md)
 
-## µ±Ç°ÃÀÊõËØ²Ä
+## å½“å‰ç¾æœ¯ç´ æ
 
 <!-- ART_SECTION:entry-art:START -->
 
-| ËØ²Ä | ID | ³ß´ç |
+| ç´ æ | ID | å°ºå¯¸ |
 | --- | --- | --- |
-| <img src="../../../../Assets/Final/old_furnace_ember/old_furnace_ember__item_icon__v01.png" alt="¾ÉÂ¯»ğÖÖ" width="48"> | old_furnace_ember | 32x32 |
+| <img src="../../../../Assets/Final/old_furnace_ember/old_furnace_ember__item_icon__v01.png" alt="æ—§ç‚‰ç«ç§" width="48"> | old_furnace_ember | 32x32 |
 
 <!-- ART_SECTION:entry-art:END -->
 
-## ÃÀÊõ×ÊÔ´
+## ç¾æœ¯èµ„æº
 
-- Ïê¼û [ÎïÆ·×ÜÀÀ](../Overview.md) ÃÀÊõËØ²Ä±í¡£
-- Prompt£ºTerraria pixel art item icon, xianxia theme, transparent background.
+- è¯¦è§ [ç‰©å“æ€»è§ˆ](../Overview.md) ç¾æœ¯ç´ æè¡¨ã€‚
+- Promptï¼šTerraria pixel art item icon, xianxia theme, transparent background.
 
-## ¶¨Î»
+# æ—§ç‚‰ç«ç§
 
-- Ó¢ÎÄ ID£º`old_furnace_ember`
-- ·ÖÀà£ºBossÕÙ»½Îï
-- ½×¶Î£ºPre-Hardmode
+[è¿”å›ç‰©å“æ€»è§ˆ](../Overview.md)
 
-## À´Ô´
+## å®šä½
 
-- ºÏ³É£º¾ÉÂ¯»ğÖÖx1 + ÏÂÆ·ÁéÊ¯x13 @ ¹¤×÷Ì¨
+- è‹±æ–‡ IDï¼š`old_furnace_ember`
+- åˆ†ç±»ï¼šBosså¬å”¤ç‰©
+- é˜¶æ®µï¼šPre-Hardmode
 
-## ÓÃÍ¾
+## æ¥æº
 
-- ÔÚ³ÁÂ¯¿óÂöÊ¹ÓÃ£¬ÕÙ»½ĞşÂ¯Ìú¿ş
-- ĞèÒªÆôÁé¾³+»÷°ÜÁéÂöÈä³æ
+- åˆæˆï¼šæ—§ç‚‰ç«ç§x1 + ä¸‹å“çµçŸ³x13 @ å·¥ä½œå°
 
-## Åä·½
+## ç”¨é€”
 
-| ²ÄÁÏ | ÊıÁ¿ |
+- åœ¨æ²‰ç‚‰çŸ¿è„‰ä½¿ç”¨ï¼Œå¬å”¤ç„ç‚‰é“å‚€
+- éœ€è¦å¯çµå¢ƒ+å‡»è´¥çµè„‰è •è™«
+
+## é…æ–¹
+
+| ææ–™ | æ•°é‡ |
 |------|------|
-| ¾ÉÂ¯»ğÖÖ | 1 |
-| ÏÂÆ·ÁéÊ¯ | 13 |
+| æ—§ç‚‰ç«ç§ | 1 |
+| ä¸‹å“çµçŸ³ | 13 |
 
-ÖÆ×÷Õ¾£º¹¤×÷Ì¨
+åˆ¶ä½œç«™ï¼šå·¥ä½œå°
 
-## ´úÂëÊµÏÖ
+## ä»£ç å®ç°
 
-- ? ÎïÆ·ÀàÍêÕû
-- ? Åä·½/µôÂäÊµÏÖ
+- âœ… ç‰©å“ç±»å®Œæ•´
+- âœ… é…æ–¹/æ‰è½å®ç°

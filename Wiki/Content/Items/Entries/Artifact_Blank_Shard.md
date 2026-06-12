@@ -1,40 +1,42 @@
-# Æ÷ÅßËéÆ¬
 
-[·µ»ØÎïÆ·×ÜÀÀ](../Overview.md)
 
-## µ±Ç°ÃÀÊõËØ²Ä
+## å½“å‰ç¾æœ¯ç´ æ
 
 <!-- ART_SECTION:entry-art:START -->
 
-| ËØ²Ä | ID | ³ß´ç |
+| ç´ æ | ID | å°ºå¯¸ |
 | --- | --- | --- |
-| <img src="../../../../Assets/Final/artifact_blank_shard/artifact_blank_shard__item_icon__v01.png" alt="Æ÷ÅßËéÆ¬" width="48"> | artifact_blank_shard | 32x32 |
+| <img src="../../../../Assets/Final/artifact_blank_shard/artifact_blank_shard__item_icon__v01.png" alt="å™¨èƒšç¢ç‰‡" width="48"> | artifact_blank_shard | 32x32 |
 
 <!-- ART_SECTION:entry-art:END -->
 
-## ÃÀÊõ×ÊÔ´
+## ç¾æœ¯èµ„æº
 
-- Ïê¼û [ÎïÆ·×ÜÀÀ](../Overview.md) ÃÀÊõËØ²Ä±í¡£
-- Prompt£ºTerraria pixel art item icon, xianxia theme, transparent background.
+- è¯¦è§ [ç‰©å“æ€»è§ˆ](../Overview.md) ç¾æœ¯ç´ æè¡¨ã€‚
+- Promptï¼šTerraria pixel art item icon, xianxia theme, transparent background.
 
-## ¶¨Î»
+# å™¨èƒšç¢ç‰‡
 
-- Ó¢ÎÄ ID£º`artifact_blank_shard`
-- ·ÖÀà£º²ÄÁÏ
-- ½×¶Î£ºPre-Hardmode
+[è¿”å›ç‰©å“æ€»è§ˆ](../Overview.md)
 
-## À´Ô´
+## å®šä½
 
-- ÌúĞ¼ÁéµôÂä£¨50%£©
-- BossÍ¨ÓÃµôÂä£¨12.5%£©
-- ÓÎ·½Æ÷Ê¦ÉÌµê
+- è‹±æ–‡ IDï¼š`artifact_blank_shard`
+- åˆ†ç±»ï¼šææ–™
+- é˜¶æ®µï¼šPre-Hardmode
 
-## ÓÃÍ¾
+## æ¥æº
 
-- ·¨Æ÷ÖıÔìºËĞÄ²ÄÁÏ
-- ËùÓĞÎäÆ÷Åä·½Ê¹ÓÃ
+- é“å±‘çµæ‰è½ï¼ˆ50%ï¼‰
+- Bossé€šç”¨æ‰è½ï¼ˆ12.5%ï¼‰
+- æ¸¸æ–¹å™¨å¸ˆå•†åº—
 
-## ´úÂëÊµÏÖ
+## ç”¨é€”
 
-- ? ÎïÆ·ÀàÍêÕû
-- ? Åä·½/µôÂäÊµÏÖ
+- æ³•å™¨é“¸é€ æ ¸å¿ƒææ–™
+- æ‰€æœ‰æ­¦å™¨é…æ–¹ä½¿ç”¨
+
+## ä»£ç å®ç°
+
+- âœ… ç‰©å“ç±»å®Œæ•´
+- âœ… é…æ–¹/æ‰è½å®ç°

@@ -1,49 +1,51 @@
-# �۽ٵ���
 
-[���� NPC ����](../Overview.md)
 
-## ��ǰ�����ز�
+## 当前美术素材
 
 <!-- ART_SECTION:entry-art:START -->
 
-| �ز� | ���� | ID | ���� | �ߴ� |
+| 素材 | 名称 | ID | 类型 | 尺寸 |
 | --- | --- | --- | --- | --- |
-| <img src="../../../../Assets/Final/tribulation_observer/tribulation_observer__body__v01.png" alt="�۽ٵ��� body" width="72"> | �۽ٵ��� | `tribulation_observer` | `body` | 40x56 |
-| <img src="../../../../Assets/Final/tribulation_observer/tribulation_observer__head__v01.png" alt="�۽ٵ��� head" width="72"> | �۽ٵ��� | `tribulation_observer` | `head` | 32x32 |
+| <img src="../../../../Assets/Final/tribulation_observer/tribulation_observer__body__v01.png" alt="观劫道人 body" width="72"> | 观劫道人 | `tribulation_observer` | `body` | 40x56 |
+| <img src="../../../../Assets/Final/tribulation_observer/tribulation_observer__head__v01.png" alt="观劫道人 head" width="72"> | 观劫道人 | `tribulation_observer` | `head` | 32x32 |
 
 <!-- ART_SECTION:entry-art:END -->
 
-## ������Դ
+## 美术资源
 
-- ���壺40x56���������ۡ�������ɡ����������ơ�
-- ͷ��32x32����ɡ������ü��
-- ������idle 4 ֡��point_sky 3 ֡��walk 6 ֡��
-- Prompt �ص㣺`tribulation watcher taoist NPC, broken umbrella, blue gray robe, lightning patterns`��
+- 主体：40x56，灰蓝道袍、背负破伞、袖口有雷纹。
+- 头像：32x32，破伞和雷纹眉。
+- 动画：idle 4 帧，point_sky 3 帧，walk 6 帧。
+- Prompt 重点：`tribulation watcher taoist NPC, broken umbrella, blue gray robe, lightning patterns`。
 
-## ��λ
+# 观劫道人
 
-- Ӣ�� ID��`tribulation_observer`
-- ����������״����С��١�
-- ���ܣ����Ԥ����������Ʒ��ͻ�Ʒ���˵����
-- ��Ӫ������ɢ�ޡ�
+[返回 NPC 总览](../Overview.md)
 
-## ����
+## 定位
 
-- ��ʾ��ǰ��ѹ����ٻ��ۡ�
-- ���۱��׷������ٵ����ġ�
-- �ṩ���ѵ����ս�������������䡣
-- ����ͻ��ʧ�ܵĳͷ���
+- 英文 ID：`tribulation_observer`
+- 解锁：玩家首次完成小天劫。
+- 功能：天劫预报、抗劫物品、突破风险说明。
+- 阵营：无相散修。
 
-## �Ի�����
+## 服务
 
-- ���ڣ����������ٲ����������Ǿ�����ڵ�����
-- ���ڣ���ʾ����˾���޷�������ʿ�͹��
-- ���ڣ�������Ҿ����Ƿ�Ҫ���������������
+- 显示当前灵压与天劫积累。
+- 出售避雷符、抗劫丹辅材。
+- 提供天劫训练挑战，不给完整掉落。
+- 解释突破失败的惩罚。
 
-## ����ʵ��
+## 对话方向
 
-- ? NPC���������Ի�/�̵�/ί��/�Ҹ��ȣ�
-- ? ����/����ֵ��wiki����
-- ? �̵���Ʒ�׶��Խ���
-- ? һ��������ί�н���
-- ? Bestiary��ζ�ı�
+- 早期：提醒玩家天劫不是天气，是旧天道在点名。
+- 中期：暗示残天司已无法区分修士和怪物。
+- 后期：鼓励玩家决定是否还要接受这样的天道。
+
+## 代码实现
+
+- ✅ NPC类完整（对话/商店/委托/幸福度）
+- ✅ 防御/生命值与wiki对齐
+- ✅ 商店商品阶段性解锁
+- ✅ 一次性宗门委托奖励
+- ✅ Bestiary风味文本

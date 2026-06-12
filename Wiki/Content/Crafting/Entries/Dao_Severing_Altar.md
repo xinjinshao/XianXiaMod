@@ -1,36 +1,38 @@
-# ն��̨
 
-[������������](../Overview.md)
 
-## ��ǰ�����ز�
+## 当前美术素材
 
 <!-- ART_SECTION:entry-art:START -->
 
-| �ز� | ���� | �ߴ� |
+| 素材 | 类型 | 尺寸 |
 | --- | --- | --- |
-| ?? ʹ��ռλ������ | tile | �� |
+| ⚠️ 使用占位符纹理 | tile | — |
 
 <!-- ART_SECTION:entry-art:END -->
 
-## ������Դ
+## 美术资源
 
-- ��� [��������](../Overview.md) �е�����վ������
-- ?? ��ǰʹ�ù���ռλ���������ȴ����������زġ�
+- 详见 [制作总览](../Overview.md) 中的制作站规格表。
+- ⚠️ 当前使用共享占位符纹理，等待独立美术素材。
 
-## ��λ
+# 斩道台
 
-- ID: dao_severing_altar | �׶�: Endgame | ��ȡ: ն����x12+�¹�x8@���¯
+[返回制作总览](../Overview.md)
 
-## ��;
+## 定位
 
-- �վ�·��װ�������LunarCraftingStation���ܡ�
+- ID: dao_severing_altar | 阶段: Endgame | 获取: 斩道尘x12+月骨x8@天火炉
 
-- 80x48 �ڰ׶ϻ�ʯ̨���м�ϸС��϶��
+## 用途
 
-## ����ʵ��
+- 终局路线装备。获得LunarCraftingStation功能。
 
-- ? ��Ʒ+�ؿ�������
-- ? �����䷽
-- ? AdjTiles���ܼ���
+- 80x48 黑白断环石台，中间细小裂隙。
 
-- ? ��Ʒ+�ؿ������� | ? �䷽ | ? AdjTiles=LunarCraftingStation
+## 代码实现
+
+- ✅ 物品+地块类完整
+- ✅ 制作配方
+- ✅ AdjTiles功能集成
+
+- ✅ 物品+地块类完整 | ✅ 配方 | ✅ AdjTiles=LunarCraftingStation

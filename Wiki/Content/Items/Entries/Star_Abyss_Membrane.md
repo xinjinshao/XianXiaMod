@@ -1,47 +1,49 @@
-# ĞÇÔ¨Ì¥Ä¤
 
-[·µ»ØÎïÆ·×ÜÀÀ](../Overview.md)
 
-## µ±Ç°ÃÀÊõËØ²Ä
+## å½“å‰ç¾æœ¯ç´ æ
 
 <!-- ART_SECTION:entry-art:START -->
 
-| ËØ²Ä | ID | ³ß´ç |
+| ç´ æ | ID | å°ºå¯¸ |
 | --- | --- | --- |
-| <img src="../../../../Assets/Final/star_abyss_membrane/star_abyss_membrane__item_icon__v01.png" alt="ĞÇÔ¨Ì¥Ä¤" width="48"> | star_abyss_membrane | 32x32 |
+| <img src="../../../../Assets/Final/star_abyss_membrane/star_abyss_membrane__item_icon__v01.png" alt="æ˜Ÿæ¸Šèƒè†œ" width="48"> | star_abyss_membrane | 32x32 |
 
 <!-- ART_SECTION:entry-art:END -->
 
-## ÃÀÊõ×ÊÔ´
+## ç¾æœ¯èµ„æº
 
-- Ïê¼û [ÎïÆ·×ÜÀÀ](../Overview.md) ÃÀÊõËØ²Ä±í¡£
-- Prompt£ºTerraria pixel art item icon, xianxia theme, transparent background.
+- è¯¦è§ [ç‰©å“æ€»è§ˆ](../Overview.md) ç¾æœ¯ç´ æè¡¨ã€‚
+- Promptï¼šTerraria pixel art item icon, xianxia theme, transparent background.
 
-## ¶¨Î»
+# æ˜Ÿæ¸Šèƒè†œ
 
-- Ó¢ÎÄ ID£º`star_abyss_membrane`
-- ·ÖÀà£ºBossÕÙ»½Îï
-- ½×¶Î£ºHardmode
+[è¿”å›ç‰©å“æ€»è§ˆ](../Overview.md)
 
-## À´Ô´
+## å®šä½
 
-- ºÏ³É£ºĞÇÔ¨Ì¥Ä¤x1 + ÏÂÆ·ÁéÊ¯x22 @ ¶ñÄ§¼ÀÌ³
+- è‹±æ–‡ IDï¼š`star_abyss_membrane`
+- åˆ†ç±»ï¼šBosså¬å”¤ç‰©
+- é˜¶æ®µï¼šHardmode
 
-## ÓÃÍ¾
+## æ¥æº
 
-- ÔÚĞÇÔ¨ÁÑÏ¶Ê¹ÓÃ£¨ĞèÒ¹Íí£©£¬ÕÙ»½ĞÇÔ¨Ì¥Ö÷
-- ĞèÒªÖş»ù¾³+»÷°ÜĞşÂ¯Ìú¿ş
+- åˆæˆï¼šæ˜Ÿæ¸Šèƒè†œx1 + ä¸‹å“çµçŸ³x22 @ æ¶é­”ç¥­å›
 
-## Åä·½
+## ç”¨é€”
 
-| ²ÄÁÏ | ÊıÁ¿ |
+- åœ¨æ˜Ÿæ¸Šè£‚éš™ä½¿ç”¨ï¼ˆéœ€å¤œæ™šï¼‰ï¼Œå¬å”¤æ˜Ÿæ¸Šèƒä¸»
+- éœ€è¦ç­‘åŸºå¢ƒ+å‡»è´¥ç„ç‚‰é“å‚€
+
+## é…æ–¹
+
+| ææ–™ | æ•°é‡ |
 |------|------|
-| ĞÇÔ¨Ì¥Ä¤ | 1 |
-| ÏÂÆ·ÁéÊ¯ | 22 |
+| æ˜Ÿæ¸Šèƒè†œ | 1 |
+| ä¸‹å“çµçŸ³ | 22 |
 
-ÖÆ×÷Õ¾£º¶ñÄ§¼ÀÌ³
+åˆ¶ä½œç«™ï¼šæ¶é­”ç¥­å›
 
-## ´úÂëÊµÏÖ
+## ä»£ç å®ç°
 
-- ? ÎïÆ·ÀàÍêÕû
-- ? Åä·½/µôÂäÊµÏÖ
+- âœ… ç‰©å“ç±»å®Œæ•´
+- âœ… é…æ–¹/æ‰è½å®ç°
