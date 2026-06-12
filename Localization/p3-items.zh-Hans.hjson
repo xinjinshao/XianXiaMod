@@ -1,0 +1,92 @@
+Mods: {
+	XianXia: {
+		Items: {
+			GreenwoodInscriptionNeedle: {
+				DisplayName: "青木铭刻针"
+				Tooltip: "在法器武器上铭刻青木纹。偏向恢复与持续。"
+			}
+			FurnaceInscriptionNeedle: {
+				DisplayName: "玄炉铭刻针"
+				Tooltip: "在法器武器上铭刻玄炉纹。偏向破甲与重击。"
+			}
+			ThunderInscriptionNeedle: {
+				DisplayName: "雷泽铭刻针"
+				Tooltip: "在法器武器上铭刻雷纹。偏向速度与连锁。"
+			}
+			StarAbyssInscriptionNeedle: {
+				DisplayName: "星渊铭刻针"
+				Tooltip: "在法器武器上铭刻星渊纹。高伤害附带污染代价。"
+			}
+			BrokenHeavenInscriptionNeedle: {
+				DisplayName: "残天铭刻针"
+				Tooltip: "在法器武器上铭刻残天纹。偏向控制与审判。"
+			}
+			InscriptionRemovalStone: {
+				DisplayName: "铭刻清除石"
+				Tooltip: "清除法器上的当前铭刻，恢复为基础形态。"
+			}
+			SmallArtifactPendant: {
+				DisplayName: "小器灵坠"
+				Tooltip: "蕴含灵气的小吊坠。提升灵气恢复速度。"
+			}
+			FurnaceAshSpiritContract: {
+				DisplayName: "炉灰器灵契"
+				Tooltip: "契约一只炉灰器灵为仆从。召唤伤害+8%。"
+			}
+			StarAbyssLarvaContract: {
+				DisplayName: "星渊幼体契"
+				Tooltip: "与星渊幼体缔结契约。召唤伤害+10%，但灵气消耗略增。"
+			}
+			NascentSoulCloneTalisman: {
+				DisplayName: "元婴分身符"
+				Tooltip: "化出元婴分身的符箓。+1 最大仆从，召唤伤害+12%。"
+			}
+			CelestialPuppetToken: {
+				DisplayName: "仙傀令"
+				Tooltip: "操控天庭傀儡的令牌。+1 最大仆从，召唤伤害+14%。"
+			}
+			ArchivedImmortalSoulContract: {
+				DisplayName: "归档仙魂契"
+				Tooltip: "与归档仙魂缔结契约。+2 最大仆从，召唤伤害+18%。"
+			}
+			LightningAvoidanceRune: {
+				DisplayName: "避雷符"
+				Tooltip: "获得30分钟的抗劫状态。"
+			}
+			TribulationTrainingToken: {
+				DisplayName: "天劫训练令"
+				Tooltip: "小幅提升灵压并回复灵气。用于测试渡劫准备程度。"
+			}
+			BlankSectScroll: {
+				DisplayName: "空白残卷"
+				Tooltip: "空白卷轴，可记录宗门传承与配方。"
+			}
+			SpiritHerbSeeds: {
+				DisplayName: "灵草种子"
+				Tooltip: "种植在青木土上可长成灵草的种子。"
+			}
+			HeavenDaoRouteHint: {
+				DisplayName: "天庭路线提示"
+				Tooltip: "揭示三条终局修行路线之一的需求。"
+			}
+			EndgameRouteFrame: {
+				DisplayName: "终局路线信物框"
+				Tooltip: "展示你已选择的终局路线的玉框。"
+			}
+		}
+		Buffs: {
+			SpringReturnRegenBuff: {
+				DisplayName: "回春再生"
+				Description: "身体重返春天活力。生命恢复与灵气恢复均获提升。"
+			}
+			StarAbyssCorrosionBuff: {
+				DisplayName: "星渊侵蚀"
+				Description: "星渊之力腐蚀了你的防御。防御降低，灵压持续增长。"
+			}
+			ArchiveLockBuff: {
+				DisplayName: "归档锁"
+				Description: "归档锁限制了你的行动。速度、加速度与跳跃高度降低。"
+			}
+		}
+	}
+}

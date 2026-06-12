@@ -29,9 +29,12 @@ public class SpiritVeinWyrm : ModNPC
     {
         NPC.width = 96;
         NPC.height = 32;
-        NPC.damage = 22;
+        int baseLife = 1200; int baseDamage = 22;
+        if (Main.expertMode) { baseLife = (int)(baseLife * 1.45f); baseDamage = (int)(baseDamage * 1.25f); }
+        if (Main.masterMode) { baseLife = (int)(baseLife * 1.85f); baseDamage = (int)(baseDamage * 1.45f); }
+        NPC.lifeMax = baseLife;
+        NPC.damage = baseDamage;
         NPC.defense = 6;
-        NPC.lifeMax = 1200;
         NPC.knockBackResist = 0f;
         NPC.value = Item.buyPrice(silver: 80);
         NPC.boss = true;

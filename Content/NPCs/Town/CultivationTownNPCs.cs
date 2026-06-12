@@ -199,6 +199,9 @@ public class HerbSectApprentice : CultivationTownNPC
         shop.Add<SpiritwoodCharm>();
         shop.Add<QiGatheringPendant>();
         shop.Add<LowGradeSpiritStone>();
+        shop.Add<SpiritHerbSeeds>();
+        shop.Add<BlankSectScroll>();
+        shop.Add<LightningAvoidanceRune>();
         shop.Register();
     }
 
@@ -284,6 +287,9 @@ public class WanderingArtificer : CultivationTownNPC
         shop.Add<ArtifactBlankShard>();
         shop.Add<FurnaceSlagIron>();
         shop.Add<LowGradeSpiritStone>();
+        shop.Add<GreenwoodInscriptionNeedle>();
+        shop.Add<FurnaceInscriptionNeedle>();
+        shop.Add<InscriptionRemovalStone>();
         shop.Register();
     }
 
@@ -294,10 +300,17 @@ public class WanderingArtificer : CultivationTownNPC
             HideShopItem<CloudpiercerFlyingSword>(items);
             HideShopItem<GreenwoodArrayPlate>(items);
         }
-
         if (!LocalAtStage(CultivationStage.Foundation))
         {
             HideShopItem<FurnaceHeartRing>(items);
+        }
+        if (!Downed("thunder_marsh_jiao"))
+        {
+            HideShopItem<ThunderInscriptionNeedle>(items);
+        }
+        if (!Downed("heaven_tablet_guardian"))
+        {
+            HideShopItem<BrokenHeavenInscriptionNeedle>(items);
         }
     }
 
@@ -374,6 +387,9 @@ public class TribulationObserver : CultivationTownNPC
         shop.Add<SummonThunderCallingJade>();
         shop.Add<TribulationCloudDew>();
         shop.Add<LowGradeSpiritStone>();
+        shop.Add<LightningAvoidanceRune>();
+        shop.Add<TribulationTrainingToken>();
+        shop.Add<ThunderInscriptionNeedle>();
         shop.Register();
     }
 
@@ -383,6 +399,10 @@ public class TribulationObserver : CultivationTownNPC
         {
             HideShopItem<ThunderTalismanArrayPlate>(items);
             HideShopItem<SummonThunderCallingJade>(items);
+        }
+        if (!Downed("tribulation_cloud_avatar"))
+        {
+            HideShopItem<TribulationResistingPill>(items);
         }
     }
 
@@ -464,6 +484,8 @@ public class ArchiveScrollSpirit : CultivationTownNPC
         shop.Add<NascentSoulJadeBox>();
         shop.Add<ArtifactBlankShard>();
         shop.Add<LowGradeSpiritStone>();
+        shop.Add<BlankSectScroll>();
+        shop.Add<StarAbyssInscriptionNeedle>();
         shop.Register();
     }
 
@@ -474,7 +496,10 @@ public class ArchiveScrollSpirit : CultivationTownNPC
             HideShopItem<FormlessSwordWheel>(items);
             HideShopItem<NascentSoulJadeBox>(items);
         }
-
+        if (!Downed("abyssal_star_womb"))
+        {
+            HideShopItem<StarAbyssInscriptionNeedle>(items);
+        }
         if (!DownedBossSystem.HasSectReputation(80))
         {
             HideShopItem<NascentSoulJadeBox>(items);
@@ -558,6 +583,8 @@ public class FallenHeavenMessenger : CultivationTownNPC
         shop.Add<DaoSeveringRing>();
         shop.Add<HeavenDaoFragment>();
         shop.Add<LowGradeSpiritStone>();
+        shop.Add<BrokenHeavenInscriptionNeedle>();
+        shop.Add<HeavenDaoRouteHint>();
         shop.Register();
     }
 
@@ -568,15 +595,21 @@ public class FallenHeavenMessenger : CultivationTownNPC
             HideShopItem<BrokenHeavenDecree>(items);
             HideShopItem<BrokenHeavenCrownSeal>(items);
         }
-
+        if (!LocalAtStage(CultivationStage.SpiritSevering))
+        {
+            HideShopItem<BrokenHeavenInscriptionNeedle>(items);
+        }
         if (!LocalAtStage(CultivationStage.Tribulation))
         {
             HideShopItem<DaoSeveringRing>(items);
         }
-
         if (!DownedBossSystem.HasSectReputation(160))
         {
             HideShopItem<DaoSeveringRing>(items);
+        }
+        if (!Downed("moonbone_immortal"))
+        {
+            HideShopItem<EndgameRouteFrame>(items);
         }
     }
 

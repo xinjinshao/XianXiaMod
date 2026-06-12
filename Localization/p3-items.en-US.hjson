@@ -1,0 +1,92 @@
+Mods: {
+	XianXia: {
+		Items: {
+			GreenwoodInscriptionNeedle: {
+				DisplayName: "Greenwood Inscription Needle"
+				Tooltip: "Engraves a Greenwood inscription on an artifact weapon. Favors recovery and sustain."
+			}
+			FurnaceInscriptionNeedle: {
+				DisplayName: "Furnace Inscription Needle"
+				Tooltip: "Engraves a Furnace inscription on an artifact weapon. Favors armor penetration and heavy strikes."
+			}
+			ThunderInscriptionNeedle: {
+				DisplayName: "Thunder Inscription Needle"
+				Tooltip: "Engraves a Thunder inscription on an artifact weapon. Favors speed and chain attacks."
+			}
+			StarAbyssInscriptionNeedle: {
+				DisplayName: "Star Abyss Inscription Needle"
+				Tooltip: "Engraves a Star Abyss inscription on an artifact weapon. High damage with corruption drawbacks."
+			}
+			BrokenHeavenInscriptionNeedle: {
+				DisplayName: "Broken Heaven Inscription Needle"
+				Tooltip: "Engraves a Broken Heaven inscription on an artifact weapon. Favors control and judgment."
+			}
+			InscriptionRemovalStone: {
+				DisplayName: "Inscription Removal Stone"
+				Tooltip: "Removes the current inscription from an artifact, restoring it to base form."
+			}
+			SmallArtifactPendant: {
+				DisplayName: "Small Artifact Pendant"
+				Tooltip: "A tiny pendant that hums with spiritual energy. Increases spiritual energy regeneration."
+			}
+			FurnaceAshSpiritContract: {
+				DisplayName: "Furnace Ash Spirit Contract"
+				Tooltip: "A contract binding a furnace ash spirit as a minion. Increases summon damage by 8%."
+			}
+			StarAbyssLarvaContract: {
+				DisplayName: "Star Abyss Larva Contract"
+				Tooltip: "A contract with a star abyss larva. Increases summon damage by 10% but raises spiritual energy costs slightly."
+			}
+			NascentSoulCloneTalisman: {
+				DisplayName: "Nascent Soul Clone Talisman"
+				Tooltip: "A talisman that creates a nascent soul clone. +1 max minion, +12% summon damage."
+			}
+			CelestialPuppetToken: {
+				DisplayName: "Celestial Puppet Token"
+				Tooltip: "A token commanding a celestial puppet. +1 max minion, +14% summon damage."
+			}
+			ArchivedImmortalSoulContract: {
+				DisplayName: "Archived Immortal Soul Contract"
+				Tooltip: "A contract with an archived immortal soul. +2 max minions, +18% summon damage."
+			}
+			LightningAvoidanceRune: {
+				DisplayName: "Lightning Avoidance Rune"
+				Tooltip: "Grants temporary tribulation resistance for 30 minutes."
+			}
+			TribulationTrainingToken: {
+				DisplayName: "Tribulation Training Token"
+				Tooltip: "Slightly increases spirit pressure and restores spiritual energy. Used to test tribulation readiness."
+			}
+			BlankSectScroll: {
+				DisplayName: "Blank Sect Scroll"
+				Tooltip: "A blank scroll ready to record sect lore and recipes."
+			}
+			SpiritHerbSeeds: {
+				DisplayName: "Spirit Herb Seeds"
+				Tooltip: "Seeds that grow into spirit herbs when planted in Greenwood Soil."
+			}
+			HeavenDaoRouteHint: {
+				DisplayName: "Heaven Dao Route Hint"
+				Tooltip: "Reveals the requirements for one of the three endgame cultivation routes."
+			}
+			EndgameRouteFrame: {
+				DisplayName: "Endgame Route Frame"
+				Tooltip: "A jade frame that displays your chosen endgame route."
+			}
+		}
+		Buffs: {
+			SpringReturnRegenBuff: {
+				DisplayName: "Spring Return Regen"
+				Description: "The body returns to spring vitality. Life regeneration and spiritual energy recovery are increased."
+			}
+			StarAbyssCorrosionBuff: {
+				DisplayName: "Star Abyss Corrosion"
+				Description: "The star abyss corrodes your defenses. Defense reduced and spirit pressure grows."
+			}
+			ArchiveLockBuff: {
+				DisplayName: "Archive Lock"
+				Description: "An archive lock restricts your movement. Reduced speed, acceleration, and jump height."
+			}
+		}
+	}
+}
