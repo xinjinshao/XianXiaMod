@@ -3,25 +3,60 @@ Mods: {
 		Items: {
 			AlchemyCauldron: {
 				DisplayName: "炼丹炉"
-				Tooltip: "用于炼制修行丹药。"
+				Tooltip: "用于炼制丹药。"
 			}
 			ArtifactForge: {
 				DisplayName: "器胚炉"
-				Tooltip: "用于锻造飞剑、阵盘与其他法器。"
+				Tooltip: "用于铸造飞剑、阵盘和法器。"
+			}
+			EarthClayFurnace: {
+				DisplayName: "土炉"
+				Tooltip: "基础陶炉，用于早期炼丹。"
+			}
+			SimpleTalismanTable: {
+				DisplayName: "简易符案"
+				Tooltip: "木制符案，用于绘制基础符箓。"
+			}
+			StarPatternCauldron: {
+				DisplayName: "星纹丹鼎"
+				Tooltip: "暗蓝丹鼎，用于星渊高阶丹药。"
+			}
+			ThunderPatternForge: {
+				DisplayName: "雷纹锻台"
+				Tooltip: "紫蓝雷纹锻台，用于雷系装备。"
+			}
+			SectTrialAltar: {
+				DisplayName: "宗门试炼台"
+				Tooltip: "白石试炼台，用于宗门职业装备。"
+			}
+			HeavenFireFurnace: {
+				DisplayName: "天火炉"
+				Tooltip: "白玉天火炉，用于天道系装备。"
+			}
+			DaoSeveringAltar: {
+				DisplayName: "斩道台"
+				Tooltip: "黑白断环石台，用于终局路线装备。"
 			}
 		}
 		Tiles: {
 			AlchemyCauldronTile.MapEntry: "炼丹炉"
 			ArtifactForgeTile.MapEntry: "器胚炉"
+			EarthClayFurnaceTile.MapEntry: "土炉"
+			SimpleTalismanTableTile.MapEntry: "简易符案"
+			StarPatternCauldronTile.MapEntry: "星纹丹鼎"
+			ThunderPatternForgeTile.MapEntry: "雷纹锻台"
+			SectTrialAltarTile.MapEntry: "宗门试炼台"
+			HeavenFireFurnaceTile.MapEntry: "天火炉"
+			DaoSeveringAltarTile.MapEntry: "斩道台"
 		}
 		Buffs: {
 			AlchemyInsightBuff: {
 				DisplayName: "丹炉温养"
-				Description: "靠近炼丹炉，灵气恢复提升。"
+				Description: "在炼丹炉附近，灵气恢复更快。"
 			}
 			ArtifactResonanceBuff: {
 				DisplayName: "器胚共鸣"
-				Description: "靠近器胚炉，灵气消耗小幅降低。"
+				Description: "在器胚炉附近，灵气消耗略降。"
 			}
 		}
 	}

@@ -9,10 +9,45 @@ Mods: {
 				DisplayName: "Artifact Forge"
 				Tooltip: "Used to forge flying swords, arrays, and other artifacts."
 			}
+			EarthClayFurnace: {
+				DisplayName: "Earth Clay Furnace"
+				Tooltip: "A basic clay furnace for early pill refining."
+			}
+			SimpleTalismanTable: {
+				DisplayName: "Simple Talisman Table"
+				Tooltip: "A wooden desk for crafting basic talismans."
+			}
+			StarPatternCauldron: {
+				DisplayName: "Star Pattern Cauldron"
+				Tooltip: "A star-patterned cauldron for high-grade star abyss pills."
+			}
+			ThunderPatternForge: {
+				DisplayName: "Thunder Pattern Forge"
+				Tooltip: "A lightning-etched forge for thunder-element equipment."
+			}
+			SectTrialAltar: {
+				DisplayName: "Sect Trial Altar"
+				Tooltip: "An ancient altar for class-specialized sect equipment."
+			}
+			HeavenFireFurnace: {
+				DisplayName: "Heaven Fire Furnace"
+				Tooltip: "A divine furnace for heaven-dao equipment."
+			}
+			DaoSeveringAltar: {
+				DisplayName: "Dao Severing Altar"
+				Tooltip: "An endgame altar for forging route-specific equipment."
+			}
 		}
 		Tiles: {
 			AlchemyCauldronTile.MapEntry: "Alchemy Cauldron"
 			ArtifactForgeTile.MapEntry: "Artifact Forge"
+			EarthClayFurnaceTile.MapEntry: "Earth Clay Furnace"
+			SimpleTalismanTableTile.MapEntry: "Simple Talisman Table"
+			StarPatternCauldronTile.MapEntry: "Star Pattern Cauldron"
+			ThunderPatternForgeTile.MapEntry: "Thunder Pattern Forge"
+			SectTrialAltarTile.MapEntry: "Sect Trial Altar"
+			HeavenFireFurnaceTile.MapEntry: "Heaven Fire Furnace"
+			DaoSeveringAltarTile.MapEntry: "Dao Severing Altar"
 		}
 		Buffs: {
 			AlchemyInsightBuff: {
