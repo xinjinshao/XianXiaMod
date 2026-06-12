@@ -231,7 +231,10 @@ def write_gallery(data: list[dict[str, str]]) -> None:
 
 def write_audit(data: list[dict[str, str]]) -> None:
     file = Path("Wiki/Art_Audit.md")
-    final_png_count = len(list(FINAL.glob("*/*.png")))
+    final_png_count = sum(1 for row in data if asset_path(row).exists())
+    preview_png_count = len(list((FINAL / "ContactSheets").glob("*.png"))) + len(list((FINAL / "TilePreviews").glob("*.png")))
+    if (FINAL / "contact_sheet_v01.png").exists():
+        preview_png_count += 1
     parts = [
         "# 美术素材审计",
         "",
@@ -240,11 +243,15 @@ def write_audit(data: list[dict[str, str]]) -> None:
         "## 自动检查结果",
         "",
         f"- Manifest 条目：{len(data)}",
-        f"- `Assets/Final/<asset_id>/` 下最终 PNG：{final_png_count}",
+        f"- `Assets/Final/<asset_id>/` 下最终素材 PNG：{final_png_count}",
+        f"- 预览/审计 PNG：{preview_png_count}（总览、分类 contact sheets、Tile 平铺预览）。",
         "- 已检查：文件存在、RGBA 格式、目标尺寸、非 Tile/Wall 透明角。",
         "- 当前机器检查：通过。",
         "- 已修复：Wiki 页面已插入素材图片，不再只依赖路径定位。",
         "- 已修复：美术图库使用中文名称、ID、类型、尺寸同表展示，便于对照。",
+        "- 已修复：总览 contact sheet 由 `Tools/create_art_previews.py` 按 manifest 顺序重建，避免替换素材后总览图滞后。",
+        "- 已修复：非 Tile/Wall/UI 的独立精灵已通过 `Tools/repair_asset_safe_margins.py` 统一补足安全透明边距，降低游戏缩放和 Wiki 预览中的截断风险。",
+        "- 已修复：`old_heaven_dao_core`、`woodgrain_flying_sword` 等点名素材已同步刷新到 `Assets/Final`、`Content`、总览图与 Wiki 页面。",
         "",
         "## 语义一致性检查",
         "",
