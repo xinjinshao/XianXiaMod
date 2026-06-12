@@ -54,6 +54,18 @@ def main() -> None:
         "BossArrayFieldProjectile",
         "field_ids",
         "BOSS_UNLOCK_REQUIREMENTS",
+        "def projectile_behavior_code",
+        "CloudpiercerSwordProjectile",
+        "StarEclipseSplitBolt",
+    )
+    require_text(
+        "Content/Projectiles/Generated/GeneratedProjectiles.cs",
+        "CloudWispProjectile",
+        "MinorThunderboltProjectile",
+        "localNPCHitCooldown",
+        "RestoreSpiritualEnergy",
+        "BuffID.OnFire3",
+        "StarEclipseSplitBolt",
     )
     require_text(
         "Common/Players/XianXiaPlayer.cs",

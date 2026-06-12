@@ -737,6 +737,15 @@ def generate_projectiles(existing: set[str]) -> None:
             continue
         copy_asset(row["asset_id"], "projectile", class_name, CONTENT / "Projectiles" / "Generated")
         width, height = row["width"], row["height"]
+        extra_defaults, extra_methods = projectile_behavior_code(class_name)
+        default_ai = "" if "public override void AI()" in extra_methods else """
+    public override void AI()
+    {
+        if (Projectile.velocity.LengthSquared() > 0.01f)
+            Projectile.rotation = Projectile.velocity.ToRotation();
+        Lighting.AddLight(Projectile.Center, 0.06f, 0.18f, 0.2f);
+    }
+"""
         classes.append(f"""
 public class {class_name} : ModProjectile
 {{
@@ -751,20 +760,199 @@ public class {class_name} : ModProjectile
         Projectile.timeLeft = 180;
         Projectile.tileCollide = true;
         Projectile.ignoreWater = true;
+{extra_defaults}
     }}
-
-    public override void AI()
-    {{
-        if (Projectile.velocity.LengthSquared() > 0.01f)
-            Projectile.rotation = Projectile.velocity.ToRotation();
-        Lighting.AddLight(Projectile.Center, 0.06f, 0.18f, 0.2f);
-    }}
+{default_ai}{extra_methods}
 }}
 """)
     write(CONTENT / "Projectiles" / "Generated" / "GeneratedProjectiles.cs", PROJECTILE_HEADER + "\n".join(classes))
 
 
-PROJECTILE_HEADER = """using Microsoft.Xna.Framework;\nusing Terraria;\nusing Terraria.ModLoader;\n\nnamespace XianXia.Content.Projectiles.Generated;\n"""
+def projectile_behavior_code(class_name: str) -> tuple[str, str]:
+    if class_name == "CloudpiercerSwordProjectile":
+        return ("""
+        Projectile.penetrate = 2;
+        Projectile.timeLeft = 105;""", """
+
+    public override void OnKill(int timeLeft)
+    {
+        if (Projectile.owner == Main.myPlayer)
+        {
+            Vector2 velocity = Projectile.velocity.SafeNormalize(Vector2.UnitX).RotatedByRandom(0.55f) * 6f;
+            Projectile.NewProjectile(
+                Projectile.GetSource_FromThis(),
+                Projectile.Center,
+                velocity,
+                ModContent.ProjectileType<CloudWispProjectile>(),
+                Math.Max(1, Projectile.damage / 3),
+                1f,
+                Projectile.owner);
+        }
+    }
+
+    public override bool OnTileCollide(Vector2 oldVelocity)
+    {
+        Projectile.tileCollide = false;
+        Projectile.timeLeft = Math.Min(Projectile.timeLeft, 24);
+        return false;
+    }
+""")
+
+    if class_name == "ThunderSwordProjectile":
+        return ("""
+        Projectile.penetrate = 3;
+        Projectile.timeLeft = 110;""", """
+
+    public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
+    {
+        if (Projectile.owner == Main.myPlayer && Main.rand.NextBool(3))
+        {
+            Projectile.NewProjectile(
+                Projectile.GetSource_OnHit(target),
+                target.Center + new Vector2(Main.rand.NextFloat(-32f, 32f), -240f),
+                Vector2.UnitY * 12f,
+                ModContent.ProjectileType<MinorThunderboltProjectile>(),
+                Math.Max(1, Projectile.damage / 2),
+                0.5f,
+                Projectile.owner);
+        }
+    }
+""")
+
+    if class_name == "FormlessSwordWheelProjectile":
+        return ("""
+        Projectile.penetrate = 5;
+        Projectile.timeLeft = 150;
+        Projectile.tileCollide = false;
+        Projectile.usesLocalNPCImmunity = true;
+        Projectile.localNPCHitCooldown = 12;""", """
+
+    public override void AI()
+    {
+        Player owner = Main.player[Projectile.owner];
+        Projectile.rotation += 0.28f;
+        if (owner.active)
+        {
+            Vector2 drift = owner.velocity.SafeNormalize(Vector2.Zero) * 3f;
+            Projectile.velocity = Vector2.Lerp(Projectile.velocity, Projectile.velocity + drift, 0.04f);
+        }
+        Lighting.AddLight(Projectile.Center, 0.08f, 0.2f, 0.24f);
+    }
+""")
+
+    if class_name == "MoonboneShardProjectile":
+        return ("""
+        Projectile.penetrate = 2;
+        Projectile.timeLeft = 80;""", """
+
+    public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
+    {
+        Projectile.velocity *= 0.2f;
+        Projectile.timeLeft = Math.Min(Projectile.timeLeft, 24);
+    }
+""")
+
+    if class_name == "CinnabarTalismanFlame":
+        return ("", """
+
+    public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
+    {
+        target.AddBuff(BuffID.OnFire3, 60 * 3);
+    }
+""")
+
+    if class_name == "GreenwoodArrayField":
+        return ("""
+        Projectile.penetrate = -1;
+        Projectile.timeLeft = 300;
+        Projectile.tileCollide = false;
+        Projectile.usesLocalNPCImmunity = true;
+        Projectile.localNPCHitCooldown = 30;""", """
+
+    public override void AI()
+    {
+        Projectile.velocity = Vector2.Zero;
+        Projectile.rotation += 0.02f;
+        Player owner = Main.player[Projectile.owner];
+        if (owner.active && owner.Hitbox.Intersects(Projectile.Hitbox) && Main.GameUpdateCount % 60 == 0)
+        {
+            owner.statLife = Math.Min(owner.statLifeMax2, owner.statLife + 1);
+            owner.GetModPlayer<global::XianXia.Common.Players.XianXiaPlayer>().RestoreSpiritualEnergy(1);
+        }
+        Lighting.AddLight(Projectile.Center, 0.05f, 0.24f, 0.12f);
+    }
+""")
+
+    if class_name == "ThunderTalismanArray":
+        return ("""
+        Projectile.penetrate = -1;
+        Projectile.timeLeft = 240;
+        Projectile.tileCollide = false;
+        Projectile.usesLocalNPCImmunity = true;
+        Projectile.localNPCHitCooldown = 30;""", """
+
+    public override void AI()
+    {
+        Projectile.velocity = Vector2.Zero;
+        Projectile.rotation += 0.035f;
+        if (Projectile.owner == Main.myPlayer && Projectile.timeLeft % 45 == 0)
+        {
+            Projectile.NewProjectile(
+                Projectile.GetSource_FromAI(),
+                Projectile.Center + new Vector2(Main.rand.NextFloat(-48f, 48f), -220f),
+                Vector2.UnitY * 13f,
+                ModContent.ProjectileType<MinorThunderboltProjectile>(),
+                Math.Max(1, Projectile.damage / 2),
+                0.5f,
+                Projectile.owner);
+        }
+        Lighting.AddLight(Projectile.Center, 0.12f, 0.08f, 0.25f);
+    }
+""")
+
+    if class_name == "DecreeJudgementBeam":
+        return ("""
+        Projectile.penetrate = 8;
+        Projectile.timeLeft = 36;
+        Projectile.tileCollide = false;
+        Projectile.usesLocalNPCImmunity = true;
+        Projectile.localNPCHitCooldown = 8;""", """
+
+    public override bool? CanDamage()
+    {
+        return Projectile.timeLeft < 18;
+    }
+""")
+
+    if class_name == "StarEclipseSplitBolt":
+        return ("""
+        Projectile.penetrate = 2;
+        Projectile.timeLeft = 160;""", """
+
+    public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
+    {
+        if (Projectile.owner == Main.myPlayer && Projectile.ai[0] == 0f)
+        {
+            for (int i = -1; i <= 1; i += 2)
+            {
+                Projectile.NewProjectile(
+                    Projectile.GetSource_OnHit(target),
+                    Projectile.Center,
+                    Projectile.velocity.RotatedBy(MathHelper.ToRadians(18f * i)) * 0.85f,
+                    ModContent.ProjectileType<SpiritBolt>(),
+                    Math.Max(1, Projectile.damage / 2),
+                    1f,
+                    Projectile.owner,
+                    1f);
+            }
+        }
+    }
+""")
+
+    return ("", "")
+
+
+PROJECTILE_HEADER = """using System;\nusing Microsoft.Xna.Framework;\nusing Terraria;\nusing Terraria.ID;\nusing Terraria.ModLoader;\n\nnamespace XianXia.Content.Projectiles.Generated;\n"""
 
 
 def generate_tiles(existing: set[str]) -> None:
