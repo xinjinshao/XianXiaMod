@@ -1,0 +1,60 @@
+version: v05
+date: 2026-06-13
+source_atlases:
+  - Assets/Generated/quality_fix_v05/projectiles_atlas_source.png
+  - Assets/Generated/quality_fix_v05/objects_atlas_source.png
+rules:
+  non_tileable_margin_px: 1
+  generated_atlas_cell_padding: "approximately 20%"
+  contact_sheet_preview_padding_px: 18
+  reject:
+    - flat circular badge with one symbol
+    - pure color square, disk, or line placeholder
+    - clipped glow, weapon tip, scroll tassel, or object base
+  tileable_exception:
+    - terrain tiles and walls may touch the canvas edge only when intentionally seamless
+assets:
+  - id: spirit_bolt
+    content: Content/Projectiles/SpiritBolt.png
+    size: 16x8
+    description: teal spirit dart with bright core and dark cyan outline
+  - id: boss_array_field_projectile
+    content: Content/Projectiles/BossArrayFieldProjectile.png
+    size: 28x28
+    description: layered jade-indigo arcane formation disc with rune detail
+  - id: tribulation_lightning_projectile
+    content: Content/Projectiles/TribulationLightningProjectile.png
+    size: 16x48
+    description: vertical jagged blue-white thunder column with violet edge sparks
+  - id: tribulation_warning_line_projectile
+    content: Content/Projectiles/TribulationWarningLineProjectile.png
+    size: 16x4
+    description: thin omen beam with tapered cyan-white core, adapted by hand to avoid dot-like scaling
+  - id: cloudpiercer_sword_projectile
+    content: Content/Projectiles/CloudpiercerSwordProjectile.png
+    size: 48x16
+    description: silver flying sword slash with blue cloud trail
+  - id: thunder_sword_projectile
+    content: Content/Projectiles/ThunderSwordProjectile.png
+    size: 48x16
+    description: lightning sword slash with blue-white blade and violet-gold sparks
+  - id: woodgrain_sword_projectile
+    content: Content/Projectiles/WoodgrainSwordProjectile.png
+    size: 32x16
+    description: wooden flying sword with carved grain, green tassel, and qi trail
+  - id: archive_light_pillar
+    content: Content/Tiles/ArchiveLightPillarTile.png
+    size: 32x96
+    description: cyan-white archive pillar with gold frame and floating glyph motes
+  - id: broken_heaven_tablet
+    content: Content/Tiles/BrokenHeavenTabletTile.png
+    size: 32x64
+    description: fractured pale jade-gold scripture slab with red tassel
+  - id: thunder_pattern_forge
+    content: Content/Tiles/Stations/ThunderPatternForgeTile.png
+    size: 64x48
+    description: compact black-metal forge with thunder inlay and blue sparks
+  - id: simple_talisman_table
+    content: Content/Tiles/Stations/SimpleTalismanTableTile.png
+    size: 48x32
+    description: wooden talisman desk with brush, papers, cinnabar seal, and teal lamp

@@ -255,7 +255,8 @@ def fit_thumb(path: Path, size: int = 96) -> Image.Image:
     bbox = alpha.getbbox()
     if bbox:
         image = image.crop(bbox)
-    scale = min((size - 10) / image.width, (size - 10) / image.height)
+    preview_padding = 18
+    scale = min((size - preview_padding * 2) / image.width, (size - preview_padding * 2) / image.height)
     resized = image.resize(
         (max(1, int(image.width * scale)), max(1, int(image.height * scale))),
         Image.Resampling.NEAREST,
