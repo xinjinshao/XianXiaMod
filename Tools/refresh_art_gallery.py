@@ -216,7 +216,7 @@ def write_gallery(entries: list[dict[str, str]]) -> None:
         "",
         "## 总览图",
         "",
-        '<img src="../Assets/Final/contact_sheet_v01.png" alt="all assets contact sheet" width="760">',
+        '<img src="../Assets/Final/contact_sheet_v01.png" alt="all assets contact sheet" width="960">',
         "",
         "## 多帧规则",
         "",

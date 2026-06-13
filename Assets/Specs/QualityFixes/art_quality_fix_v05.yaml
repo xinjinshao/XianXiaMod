@@ -4,7 +4,12 @@ source_atlases:
   - Assets/Generated/quality_fix_v05/projectiles_atlas_source.png
   - Assets/Generated/quality_fix_v05/objects_atlas_source.png
 rules:
-  non_tileable_margin_px: 1
+  visual_safe_margin_px:
+    buff_or_32px_item: 3
+    small_24px_icon: 2
+    station_or_object_tile: 2
+    normal_projectile: 2
+    ultra_thin_functional_projectile: 1
   generated_atlas_cell_padding: "approximately 20%"
   contact_sheet_preview_padding_px: 18
   reject:

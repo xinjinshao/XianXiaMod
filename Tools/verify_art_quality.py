@@ -40,6 +40,22 @@ def rel(path: Path) -> str:
     return path.relative_to(ROOT).as_posix()
 
 
+def required_margin(path: Path, image: Image.Image) -> int:
+    item = rel(path)
+    width, height = image.size
+    if item in TILEABLE_PREFIXES:
+        return 0
+    if "Content/Projectiles/" in item:
+        if min(width, height) <= 4:
+            return 1
+        return 2
+    if "Content/Tiles/Stations/" in item or item in OBJECT_TILES:
+        return 2
+    if width <= 24 or height <= 24:
+        return 2
+    return 3
+
+
 def png_paths() -> list[Path]:
     roots = [ROOT / "Content" / "Buffs", ROOT / "Content" / "Items", ROOT / "Content" / "Projectiles", ROOT / "Content" / "Tiles" / "Stations"]
     paths: list[Path] = []
@@ -64,7 +80,8 @@ def nontransparent_colors(image: Image.Image) -> int:
 
 def assert_safe_edges(path: Path, image: Image.Image, failures: list[str]) -> None:
     item = rel(path)
-    if item in TILEABLE_PREFIXES:
+    margin = required_margin(path, image)
+    if margin == 0:
         return
     alpha = image.convert("RGBA").getchannel("A")
     bbox = alpha.getbbox()
@@ -73,8 +90,8 @@ def assert_safe_edges(path: Path, image: Image.Image, failures: list[str]) -> No
         return
     width, height = image.size
     left, top, right, bottom = bbox
-    if left <= 0 or top <= 0 or right >= width or bottom >= height:
-        failures.append(f"{item}: non-tileable alpha touches edge, bbox={bbox}, size={image.size}")
+    if left < margin or top < margin or width - right < margin or height - bottom < margin:
+        failures.append(f"{item}: needs {margin}px visual margin, bbox={bbox}, size={image.size}")
 
 
 def assert_color_depth(path: Path, image: Image.Image, failures: list[str]) -> None:

@@ -43,7 +43,29 @@ if (!(Test-Path $tmod)) {
 
 $testMods = Join-Path $SaveDir "Mods"
 New-Item -ItemType Directory -Force -Path $testMods | Out-Null
-Copy-Item $tmod (Join-Path $testMods "XianXia.tmod") -Force
+
+function Copy-SharedFile {
+    param(
+        [string]$Source,
+        [string]$Destination
+    )
+
+    $inputStream = [System.IO.File]::Open($Source, [System.IO.FileMode]::Open, [System.IO.FileAccess]::Read, [System.IO.FileShare]::ReadWrite)
+    try {
+        $outputStream = [System.IO.File]::Open($Destination, [System.IO.FileMode]::Create, [System.IO.FileAccess]::Write, [System.IO.FileShare]::None)
+        try {
+            $inputStream.CopyTo($outputStream)
+        }
+        finally {
+            $outputStream.Dispose()
+        }
+    }
+    finally {
+        $inputStream.Dispose()
+    }
+}
+
+Copy-SharedFile $tmod (Join-Path $testMods "XianXia.tmod")
 '["XianXia"]' | Set-Content -Path (Join-Path $testMods "enabled.json") -Encoding UTF8
 
 $stdout = Join-Path $SaveDir "server-smoke.log"
