@@ -9,7 +9,7 @@ using Terraria.ModLoader;
 using XianXia.Common.Players;
 using XianXia.Common.Systems;
 using XianXia.Content.Items.BossSummons;
-using XianXia.Content.Items.BossSummons.Generated;
+using XianXia.Content.Items.BossSummons;
 using XianXia.Content.Items.Consumables;
 using XianXia.Content.Items.Weapons;
 using XianXia.Content.Items.Accessories;

@@ -2194,7 +2194,7 @@ public class {class_name} : ModItem
     write(CONTENT / "Items" / "BossSummons" / "Generated" / "GeneratedBossSummons.cs", SUMMON_HEADER + "\n".join(classes))
 
 
-SUMMON_HEADER = """using Terraria;\nusing Terraria.ID;\nusing Terraria.ModLoader;\n\nnamespace XianXia.Content.Items.BossSummons.Generated;\n"""
+SUMMON_HEADER = """using Terraria;\nusing Terraria.ID;\nusing Terraria.ModLoader;\n\nnamespace XianXia.Content.Items.BossSummons;\n"""
 
 
 def hjson_block(entries: dict[str, dict[str, str]], indent: str = "\t\t\t") -> str:
