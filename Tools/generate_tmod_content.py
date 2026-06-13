@@ -777,6 +777,10 @@ def generate_materials(existing: set[str]) -> None:
             # Check if using HandGenerated items
             hg_weapon_mats = {"ThunderPatternFeather", "BrokenSwordIntent"}
             ing_ns = "HandGenerated" if ingredient in hg_weapon_mats else "Generated"
+            recipe = f"""
+    public override void AddRecipes()
+    {{
+        CreateRecipe()
             station = {
                 "cloudpiercer_flying_sword": "ArtifactForgeTile",
                 "thunder_pattern_sword_case": "ThunderPatternForgeTile",

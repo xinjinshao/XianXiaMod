@@ -1,0 +1,18 @@
+using Terraria;
+using Terraria.ID;
+using Terraria.ModLoader;
+
+namespace XianXia.Content.Items.HandGenerated;
+
+public class SpiritVeinWyrmTrophy : ModItem { public override void SetStaticDefaults() => Item.ResearchUnlockCount = 1; public override void SetDefaults() { Item.width = 32; Item.height = 32; Item.maxStack = 99; Item.value = Item.buyPrice(gold: 1); Item.rare = ItemRarityID.Blue; } }
+public class GardenWardenMask : ModItem { public override void SetStaticDefaults() => Item.ResearchUnlockCount = 1; public override void SetDefaults() { Item.width = 32; Item.height = 32; Item.maxStack = 1; Item.value = Item.buyPrice(gold: 1); Item.rare = ItemRarityID.Green; Item.vanity = true; } }
+public class BlackFurnaceIronGolemPet : ModItem { public override void SetStaticDefaults() => Item.ResearchUnlockCount = 1; public override void SetDefaults() { Item.width = 32; Item.height = 32; Item.maxStack = 1; Item.value = Item.buyPrice(gold: 2); Item.rare = ItemRarityID.Orange; } }
+public class TribulationCloudBottle : ModItem { public override void SetStaticDefaults() => Item.ResearchUnlockCount = 1; public override void SetDefaults() { Item.width = 32; Item.height = 32; Item.maxStack = 1; Item.value = Item.buyPrice(gold: 2); Item.rare = ItemRarityID.LightRed; } }
+public class ThunderMarshJiaoWing : ModItem { public override void SetStaticDefaults() => Item.ResearchUnlockCount = 1; public override void SetDefaults() { Item.width = 32; Item.height = 32; Item.maxStack = 1; Item.value = Item.buyPrice(gold: 3); Item.rare = ItemRarityID.LightRed; Item.vanity = true; } }
+public class AbyssalStarWombLamp : ModItem { public override void SetStaticDefaults() => Item.ResearchUnlockCount = 1; public override void SetDefaults() { Item.width = 32; Item.height = 32; Item.maxStack = 1; Item.value = Item.buyPrice(gold: 2); Item.rare = ItemRarityID.Pink; } }
+public class FormlessSwordSoulCostume : ModItem { public override void SetStaticDefaults() => Item.ResearchUnlockCount = 1; public override void SetDefaults() { Item.width = 32; Item.height = 32; Item.maxStack = 1; Item.value = Item.buyPrice(gold: 3); Item.rare = ItemRarityID.Lime; Item.vanity = true; } }
+public class MedicineKingCauldronDecoration : ModItem { public override void SetStaticDefaults() => Item.ResearchUnlockCount = 1; public override void SetDefaults() { Item.width = 32; Item.height = 32; Item.maxStack = 1; Item.value = Item.buyPrice(gold: 3); Item.rare = ItemRarityID.Lime; } }
+public class SmallTabletPet : ModItem { public override void SetStaticDefaults() => Item.ResearchUnlockCount = 1; public override void SetDefaults() { Item.width = 32; Item.height = 32; Item.maxStack = 1; Item.value = Item.buyPrice(gold: 3); Item.rare = ItemRarityID.Yellow; } }
+public class InspectorMask : ModItem { public override void SetStaticDefaults() => Item.ResearchUnlockCount = 1; public override void SetDefaults() { Item.width = 32; Item.height = 32; Item.maxStack = 1; Item.value = Item.buyPrice(gold: 4); Item.rare = ItemRarityID.Yellow; Item.vanity = true; } }
+public class MoonboneImmortalWingAccessory : ModItem { public override void SetStaticDefaults() => Item.ResearchUnlockCount = 1; public override void SetDefaults() { Item.width = 32; Item.height = 32; Item.maxStack = 1; Item.value = Item.buyPrice(gold: 5); Item.rare = ItemRarityID.Red; Item.vanity = true; } }
+public class SilentTabletDecoration : ModItem { public override void SetStaticDefaults() => Item.ResearchUnlockCount = 1; public override void SetDefaults() { Item.width = 32; Item.height = 32; Item.maxStack = 1; Item.value = Item.buyPrice(gold: 8); Item.rare = ItemRarityID.Purple; } }
