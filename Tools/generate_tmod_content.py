@@ -772,7 +772,7 @@ def generate_materials(existing: set[str]) -> None:
     public override void AddRecipes()
     {{
         CreateRecipe()
-            .AddIngredient<global::XianXia.Content.Items.Generated.ArtifactBlankShard>(2)
+            .AddIngredient<global::XianXia.Content.Items.Materials.ArtifactBlankShard>(2)
             .AddIngredient<global::XianXia.Content.Items.{ing_ns}.{ingredient}>({tier_count})
             .AddIngredient<global::XianXia.Content.Items.Materials.LowGradeSpiritStone>(12)
             .AddTile(ModContent.TileType<global::XianXia.Content.Tiles.Stations.ArtifactForgeTile>())
@@ -805,7 +805,7 @@ def generate_materials(existing: set[str]) -> None:
     public override void AddRecipes()
     {
         CreateRecipe(3)
-            .AddIngredient<global::XianXia.Content.Items.Generated.GreenwoodRoot>(2)
+            .AddIngredient<global::XianXia.Content.Items.Materials.GreenwoodRoot>(2)
             .AddIngredient(ItemID.BottledWater)
             .AddTile(ModContent.TileType<global::XianXia.Content.Tiles.Stations.AlchemyCauldronTile>())
             .Register();
@@ -816,7 +816,7 @@ def generate_materials(existing: set[str]) -> None:
     public override void AddRecipes()
     {
         CreateRecipe()
-            .AddIngredient<global::XianXia.Content.Items.Generated.GreenwoodRoot>(3)
+            .AddIngredient<global::XianXia.Content.Items.Materials.GreenwoodRoot>(3)
             .AddIngredient<global::XianXia.Content.Items.Materials.LowGradeSpiritStone>(5)
             .AddTile(ModContent.TileType<global::XianXia.Content.Tiles.Stations.AlchemyCauldronTile>())
             .Register();
@@ -827,8 +827,8 @@ def generate_materials(existing: set[str]) -> None:
     public override void AddRecipes()
     {
         CreateRecipe()
-            .AddIngredient<global::XianXia.Content.Items.Generated.GreenwoodRoot>(4)
-            .AddIngredient<global::XianXia.Content.Items.Generated.FurnaceSlagIron>(4)
+            .AddIngredient<global::XianXia.Content.Items.Materials.GreenwoodRoot>(4)
+            .AddIngredient<global::XianXia.Content.Items.Materials.FurnaceSlagIron>(4)
             .AddIngredient<global::XianXia.Content.Items.Materials.LowGradeSpiritStone>(10)
             .AddTile(ModContent.TileType<global::XianXia.Content.Tiles.Stations.AlchemyCauldronTile>())
             .Register();
@@ -839,8 +839,8 @@ def generate_materials(existing: set[str]) -> None:
     public override void AddRecipes()
     {
         CreateRecipe(2)
-            .AddIngredient<global::XianXia.Content.Items.Generated.TribulationCloudDew>(3)
-            .AddIngredient<global::XianXia.Content.Items.Generated.GreenwoodRoot>(2)
+            .AddIngredient<global::XianXia.Content.Items.Materials.TribulationCloudDew>(3)
+            .AddIngredient<global::XianXia.Content.Items.Materials.GreenwoodRoot>(2)
             .AddIngredient(ItemID.BottledWater)
             .AddTile(ModContent.TileType<global::XianXia.Content.Tiles.Stations.AlchemyCauldronTile>())
             .Register();
@@ -851,8 +851,8 @@ def generate_materials(existing: set[str]) -> None:
     public override void AddRecipes()
     {
         CreateRecipe()
-            .AddIngredient<global::XianXia.Content.Items.Generated.StarEclipseCrystal>(6)
-            .AddIngredient<global::XianXia.Content.Items.Generated.StarAbyssMembrane>(2)
+            .AddIngredient<global::XianXia.Content.Items.Materials.StarEclipseCrystal>(6)
+            .AddIngredient<global::XianXia.Content.Items.Materials.StarAbyssMembrane>(2)
             .AddIngredient<global::XianXia.Content.Items.Materials.LowGradeSpiritStone>(12)
             .AddTile(TileID.DemonAltar)
             .Register();
@@ -1884,7 +1884,7 @@ public class {class_name} : ModNPC
         npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<global::XianXia.Content.Items.Generated.{pascal(drop2)}>(), 1, 8, 16));
         npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<global::XianXia.Content.Items.Materials.LowGradeSpiritStone>(), 1, 8, 16));
         npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<global::XianXia.Content.Items.Materials.SpiritGel>(), 4, 3, 8));
-        npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<global::XianXia.Content.Items.Generated.ArtifactBlankShard>(), 8, 1, 3));
+        npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<global::XianXia.Content.Items.Materials.ArtifactBlankShard>(), 8, 1, 3));
         npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<global::XianXia.Content.Items.HandGenerated.{BOSS_RARE_DROPS.get(asset_id, ("ArtifactBlankShard", 100))[0]}>(), {BOSS_RARE_DROPS.get(asset_id, ("ArtifactBlankShard", 100))[1]}, 1, 1));
     }}
 }}

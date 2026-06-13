@@ -55,7 +55,7 @@ public class StarPatternCauldron : ModItem
     }
     public override void AddRecipes()
     {
-        CreateRecipe().AddIngredient<global::XianXia.Content.Items.Generated.StarEclipseCrystal>(8)
+        CreateRecipe().AddIngredient<global::XianXia.Content.Items.Materials.StarEclipseCrystal>(8)
             .AddIngredient(ItemID.HellstoneBar, 10)
             .AddTile(ModContent.TileType<AlchemyCauldronTile>()).Register();
     }
@@ -75,7 +75,7 @@ public class ThunderPatternForge : ModItem
     }
     public override void AddRecipes()
     {
-        CreateRecipe().AddIngredient<global::XianXia.Content.Items.Generated.TribulationCloudDew>(8)
+        CreateRecipe().AddIngredient<global::XianXia.Content.Items.Materials.TribulationCloudDew>(8)
             .AddIngredient(ItemID.MythrilAnvil).AddTile(TileID.MythrilAnvil).Register();
     }
 }
@@ -94,8 +94,8 @@ public class SectTrialAltar : ModItem
     }
     public override void AddRecipes()
     {
-        CreateRecipe().AddIngredient<global::XianXia.Content.Items.Generated.SectTrialToken>(4)
-            .AddIngredient<global::XianXia.Content.Items.Generated.ArtifactBlankShard>(8)
+        CreateRecipe().AddIngredient<global::XianXia.Content.Items.Materials.SectTrialToken>(4)
+            .AddIngredient<global::XianXia.Content.Items.Materials.ArtifactBlankShard>(8)
             .AddTile(ModContent.TileType<ArtifactForgeTile>()).Register();
     }
 }
@@ -114,7 +114,7 @@ public class HeavenFireFurnace : ModItem
     }
     public override void AddRecipes()
     {
-        CreateRecipe().AddIngredient<global::XianXia.Content.Items.Generated.HeavenDaoFragment>(12)
+        CreateRecipe().AddIngredient<global::XianXia.Content.Items.Materials.HeavenDaoFragment>(12)
             .AddIngredient(ItemID.AdamantiteForge).AddTile(TileID.MythrilAnvil).Register();
     }
 }
@@ -133,8 +133,8 @@ public class DaoSeveringAltar : ModItem
     }
     public override void AddRecipes()
     {
-        CreateRecipe().AddIngredient<global::XianXia.Content.Items.Generated.DaoSeveringDust>(12)
-            .AddIngredient<global::XianXia.Content.Items.Generated.Moonbone>(8)
+        CreateRecipe().AddIngredient<global::XianXia.Content.Items.Materials.DaoSeveringDust>(12)
+            .AddIngredient<global::XianXia.Content.Items.Materials.Moonbone>(8)
             .AddTile(ModContent.TileType<global::XianXia.Content.Tiles.Stations.HeavenFireFurnaceTile>()).Register();
     }
 }

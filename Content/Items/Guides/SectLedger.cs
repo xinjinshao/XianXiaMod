@@ -4,7 +4,9 @@ using Terraria.Localization;
 using Terraria.ModLoader;
 using XianXia.Common.Players;
 using XianXia.Common.Systems;
-using XianXia.Content.Items.Generated;
+using XianXia.Content.Items.Weapons;
+using XianXia.Content.Items.Accessories;
+using XianXia.Content.Items.Materials;
 using XianXia.Content.Items.Materials;
 
 namespace XianXia.Content.Items.Guides;
