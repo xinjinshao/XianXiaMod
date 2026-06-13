@@ -12,7 +12,7 @@ public class WanderingSpiritSlime : ModNPC
 {
     public override void SetStaticDefaults()
     {
-        Main.npcFrameCount[Type] = Main.npcFrameCount[NPCID.BlueSlime];
+        Main.npcFrameCount[Type] = global::XianXia.Common.Animation.NpcFrameAnimator.EnemyFrameCount;
     }
 
     public override void SetBestiary(BestiaryDatabase database, BestiaryEntry bestiaryEntry)
@@ -32,7 +32,11 @@ public class WanderingSpiritSlime : ModNPC
         NPC.value = 45f;
         NPC.aiStyle = NPCAIStyleID.Slime;
         AIType = NPCID.BlueSlime;
-        AnimationType = NPCID.BlueSlime;
+    }
+
+    public override void FindFrame(int frameHeight)
+    {
+        global::XianXia.Common.Animation.NpcFrameAnimator.Animate(NPC, frameHeight, Main.npcFrameCount[Type], 7);
     }
 
     public override float SpawnChance(NPCSpawnInfo spawnInfo)

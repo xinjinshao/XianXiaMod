@@ -7,7 +7,6 @@ using XianXia.Common.Systems;
 using XianXia.Content.Items.Weapons;
 using XianXia.Content.Items.Accessories;
 using XianXia.Content.Items.Materials;
-using XianXia.Content.Items.Materials;
 
 namespace XianXia.Content.Items.Guides;
 

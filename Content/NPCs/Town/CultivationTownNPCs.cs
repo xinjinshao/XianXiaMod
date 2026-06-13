@@ -9,16 +9,13 @@ using Terraria.ModLoader;
 using XianXia.Common.Players;
 using XianXia.Common.Systems;
 using XianXia.Content.Items.BossSummons;
-using XianXia.Content.Items.BossSummons;
 using XianXia.Content.Items.Consumables;
 using XianXia.Content.Items.Weapons;
 using XianXia.Content.Items.Accessories;
 using XianXia.Content.Items.Materials;
 using XianXia.Content.Items.HandGenerated;
 using XianXia.Content.Items.Guides;
-using XianXia.Content.Items.Materials;
 using XianXia.Content.Items.Stations;
-using XianXia.Content.Items.Weapons;
 
 namespace XianXia.Content.NPCs.Town;
 
@@ -26,13 +23,7 @@ public abstract class CultivationTownNPC : ModNPC
 {
     public override void SetStaticDefaults()
     {
-        Main.npcFrameCount[Type] = Main.npcFrameCount[NPCID.Guide];
-        NPCID.Sets.ExtraFramesCount[Type] = NPCID.Sets.ExtraFramesCount[NPCID.Guide];
-        NPCID.Sets.AttackFrameCount[Type] = NPCID.Sets.AttackFrameCount[NPCID.Guide];
-        NPCID.Sets.DangerDetectRange[Type] = 650;
-        NPCID.Sets.AttackType[Type] = 0;
-        NPCID.Sets.AttackTime[Type] = 28;
-        NPCID.Sets.AttackAverageChance[Type] = 20;
+        Main.npcFrameCount[Type] = global::XianXia.Common.Animation.NpcFrameAnimator.TownFrameCount;
     }
 
     public override void SetDefaults()
@@ -49,7 +40,12 @@ public abstract class CultivationTownNPC : ModNPC
         NPC.DeathSound = SoundID.NPCDeath1;
         NPC.knockBackResist = 0.5f;
         AIType = NPCID.Guide;
-        AnimationType = NPCID.Guide;
+    }
+
+
+    public override void FindFrame(int frameHeight)
+    {
+        global::XianXia.Common.Animation.NpcFrameAnimator.Animate(NPC, frameHeight, Main.npcFrameCount[Type], 10);
     }
 
     protected static bool AnyPlayerAtStage(CultivationStage stage)

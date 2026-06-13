@@ -14,7 +14,7 @@ public class TalismanBat : ModNPC
 {
     public override void SetStaticDefaults()
     {
-        Main.npcFrameCount[Type] = Main.npcFrameCount[NPCID.CaveBat];
+        Main.npcFrameCount[Type] = global::XianXia.Common.Animation.NpcFrameAnimator.EnemyFrameCount;
     }
 
     public override void SetBestiary(BestiaryDatabase database, BestiaryEntry bestiaryEntry)
@@ -34,8 +34,7 @@ public class TalismanBat : ModNPC
         NPC.value = 50f;
         NPC.aiStyle = NPCAIStyleID.Bat;
         AIType = NPCID.CaveBat;
-        AnimationType = NPCID.CaveBat;
-        NPC.noGravity = true;
+NPC.noGravity = true;
     }
 
     public override float SpawnChance(NPCSpawnInfo spawnInfo)
@@ -67,5 +66,9 @@ public class TalismanBat : ModNPC
     public override void ModifyNPCLoot(NPCLoot npcLoot)
     {
         npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<SpiritGel>(), 2, 1, 2));
+    }
+    public override void FindFrame(int frameHeight)
+    {
+        global::XianXia.Common.Animation.NpcFrameAnimator.Animate(NPC, frameHeight, Main.npcFrameCount[Type], 7);
     }
 }

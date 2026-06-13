@@ -17,6 +17,11 @@ namespace XianXia.Content.NPCs.Enemies;
 public class ObsessedSwordCultivator : ModNPC
 
 {
+    public override void SetStaticDefaults()
+    {
+        Main.npcFrameCount[Type] = global::XianXia.Common.Animation.NpcFrameAnimator.EnemyFrameCount;
+    }
+
 
     public override void SetBestiary(BestiaryDatabase database, BestiaryEntry bestiaryEntry)
 
@@ -174,4 +179,8 @@ public class ObsessedSwordCultivator : ModNPC
 
     }
 
+    public override void FindFrame(int frameHeight)
+    {
+        global::XianXia.Common.Animation.NpcFrameAnimator.Animate(NPC, frameHeight, Main.npcFrameCount[Type], 7);
+    }
 }

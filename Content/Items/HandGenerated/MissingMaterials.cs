@@ -1,5 +1,4 @@
 // Missing materials from wiki enemy/boss drop tables
-// TODO: ART_PLACEHOLDER - all use placeholder sprite
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;

@@ -6,7 +6,6 @@ using Terraria.ID;
 using Terraria.IO;
 using Terraria.ModLoader;
 using Terraria.WorldBuilding;
-using XianXia.Content.Tiles.Generated;
 using XianXia.Content.Tiles;
 
 namespace XianXia.Common.Systems;

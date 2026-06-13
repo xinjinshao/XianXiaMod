@@ -21,6 +21,11 @@ namespace XianXia.Content.NPCs.Bosses;
 public class TribulationCloudAvatar : ModNPC
 
 {
+    public override void SetStaticDefaults()
+    {
+        Main.npcFrameCount[Type] = global::XianXia.Common.Animation.NpcFrameAnimator.BossFrameCount;
+    }
+
 
     public override void SetBestiary(BestiaryDatabase database, BestiaryEntry bestiaryEntry)
 
@@ -75,6 +80,11 @@ public class TribulationCloudAvatar : ModNPC
     }
 
 
+
+    public override void FindFrame(int frameHeight)
+    {
+        global::XianXia.Common.Animation.NpcFrameAnimator.Animate(NPC, frameHeight, Main.npcFrameCount[Type], 8);
+    }
 
     public override void AI()
 
@@ -273,9 +283,3 @@ public class TribulationCloudAvatar : ModNPC
     }
 
 }
-
-
-
-
-
-[AutoloadBossHead]

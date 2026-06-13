@@ -7,7 +7,7 @@ namespace XianXia.Content.Projectiles;
 
 public class BossSpiritBoltProjectile : ModProjectile
 {
-    public override string Texture => "XianXia/Content/Projectiles/Generated/SpiritBolt";
+    public override string Texture => "XianXia/Content/Projectiles/SpiritBolt";
 
     public override void SetDefaults()
     {

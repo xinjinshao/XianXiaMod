@@ -27,9 +27,9 @@ def main() -> None:
     required_files = [
         "Content/Projectiles/BossArrayFieldProjectile.cs",
         "Common/Systems/BossSummonRules.cs",
-        "Content/Projectiles/Generated/ThunderTalismanArray.png",
-        "Content/NPCs/Bosses/Generated/GeneratedBosses.cs",
-        "Content/Items/Generated/GeneratedItems.cs",
+        "Content/Projectiles/ThunderTalismanArray.png",
+        "Content/NPCs/Bosses/AbyssalStarWomb.cs",
+        "Content/Items/Weapons/ThunderTalismanArrayPlate.cs",
         "Content/NPCs/Town/CultivationTownNPCs.cs",
         "Common/Systems/DownedBossSystem.cs",
         "Wiki/Design_Status.md",
@@ -51,12 +51,8 @@ def main() -> None:
         "GreenwoodHerbGardenBiome",
         "MoonboneAbyssBiome",
     )
-    require_text(
-        "Content/NPCs/Bosses/Generated/GeneratedBosses.cs",
-        "BossArrayFieldProjectile",
-        "TribulationWarningLineProjectile",
-        "patternInterval",
-    )
+    require_text("Content/NPCs/Bosses/AbyssalStarWomb.cs", "BossArrayFieldProjectile", "patternInterval")
+    require_text("Content/NPCs/Bosses/TribulationCloudAvatar.cs", "TribulationWarningLineProjectile", "patternInterval")
     require_text(
         "Tools/generate_tmod_content.py",
         "def boss_pattern_code",
@@ -70,23 +66,32 @@ def main() -> None:
         "tribulation_cloudling",
         "archived_immortal_soul",
     )
+    require_text("Content/NPCs/Enemies/MiasmaFlowerMoth.cs", "PostAI()", "BuffID.Poisoned", "Main.ActivePlayers")
+    require_text("Content/NPCs/Enemies/FurnaceAshGolem.cs", "PostAI()", "BuffID.OnFire3")
+    require_text("Content/NPCs/Enemies/TribulationCloudling.cs", "TribulationWarningLineProjectile")
+    require_text("Content/NPCs/Enemies/ArchivedImmortalSoul.cs", "BossSpiritBoltProjectile", "SafeNormalize")
     require_text(
-        "Content/NPCs/Enemies/Generated/GeneratedEnemies.cs",
-        "PostAI()",
-        "BuffID.Poisoned",
-        "BuffID.OnFire3",
-        "TribulationWarningLineProjectile",
-        "BossSpiritBoltProjectile",
-        "SafeNormalize",
-        "Main.ActivePlayers",
+        "Content/Projectiles/CloudWispProjectile.cs",
+        "CloudWispProjectile",
     )
     require_text(
-        "Content/Projectiles/Generated/GeneratedProjectiles.cs",
-        "CloudWispProjectile",
-        "MinorThunderboltProjectile",
-        "localNPCHitCooldown",
+        "Content/Projectiles/GreenwoodArrayField.cs",
         "RestoreSpiritualEnergy",
+    )
+    require_text(
+        "Content/Projectiles/MinorThunderboltProjectile.cs",
+        "MinorThunderboltProjectile",
+    )
+    require_text(
+        "Content/Projectiles/DecreeJudgementBeam.cs",
+        "localNPCHitCooldown",
+    )
+    require_text(
+        "Content/Projectiles/CinnabarTalismanFlame.cs",
         "BuffID.OnFire3",
+    )
+    require_text(
+        "Content/Projectiles/StarEclipseSplitBolt.cs",
         "StarEclipseSplitBolt",
     )
     require_text(
@@ -95,13 +100,8 @@ def main() -> None:
         "requiredDownedBoss",
         "DownedBossSystem.DownedBosses.Contains",
     )
-    require_text(
-        "Content/Items/BossSummons/Generated/GeneratedBossSummons.cs",
-        "spirit_vein_wyrm",
-        "moonbone_immortal",
-        "CanUseBossSummon",
-        "CanUseGeneratedBossSummon",
-    )
+    require_text("Content/Items/BossSummons/SummonMoonboneRitualTalisman.cs", "moonbone_immortal", "CanUseBossSummon", "CanUseGeneratedBossSummon")
+    require_text("Content/Items/BossSummons/SummonGardenBrokenKey.cs", "spirit_vein_wyrm", "CanUseBossSummon", "CanUseGeneratedBossSummon")
     require_text(
         "Content/NPCs/Town/CultivationTownNPCs.cs",
         "SetChatButtons",
@@ -125,16 +125,9 @@ def main() -> None:
         "ReputationByCommission",
         "TryClaimCommission",
     )
-    require_text(
-        "Content/Items/Generated/GeneratedItems.cs",
-        "AlchemyInsightBuff",
-        "ReduceSpiritPressure",
-        "SpiritualPressureDisorderBuff",
-        "spiritualEnergyCostMultiplier *= 1.08f",
-        "HasArtifactAwakening",
-        "ArtifactAwakeningReady",
-        "DownedBossSystem.SectReputation",
-    )
+    require_text("Content/Items/Materials/FoundationPill.cs", "AlchemyInsightBuff", "ReduceSpiritPressure")
+    require_text("Content/Items/Accessories/StarAbyssEye.cs", "spiritualEnergyCostMultiplier *= 1.08f")
+    require_text("Content/Items/Weapons/ThunderTalismanArrayPlate.cs", "HasArtifactAwakening", "ArtifactAwakeningReady", "DownedBossSystem.SectReputation")
     require_text(
         "Common/Players/XianXiaPlayer.cs",
         "tribulationComprehension",
@@ -209,7 +202,7 @@ def main() -> None:
         "HerbSectApprentice",
     )
 
-    boss_field_refs = read("Content/NPCs/Bosses/Generated/GeneratedBosses.cs").count("BossArrayFieldProjectile")
+    boss_field_refs = sum(path.read_text(encoding="utf-8").count("BossArrayFieldProjectile") for path in (ROOT / "Content/NPCs/Bosses").glob("*.cs"))
     if boss_field_refs < 6:
         raise SystemExit(f"Expected multiple boss arena field references, found {boss_field_refs}.")
 

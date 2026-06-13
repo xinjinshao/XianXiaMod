@@ -7,7 +7,7 @@ namespace XianXia.Content.Projectiles;
 
 public class BossArrayFieldProjectile : ModProjectile
 {
-    public override string Texture => "XianXia/Content/Projectiles/Generated/ThunderTalismanArray";
+    public override string Texture => "XianXia/Content/Projectiles/ThunderTalismanArray";
 
     public override void SetDefaults()
     {

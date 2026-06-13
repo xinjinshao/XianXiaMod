@@ -8,6 +8,11 @@ namespace XianXia.Content.NPCs.Bosses;
 
 public class ShatteredJadeWyrmMinion : ModNPC
 {
+    public override void SetStaticDefaults()
+    {
+        Main.npcFrameCount[Type] = global::XianXia.Common.Animation.NpcFrameAnimator.BossFrameCount;
+    }
+
     public override string Texture => "XianXia/Content/NPCs/Enemies/ShatteredJadeWorm";
 
     public override void SetBestiary(BestiaryDatabase database, BestiaryEntry bestiaryEntry)
@@ -28,6 +33,11 @@ public class ShatteredJadeWyrmMinion : ModNPC
         NPC.HitSound = SoundID.NPCHit1;
         NPC.DeathSound = SoundID.NPCDeath1;
         NPC.aiStyle = -1;
+    }
+
+    public override void FindFrame(int frameHeight)
+    {
+        global::XianXia.Common.Animation.NpcFrameAnimator.Animate(NPC, frameHeight, Main.npcFrameCount[Type], 8);
     }
 
     public override void AI()

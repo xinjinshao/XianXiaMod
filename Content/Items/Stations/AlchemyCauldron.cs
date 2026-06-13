@@ -4,7 +4,6 @@ using Terraria.ModLoader;
 using XianXia.Content.Items.Weapons;
 using XianXia.Content.Items.Accessories;
 using XianXia.Content.Items.Materials;
-using XianXia.Content.Items.Materials;
 using XianXia.Content.Tiles.Stations;
 
 namespace XianXia.Content.Items.Stations;

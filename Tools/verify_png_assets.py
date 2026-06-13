@@ -61,7 +61,11 @@ def main() -> int:
                 continue
 
             for class_name in matches:
-                texture = source.parent / f"{class_name}.png"
+                texture_override = re.search(r'override\s+string\s+Texture\s*=>\s*"XianXia/([^"]+)"', text)
+                if texture_override:
+                    texture = ROOT / f"{texture_override.group(1)}.png"
+                else:
+                    texture = source.parent / f"{class_name}.png"
                 if not texture.exists():
                     invalid.append(f"{source.relative_to(ROOT)}: missing client texture {texture.relative_to(ROOT)}")
 

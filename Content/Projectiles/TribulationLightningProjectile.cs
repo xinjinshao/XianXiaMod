@@ -7,7 +7,7 @@ namespace XianXia.Content.Projectiles;
 
 public class TribulationLightningProjectile : ModProjectile
 {
-    public override string Texture => "XianXia/Content/Projectiles/Generated/MinorThunderboltProjectile";
+    public override string Texture => "XianXia/Content/Projectiles/MinorThunderboltProjectile";
 
     public override void SetDefaults()
     {

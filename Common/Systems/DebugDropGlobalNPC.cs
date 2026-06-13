@@ -5,7 +5,6 @@ using Terraria.ModLoader;
 using XianXia.Content.Items.Weapons;
 using XianXia.Content.Items.Accessories;
 using XianXia.Content.Items.Materials;
-using XianXia.Content.Items.Materials;
 
 namespace XianXia.Common.Systems;
 

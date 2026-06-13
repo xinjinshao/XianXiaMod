@@ -17,7 +17,7 @@ public class SpiritVeinWyrm : ModNPC
 
     public override void SetStaticDefaults()
     {
-        Main.npcFrameCount[Type] = 1;
+        Main.npcFrameCount[Type] = global::XianXia.Common.Animation.NpcFrameAnimator.BossFrameCount;
     }
 
     public override void SetBestiary(BestiaryDatabase database, BestiaryEntry bestiaryEntry)
@@ -44,6 +44,11 @@ public class SpiritVeinWyrm : ModNPC
         NPC.DeathSound = SoundID.NPCDeath14;
         NPC.aiStyle = -1;
         Music = MusicID.Boss1;
+    }
+
+    public override void FindFrame(int frameHeight)
+    {
+        global::XianXia.Common.Animation.NpcFrameAnimator.Animate(NPC, frameHeight, Main.npcFrameCount[Type], 8);
     }
 
     public override void AI()
