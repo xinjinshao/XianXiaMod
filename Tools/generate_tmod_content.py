@@ -776,11 +776,7 @@ def generate_materials(existing: set[str]) -> None:
             }.get(asset_id, 6)
             # Check if using HandGenerated items
             hg_weapon_mats = {"ThunderPatternFeather", "BrokenSwordIntent"}
-            ing_ns = "HandGenerated" if ingredient in hg_weapon_mats else "Generated"
-            recipe = f"""
-    public override void AddRecipes()
-    {{
-        CreateRecipe()
+            ing_ns = "HandGenerated" if ingredient in hg_weapon_mats else "Materials"
             station = {
                 "cloudpiercer_flying_sword": "ArtifactForgeTile",
                 "thunder_pattern_sword_case": "ThunderPatternForgeTile",
@@ -2389,29 +2385,9 @@ def generate_localization() -> None:
 
 
 def main() -> None:
-    for folder in [
-        CONTENT / "Items",
-        CONTENT / "Items" / "BossSummons",
-        CONTENT / "Projectiles",
-        CONTENT / "Tiles",
-        CONTENT / "NPCs" / "Enemies",
-        CONTENT / "NPCs" / "Bosses",
-    ]:
-        if folder.exists():
-            shutil.rmtree(folder)
-    existing = existing_class_names()
-    generate_materials(existing)
-    existing = existing_class_names()
-    generate_projectiles(existing)
-    generate_tiles(existing)
-    generate_biomes()
-    existing = existing_class_names()
-    generate_enemies(existing)
-    generate_bosses(existing)
-    existing = existing_class_names()
-    generate_summons(existing)
+    # Content is now hand-written. Only generate localization.
     generate_localization()
-    print("generated tModLoader content")
+    print("generated localization")
 
 
 if __name__ == "__main__":
