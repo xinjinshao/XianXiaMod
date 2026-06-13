@@ -1,0 +1,19 @@
+id: broken_heaven_inscription_needle
+type: item
+display_name_en: BrokenHeavenInscriptionNeedle
+theme: broken heaven inscription needle
+shape: white jade needle with gold broken heaven rune sparks
+palette: (236, 224, 166), (94, 124, 132), dark outline, pale cyan highlights
+size: 32x32
+source: imggen style atlas v02 plus project postprocess
+outputs:
+  - path: Content/Items/HandGenerated/BrokenHeavenInscriptionNeedle.png
+    role: runtime_texture
+  - path: Assets/Final/broken_heaven_inscription_needle/broken_heaven_inscription_needle__item_icon__v02.png
+    role: final_review_asset
+notes:
+  - Terraria-like 2D pixel art
+  - transparent background
+  - strong dark outline
+  - no text or UI
+  - replaces flat placeholder-style icon

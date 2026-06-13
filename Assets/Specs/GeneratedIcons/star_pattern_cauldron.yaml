@@ -1,0 +1,19 @@
+id: star_pattern_cauldron
+type: station
+display_name_en: StarPatternCauldron
+theme: star pattern cauldron item
+shape: dark blue cauldron with star pattern and violet steam
+palette: (80, 142, 230), (128, 62, 174), dark outline, pale cyan highlights
+size: 32x32
+source: imggen style atlas v02 plus project postprocess
+outputs:
+  - path: Content/Items/Stations/StarPatternCauldron.png
+    role: runtime_texture
+  - path: Assets/Final/star_pattern_cauldron/star_pattern_cauldron__station_icon__v02.png
+    role: final_review_asset
+notes:
+  - Terraria-like 2D pixel art
+  - transparent background
+  - strong dark outline
+  - no text or UI
+  - replaces flat placeholder-style icon

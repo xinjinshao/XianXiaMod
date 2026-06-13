@@ -1,0 +1,19 @@
+id: simple_talisman_table
+type: station
+display_name_en: SimpleTalismanTable
+theme: simple talisman table item
+shape: wood talisman table with brush, cinnabar dish, and paper
+palette: (172, 112, 56), (226, 202, 128), dark outline, pale cyan highlights
+size: 32x32
+source: imggen style atlas v02 plus project postprocess
+outputs:
+  - path: Content/Items/Stations/SimpleTalismanTable.png
+    role: runtime_texture
+  - path: Assets/Final/simple_talisman_table/simple_talisman_table__station_icon__v02.png
+    role: final_review_asset
+notes:
+  - Terraria-like 2D pixel art
+  - transparent background
+  - strong dark outline
+  - no text or UI
+  - replaces flat placeholder-style icon

@@ -1,0 +1,19 @@
+id: inspector_mask
+type: item
+display_name_en: InspectorMask
+theme: broken heaven inspector mask
+shape: white black judge mask with single red eye gem
+palette: (226, 226, 210), (192, 58, 42), dark outline, pale cyan highlights
+size: 32x32
+source: imggen style atlas v02 plus project postprocess
+outputs:
+  - path: Content/Items/HandGenerated/InspectorMask.png
+    role: runtime_texture
+  - path: Assets/Final/inspector_mask/inspector_mask__item_icon__v02.png
+    role: final_review_asset
+notes:
+  - Terraria-like 2D pixel art
+  - transparent background
+  - strong dark outline
+  - no text or UI
+  - replaces flat placeholder-style icon

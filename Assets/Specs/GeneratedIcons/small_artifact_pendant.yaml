@@ -1,0 +1,19 @@
+id: small_artifact_pendant
+type: item
+display_name_en: SmallArtifactPendant
+theme: small artifact pendant
+shape: small gold jade pendant with cyan artifact core
+palette: (96, 224, 196), (196, 142, 52), dark outline, pale cyan highlights
+size: 32x32
+source: imggen style atlas v02 plus project postprocess
+outputs:
+  - path: Content/Items/HandGenerated/SmallArtifactPendant.png
+    role: runtime_texture
+  - path: Assets/Final/small_artifact_pendant/small_artifact_pendant__item_icon__v02.png
+    role: final_review_asset
+notes:
+  - Terraria-like 2D pixel art
+  - transparent background
+  - strong dark outline
+  - no text or UI
+  - replaces flat placeholder-style icon

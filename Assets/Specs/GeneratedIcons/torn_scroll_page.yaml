@@ -1,0 +1,15 @@
+id: torn_scroll_page
+type: material
+display_name_en: TornScrollPage
+theme: torn scroll page
+shape: aged scroll scrap
+size: 32x32
+source: imggen style atlas v02 plus project postprocess
+outputs:
+  - path: Content/Items/HandGenerated/TornScrollPage.png
+    role: runtime_texture
+notes:
+  - Terraria-like pixel art
+  - transparent background
+  - strong dark outline
+  - no text or UI

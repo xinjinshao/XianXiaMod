@@ -1,0 +1,19 @@
+id: summon_heaven_tablet_rubbing
+type: item
+display_name_en: SummonHeavenTabletRubbing
+theme: heaven tablet rubbing summon
+shape: aged rubbing scroll with broken heaven cyan-gold seal
+palette: (226, 210, 158), (82, 118, 132), dark outline, pale cyan highlights
+size: 32x32
+source: imggen style atlas v02 plus project postprocess
+outputs:
+  - path: Content/Items/BossSummons/SummonHeavenTabletRubbing.png
+    role: runtime_texture
+  - path: Assets/Final/summon_heaven_tablet_rubbing/summon_heaven_tablet_rubbing__item_icon__v02.png
+    role: final_review_asset
+notes:
+  - Terraria-like 2D pixel art
+  - transparent background
+  - strong dark outline
+  - no text or UI
+  - replaces flat placeholder-style icon

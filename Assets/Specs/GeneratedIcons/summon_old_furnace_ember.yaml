@@ -1,0 +1,15 @@
+id: summon_old_furnace_ember
+type: item
+display_name_en: SummonOldFurnaceEmber
+theme: old furnace ember summon
+shape: larger ember charm for boss summon
+size: 24x24
+source: imggen style atlas v02 plus project postprocess
+outputs:
+  - path: Content/Items/BossSummons/SummonOldFurnaceEmber.png
+    role: runtime_texture
+notes:
+  - Terraria-like pixel art
+  - transparent background
+  - strong dark outline
+  - no text or UI

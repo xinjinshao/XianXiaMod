@@ -1,0 +1,19 @@
+id: star_abyss_corrosion_buff
+type: buff
+display_name_en: StarAbyssCorrosionBuff
+theme: star abyss corrosion
+shape: dark blue star eye crystal with violet cracks
+palette: (66, 140, 246), (112, 42, 180), dark outline, pale cyan highlights
+size: 32x32
+source: imggen style atlas v02 plus project postprocess
+outputs:
+  - path: Content/Buffs/StarAbyssCorrosionBuff.png
+    role: runtime_texture
+  - path: Assets/Final/star_abyss_corrosion_buff/star_abyss_corrosion_buff__buff_icon__v02.png
+    role: final_review_asset
+notes:
+  - Terraria-like 2D pixel art
+  - transparent background
+  - strong dark outline
+  - no text or UI
+  - replaces flat placeholder-style icon

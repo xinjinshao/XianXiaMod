@@ -1,0 +1,19 @@
+id: spring_return_buff
+type: buff
+display_name_en: SpringReturnBuff
+theme: spring return recovery
+shape: green pill sprouting two leaves with warm life glow
+palette: (118, 236, 126), (46, 118, 62), dark outline, pale cyan highlights
+size: 32x32
+source: imggen style atlas v02 plus project postprocess
+outputs:
+  - path: Content/Buffs/SpringReturnBuff.png
+    role: runtime_texture
+  - path: Assets/Final/spring_return_buff/spring_return_buff__buff_icon__v02.png
+    role: final_review_asset
+notes:
+  - Terraria-like 2D pixel art
+  - transparent background
+  - strong dark outline
+  - no text or UI
+  - replaces flat placeholder-style icon

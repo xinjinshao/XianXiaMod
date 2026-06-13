@@ -1,0 +1,19 @@
+id: silent_tablet_decoration
+type: item
+display_name_en: SilentTabletDecoration
+theme: silent tablet decoration
+shape: silent black stone tablet with faint cyan cracks
+palette: (86, 104, 112), (64, 218, 218), dark outline, pale cyan highlights
+size: 32x32
+source: imggen style atlas v02 plus project postprocess
+outputs:
+  - path: Content/Items/HandGenerated/SilentTabletDecoration.png
+    role: runtime_texture
+  - path: Assets/Final/silent_tablet_decoration/silent_tablet_decoration__item_icon__v02.png
+    role: final_review_asset
+notes:
+  - Terraria-like 2D pixel art
+  - transparent background
+  - strong dark outline
+  - no text or UI
+  - replaces flat placeholder-style icon

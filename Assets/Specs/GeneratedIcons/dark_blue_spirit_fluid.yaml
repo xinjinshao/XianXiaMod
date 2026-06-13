@@ -1,0 +1,15 @@
+id: dark_blue_spirit_fluid
+type: material
+display_name_en: DarkBlueSpiritFluid
+theme: dark blue spirit fluid
+shape: dark spirit fluid bottle
+size: 32x32
+source: imggen style atlas v02 plus project postprocess
+outputs:
+  - path: Content/Items/HandGenerated/DarkBlueSpiritFluid.png
+    role: runtime_texture
+notes:
+  - Terraria-like pixel art
+  - transparent background
+  - strong dark outline
+  - no text or UI

@@ -1,0 +1,15 @@
+id: thunder_pattern_feather
+type: material
+display_name_en: ThunderPatternFeather
+theme: thunder pattern feather
+shape: blue lightning feather
+size: 32x32
+source: imggen style atlas v02 plus project postprocess
+outputs:
+  - path: Content/Items/HandGenerated/ThunderPatternFeather.png
+    role: runtime_texture
+notes:
+  - Terraria-like pixel art
+  - transparent background
+  - strong dark outline
+  - no text or UI

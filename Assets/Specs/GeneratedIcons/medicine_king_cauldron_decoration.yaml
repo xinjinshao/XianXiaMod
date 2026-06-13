@@ -1,0 +1,19 @@
+id: medicine_king_cauldron_decoration
+type: item
+display_name_en: MedicineKingCauldronDecoration
+theme: medicine king cauldron decoration
+shape: tiny green bronze medicine cauldron with herb crown
+palette: (92, 218, 126), (128, 88, 44), dark outline, pale cyan highlights
+size: 32x32
+source: imggen style atlas v02 plus project postprocess
+outputs:
+  - path: Content/Items/HandGenerated/MedicineKingCauldronDecoration.png
+    role: runtime_texture
+  - path: Assets/Final/medicine_king_cauldron_decoration/medicine_king_cauldron_decoration__item_icon__v02.png
+    role: final_review_asset
+notes:
+  - Terraria-like 2D pixel art
+  - transparent background
+  - strong dark outline
+  - no text or UI
+  - replaces flat placeholder-style icon

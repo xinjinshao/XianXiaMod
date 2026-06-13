@@ -1,0 +1,19 @@
+id: summon_heaven_tablet_rubbing_broken_heaven_inspector
+type: item
+display_name_en: SummonHeavenTabletRubbingBrokenHeavenInspector
+theme: HeavenTabletRubbing derived summon
+shape: rubbing plus black inspector mask seal
+palette: (132, 224, 204), (196, 132, 58), dark outline, pale cyan highlights
+size: 32x32
+source: imggen style atlas v02 plus project postprocess
+outputs:
+  - path: Content/Items/BossSummons/SummonHeavenTabletRubbingBrokenHeavenInspector.png
+    role: runtime_texture
+  - path: Assets/Final/summon_heaven_tablet_rubbing_broken_heaven_inspector/summon_heaven_tablet_rubbing_broken_heaven_inspector__item_icon__v02.png
+    role: final_review_asset
+notes:
+  - Terraria-like 2D pixel art
+  - transparent background
+  - strong dark outline
+  - no text or UI
+  - replaces flat placeholder-style icon

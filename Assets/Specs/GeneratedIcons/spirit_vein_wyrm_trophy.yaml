@@ -1,0 +1,19 @@
+id: spirit_vein_wyrm_trophy
+type: item
+display_name_en: SpiritVeinWyrmTrophy
+theme: spirit vein wyrm trophy
+shape: small jade wyrm head trophy plaque
+palette: (102, 222, 196), (118, 82, 52), dark outline, pale cyan highlights
+size: 32x32
+source: imggen style atlas v02 plus project postprocess
+outputs:
+  - path: Content/Items/HandGenerated/SpiritVeinWyrmTrophy.png
+    role: runtime_texture
+  - path: Assets/Final/spirit_vein_wyrm_trophy/spirit_vein_wyrm_trophy__item_icon__v02.png
+    role: final_review_asset
+notes:
+  - Terraria-like 2D pixel art
+  - transparent background
+  - strong dark outline
+  - no text or UI
+  - replaces flat placeholder-style icon

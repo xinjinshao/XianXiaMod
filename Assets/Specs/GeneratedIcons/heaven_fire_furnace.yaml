@@ -1,0 +1,19 @@
+id: heaven_fire_furnace
+type: station
+display_name_en: HeavenFireFurnace
+theme: heaven fire furnace item
+shape: tall heaven fire furnace with white flame and gold trim
+palette: (242, 176, 66), (236, 232, 178), dark outline, pale cyan highlights
+size: 32x32
+source: imggen style atlas v02 plus project postprocess
+outputs:
+  - path: Content/Items/Stations/HeavenFireFurnace.png
+    role: runtime_texture
+  - path: Assets/Final/heaven_fire_furnace/heaven_fire_furnace__station_icon__v02.png
+    role: final_review_asset
+notes:
+  - Terraria-like 2D pixel art
+  - transparent background
+  - strong dark outline
+  - no text or UI
+  - replaces flat placeholder-style icon

@@ -1,0 +1,19 @@
+id: earth_clay_furnace
+type: station
+display_name_en: EarthClayFurnace
+theme: earth clay furnace item
+shape: earthen clay furnace with warm orange mouth and jade smoke
+palette: (194, 118, 62), (96, 210, 176), dark outline, pale cyan highlights
+size: 32x32
+source: imggen style atlas v02 plus project postprocess
+outputs:
+  - path: Content/Items/Stations/EarthClayFurnace.png
+    role: runtime_texture
+  - path: Assets/Final/earth_clay_furnace/earth_clay_furnace__station_icon__v02.png
+    role: final_review_asset
+notes:
+  - Terraria-like 2D pixel art
+  - transparent background
+  - strong dark outline
+  - no text or UI
+  - replaces flat placeholder-style icon

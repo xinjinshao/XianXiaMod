@@ -1,0 +1,19 @@
+id: nascent_soul_clone_talisman
+type: item
+display_name_en: NascentSoulCloneTalisman
+theme: nascent soul clone talisman
+shape: paper talisman with small cyan human soul silhouette
+palette: (226, 204, 142), (82, 210, 214), dark outline, pale cyan highlights
+size: 32x32
+source: imggen style atlas v02 plus project postprocess
+outputs:
+  - path: Content/Items/HandGenerated/NascentSoulCloneTalisman.png
+    role: runtime_texture
+  - path: Assets/Final/nascent_soul_clone_talisman/nascent_soul_clone_talisman__item_icon__v02.png
+    role: final_review_asset
+notes:
+  - Terraria-like 2D pixel art
+  - transparent background
+  - strong dark outline
+  - no text or UI
+  - replaces flat placeholder-style icon

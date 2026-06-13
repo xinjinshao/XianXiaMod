@@ -1,0 +1,19 @@
+id: garden_warden_mask
+type: item
+display_name_en: GardenWardenMask
+theme: garden warden mask
+shape: wooden green warden mask with leaf horns
+palette: (104, 214, 116), (92, 74, 42), dark outline, pale cyan highlights
+size: 32x32
+source: imggen style atlas v02 plus project postprocess
+outputs:
+  - path: Content/Items/HandGenerated/GardenWardenMask.png
+    role: runtime_texture
+  - path: Assets/Final/garden_warden_mask/garden_warden_mask__item_icon__v02.png
+    role: final_review_asset
+notes:
+  - Terraria-like 2D pixel art
+  - transparent background
+  - strong dark outline
+  - no text or UI
+  - replaces flat placeholder-style icon

@@ -1,0 +1,19 @@
+id: sect_trial_hint
+type: item
+display_name_en: SectTrialHint
+theme: sect trial hint token
+shape: sect trial jade tablet with old gold border and crossed marks
+palette: (126, 226, 178), (176, 126, 58), dark outline, pale cyan highlights
+size: 32x32
+source: imggen style atlas v02 plus project postprocess
+outputs:
+  - path: Content/Items/HandGenerated/SectTrialHint.png
+    role: runtime_texture
+  - path: Assets/Final/sect_trial_hint/sect_trial_hint__item_icon__v02.png
+    role: final_review_asset
+notes:
+  - Terraria-like 2D pixel art
+  - transparent background
+  - strong dark outline
+  - no text or UI
+  - replaces flat placeholder-style icon

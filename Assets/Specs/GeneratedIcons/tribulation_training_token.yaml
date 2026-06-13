@@ -1,0 +1,19 @@
+id: tribulation_training_token
+type: item
+display_name_en: TribulationTrainingToken
+theme: tribulation training token
+shape: round dark trial token with thunder notch and gold rim
+palette: (214, 164, 62), (102, 74, 150), dark outline, pale cyan highlights
+size: 32x32
+source: imggen style atlas v02 plus project postprocess
+outputs:
+  - path: Content/Items/HandGenerated/TribulationTrainingToken.png
+    role: runtime_texture
+  - path: Assets/Final/tribulation_training_token/tribulation_training_token__item_icon__v02.png
+    role: final_review_asset
+notes:
+  - Terraria-like 2D pixel art
+  - transparent background
+  - strong dark outline
+  - no text or UI
+  - replaces flat placeholder-style icon

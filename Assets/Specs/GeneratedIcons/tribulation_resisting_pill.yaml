@@ -1,0 +1,15 @@
+id: tribulation_resisting_pill
+type: material
+display_name_en: TribulationResistingPill
+theme: tribulation resisting pill
+shape: violet pill with lightning shield
+size: 24x24
+source: imggen style atlas v02 plus project postprocess
+outputs:
+  - path: Content/Items/Materials/TribulationResistingPill.png
+    role: runtime_texture
+notes:
+  - Terraria-like pixel art
+  - transparent background
+  - strong dark outline
+  - no text or UI

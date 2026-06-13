@@ -1,0 +1,15 @@
+id: broken_sword_intent
+type: material
+display_name_en: BrokenSwordIntent
+theme: broken sword intent
+shape: silver sword intent shard
+size: 32x32
+source: imggen style atlas v02 plus project postprocess
+outputs:
+  - path: Content/Items/HandGenerated/BrokenSwordIntent.png
+    role: runtime_texture
+notes:
+  - Terraria-like pixel art
+  - transparent background
+  - strong dark outline
+  - no text or UI

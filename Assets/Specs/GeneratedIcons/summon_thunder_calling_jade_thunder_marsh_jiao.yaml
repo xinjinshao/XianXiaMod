@@ -1,0 +1,19 @@
+id: summon_thunder_calling_jade_thunder_marsh_jiao
+type: item
+display_name_en: SummonThunderCallingJadeThunderMarshJiao
+theme: ThunderCallingJade derived summon
+shape: thunder jade plus teal jiao horn mark
+palette: (116, 168, 246), (238, 216, 70), dark outline, pale cyan highlights
+size: 32x32
+source: imggen style atlas v02 plus project postprocess
+outputs:
+  - path: Content/Items/BossSummons/SummonThunderCallingJadeThunderMarshJiao.png
+    role: runtime_texture
+  - path: Assets/Final/summon_thunder_calling_jade_thunder_marsh_jiao/summon_thunder_calling_jade_thunder_marsh_jiao__item_icon__v02.png
+    role: final_review_asset
+notes:
+  - Terraria-like 2D pixel art
+  - transparent background
+  - strong dark outline
+  - no text or UI
+  - replaces flat placeholder-style icon

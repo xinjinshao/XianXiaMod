@@ -1,0 +1,15 @@
+id: foundation_pill
+type: material
+display_name_en: FoundationPill
+theme: foundation pill
+shape: gold jade foundation pill with vertical light
+size: 24x24
+source: imggen style atlas v02 plus project postprocess
+outputs:
+  - path: Content/Items/Materials/FoundationPill.png
+    role: runtime_texture
+notes:
+  - Terraria-like pixel art
+  - transparent background
+  - strong dark outline
+  - no text or UI

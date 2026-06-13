@@ -1,0 +1,19 @@
+id: celestial_puppet_token
+type: item
+display_name_en: CelestialPuppetToken
+theme: celestial puppet token
+shape: white jade puppet face token with gold joint dots
+palette: (218, 232, 218), (178, 132, 58), dark outline, pale cyan highlights
+size: 32x32
+source: imggen style atlas v02 plus project postprocess
+outputs:
+  - path: Content/Items/HandGenerated/CelestialPuppetToken.png
+    role: runtime_texture
+  - path: Assets/Final/celestial_puppet_token/celestial_puppet_token__item_icon__v02.png
+    role: final_review_asset
+notes:
+  - Terraria-like 2D pixel art
+  - transparent background
+  - strong dark outline
+  - no text or UI
+  - replaces flat placeholder-style icon

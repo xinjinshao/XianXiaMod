@@ -1,0 +1,15 @@
+id: old_furnace_ember
+type: material
+display_name_en: OldFurnaceEmber
+theme: old furnace ember
+shape: charcoal ember with old gold fire
+size: 24x24
+source: imggen style atlas v02 plus project postprocess
+outputs:
+  - path: Content/Items/Materials/OldFurnaceEmber.png
+    role: runtime_texture
+notes:
+  - Terraria-like pixel art
+  - transparent background
+  - strong dark outline
+  - no text or UI

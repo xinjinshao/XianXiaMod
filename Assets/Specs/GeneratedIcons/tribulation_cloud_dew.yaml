@@ -1,0 +1,15 @@
+id: tribulation_cloud_dew
+type: material
+display_name_en: TribulationCloudDew
+theme: tribulation cloud dew
+shape: blue violet thunder dew drop
+size: 24x24
+source: imggen style atlas v02 plus project postprocess
+outputs:
+  - path: Content/Items/Materials/TribulationCloudDew.png
+    role: runtime_texture
+notes:
+  - Terraria-like pixel art
+  - transparent background
+  - strong dark outline
+  - no text or UI

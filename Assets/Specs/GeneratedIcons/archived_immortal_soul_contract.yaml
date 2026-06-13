@@ -1,0 +1,19 @@
+id: archived_immortal_soul_contract
+type: item
+display_name_en: ArchivedImmortalSoulContract
+theme: archived immortal soul contract
+shape: rolled contract with gold archive ring and ghost cyan seal
+palette: (226, 206, 156), (66, 82, 128), dark outline, pale cyan highlights
+size: 32x32
+source: imggen style atlas v02 plus project postprocess
+outputs:
+  - path: Content/Items/HandGenerated/ArchivedImmortalSoulContract.png
+    role: runtime_texture
+  - path: Assets/Final/archived_immortal_soul_contract/archived_immortal_soul_contract__item_icon__v02.png
+    role: final_review_asset
+notes:
+  - Terraria-like 2D pixel art
+  - transparent background
+  - strong dark outline
+  - no text or UI
+  - replaces flat placeholder-style icon

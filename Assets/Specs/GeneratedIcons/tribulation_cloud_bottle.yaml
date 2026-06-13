@@ -1,0 +1,19 @@
+id: tribulation_cloud_bottle
+type: item
+display_name_en: TribulationCloudBottle
+theme: tribulation cloud bottle
+shape: glass bottle containing purple thunder cloud and cyan bolt
+palette: (126, 142, 238), (86, 220, 238), dark outline, pale cyan highlights
+size: 32x32
+source: imggen style atlas v02 plus project postprocess
+outputs:
+  - path: Content/Items/HandGenerated/TribulationCloudBottle.png
+    role: runtime_texture
+  - path: Assets/Final/tribulation_cloud_bottle/tribulation_cloud_bottle__item_icon__v02.png
+    role: final_review_asset
+notes:
+  - Terraria-like 2D pixel art
+  - transparent background
+  - strong dark outline
+  - no text or UI
+  - replaces flat placeholder-style icon

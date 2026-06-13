@@ -1,0 +1,19 @@
+id: spirit_herb_seeds
+type: item
+display_name_en: SpiritHerbSeeds
+theme: spirit herb seeds
+shape: three green glowing seeds in tiny cloth pouch
+palette: (100, 226, 126), (112, 82, 44), dark outline, pale cyan highlights
+size: 32x32
+source: imggen style atlas v02 plus project postprocess
+outputs:
+  - path: Content/Items/HandGenerated/SpiritHerbSeeds.png
+    role: runtime_texture
+  - path: Assets/Final/spirit_herb_seeds/spirit_herb_seeds__item_icon__v02.png
+    role: final_review_asset
+notes:
+  - Terraria-like 2D pixel art
+  - transparent background
+  - strong dark outline
+  - no text or UI
+  - replaces flat placeholder-style icon

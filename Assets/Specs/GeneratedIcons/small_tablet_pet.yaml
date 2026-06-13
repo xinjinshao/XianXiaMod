@@ -1,0 +1,19 @@
+id: small_tablet_pet
+type: item
+display_name_en: SmallTabletPet
+theme: small tablet pet
+shape: tiny floating stone tablet pet with jade eye
+palette: (172, 184, 172), (72, 214, 180), dark outline, pale cyan highlights
+size: 32x32
+source: imggen style atlas v02 plus project postprocess
+outputs:
+  - path: Content/Items/HandGenerated/SmallTabletPet.png
+    role: runtime_texture
+  - path: Assets/Final/small_tablet_pet/small_tablet_pet__item_icon__v02.png
+    role: final_review_asset
+notes:
+  - Terraria-like 2D pixel art
+  - transparent background
+  - strong dark outline
+  - no text or UI
+  - replaces flat placeholder-style icon

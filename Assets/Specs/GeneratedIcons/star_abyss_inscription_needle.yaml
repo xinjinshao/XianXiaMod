@@ -1,0 +1,19 @@
+id: star_abyss_inscription_needle
+type: item
+display_name_en: StarAbyssInscriptionNeedle
+theme: star abyss inscription needle
+shape: dark blue needle with star eye tip and violet glow
+palette: (76, 156, 242), (122, 54, 178), dark outline, pale cyan highlights
+size: 32x32
+source: imggen style atlas v02 plus project postprocess
+outputs:
+  - path: Content/Items/HandGenerated/StarAbyssInscriptionNeedle.png
+    role: runtime_texture
+  - path: Assets/Final/star_abyss_inscription_needle/star_abyss_inscription_needle__item_icon__v02.png
+    role: final_review_asset
+notes:
+  - Terraria-like 2D pixel art
+  - transparent background
+  - strong dark outline
+  - no text or UI
+  - replaces flat placeholder-style icon

@@ -1,0 +1,19 @@
+id: sect_ledger
+type: item
+display_name_en: SectLedger
+theme: sect ledger guide
+shape: bound ledger book with jade bookmark and gold corners
+palette: (226, 198, 132), (76, 190, 172), dark outline, pale cyan highlights
+size: 32x32
+source: imggen style atlas v02 plus project postprocess
+outputs:
+  - path: Content/Items/Guides/SectLedger.png
+    role: runtime_texture
+  - path: Assets/Final/sect_ledger/sect_ledger__item_icon__v02.png
+    role: final_review_asset
+notes:
+  - Terraria-like 2D pixel art
+  - transparent background
+  - strong dark outline
+  - no text or UI
+  - replaces flat placeholder-style icon

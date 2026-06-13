@@ -1,0 +1,19 @@
+id: sect_trial_altar
+type: station
+display_name_en: SectTrialAltar
+theme: sect trial altar item
+shape: stone sect altar with old gold trial sigil and cyan candles
+palette: (190, 174, 128), (76, 206, 218), dark outline, pale cyan highlights
+size: 32x32
+source: imggen style atlas v02 plus project postprocess
+outputs:
+  - path: Content/Items/Stations/SectTrialAltar.png
+    role: runtime_texture
+  - path: Assets/Final/sect_trial_altar/sect_trial_altar__station_icon__v02.png
+    role: final_review_asset
+notes:
+  - Terraria-like 2D pixel art
+  - transparent background
+  - strong dark outline
+  - no text or UI
+  - replaces flat placeholder-style icon

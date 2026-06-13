@@ -1,0 +1,19 @@
+id: tribulation_resistance_buff
+type: buff
+display_name_en: TribulationResistanceBuff
+theme: tribulation resistance
+shape: violet jade shield talisman holding a stable lightning rune
+palette: (158, 178, 255), (88, 58, 168), dark outline, pale cyan highlights
+size: 32x32
+source: imggen style atlas v02 plus project postprocess
+outputs:
+  - path: Content/Buffs/TribulationResistanceBuff.png
+    role: runtime_texture
+  - path: Assets/Final/tribulation_resistance_buff/tribulation_resistance_buff__buff_icon__v02.png
+    role: final_review_asset
+notes:
+  - Terraria-like 2D pixel art
+  - transparent background
+  - strong dark outline
+  - no text or UI
+  - replaces flat placeholder-style icon

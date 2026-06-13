@@ -1,0 +1,19 @@
+id: formless_sword_soul_costume
+type: item
+display_name_en: FormlessSwordSoulCostume
+theme: formless sword soul costume
+shape: pale sword soul mask and blue ghost cloak shard
+palette: (180, 220, 252), (66, 72, 132), dark outline, pale cyan highlights
+size: 32x32
+source: imggen style atlas v02 plus project postprocess
+outputs:
+  - path: Content/Items/HandGenerated/FormlessSwordSoulCostume.png
+    role: runtime_texture
+  - path: Assets/Final/formless_sword_soul_costume/formless_sword_soul_costume__item_icon__v02.png
+    role: final_review_asset
+notes:
+  - Terraria-like 2D pixel art
+  - transparent background
+  - strong dark outline
+  - no text or UI
+  - replaces flat placeholder-style icon

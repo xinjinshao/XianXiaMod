@@ -1,0 +1,19 @@
+id: moonbone_ritual_talisman
+type: item
+display_name_en: MoonboneRitualTalisman
+theme: moonbone ritual talisman
+shape: bone white crescent talisman with dark blue cord
+palette: (218, 228, 232), (82, 82, 140), dark outline, pale cyan highlights
+size: 32x32
+source: imggen style atlas v02 plus project postprocess
+outputs:
+  - path: Content/Items/BossSummons/SummonMoonboneRitualTalisman.png
+    role: runtime_texture
+  - path: Assets/Final/moonbone_ritual_talisman/moonbone_ritual_talisman__item_icon__v02.png
+    role: final_review_asset
+notes:
+  - Terraria-like 2D pixel art
+  - transparent background
+  - strong dark outline
+  - no text or UI
+  - replaces flat placeholder-style icon

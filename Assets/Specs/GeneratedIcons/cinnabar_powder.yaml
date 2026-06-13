@@ -1,0 +1,15 @@
+id: cinnabar_powder
+type: material
+display_name_en: CinnabarPowder
+theme: cinnabar powder
+shape: red cinnabar powder
+size: 32x32
+source: imggen style atlas v02 plus project postprocess
+outputs:
+  - path: Content/Items/HandGenerated/CinnabarPowder.png
+    role: runtime_texture
+notes:
+  - Terraria-like pixel art
+  - transparent background
+  - strong dark outline
+  - no text or UI

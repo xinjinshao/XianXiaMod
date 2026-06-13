@@ -1,0 +1,19 @@
+id: endgame_route_frame
+type: item
+display_name_en: EndgameRouteFrame
+theme: endgame route frame
+shape: dark dao frame with three split route lights
+palette: (106, 236, 210), (118, 64, 172), dark outline, pale cyan highlights
+size: 32x32
+source: imggen style atlas v02 plus project postprocess
+outputs:
+  - path: Content/Items/HandGenerated/EndgameRouteFrame.png
+    role: runtime_texture
+  - path: Assets/Final/endgame_route_frame/endgame_route_frame__item_icon__v02.png
+    role: final_review_asset
+notes:
+  - Terraria-like 2D pixel art
+  - transparent background
+  - strong dark outline
+  - no text or UI
+  - replaces flat placeholder-style icon

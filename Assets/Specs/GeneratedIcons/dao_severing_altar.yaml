@@ -1,0 +1,19 @@
+id: dao_severing_altar
+type: station
+display_name_en: DaoSeveringAltar
+theme: dao severing altar item
+shape: black white altar with severed dao ring and violet cut
+palette: (218, 220, 214), (118, 58, 178), dark outline, pale cyan highlights
+size: 32x32
+source: imggen style atlas v02 plus project postprocess
+outputs:
+  - path: Content/Items/Stations/DaoSeveringAltar.png
+    role: runtime_texture
+  - path: Assets/Final/dao_severing_altar/dao_severing_altar__station_icon__v02.png
+    role: final_review_asset
+notes:
+  - Terraria-like 2D pixel art
+  - transparent background
+  - strong dark outline
+  - no text or UI
+  - replaces flat placeholder-style icon

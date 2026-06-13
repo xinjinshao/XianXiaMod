@@ -1,0 +1,19 @@
+id: thunder_pattern_forge
+type: station
+display_name_en: ThunderPatternForge
+theme: thunder pattern forge item
+shape: dark forge with purple thunder inlays and yellow sparks
+palette: (124, 104, 218), (238, 208, 62), dark outline, pale cyan highlights
+size: 32x32
+source: imggen style atlas v02 plus project postprocess
+outputs:
+  - path: Content/Items/Stations/ThunderPatternForge.png
+    role: runtime_texture
+  - path: Assets/Final/thunder_pattern_forge/thunder_pattern_forge__station_icon__v02.png
+    role: final_review_asset
+notes:
+  - Terraria-like 2D pixel art
+  - transparent background
+  - strong dark outline
+  - no text or UI
+  - replaces flat placeholder-style icon

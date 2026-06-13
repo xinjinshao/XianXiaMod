@@ -1,0 +1,19 @@
+id: furnace_ash_spirit_contract
+type: item
+display_name_en: FurnaceAshSpiritContract
+theme: furnace ash spirit contract
+shape: charred contract with orange ember seal
+palette: (238, 112, 42), (74, 54, 48), dark outline, pale cyan highlights
+size: 32x32
+source: imggen style atlas v02 plus project postprocess
+outputs:
+  - path: Content/Items/HandGenerated/FurnaceAshSpiritContract.png
+    role: runtime_texture
+  - path: Assets/Final/furnace_ash_spirit_contract/furnace_ash_spirit_contract__item_icon__v02.png
+    role: final_review_asset
+notes:
+  - Terraria-like 2D pixel art
+  - transparent background
+  - strong dark outline
+  - no text or UI
+  - replaces flat placeholder-style icon

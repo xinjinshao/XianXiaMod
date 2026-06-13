@@ -1,0 +1,19 @@
+id: thunder_inscription_needle
+type: item
+display_name_en: ThunderInscriptionNeedle
+theme: thunder inscription needle
+shape: blue violet needle with yellow thunder sparks
+palette: (112, 172, 250), (238, 216, 72), dark outline, pale cyan highlights
+size: 32x32
+source: imggen style atlas v02 plus project postprocess
+outputs:
+  - path: Content/Items/HandGenerated/ThunderInscriptionNeedle.png
+    role: runtime_texture
+  - path: Assets/Final/thunder_inscription_needle/thunder_inscription_needle__item_icon__v02.png
+    role: final_review_asset
+notes:
+  - Terraria-like 2D pixel art
+  - transparent background
+  - strong dark outline
+  - no text or UI
+  - replaces flat placeholder-style icon

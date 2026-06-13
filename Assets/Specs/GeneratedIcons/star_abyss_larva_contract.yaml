@@ -1,0 +1,19 @@
+id: star_abyss_larva_contract
+type: item
+display_name_en: StarAbyssLarvaContract
+theme: star abyss larva contract
+shape: dark contract wrapped around a small blue larva eye
+palette: (76, 154, 230), (84, 44, 130), dark outline, pale cyan highlights
+size: 32x32
+source: imggen style atlas v02 plus project postprocess
+outputs:
+  - path: Content/Items/HandGenerated/StarAbyssLarvaContract.png
+    role: runtime_texture
+  - path: Assets/Final/star_abyss_larva_contract/star_abyss_larva_contract__item_icon__v02.png
+    role: final_review_asset
+notes:
+  - Terraria-like 2D pixel art
+  - transparent background
+  - strong dark outline
+  - no text or UI
+  - replaces flat placeholder-style icon

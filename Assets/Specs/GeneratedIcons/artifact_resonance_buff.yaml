@@ -1,0 +1,19 @@
+id: artifact_resonance_buff
+type: buff
+display_name_en: ArtifactResonanceBuff
+theme: artifact resonance
+shape: jade artifact blank vibrating with two cyan resonance arcs
+palette: (101, 232, 205), (74, 62, 142), dark outline, pale cyan highlights
+size: 32x32
+source: imggen style atlas v02 plus project postprocess
+outputs:
+  - path: Content/Buffs/ArtifactResonanceBuff.png
+    role: runtime_texture
+  - path: Assets/Final/artifact_resonance_buff/artifact_resonance_buff__buff_icon__v02.png
+    role: final_review_asset
+notes:
+  - Terraria-like 2D pixel art
+  - transparent background
+  - strong dark outline
+  - no text or UI
+  - replaces flat placeholder-style icon

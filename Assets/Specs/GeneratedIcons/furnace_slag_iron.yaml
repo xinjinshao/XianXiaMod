@@ -1,0 +1,15 @@
+id: furnace_slag_iron
+type: material
+display_name_en: FurnaceSlagIron
+theme: furnace slag iron
+shape: black slag iron chunk with red heat
+size: 24x24
+source: imggen style atlas v02 plus project postprocess
+outputs:
+  - path: Content/Items/Materials/FurnaceSlagIron.png
+    role: runtime_texture
+notes:
+  - Terraria-like pixel art
+  - transparent background
+  - strong dark outline
+  - no text or UI

@@ -1,0 +1,15 @@
+id: spirit_gel
+type: material
+display_name_en: SpiritGel
+theme: spirit gel
+shape: cyan translucent slime gel bead
+size: 16x16
+source: imggen style atlas v02 plus project postprocess
+outputs:
+  - path: Content/Items/Materials/SpiritGel.png
+    role: runtime_texture
+notes:
+  - Terraria-like pixel art
+  - transparent background
+  - strong dark outline
+  - no text or UI

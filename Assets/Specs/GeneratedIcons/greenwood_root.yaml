@@ -1,0 +1,15 @@
+id: greenwood_root
+type: material
+display_name_en: GreenwoodRoot
+theme: greenwood root
+shape: twisted spirit root with leaf sprout
+size: 24x24
+source: imggen style atlas v02 plus project postprocess
+outputs:
+  - path: Content/Items/Materials/GreenwoodRoot.png
+    role: runtime_texture
+notes:
+  - Terraria-like pixel art
+  - transparent background
+  - strong dark outline
+  - no text or UI

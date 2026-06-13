@@ -1,0 +1,19 @@
+id: greenwood_inscription_needle
+type: item
+display_name_en: GreenwoodInscriptionNeedle
+theme: greenwood inscription needle
+shape: greenwood needle with leaf aura and cyan tip
+palette: (96, 224, 138), (42, 104, 64), dark outline, pale cyan highlights
+size: 32x32
+source: imggen style atlas v02 plus project postprocess
+outputs:
+  - path: Content/Items/HandGenerated/GreenwoodInscriptionNeedle.png
+    role: runtime_texture
+  - path: Assets/Final/greenwood_inscription_needle/greenwood_inscription_needle__item_icon__v02.png
+    role: final_review_asset
+notes:
+  - Terraria-like 2D pixel art
+  - transparent background
+  - strong dark outline
+  - no text or UI
+  - replaces flat placeholder-style icon

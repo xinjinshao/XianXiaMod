@@ -1,0 +1,19 @@
+id: black_furnace_iron_golem_pet
+type: item
+display_name_en: BlackFurnaceIronGolemPet
+theme: black furnace golem pet token
+shape: small black iron golem charm with ember heart
+palette: (226, 94, 38), (54, 54, 58), dark outline, pale cyan highlights
+size: 32x32
+source: imggen style atlas v02 plus project postprocess
+outputs:
+  - path: Content/Items/HandGenerated/BlackFurnaceIronGolemPet.png
+    role: runtime_texture
+  - path: Assets/Final/black_furnace_iron_golem_pet/black_furnace_iron_golem_pet__item_icon__v02.png
+    role: final_review_asset
+notes:
+  - Terraria-like 2D pixel art
+  - transparent background
+  - strong dark outline
+  - no text or UI
+  - replaces flat placeholder-style icon

@@ -1,0 +1,19 @@
+id: furnace_inscription_needle
+type: item
+display_name_en: FurnaceInscriptionNeedle
+theme: furnace inscription needle
+shape: black iron inscription needle with red furnace glow
+palette: (236, 92, 42), (62, 54, 48), dark outline, pale cyan highlights
+size: 32x32
+source: imggen style atlas v02 plus project postprocess
+outputs:
+  - path: Content/Items/HandGenerated/FurnaceInscriptionNeedle.png
+    role: runtime_texture
+  - path: Assets/Final/furnace_inscription_needle/furnace_inscription_needle__item_icon__v02.png
+    role: final_review_asset
+notes:
+  - Terraria-like 2D pixel art
+  - transparent background
+  - strong dark outline
+  - no text or UI
+  - replaces flat placeholder-style icon

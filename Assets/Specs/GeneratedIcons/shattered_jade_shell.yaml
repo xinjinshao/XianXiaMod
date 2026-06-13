@@ -1,0 +1,15 @@
+id: shattered_jade_shell
+type: material
+display_name_en: ShatteredJadeShell
+theme: shattered jade shell
+shape: broken jade shell shard
+size: 32x32
+source: imggen style atlas v02 plus project postprocess
+outputs:
+  - path: Content/Items/HandGenerated/ShatteredJadeShell.png
+    role: runtime_texture
+notes:
+  - Terraria-like pixel art
+  - transparent background
+  - strong dark outline
+  - no text or UI

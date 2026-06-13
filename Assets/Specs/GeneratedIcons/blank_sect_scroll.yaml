@@ -1,0 +1,19 @@
+id: blank_sect_scroll
+type: item
+display_name_en: BlankSectScroll
+theme: blank sect scroll
+shape: aged blank scroll with jade cord and empty glowing center
+palette: (226, 210, 158), (54, 136, 116), dark outline, pale cyan highlights
+size: 32x32
+source: imggen style atlas v02 plus project postprocess
+outputs:
+  - path: Content/Items/HandGenerated/BlankSectScroll.png
+    role: runtime_texture
+  - path: Assets/Final/blank_sect_scroll/blank_sect_scroll__item_icon__v02.png
+    role: final_review_asset
+notes:
+  - Terraria-like 2D pixel art
+  - transparent background
+  - strong dark outline
+  - no text or UI
+  - replaces flat placeholder-style icon

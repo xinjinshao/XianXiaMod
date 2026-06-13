@@ -1,0 +1,15 @@
+id: summon_garden_broken_key
+type: item
+display_name_en: SummonGardenBrokenKey
+theme: garden broken key summon
+shape: broken key with leaf seal
+size: 32x32
+source: imggen style atlas v02 plus project postprocess
+outputs:
+  - path: Content/Items/BossSummons/SummonGardenBrokenKey.png
+    role: runtime_texture
+notes:
+  - Terraria-like pixel art
+  - transparent background
+  - strong dark outline
+  - no text or UI

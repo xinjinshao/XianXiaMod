@@ -1,0 +1,19 @@
+id: thunder_marsh_jiao_wing
+type: item
+display_name_en: ThunderMarshJiaoWing
+theme: thunder marsh jiao wing
+shape: small teal dragon wing scale with purple lightning
+palette: (78, 210, 204), (120, 70, 206), dark outline, pale cyan highlights
+size: 32x32
+source: imggen style atlas v02 plus project postprocess
+outputs:
+  - path: Content/Items/HandGenerated/ThunderMarshJiaoWing.png
+    role: runtime_texture
+  - path: Assets/Final/thunder_marsh_jiao_wing/thunder_marsh_jiao_wing__item_icon__v02.png
+    role: final_review_asset
+notes:
+  - Terraria-like 2D pixel art
+  - transparent background
+  - strong dark outline
+  - no text or UI
+  - replaces flat placeholder-style icon

@@ -1,0 +1,19 @@
+id: tribulation_gauge
+type: item
+display_name_en: TribulationGauge
+theme: tribulation gauge guide
+shape: round jade gauge with purple storm needle
+palette: (112, 170, 238), (132, 72, 190), dark outline, pale cyan highlights
+size: 32x32
+source: imggen style atlas v02 plus project postprocess
+outputs:
+  - path: Content/Items/Guides/TribulationGauge.png
+    role: runtime_texture
+  - path: Assets/Final/tribulation_gauge/tribulation_gauge__item_icon__v02.png
+    role: final_review_asset
+notes:
+  - Terraria-like 2D pixel art
+  - transparent background
+  - strong dark outline
+  - no text or UI
+  - replaces flat placeholder-style icon
