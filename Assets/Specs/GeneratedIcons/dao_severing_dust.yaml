@@ -1,0 +1,16 @@
+id: dao_severing_dust
+type: material
+display_name_en: Dao Severing Dust
+source_atlas: Assets/Generated/approved_icon_refresh/leftover_material_icons__imggen_atlas__v04.png
+quality_line: approved_v03_icon_style
+style_constraints:
+  - object-first irregular silhouette
+  - no flat circular badge placeholder
+  - deep outline and left-top highlights
+outputs:
+  - path: Content/Items/Materials/DaoSeveringDust.png
+    role: runtime_texture
+  - path: Assets/Cleaned/approved_icon_refresh/dao_severing_dust__candidate_32x32__v04.png
+    role: cleaned_candidate
+  - path: Assets/Final/dao_severing_dust/dao_severing_dust__item_icon__v04.png
+    role: final_review_asset

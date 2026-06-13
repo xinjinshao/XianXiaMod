@@ -1,19 +1,20 @@
 id: blank_sect_scroll
 type: item
-display_name_en: BlankSectScroll
-theme: blank sect scroll
-shape: aged blank scroll with jade cord and empty glowing center
-palette: (226, 210, 158), (54, 136, 116), dark outline, pale cyan highlights
-size: 32x32
-source: imggen style atlas v02 plus project postprocess
+display_name_en: Blank Sect Scroll
+source_atlas: Assets/Generated/approved_icon_refresh/summon_guide_icons__imggen_atlas__v04.png
+quality_line: approved_v03_icon_style
+style_constraints:
+  - object-first irregular silhouette
+  - no flat circular badge placeholder
+  - deep outline and left-top highlights
+  - Terraria-like inventory readability
 outputs:
   - path: Content/Items/HandGenerated/BlankSectScroll.png
     role: runtime_texture
-  - path: Assets/Final/blank_sect_scroll/blank_sect_scroll__item_icon__v02.png
+  - path: Assets/Cleaned/approved_icon_refresh/blank_sect_scroll__candidate_32x32__v04.png
+    role: cleaned_candidate
+  - path: Assets/Final/blank_sect_scroll/blank_sect_scroll__item_icon__v04.png
     role: final_review_asset
 notes:
-  - Terraria-like 2D pixel art
-  - transparent background
-  - strong dark outline
-  - no text or UI
-  - replaces flat placeholder-style icon
+  - generated from imggen atlas after user-approved style sample
+  - references Terraria/Calamity only for broad pixel-art readability, not copied sprites

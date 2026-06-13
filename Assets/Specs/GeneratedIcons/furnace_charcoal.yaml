@@ -1,15 +1,16 @@
 id: furnace_charcoal
 type: material
-display_name_en: FurnaceCharcoal
-theme: furnace charcoal
-shape: black ember charcoal
-size: 32x32
-source: imggen style atlas v02 plus project postprocess
+display_name_en: Furnace Charcoal
+source_atlas: Assets/Generated/approved_icon_refresh/leftover_material_icons__imggen_atlas__v04.png
+quality_line: approved_v03_icon_style
+style_constraints:
+  - object-first irregular silhouette
+  - no flat circular badge placeholder
+  - deep outline and left-top highlights
 outputs:
   - path: Content/Items/HandGenerated/FurnaceCharcoal.png
     role: runtime_texture
-notes:
-  - Terraria-like pixel art
-  - transparent background
-  - strong dark outline
-  - no text or UI
+  - path: Assets/Cleaned/approved_icon_refresh/furnace_charcoal__candidate_32x32__v04.png
+    role: cleaned_candidate
+  - path: Assets/Final/furnace_charcoal/furnace_charcoal__item_icon__v04.png
+    role: final_review_asset

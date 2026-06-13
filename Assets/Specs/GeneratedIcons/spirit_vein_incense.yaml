@@ -1,0 +1,20 @@
+id: spirit_vein_incense
+type: item
+display_name_en: Spirit Vein Incense
+source_atlas: Assets/Generated/approved_icon_refresh/summon_guide_icons__imggen_atlas__v04.png
+quality_line: approved_v03_icon_style
+style_constraints:
+  - object-first irregular silhouette
+  - no flat circular badge placeholder
+  - deep outline and left-top highlights
+  - Terraria-like inventory readability
+outputs:
+  - path: Content/Items/BossSummons/SpiritVeinIncense.png
+    role: runtime_texture
+  - path: Assets/Cleaned/approved_icon_refresh/spirit_vein_incense__candidate_32x32__v04.png
+    role: cleaned_candidate
+  - path: Assets/Final/spirit_vein_incense/spirit_vein_incense__item_icon__v04.png
+    role: final_review_asset
+notes:
+  - generated from imggen atlas after user-approved style sample
+  - references Terraria/Calamity only for broad pixel-art readability, not copied sprites

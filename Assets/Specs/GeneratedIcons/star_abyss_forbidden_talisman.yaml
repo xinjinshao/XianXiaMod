@@ -1,0 +1,16 @@
+id: star_abyss_forbidden_talisman
+type: material
+display_name_en: Star Abyss Forbidden Talisman
+source_atlas: Assets/Generated/approved_icon_refresh/leftover_material_icons__imggen_atlas__v04.png
+quality_line: approved_v03_icon_style
+style_constraints:
+  - object-first irregular silhouette
+  - no flat circular badge placeholder
+  - deep outline and left-top highlights
+outputs:
+  - path: Content/Items/Materials/StarAbyssForbiddenTalisman.png
+    role: runtime_texture
+  - path: Assets/Cleaned/approved_icon_refresh/star_abyss_forbidden_talisman__candidate_32x32__v04.png
+    role: cleaned_candidate
+  - path: Assets/Final/star_abyss_forbidden_talisman/star_abyss_forbidden_talisman__item_icon__v04.png
+    role: final_review_asset

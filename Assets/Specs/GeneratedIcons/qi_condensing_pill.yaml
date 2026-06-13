@@ -1,15 +1,20 @@
 id: qi_condensing_pill
 type: material
-display_name_en: QiCondensingPill
-theme: qi condensing pill
-shape: cyan qi pill with swirl
-size: 24x24
-source: imggen style atlas v02 plus project postprocess
+display_name_en: Qi Condensing Pill
+source_atlas: Assets/Generated/approved_icon_refresh/material_icons__imggen_atlas__v04.png
+quality_line: approved_v03_icon_style
+style_constraints:
+  - object-first irregular silhouette
+  - no flat circular badge placeholder
+  - deep outline and left-top highlights
+  - Terraria-like inventory readability
 outputs:
   - path: Content/Items/Materials/QiCondensingPill.png
     role: runtime_texture
+  - path: Assets/Cleaned/approved_icon_refresh/qi_condensing_pill__candidate_24x24__v04.png
+    role: cleaned_candidate
+  - path: Assets/Final/qi_condensing_pill/qi_condensing_pill__item_icon__v04.png
+    role: final_review_asset
 notes:
-  - Terraria-like pixel art
-  - transparent background
-  - strong dark outline
-  - no text or UI
+  - generated from imggen atlas after user-approved style sample
+  - references Terraria/Calamity only for broad pixel-art readability, not copied sprites

@@ -1,15 +1,16 @@
 id: spring_return_pill
 type: material
-display_name_en: SpringReturnPill
-theme: spring return pill
-shape: green healing pill with leaves
-size: 16x16
-source: imggen style atlas v02 plus project postprocess
+display_name_en: Spring Return Pill
+source_atlas: Assets/Generated/approved_icon_refresh/leftover_material_icons__imggen_atlas__v04.png
+quality_line: approved_v03_icon_style
+style_constraints:
+  - object-first irregular silhouette
+  - no flat circular badge placeholder
+  - deep outline and left-top highlights
 outputs:
   - path: Content/Items/Materials/SpringReturnPill.png
     role: runtime_texture
-notes:
-  - Terraria-like pixel art
-  - transparent background
-  - strong dark outline
-  - no text or UI
+  - path: Assets/Cleaned/approved_icon_refresh/spring_return_pill__candidate_16x16__v04.png
+    role: cleaned_candidate
+  - path: Assets/Final/spring_return_pill/spring_return_pill__item_icon__v04.png
+    role: final_review_asset

@@ -1,15 +1,16 @@
 id: garden_broken_key
 type: material
-display_name_en: GardenBrokenKey
-theme: garden broken key
-shape: broken green garden key
-size: 32x32
-source: imggen style atlas v02 plus project postprocess
+display_name_en: Garden Broken Key
+source_atlas: Assets/Generated/approved_icon_refresh/leftover_material_icons__imggen_atlas__v04.png
+quality_line: approved_v03_icon_style
+style_constraints:
+  - object-first irregular silhouette
+  - no flat circular badge placeholder
+  - deep outline and left-top highlights
 outputs:
   - path: Content/Items/Materials/GardenBrokenKey.png
     role: runtime_texture
-notes:
-  - Terraria-like pixel art
-  - transparent background
-  - strong dark outline
-  - no text or UI
+  - path: Assets/Cleaned/approved_icon_refresh/garden_broken_key__candidate_32x32__v04.png
+    role: cleaned_candidate
+  - path: Assets/Final/garden_broken_key/garden_broken_key__item_icon__v04.png
+    role: final_review_asset

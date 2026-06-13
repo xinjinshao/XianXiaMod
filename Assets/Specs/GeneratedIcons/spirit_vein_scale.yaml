@@ -1,15 +1,20 @@
 id: spirit_vein_scale
 type: material
-display_name_en: SpiritVeinScale
-theme: spirit vein scale
-shape: turquoise wyrm scale
-size: 32x32
-source: imggen style atlas v02 plus project postprocess
+display_name_en: Spirit Vein Scale
+source_atlas: Assets/Generated/approved_icon_refresh/material_icons__imggen_atlas__v04.png
+quality_line: approved_v03_icon_style
+style_constraints:
+  - object-first irregular silhouette
+  - no flat circular badge placeholder
+  - deep outline and left-top highlights
+  - Terraria-like inventory readability
 outputs:
   - path: Content/Items/HandGenerated/SpiritVeinScale.png
     role: runtime_texture
+  - path: Assets/Cleaned/approved_icon_refresh/spirit_vein_scale__candidate_32x32__v04.png
+    role: cleaned_candidate
+  - path: Assets/Final/spirit_vein_scale/spirit_vein_scale__item_icon__v04.png
+    role: final_review_asset
 notes:
-  - Terraria-like pixel art
-  - transparent background
-  - strong dark outline
-  - no text or UI
+  - generated from imggen atlas after user-approved style sample
+  - references Terraria/Calamity only for broad pixel-art readability, not copied sprites

@@ -66,6 +66,23 @@ Docs/
 - 不使用模糊半透明烟雾作为主要轮廓。
 - 不让特效遮挡武器、敌怪或 Boss 的核心剪影。
 
+### 3.1 已确认的图标质量线
+
+2026-06-13 确认的 `QiGatheringBuff` 与 `SimpleTalismanTable` 样例为后续 Buff、物品图标、制作台图标的最低质量线。后续同类资源必须满足：
+
+- 不使用“圆形底板 + 单一符号”的扁平 UI 占位图结构。
+- 图标必须有独立剪影，优先采用不规则轮廓、材质块面和可读的物件结构。
+- 参考本项目已验收的 Boss、武器和饰品资源的像素密度：深色外轮廓、局部冷暖高光、有限但丰富的色板。
+- Buff 图标也必须表现为“状态物件/能量形态”，而不是按钮图标；例如灵气旋涡应有气流层次和核心珠，不应只是圆形徽章。
+- 制作台图标必须表现实际工作台物件，包含桌面、工具、材料、容器或光效等可辨元素。
+- 可参考 Terraria 与 Calamity 的通用像素资产语言，包括轮廓强度、明暗分组、库存尺寸可读性，但禁止复制或临摹其具体贴图。
+- 输出必须先进入 `Assets/Generated/`，清理裁切后进入 `Assets/Cleaned/`，验收版本进入 `Assets/Final/`，最后再同步到 `Content/`。
+
+已确认样例：
+
+- `Assets/Cleaned/style_samples/qi_gathering_buff__candidate_32x32__v03.png`
+- `Assets/Cleaned/style_samples/simple_talisman_table__candidate_48x48__v03.png`
+
 ## 4. 资产类型规则
 
 敌怪：

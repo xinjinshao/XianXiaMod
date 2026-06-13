@@ -1,19 +1,20 @@
 id: heaven_dao_route_hint
 type: item
-display_name_en: HeavenDaoRouteHint
-theme: heaven dao route hint
-shape: gold white dao path compass with broken heaven shard
-palette: (238, 220, 136), (86, 116, 126), dark outline, pale cyan highlights
-size: 32x32
-source: imggen style atlas v02 plus project postprocess
+display_name_en: Heaven Dao Route Hint
+source_atlas: Assets/Generated/approved_icon_refresh/special_reward_icons__imggen_atlas__v04.png
+quality_line: approved_v03_icon_style
+style_constraints:
+  - object-first irregular silhouette
+  - no flat circular badge placeholder
+  - deep outline and left-top highlights
+  - Terraria-like inventory readability
 outputs:
   - path: Content/Items/HandGenerated/HeavenDaoRouteHint.png
     role: runtime_texture
-  - path: Assets/Final/heaven_dao_route_hint/heaven_dao_route_hint__item_icon__v02.png
+  - path: Assets/Cleaned/approved_icon_refresh/heaven_dao_route_hint__candidate_32x32__v04.png
+    role: cleaned_candidate
+  - path: Assets/Final/heaven_dao_route_hint/heaven_dao_route_hint__item_icon__v04.png
     role: final_review_asset
 notes:
-  - Terraria-like 2D pixel art
-  - transparent background
-  - strong dark outline
-  - no text or UI
-  - replaces flat placeholder-style icon
+  - generated from imggen atlas after user-approved style sample
+  - references Terraria/Calamity only for broad pixel-art readability, not copied sprites

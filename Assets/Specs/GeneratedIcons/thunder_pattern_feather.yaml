@@ -1,15 +1,20 @@
 id: thunder_pattern_feather
 type: material
-display_name_en: ThunderPatternFeather
-theme: thunder pattern feather
-shape: blue lightning feather
-size: 32x32
-source: imggen style atlas v02 plus project postprocess
+display_name_en: Thunder Pattern Feather
+source_atlas: Assets/Generated/approved_icon_refresh/material_icons__imggen_atlas__v04.png
+quality_line: approved_v03_icon_style
+style_constraints:
+  - object-first irregular silhouette
+  - no flat circular badge placeholder
+  - deep outline and left-top highlights
+  - Terraria-like inventory readability
 outputs:
   - path: Content/Items/HandGenerated/ThunderPatternFeather.png
     role: runtime_texture
+  - path: Assets/Cleaned/approved_icon_refresh/thunder_pattern_feather__candidate_32x32__v04.png
+    role: cleaned_candidate
+  - path: Assets/Final/thunder_pattern_feather/thunder_pattern_feather__item_icon__v04.png
+    role: final_review_asset
 notes:
-  - Terraria-like pixel art
-  - transparent background
-  - strong dark outline
-  - no text or UI
+  - generated from imggen atlas after user-approved style sample
+  - references Terraria/Calamity only for broad pixel-art readability, not copied sprites

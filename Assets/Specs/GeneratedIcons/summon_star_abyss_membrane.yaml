@@ -1,0 +1,20 @@
+id: summon_star_abyss_membrane
+type: item
+display_name_en: Summon Star Abyss Membrane
+source_atlas: Assets/Generated/approved_icon_refresh/summon_guide_icons__imggen_atlas__v04.png
+quality_line: approved_v03_icon_style
+style_constraints:
+  - object-first irregular silhouette
+  - no flat circular badge placeholder
+  - deep outline and left-top highlights
+  - Terraria-like inventory readability
+outputs:
+  - path: Content/Items/BossSummons/SummonStarAbyssMembrane.png
+    role: runtime_texture
+  - path: Assets/Cleaned/approved_icon_refresh/summon_star_abyss_membrane__candidate_32x32__v04.png
+    role: cleaned_candidate
+  - path: Assets/Final/summon_star_abyss_membrane/summon_star_abyss_membrane__item_icon__v04.png
+    role: final_review_asset
+notes:
+  - generated from imggen atlas after user-approved style sample
+  - references Terraria/Calamity only for broad pixel-art readability, not copied sprites

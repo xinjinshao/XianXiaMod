@@ -1,15 +1,20 @@
 id: furnace_slag_iron
 type: material
-display_name_en: FurnaceSlagIron
-theme: furnace slag iron
-shape: black slag iron chunk with red heat
-size: 24x24
-source: imggen style atlas v02 plus project postprocess
+display_name_en: Furnace Slag Iron
+source_atlas: Assets/Generated/approved_icon_refresh/material_icons__imggen_atlas__v04.png
+quality_line: approved_v03_icon_style
+style_constraints:
+  - object-first irregular silhouette
+  - no flat circular badge placeholder
+  - deep outline and left-top highlights
+  - Terraria-like inventory readability
 outputs:
   - path: Content/Items/Materials/FurnaceSlagIron.png
     role: runtime_texture
+  - path: Assets/Cleaned/approved_icon_refresh/furnace_slag_iron__candidate_24x24__v04.png
+    role: cleaned_candidate
+  - path: Assets/Final/furnace_slag_iron/furnace_slag_iron__item_icon__v04.png
+    role: final_review_asset
 notes:
-  - Terraria-like pixel art
-  - transparent background
-  - strong dark outline
-  - no text or UI
+  - generated from imggen atlas after user-approved style sample
+  - references Terraria/Calamity only for broad pixel-art readability, not copied sprites

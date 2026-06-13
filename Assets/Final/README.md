@@ -15,4 +15,4 @@ Important files:
 - `ContactSheets/`: per-source-sheet review images.
 - `TilePreviews/`: 4x4 previews for tile and wall resources.
 
-All assets are versioned as `v01` and should be treated as usable placeholders or first-pass art, not final hand-polished release art.
+Assets marked `v01` are usable first-pass art. Icon assets marked `v03` or later must meet the approved icon quality line in `Docs/ART_ASSET_GENERATION_PLAN.md`: irregular silhouettes, material detail, deep outlines, left-top highlights, and no flat circular badge placeholders.

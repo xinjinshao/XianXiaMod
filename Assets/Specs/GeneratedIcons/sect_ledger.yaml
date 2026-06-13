@@ -1,19 +1,20 @@
 id: sect_ledger
 type: item
-display_name_en: SectLedger
-theme: sect ledger guide
-shape: bound ledger book with jade bookmark and gold corners
-palette: (226, 198, 132), (76, 190, 172), dark outline, pale cyan highlights
-size: 32x32
-source: imggen style atlas v02 plus project postprocess
+display_name_en: Sect Ledger
+source_atlas: Assets/Generated/approved_icon_refresh/summon_guide_icons__imggen_atlas__v04.png
+quality_line: approved_v03_icon_style
+style_constraints:
+  - object-first irregular silhouette
+  - no flat circular badge placeholder
+  - deep outline and left-top highlights
+  - Terraria-like inventory readability
 outputs:
   - path: Content/Items/Guides/SectLedger.png
     role: runtime_texture
-  - path: Assets/Final/sect_ledger/sect_ledger__item_icon__v02.png
+  - path: Assets/Cleaned/approved_icon_refresh/sect_ledger__candidate_32x32__v04.png
+    role: cleaned_candidate
+  - path: Assets/Final/sect_ledger/sect_ledger__item_icon__v04.png
     role: final_review_asset
 notes:
-  - Terraria-like 2D pixel art
-  - transparent background
-  - strong dark outline
-  - no text or UI
-  - replaces flat placeholder-style icon
+  - generated from imggen atlas after user-approved style sample
+  - references Terraria/Calamity only for broad pixel-art readability, not copied sprites

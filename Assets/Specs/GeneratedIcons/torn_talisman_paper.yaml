@@ -1,15 +1,16 @@
 id: torn_talisman_paper
 type: material
-display_name_en: TornTalismanPaper
-theme: torn talisman paper
-shape: yellow talisman scrap
-size: 32x32
-source: imggen style atlas v02 plus project postprocess
+display_name_en: Torn Talisman Paper
+source_atlas: Assets/Generated/approved_icon_refresh/leftover_material_icons__imggen_atlas__v04.png
+quality_line: approved_v03_icon_style
+style_constraints:
+  - object-first irregular silhouette
+  - no flat circular badge placeholder
+  - deep outline and left-top highlights
 outputs:
   - path: Content/Items/HandGenerated/TornTalismanPaper.png
     role: runtime_texture
-notes:
-  - Terraria-like pixel art
-  - transparent background
-  - strong dark outline
-  - no text or UI
+  - path: Assets/Cleaned/approved_icon_refresh/torn_talisman_paper__candidate_32x32__v04.png
+    role: cleaned_candidate
+  - path: Assets/Final/torn_talisman_paper/torn_talisman_paper__item_icon__v04.png
+    role: final_review_asset

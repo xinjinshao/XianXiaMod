@@ -1,0 +1,20 @@
+id: alchemy_cauldron
+type: station
+display_name_en: Alchemy Cauldron
+source_atlas: Assets/Generated/approved_icon_refresh/station_icons__imggen_atlas__v04.png
+quality_line: approved_v03_icon_style
+style_constraints:
+  - object-first irregular silhouette
+  - no flat circular badge placeholder
+  - deep outline and left-top highlights
+  - Terraria-like inventory readability
+outputs:
+  - path: Content/Items/Stations/AlchemyCauldron.png
+    role: runtime_texture
+  - path: Assets/Cleaned/approved_icon_refresh/alchemy_cauldron__candidate_32x32__v04.png
+    role: cleaned_candidate
+  - path: Assets/Final/alchemy_cauldron/alchemy_cauldron__station_icon__v04.png
+    role: final_review_asset
+notes:
+  - generated from imggen atlas after user-approved style sample
+  - references Terraria/Calamity only for broad pixel-art readability, not copied sprites

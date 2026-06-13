@@ -1,19 +1,20 @@
 id: lightning_avoidance_rune
 type: item
-display_name_en: LightningAvoidanceRune
-theme: lightning avoidance rune
-shape: violet jade rune with split yellow lightning deflected aside
-palette: (150, 116, 232), (238, 216, 78), dark outline, pale cyan highlights
-size: 32x32
-source: imggen style atlas v02 plus project postprocess
+display_name_en: Lightning Avoidance Rune
+source_atlas: Assets/Generated/approved_icon_refresh/special_reward_icons__imggen_atlas__v04.png
+quality_line: approved_v03_icon_style
+style_constraints:
+  - object-first irregular silhouette
+  - no flat circular badge placeholder
+  - deep outline and left-top highlights
+  - Terraria-like inventory readability
 outputs:
   - path: Content/Items/HandGenerated/LightningAvoidanceRune.png
     role: runtime_texture
-  - path: Assets/Final/lightning_avoidance_rune/lightning_avoidance_rune__item_icon__v02.png
+  - path: Assets/Cleaned/approved_icon_refresh/lightning_avoidance_rune__candidate_32x32__v04.png
+    role: cleaned_candidate
+  - path: Assets/Final/lightning_avoidance_rune/lightning_avoidance_rune__item_icon__v04.png
     role: final_review_asset
 notes:
-  - Terraria-like 2D pixel art
-  - transparent background
-  - strong dark outline
-  - no text or UI
-  - replaces flat placeholder-style icon
+  - generated from imggen atlas after user-approved style sample
+  - references Terraria/Calamity only for broad pixel-art readability, not copied sprites

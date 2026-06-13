@@ -1,19 +1,20 @@
 id: abyssal_star_womb_lamp
 type: item
-display_name_en: AbyssalStarWombLamp
-theme: abyssal star womb lamp
-shape: hanging dark blue lamp with cyan star embryo inside
-palette: (58, 196, 226), (66, 38, 120), dark outline, pale cyan highlights
-size: 32x32
-source: imggen style atlas v02 plus project postprocess
+display_name_en: Abyssal Star Womb Lamp
+source_atlas: Assets/Generated/approved_icon_refresh/special_reward_icons__imggen_atlas__v04.png
+quality_line: approved_v03_icon_style
+style_constraints:
+  - object-first irregular silhouette
+  - no flat circular badge placeholder
+  - deep outline and left-top highlights
+  - Terraria-like inventory readability
 outputs:
   - path: Content/Items/HandGenerated/AbyssalStarWombLamp.png
     role: runtime_texture
-  - path: Assets/Final/abyssal_star_womb_lamp/abyssal_star_womb_lamp__item_icon__v02.png
+  - path: Assets/Cleaned/approved_icon_refresh/abyssal_star_womb_lamp__candidate_32x32__v04.png
+    role: cleaned_candidate
+  - path: Assets/Final/abyssal_star_womb_lamp/abyssal_star_womb_lamp__item_icon__v04.png
     role: final_review_asset
 notes:
-  - Terraria-like 2D pixel art
-  - transparent background
-  - strong dark outline
-  - no text or UI
-  - replaces flat placeholder-style icon
+  - generated from imggen atlas after user-approved style sample
+  - references Terraria/Calamity only for broad pixel-art readability, not copied sprites

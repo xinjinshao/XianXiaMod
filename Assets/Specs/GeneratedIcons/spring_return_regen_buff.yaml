@@ -1,19 +1,20 @@
 id: spring_return_regen_buff
 type: buff
-display_name_en: SpringReturnRegenBuff
-theme: spring return regeneration
-shape: jade pill with leaf vein and brighter healing aura
-palette: (144, 246, 142), (62, 140, 78), dark outline, pale cyan highlights
-size: 32x32
-source: imggen style atlas v02 plus project postprocess
+display_name_en: Spring Return Regen Buff
+source_atlas: Assets/Generated/approved_icon_refresh/buff_icons__imggen_atlas__v04.png
+quality_line: approved_v03_icon_style
+style_constraints:
+  - object-first irregular silhouette
+  - no flat circular badge placeholder
+  - deep outline and left-top highlights
+  - Terraria-like inventory readability
 outputs:
   - path: Content/Buffs/SpringReturnRegenBuff.png
     role: runtime_texture
-  - path: Assets/Final/spring_return_regen_buff/spring_return_regen_buff__buff_icon__v02.png
+  - path: Assets/Cleaned/approved_icon_refresh/spring_return_regen_buff__candidate_32x32__v04.png
+    role: cleaned_candidate
+  - path: Assets/Final/spring_return_regen_buff/spring_return_regen_buff__buff_icon__v04.png
     role: final_review_asset
 notes:
-  - Terraria-like 2D pixel art
-  - transparent background
-  - strong dark outline
-  - no text or UI
-  - replaces flat placeholder-style icon
+  - generated from imggen atlas after user-approved style sample
+  - references Terraria/Calamity only for broad pixel-art readability, not copied sprites

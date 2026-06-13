@@ -1,19 +1,20 @@
 id: thunder_pattern_forge
 type: station
-display_name_en: ThunderPatternForge
-theme: thunder pattern forge item
-shape: dark forge with purple thunder inlays and yellow sparks
-palette: (124, 104, 218), (238, 208, 62), dark outline, pale cyan highlights
-size: 32x32
-source: imggen style atlas v02 plus project postprocess
+display_name_en: Thunder Pattern Forge
+source_atlas: Assets/Generated/approved_icon_refresh/station_icons__imggen_atlas__v04.png
+quality_line: approved_v03_icon_style
+style_constraints:
+  - object-first irregular silhouette
+  - no flat circular badge placeholder
+  - deep outline and left-top highlights
+  - Terraria-like inventory readability
 outputs:
   - path: Content/Items/Stations/ThunderPatternForge.png
     role: runtime_texture
-  - path: Assets/Final/thunder_pattern_forge/thunder_pattern_forge__station_icon__v02.png
+  - path: Assets/Cleaned/approved_icon_refresh/thunder_pattern_forge__candidate_32x32__v04.png
+    role: cleaned_candidate
+  - path: Assets/Final/thunder_pattern_forge/thunder_pattern_forge__station_icon__v04.png
     role: final_review_asset
 notes:
-  - Terraria-like 2D pixel art
-  - transparent background
-  - strong dark outline
-  - no text or UI
-  - replaces flat placeholder-style icon
+  - generated from imggen atlas after user-approved style sample
+  - references Terraria/Calamity only for broad pixel-art readability, not copied sprites
