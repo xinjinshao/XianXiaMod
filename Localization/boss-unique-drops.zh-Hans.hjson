@@ -1,0 +1,12 @@
+Mods: {
+	XianXia: {
+		Items: {
+			FoundationSeal: { DisplayName: "筑基印" Tooltip: "完成筑基突破的印记。渡过天劫的证明。" }
+			MedicineKingWoodHeart: { DisplayName: "药王木心" Tooltip: "古药王的木之心。用于高阶炼丹装备。" }
+			StarCalamityCore: { DisplayName: "星灾灵核" Tooltip: "星灾能量的核心。终局路线装备的关键材料。" }
+			ImperialDecreeItem: { DisplayName: "天庭法旨" Tooltip: "残天监察使的天界法旨。" }
+			HeavenTabletSeal: { DisplayName: "天碑镇印" Tooltip: "天碑守御的封印。用于天道系装备。" }
+			RouteMaterial: { DisplayName: "路线材料" Tooltip: "与你选择的终局路线共振的材料。" }
+		}
+	}
+}

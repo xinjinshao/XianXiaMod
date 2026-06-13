@@ -337,6 +337,15 @@ BOSS_STAGE_REQUIREMENTS = {
     "old_heaven_dao_core": "DaoSevering",
 }
 
+BOSS_UNIQUE_DROPS = {
+    "tribulation_cloud_avatar": ("FoundationSeal", 1),
+    "greenwood_medicine_king_echo": ("MedicineKingWoodHeart", 1),
+    "moonbone_immortal": ("StarCalamityCore", 1),
+    "broken_heaven_inspector": ("ImperialDecreeItem", 1),
+    "heaven_tablet_guardian": ("HeavenTabletSeal", 1),
+    "old_heaven_dao_core": ("RouteMaterial", 1),
+}
+
 BOSS_RARE_DROPS = {
     "spirit_vein_wyrm": ("SpiritVeinWyrmTrophy", 10),
     "garden_warden": ("GardenWardenMask", 7),
@@ -772,10 +781,26 @@ def generate_materials(existing: set[str]) -> None:
     public override void AddRecipes()
     {{
         CreateRecipe()
+            station = {
+                "cloudpiercer_flying_sword": "ArtifactForgeTile",
+                "thunder_pattern_sword_case": "ThunderPatternForgeTile",
+                "formless_sword_wheel": "SectTrialAltarTile",
+                "moonbone_dharma_sword": "DaoSeveringAltarTile",
+                "cinnabar_talisman_flame_item": "ArtifactForgeTile",
+                "greenwood_array_plate": "ArtifactForgeTile",
+                "thunder_talisman_array_plate": "ThunderPatternForgeTile",
+                "broken_heaven_decree": "HeavenFireFurnaceTile",
+                "star_eclipse_arbalest": "ArtifactForgeTile",
+                "old_heaven_dao_scroll": "ArtifactForgeTile",
+            }.get(asset_id, "ArtifactForgeTile")
+            recipe = f"""
+    public override void AddRecipes()
+    {{
+        CreateRecipe()
             .AddIngredient<global::XianXia.Content.Items.Materials.ArtifactBlankShard>(2)
             .AddIngredient<global::XianXia.Content.Items.{ing_ns}.{ingredient}>({tier_count})
             .AddIngredient<global::XianXia.Content.Items.Materials.LowGradeSpiritStone>(12)
-            .AddTile(ModContent.TileType<global::XianXia.Content.Tiles.Stations.ArtifactForgeTile>())
+            .AddTile(ModContent.TileType<global::XianXia.Content.Tiles.Stations.{station}>())
             .Register();
     }}
 """
@@ -1886,6 +1911,7 @@ public class {class_name} : ModNPC
         npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<global::XianXia.Content.Items.Materials.SpiritGel>(), 4, 3, 8));
         npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<global::XianXia.Content.Items.Materials.ArtifactBlankShard>(), 8, 1, 3));
         npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<global::XianXia.Content.Items.HandGenerated.{BOSS_RARE_DROPS.get(asset_id, ("ArtifactBlankShard", 100))[0]}>(), {BOSS_RARE_DROPS.get(asset_id, ("ArtifactBlankShard", 100))[1]}, 1, 1));
+        {f'npcloot.Add(ItemDropRule.Common(ModContent.ItemType<global::XianXia.Content.Items.HandGenerated.{BOSS_UNIQUE_DROPS[asset_id][0]}>(), 1, {BOSS_UNIQUE_DROPS[asset_id][1]}, {BOSS_UNIQUE_DROPS[asset_id][1]}));' if asset_id in BOSS_UNIQUE_DROPS else ''}
     }}
 }}
 """)

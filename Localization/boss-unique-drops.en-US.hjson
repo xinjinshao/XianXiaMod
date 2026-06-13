@@ -1,0 +1,12 @@
+Mods: {
+	XianXia: {
+		Items: {
+			FoundationSeal: { DisplayName: "Foundation Seal" Tooltip: "A seal marking the completion of the Foundation breakthrough. Proof of surviving the tribulation." }
+			MedicineKingWoodHeart: { DisplayName: "Medicine King Wood Heart" Tooltip: "The wooden heart of the ancient Medicine King. Used for high-tier alchemy equipment." }
+			StarCalamityCore: { DisplayName: "Star Calamity Core" Tooltip: "A core of star calamity energy. Key material for endgame route equipment." }
+			ImperialDecreeItem: { DisplayName: "Imperial Decree" Tooltip: "A heavenly decree from the Broken Heaven Inspector." }
+			HeavenTabletSeal: { DisplayName: "Heaven Tablet Seal" Tooltip: "A seal from the Heaven Tablet Guardian. Used for heaven-dao equipment." }
+			RouteMaterial: { DisplayName: "Route Material" Tooltip: "A material that resonates with your chosen endgame route." }
+		}
+	}
+}
