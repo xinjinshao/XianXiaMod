@@ -2,88 +2,22 @@
 
 [返回首页](../../Home.md)
 
-## 详细参数
+## 生态列表
+
+| 生态 | 美术 | 阶段 | 位置 | 主要资源 | 敌怪 | Boss |
+| --- | --- | --- | --- | --- | --- | --- |
+| [浅层灵脉](Entries/Shallow_Spirit_Veins.md) | <img src="../../../Assets/Final/spirit_ore_tile/spirit_ore_tile__tile__v01.png" width="32"> | Pre-Boss | 地下浅层 | 下品灵石、灵苔 | 游灵史莱姆、碎玉虫 | 灵脉蠕虫 |
+| [青木药园](Entries/Greenwood_Herb_Garden.md) | <img src="../../../Assets/Final/greenwood_soil_tile/greenwood_soil_tile__tile__v01.png" width="32"> | Pre-Hardmode | 丛林支系 | 青木根、灵草 | 药园藤妖、花瘴蝶 | 药宗守园人 |
+| [沉炉矿脉](Entries/Sunken_Furnace_Vein.md) | <img src="../../../Assets/Final/furnace_slag_tile/furnace_slag_tile__tile__v01.png" width="32"> | Pre-Hardmode | 洞穴层/熔岩区 | 炉渣铁、玄炉墙 | 炉灰傀、铁屑灵 | 玄炉铁傀 |
+| [雷泽云层](Entries/Thunder_Marsh_Clouds.md) | <img src="../../../Assets/Final/thunder_cloud_tile/thunder_cloud_tile__tile__v01.png" width="32"> | Hardmode | 高空/空岛 | 劫云露、鸣雷石 | 劫云灵、雷纹鹰 | 雷泽蛟 |
+| [星渊裂隙](Entries/Star_Abyss_Rift.md) | <img src="../../../Assets/Final/star_abyss_crystal_tile/star_abyss_crystal_tile__tile__v01.png" width="32"> | Hardmode | 地下深层 | 星蚀晶、裂隙膜 | 星蚀修士、星渊幼体 | 星渊胎主 |
+| [万宗遗址](Entries/Ten_Thousand_Sects_Ruins.md) | <img src="../../../Assets/Final/sect_ruin_brick/sect_ruin_brick__tile__v01.png" width="32"> | Post-Plantera | 地牢/地下遗迹 | 宗门令、剑碑 | 执念剑修、藏经残影 | 无相剑魄 |
+| [坠天宫阙](Entries/Fallen_Heaven_Palace.md) | <img src="../../../Assets/Final/fallen_heaven_jade_tile/fallen_heaven_jade_tile__tile__v01.png" width="32"> | Post-Golem | 高空特殊结构 | 天道碎片、天碑 | 仙傀、天碑卫 | 天碑守御 |
+| [月骸天渊](Entries/Moonbone_Abyss.md) | <img src="../../../Assets/Final/moonbone_tile/moonbone_tile__tile__v01.png" width="32"> | Post-Moon Lord | 终局专属区域 | 月骨、归档光柱 | 月骸修士、归档仙魂 | 月骸仙君 |
+
+## 相关数据
 
 - [生态生成与 Tile 规格](Biome_Generation_Stats.md)
-
-## 浅层灵脉
-
-- 进度：Pre-Boss。
-- 位置：地下浅层，少量生成。
-- 资源：下品灵石、灵苔、碎玉虫掉落物。
-- 敌怪：游灵史莱姆、碎玉虫。
-- 作用：引导玩家接触灵气系统。
-- 详情：[浅层灵脉](Entries/Shallow_Spirit_Veins.md)
-
-## 青木药园
-
-- 进度：Pre-Hardmode。
-- 位置：丛林支系或独立小型结构。
-- 资源：灵草、药露、青木根。
-- 敌怪：药园藤妖、花瘴蝶。
-- Boss：药宗守园人。
-- 作用：炼丹入门。
-- 详情：[青木药园](Entries/Greenwood_Herb_Garden.md)
-
-## 沉炉矿脉
-
-- 进度：Pre-Hardmode 到 Hardmode。
-- 位置：洞穴层，靠近熔岩或矿区。
-- 资源：炉渣铁、玄炉炭、器胚碎片。
-- 敌怪：炉灰傀、铁屑灵。
-- Boss：玄炉铁傀。
-- 作用：炼器入门。
-- 详情：[沉炉矿脉](Entries/Sunken_Furnace_Vein.md)
-
-## 雷泽云层
-
-- 进度：Hardmode。
-- 位置：空岛附近或高空事件。
-- 资源：雷纹羽、劫云露、鸣雷石。
-- 敌怪：雷纹鹰、劫云灵。
-- Boss：雷泽蛟。
-- 作用：天劫与雷系装备。
-- 详情：[雷泽云层](Entries/Thunder_Marsh_Clouds.md)
-
-## 星渊裂隙
-
-- 进度：Hardmode。
-- 位置：地下深层、陨石坑或世界边缘裂隙。
-- 资源：星蚀晶、渊尘、暗蓝灵液。
-- 敌怪：星蚀修士、星渊幼体。
-- Boss：星渊胎主。
-- 作用：高风险禁术与污染线。
-- 详情：[星渊裂隙](Entries/Star_Abyss_Rift.md)
-
-## 万宗遗址
-
-- 进度：Post-Plantera。
-- 位置：地牢、地下遗迹或新结构。
-- 资源：宗门令、残卷、试炼玉牌。
-- 敌怪：执念剑修、藏经残影。
-- Boss：青木药王残影、无相剑魄。
-- 作用：中后期职业分化。
-- 详情：[万宗遗址](Entries/Ten_Thousand_Sects_Ruins.md)
-
-## 坠天宫阙
-
-- 进度：Post-Golem。
-- 位置：高空或特殊传送结构。
-- 资源：天道碎片、残天玉、破损法旨。
-- 敌怪：仙傀、天碑卫。
-- Boss：天碑守御、残天监察使。
-- 作用：旧天道主线。
-- 详情：[坠天宫阙](Entries/Fallen_Heaven_Palace.md)
-
-## 月骸天渊
-
-- 进度：Post-Moon Lord。
-- 位置：月亮领主后解锁的终局生态。
-- 资源：月骸骨、斩道尘、星灾灵核。
-- 敌怪：月骸修士、归档仙魂。
-- Boss：月骸仙君、旧天道核心。
-- 作用：终局路线。
-- 详情：[月骸天渊](Entries/Moonbone_Abyss.md)
 
 相关页面：
 
