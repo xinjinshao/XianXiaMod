@@ -47,7 +47,7 @@ public class ThunderPatternSwordCase : ModItem
 
         Item.noMelee = true;
 
-        Item.shoot = ModContent.ProjectileType<global::XianXia.Content.Projectiles.Generated.ThunderSwordProjectile>();
+        Item.shoot = ModContent.ProjectileType<global::XianXia.Content.Projectiles.ThunderSwordProjectile>();
 
         Item.shootSpeed = 13f;
 

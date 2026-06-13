@@ -49,7 +49,7 @@ public class SummonHeavenTabletRubbingBrokenHeavenInspector : ModItem
 
             .CanUseBossSummon(
 
-                ModContent.NPCType<global::XianXia.Content.NPCs.Bosses.Generated.BrokenHeavenInspector>(),
+                ModContent.NPCType<global::XianXia.Content.NPCs.Bosses.BrokenHeavenInspector>(),
 
                 global::XianXia.Common.Players.CultivationStage.NascentSoul,
 
@@ -67,7 +67,7 @@ public class SummonHeavenTabletRubbingBrokenHeavenInspector : ModItem
 
         if (Main.netMode != NetmodeID.MultiplayerClient)
 
-            NPC.SpawnOnPlayer(player.whoAmI, ModContent.NPCType<global::XianXia.Content.NPCs.Bosses.Generated.BrokenHeavenInspector>());
+            NPC.SpawnOnPlayer(player.whoAmI, ModContent.NPCType<global::XianXia.Content.NPCs.Bosses.BrokenHeavenInspector>());
 
         return true;
 

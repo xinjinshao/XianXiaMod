@@ -47,7 +47,7 @@ public class ThunderTalismanArrayPlate : ModItem
 
         Item.noMelee = true;
 
-        Item.shoot = ModContent.ProjectileType<global::XianXia.Content.Projectiles.Generated.ThunderTalismanArray>();
+        Item.shoot = ModContent.ProjectileType<global::XianXia.Content.Projectiles.ThunderTalismanArray>();
 
         Item.shootSpeed = 0f;
 

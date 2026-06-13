@@ -49,7 +49,7 @@ public class SummonMoonboneRitualTalismanOldHeavenDaoCore : ModItem
 
             .CanUseBossSummon(
 
-                ModContent.NPCType<global::XianXia.Content.NPCs.Bosses.Generated.OldHeavenDaoCore>(),
+                ModContent.NPCType<global::XianXia.Content.NPCs.Bosses.OldHeavenDaoCore>(),
 
                 global::XianXia.Common.Players.CultivationStage.DaoSevering,
 
@@ -67,7 +67,7 @@ public class SummonMoonboneRitualTalismanOldHeavenDaoCore : ModItem
 
         if (Main.netMode != NetmodeID.MultiplayerClient)
 
-            NPC.SpawnOnPlayer(player.whoAmI, ModContent.NPCType<global::XianXia.Content.NPCs.Bosses.Generated.OldHeavenDaoCore>());
+            NPC.SpawnOnPlayer(player.whoAmI, ModContent.NPCType<global::XianXia.Content.NPCs.Bosses.OldHeavenDaoCore>());
 
         return true;
 

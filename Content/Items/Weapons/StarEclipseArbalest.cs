@@ -47,7 +47,7 @@ public class StarEclipseArbalest : ModItem
 
         Item.noMelee = true;
 
-        Item.shoot = ModContent.ProjectileType<global::XianXia.Content.Projectiles.Generated.StarEclipseSplitBolt>();
+        Item.shoot = ModContent.ProjectileType<global::XianXia.Content.Projectiles.StarEclipseSplitBolt>();
 
         Item.shootSpeed = 12f;
 

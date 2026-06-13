@@ -49,7 +49,7 @@ public class SummonMoonboneRitualTalisman : ModItem
 
             .CanUseBossSummon(
 
-                ModContent.NPCType<global::XianXia.Content.NPCs.Bosses.Generated.MoonboneImmortal>(),
+                ModContent.NPCType<global::XianXia.Content.NPCs.Bosses.MoonboneImmortal>(),
 
                 global::XianXia.Common.Players.CultivationStage.Tribulation,
 
@@ -67,7 +67,7 @@ public class SummonMoonboneRitualTalisman : ModItem
 
         if (Main.netMode != NetmodeID.MultiplayerClient)
 
-            NPC.SpawnOnPlayer(player.whoAmI, ModContent.NPCType<global::XianXia.Content.NPCs.Bosses.Generated.MoonboneImmortal>());
+            NPC.SpawnOnPlayer(player.whoAmI, ModContent.NPCType<global::XianXia.Content.NPCs.Bosses.MoonboneImmortal>());
 
         return true;
 

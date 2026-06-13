@@ -49,7 +49,7 @@ public class SummonSectTrialTokenGreenwoodMedicineKingEcho : ModItem
 
             .CanUseBossSummon(
 
-                ModContent.NPCType<global::XianXia.Content.NPCs.Bosses.Generated.GreenwoodMedicineKingEcho>(),
+                ModContent.NPCType<global::XianXia.Content.NPCs.Bosses.GreenwoodMedicineKingEcho>(),
 
                 global::XianXia.Common.Players.CultivationStage.GoldenCore,
 
@@ -67,7 +67,7 @@ public class SummonSectTrialTokenGreenwoodMedicineKingEcho : ModItem
 
         if (Main.netMode != NetmodeID.MultiplayerClient)
 
-            NPC.SpawnOnPlayer(player.whoAmI, ModContent.NPCType<global::XianXia.Content.NPCs.Bosses.Generated.GreenwoodMedicineKingEcho>());
+            NPC.SpawnOnPlayer(player.whoAmI, ModContent.NPCType<global::XianXia.Content.NPCs.Bosses.GreenwoodMedicineKingEcho>());
 
         return true;
 

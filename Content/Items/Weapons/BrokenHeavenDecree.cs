@@ -47,7 +47,7 @@ public class BrokenHeavenDecree : ModItem
 
         Item.noMelee = true;
 
-        Item.shoot = ModContent.ProjectileType<global::XianXia.Content.Projectiles.Generated.DecreeJudgementBeam>();
+        Item.shoot = ModContent.ProjectileType<global::XianXia.Content.Projectiles.DecreeJudgementBeam>();
 
         Item.shootSpeed = 0f;
 

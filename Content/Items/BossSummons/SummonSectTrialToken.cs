@@ -49,7 +49,7 @@ public class SummonSectTrialToken : ModItem
 
             .CanUseBossSummon(
 
-                ModContent.NPCType<global::XianXia.Content.NPCs.Bosses.Generated.FormlessSwordSoul>(),
+                ModContent.NPCType<global::XianXia.Content.NPCs.Bosses.FormlessSwordSoul>(),
 
                 global::XianXia.Common.Players.CultivationStage.GoldenCore,
 
@@ -67,7 +67,7 @@ public class SummonSectTrialToken : ModItem
 
         if (Main.netMode != NetmodeID.MultiplayerClient)
 
-            NPC.SpawnOnPlayer(player.whoAmI, ModContent.NPCType<global::XianXia.Content.NPCs.Bosses.Generated.FormlessSwordSoul>());
+            NPC.SpawnOnPlayer(player.whoAmI, ModContent.NPCType<global::XianXia.Content.NPCs.Bosses.FormlessSwordSoul>());
 
         return true;
 

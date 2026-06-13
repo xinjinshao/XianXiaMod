@@ -49,7 +49,7 @@ public class SummonHeavenTabletRubbing : ModItem
 
             .CanUseBossSummon(
 
-                ModContent.NPCType<global::XianXia.Content.NPCs.Bosses.Generated.HeavenTabletGuardian>(),
+                ModContent.NPCType<global::XianXia.Content.NPCs.Bosses.HeavenTabletGuardian>(),
 
                 global::XianXia.Common.Players.CultivationStage.NascentSoul,
 
@@ -67,7 +67,7 @@ public class SummonHeavenTabletRubbing : ModItem
 
         if (Main.netMode != NetmodeID.MultiplayerClient)
 
-            NPC.SpawnOnPlayer(player.whoAmI, ModContent.NPCType<global::XianXia.Content.NPCs.Bosses.Generated.HeavenTabletGuardian>());
+            NPC.SpawnOnPlayer(player.whoAmI, ModContent.NPCType<global::XianXia.Content.NPCs.Bosses.HeavenTabletGuardian>());
 
         return true;
 

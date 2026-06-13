@@ -47,7 +47,7 @@ public class CinnabarTalismanFlameItem : ModItem
 
         Item.noMelee = true;
 
-        Item.shoot = ModContent.ProjectileType<global::XianXia.Content.Projectiles.Generated.CinnabarTalismanFlame>();
+        Item.shoot = ModContent.ProjectileType<global::XianXia.Content.Projectiles.CinnabarTalismanFlame>();
 
         Item.shootSpeed = 7f;
 

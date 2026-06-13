@@ -47,7 +47,7 @@ public class MoonboneDharmaSword : ModItem
 
         Item.noMelee = true;
 
-        Item.shoot = ModContent.ProjectileType<global::XianXia.Content.Projectiles.Generated.MoonboneShardProjectile>();
+        Item.shoot = ModContent.ProjectileType<global::XianXia.Content.Projectiles.MoonboneShardProjectile>();
 
         Item.shootSpeed = 14f;
 

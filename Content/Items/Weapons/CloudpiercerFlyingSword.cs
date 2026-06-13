@@ -47,7 +47,7 @@ public class CloudpiercerFlyingSword : ModItem
 
         Item.noMelee = true;
 
-        Item.shoot = ModContent.ProjectileType<global::XianXia.Content.Projectiles.Generated.CloudpiercerSwordProjectile>();
+        Item.shoot = ModContent.ProjectileType<global::XianXia.Content.Projectiles.CloudpiercerSwordProjectile>();
 
         Item.shootSpeed = 11f;
 

@@ -49,7 +49,7 @@ public class SummonOldFurnaceEmber : ModItem
 
             .CanUseBossSummon(
 
-                ModContent.NPCType<global::XianXia.Content.NPCs.Bosses.Generated.BlackFurnaceIronGolem>(),
+                ModContent.NPCType<global::XianXia.Content.NPCs.Bosses.BlackFurnaceIronGolem>(),
 
                 global::XianXia.Common.Players.CultivationStage.QiAwakening,
 
@@ -67,7 +67,7 @@ public class SummonOldFurnaceEmber : ModItem
 
         if (Main.netMode != NetmodeID.MultiplayerClient)
 
-            NPC.SpawnOnPlayer(player.whoAmI, ModContent.NPCType<global::XianXia.Content.NPCs.Bosses.Generated.BlackFurnaceIronGolem>());
+            NPC.SpawnOnPlayer(player.whoAmI, ModContent.NPCType<global::XianXia.Content.NPCs.Bosses.BlackFurnaceIronGolem>());
 
         return true;
 

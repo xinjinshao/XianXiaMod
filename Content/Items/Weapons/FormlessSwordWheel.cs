@@ -47,7 +47,7 @@ public class FormlessSwordWheel : ModItem
 
         Item.noMelee = true;
 
-        Item.shoot = ModContent.ProjectileType<global::XianXia.Content.Projectiles.Generated.FormlessSwordWheelProjectile>();
+        Item.shoot = ModContent.ProjectileType<global::XianXia.Content.Projectiles.FormlessSwordWheelProjectile>();
 
         Item.shootSpeed = 8f;
 

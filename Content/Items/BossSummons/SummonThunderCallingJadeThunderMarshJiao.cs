@@ -49,7 +49,7 @@ public class SummonThunderCallingJadeThunderMarshJiao : ModItem
 
             .CanUseBossSummon(
 
-                ModContent.NPCType<global::XianXia.Content.NPCs.Bosses.Generated.ThunderMarshJiao>(),
+                ModContent.NPCType<global::XianXia.Content.NPCs.Bosses.ThunderMarshJiao>(),
 
                 global::XianXia.Common.Players.CultivationStage.Foundation,
 
@@ -67,7 +67,7 @@ public class SummonThunderCallingJadeThunderMarshJiao : ModItem
 
         if (Main.netMode != NetmodeID.MultiplayerClient)
 
-            NPC.SpawnOnPlayer(player.whoAmI, ModContent.NPCType<global::XianXia.Content.NPCs.Bosses.Generated.ThunderMarshJiao>());
+            NPC.SpawnOnPlayer(player.whoAmI, ModContent.NPCType<global::XianXia.Content.NPCs.Bosses.ThunderMarshJiao>());
 
         return true;
 

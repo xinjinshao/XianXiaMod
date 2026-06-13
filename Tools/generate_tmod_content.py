@@ -523,7 +523,7 @@ def generate_materials(existing: set[str]) -> None:
         class_name = pascal(asset_id)
         if class_name in existing:
             continue
-        copy_asset(asset_id, "item_icon", class_name, CONTENT / "Items" / "Generated")
+        copy_asset(asset_id, "item_icon", class_name, CONTENT / "Items")
         rare = "ItemRarityID.White"
         # Material-specific overrides matching wiki rarities
         if asset_id in ("greenwood_root", "furnace_slag_iron", "spirit_gel"):
@@ -705,7 +705,7 @@ def generate_materials(existing: set[str]) -> None:
         Item.useAnimation = {use_time};
         Item.UseSound = SoundID.Item20;
         Item.noMelee = true;
-        Item.shoot = ModContent.ProjectileType<global::XianXia.Content.Projectiles.Generated.{projectile}>();
+        Item.shoot = ModContent.ProjectileType<global::XianXia.Content.Projectiles.{projectile}>();
         Item.shootSpeed = {shoot_speed}f;"""
             use_item = f"""
     public override bool CanUseItem(Player player)
@@ -794,7 +794,7 @@ def generate_materials(existing: set[str]) -> None:
     public override void AddRecipes()
     {{
         CreateRecipe()
-            .AddIngredient<global::XianXia.Content.Items.Generated.{ingredient}>(5)
+            .AddIngredient<global::XianXia.Content.Items.Materials.{ingredient}>(5)
             .AddIngredient<global::XianXia.Content.Items.Materials.LowGradeSpiritStone>(8)
             .AddTile(ModContent.TileType<global::XianXia.Content.Tiles.Stations.ArtifactForgeTile>())
             .Register();
@@ -874,10 +874,10 @@ public class {class_name} : ModItem
 {can_use_item}{use_item}{accessory}{awakening}{recipe}
 }}
 """)
-    write(CONTENT / "Items" / "Generated" / "GeneratedItems.cs", ITEMS_HEADER + "\n".join(classes))
+    write(CONTENT / "Items" / "GeneratedItems.cs", ITEMS_HEADER + "\n".join(classes))
 
 
-ITEMS_HEADER = """using System;\nusing Terraria;\nusing Terraria.ID;\nusing Terraria.ModLoader;\n\nnamespace XianXia.Content.Items.Generated;\n"""
+ITEMS_HEADER = """using System;\nusing Terraria;\nusing Terraria.ID;\nusing Terraria.ModLoader;\n\nnamespace XianXia.Content.Items;\n"""
 
 
 def generate_projectiles(existing: set[str]) -> None:
@@ -888,7 +888,7 @@ def generate_projectiles(existing: set[str]) -> None:
         class_name = pascal(row["asset_id"].replace("_proj", "_projectile"))
         if class_name in existing:
             continue
-        copy_asset(row["asset_id"], "projectile", class_name, CONTENT / "Projectiles" / "Generated")
+        copy_asset(row["asset_id"], "projectile", class_name, CONTENT / "Projectiles")
         width, height = row["width"], row["height"]
         extra_defaults, extra_methods = projectile_behavior_code(class_name)
         default_ai = "" if "public override void AI()" in extra_methods else """
@@ -918,7 +918,7 @@ public class {class_name} : ModProjectile
 {default_ai}{extra_methods}
 }}
 """)
-    write(CONTENT / "Projectiles" / "Generated" / "GeneratedProjectiles.cs", PROJECTILE_HEADER + "\n".join(classes))
+    write(CONTENT / "Projectiles" / "GeneratedProjectiles.cs", PROJECTILE_HEADER + "\n".join(classes))
 
 
 def projectile_behavior_code(class_name: str) -> tuple[str, str]:
@@ -1105,7 +1105,7 @@ def projectile_behavior_code(class_name: str) -> tuple[str, str]:
     return ("", "")
 
 
-PROJECTILE_HEADER = """using System;\nusing Microsoft.Xna.Framework;\nusing Terraria;\nusing Terraria.ID;\nusing Terraria.ModLoader;\n\nnamespace XianXia.Content.Projectiles.Generated;\n"""
+PROJECTILE_HEADER = """using System;\nusing Microsoft.Xna.Framework;\nusing Terraria;\nusing Terraria.ID;\nusing Terraria.ModLoader;\n\nnamespace XianXia.Content.Projectiles;\n"""
 
 
 def generate_tiles(existing: set[str]) -> None:
@@ -1114,10 +1114,10 @@ def generate_tiles(existing: set[str]) -> None:
         if class_name in existing:
             continue
         output = "wall" if asset_id.endswith("_wall") else "tile"
-        copy_asset(asset_id, output, class_name, CONTENT / "Tiles" / "Generated")
+        copy_asset(asset_id, output, class_name, CONTENT / "Tiles")
         drop_line = ""
         if drop:
-            drop_line = f"        RegisterItemDrop(ModContent.ItemType<global::XianXia.Content.Items.Generated.{pascal(drop)}>());"
+            drop_line = f"        RegisterItemDrop(ModContent.ItemType<global::XianXia.Content.Items.Materials.{pascal(drop)}>());"
         wall = "Wall" in class_name
         if wall:
             classes.append(f"""
@@ -1147,7 +1147,7 @@ public class {class_name} : ModTile
     }}
 }}
 """)
-    write(CONTENT / "Tiles" / "Generated" / "GeneratedTiles.cs", TILE_HEADER + "\n".join(classes))
+    write(CONTENT / "Tiles" / "GeneratedTiles.cs", TILE_HEADER + "\n".join(classes))
 
 
 TILE_HEADER = """using Microsoft.Xna.Framework;\nusing Terraria;\nusing Terraria.ID;\nusing Terraria.ModLoader;\n\nnamespace XianXia.Content.Tiles.Generated;\n"""
@@ -1200,7 +1200,7 @@ def generate_enemies(existing: set[str]) -> None:
         class_name = pascal(asset_id)
         if class_name in existing:
             continue
-        copy_asset(asset_id, "base", class_name, CONTENT / "NPCs" / "Enemies" / "Generated")
+        copy_asset(asset_id, "base", class_name, CONTENT / "NPCs" / "Enemies")
         biome = BIOME_BY_ENEMY[asset_id]
         extra_defaults, extra_methods = enemy_behavior_code(asset_id)
         ai = "NPCAIStyleID.Fighter"
@@ -1244,7 +1244,7 @@ public class {class_name} : ModNPC
     }}
 }}
 """)
-    write(CONTENT / "NPCs" / "Enemies" / "Generated" / "GeneratedEnemies.cs", ENEMY_HEADER + "\n".join(classes))
+    write(CONTENT / "NPCs" / "Enemies" / "GeneratedEnemies.cs", ENEMY_HEADER + "\n".join(classes))
 
 
 def enemy_behavior_code(asset_id: str) -> tuple[str, str]:
@@ -1763,7 +1763,7 @@ def enemy_behavior_code(asset_id: str) -> tuple[str, str]:
     return ("", "")
 
 
-ENEMY_HEADER = """using System;\nusing Microsoft.Xna.Framework;\nusing Terraria;\nusing Terraria.GameContent.Bestiary;\nusing Terraria.GameContent.ItemDropRules;\nusing Terraria.ID;\nusing Terraria.ModLoader;\n\nnamespace XianXia.Content.NPCs.Enemies.Generated;\n"""
+ENEMY_HEADER = """using System;\nusing Microsoft.Xna.Framework;\nusing Terraria;\nusing Terraria.GameContent.Bestiary;\nusing Terraria.GameContent.ItemDropRules;\nusing Terraria.ID;\nusing Terraria.ModLoader;\n\nnamespace XianXia.Content.NPCs.Enemies;\n"""
 
 
 def generate_bosses(existing: set[str]) -> None:
@@ -1772,8 +1772,8 @@ def generate_bosses(existing: set[str]) -> None:
         class_name = pascal(asset_id)
         if class_name in existing:
             continue
-        copy_asset(asset_id, "body", class_name, CONTENT / "NPCs" / "Bosses" / "Generated")
-        copy_asset(asset_id, "boss_head", class_name, CONTENT / "NPCs" / "Bosses" / "Generated", "_Head_Boss")
+        copy_asset(asset_id, "body", class_name, CONTENT / "NPCs" / "Bosses")
+        copy_asset(asset_id, "boss_head", class_name, CONTENT / "NPCs" / "Bosses", "_Head_Boss")
         classes.append(f"""
 [AutoloadBossHead]
 public class {class_name} : ModNPC
@@ -1880,8 +1880,8 @@ public class {class_name} : ModNPC
 
     public override void ModifyNPCLoot(NPCLoot npcLoot)
     {{
-        npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<global::XianXia.Content.Items.Generated.{pascal(drop)}>(), 1, 16, 28));
-        npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<global::XianXia.Content.Items.Generated.{pascal(drop2)}>(), 1, 8, 16));
+        npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<global::XianXia.Content.Items.Materials.{pascal(drop)}>(), 1, 16, 28));
+        npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<global::XianXia.Content.Items.Materials.{pascal(drop2)}>(), 1, 8, 16));
         npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<global::XianXia.Content.Items.Materials.LowGradeSpiritStone>(), 1, 8, 16));
         npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<global::XianXia.Content.Items.Materials.SpiritGel>(), 4, 3, 8));
         npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<global::XianXia.Content.Items.Materials.ArtifactBlankShard>(), 8, 1, 3));
@@ -1889,10 +1889,10 @@ public class {class_name} : ModNPC
     }}
 }}
 """)
-    write(CONTENT / "NPCs" / "Bosses" / "Generated" / "GeneratedBosses.cs", BOSS_HEADER + "\n".join(classes))
+    write(CONTENT / "NPCs" / "Bosses" / "GeneratedBosses.cs", BOSS_HEADER + "\n".join(classes))
 
 
-BOSS_HEADER = """using System;\nusing Microsoft.Xna.Framework;\nusing Terraria;\nusing Terraria.GameContent.Bestiary;\nusing Terraria.GameContent.ItemDropRules;\nusing Terraria.ID;\nusing Terraria.Localization;\nusing Terraria.ModLoader;\nusing XianXia.Common.Systems;\n\nnamespace XianXia.Content.NPCs.Bosses.Generated;\n"""
+BOSS_HEADER = """using System;\nusing Microsoft.Xna.Framework;\nusing Terraria;\nusing Terraria.GameContent.Bestiary;\nusing Terraria.GameContent.ItemDropRules;\nusing Terraria.ID;\nusing Terraria.Localization;\nusing Terraria.ModLoader;\nusing XianXia.Common.Systems;\n\nnamespace XianXia.Content.NPCs.Bosses;\n"""
 
 
 def boss_pattern_code(asset_id: str) -> str:
@@ -1921,7 +1921,7 @@ def boss_pattern_code(asset_id: str) -> str:
             if (phaseTwo) {{
                 for (int j = 0; j < 2; j++)
                     NPC.NewNPC(NPC.GetSource_FromAI(), (int)NPC.Center.X + Main.rand.Next(-60, 61), (int)NPC.Center.Y + Main.rand.Next(-40, 41),
-                        ModContent.NPCType<global::XianXia.Content.NPCs.Enemies.Generated.IronShardSpirit>(), ai0: NPC.whoAmI);
+                        ModContent.NPCType<global::XianXia.Content.NPCs.Enemies.IronShardSpirit>(), ai0: NPC.whoAmI);
             }}
             Vector2 side = (target.Center - NPC.Center).SafeNormalize(Vector2.UnitY).RotatedBy(MathHelper.PiOver2);
             for (int i = -1; i <= 1; i++)
@@ -1944,7 +1944,7 @@ def boss_pattern_code(asset_id: str) -> str:
             }}
             if (phaseTwo && NPC.ai[3]++ == 0) {{
                 NPC.NewNPC(NPC.GetSource_FromAI(), (int)NPC.Center.X, (int)NPC.Center.Y,
-                    ModContent.NPCType<global::XianXia.Content.NPCs.Enemies.Generated.TribulationCloudling>(), ai0: NPC.whoAmI);
+                    ModContent.NPCType<global::XianXia.Content.NPCs.Enemies.TribulationCloudling>(), ai0: NPC.whoAmI);
             }}
             if (finalPhase)
                 Projectile.NewProjectile(NPC.GetSource_FromAI(), target.Center, Vector2.Zero,
@@ -1989,7 +1989,7 @@ def boss_pattern_code(asset_id: str) -> str:
             if (phaseTwo && NPC.ai[3]++ == 0) {{
                 for (int s = 0; s < 3; s++)
                     NPC.NewNPC(NPC.GetSource_FromAI(), (int)NPC.Center.X + Main.rand.Next(-80, 81), (int)NPC.Center.Y + Main.rand.Next(-40, 41),
-                        ModContent.NPCType<global::XianXia.Content.NPCs.Enemies.Generated.ObsessedSwordCultivator>(), ai0: NPC.whoAmI);
+                        ModContent.NPCType<global::XianXia.Content.NPCs.Enemies.ObsessedSwordCultivator>(), ai0: NPC.whoAmI);
             }}
             int spokes = finalPhase ? 10 : phaseTwo ? 8 : 6;
             float rot = Main.GameUpdateCount * 0.025f;
@@ -2010,7 +2010,7 @@ def boss_pattern_code(asset_id: str) -> str:
             if (phaseTwo && NPC.ai[3]++ == 0) {{
                 for (int f = 0; f < 3; f++)
                     NPC.NewNPC(NPC.GetSource_FromAI(), (int)target.Center.X + Main.rand.Next(-120, 121), (int)target.Center.Y - 60,
-                        ModContent.NPCType<global::XianXia.Content.NPCs.Enemies.Generated.HerbGardenVineSpirit>(), ai0: NPC.whoAmI);
+                        ModContent.NPCType<global::XianXia.Content.NPCs.Enemies.HerbGardenVineSpirit>(), ai0: NPC.whoAmI);
             }}
             Projectile.NewProjectile(NPC.GetSource_FromAI(), target.Center + target.velocity * 16f, Vector2.Zero,
                 ModContent.ProjectileType<{F}>(), fDmg, 1.2f, Main.myPlayer);
@@ -2043,7 +2043,7 @@ def boss_pattern_code(asset_id: str) -> str:
                 NPC.localAI[1] = 1f;
                 for (int p = 0; p < 2; p++)
                     NPC.NewNPC(NPC.GetSource_FromAI(), (int)NPC.Center.X + Main.rand.Next(-80, 81), (int)NPC.Center.Y + Main.rand.Next(-40, 41),
-                        ModContent.NPCType<global::XianXia.Content.NPCs.Enemies.Generated.CelestialPuppet>(), ai0: NPC.whoAmI);
+                        ModContent.NPCType<global::XianXia.Content.NPCs.Enemies.CelestialPuppet>(), ai0: NPC.whoAmI);
             }}
             int sDmg = Math.Max(18, NPC.damage / 3);
             int lanes = finalPhase ? 5 : phaseTwo ? 3 : 1;
@@ -2065,7 +2065,7 @@ def boss_pattern_code(asset_id: str) -> str:
                 NPC.localAI[1] = 1f;
                 for (int a = 0; a < 2; a++)
                     NPC.NewNPC(NPC.GetSource_FromAI(), (int)NPC.Center.X + Main.rand.Next(-80, 81), (int)NPC.Center.Y + Main.rand.Next(-40, 41),
-                        ModContent.NPCType<global::XianXia.Content.NPCs.Enemies.Generated.ArchivedImmortalSoul>(), ai0: NPC.whoAmI);
+                        ModContent.NPCType<global::XianXia.Content.NPCs.Enemies.ArchivedImmortalSoul>(), ai0: NPC.whoAmI);
             }}
             int spokes = finalPhase ? 12 : phaseTwo ? 8 : 6;
             float rot = Main.GameUpdateCount * 0.025f;
@@ -2142,7 +2142,7 @@ def generate_summons(existing: set[str]) -> None:
         used.add(class_name)
         if class_name in existing:
             continue
-        copy_asset(summon, "item_icon", class_name, CONTENT / "Items" / "BossSummons" / "Generated")
+        copy_asset(summon, "item_icon", class_name, CONTENT / "Items" / "BossSummons")
         required_stage = BOSS_STAGE_REQUIREMENTS[asset_id]
         required_boss = BOSS_UNLOCK_REQUIREMENTS.get(asset_id, "")
         spirit_stone_cost = 10 + list(BOSS_DATA).index(asset_id) * 3
@@ -2168,7 +2168,7 @@ public class {class_name} : ModItem
     {{
         return player.GetModPlayer<global::XianXia.Common.Players.XianXiaPlayer>()
             .CanUseBossSummon(
-                ModContent.NPCType<global::XianXia.Content.NPCs.Bosses.Generated.{boss_class}>(),
+                ModContent.NPCType<global::XianXia.Content.NPCs.Bosses.{boss_class}>(),
                 global::XianXia.Common.Players.CultivationStage.{required_stage},
                 "{required_boss}")
             && global::XianXia.Common.Systems.BossSummonRules.CanUseGeneratedBossSummon(player, "{asset_id}");
@@ -2177,21 +2177,21 @@ public class {class_name} : ModItem
     public override bool? UseItem(Player player)
     {{
         if (Main.netMode != NetmodeID.MultiplayerClient)
-            NPC.SpawnOnPlayer(player.whoAmI, ModContent.NPCType<global::XianXia.Content.NPCs.Bosses.Generated.{boss_class}>());
+            NPC.SpawnOnPlayer(player.whoAmI, ModContent.NPCType<global::XianXia.Content.NPCs.Bosses.{boss_class}>());
         return true;
     }}
 
     public override void AddRecipes()
     {{
         CreateRecipe()
-            .AddIngredient<global::XianXia.Content.Items.Generated.{pascal(summon)}>()
+            .AddIngredient<global::XianXia.Content.Items.Materials.{pascal(summon)}>()
             .AddIngredient<global::XianXia.Content.Items.Materials.LowGradeSpiritStone>({spirit_stone_cost})
             .AddTile({crafting_tile})
             .Register();
     }}
 }}
 """)
-    write(CONTENT / "Items" / "BossSummons" / "Generated" / "GeneratedBossSummons.cs", SUMMON_HEADER + "\n".join(classes))
+    write(CONTENT / "Items" / "BossSummons" / "GeneratedBossSummons.cs", SUMMON_HEADER + "\n".join(classes))
 
 
 SUMMON_HEADER = """using Terraria;\nusing Terraria.ID;\nusing Terraria.ModLoader;\n\nnamespace XianXia.Content.Items.BossSummons;\n"""
@@ -2364,12 +2364,12 @@ def generate_localization() -> None:
 
 def main() -> None:
     for folder in [
-        CONTENT / "Items" / "Generated",
-        CONTENT / "Items" / "BossSummons" / "Generated",
-        CONTENT / "Projectiles" / "Generated",
-        CONTENT / "Tiles" / "Generated",
-        CONTENT / "NPCs" / "Enemies" / "Generated",
-        CONTENT / "NPCs" / "Bosses" / "Generated",
+        CONTENT / "Items",
+        CONTENT / "Items" / "BossSummons",
+        CONTENT / "Projectiles",
+        CONTENT / "Tiles",
+        CONTENT / "NPCs" / "Enemies",
+        CONTENT / "NPCs" / "Bosses",
     ]:
         if folder.exists():
             shutil.rmtree(folder)

@@ -373,8 +373,8 @@ public class XianXiaPlayer : ModPlayer
         float offsetX = Main.rand.NextFloat(-200f, 200f);
         float offsetY = Main.rand.NextFloat(-200f, -120f);
         int npcType = tribulationStage >= 5
-            ? ModContent.NPCType<global::XianXia.Content.NPCs.Enemies.Generated.StarEclipsedCultivator>()
-            : ModContent.NPCType<global::XianXia.Content.NPCs.Enemies.Generated.TribulationCloudling>();
+            ? ModContent.NPCType<global::XianXia.Content.NPCs.Enemies.StarEclipsedCultivator>()
+            : ModContent.NPCType<global::XianXia.Content.NPCs.Enemies.TribulationCloudling>();
         int id = NPC.NewNPC(Player.GetSource_FromThis(), (int)(Player.Center.X + offsetX), (int)(Player.Center.Y + offsetY),
             npcType);
         if (id < Main.maxNPCs)

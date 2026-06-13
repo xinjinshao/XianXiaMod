@@ -49,7 +49,7 @@ public class SummonThunderCallingJade : ModItem
 
             .CanUseBossSummon(
 
-                ModContent.NPCType<global::XianXia.Content.NPCs.Bosses.Generated.TribulationCloudAvatar>(),
+                ModContent.NPCType<global::XianXia.Content.NPCs.Bosses.TribulationCloudAvatar>(),
 
                 global::XianXia.Common.Players.CultivationStage.QiCondensation,
 
@@ -67,7 +67,7 @@ public class SummonThunderCallingJade : ModItem
 
         if (Main.netMode != NetmodeID.MultiplayerClient)
 
-            NPC.SpawnOnPlayer(player.whoAmI, ModContent.NPCType<global::XianXia.Content.NPCs.Bosses.Generated.TribulationCloudAvatar>());
+            NPC.SpawnOnPlayer(player.whoAmI, ModContent.NPCType<global::XianXia.Content.NPCs.Bosses.TribulationCloudAvatar>());
 
         return true;
 

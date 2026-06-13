@@ -49,7 +49,7 @@ public class SummonGardenBrokenKey : ModItem
 
             .CanUseBossSummon(
 
-                ModContent.NPCType<global::XianXia.Content.NPCs.Bosses.Generated.GardenWarden>(),
+                ModContent.NPCType<global::XianXia.Content.NPCs.Bosses.GardenWarden>(),
 
                 global::XianXia.Common.Players.CultivationStage.QiAwakening,
 
@@ -67,7 +67,7 @@ public class SummonGardenBrokenKey : ModItem
 
         if (Main.netMode != NetmodeID.MultiplayerClient)
 
-            NPC.SpawnOnPlayer(player.whoAmI, ModContent.NPCType<global::XianXia.Content.NPCs.Bosses.Generated.GardenWarden>());
+            NPC.SpawnOnPlayer(player.whoAmI, ModContent.NPCType<global::XianXia.Content.NPCs.Bosses.GardenWarden>());
 
         return true;
 

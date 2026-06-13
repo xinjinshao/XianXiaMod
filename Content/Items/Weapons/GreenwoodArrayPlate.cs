@@ -47,7 +47,7 @@ public class GreenwoodArrayPlate : ModItem
 
         Item.noMelee = true;
 
-        Item.shoot = ModContent.ProjectileType<global::XianXia.Content.Projectiles.Generated.GreenwoodArrayField>();
+        Item.shoot = ModContent.ProjectileType<global::XianXia.Content.Projectiles.GreenwoodArrayField>();
 
         Item.shootSpeed = 0f;
 

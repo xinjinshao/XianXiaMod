@@ -49,7 +49,7 @@ public class SummonStarAbyssMembrane : ModItem
 
             .CanUseBossSummon(
 
-                ModContent.NPCType<global::XianXia.Content.NPCs.Bosses.Generated.AbyssalStarWomb>(),
+                ModContent.NPCType<global::XianXia.Content.NPCs.Bosses.AbyssalStarWomb>(),
 
                 global::XianXia.Common.Players.CultivationStage.Foundation,
 
@@ -67,7 +67,7 @@ public class SummonStarAbyssMembrane : ModItem
 
         if (Main.netMode != NetmodeID.MultiplayerClient)
 
-            NPC.SpawnOnPlayer(player.whoAmI, ModContent.NPCType<global::XianXia.Content.NPCs.Bosses.Generated.AbyssalStarWomb>());
+            NPC.SpawnOnPlayer(player.whoAmI, ModContent.NPCType<global::XianXia.Content.NPCs.Bosses.AbyssalStarWomb>());
 
         return true;
 
