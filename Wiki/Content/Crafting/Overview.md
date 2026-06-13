@@ -47,10 +47,6 @@ XianXia 的制作体系围绕 Terraria 原版材料和 Mod 新材料共同展开
 - 关键制作站必须来自 Boss 或明确探索目标。
 - 终局材料不能过度依赖低概率刷怪。
 
-## 详细条目
-
-- [配方与制作站详细目录](Recipe_Catalog.md)
-
 相关页面：
 
 - [物品总览](../Items/Overview.md)
