@@ -1,0 +1,44 @@
+version: v07-buffs
+date: 2026-06-14
+scope: Buff icons
+reason: >
+  Regenerate every buff icon from a single-asset source image. This replaces any
+  atlas-derived final buff art and establishes the no-atlas final workflow for
+  future asset generation.
+rules:
+  final_generation_mode: single_asset_source_only
+  atlas_use: forbidden_for_final_content
+  source_dir: Assets/Generated/individual_regen_v07_buffs
+  cleaned_dir: Assets/Cleaned/individual_regen_v07_buffs
+  final_margin_px: 3
+assets:
+  - id: alchemy_insight_buff
+    content: Content/Buffs/AlchemyInsightBuff.png
+    final: Assets/Final/alchemy_insight_buff/alchemy_insight_buff__buff_icon__v07.png
+  - id: archive_lock_buff
+    content: Content/Buffs/ArchiveLockBuff.png
+    final: Assets/Final/archive_lock_buff/archive_lock_buff__buff_icon__v07.png
+  - id: artifact_resonance_buff
+    content: Content/Buffs/ArtifactResonanceBuff.png
+    final: Assets/Final/artifact_resonance_buff/artifact_resonance_buff__buff_icon__v07.png
+  - id: qi_gathering_buff
+    content: Content/Buffs/QiGatheringBuff.png
+    final: Assets/Final/qi_gathering_buff/qi_gathering_buff__buff_icon__v07.png
+  - id: spiritual_pressure_disorder_buff
+    content: Content/Buffs/SpiritualPressureDisorderBuff.png
+    final: Assets/Final/spiritual_pressure_disorder_buff/spiritual_pressure_disorder_buff__buff_icon__v07.png
+  - id: spring_return_buff
+    content: Content/Buffs/SpringReturnBuff.png
+    final: Assets/Final/spring_return_buff/spring_return_buff__buff_icon__v07.png
+  - id: spring_return_regen_buff
+    content: Content/Buffs/SpringReturnRegenBuff.png
+    final: Assets/Final/spring_return_regen_buff/spring_return_regen_buff__buff_icon__v07.png
+  - id: star_abyss_corrosion_buff
+    content: Content/Buffs/StarAbyssCorrosionBuff.png
+    final: Assets/Final/star_abyss_corrosion_buff/star_abyss_corrosion_buff__buff_icon__v07.png
+  - id: tribulation_pressure_buff
+    content: Content/Buffs/TribulationPressureBuff.png
+    final: Assets/Final/tribulation_pressure_buff/tribulation_pressure_buff__buff_icon__v07.png
+  - id: tribulation_resistance_buff
+    content: Content/Buffs/TribulationResistanceBuff.png
+    final: Assets/Final/tribulation_resistance_buff/tribulation_resistance_buff__buff_icon__v07.png
