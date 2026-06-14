@@ -481,6 +481,121 @@ Mods: {
 				DisplayName: Thunder Pattern Forge
 				Tooltip: ""
 			}
+
+			AbyssDust: {
+				DisplayName: Abyss Dust
+				Tooltip: ""
+			}
+
+			ArchiveRemnantLight: {
+				DisplayName: Archive Remnant Light
+				Tooltip: ""
+			}
+
+			BrokenDecreeItem: {
+				DisplayName: Broken Decree Item
+				Tooltip: ""
+			}
+
+			BrokenHeavenJade: {
+				DisplayName: Broken Heaven Jade
+				Tooltip: ""
+			}
+
+			BrokenSwordIntent: {
+				DisplayName: Broken Sword Intent
+				Tooltip: ""
+			}
+
+			CinnabarPowder: {
+				DisplayName: Cinnabar Powder
+				Tooltip: ""
+			}
+
+			ColdMoonDust: {
+				DisplayName: Cold Moon Dust
+				Tooltip: ""
+			}
+
+			DarkBlueSpiritFluid: {
+				DisplayName: Dark Blue Spirit Fluid
+				Tooltip: ""
+			}
+
+			FoundationSeal: {
+				DisplayName: Foundation Seal
+				Tooltip: ""
+			}
+
+			FurnaceCharcoal: {
+				DisplayName: Furnace Charcoal
+				Tooltip: ""
+			}
+
+			HeavenTabletSeal: {
+				DisplayName: Heaven Tablet Seal
+				Tooltip: ""
+			}
+
+			HerbDew: {
+				DisplayName: Herb Dew
+				Tooltip: ""
+			}
+
+			ImperialDecreeItem: {
+				DisplayName: Imperial Decree Item
+				Tooltip: ""
+			}
+
+			LowGradeSpiritCore: {
+				DisplayName: Low Grade Spirit Core
+				Tooltip: ""
+			}
+
+			MedicineKingWoodHeart: {
+				DisplayName: Medicine King Wood Heart
+				Tooltip: ""
+			}
+
+			RouteMaterial: {
+				DisplayName: Route Material
+				Tooltip: ""
+			}
+
+			ShatteredJadeShell: {
+				DisplayName: Shattered Jade Shell
+				Tooltip: ""
+			}
+
+			SingingThunderStoneItem: {
+				DisplayName: Singing Thunder Stone Item
+				Tooltip: ""
+			}
+
+			SpiritVeinScale: {
+				DisplayName: Spirit Vein Scale
+				Tooltip: ""
+			}
+
+			StarCalamityCore: {
+				DisplayName: Star Calamity Core
+				Tooltip: ""
+			}
+
+			ThunderPatternFeather: {
+				DisplayName: Thunder Pattern Feather
+				Tooltip: ""
+			}
+
+			TornScrollPage: {
+				DisplayName: Torn Scroll Page
+				Tooltip: ""
+			}
+
+			TornTalismanPaper: {
+				DisplayName: Torn Talisman Paper
+				Tooltip: ""
+			}
 		}
 
 		Projectiles: {

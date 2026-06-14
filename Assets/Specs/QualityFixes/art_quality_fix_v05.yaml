@@ -11,11 +11,14 @@ rules:
     normal_projectile: 2
     ultra_thin_functional_projectile: 1
   generated_atlas_cell_padding: "approximately 20%"
+  atlas_gutter: "required; each generated cell must have clear pure-background separation from neighboring cells"
+  connected_component_audit: "required; remove or regenerate top/bottom slivers and tiny separated fragments outside the main sprite"
   contact_sheet_preview_padding_px: 18
   reject:
     - flat circular badge with one symbol
     - pure color square, disk, or line placeholder
     - clipped glow, weapon tip, scroll tassel, or object base
+    - neighbor-cell fragment attached to the top or bottom of another asset
   tileable_exception:
     - terrain tiles and walls may touch the canvas edge only when intentionally seamless
 assets:
