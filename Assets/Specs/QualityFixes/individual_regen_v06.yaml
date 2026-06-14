@@ -1,0 +1,62 @@
+version: v06
+date: 2026-06-14
+reason: >
+  Regenerate cross-cell pollution chains from individual single-asset sources.
+  Prior atlas-based assets could transfer the top or bottom of one sprite into another,
+  which makes both the receiver and the original donor incomplete.
+rules:
+  final_generation_mode: single_asset_source
+  atlas_use: concept_only_for_buff_item_material_station_icons
+  pollution_chain_policy: regenerate_all_members_not_clean_only
+  source_requirements:
+    - one complete centered sprite per generated image
+    - no neighboring asset, cap, base strip, detached top, detached bottom, or UI frame
+    - large chroma-key padding around the full sprite
+    - preserve a copied source under Assets/Generated/individual_regen_v06
+assets:
+  - id: qi_gathering_buff
+    content:
+      - Content/Buffs/QiGatheringBuff.png
+    source: Assets/Generated/individual_regen_v06/qi_gathering_buff__single_source__v06.png
+    final: Assets/Final/qi_gathering_buff/qi_gathering_buff__buff_icon__v06.png
+  - id: tribulation_pressure_buff
+    content:
+      - Content/Buffs/TribulationPressureBuff.png
+    source: Assets/Generated/individual_regen_v06/tribulation_pressure_buff__single_source__v06.png
+    final: Assets/Final/tribulation_pressure_buff/tribulation_pressure_buff__buff_icon__v06.png
+  - id: medicine_king_cauldron_decoration
+    content:
+      - Content/Items/HandGenerated/MedicineKingCauldronDecoration.png
+    source: Assets/Generated/individual_regen_v06/medicine_king_cauldron_decoration__single_source__v06.png
+    final: Assets/Final/medicine_king_cauldron_decoration/medicine_king_cauldron_decoration__item_icon__v06.png
+  - id: singing_thunder_stone_item
+    content:
+      - Content/Items/HandGenerated/SingingThunderStoneItem.png
+    source: Assets/Generated/individual_regen_v06/singing_thunder_stone_item__single_source__v06.png
+    final: Assets/Final/singing_thunder_stone_item/singing_thunder_stone_item__item_icon__v06.png
+  - id: small_artifact_pendant
+    content:
+      - Content/Items/HandGenerated/SmallArtifactPendant.png
+    source: Assets/Generated/individual_regen_v06/small_artifact_pendant__single_source__v06.png
+    final: Assets/Final/small_artifact_pendant/small_artifact_pendant__item_icon__v06.png
+  - id: sect_trial_hint
+    content:
+      - Content/Items/HandGenerated/SectTrialHint.png
+    source: Assets/Generated/individual_regen_v06/sect_trial_hint__single_source__v06.png
+    final: Assets/Final/sect_trial_hint/sect_trial_hint__item_icon__v06.png
+  - id: cold_moon_dust
+    content:
+      - Content/Items/HandGenerated/ColdMoonDust.png
+    source: Assets/Generated/individual_regen_v06/cold_moon_dust__single_source__v06.png
+    final: Assets/Final/cold_moon_dust/cold_moon_dust__item_icon__v06.png
+  - id: thunder_pattern_feather
+    content:
+      - Content/Items/HandGenerated/ThunderPatternFeather.png
+    source: Assets/Generated/individual_regen_v06/thunder_pattern_feather__single_source__v06.png
+    final: Assets/Final/thunder_pattern_feather/thunder_pattern_feather__item_icon__v06.png
+  - id: formless_sword_wheel
+    content:
+      - Content/Items/Materials/FormlessSwordWheel.png
+      - Content/Items/Weapons/FormlessSwordWheel.png
+    source: Assets/Generated/individual_regen_v06/formless_sword_wheel__single_source__v06.png
+    final: Assets/Final/formless_sword_wheel/formless_sword_wheel__item_icon__v06.png
