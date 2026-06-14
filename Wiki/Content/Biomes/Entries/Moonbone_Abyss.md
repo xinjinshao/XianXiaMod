@@ -6,8 +6,8 @@
 
 | 素材 | 名称 | ID | 类型 | 尺寸 |
 | --- | --- | --- | --- | --- |
-| <img src="../../../../Assets/Final/moonbone_tile/moonbone_tile__tile__v01.png" alt="月骸骨岩 tile" width="64"> | 月骸骨岩 | `moonbone_tile` | `tile` | 16x16 |
-| <img src="../../../../Assets/Final/archive_light_pillar/archive_light_pillar__object__v01.png" alt="归档光柱 object" width="64"> | 归档光柱 | `archive_light_pillar` | `object` | 32x96 |
+| <img src="../../../../Assets/Final/moonbone_tile/moonbone_tile__tile__v05.png" alt="月骸骨岩 tile" width="64"> | 月骸骨岩 | `moonbone_tile` | `tile` | 16x16 |
+| <img src="../../../../Assets/Final/archive_light_pillar/archive_light_pillar__object__v05.png" alt="归档光柱 object" width="64"> | 归档光柱 | `archive_light_pillar` | `object` | 32x96 |
 
 <!-- ART_SECTION:entry-art:END -->
 

@@ -7,7 +7,7 @@
 | 素材 | 名称 | ID | 类型 | 尺寸 |
 | --- | --- | --- | --- | --- |
 | <img src="../../../../Assets/Final/star_abyss_crystal_tile/star_abyss_crystal_tile__tile__v01.png" alt="星渊晶岩 tile" width="64"> | 星渊晶岩 | `star_abyss_crystal_tile` | `tile` | 16x16 |
-| <img src="../../../../Assets/Final/rift_membrane/rift_membrane__object__v01.png" alt="裂隙膜 object" width="64"> | 裂隙膜 | `rift_membrane` | `object` | 32x32 |
+| <img src="../../../../Assets/Final/rift_membrane/rift_membrane__object__v05.png" alt="裂隙膜 object" width="64"> | 裂隙膜 | `rift_membrane` | `object` | 32x32 |
 
 <!-- ART_SECTION:entry-art:END -->
 

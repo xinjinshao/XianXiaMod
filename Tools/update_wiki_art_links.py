@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import csv
+import re
 from collections import defaultdict
 from pathlib import Path
 from typing import Iterable
@@ -138,7 +139,18 @@ def rows() -> list[dict[str, str]]:
 
 
 def asset_path(row: dict[str, str]) -> Path:
-    return FINAL / row["asset_id"] / f"{row['asset_id']}__{row['output_type']}__v01.png"
+    """Return path to the *latest* version of an asset file, not a hardcoded v01."""
+    base = FINAL / row["asset_id"]
+    prefix = f"{row['asset_id']}__{row['output_type']}"
+    # Both naming conventions: prefix__vNN.png and prefix_vNN.png
+    candidates = list(base.glob(f"{prefix}__v*.png")) + list(base.glob(f"{prefix}_v*.png"))
+    if not candidates:
+        return base / f"{prefix}__v01.png"
+    def _ver(p: Path) -> int:
+        m = re.search(r'_v(\d+)$', p.stem)
+        return int(m.group(1)) if m else 0
+    candidates.sort(key=_ver, reverse=True)
+    return candidates[0]
 
 
 def rel(from_file: Path, target: Path) -> str:

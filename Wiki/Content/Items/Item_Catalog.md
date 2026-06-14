@@ -165,30 +165,30 @@
 
 | 素材 | 名称 | ID | 类型 | 尺寸 |
 | --- | --- | --- | --- | --- |
-| <img src="../../../Assets/Final/low_grade_spirit_stone/low_grade_spirit_stone__item_icon__v01.png" alt="下品灵石 item_icon" width="48"> | 下品灵石 | `low_grade_spirit_stone` | `item_icon` | 24x24 |
-| <img src="../../../Assets/Final/spirit_gel/spirit_gel__item_icon__v01.png" alt="灵气凝胶 item_icon" width="48"> | 灵气凝胶 | `spirit_gel` | `item_icon` | 20x20 |
-| <img src="../../../Assets/Final/torn_talisman_paper/torn_talisman_paper__item_icon__v01.png" alt="残符纸 item_icon" width="48"> | 残符纸 | `torn_talisman_paper` | `item_icon` | 28x24 |
-| <img src="../../../Assets/Final/greenwood_root/greenwood_root__item_icon__v01.png" alt="青木根 item_icon" width="48"> | 青木根 | `greenwood_root` | `item_icon` | 24x24 |
-| <img src="../../../Assets/Final/furnace_slag_iron/furnace_slag_iron__item_icon__v01.png" alt="炉渣铁 item_icon" width="48"> | 炉渣铁 | `furnace_slag_iron` | `item_icon` | 28x28 |
-| <img src="../../../Assets/Final/artifact_blank_shard/artifact_blank_shard__item_icon__v01.png" alt="器胚碎片 item_icon" width="48"> | 器胚碎片 | `artifact_blank_shard` | `item_icon` | 24x24 |
-| <img src="../../../Assets/Final/tribulation_cloud_dew/tribulation_cloud_dew__item_icon__v01.png" alt="劫云露 item_icon" width="48"> | 劫云露 | `tribulation_cloud_dew` | `item_icon` | 24x24 |
-| <img src="../../../Assets/Final/star_eclipse_crystal/star_eclipse_crystal__item_icon__v01.png" alt="星蚀晶 item_icon" width="48"> | 星蚀晶 | `star_eclipse_crystal` | `item_icon` | 28x28 |
+| <img src="../../../Assets/Final/low_grade_spirit_stone/low_grade_spirit_stone__item_icon__v04.png" alt="下品灵石 item_icon" width="48"> | 下品灵石 | `low_grade_spirit_stone` | `item_icon` | 24x24 |
+| <img src="../../../Assets/Final/spirit_gel/spirit_gel__item_icon__v04.png" alt="灵气凝胶 item_icon" width="48"> | 灵气凝胶 | `spirit_gel` | `item_icon` | 20x20 |
+| <img src="../../../Assets/Final/torn_talisman_paper/torn_talisman_paper__item_icon__v04.png" alt="残符纸 item_icon" width="48"> | 残符纸 | `torn_talisman_paper` | `item_icon` | 28x24 |
+| <img src="../../../Assets/Final/greenwood_root/greenwood_root__item_icon__v04.png" alt="青木根 item_icon" width="48"> | 青木根 | `greenwood_root` | `item_icon` | 24x24 |
+| <img src="../../../Assets/Final/furnace_slag_iron/furnace_slag_iron__item_icon__v04.png" alt="炉渣铁 item_icon" width="48"> | 炉渣铁 | `furnace_slag_iron` | `item_icon` | 28x28 |
+| <img src="../../../Assets/Final/artifact_blank_shard/artifact_blank_shard__item_icon__v04.png" alt="器胚碎片 item_icon" width="48"> | 器胚碎片 | `artifact_blank_shard` | `item_icon` | 24x24 |
+| <img src="../../../Assets/Final/tribulation_cloud_dew/tribulation_cloud_dew__item_icon__v04.png" alt="劫云露 item_icon" width="48"> | 劫云露 | `tribulation_cloud_dew` | `item_icon` | 24x24 |
+| <img src="../../../Assets/Final/star_eclipse_crystal/star_eclipse_crystal__item_icon__v04.png" alt="星蚀晶 item_icon" width="48"> | 星蚀晶 | `star_eclipse_crystal` | `item_icon` | 28x28 |
 | <img src="../../../Assets/Final/sect_trial_token/sect_trial_token__item_icon__v01.png" alt="宗门令 item_icon" width="48"> | 宗门令 | `sect_trial_token` | `item_icon` | 32x32 |
 | <img src="../../../Assets/Final/heaven_dao_fragment/heaven_dao_fragment__item_icon__v01.png" alt="天道碎片 item_icon" width="48"> | 天道碎片 | `heaven_dao_fragment` | `item_icon` | 32x32 |
-| <img src="../../../Assets/Final/moonbone/moonbone__item_icon__v01.png" alt="月骸骨 item_icon" width="48"> | 月骸骨 | `moonbone` | `item_icon` | 36x36 |
-| <img src="../../../Assets/Final/dao_severing_dust/dao_severing_dust__item_icon__v01.png" alt="斩道尘 item_icon" width="48"> | 斩道尘 | `dao_severing_dust` | `item_icon` | 28x28 |
-| <img src="../../../Assets/Final/qi_drawing_talisman/qi_drawing_talisman__item_icon__v01.png" alt="引气符 item_icon" width="48"> | 引气符 | `qi_drawing_talisman` | `item_icon` | 32x32 |
-| <img src="../../../Assets/Final/spring_return_pill/spring_return_pill__item_icon__v01.png" alt="回春丹 item_icon" width="48"> | 回春丹 | `spring_return_pill` | `item_icon` | 22x22 |
-| <img src="../../../Assets/Final/qi_condensing_pill/qi_condensing_pill__item_icon__v01.png" alt="凝气丹 item_icon" width="48"> | 凝气丹 | `qi_condensing_pill` | `item_icon` | 24x24 |
-| <img src="../../../Assets/Final/foundation_pill/foundation_pill__item_icon__v01.png" alt="筑基丹 item_icon" width="48"> | 筑基丹 | `foundation_pill` | `item_icon` | 24x24 |
-| <img src="../../../Assets/Final/tribulation_resisting_pill/tribulation_resisting_pill__item_icon__v01.png" alt="抗劫丹 item_icon" width="48"> | 抗劫丹 | `tribulation_resisting_pill` | `item_icon` | 28x28 |
-| <img src="../../../Assets/Final/star_abyss_forbidden_talisman/star_abyss_forbidden_talisman__item_icon__v01.png" alt="星渊禁符 item_icon" width="48"> | 星渊禁符 | `star_abyss_forbidden_talisman` | `item_icon` | 36x36 |
-| <img src="../../../Assets/Final/spirit_vein_incense/spirit_vein_incense__item_icon__v01.png" alt="灵脉香 item_icon" width="48"> | 灵脉香 | `spirit_vein_incense` | `item_icon` | 32x32 |
-| <img src="../../../Assets/Final/garden_broken_key/garden_broken_key__item_icon__v01.png" alt="守园残钥 item_icon" width="48"> | 守园残钥 | `garden_broken_key` | `item_icon` | 32x32 |
-| <img src="../../../Assets/Final/old_furnace_ember/old_furnace_ember__item_icon__v01.png" alt="旧炉火种 item_icon" width="48"> | 旧炉火种 | `old_furnace_ember` | `item_icon` | 28x28 |
+| <img src="../../../Assets/Final/moonbone/moonbone__item_icon__v04.png" alt="月骸骨 item_icon" width="48"> | 月骸骨 | `moonbone` | `item_icon` | 36x36 |
+| <img src="../../../Assets/Final/dao_severing_dust/dao_severing_dust__item_icon__v04.png" alt="斩道尘 item_icon" width="48"> | 斩道尘 | `dao_severing_dust` | `item_icon` | 28x28 |
+| <img src="../../../Assets/Final/qi_drawing_talisman/qi_drawing_talisman__item_icon__v04.png" alt="引气符 item_icon" width="48"> | 引气符 | `qi_drawing_talisman` | `item_icon` | 32x32 |
+| <img src="../../../Assets/Final/spring_return_pill/spring_return_pill__item_icon__v04.png" alt="回春丹 item_icon" width="48"> | 回春丹 | `spring_return_pill` | `item_icon` | 22x22 |
+| <img src="../../../Assets/Final/qi_condensing_pill/qi_condensing_pill__item_icon__v04.png" alt="凝气丹 item_icon" width="48"> | 凝气丹 | `qi_condensing_pill` | `item_icon` | 24x24 |
+| <img src="../../../Assets/Final/foundation_pill/foundation_pill__item_icon__v04.png" alt="筑基丹 item_icon" width="48"> | 筑基丹 | `foundation_pill` | `item_icon` | 24x24 |
+| <img src="../../../Assets/Final/tribulation_resisting_pill/tribulation_resisting_pill__item_icon__v04.png" alt="抗劫丹 item_icon" width="48"> | 抗劫丹 | `tribulation_resisting_pill` | `item_icon` | 28x28 |
+| <img src="../../../Assets/Final/star_abyss_forbidden_talisman/star_abyss_forbidden_talisman__item_icon__v04.png" alt="星渊禁符 item_icon" width="48"> | 星渊禁符 | `star_abyss_forbidden_talisman` | `item_icon` | 36x36 |
+| <img src="../../../Assets/Final/spirit_vein_incense/spirit_vein_incense__item_icon__v04.png" alt="灵脉香 item_icon" width="48"> | 灵脉香 | `spirit_vein_incense` | `item_icon` | 32x32 |
+| <img src="../../../Assets/Final/garden_broken_key/garden_broken_key__item_icon__v04.png" alt="守园残钥 item_icon" width="48"> | 守园残钥 | `garden_broken_key` | `item_icon` | 32x32 |
+| <img src="../../../Assets/Final/old_furnace_ember/old_furnace_ember__item_icon__v04.png" alt="旧炉火种 item_icon" width="48"> | 旧炉火种 | `old_furnace_ember` | `item_icon` | 28x28 |
 | <img src="../../../Assets/Final/thunder_calling_jade/thunder_calling_jade__item_icon__v01.png" alt="引雷玉 item_icon" width="48"> | 引雷玉 | `thunder_calling_jade` | `item_icon` | 36x36 |
 | <img src="../../../Assets/Final/star_abyss_membrane/star_abyss_membrane__item_icon__v01.png" alt="星渊胎膜 item_icon" width="48"> | 星渊胎膜 | `star_abyss_membrane` | `item_icon` | 32x32 |
 | <img src="../../../Assets/Final/heaven_tablet_rubbing/heaven_tablet_rubbing__item_icon__v01.png" alt="天碑拓片 item_icon" width="48"> | 天碑拓片 | `heaven_tablet_rubbing` | `item_icon` | 32x32 |
-| <img src="../../../Assets/Final/moonbone_ritual_talisman/moonbone_ritual_talisman__item_icon__v01.png" alt="月骸祭符 item_icon" width="48"> | 月骸祭符 | `moonbone_ritual_talisman` | `item_icon` | 36x36 |
+| <img src="../../../Assets/Final/moonbone_ritual_talisman/moonbone_ritual_talisman__item_icon__v02.png" alt="月骸祭符 item_icon" width="48"> | 月骸祭符 | `moonbone_ritual_talisman` | `item_icon` | 36x36 |
 
 <!-- ART_SECTION:item-art:END -->

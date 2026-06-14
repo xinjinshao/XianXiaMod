@@ -188,7 +188,7 @@
 | <img src="../../../Assets/Final/woodgrain_flying_sword/woodgrain_flying_sword__item_icon__v01.png" alt="木纹飞剑 item_icon" width="64"> | 木纹飞剑 | `woodgrain_flying_sword` | `item_icon` | 56x56 |
 | <img src="../../../Assets/Final/cloudpiercer_flying_sword/cloudpiercer_flying_sword__item_icon__v01.png" alt="破云飞剑 item_icon" width="64"> | 破云飞剑 | `cloudpiercer_flying_sword` | `item_icon` | 72x72 |
 | <img src="../../../Assets/Final/thunder_pattern_sword_case/thunder_pattern_sword_case__item_icon__v01.png" alt="雷纹剑匣 item_icon" width="64"> | 雷纹剑匣 | `thunder_pattern_sword_case` | `item_icon` | 80x80 |
-| <img src="../../../Assets/Final/formless_sword_wheel/formless_sword_wheel__item_icon__v01.png" alt="无相剑轮 item_icon" width="64"> | 无相剑轮 | `formless_sword_wheel` | `item_icon` | 96x96 |
+| <img src="../../../Assets/Final/formless_sword_wheel/formless_sword_wheel__item_icon__v06.png" alt="无相剑轮 item_icon" width="64"> | 无相剑轮 | `formless_sword_wheel` | `item_icon` | 96x96 |
 | <img src="../../../Assets/Final/moonbone_dharma_sword/moonbone_dharma_sword__item_icon__v01.png" alt="月骸法剑 item_icon" width="64"> | 月骸法剑 | `moonbone_dharma_sword` | `item_icon` | 104x104 |
 | <img src="../../../Assets/Final/cinnabar_talisman_flame_item/cinnabar_talisman_flame_item__item_icon__v01.png" alt="朱砂符火 item_icon" width="64"> | 朱砂符火 | `cinnabar_talisman_flame_item` | `item_icon` | 48x48 |
 | <img src="../../../Assets/Final/greenwood_array_plate/greenwood_array_plate__item_icon__v01.png" alt="青木阵盘 item_icon" width="64"> | 青木阵盘 | `greenwood_array_plate` | `item_icon` | 56x56 |
@@ -197,13 +197,13 @@
 | <img src="../../../Assets/Final/old_heaven_dao_scroll/old_heaven_dao_scroll__item_icon__v01.png" alt="旧天道残卷 item_icon" width="64"> | 旧天道残卷 | `old_heaven_dao_scroll` | `item_icon` | 72x72 |
 | <img src="../../../Assets/Final/spiritwood_crossbow/spiritwood_crossbow__item_icon__v01.png" alt="灵木短弩 item_icon" width="64"> | 灵木短弩 | `spiritwood_crossbow` | `item_icon` | 56x44 |
 | <img src="../../../Assets/Final/star_eclipse_arbalest/star_eclipse_arbalest__item_icon__v01.png" alt="星蚀弩机 item_icon" width="64"> | 星蚀弩机 | `star_eclipse_arbalest` | `item_icon` | 72x52 |
-| <img src="../../../Assets/Final/qi_gathering_pendant/qi_gathering_pendant__item_icon__v01.png" alt="聚气坠 item_icon" width="64"> | 聚气坠 | `qi_gathering_pendant` | `item_icon` | 36x32 |
-| <img src="../../../Assets/Final/spiritwood_charm/spiritwood_charm__item_icon__v01.png" alt="灵木护符 item_icon" width="64"> | 灵木护符 | `spiritwood_charm` | `item_icon` | 32x32 |
-| <img src="../../../Assets/Final/furnace_heart_ring/furnace_heart_ring__item_icon__v01.png" alt="炉心戒 item_icon" width="64"> | 炉心戒 | `furnace_heart_ring` | `item_icon` | 32x32 |
-| <img src="../../../Assets/Final/lightning_ward_jade/lightning_ward_jade__item_icon__v01.png" alt="避雷玉佩 item_icon" width="64"> | 避雷玉佩 | `lightning_ward_jade` | `item_icon` | 32x32 |
-| <img src="../../../Assets/Final/star_abyss_eye/star_abyss_eye__item_icon__v01.png" alt="星渊眼 item_icon" width="64"> | 星渊眼 | `star_abyss_eye` | `item_icon` | 36x36 |
-| <img src="../../../Assets/Final/nascent_soul_jade_box/nascent_soul_jade_box__item_icon__v01.png" alt="元婴玉匣 item_icon" width="64"> | 元婴玉匣 | `nascent_soul_jade_box` | `item_icon` | 36x32 |
-| <img src="../../../Assets/Final/broken_heaven_crown_seal/broken_heaven_crown_seal__item_icon__v01.png" alt="残天冠印 item_icon" width="64"> | 残天冠印 | `broken_heaven_crown_seal` | `item_icon` | 36x36 |
-| <img src="../../../Assets/Final/dao_severing_ring/dao_severing_ring__item_icon__v01.png" alt="斩道环 item_icon" width="64"> | 斩道环 | `dao_severing_ring` | `item_icon` | 32x32 |
+| <img src="../../../Assets/Final/qi_gathering_pendant/qi_gathering_pendant__item_icon_v08.png" alt="聚气坠 item_icon" width="64"> | 聚气坠 | `qi_gathering_pendant` | `item_icon` | 36x32 |
+| <img src="../../../Assets/Final/spiritwood_charm/spiritwood_charm__item_icon_v08.png" alt="灵木护符 item_icon" width="64"> | 灵木护符 | `spiritwood_charm` | `item_icon` | 32x32 |
+| <img src="../../../Assets/Final/furnace_heart_ring/furnace_heart_ring__item_icon_v08.png" alt="炉心戒 item_icon" width="64"> | 炉心戒 | `furnace_heart_ring` | `item_icon` | 32x32 |
+| <img src="../../../Assets/Final/lightning_ward_jade/lightning_ward_jade__item_icon_v08.png" alt="避雷玉佩 item_icon" width="64"> | 避雷玉佩 | `lightning_ward_jade` | `item_icon` | 32x32 |
+| <img src="../../../Assets/Final/star_abyss_eye/star_abyss_eye__item_icon_v08.png" alt="星渊眼 item_icon" width="64"> | 星渊眼 | `star_abyss_eye` | `item_icon` | 36x36 |
+| <img src="../../../Assets/Final/nascent_soul_jade_box/nascent_soul_jade_box__item_icon_v08.png" alt="元婴玉匣 item_icon" width="64"> | 元婴玉匣 | `nascent_soul_jade_box` | `item_icon` | 36x32 |
+| <img src="../../../Assets/Final/broken_heaven_crown_seal/broken_heaven_crown_seal__item_icon_v08.png" alt="残天冠印 item_icon" width="64"> | 残天冠印 | `broken_heaven_crown_seal` | `item_icon` | 36x36 |
+| <img src="../../../Assets/Final/dao_severing_ring/dao_severing_ring__item_icon_v08.png" alt="斩道环 item_icon" width="64"> | 斩道环 | `dao_severing_ring` | `item_icon` | 32x32 |
 
 <!-- ART_SECTION:equipment-art:END -->

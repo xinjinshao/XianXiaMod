@@ -7,7 +7,7 @@
 | 素材 | 名称 | ID | 类型 | 尺寸 |
 | --- | --- | --- | --- | --- |
 | <img src="../../../../Assets/Final/sect_ruin_brick/sect_ruin_brick__tile__v01.png" alt="宗门石砖 tile" width="64"> | 宗门石砖 | `sect_ruin_brick` | `tile` | 16x16 |
-| <img src="../../../../Assets/Final/sword_tablet/sword_tablet__object__v01.png" alt="剑碑 object" width="64"> | 剑碑 | `sword_tablet` | `object` | 32x48 |
+| <img src="../../../../Assets/Final/sword_tablet/sword_tablet__object__v05.png" alt="剑碑 object" width="64"> | 剑碑 | `sword_tablet` | `object` | 32x48 |
 
 <!-- ART_SECTION:entry-art:END -->
 

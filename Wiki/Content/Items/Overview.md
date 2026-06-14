@@ -6,7 +6,7 @@
 
 | 物品 | 美术 | 阶段 | 来源 | 用途 |
 | --- | --- | --- | --- | --- |
-| [下品灵石](Entries/Low_Grade_Spirit_Stone.md) | <img src="../../../Assets/Final/low_grade_spirit_stone/low_grade_spirit_stone__item_icon__v01.png" width="32"> | Pre-Boss | 浅层灵脉、游灵史莱姆 | 引气、基础符箓 |
+| [下品灵石](Entries/Low_Grade_Spirit_Stone.md) | <img src="../../../Assets/Final/low_grade_spirit_stone/low_grade_spirit_stone__item_icon__v04.png" width="32"> | Pre-Boss | 浅层灵脉、游灵史莱姆 | 引气、基础符箓 |
 | [灵气凝胶](Entries/Spirit_Gel.md) | <img src="../../../Assets/Final/spirit_gel/spirit_gel__item_icon__v01.png" width="32"> | Pre-Boss | 游灵史莱姆 | 早期配方 |
 | [青木根](Entries/Greenwood_Root.md) | <img src="../../../Assets/Final/greenwood_root/greenwood_root__item_icon__v01.png" width="32"> | Pre-Hardmode | 药园藤妖、花瘴蝶 | 丹药、法器 |
 | [炉渣铁](Entries/Furnace_Slag_Iron.md) | <img src="../../../Assets/Final/furnace_slag_iron/furnace_slag_iron__item_icon__v01.png" width="32"> | Pre-Hardmode | 沉炉矿脉、炉灰傀 | 炼器核心 |

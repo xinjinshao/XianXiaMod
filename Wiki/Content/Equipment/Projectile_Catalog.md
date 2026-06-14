@@ -66,11 +66,11 @@
 | <img src="../../../Assets/Final/minor_thunderbolt_proj/minor_thunderbolt_proj__projectile__v01.png" alt="小雷 projectile" width="64"> | 小雷 | `minor_thunderbolt_proj` | `projectile` | 24x80 |
 | <img src="../../../Assets/Final/formless_sword_wheel_proj/formless_sword_wheel_proj__projectile__v01.png" alt="无相剑轮投射物 projectile" width="64"> | 无相剑轮投射物 | `formless_sword_wheel_proj` | `projectile` | 80x80 |
 | <img src="../../../Assets/Final/moonbone_shard_proj/moonbone_shard_proj__projectile__v01.png" alt="月骨残刃 projectile" width="64"> | 月骨残刃 | `moonbone_shard_proj` | `projectile` | 28x20 |
-| <img src="../../../Assets/Final/cinnabar_talisman_flame/cinnabar_talisman_flame__projectile__v01.png" alt="朱砂符火投射物 projectile" width="64"> | 朱砂符火投射物 | `cinnabar_talisman_flame` | `projectile` | 32x32 |
+| <img src="../../../Assets/Final/cinnabar_talisman_flame/cinnabar_talisman_flame__projectile__v05.png" alt="朱砂符火投射物 projectile" width="64"> | 朱砂符火投射物 | `cinnabar_talisman_flame` | `projectile` | 32x32 |
 | <img src="../../../Assets/Final/greenwood_array_field/greenwood_array_field__projectile__v01.png" alt="青木阵域 projectile" width="64"> | 青木阵域 | `greenwood_array_field` | `projectile` | 96x96 |
 | <img src="../../../Assets/Final/thunder_talisman_array/thunder_talisman_array__projectile__v01.png" alt="雷符阵域 projectile" width="64"> | 雷符阵域 | `thunder_talisman_array` | `projectile` | 96x96 |
-| <img src="../../../Assets/Final/decree_judgement_beam/decree_judgement_beam__projectile__v01.png" alt="审判光束 projectile" width="64"> | 审判光束 | `decree_judgement_beam` | `projectile` | 40x160 |
-| <img src="../../../Assets/Final/spirit_bolt/spirit_bolt__projectile__v01.png" alt="灵气箭 projectile" width="64"> | 灵气箭 | `spirit_bolt` | `projectile` | 20x12 |
-| <img src="../../../Assets/Final/star_eclipse_split_bolt/star_eclipse_split_bolt__projectile__v01.png" alt="星蚀分裂弹 projectile" width="64"> | 星蚀分裂弹 | `star_eclipse_split_bolt` | `projectile` | 32x32 |
+| <img src="../../../Assets/Final/decree_judgement_beam/decree_judgement_beam__projectile__v05.png" alt="审判光束 projectile" width="64"> | 审判光束 | `decree_judgement_beam` | `projectile` | 40x160 |
+| <img src="../../../Assets/Final/spirit_bolt/spirit_bolt__projectile__v05.png" alt="灵气箭 projectile" width="64"> | 灵气箭 | `spirit_bolt` | `projectile` | 20x12 |
+| <img src="../../../Assets/Final/star_eclipse_split_bolt/star_eclipse_split_bolt__projectile__v05.png" alt="星蚀分裂弹 projectile" width="64"> | 星蚀分裂弹 | `star_eclipse_split_bolt` | `projectile` | 32x32 |
 
 <!-- ART_SECTION:projectile-art:END -->
