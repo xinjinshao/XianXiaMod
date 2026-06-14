@@ -6,14 +6,14 @@
 
 | 素材 | 名称 | ID | 类型 | 尺寸 |
 | --- | --- | --- | --- | --- |
-| <img src="../../../../Assets/Final/heaven_tablet_guardian/heaven_tablet_guardian__body__v01.png" alt="天碑守御 body" width="96"> | 天碑守御 | `heaven_tablet_guardian` | `body` | 96x160 |
+| <img src="../../../../Assets/Final/heaven_tablet_guardian/heaven_tablet_guardian__body__v01.png" alt="天碑守御 body" width="96"> | 天碑守御 | `heaven_tablet_guardian` | `body` | 128x192 |
 | <img src="../../../../Assets/Final/heaven_tablet_guardian/heaven_tablet_guardian__boss_head__v01.png" alt="天碑守御 boss_head" width="96"> | 天碑守御 | `heaven_tablet_guardian` | `boss_head` | 32x32 |
 
 <!-- ART_SECTION:entry-art:END -->
 
 ## 美术资源
 
-- 主体：96x160，竖直白玉碑，裂纹、残金碑文、悬浮碎片。
+- 主体：128x192，竖直白玉碑，裂纹、残金碑文、悬浮碎片。
 - 动画：`idle` 6 帧，`shield` 4 帧，`break` 5 帧。
 - 头像：32x32，玉碑上半和金色眼状符号。
 - 投射物：碑文弹 16x16，审判光柱 32x128。

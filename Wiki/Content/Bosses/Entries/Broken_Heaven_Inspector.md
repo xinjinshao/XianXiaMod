@@ -6,14 +6,14 @@
 
 | 素材 | 名称 | ID | 类型 | 尺寸 |
 | --- | --- | --- | --- | --- |
-| <img src="../../../../Assets/Final/broken_heaven_inspector/broken_heaven_inspector__body__v01.png" alt="残天监察使 body" width="96"> | 残天监察使 | `broken_heaven_inspector` | `body` | 128x128 |
+| <img src="../../../../Assets/Final/broken_heaven_inspector/broken_heaven_inspector__body__v01.png" alt="残天监察使 body" width="96"> | 残天监察使 | `broken_heaven_inspector` | `body` | 160x160 |
 | <img src="../../../../Assets/Final/broken_heaven_inspector/broken_heaven_inspector__boss_head__v01.png" alt="残天监察使 boss_head" width="96"> | 残天监察使 | `broken_heaven_inspector` | `boss_head` | 32x32 |
 
 <!-- ART_SECTION:entry-art:END -->
 
 ## 美术资源
 
-- 主体：128x128，白玉甲胄人形，残金法旨，面部无五官只有印章。
+- 主体：160x160，白玉甲胄人形，残金法旨，面部无五官只有印章。
 - 动画：`cast` 6 帧，`summon` 5 帧，`blade` 6 帧。
 - 头像：32x32，无面玉盔和金色印章。
 - 召唤物：仙傀 64x64。

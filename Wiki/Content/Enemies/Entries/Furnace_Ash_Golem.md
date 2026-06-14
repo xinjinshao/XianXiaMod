@@ -12,7 +12,7 @@
 
 ## 美术资源
 
-- 主体：64x64，灰黑小傀儡，胸口暗红煤火。
+- 主体：72x72，灰黑小傀儡，胸口暗红煤火。
 - 动画：`walk` 4帧，`punch` 4帧。
 - Prompt：`small ash furnace golem, ember chest, black iron outline`
 

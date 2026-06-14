@@ -6,14 +6,14 @@
 
 | 素材 | 名称 | ID | 类型 | 尺寸 |
 | --- | --- | --- | --- | --- |
-| <img src="../../../../Assets/Final/black_furnace_iron_golem/black_furnace_iron_golem__body__v01.png" alt="玄炉铁傀 body" width="96"> | 玄炉铁傀 | `black_furnace_iron_golem` | `body` | 112x112 |
+| <img src="../../../../Assets/Final/black_furnace_iron_golem/black_furnace_iron_golem__body__v01.png" alt="玄炉铁傀 body" width="96"> | 玄炉铁傀 | `black_furnace_iron_golem` | `body` | 144x144 |
 | <img src="../../../../Assets/Final/black_furnace_iron_golem/black_furnace_iron_golem__boss_head__v01.png" alt="玄炉铁傀 boss_head" width="96"> | 玄炉铁傀 | `black_furnace_iron_golem` | `boss_head` | 32x32 |
 
 <!-- ART_SECTION:entry-art:END -->
 
 ## 美术资源
 
-- 主体：112x112，厚重铁傀，胸口橙红炉心，玄铁灰和暗红色板。
+- 主体：144x144，厚重铁傀，胸口橙红炉心，玄铁灰和暗红色板。
 - 动画：`idle` 4 帧，`slam` 6 帧，`forge_breath` 6 帧，`hit` 2 帧。
 - 头像：32x32，方形铁面和炉心光。
 - 投射物：炉灰 16x16，火星 8x8。

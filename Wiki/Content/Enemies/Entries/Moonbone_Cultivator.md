@@ -12,7 +12,7 @@
 
 ## 美术资源
 
-- 主体：72x80，月白骨甲，残月披肩。
+- 主体：72x88，月白骨甲，残月披肩。
 - 动画：`dash` 4帧，`cast` 5帧。
 - Prompt：`moonbone armored cultivator, white lunar bone armor, cold blue cracks`
 

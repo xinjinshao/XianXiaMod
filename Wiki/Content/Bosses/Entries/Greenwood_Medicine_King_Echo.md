@@ -6,14 +6,14 @@
 
 | 素材 | 名称 | ID | 类型 | 尺寸 |
 | --- | --- | --- | --- | --- |
-| <img src="../../../../Assets/Final/greenwood_medicine_king_echo/greenwood_medicine_king_echo__body__v01.png" alt="青木药王残影 body" width="96"> | 青木药王残影 | `greenwood_medicine_king_echo` | `body` | 112x112 |
+| <img src="../../../../Assets/Final/greenwood_medicine_king_echo/greenwood_medicine_king_echo__body__v01.png" alt="青木药王残影 body" width="96"> | 青木药王残影 | `greenwood_medicine_king_echo` | `body` | 144x144 |
 | <img src="../../../../Assets/Final/greenwood_medicine_king_echo/greenwood_medicine_king_echo__boss_head__v01.png" alt="青木药王残影 boss_head" width="96"> | 青木药王残影 | `greenwood_medicine_king_echo` | `boss_head` | 32x32 |
 
 <!-- ART_SECTION:entry-art:END -->
 
 ## 美术资源
 
-- 主体：112x112，老者残影、青铜药鼎、背后药枝光轮。
+- 主体：144x144，老者残影、青铜药鼎、背后药枝光轮。
 - 动画：`cast` 6 帧，`cauldron` 4 帧，`absorb` 5 帧。
 - 头像：32x32，药鼎和木纹面容。
 - 场地物件：治疗花 24x24，毒花 24x24。

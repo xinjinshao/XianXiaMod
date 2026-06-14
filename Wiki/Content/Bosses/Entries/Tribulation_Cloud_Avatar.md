@@ -6,14 +6,14 @@
 
 | 素材 | 名称 | ID | 类型 | 尺寸 |
 | --- | --- | --- | --- | --- |
-| <img src="../../../../Assets/Final/tribulation_cloud_avatar/tribulation_cloud_avatar__body__v01.png" alt="劫云化身 body" width="96"> | 劫云化身 | `tribulation_cloud_avatar` | `body` | 128x96 |
+| <img src="../../../../Assets/Final/tribulation_cloud_avatar/tribulation_cloud_avatar__body__v01.png" alt="劫云化身 body" width="96"> | 劫云化身 | `tribulation_cloud_avatar` | `body` | 160x120 |
 | <img src="../../../../Assets/Final/tribulation_cloud_avatar/tribulation_cloud_avatar__boss_head__v01.png" alt="劫云化身 boss_head" width="96"> | 劫云化身 | `tribulation_cloud_avatar` | `boss_head` | 32x32 |
 
 <!-- ART_SECTION:entry-art:END -->
 
 ## 美术资源
 
-- 主体：128x96，深紫雷云中露出模糊玉面，不要真实云雾糊边。
+- 主体：160x120，深紫雷云中露出模糊玉面，不要真实云雾糊边。
 - 动画：`idle` 6 帧，`strike` 5 帧，`split` 4 帧。
 - 头像：32x32，雷云和玉面轮廓。
 - 投射物：雷柱 16x64，雷链 64x16。

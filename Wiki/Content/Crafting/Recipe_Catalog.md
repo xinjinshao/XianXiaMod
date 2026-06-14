@@ -10,7 +10,7 @@
 - 阶段：Pre-Boss
 - 获取：泥土、石块、木材制作。
 - 用途：回春丹、低阶灵气药剂。
-- 美术：48x48，小陶炉，暗红炉口，青色药烟硬边。
+- 美术：48x32，小陶炉，暗红炉口，青色药烟硬边。
 - Prompt：`small clay alchemy furnace, red ember mouth, jade herbal vapor, Terraria crafting station`
 
 ### 简易符案
@@ -46,7 +46,7 @@
 - 阶段：Hardmode
 - 获取：星渊胎主材料制作。
 - 用途：星渊禁符、星灾丹药。
-- 美术：64x64，暗蓝丹鼎，星晶嵌边，紫黑火焰。
+- 美术：48x48，暗蓝丹鼎，星晶嵌边，紫黑火焰。
 - Prompt：`dark blue star-pattern cauldron, void crystal rim, violet flame, crisp pixel art`
 
 ### 雷纹锻台
@@ -55,7 +55,7 @@
 - 阶段：Hardmode
 - 获取：雷泽蛟掉落材料制作。
 - 用途：雷系飞剑、避雷玉佩。
-- 美术：64x48，云铁锻台，紫蓝雷纹，小电弧。
+- 美术：48x32，云铁锻台，紫蓝雷纹，小电弧。
 - Prompt：`thunder forge crafting station, cloud iron anvil, purple blue lightning veins`
 
 ### 宗门试炼台
@@ -64,7 +64,7 @@
 - 阶段：Post-Plantera
 - 获取：万宗遗址修复。
 - 用途：职业分化装备、宗门令消耗。
-- 美术：64x48，白石台、插剑、玉牌槽。
+- 美术：48x48，白石台、插剑、玉牌槽。
 - Prompt：`ancient sect trial altar, white stone, sword slot, jade token socket`
 
 ### 天火炉
@@ -73,7 +73,7 @@
 - 阶段：Post-Golem
 - 获取：天碑守御后制作。
 - 用途：残天装备、化神材料。
-- 美术：64x64，白玉炉，金色天火，破损法旨环绕。
+- 美术：64x48，白玉炉，金色天火，破损法旨环绕。
 - Prompt：`white jade heaven fire furnace, golden divine flame, floating decree fragments`
 
 ### 斩道台
@@ -82,7 +82,7 @@
 - 阶段：Endgame
 - 获取：旧天道核心后。
 - 用途：终局路线装备。
-- 美术：80x48，黑白断环石台，中间细小裂隙。
+- 美术：64x48，黑白断环石台，中间细小裂隙。
 - Prompt：`dao severing altar, black and white broken ring, tiny void crack, endgame Terraria station`
 
 ## 关键配方

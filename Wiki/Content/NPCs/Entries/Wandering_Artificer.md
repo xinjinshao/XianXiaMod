@@ -6,14 +6,14 @@
 
 | 素材 | 名称 | ID | 类型 | 尺寸 |
 | --- | --- | --- | --- | --- |
-| <img src="../../../../Assets/Final/wandering_artificer/wandering_artificer__body__v01.png" alt="游方器师 body" width="72"> | 游方器师 | `wandering_artificer` | `body` | 42x58 |
+| <img src="../../../../Assets/Final/wandering_artificer/wandering_artificer__body__v01.png" alt="游方器师 body" width="72"> | 游方器师 | `wandering_artificer` | `body` | 40x56 |
 | <img src="../../../../Assets/Final/wandering_artificer/wandering_artificer__head__v01.png" alt="游方器师 head" width="72"> | 游方器师 | `wandering_artificer` | `head` | 32x32 |
 
 <!-- ART_SECTION:entry-art:END -->
 
 ## 美术资源
 
-- 主体：42x58，深灰围裙、肩背小炉、腰间锤钳。
+- 主体：40x56，深灰围裙、肩背小炉、腰间锤钳。
 - 头像：32x32，护目镜和小炉火。
 - 动画：idle 4 帧，hammer 4 帧，walk 6 帧。
 - Prompt 重点：`wandering artificer NPC, portable furnace, smith tools, dark apron, Terraria pixel art`。

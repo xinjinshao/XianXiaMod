@@ -6,16 +6,16 @@
 
 | 素材 | 名称 | ID | 类型 | 尺寸 |
 | --- | --- | --- | --- | --- |
-| <img src="../../../../Assets/Final/moonbone_immortal/moonbone_immortal__body__v01.png" alt="月骸仙君 body" width="96"> | 月骸仙君 | `moonbone_immortal` | `body` | 180x180 |
-| <img src="../../../../Assets/Final/moonbone_immortal/moonbone_immortal__boss_head__v01.png" alt="月骸仙君 boss_head" width="96"> | 月骸仙君 | `moonbone_immortal` | `boss_head` | 48x48 |
+| <img src="../../../../Assets/Final/moonbone_immortal/moonbone_immortal__body__v01.png" alt="月骸仙君 body" width="96"> | 月骸仙君 | `moonbone_immortal` | `body` | 200x200 |
+| <img src="../../../../Assets/Final/moonbone_immortal/moonbone_immortal__boss_head__v01.png" alt="月骸仙君 boss_head" width="96"> | 月骸仙君 | `moonbone_immortal` | `boss_head` | 40x40 |
 
 <!-- ART_SECTION:entry-art:END -->
 
 ## 美术资源
 
-- 主体：180x180，月白骨甲仙人，胸口暗蓝星核，破碎光环。
+- 主体：200x200，月白骨甲仙人，胸口暗蓝星核，破碎光环。
 - 动画：`float` 6 帧，`sword_cast` 6 帧，`core_reveal` 6 帧。
-- 头像：48x48，骨面、残月角、星核光。
+- 头像：40x40，骨面、残月角、星核光。
 - 投射物：月骨剑 48x16，星灾弹 24x24。
 - Prompt 重点：`moonbone immortal, skeletal celestial armor, dark star core, broken moon halo`。
 

@@ -12,7 +12,7 @@
 
 ## 美术资源
 
-- 主体：48x48。Prompt：Terraria pixel enemy, xianxia theme, transparent background.
+- 主体：40x40。Prompt：Terraria pixel enemy, xianxia theme, transparent background.
 
 # 游灵史莱姆
 [返回敌怪总览](../Overview.md)

@@ -6,14 +6,14 @@
 
 | 素材 | 名称 | ID | 类型 | 尺寸 |
 | --- | --- | --- | --- | --- |
-| <img src="../../../../Assets/Final/archive_scroll_spirit/archive_scroll_spirit__body__v01.png" alt="残卷书灵 body" width="72"> | 残卷书灵 | `archive_scroll_spirit` | `body` | 36x48 |
+| <img src="../../../../Assets/Final/archive_scroll_spirit/archive_scroll_spirit__body__v01.png" alt="残卷书灵 body" width="72"> | 残卷书灵 | `archive_scroll_spirit` | `body` | 40x56 |
 | <img src="../../../../Assets/Final/archive_scroll_spirit/archive_scroll_spirit__head__v01.png" alt="残卷书灵 head" width="72"> | 残卷书灵 | `archive_scroll_spirit` | `head` | 32x32 |
 
 <!-- ART_SECTION:entry-art:END -->
 
 ## 美术资源
 
-- 主体：36x48，漂浮书卷，卷轴中露出小型光灵。
+- 主体：40x56，漂浮书卷，卷轴中露出小型光灵。
 - 头像：32x32，展开卷轴和青白眼光。
 - 动画：float 6 帧，page_turn 4 帧。
 - Prompt 重点：`floating archive scroll spirit NPC, tiny light spirit inside ancient scroll, no readable text`。

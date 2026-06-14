@@ -12,7 +12,7 @@
 
 ## 美术资源
 
-- 主体：64x48，鹰形，羽毛有蓝色雷纹。
+- 主体：68x52，鹰形，羽毛有蓝色雷纹。
 - 动画：`fly` 6帧，`dive` 3帧。
 - Prompt：`hawk with blue lightning feather patterns, side-view flying`
 

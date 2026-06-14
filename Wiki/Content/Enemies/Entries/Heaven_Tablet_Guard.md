@@ -12,7 +12,7 @@
 
 ## 美术资源
 
-- 主体：64x80，碑甲卫士，盾像小天碑。
+- 主体：72x88，碑甲卫士，盾像小天碑。
 - 动画：`guard` 4帧，`blast` 4帧。
 - Prompt：`jade tablet shield guardian, golden decree armor, crisp pixel silhouette`
 

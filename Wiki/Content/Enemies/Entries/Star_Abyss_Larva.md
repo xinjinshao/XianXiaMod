@@ -12,7 +12,7 @@
 
 ## 美术资源
 
-- 主体：48x32，深蓝寄生幼体，星点眼。
+- 主体：52x36，深蓝寄生幼体，星点眼。
 - 动画：`crawl` 6帧，`leap` 3帧。
 - Prompt：`dark blue star abyss larva, parasitic shape, bright tiny star eyes`
 

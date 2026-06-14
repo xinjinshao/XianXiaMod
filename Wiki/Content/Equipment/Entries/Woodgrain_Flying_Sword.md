@@ -53,7 +53,7 @@
 
 | 素材 | 类型 | 尺寸 |
 | --- | --- | --- |
-| <img src="../../../../Assets/Final/woodgrain_sword_proj/woodgrain_sword_proj__projectile__v01.png" width="64"> | projectile | 32x16 |
+| <img src="../../../../Assets/Final/woodgrain_sword_proj/woodgrain_sword_proj__projectile__v01.png" width="64"> | projectile | 40x20 |
 
 ## 代码实现
 

@@ -12,7 +12,7 @@
 
 ## 美术资源
 
-- 主体：64x80，白玉傀儡，金线关节，无脸。
+- 主体：72x80，白玉傀儡，金线关节，无脸。
 - 动画：`walk` 4帧，`attack` 5帧。
 - Prompt：`white jade celestial puppet, golden joints, faceless divine automaton`
 

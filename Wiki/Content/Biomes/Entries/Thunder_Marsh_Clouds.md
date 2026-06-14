@@ -7,7 +7,7 @@
 | 素材 | 名称 | ID | 类型 | 尺寸 |
 | --- | --- | --- | --- | --- |
 | <img src="../../../../Assets/Final/thunder_cloud_tile/thunder_cloud_tile__tile__v01.png" alt="雷云块 tile" width="64"> | 雷云块 | `thunder_cloud_tile` | `tile` | 16x16 |
-| <img src="../../../../Assets/Final/singing_thunder_stone/singing_thunder_stone__object__v01.png" alt="鸣雷石 object" width="64"> | 鸣雷石 | `singing_thunder_stone` | `object` | 24x32 |
+| <img src="../../../../Assets/Final/singing_thunder_stone/singing_thunder_stone__object__v01.png" alt="鸣雷石 object" width="64"> | 鸣雷石 | `singing_thunder_stone` | `object` | 32x32 |
 
 <!-- ART_SECTION:entry-art:END -->
 

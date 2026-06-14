@@ -12,7 +12,7 @@
 
 ## 美术资源
 
-- 主体：48x48，紫色小雷云，有玉色面具碎片。
+- 主体：56x48，紫色小雷云，有玉色面具碎片。
 - 动画：`float` 6帧。
 - Prompt：`small tribulation cloud spirit, jade mask shard, purple lightning`
 

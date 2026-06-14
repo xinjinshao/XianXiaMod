@@ -12,7 +12,7 @@
 
 ## 美术资源
 
-- 主体：32x32，漂浮铁片和小火光。
+- 主体：36x36，漂浮铁片和小火光。
 - 动画：`spin` 4帧。
 - Prompt：`floating iron shard spirit, tiny ember core`
 

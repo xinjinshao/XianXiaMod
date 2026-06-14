@@ -6,14 +6,14 @@
 
 | 素材 | 名称 | ID | 类型 | 尺寸 |
 | --- | --- | --- | --- | --- |
-| <img src="../../../../Assets/Final/garden_warden/garden_warden__body__v01.png" alt="药宗守园人 body" width="96"> | 药宗守园人 | `garden_warden` | `body` | 96x96 |
+| <img src="../../../../Assets/Final/garden_warden/garden_warden__body__v01.png" alt="药宗守园人 body" width="96"> | 药宗守园人 | `garden_warden` | `body` | 128x128 |
 | <img src="../../../../Assets/Final/garden_warden/garden_warden__boss_head__v01.png" alt="药宗守园人 boss_head" width="96"> | 药宗守园人 | `garden_warden` | `boss_head` | 32x32 |
 
 <!-- ART_SECTION:entry-art:END -->
 
 ## 美术资源
 
-- 主体：96x96，人形木傀儡，背负药篓，藤蔓手臂，深绿外轮廓。
+- 主体：128x128，人形木傀儡，背负药篓，藤蔓手臂，深绿外轮廓。
 - 动画：`idle` 4 帧，`cast` 6 帧，`hit` 2 帧。
 - 头像：32x32，木面具和一片发光药叶。
 - 场地物件：药种 16x16，治疗花 32x32。

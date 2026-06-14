@@ -55,7 +55,7 @@
 
 | 素材 | 类型 | 尺寸 |
 | --- | --- | --- |
-| <img src="../../../../Assets/Final/moonbone_shard_proj/moonbone_shard_proj__projectile__v01.png" width="64"> | projectile | 24x16 |
+| <img src="../../../../Assets/Final/moonbone_shard_proj/moonbone_shard_proj__projectile__v01.png" width="64"> | projectile | 28x20 |
 
 ## 代码实现
 

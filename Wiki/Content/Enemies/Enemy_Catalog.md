@@ -55,7 +55,7 @@
 - 行为：慢速跳跃，受击时短暂释放灵气粒子。
 - 掉落：灵气凝胶、少量下品灵石。
 - 玩法作用：灵气系统的第一个材料来源。
-- 美术：48x48，圆形青绿色史莱姆，体内漂浮小符核；idle 4 帧，hop 4 帧，hit 2 帧。
+- 美术：40x40，圆形青绿色史莱姆，体内漂浮小符核；idle 4 帧，hop 4 帧，hit 2 帧。
 - Prompt：`jade green slime with floating talisman core, Terraria-style pixel enemy, transparent background`
 
 ### 碎玉虫
@@ -65,7 +65,7 @@
 - 行为：贴地爬行，短距离钻地冲刺。
 - 掉落：碎玉壳、下品灵石碎片。
 - 玩法作用：提供早期饰品材料。
-- 美术：48x24，虫形，玉壳断裂，深绿外轮廓；crawl 6 帧。
+- 美术：54x28，虫形，玉壳断裂，深绿外轮廓；crawl 6 帧。
 - Prompt：`small jade-shelled cave worm, cracked crystal carapace, side-view Terraria pixel art`
 
 ### 符纸蝠
@@ -75,7 +75,7 @@
 - 行为：飞行接近，低概率发射弱符火。
 - 掉落：残符纸、朱砂粉。
 - 玩法作用：符箓制作入口。
-- 美术：48x32，蝙蝠身体像折纸符箓，朱砂眼点；fly 6 帧。
+- 美术：50x34，蝙蝠身体像折纸符箓，朱砂眼点；fly 6 帧。
 - Prompt：`paper talisman bat, cinnabar markings, crisp pixel wings, no text`
 
 ## Pre-Hardmode
@@ -97,7 +97,7 @@
 - 行为：慢速飞行，释放短持续毒雾圈。
 - 掉落：药露、毒粉。
 - 玩法作用：教玩家不要站桩输出。
-- 美术：48x48，蝶翼带花纹，药绿和淡紫色板；fly 6 帧，miasma 3 帧。
+- 美术：56x56，蝶翼带花纹，药绿和淡紫色板；fly 6 帧，miasma 3 帧。
 - Prompt：`flower moth with herbal miasma, green and pale purple wings, clean pixel outline`
 
 ### 炉灰傀
@@ -107,7 +107,7 @@
 - 行为：高防御近战，受击掉落火星。
 - 掉落：炉渣铁、玄炉炭。
 - 玩法作用：炼器材料来源。
-- 美术：64x64，灰黑小傀儡，胸口暗红煤火；walk 4 帧，punch 4 帧。
+- 美术：72x72，灰黑小傀儡，胸口暗红煤火；walk 4 帧，punch 4 帧。
 - Prompt：`small ash furnace golem, ember chest, black iron outline, Terraria enemy`
 
 ### 铁屑灵
@@ -117,7 +117,7 @@
 - 行为：成群飞行，靠近后高速刺击。
 - 掉落：器胚碎片。
 - 玩法作用：胚器制作的可刷材料。
-- 美术：32x32，漂浮铁片和小火光；spin 4 帧。
+- 美术：36x36，漂浮铁片和小火光；spin 4 帧。
 - Prompt：`floating iron shard spirit, tiny ember core, readable small pixel enemy`
 
 ## Hardmode
@@ -129,7 +129,7 @@
 - 行为：短距离闪现，在玩家脚下生成落雷预警。
 - 掉落：劫云露。
 - 玩法作用：抗劫丹和雷系装备材料。
-- 美术：48x48，紫色小雷云，有玉色面具碎片；float 6 帧。
+- 美术：56x48，紫色小雷云，有玉色面具碎片；float 6 帧。
 - Prompt：`small tribulation cloud spirit, jade mask shard, purple lightning, crisp pixel art`
 
 ### 雷纹鹰
@@ -139,7 +139,7 @@
 - 行为：高空盘旋后俯冲，留下短电弧。
 - 掉落：雷纹羽。
 - 玩法作用：空战威胁与翅膀/飞剑材料。
-- 美术：64x48，鹰形，羽毛有蓝色雷纹；fly 6 帧，dive 3 帧。
+- 美术：68x52，鹰形，羽毛有蓝色雷纹；fly 6 帧，dive 3 帧。
 - Prompt：`hawk with blue lightning feather patterns, side-view flying Terraria enemy`
 
 ### 星蚀修士
@@ -159,7 +159,7 @@
 - 行为：贴地爬行，靠近后跳扑并短暂附着。
 - 掉落：渊尘、暗蓝灵液。
 - 玩法作用：给星渊区域提供压迫感。
-- 美术：48x32，深蓝寄生幼体，星点眼；crawl 6 帧，leap 3 帧。
+- 美术：52x36，深蓝寄生幼体，星点眼；crawl 6 帧，leap 3 帧。
 - Prompt：`dark blue star abyss larva, parasitic shape, bright tiny star eyes`
 
 ## Post-Plantera
@@ -171,7 +171,7 @@
 - 行为：格挡正面攻击，格挡后反击突刺。
 - 掉落：断剑残意、宗门令碎片。
 - 玩法作用：教玩家绕位或等待破绽。
-- 美术：64x80，残影剑修，破旧道袍，手持断剑；guard 3 帧，thrust 5 帧。
+- 美术：72x88，残影剑修，破旧道袍，手持断剑；guard 3 帧，thrust 5 帧。
 - Prompt：`ghostly sword cultivator, broken robe, broken sword, pale cyan aura`
 
 ### 藏经残影
@@ -193,7 +193,7 @@
 - 行为：模块化攻击，手臂和主体可分别表现动画。
 - 掉落：残天玉、仙傀零件。
 - 玩法作用：天庭器械材料。
-- 美术：64x80，白玉傀儡，金线关节，无脸；walk 4 帧，attack 5 帧。
+- 美术：72x80，白玉傀儡，金线关节，无脸；walk 4 帧，attack 5 帧。
 - Prompt：`white jade celestial puppet, golden joints, faceless divine automaton, Terraria enemy`
 
 ### 天碑卫
@@ -203,7 +203,7 @@
 - 行为：举盾推进，周期性释放碑文直线弹。
 - 掉落：破损法旨、天道碎屑。
 - 玩法作用：Post-Golem 防御型敌怪。
-- 美术：64x80，碑甲卫士，盾像小天碑；guard 4 帧，blast 4 帧。
+- 美术：72x88，碑甲卫士，盾像小天碑；guard 4 帧，blast 4 帧。
 - Prompt：`jade tablet shield guardian, golden decree armor, crisp pixel silhouette`
 
 ## Post-Moon Lord
@@ -215,7 +215,7 @@
 - 行为：高速飞行，释放月骨剑气。
 - 掉落：月骸骨。
 - 玩法作用：终局武器材料来源。
-- 美术：72x80，月白骨甲，残月披肩；dash 4 帧，cast 5 帧。
+- 美术：72x88，月白骨甲，残月披肩；dash 4 帧，cast 5 帧。
 - Prompt：`moonbone armored cultivator, white lunar bone armor, cold blue cracks`
 
 ### 归档仙魂
@@ -225,7 +225,7 @@
 - 行为：复制玩家最近的移动方向和攻击节奏，延迟释放幻影弹。
 - 掉落：斩道尘。
 - 玩法作用：终局高压敌怪，呼应旧天道归档主题。
-- 美术：72x72，半透明仙魂，环形归档线，中心空洞；float 6 帧，copy 4 帧。
+- 美术：80x80，半透明仙魂，环形归档线，中心空洞；float 6 帧，copy 4 帧。
 - Prompt：`archived immortal soul, circular archive lines, hollow glowing core, Terraria pixel art`
 
 ## 统一验收
@@ -260,22 +260,22 @@
 
 | 素材 | 名称 | ID | 类型 | 尺寸 |
 | --- | --- | --- | --- | --- |
-| <img src="../../../Assets/Final/wandering_spirit_slime/wandering_spirit_slime__base__v01.png" alt="游灵史莱姆 base" width="72"> | 游灵史莱姆 | `wandering_spirit_slime` | `base` | 48x48 |
-| <img src="../../../Assets/Final/shattered_jade_worm/shattered_jade_worm__base__v01.png" alt="碎玉虫 base" width="72"> | 碎玉虫 | `shattered_jade_worm` | `base` | 48x24 |
-| <img src="../../../Assets/Final/talisman_bat/talisman_bat__base__v01.png" alt="符纸蝠 base" width="72"> | 符纸蝠 | `talisman_bat` | `base` | 48x32 |
+| <img src="../../../Assets/Final/wandering_spirit_slime/wandering_spirit_slime__base__v01.png" alt="游灵史莱姆 base" width="72"> | 游灵史莱姆 | `wandering_spirit_slime` | `base` | 40x40 |
+| <img src="../../../Assets/Final/shattered_jade_worm/shattered_jade_worm__base__v01.png" alt="碎玉虫 base" width="72"> | 碎玉虫 | `shattered_jade_worm` | `base` | 54x28 |
+| <img src="../../../Assets/Final/talisman_bat/talisman_bat__base__v01.png" alt="符纸蝠 base" width="72"> | 符纸蝠 | `talisman_bat` | `base` | 50x34 |
 | <img src="../../../Assets/Final/herb_garden_vine_spirit/herb_garden_vine_spirit__base__v01.png" alt="药园藤妖 base" width="72"> | 药园藤妖 | `herb_garden_vine_spirit` | `base` | 64x64 |
-| <img src="../../../Assets/Final/miasma_flower_moth/miasma_flower_moth__base__v01.png" alt="花瘴蝶 base" width="72"> | 花瘴蝶 | `miasma_flower_moth` | `base` | 48x48 |
-| <img src="../../../Assets/Final/furnace_ash_golem/furnace_ash_golem__base__v01.png" alt="炉灰傀 base" width="72"> | 炉灰傀 | `furnace_ash_golem` | `base` | 64x64 |
-| <img src="../../../Assets/Final/iron_shard_spirit/iron_shard_spirit__base__v01.png" alt="铁屑灵 base" width="72"> | 铁屑灵 | `iron_shard_spirit` | `base` | 32x32 |
-| <img src="../../../Assets/Final/tribulation_cloudling/tribulation_cloudling__base__v01.png" alt="劫云灵 base" width="72"> | 劫云灵 | `tribulation_cloudling` | `base` | 48x48 |
-| <img src="../../../Assets/Final/thunder_pattern_hawk/thunder_pattern_hawk__base__v01.png" alt="雷纹鹰 base" width="72"> | 雷纹鹰 | `thunder_pattern_hawk` | `base` | 64x48 |
+| <img src="../../../Assets/Final/miasma_flower_moth/miasma_flower_moth__base__v01.png" alt="花瘴蝶 base" width="72"> | 花瘴蝶 | `miasma_flower_moth` | `base` | 56x56 |
+| <img src="../../../Assets/Final/furnace_ash_golem/furnace_ash_golem__base__v01.png" alt="炉灰傀 base" width="72"> | 炉灰傀 | `furnace_ash_golem` | `base` | 72x72 |
+| <img src="../../../Assets/Final/iron_shard_spirit/iron_shard_spirit__base__v01.png" alt="铁屑灵 base" width="72"> | 铁屑灵 | `iron_shard_spirit` | `base` | 36x36 |
+| <img src="../../../Assets/Final/tribulation_cloudling/tribulation_cloudling__base__v01.png" alt="劫云灵 base" width="72"> | 劫云灵 | `tribulation_cloudling` | `base` | 56x48 |
+| <img src="../../../Assets/Final/thunder_pattern_hawk/thunder_pattern_hawk__base__v01.png" alt="雷纹鹰 base" width="72"> | 雷纹鹰 | `thunder_pattern_hawk` | `base` | 68x52 |
 | <img src="../../../Assets/Final/star_eclipsed_cultivator/star_eclipsed_cultivator__base__v01.png" alt="星蚀修士 base" width="72"> | 星蚀修士 | `star_eclipsed_cultivator` | `base` | 64x64 |
-| <img src="../../../Assets/Final/star_abyss_larva/star_abyss_larva__base__v01.png" alt="星渊幼体 base" width="72"> | 星渊幼体 | `star_abyss_larva` | `base` | 48x32 |
-| <img src="../../../Assets/Final/obsessed_sword_cultivator/obsessed_sword_cultivator__base__v01.png" alt="执念剑修 base" width="72"> | 执念剑修 | `obsessed_sword_cultivator` | `base` | 64x80 |
+| <img src="../../../Assets/Final/star_abyss_larva/star_abyss_larva__base__v01.png" alt="星渊幼体 base" width="72"> | 星渊幼体 | `star_abyss_larva` | `base` | 52x36 |
+| <img src="../../../Assets/Final/obsessed_sword_cultivator/obsessed_sword_cultivator__base__v01.png" alt="执念剑修 base" width="72"> | 执念剑修 | `obsessed_sword_cultivator` | `base` | 72x88 |
 | <img src="../../../Assets/Final/scripture_archive_echo/scripture_archive_echo__base__v01.png" alt="藏经残影 base" width="72"> | 藏经残影 | `scripture_archive_echo` | `base` | 64x64 |
-| <img src="../../../Assets/Final/celestial_puppet/celestial_puppet__base__v01.png" alt="仙傀 base" width="72"> | 仙傀 | `celestial_puppet` | `base` | 64x80 |
-| <img src="../../../Assets/Final/heaven_tablet_guard/heaven_tablet_guard__base__v01.png" alt="天碑卫 base" width="72"> | 天碑卫 | `heaven_tablet_guard` | `base` | 64x80 |
-| <img src="../../../Assets/Final/moonbone_cultivator/moonbone_cultivator__base__v01.png" alt="月骸修士 base" width="72"> | 月骸修士 | `moonbone_cultivator` | `base` | 72x80 |
-| <img src="../../../Assets/Final/archived_immortal_soul/archived_immortal_soul__base__v01.png" alt="归档仙魂 base" width="72"> | 归档仙魂 | `archived_immortal_soul` | `base` | 72x72 |
+| <img src="../../../Assets/Final/celestial_puppet/celestial_puppet__base__v01.png" alt="仙傀 base" width="72"> | 仙傀 | `celestial_puppet` | `base` | 72x80 |
+| <img src="../../../Assets/Final/heaven_tablet_guard/heaven_tablet_guard__base__v01.png" alt="天碑卫 base" width="72"> | 天碑卫 | `heaven_tablet_guard` | `base` | 72x88 |
+| <img src="../../../Assets/Final/moonbone_cultivator/moonbone_cultivator__base__v01.png" alt="月骸修士 base" width="72"> | 月骸修士 | `moonbone_cultivator` | `base` | 72x88 |
+| <img src="../../../Assets/Final/archived_immortal_soul/archived_immortal_soul__base__v01.png" alt="归档仙魂 base" width="72"> | 归档仙魂 | `archived_immortal_soul` | `base` | 80x80 |
 
 <!-- ART_SECTION:enemy-art:END -->

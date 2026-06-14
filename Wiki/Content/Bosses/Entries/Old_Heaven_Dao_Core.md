@@ -6,16 +6,16 @@
 
 | 素材 | 名称 | ID | 类型 | 尺寸 |
 | --- | --- | --- | --- | --- |
-| <img src="../../../../Assets/Final/old_heaven_dao_core/old_heaven_dao_core__body__v01.png" alt="旧天道核心 body" width="96"> | 旧天道核心 | `old_heaven_dao_core` | `body` | 192x192 |
-| <img src="../../../../Assets/Final/old_heaven_dao_core/old_heaven_dao_core__boss_head__v01.png" alt="旧天道核心 boss_head" width="96"> | 旧天道核心 | `old_heaven_dao_core` | `boss_head` | 48x48 |
+| <img src="../../../../Assets/Final/old_heaven_dao_core/old_heaven_dao_core__body__v01.png" alt="旧天道核心 body" width="96"> | 旧天道核心 | `old_heaven_dao_core` | `body` | 208x208 |
+| <img src="../../../../Assets/Final/old_heaven_dao_core/old_heaven_dao_core__boss_head__v01.png" alt="旧天道核心 boss_head" width="96"> | 旧天道核心 | `old_heaven_dao_core` | `boss_head` | 40x40 |
 
 <!-- ART_SECTION:entry-art:END -->
 
 ## 美术资源
 
-- 主体：192x192，悬浮玉色机械核心，三层环形法阵，金色归档线，中心黑白裂隙。
+- 主体：208x208，悬浮玉色机械核心，三层环形法阵，金色归档线，中心黑白裂隙。
 - 动画：`rotate` 8 帧，`module_shift` 6 帧，`collapse` 8 帧。
-- 头像：48x48，核心裂隙和环形法阵。
+- 头像：40x40，核心裂隙和环形法阵。
 - UI 图标：路线图标各 32x32。
 - Prompt 重点：`ancient heavenly dao core, jade divine machine, circular talisman rings, archive light, final boss`。
 

@@ -6,14 +6,14 @@
 
 | 素材 | 名称 | ID | 类型 | 尺寸 |
 | --- | --- | --- | --- | --- |
-| <img src="../../../../Assets/Final/formless_sword_soul/formless_sword_soul__body__v01.png" alt="无相剑魄 body" width="96"> | 无相剑魄 | `formless_sword_soul` | `body` | 96x96 |
+| <img src="../../../../Assets/Final/formless_sword_soul/formless_sword_soul__body__v01.png" alt="无相剑魄 body" width="96"> | 无相剑魄 | `formless_sword_soul` | `body` | 128x128 |
 | <img src="../../../../Assets/Final/formless_sword_soul/formless_sword_soul__boss_head__v01.png" alt="无相剑魄 boss_head" width="96"> | 无相剑魄 | `formless_sword_soul` | `boss_head` | 32x32 |
 
 <!-- ART_SECTION:entry-art:END -->
 
 ## 美术资源
 
-- 主体：96x96，半透明剑修残影，中心是一把清晰飞剑。
+- 主体：128x128，半透明剑修残影，中心是一把清晰飞剑。
 - 动画：`idle` 6 帧，`slash` 5 帧，`split` 5 帧。
 - 头像：32x32，飞剑与空白面孔。
 - 投射物：剑影 48x16，剑阵线 64x8。

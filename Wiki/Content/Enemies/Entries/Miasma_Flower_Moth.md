@@ -12,7 +12,7 @@
 
 ## 美术资源
 
-- 主体：48x48，蝶翼带花纹，药绿和淡紫色板。
+- 主体：56x56，蝶翼带花纹，药绿和淡紫色板。
 - 动画：`fly` 6帧，`miasma` 3帧。
 - Prompt：`flower moth with herbal miasma, green and pale purple wings, clean pixel outline`
 

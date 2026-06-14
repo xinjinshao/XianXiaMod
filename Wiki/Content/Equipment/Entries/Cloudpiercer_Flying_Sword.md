@@ -55,7 +55,7 @@
 
 | 素材 | 类型 | 尺寸 |
 | --- | --- | --- |
-| <img src="../../../../Assets/Final/cloudpiercer_sword_proj/cloudpiercer_sword_proj__projectile__v01.png" width="64"> | projectile | 48x16 |
+| <img src="../../../../Assets/Final/cloudpiercer_sword_proj/cloudpiercer_sword_proj__projectile__v01.png" width="64"> | projectile | 56x24 |
 
 ## 代码实现
 

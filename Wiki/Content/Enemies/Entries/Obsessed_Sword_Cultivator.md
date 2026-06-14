@@ -12,7 +12,7 @@
 
 ## 美术资源
 
-- 主体：64x80，残影剑修，破旧道袍，手持断剑。
+- 主体：72x88，残影剑修，破旧道袍，手持断剑。
 - 动画：`guard` 3帧，`thrust` 5帧。
 - Prompt：`ghostly sword cultivator, broken robe, broken sword, pale cyan aura`
 

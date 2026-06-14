@@ -55,7 +55,7 @@
 
 | 素材 | 类型 | 尺寸 |
 | --- | --- | --- |
-| <img src="../../../../Assets/Final/cinnabar_talisman_flame/cinnabar_talisman_flame__projectile__v01.png" width="64"> | projectile | 24x24 |
+| <img src="../../../../Assets/Final/cinnabar_talisman_flame/cinnabar_talisman_flame__projectile__v01.png" width="64"> | projectile | 32x32 |
 
 ## 代码实现
 

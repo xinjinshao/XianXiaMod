@@ -12,7 +12,7 @@
 
 ## 美术资源
 
-- 主体：72x72，半透明仙魂，环形归档线，中心空洞。
+- 主体：80x80，半透明仙魂，环形归档线，中心空洞。
 - 动画：`float` 6帧，`copy` 4帧。
 - Prompt：`archived immortal soul, circular archive lines, hollow glowing core`
 
