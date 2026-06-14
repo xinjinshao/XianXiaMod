@@ -1,0 +1,46 @@
+{
+  "version": "v08-accessories-row2",
+  "rules": {
+    "generation": "safe_atlas",
+    "minimum_gutter_px": 100,
+    "layout": "1x4"
+  },
+  "assets": [
+    {
+      "slug": "nascent_soul_jade_box",
+      "type": "item_icon_v08",
+      "content": [
+        "Content/Items/Accessories/NascentSoulJadeBox.png",
+        "Content/Items/Materials/NascentSoulJadeBox.png"
+      ],
+      "size": "32x32"
+    },
+    {
+      "slug": "qi_gathering_pendant",
+      "type": "item_icon_v08",
+      "content": [
+        "Content/Items/Accessories/QiGatheringPendant.png",
+        "Content/Items/Materials/QiGatheringPendant.png"
+      ],
+      "size": "32x32"
+    },
+    {
+      "slug": "spiritwood_charm",
+      "type": "item_icon_v08",
+      "content": [
+        "Content/Items/Accessories/SpiritwoodCharm.png",
+        "Content/Items/Materials/SpiritwoodCharm.png"
+      ],
+      "size": "32x32"
+    },
+    {
+      "slug": "star_abyss_eye",
+      "type": "item_icon_v08",
+      "content": [
+        "Content/Items/Accessories/StarAbyssEye.png",
+        "Content/Items/Materials/StarAbyssEye.png"
+      ],
+      "size": "32x32"
+    }
+  ]
+}

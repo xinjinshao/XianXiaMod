@@ -1,0 +1,46 @@
+{
+  "version": "v08-accessories-row1",
+  "rules": {
+    "generation": "safe_atlas",
+    "minimum_gutter_px": 100,
+    "layout": "1x4"
+  },
+  "assets": [
+    {
+      "slug": "broken_heaven_crown_seal",
+      "type": "item_icon_v08",
+      "content": [
+        "Content/Items/Accessories/BrokenHeavenCrownSeal.png",
+        "Content/Items/Materials/BrokenHeavenCrownSeal.png"
+      ],
+      "size": "32x32"
+    },
+    {
+      "slug": "dao_severing_ring",
+      "type": "item_icon_v08",
+      "content": [
+        "Content/Items/Accessories/DaoSeveringRing.png",
+        "Content/Items/Materials/DaoSeveringRing.png"
+      ],
+      "size": "32x32"
+    },
+    {
+      "slug": "furnace_heart_ring",
+      "type": "item_icon_v08",
+      "content": [
+        "Content/Items/Accessories/FurnaceHeartRing.png",
+        "Content/Items/Materials/FurnaceHeartRing.png"
+      ],
+      "size": "32x32"
+    },
+    {
+      "slug": "lightning_ward_jade",
+      "type": "item_icon_v08",
+      "content": [
+        "Content/Items/Accessories/LightningWardJade.png",
+        "Content/Items/Materials/LightningWardJade.png"
+      ],
+      "size": "32x32"
+    }
+  ]
+}
