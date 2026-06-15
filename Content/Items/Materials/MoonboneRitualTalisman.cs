@@ -17,9 +17,9 @@ public class MoonboneRitualTalisman : ModItem
 
     {
 
-        Item.width = 32;
+        Item.width = 36;
 
-        Item.height = 32;
+        Item.height = 36;
 
         Item.maxStack = 999;
 

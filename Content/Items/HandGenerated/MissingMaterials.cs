@@ -6,7 +6,7 @@ using Terraria.ModLoader;
 namespace XianXia.Content.Items.HandGenerated;
 
 public class ShatteredJadeShell : ModItem { public override void SetStaticDefaults() => Item.ResearchUnlockCount = 25; public override void SetDefaults() { Item.width = 32; Item.height = 32; Item.maxStack = 999; Item.value = Item.buyPrice(silver: 5); Item.rare = ItemRarityID.White; } }
-public class TornTalismanPaper : ModItem { public override void SetStaticDefaults() => Item.ResearchUnlockCount = 25; public override void SetDefaults() { Item.width = 32; Item.height = 32; Item.maxStack = 999; Item.value = Item.buyPrice(silver: 3); Item.rare = ItemRarityID.White; } }
+public class TornTalismanPaper : ModItem { public override void SetStaticDefaults() => Item.ResearchUnlockCount = 25; public override void SetDefaults() { Item.width = 28; Item.height = 24; Item.maxStack = 999; Item.value = Item.buyPrice(silver: 3); Item.rare = ItemRarityID.White; } }
 public class CinnabarPowder : ModItem { public override void SetStaticDefaults() => Item.ResearchUnlockCount = 25; public override void SetDefaults() { Item.width = 32; Item.height = 32; Item.maxStack = 999; Item.value = Item.buyPrice(silver: 4); Item.rare = ItemRarityID.White; } }
 public class HerbDew : ModItem { public override void SetStaticDefaults() => Item.ResearchUnlockCount = 25; public override void SetDefaults() { Item.width = 32; Item.height = 32; Item.maxStack = 999; Item.value = Item.buyPrice(silver: 8); Item.rare = ItemRarityID.Blue; } }
 public class FurnaceCharcoal : ModItem { public override void SetStaticDefaults() => Item.ResearchUnlockCount = 25; public override void SetDefaults() { Item.width = 32; Item.height = 32; Item.maxStack = 999; Item.value = Item.buyPrice(silver: 6); Item.rare = ItemRarityID.White; } }

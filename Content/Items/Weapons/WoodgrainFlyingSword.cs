@@ -14,8 +14,8 @@ public class WoodgrainFlyingSword : ModItem
 
     public override void SetDefaults()
     {
-        Item.width = 48;
-        Item.height = 48;
+        Item.width = 56;
+        Item.height = 56;
         Item.damage = 14;
         Item.DamageType = DamageClass.MeleeNoSpeed;
         Item.knockBack = 3f;

@@ -1,0 +1,31 @@
+{
+  "version": "v09-worm-segments-shattered-jade-minion",
+  "source_spec": "Assets/Specs/Bosses/worm_segment_refresh_v09.yaml",
+  "rules": {
+    "generation": "description_yaml_generation",
+    "layout": "1x3",
+    "minimum_gutter_px": 160,
+    "outer_margin_px": 120,
+    "segment_extraction": "projection"
+  },
+  "assets": [
+    {
+      "slug": "shattered_jade_wyrm_minion",
+      "type": "head__v01",
+      "content": "Content/NPCs/Bosses/ShatteredJadeWyrmMinion.png",
+      "size": "32x32"
+    },
+    {
+      "slug": "shattered_jade_wyrm_minion",
+      "type": "body__v01",
+      "content": "Content/NPCs/Bosses/ShatteredJadeWyrmMinionBody.png",
+      "size": "32x32"
+    },
+    {
+      "slug": "shattered_jade_wyrm_minion",
+      "type": "tail__v01",
+      "content": "Content/NPCs/Bosses/ShatteredJadeWyrmMinionTail.png",
+      "size": "32x24"
+    }
+  ]
+}

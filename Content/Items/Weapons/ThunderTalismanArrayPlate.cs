@@ -17,9 +17,9 @@ public class ThunderTalismanArrayPlate : ModItem
 
     {
 
-        Item.width = 32;
+        Item.width = 60;
 
-        Item.height = 32;
+        Item.height = 60;
 
         Item.maxStack = 1;
 

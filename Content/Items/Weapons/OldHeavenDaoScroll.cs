@@ -17,9 +17,9 @@ public class OldHeavenDaoScroll : ModItem
 
     {
 
-        Item.width = 32;
+        Item.width = 72;
 
-        Item.height = 32;
+        Item.height = 72;
 
         Item.maxStack = 30;
 

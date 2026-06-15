@@ -1,0 +1,31 @@
+{
+  "version": "v09-worm-segments-spirit-vein-wyrm",
+  "source_spec": "Assets/Specs/Bosses/worm_segment_refresh_v09.yaml",
+  "rules": {
+    "generation": "description_yaml_generation",
+    "layout": "1x3",
+    "minimum_gutter_px": 160,
+    "outer_margin_px": 120,
+    "segment_extraction": "projection"
+  },
+  "assets": [
+    {
+      "slug": "spirit_vein_wyrm",
+      "type": "head__v01",
+      "content": "Content/NPCs/Bosses/SpiritVeinWyrm.png",
+      "size": "64x64"
+    },
+    {
+      "slug": "spirit_vein_wyrm",
+      "type": "body__v01",
+      "content": "Content/NPCs/Bosses/SpiritVeinWyrmBody.png",
+      "size": "64x64"
+    },
+    {
+      "slug": "spirit_vein_wyrm",
+      "type": "tail__v01",
+      "content": "Content/NPCs/Bosses/SpiritVeinWyrmTail.png",
+      "size": "64x48"
+    }
+  ]
+}

@@ -17,9 +17,9 @@ public class BrokenHeavenDecree : ModItem
 
     {
 
-        Item.width = 32;
+        Item.width = 56;
 
-        Item.height = 32;
+        Item.height = 56;
 
         Item.maxStack = 1;
 

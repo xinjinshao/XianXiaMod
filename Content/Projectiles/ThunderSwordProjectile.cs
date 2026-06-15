@@ -18,9 +18,9 @@ public class ThunderSwordProjectile : ModProjectile
 
     {
 
-        Projectile.width = 48;
+        Projectile.width = 56;
 
-        Projectile.height = 16;
+        Projectile.height = 24;
 
         Projectile.friendly = true;
 

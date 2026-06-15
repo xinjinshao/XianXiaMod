@@ -1,0 +1,45 @@
+{
+  "summary": {
+    "bosses": {
+      "total": 22,
+      "latest_final_mismatch": 0,
+      "missing": 0
+    },
+    "boss_worm_segments": {
+      "total": 9,
+      "latest_final_mismatch": 0,
+      "missing": 0
+    },
+    "enemies": {
+      "total": 17,
+      "latest_final_mismatch": 0,
+      "missing": 0
+    },
+    "town_npcs": {
+      "total": 10,
+      "latest_final_mismatch": 0,
+      "missing": 0
+    },
+    "items_materials_summons": {
+      "total": 25,
+      "latest_final_mismatch": 0,
+      "missing": 0
+    },
+    "equipment_accessories": {
+      "total": 20,
+      "latest_final_mismatch": 0,
+      "missing": 0
+    },
+    "projectiles": {
+      "total": 13,
+      "latest_final_mismatch": 0,
+      "missing": 0
+    },
+    "tiles_ui": {
+      "total": 21,
+      "latest_final_mismatch": 0,
+      "missing": 0
+    }
+  },
+  "problems": []
+}

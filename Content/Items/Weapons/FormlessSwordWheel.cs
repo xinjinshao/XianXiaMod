@@ -17,9 +17,9 @@ public class FormlessSwordWheel : ModItem
 
     {
 
-        Item.width = 32;
+        Item.width = 96;
 
-        Item.height = 32;
+        Item.height = 96;
 
         Item.maxStack = 1;
 

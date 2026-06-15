@@ -18,9 +18,9 @@ public class SpiritBolt : ModProjectile
 
     {
 
-        Projectile.width = 16;
+        Projectile.width = 20;
 
-        Projectile.height = 8;
+        Projectile.height = 12;
 
         Projectile.friendly = true;
 

@@ -17,9 +17,9 @@ public class MoonboneDharmaSword : ModItem
 
     {
 
-        Item.width = 32;
+        Item.width = 104;
 
-        Item.height = 32;
+        Item.height = 104;
 
         Item.maxStack = 1;
 

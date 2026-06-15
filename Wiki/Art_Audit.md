@@ -5,8 +5,8 @@
 ## 自动检查结果
 
 - Manifest 条目：137
-- `Assets/Final/<asset_id>/` 下最终素材 PNG：130
-- 预览/审计 PNG：21（总览、分类 contact sheets、Tile 平铺预览）。
+- `Assets/Final/<asset_id>/` 下最终素材 PNG：137
+- 预览/审计 PNG：22（总览、分类 contact sheets、Tile 平铺预览）。
 - 已检查：文件存在、RGBA 格式、目标尺寸、非 Tile/Wall 透明角。
 - 当前机器检查：通过。
 - 已修复：Wiki 页面已插入素材图片，不再只依赖路径定位。

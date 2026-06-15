@@ -18,9 +18,9 @@ public class MoonboneShardProjectile : ModProjectile
 
     {
 
-        Projectile.width = 24;
+        Projectile.width = 28;
 
-        Projectile.height = 16;
+        Projectile.height = 20;
 
         Projectile.friendly = true;
 

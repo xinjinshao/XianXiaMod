@@ -17,7 +17,7 @@ public class NascentSoulJadeBox : ModItem
 
     {
 
-        Item.width = 32;
+        Item.width = 36;
 
         Item.height = 32;
 

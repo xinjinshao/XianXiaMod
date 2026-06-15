@@ -18,9 +18,9 @@ public class MinorThunderboltProjectile : ModProjectile
 
     {
 
-        Projectile.width = 16;
+        Projectile.width = 24;
 
-        Projectile.height = 64;
+        Projectile.height = 80;
 
         Projectile.friendly = true;
 

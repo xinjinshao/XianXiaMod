@@ -17,9 +17,9 @@ public class CinnabarTalismanFlameItem : ModItem
 
     {
 
-        Item.width = 32;
+        Item.width = 48;
 
-        Item.height = 32;
+        Item.height = 48;
 
         Item.maxStack = 1;
 

@@ -8,7 +8,7 @@
 
 | Boss | 美术 | 阶段 | 分段 | 运动 | 解锁方式 | 主要奖励 |
 | --- | --- | --- | --- | --- | --- | --- |
-| [灵脉蠕虫](Entries/Spirit_Vein_Wyrm.md) | <img src="../../../Assets/Final/spirit_vein_wyrm_/spirit_vein_wyrm__head__v01.png" width="64"> | Pre-Boss | ✅ head+body+tail（8-10 节） | 穿墙正弦波 + 冲刺 | 在浅层灵脉使用引气符 | 下品灵石核心 |
+| [灵脉蠕虫](Entries/Spirit_Vein_Wyrm.md) | <img src="../../../Assets/Final/spirit_vein_wyrm/spirit_vein_wyrm__head__v01.png" width="64"> | Pre-Boss | ✅ head+body+tail（8-10 节） | 穿墙正弦波 + 冲刺 | 在浅层灵脉使用引气符 | 下品灵石核心 |
 | [药宗守园人](Entries/Garden_Warden.md) | <img src="../../../Assets/Final/garden_warden/garden_warden__body__v01.png" width="64"> | Pre-Hardmode | 单体 | 地面移动 | 青木药园采集足够灵草后召唤 | 青木丹炉 |
 | [玄炉铁傀](Entries/Black_Furnace_Iron_Golem.md) | <img src="../../../Assets/Final/black_furnace_iron_golem/black_furnace_iron_golem__body__v01.png" width="64"> | Pre-Hardmode | 单体 | 地面重装 | 沉炉矿脉修复旧炉 | 器胚、基础炼器台 |
 | [劫云化身](Entries/Tribulation_Cloud_Avatar.md) | <img src="../../../Assets/Final/tribulation_cloud_avatar/tribulation_cloud_avatar__body__v01.png" width="64"> | Wall of Flesh 前后 | 单体 | 空中漂浮 | 筑基突破触发 | 筑基印、雷劫材料 |
@@ -25,7 +25,7 @@
 
 | 仆从 | 美术 | 来源 Boss | 分段 | 运动 | 数量 | 生存时间 |
 | --- | --- | --- | --- | --- | --- | --- |
-| [碎玉蠕虫仆从](Entries/Shattered_Jade_Wyrm_Minion.md) | — | 灵脉蠕虫（分裂产出） | ✅ head+body+tail（5-7 节） | 穿墙追踪 | 2-3 条 | 15-20 秒 |
+| [碎玉蠕虫仆从](Entries/Shattered_Jade_Wyrm_Minion.md) | <img src="../../../Assets/Final/shattered_jade_wyrm_minion/shattered_jade_wyrm_minion__head__v01.png" width="48"> | 灵脉蠕虫（分裂产出） | ✅ head+body+tail（5-7 节） | 穿墙追踪 | 2-3 条 | 15-20 秒 |
 
 ## 召唤门槛
 

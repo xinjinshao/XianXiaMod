@@ -17,9 +17,9 @@ public class ArtifactBlankShard : ModItem
 
     {
 
-        Item.width = 32;
+        Item.width = 24;
 
-        Item.height = 32;
+        Item.height = 24;
 
         Item.maxStack = 9999;
 

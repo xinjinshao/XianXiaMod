@@ -1,0 +1,31 @@
+{
+  "version": "v09-worm-segments-thunder-marsh-jiao",
+  "source_spec": "Assets/Specs/Bosses/worm_segment_refresh_v09.yaml",
+  "rules": {
+    "generation": "description_yaml_generation",
+    "layout": "1x3",
+    "minimum_gutter_px": 160,
+    "outer_margin_px": 120,
+    "segment_extraction": "projection"
+  },
+  "assets": [
+    {
+      "slug": "thunder_marsh_jiao",
+      "type": "head__v01",
+      "content": "Content/NPCs/Bosses/ThunderMarshJiao.png",
+      "size": "96x80"
+    },
+    {
+      "slug": "thunder_marsh_jiao",
+      "type": "body__v01",
+      "content": "Content/NPCs/Bosses/ThunderMarshJiaoBody.png",
+      "size": "96x80"
+    },
+    {
+      "slug": "thunder_marsh_jiao",
+      "type": "tail__v01",
+      "content": "Content/NPCs/Bosses/ThunderMarshJiaoTail.png",
+      "size": "96x64"
+    }
+  ]
+}

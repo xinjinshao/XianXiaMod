@@ -17,9 +17,9 @@ public class OldFurnaceEmber : ModItem
 
     {
 
-        Item.width = 32;
+        Item.width = 28;
 
-        Item.height = 32;
+        Item.height = 28;
 
         Item.maxStack = 999;
 

@@ -18,9 +18,9 @@ public class CinnabarTalismanFlame : ModProjectile
 
     {
 
-        Projectile.width = 24;
+        Projectile.width = 32;
 
-        Projectile.height = 24;
+        Projectile.height = 32;
 
         Projectile.friendly = true;
 

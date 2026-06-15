@@ -9,8 +9,8 @@ public class WoodgrainSwordProjectile : ModProjectile
 {
     public override void SetDefaults()
     {
-        Projectile.width = 32;
-        Projectile.height = 16;
+        Projectile.width = 40;
+        Projectile.height = 20;
         Projectile.friendly = true;
         Projectile.DamageType = DamageClass.Melee;
         Projectile.penetrate = 1;

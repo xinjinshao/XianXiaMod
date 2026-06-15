@@ -17,9 +17,9 @@ public class SpringReturnPill : ModItem
 
     {
 
-        Item.width = 32;
+        Item.width = 22;
 
-        Item.height = 32;
+        Item.height = 22;
 
         Item.maxStack = 30;
 

@@ -14,8 +14,8 @@ public class SpiritwoodCrossbow : ModItem
 
     public override void SetDefaults()
     {
-        Item.width = 48;
-        Item.height = 48;
+        Item.width = 56;
+        Item.height = 44;
         Item.damage = 12;
         Item.DamageType = DamageClass.Ranged;
         Item.knockBack = 2f;

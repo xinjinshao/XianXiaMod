@@ -1,0 +1,152 @@
+version: v09
+pipeline: description_yaml_generation
+scope: worm_boss_segment_refresh
+reason: >
+  Refresh worm-class boss assets after the sprite size/spec pass. These assets
+  must be generated as dedicated head/body/tail segment sprites, never cropped
+  or derived from a full-body concept sprite.
+generation_mode:
+  type: safe_atlas
+  atlas_layout: per_creature_1x3_subatlases
+  chroma_key: "#ff00ff"
+  minimum_visible_gutter_px: 160
+  outer_empty_margin_px: 120
+  extraction:
+    tool: Tools/extract_safe_atlas.py
+    mode: projection
+    guard_px: 45
+    final_margin_px: 3
+  forbidden:
+    - do not crop an existing full boss sprite into segments
+    - do not let glow, whiskers, horns, dust, tail tips, or particles enter another cell
+    - do not share fragments between neighboring sprites
+    - do not use UI badges, flat symbols, text, watermark, or scene backgrounds
+style:
+  medium: Terraria-like 2D pixel art
+  view: strict side-view, drawn facing left
+  lighting: top-left
+  outline: strong dark outline, readable at Terraria scale
+  pixel_rules:
+    - crisp pixel edges
+    - limited palette with material highlights
+    - transparent final PNG after chroma-key removal
+    - each sprite centered in its own large cell
+    - each sprite has complete silhouette and internal detail inside target canvas
+assets:
+  - slug: spirit_vein_wyrm
+    display_name_zh: 灵脉蠕虫
+    segment: head
+    output_type: head__v01
+    size: 64x64
+    content:
+      - Content/NPCs/Bosses/SpiritVeinWyrm.png
+    description: >
+      Round jade spirit-wyrm head with dark green carapace outline, short paired
+      antennae, small round mouthparts, cyan inner glow, and two pale cyan eye
+      points. Side-view worm-boss head, compact but clearly larger than the body.
+  - slug: spirit_vein_wyrm
+    display_name_zh: 灵脉蠕虫
+    segment: body
+    output_type: body__v01
+    size: 64x64
+    content:
+      - Content/NPCs/Bosses/SpiritVeinWyrmBody.png
+    description: >
+      Repeating jade wyrm body segment with oval carapace plates, cyan glowing
+      spirit-vein core in the middle, dark teal outer shell, pale underside
+      texture, and connector edges that read as a worm segment.
+  - slug: spirit_vein_wyrm
+    display_name_zh: 灵脉蠕虫
+    segment: tail
+    output_type: tail__v01
+    size: 64x48
+    content:
+      - Content/NPCs/Bosses/SpiritVeinWyrmTail.png
+    description: >
+      Tapered jade tail segment, shorter than the body, with the cyan glow fading
+      toward a pointed tail tip. Same palette and outline language as the head
+      and body.
+  - slug: thunder_marsh_jiao
+    display_name_zh: 雷泽蛟
+    segment: head
+    output_type: head__v01
+    size: 96x80
+    content:
+      - Content/NPCs/Bosses/ThunderMarshJiao.png
+    description: >
+      Thunder jiao dragon head segment only, strict horizontal side-view facing
+      left. The snout and open maw point left; a short cut-off neck connector
+      exits on the right so it can attach to the body segment. Include backward
+      lightning horns, two flowing whiskers that stay inside the same cell,
+      purple-blue cheek scales, gold brow accents, storm-cyan highlights, and a
+      blue glow inside the mouth. The silhouette must be a single forward-facing
+      dragon head plus short neck connector, not a coiled dragon, not a whole
+      serpent, not a curled body, not an S-shaped neck, and not a vertical
+      portrait.
+  - slug: thunder_marsh_jiao
+    display_name_zh: 雷泽蛟
+    segment: body
+    output_type: body__v01
+    size: 96x80
+    content:
+      - Content/NPCs/Bosses/ThunderMarshJiaoBody.png
+    description: >
+      Serpentine dragon body segment with diamond blue-purple scales, short
+      dorsal spines, a flowing cyan lightning vein along the side, and clean
+      connector ends for repeated S-curve following.
+  - slug: thunder_marsh_jiao
+    display_name_zh: 雷泽蛟
+    segment: tail
+    output_type: tail__v01
+    size: 96x64
+    content:
+      - Content/NPCs/Bosses/ThunderMarshJiaoTail.png
+    description: >
+      Fan-finned thunder dragon tail segment, tapered and slightly lower than the
+      body, with sparse lightning marks, purple-blue gradient scales, and a small
+      cyan thunder-glow node near the tail end.
+  - slug: shattered_jade_wyrm_minion
+    display_name_zh: 碎玉蠕虫仆从
+    segment: head
+    output_type: head__v01
+    size: 32x32
+    content:
+      - Content/NPCs/Bosses/ShatteredJadeWyrmMinion.png
+    description: >
+      Small jade wyrm minion head, simplified version of the Spirit Vein Wyrm
+      head, translucent cyan shell, tiny mouthparts, two bright eye pixels, dark
+      teal outline.
+  - slug: shattered_jade_wyrm_minion
+    display_name_zh: 碎玉蠕虫仆从
+    segment: body
+    output_type: body__v01
+    size: 32x32
+    content:
+      - Content/NPCs/Bosses/ShatteredJadeWyrmMinionBody.png
+    description: >
+      Small repeating jade worm body segment with translucent cyan shell and a
+      tiny central glow, matching the minion head and tail.
+  - slug: shattered_jade_wyrm_minion
+    display_name_zh: 碎玉蠕虫仆从
+    segment: tail
+    output_type: tail__v01
+    size: 32x24
+    content:
+      - Content/NPCs/Bosses/ShatteredJadeWyrmMinionTail.png
+    description: >
+      Small tapered jade worm tail, shorter than the body, cyan glow fading to
+      transparent-like pale highlights while keeping a crisp dark outline.
+prompt: >
+  Generate one creature family at a time as a Terraria-like pixel art safe atlas
+  on a perfectly flat solid #ff00ff chroma-key background. Each subatlas layout
+  is exactly one horizontal row with three large cells ordered head, body, tail.
+  Every sprite must be drawn as its own dedicated segment, not cropped from a
+  full creature. Leave at least 160 pixels of pure #ff00ff empty gutter between
+  neighboring visible pixels and at least 120 pixels around the outer edges. No
+  sprite, glow, whisker, horn, particle, or tail tip may enter another cell. No
+  text, no UI, no watermark, no scene background. Strict side-view, facing left,
+  strong dark outline, crisp pixel art, limited Terraria-like palettes, readable
+  at the target canvas sizes. Special hard rule for Thunder Marsh Jiao head:
+  draw only a horizontal dragon head with snout/open mouth on the left and a
+  short neck connector on the right; do not draw a curled body, coiled torso,
+  full dragon, S-shaped neck, or vertical portrait in the head cell.

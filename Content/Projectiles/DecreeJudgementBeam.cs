@@ -18,9 +18,9 @@ public class DecreeJudgementBeam : ModProjectile
 
     {
 
-        Projectile.width = 32;
+        Projectile.width = 40;
 
-        Projectile.height = 128;
+        Projectile.height = 160;
 
         Projectile.friendly = true;
 

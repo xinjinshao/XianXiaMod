@@ -17,9 +17,9 @@ public class ThunderPatternSwordCase : ModItem
 
     {
 
-        Item.width = 32;
+        Item.width = 80;
 
-        Item.height = 32;
+        Item.height = 80;
 
         Item.maxStack = 1;
 

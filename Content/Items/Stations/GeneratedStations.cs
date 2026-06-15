@@ -10,7 +10,7 @@ public class EarthClayFurnace : ModItem
     public override void SetStaticDefaults() => Item.ResearchUnlockCount = 1;
     public override void SetDefaults()
     {
-        Item.width = 48; Item.height = 48;
+        Item.width = 32; Item.height = 32;
         Item.maxStack = 99; Item.useTurn = true; Item.autoReuse = true;
         Item.useStyle = ItemUseStyleID.Swing; Item.useTime = 10; Item.useAnimation = 15;
         Item.consumable = true; Item.value = Item.buyPrice(silver: 50);
@@ -28,7 +28,7 @@ public class SimpleTalismanTable : ModItem
     public override void SetStaticDefaults() => Item.ResearchUnlockCount = 1;
     public override void SetDefaults()
     {
-        Item.width = 48; Item.height = 32;
+        Item.width = 32; Item.height = 32;
         Item.maxStack = 99; Item.useTurn = true; Item.autoReuse = true;
         Item.useStyle = ItemUseStyleID.Swing; Item.useTime = 10; Item.useAnimation = 15;
         Item.consumable = true; Item.value = Item.buyPrice(silver: 50);
@@ -46,7 +46,7 @@ public class StarPatternCauldron : ModItem
     public override void SetStaticDefaults() => Item.ResearchUnlockCount = 1;
     public override void SetDefaults()
     {
-        Item.width = 64; Item.height = 64;
+        Item.width = 32; Item.height = 32;
         Item.maxStack = 99; Item.useTurn = true; Item.autoReuse = true;
         Item.useStyle = ItemUseStyleID.Swing; Item.useTime = 10; Item.useAnimation = 15;
         Item.consumable = true; Item.value = Item.buyPrice(gold: 2);
@@ -66,7 +66,7 @@ public class ThunderPatternForge : ModItem
     public override void SetStaticDefaults() => Item.ResearchUnlockCount = 1;
     public override void SetDefaults()
     {
-        Item.width = 64; Item.height = 48;
+        Item.width = 32; Item.height = 32;
         Item.maxStack = 99; Item.useTurn = true; Item.autoReuse = true;
         Item.useStyle = ItemUseStyleID.Swing; Item.useTime = 10; Item.useAnimation = 15;
         Item.consumable = true; Item.value = Item.buyPrice(gold: 2);
@@ -85,7 +85,7 @@ public class SectTrialAltar : ModItem
     public override void SetStaticDefaults() => Item.ResearchUnlockCount = 1;
     public override void SetDefaults()
     {
-        Item.width = 64; Item.height = 48;
+        Item.width = 32; Item.height = 32;
         Item.maxStack = 99; Item.useTurn = true; Item.autoReuse = true;
         Item.useStyle = ItemUseStyleID.Swing; Item.useTime = 10; Item.useAnimation = 15;
         Item.consumable = true; Item.value = Item.buyPrice(gold: 3);
@@ -105,7 +105,7 @@ public class HeavenFireFurnace : ModItem
     public override void SetStaticDefaults() => Item.ResearchUnlockCount = 1;
     public override void SetDefaults()
     {
-        Item.width = 64; Item.height = 64;
+        Item.width = 32; Item.height = 32;
         Item.maxStack = 99; Item.useTurn = true; Item.autoReuse = true;
         Item.useStyle = ItemUseStyleID.Swing; Item.useTime = 10; Item.useAnimation = 15;
         Item.consumable = true; Item.value = Item.buyPrice(gold: 5);
@@ -124,7 +124,7 @@ public class DaoSeveringAltar : ModItem
     public override void SetStaticDefaults() => Item.ResearchUnlockCount = 1;
     public override void SetDefaults()
     {
-        Item.width = 80; Item.height = 48;
+        Item.width = 32; Item.height = 32;
         Item.maxStack = 99; Item.useTurn = true; Item.autoReuse = true;
         Item.useStyle = ItemUseStyleID.Swing; Item.useTime = 10; Item.useAnimation = 15;
         Item.consumable = true; Item.value = Item.buyPrice(gold: 10);

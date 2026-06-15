@@ -18,9 +18,9 @@ public class FormlessSwordWheelProjectile : ModProjectile
 
     {
 
-        Projectile.width = 64;
+        Projectile.width = 80;
 
-        Projectile.height = 64;
+        Projectile.height = 80;
 
         Projectile.friendly = true;
 

@@ -17,9 +17,9 @@ public class StarEclipseArbalest : ModItem
 
     {
 
-        Item.width = 32;
+        Item.width = 72;
 
-        Item.height = 32;
+        Item.height = 52;
 
         Item.maxStack = 1;
 
