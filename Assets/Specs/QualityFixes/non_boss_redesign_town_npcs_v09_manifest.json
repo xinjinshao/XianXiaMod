@@ -1,0 +1,111 @@
+{
+  "schema": "xianxia_non_boss_redesign_manifest_v1",
+  "version": "v09",
+  "source": "Assets/Specs/art_asset_manifest.csv",
+  "grid": {
+    "cols": 5,
+    "rows": 2
+  },
+  "assets": [
+    {
+      "asset_id": "herb_sect_apprentice",
+      "output_type": "body",
+      "category": "town_body",
+      "size": [
+        40,
+        56
+      ],
+      "margin": 3
+    },
+    {
+      "asset_id": "wandering_artificer",
+      "output_type": "body",
+      "category": "town_body",
+      "size": [
+        40,
+        56
+      ],
+      "margin": 3
+    },
+    {
+      "asset_id": "tribulation_observer",
+      "output_type": "body",
+      "category": "town_body",
+      "size": [
+        40,
+        56
+      ],
+      "margin": 3
+    },
+    {
+      "asset_id": "archive_scroll_spirit",
+      "output_type": "body",
+      "category": "town_body",
+      "size": [
+        40,
+        56
+      ],
+      "margin": 3
+    },
+    {
+      "asset_id": "fallen_heaven_messenger",
+      "output_type": "body",
+      "category": "town_body",
+      "size": [
+        40,
+        56
+      ],
+      "margin": 3
+    },
+    {
+      "asset_id": "herb_sect_apprentice",
+      "output_type": "head",
+      "category": "town_head",
+      "size": [
+        32,
+        32
+      ],
+      "margin": 3
+    },
+    {
+      "asset_id": "wandering_artificer",
+      "output_type": "head",
+      "category": "town_head",
+      "size": [
+        32,
+        32
+      ],
+      "margin": 3
+    },
+    {
+      "asset_id": "tribulation_observer",
+      "output_type": "head",
+      "category": "town_head",
+      "size": [
+        32,
+        32
+      ],
+      "margin": 3
+    },
+    {
+      "asset_id": "archive_scroll_spirit",
+      "output_type": "head",
+      "category": "town_head",
+      "size": [
+        32,
+        32
+      ],
+      "margin": 3
+    },
+    {
+      "asset_id": "fallen_heaven_messenger",
+      "output_type": "head",
+      "category": "town_head",
+      "size": [
+        32,
+        32
+      ],
+      "margin": 3
+    }
+  ]
+}

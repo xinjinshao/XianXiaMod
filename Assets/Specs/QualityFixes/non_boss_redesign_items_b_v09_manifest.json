@@ -1,0 +1,15 @@
+{
+  "version": "non_boss_redesign_items_b_v09",
+  "grid": {"cols": 3, "rows": 3},
+  "assets": [
+    {"asset_id": "heaven_dao_fragment", "output_type": "item_icon", "category": "item", "size": [32, 32], "margin": 3},
+    {"asset_id": "moonbone", "output_type": "item_icon", "category": "item", "size": [36, 36], "margin": 3},
+    {"asset_id": "dao_severing_dust", "output_type": "item_icon", "category": "item", "size": [28, 28], "margin": 3},
+    {"asset_id": "qi_drawing_talisman", "output_type": "item_icon", "category": "item", "size": [32, 32], "margin": 3},
+    {"asset_id": "spring_return_pill", "output_type": "item_icon", "category": "item", "size": [22, 22], "margin": 2},
+    {"asset_id": "qi_condensing_pill", "output_type": "item_icon", "category": "item", "size": [24, 24], "margin": 2},
+    {"asset_id": "foundation_pill", "output_type": "item_icon", "category": "item", "size": [24, 24], "margin": 2},
+    {"asset_id": "tribulation_resisting_pill", "output_type": "item_icon", "category": "item", "size": [28, 28], "margin": 3},
+    {"asset_id": "star_abyss_forbidden_talisman", "output_type": "item_icon", "category": "item", "size": [36, 36], "margin": 3}
+  ]
+}

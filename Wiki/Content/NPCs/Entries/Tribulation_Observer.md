@@ -6,8 +6,8 @@
 
 | 素材 | 名称 | ID | 类型 | 尺寸 |
 | --- | --- | --- | --- | --- |
-| <img src="../../../../Assets/Final/tribulation_observer/tribulation_observer__body__v01.png" alt="观劫道人 body" width="72"> | 观劫道人 | `tribulation_observer` | `body` | 40x56 |
-| <img src="../../../../Assets/Final/tribulation_observer/tribulation_observer__head__v01.png" alt="观劫道人 head" width="72"> | 观劫道人 | `tribulation_observer` | `head` | 32x32 |
+| <img src="../../../../Assets/Final/tribulation_observer/tribulation_observer__body__v09.png" alt="观劫道人 body" width="72"> | 观劫道人 | `tribulation_observer` | `body` | 40x56 |
+| <img src="../../../../Assets/Final/tribulation_observer/tribulation_observer__head__v09.png" alt="观劫道人 head" width="72"> | 观劫道人 | `tribulation_observer` | `head` | 32x32 |
 
 <!-- ART_SECTION:entry-art:END -->
 

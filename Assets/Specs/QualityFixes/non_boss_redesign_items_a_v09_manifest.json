@@ -1,0 +1,15 @@
+{
+  "version": "non_boss_redesign_items_a_v09",
+  "grid": {"cols": 3, "rows": 3},
+  "assets": [
+    {"asset_id": "low_grade_spirit_stone", "output_type": "item_icon", "category": "item", "size": [24, 24], "margin": 2},
+    {"asset_id": "spirit_gel", "output_type": "item_icon", "category": "item", "size": [20, 20], "margin": 2},
+    {"asset_id": "torn_talisman_paper", "output_type": "item_icon", "category": "item", "size": [28, 24], "margin": 2},
+    {"asset_id": "greenwood_root", "output_type": "item_icon", "category": "item", "size": [24, 24], "margin": 2},
+    {"asset_id": "furnace_slag_iron", "output_type": "item_icon", "category": "item", "size": [28, 28], "margin": 3},
+    {"asset_id": "artifact_blank_shard", "output_type": "item_icon", "category": "item", "size": [24, 24], "margin": 2},
+    {"asset_id": "tribulation_cloud_dew", "output_type": "item_icon", "category": "item", "size": [24, 24], "margin": 2},
+    {"asset_id": "star_eclipse_crystal", "output_type": "item_icon", "category": "item", "size": [28, 28], "margin": 3},
+    {"asset_id": "sect_trial_token", "output_type": "item_icon", "category": "item", "size": [32, 32], "margin": 3}
+  ]
+}

@@ -1,0 +1,81 @@
+{
+  "schema": "xianxia_non_boss_redesign_manifest_v1",
+  "version": "v09",
+  "source": "Assets/Specs/art_asset_manifest.csv",
+  "grid": {
+    "cols": 4,
+    "rows": 2
+  },
+  "assets": [
+    {
+      "asset_id": "woodgrain_sword_proj",
+      "output_type": "projectile",
+      "category": "projectile",
+      "size": [
+        40,
+        20
+      ],
+      "margin": 3
+    },
+    {
+      "asset_id": "cloudpiercer_sword_proj",
+      "output_type": "projectile",
+      "category": "projectile",
+      "size": [
+        56,
+        24
+      ],
+      "margin": 3
+    },
+    {
+      "asset_id": "cloud_wisp_proj",
+      "output_type": "projectile",
+      "category": "projectile",
+      "size": [
+        28,
+        20
+      ],
+      "margin": 3
+    },
+    {
+      "asset_id": "thunder_sword_proj",
+      "output_type": "projectile",
+      "category": "projectile",
+      "size": [
+        56,
+        24
+      ],
+      "margin": 3
+    },
+    {
+      "asset_id": "minor_thunderbolt_proj",
+      "output_type": "projectile",
+      "category": "projectile",
+      "size": [
+        24,
+        80
+      ],
+      "margin": 3
+    },
+    {
+      "asset_id": "formless_sword_wheel_proj",
+      "output_type": "projectile",
+      "category": "projectile",
+      "size": [
+        80,
+        80
+      ],
+      "margin": 3
+    },
+    {
+      "asset_id": "moonbone_shard_proj",
+      "output_type": "projectile",
+      "category": "projectile",
+      "size": [
+        28,
+        20
+      ],
+      "margin": 3
+    }
+  ]
+}

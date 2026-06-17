@@ -1,0 +1,111 @@
+{
+  "schema": "xianxia_non_boss_redesign_manifest_v1",
+  "version": "v09",
+  "source": "Assets/Specs/art_asset_manifest.csv",
+  "grid": {
+    "cols": 5,
+    "rows": 2
+  },
+  "assets": [
+    {
+      "asset_id": "spiritwood_crossbow",
+      "output_type": "item_icon",
+      "category": "equipment",
+      "size": [
+        56,
+        44
+      ],
+      "margin": 4
+    },
+    {
+      "asset_id": "star_eclipse_arbalest",
+      "output_type": "item_icon",
+      "category": "equipment",
+      "size": [
+        72,
+        52
+      ],
+      "margin": 4
+    },
+    {
+      "asset_id": "qi_gathering_pendant",
+      "output_type": "item_icon",
+      "category": "equipment",
+      "size": [
+        36,
+        32
+      ],
+      "margin": 4
+    },
+    {
+      "asset_id": "spiritwood_charm",
+      "output_type": "item_icon",
+      "category": "equipment",
+      "size": [
+        32,
+        32
+      ],
+      "margin": 4
+    },
+    {
+      "asset_id": "furnace_heart_ring",
+      "output_type": "item_icon",
+      "category": "equipment",
+      "size": [
+        32,
+        32
+      ],
+      "margin": 4
+    },
+    {
+      "asset_id": "lightning_ward_jade",
+      "output_type": "item_icon",
+      "category": "equipment",
+      "size": [
+        32,
+        32
+      ],
+      "margin": 4
+    },
+    {
+      "asset_id": "star_abyss_eye",
+      "output_type": "item_icon",
+      "category": "equipment",
+      "size": [
+        36,
+        36
+      ],
+      "margin": 4
+    },
+    {
+      "asset_id": "nascent_soul_jade_box",
+      "output_type": "item_icon",
+      "category": "equipment",
+      "size": [
+        36,
+        32
+      ],
+      "margin": 4
+    },
+    {
+      "asset_id": "broken_heaven_crown_seal",
+      "output_type": "item_icon",
+      "category": "equipment",
+      "size": [
+        36,
+        36
+      ],
+      "margin": 4
+    },
+    {
+      "asset_id": "dao_severing_ring",
+      "output_type": "item_icon",
+      "category": "equipment",
+      "size": [
+        32,
+        32
+      ],
+      "margin": 4
+    }
+  ]
+}

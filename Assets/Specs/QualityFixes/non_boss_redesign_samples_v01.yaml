@@ -1,0 +1,90 @@
+version: non_boss_redesign_samples_v01
+workflow: description_yaml_imagegen_cleaned_final_content
+style_anchor:
+  - Terraria-like side-view pixel art
+  - Calamity-inspired readability, strong silhouette, layered materials, dark outlines
+  - Xianxia theme: spiritual energy, jade, talismans, sword qi, thunder, furnace metal, archive light
+  - no copied Terraria, Calamity, or third-party sprites
+hard_edge_rules:
+  - flat pure #ff00ff chroma-key background for removal
+  - no soft feathered alpha edges in final Content assets
+  - visible sprite core uses opaque pixels and crisp dark outline
+  - glow must be painted as controlled pixel clusters, not blurry transparent haze
+  - each sprite centered in a large cell with at least 100px gutter
+animation_rules:
+  - enemies export base plus 6-frame idle/move sheets for Content/NPCs/Enemies
+  - town NPCs export body/head plus 4-frame idle sheets for Content/NPCs/Town
+  - weapons and active items export item icon plus use/projectile frames when applicable
+  - projectiles export base plus 4-frame motion or pulse previews where gameplay benefits
+  - simple materials keep a single item icon and optional wiki-only inspect variant
+sample_assets:
+  enemies:
+    - id: wandering_spirit_slime
+      output: base
+      canvas: 40x40
+      description: jade spirit slime with an inner talisman core, squat readable silhouette, cyan spirit flame on top
+    - id: obsessed_sword_cultivator
+      output: base
+      canvas: 72x88
+      description: ragged sword cultivator spirit, hunched human silhouette, broken sword qi orbiting one shoulder
+    - id: thunder_pattern_hawk
+      output: base
+      canvas: 68x52
+      description: compact hawk with thunder-pattern wings, blue-white wing edges, dark storm outline
+  npcs:
+    - id: wandering_artificer
+      outputs: [body, head]
+      canvas: 40x56 body plus 32x32 head
+      description: traveling artificer with tool satchel, furnace-orange accents, jade goggles, readable Terraria town NPC proportions
+  items_materials_summons:
+    - id: spirit_vein_incense
+      output: item_icon
+      canvas: 32x32
+      description: small bronze incense burner with jade smoke plume and talisman cord, crisp silhouette
+    - id: garden_broken_key
+      output: item_icon
+      canvas: 32x32
+      description: broken garden key made of greenwood and gold, leaf charm, jagged broken teeth
+    - id: dao_severing_dust
+      output: item_icon
+      canvas: 28x28
+      description: dark purple dust vial with tiny severed dao spark shards, opaque glass outline
+  equipment_accessories:
+    - id: woodgrain_flying_sword
+      output: item_icon
+      canvas: 56x56
+      description: diagonal wooden flying sword with pale jade edge, carved grain, clear hilt and tip
+    - id: qi_gathering_pendant
+      output: item_icon
+      canvas: 36x32
+      description: compact jade pendant with bronze ring and condensed cyan qi core, no circular UI badge
+    - id: greenwood_array_plate
+      output: item_icon
+      canvas: 56x56
+      description: carved greenwood array plate with roots, brass pins, readable talisman-like geometry
+  projectiles:
+    - id: cloudpiercer_sword_proj
+      output: projectile
+      canvas: 56x24
+      description: left-to-right flying sword projectile with steel body, cyan cloud trail, clear opaque blade core
+    - id: minor_thunderbolt_proj
+      output: projectile
+      canvas: 24x80
+      description: vertical jagged thunderbolt with bright opaque core, blue side sparks, no blurry halo
+    - id: thunder_talisman_array
+      output: projectile
+      canvas: 96x96
+      description: circular thunder talisman array, runic ring made of pixel clusters, transparent center, crisp readable edge
+  buffs_stations_objects:
+    - id: qi_gathering_buff
+      output: buff_icon
+      canvas: 32x32
+      description: swirling jade qi bead with layered spirit wind, not a flat round badge
+    - id: simple_talisman_table
+      output: station_icon
+      canvas: 48x32
+      description: low wooden talisman table with brush, scroll, cinnabar dish, jade lamp
+    - id: singing_thunder_stone
+      output: object
+      canvas: 32x32
+      description: small resonant thunder stone with bronze base and cyan ringing sparks, solid silhouette

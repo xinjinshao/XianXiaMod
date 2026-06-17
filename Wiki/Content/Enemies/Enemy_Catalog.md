@@ -260,22 +260,22 @@
 
 | 素材 | 名称 | ID | 类型 | 尺寸 |
 | --- | --- | --- | --- | --- |
-| <img src="../../../Assets/Final/wandering_spirit_slime/wandering_spirit_slime__base__v01.png" alt="游灵史莱姆 base" width="72"> | 游灵史莱姆 | `wandering_spirit_slime` | `base` | 40x40 |
-| <img src="../../../Assets/Final/shattered_jade_worm/shattered_jade_worm__base__v01.png" alt="碎玉虫 base" width="72"> | 碎玉虫 | `shattered_jade_worm` | `base` | 54x28 |
-| <img src="../../../Assets/Final/talisman_bat/talisman_bat__base__v01.png" alt="符纸蝠 base" width="72"> | 符纸蝠 | `talisman_bat` | `base` | 50x34 |
-| <img src="../../../Assets/Final/herb_garden_vine_spirit/herb_garden_vine_spirit__base__v01.png" alt="药园藤妖 base" width="72"> | 药园藤妖 | `herb_garden_vine_spirit` | `base` | 64x64 |
-| <img src="../../../Assets/Final/miasma_flower_moth/miasma_flower_moth__base__v01.png" alt="花瘴蝶 base" width="72"> | 花瘴蝶 | `miasma_flower_moth` | `base` | 56x56 |
-| <img src="../../../Assets/Final/furnace_ash_golem/furnace_ash_golem__base__v01.png" alt="炉灰傀 base" width="72"> | 炉灰傀 | `furnace_ash_golem` | `base` | 72x72 |
-| <img src="../../../Assets/Final/iron_shard_spirit/iron_shard_spirit__base__v01.png" alt="铁屑灵 base" width="72"> | 铁屑灵 | `iron_shard_spirit` | `base` | 36x36 |
-| <img src="../../../Assets/Final/tribulation_cloudling/tribulation_cloudling__base__v01.png" alt="劫云灵 base" width="72"> | 劫云灵 | `tribulation_cloudling` | `base` | 56x48 |
-| <img src="../../../Assets/Final/thunder_pattern_hawk/thunder_pattern_hawk__base__v01.png" alt="雷纹鹰 base" width="72"> | 雷纹鹰 | `thunder_pattern_hawk` | `base` | 68x52 |
-| <img src="../../../Assets/Final/star_eclipsed_cultivator/star_eclipsed_cultivator__base__v01.png" alt="星蚀修士 base" width="72"> | 星蚀修士 | `star_eclipsed_cultivator` | `base` | 64x64 |
-| <img src="../../../Assets/Final/star_abyss_larva/star_abyss_larva__base__v01.png" alt="星渊幼体 base" width="72"> | 星渊幼体 | `star_abyss_larva` | `base` | 52x36 |
-| <img src="../../../Assets/Final/obsessed_sword_cultivator/obsessed_sword_cultivator__base__v01.png" alt="执念剑修 base" width="72"> | 执念剑修 | `obsessed_sword_cultivator` | `base` | 72x88 |
-| <img src="../../../Assets/Final/scripture_archive_echo/scripture_archive_echo__base__v01.png" alt="藏经残影 base" width="72"> | 藏经残影 | `scripture_archive_echo` | `base` | 64x64 |
-| <img src="../../../Assets/Final/celestial_puppet/celestial_puppet__base__v01.png" alt="仙傀 base" width="72"> | 仙傀 | `celestial_puppet` | `base` | 72x80 |
-| <img src="../../../Assets/Final/heaven_tablet_guard/heaven_tablet_guard__base__v01.png" alt="天碑卫 base" width="72"> | 天碑卫 | `heaven_tablet_guard` | `base` | 72x88 |
-| <img src="../../../Assets/Final/moonbone_cultivator/moonbone_cultivator__base__v01.png" alt="月骸修士 base" width="72"> | 月骸修士 | `moonbone_cultivator` | `base` | 72x88 |
-| <img src="../../../Assets/Final/archived_immortal_soul/archived_immortal_soul__base__v01.png" alt="归档仙魂 base" width="72"> | 归档仙魂 | `archived_immortal_soul` | `base` | 80x80 |
+| <img src="../../../Assets/Final/wandering_spirit_slime/wandering_spirit_slime__base__v09.png" alt="游灵史莱姆 base" width="72"> | 游灵史莱姆 | `wandering_spirit_slime` | `base` | 40x40 |
+| <img src="../../../Assets/Final/shattered_jade_worm/shattered_jade_worm__base__v09.png" alt="碎玉虫 base" width="72"> | 碎玉虫 | `shattered_jade_worm` | `base` | 54x28 |
+| <img src="../../../Assets/Final/talisman_bat/talisman_bat__base__v09.png" alt="符纸蝠 base" width="72"> | 符纸蝠 | `talisman_bat` | `base` | 50x34 |
+| <img src="../../../Assets/Final/herb_garden_vine_spirit/herb_garden_vine_spirit__base__v09.png" alt="药园藤妖 base" width="72"> | 药园藤妖 | `herb_garden_vine_spirit` | `base` | 64x64 |
+| <img src="../../../Assets/Final/miasma_flower_moth/miasma_flower_moth__base__v09.png" alt="花瘴蝶 base" width="72"> | 花瘴蝶 | `miasma_flower_moth` | `base` | 56x56 |
+| <img src="../../../Assets/Final/furnace_ash_golem/furnace_ash_golem__base__v09.png" alt="炉灰傀 base" width="72"> | 炉灰傀 | `furnace_ash_golem` | `base` | 72x72 |
+| <img src="../../../Assets/Final/iron_shard_spirit/iron_shard_spirit__base__v09.png" alt="铁屑灵 base" width="72"> | 铁屑灵 | `iron_shard_spirit` | `base` | 36x36 |
+| <img src="../../../Assets/Final/tribulation_cloudling/tribulation_cloudling__base__v09.png" alt="劫云灵 base" width="72"> | 劫云灵 | `tribulation_cloudling` | `base` | 56x48 |
+| <img src="../../../Assets/Final/thunder_pattern_hawk/thunder_pattern_hawk__base__v09.png" alt="雷纹鹰 base" width="72"> | 雷纹鹰 | `thunder_pattern_hawk` | `base` | 68x52 |
+| <img src="../../../Assets/Final/star_eclipsed_cultivator/star_eclipsed_cultivator__base__v09.png" alt="星蚀修士 base" width="72"> | 星蚀修士 | `star_eclipsed_cultivator` | `base` | 64x64 |
+| <img src="../../../Assets/Final/star_abyss_larva/star_abyss_larva__base__v09.png" alt="星渊幼体 base" width="72"> | 星渊幼体 | `star_abyss_larva` | `base` | 52x36 |
+| <img src="../../../Assets/Final/obsessed_sword_cultivator/obsessed_sword_cultivator__base__v09.png" alt="执念剑修 base" width="72"> | 执念剑修 | `obsessed_sword_cultivator` | `base` | 72x88 |
+| <img src="../../../Assets/Final/scripture_archive_echo/scripture_archive_echo__base__v09.png" alt="藏经残影 base" width="72"> | 藏经残影 | `scripture_archive_echo` | `base` | 64x64 |
+| <img src="../../../Assets/Final/celestial_puppet/celestial_puppet__base__v09.png" alt="仙傀 base" width="72"> | 仙傀 | `celestial_puppet` | `base` | 72x80 |
+| <img src="../../../Assets/Final/heaven_tablet_guard/heaven_tablet_guard__base__v09.png" alt="天碑卫 base" width="72"> | 天碑卫 | `heaven_tablet_guard` | `base` | 72x88 |
+| <img src="../../../Assets/Final/moonbone_cultivator/moonbone_cultivator__base__v09.png" alt="月骸修士 base" width="72"> | 月骸修士 | `moonbone_cultivator` | `base` | 72x88 |
+| <img src="../../../Assets/Final/archived_immortal_soul/archived_immortal_soul__base__v09.png" alt="归档仙魂 base" width="72"> | 归档仙魂 | `archived_immortal_soul` | `base` | 80x80 |
 
 <!-- ART_SECTION:enemy-art:END -->

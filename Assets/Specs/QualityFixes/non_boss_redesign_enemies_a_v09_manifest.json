@@ -1,0 +1,101 @@
+{
+  "schema": "xianxia_non_boss_redesign_manifest_v1",
+  "version": "v09",
+  "source": "Assets/Specs/art_asset_manifest.csv",
+  "grid": {
+    "cols": 5,
+    "rows": 2
+  },
+  "assets": [
+    {
+      "asset_id": "wandering_spirit_slime",
+      "output_type": "base",
+      "category": "enemy",
+      "size": [
+        40,
+        40
+      ],
+      "margin": 4
+    },
+    {
+      "asset_id": "shattered_jade_worm",
+      "output_type": "base",
+      "category": "enemy",
+      "size": [
+        54,
+        28
+      ],
+      "margin": 4
+    },
+    {
+      "asset_id": "talisman_bat",
+      "output_type": "base",
+      "category": "enemy",
+      "size": [
+        50,
+        34
+      ],
+      "margin": 4
+    },
+    {
+      "asset_id": "herb_garden_vine_spirit",
+      "output_type": "base",
+      "category": "enemy",
+      "size": [
+        64,
+        64
+      ],
+      "margin": 4
+    },
+    {
+      "asset_id": "miasma_flower_moth",
+      "output_type": "base",
+      "category": "enemy",
+      "size": [
+        56,
+        56
+      ],
+      "margin": 4
+    },
+    {
+      "asset_id": "furnace_ash_golem",
+      "output_type": "base",
+      "category": "enemy",
+      "size": [
+        72,
+        72
+      ],
+      "margin": 4
+    },
+    {
+      "asset_id": "iron_shard_spirit",
+      "output_type": "base",
+      "category": "enemy",
+      "size": [
+        36,
+        36
+      ],
+      "margin": 4
+    },
+    {
+      "asset_id": "tribulation_cloudling",
+      "output_type": "base",
+      "category": "enemy",
+      "size": [
+        56,
+        48
+      ],
+      "margin": 4
+    },
+    {
+      "asset_id": "thunder_pattern_hawk",
+      "output_type": "base",
+      "category": "enemy",
+      "size": [
+        68,
+        52
+      ],
+      "margin": 4
+    }
+  ]
+}

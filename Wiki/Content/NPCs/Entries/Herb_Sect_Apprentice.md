@@ -6,8 +6,8 @@
 
 | 素材 | 名称 | ID | 类型 | 尺寸 |
 | --- | --- | --- | --- | --- |
-| <img src="../../../../Assets/Final/herb_sect_apprentice/herb_sect_apprentice__body__v01.png" alt="药宗遗徒 body" width="72"> | 药宗遗徒 | `herb_sect_apprentice` | `body` | 40x56 |
-| <img src="../../../../Assets/Final/herb_sect_apprentice/herb_sect_apprentice__head__v01.png" alt="药宗遗徒 head" width="72"> | 药宗遗徒 | `herb_sect_apprentice` | `head` | 32x32 |
+| <img src="../../../../Assets/Final/herb_sect_apprentice/herb_sect_apprentice__body__v09.png" alt="药宗遗徒 body" width="72"> | 药宗遗徒 | `herb_sect_apprentice` | `body` | 40x56 |
+| <img src="../../../../Assets/Final/herb_sect_apprentice/herb_sect_apprentice__head__v09.png" alt="药宗遗徒 head" width="72"> | 药宗遗徒 | `herb_sect_apprentice` | `head` | 32x32 |
 
 <!-- ART_SECTION:entry-art:END -->
 

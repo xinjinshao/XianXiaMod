@@ -1,0 +1,111 @@
+{
+  "schema": "xianxia_non_boss_redesign_manifest_v1",
+  "version": "v09",
+  "source": "Assets/Specs/art_asset_manifest.csv",
+  "grid": {
+    "cols": 5,
+    "rows": 2
+  },
+  "assets": [
+    {
+      "asset_id": "woodgrain_flying_sword",
+      "output_type": "item_icon",
+      "category": "equipment",
+      "size": [
+        56,
+        56
+      ],
+      "margin": 4
+    },
+    {
+      "asset_id": "cloudpiercer_flying_sword",
+      "output_type": "item_icon",
+      "category": "equipment",
+      "size": [
+        72,
+        72
+      ],
+      "margin": 4
+    },
+    {
+      "asset_id": "thunder_pattern_sword_case",
+      "output_type": "item_icon",
+      "category": "equipment",
+      "size": [
+        80,
+        80
+      ],
+      "margin": 4
+    },
+    {
+      "asset_id": "formless_sword_wheel",
+      "output_type": "item_icon",
+      "category": "equipment",
+      "size": [
+        96,
+        96
+      ],
+      "margin": 4
+    },
+    {
+      "asset_id": "moonbone_dharma_sword",
+      "output_type": "item_icon",
+      "category": "equipment",
+      "size": [
+        104,
+        104
+      ],
+      "margin": 4
+    },
+    {
+      "asset_id": "cinnabar_talisman_flame_item",
+      "output_type": "item_icon",
+      "category": "equipment",
+      "size": [
+        48,
+        48
+      ],
+      "margin": 4
+    },
+    {
+      "asset_id": "greenwood_array_plate",
+      "output_type": "item_icon",
+      "category": "equipment",
+      "size": [
+        56,
+        56
+      ],
+      "margin": 4
+    },
+    {
+      "asset_id": "thunder_talisman_array_plate",
+      "output_type": "item_icon",
+      "category": "equipment",
+      "size": [
+        60,
+        60
+      ],
+      "margin": 4
+    },
+    {
+      "asset_id": "broken_heaven_decree",
+      "output_type": "item_icon",
+      "category": "equipment",
+      "size": [
+        56,
+        56
+      ],
+      "margin": 4
+    },
+    {
+      "asset_id": "old_heaven_dao_scroll",
+      "output_type": "item_icon",
+      "category": "equipment",
+      "size": [
+        72,
+        72
+      ],
+      "margin": 4
+    }
+  ]
+}

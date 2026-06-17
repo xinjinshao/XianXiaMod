@@ -6,8 +6,8 @@
 
 | 素材 | 名称 | ID | 类型 | 尺寸 |
 | --- | --- | --- | --- | --- |
-| <img src="../../../../Assets/Final/fallen_heaven_messenger/fallen_heaven_messenger__body__v01.png" alt="坠天信使 body" width="72"> | 坠天信使 | `fallen_heaven_messenger` | `body` | 40x56 |
-| <img src="../../../../Assets/Final/fallen_heaven_messenger/fallen_heaven_messenger__head__v01.png" alt="坠天信使 head" width="72"> | 坠天信使 | `fallen_heaven_messenger` | `head` | 32x32 |
+| <img src="../../../../Assets/Final/fallen_heaven_messenger/fallen_heaven_messenger__body__v09.png" alt="坠天信使 body" width="72"> | 坠天信使 | `fallen_heaven_messenger` | `body` | 40x56 |
+| <img src="../../../../Assets/Final/fallen_heaven_messenger/fallen_heaven_messenger__head__v09.png" alt="坠天信使 head" width="72"> | 坠天信使 | `fallen_heaven_messenger` | `head` | 32x32 |
 
 <!-- ART_SECTION:entry-art:END -->
 

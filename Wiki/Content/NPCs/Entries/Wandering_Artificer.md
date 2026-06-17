@@ -6,8 +6,8 @@
 
 | 素材 | 名称 | ID | 类型 | 尺寸 |
 | --- | --- | --- | --- | --- |
-| <img src="../../../../Assets/Final/wandering_artificer/wandering_artificer__body__v01.png" alt="游方器师 body" width="72"> | 游方器师 | `wandering_artificer` | `body` | 40x56 |
-| <img src="../../../../Assets/Final/wandering_artificer/wandering_artificer__head__v01.png" alt="游方器师 head" width="72"> | 游方器师 | `wandering_artificer` | `head` | 32x32 |
+| <img src="../../../../Assets/Final/wandering_artificer/wandering_artificer__body__v09.png" alt="游方器师 body" width="72"> | 游方器师 | `wandering_artificer` | `body` | 40x56 |
+| <img src="../../../../Assets/Final/wandering_artificer/wandering_artificer__head__v09.png" alt="游方器师 head" width="72"> | 游方器师 | `wandering_artificer` | `head` | 32x32 |
 
 <!-- ART_SECTION:entry-art:END -->
 

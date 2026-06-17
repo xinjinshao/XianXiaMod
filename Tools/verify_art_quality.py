@@ -36,6 +36,10 @@ PROJECTILE_MIN_COLORS = {
     "Content/Projectiles/SpiritBoltProjectile.png": 8,
 }
 
+FULL_BLEED_PROJECTILES = {
+    "Content/Projectiles/TribulationWarningLineProjectile.png",
+}
+
 
 def rel(path: Path) -> str:
     return path.relative_to(ROOT).as_posix()
@@ -45,6 +49,8 @@ def required_margin(path: Path, image: Image.Image) -> int:
     item = rel(path)
     width, height = image.size
     if item in TILEABLE_PREFIXES:
+        return 0
+    if item in FULL_BLEED_PROJECTILES:
         return 0
     if "Content/Projectiles/" in item:
         if min(width, height) <= 4:

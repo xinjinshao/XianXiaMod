@@ -6,8 +6,8 @@
 
 | 素材 | 名称 | ID | 类型 | 尺寸 |
 | --- | --- | --- | --- | --- |
-| <img src="../../../../Assets/Final/archive_scroll_spirit/archive_scroll_spirit__body__v01.png" alt="残卷书灵 body" width="72"> | 残卷书灵 | `archive_scroll_spirit` | `body` | 40x56 |
-| <img src="../../../../Assets/Final/archive_scroll_spirit/archive_scroll_spirit__head__v01.png" alt="残卷书灵 head" width="72"> | 残卷书灵 | `archive_scroll_spirit` | `head` | 32x32 |
+| <img src="../../../../Assets/Final/archive_scroll_spirit/archive_scroll_spirit__body__v09.png" alt="残卷书灵 body" width="72"> | 残卷书灵 | `archive_scroll_spirit` | `body` | 40x56 |
+| <img src="../../../../Assets/Final/archive_scroll_spirit/archive_scroll_spirit__head__v09.png" alt="残卷书灵 head" width="72"> | 残卷书灵 | `archive_scroll_spirit` | `head` | 32x32 |
 
 <!-- ART_SECTION:entry-art:END -->
 

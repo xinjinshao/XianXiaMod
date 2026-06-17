@@ -28,16 +28,16 @@
 
 | 素材 | 名称 | ID | 类型 | 尺寸 |
 | --- | --- | --- | --- | --- |
-| <img src="../../../Assets/Final/herb_sect_apprentice/herb_sect_apprentice__body__v01.png" alt="药宗遗徒 body" width="72"> | 药宗遗徒 | `herb_sect_apprentice` | `body` | 40x56 |
-| <img src="../../../Assets/Final/wandering_artificer/wandering_artificer__body__v01.png" alt="游方器师 body" width="72"> | 游方器师 | `wandering_artificer` | `body` | 40x56 |
-| <img src="../../../Assets/Final/tribulation_observer/tribulation_observer__body__v01.png" alt="观劫道人 body" width="72"> | 观劫道人 | `tribulation_observer` | `body` | 40x56 |
-| <img src="../../../Assets/Final/archive_scroll_spirit/archive_scroll_spirit__body__v01.png" alt="残卷书灵 body" width="72"> | 残卷书灵 | `archive_scroll_spirit` | `body` | 40x56 |
-| <img src="../../../Assets/Final/fallen_heaven_messenger/fallen_heaven_messenger__body__v01.png" alt="坠天信使 body" width="72"> | 坠天信使 | `fallen_heaven_messenger` | `body` | 40x56 |
-| <img src="../../../Assets/Final/herb_sect_apprentice/herb_sect_apprentice__head__v01.png" alt="药宗遗徒 head" width="72"> | 药宗遗徒 | `herb_sect_apprentice` | `head` | 32x32 |
-| <img src="../../../Assets/Final/wandering_artificer/wandering_artificer__head__v01.png" alt="游方器师 head" width="72"> | 游方器师 | `wandering_artificer` | `head` | 32x32 |
-| <img src="../../../Assets/Final/tribulation_observer/tribulation_observer__head__v01.png" alt="观劫道人 head" width="72"> | 观劫道人 | `tribulation_observer` | `head` | 32x32 |
-| <img src="../../../Assets/Final/archive_scroll_spirit/archive_scroll_spirit__head__v01.png" alt="残卷书灵 head" width="72"> | 残卷书灵 | `archive_scroll_spirit` | `head` | 32x32 |
-| <img src="../../../Assets/Final/fallen_heaven_messenger/fallen_heaven_messenger__head__v01.png" alt="坠天信使 head" width="72"> | 坠天信使 | `fallen_heaven_messenger` | `head` | 32x32 |
+| <img src="../../../Assets/Final/herb_sect_apprentice/herb_sect_apprentice__body__v09.png" alt="药宗遗徒 body" width="72"> | 药宗遗徒 | `herb_sect_apprentice` | `body` | 40x56 |
+| <img src="../../../Assets/Final/wandering_artificer/wandering_artificer__body__v09.png" alt="游方器师 body" width="72"> | 游方器师 | `wandering_artificer` | `body` | 40x56 |
+| <img src="../../../Assets/Final/tribulation_observer/tribulation_observer__body__v09.png" alt="观劫道人 body" width="72"> | 观劫道人 | `tribulation_observer` | `body` | 40x56 |
+| <img src="../../../Assets/Final/archive_scroll_spirit/archive_scroll_spirit__body__v09.png" alt="残卷书灵 body" width="72"> | 残卷书灵 | `archive_scroll_spirit` | `body` | 40x56 |
+| <img src="../../../Assets/Final/fallen_heaven_messenger/fallen_heaven_messenger__body__v09.png" alt="坠天信使 body" width="72"> | 坠天信使 | `fallen_heaven_messenger` | `body` | 40x56 |
+| <img src="../../../Assets/Final/herb_sect_apprentice/herb_sect_apprentice__head__v09.png" alt="药宗遗徒 head" width="72"> | 药宗遗徒 | `herb_sect_apprentice` | `head` | 32x32 |
+| <img src="../../../Assets/Final/wandering_artificer/wandering_artificer__head__v09.png" alt="游方器师 head" width="72"> | 游方器师 | `wandering_artificer` | `head` | 32x32 |
+| <img src="../../../Assets/Final/tribulation_observer/tribulation_observer__head__v09.png" alt="观劫道人 head" width="72"> | 观劫道人 | `tribulation_observer` | `head` | 32x32 |
+| <img src="../../../Assets/Final/archive_scroll_spirit/archive_scroll_spirit__head__v09.png" alt="残卷书灵 head" width="72"> | 残卷书灵 | `archive_scroll_spirit` | `head` | 32x32 |
+| <img src="../../../Assets/Final/fallen_heaven_messenger/fallen_heaven_messenger__head__v09.png" alt="坠天信使 head" width="72"> | 坠天信使 | `fallen_heaven_messenger` | `head` | 32x32 |
 
 <!-- ART_SECTION:npc-art:END -->
 

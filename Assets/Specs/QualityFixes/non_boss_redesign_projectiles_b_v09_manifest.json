@@ -1,0 +1,71 @@
+{
+  "schema": "xianxia_non_boss_redesign_manifest_v1",
+  "version": "v09",
+  "source": "Assets/Specs/art_asset_manifest.csv",
+  "grid": {
+    "cols": 3,
+    "rows": 2
+  },
+  "assets": [
+    {
+      "asset_id": "cinnabar_talisman_flame",
+      "output_type": "projectile",
+      "category": "projectile",
+      "size": [
+        32,
+        32
+      ],
+      "margin": 3
+    },
+    {
+      "asset_id": "greenwood_array_field",
+      "output_type": "projectile",
+      "category": "projectile",
+      "size": [
+        96,
+        96
+      ],
+      "margin": 3
+    },
+    {
+      "asset_id": "thunder_talisman_array",
+      "output_type": "projectile",
+      "category": "projectile",
+      "size": [
+        96,
+        96
+      ],
+      "margin": 3
+    },
+    {
+      "asset_id": "decree_judgement_beam",
+      "output_type": "projectile",
+      "category": "projectile",
+      "size": [
+        40,
+        160
+      ],
+      "margin": 3
+    },
+    {
+      "asset_id": "spirit_bolt",
+      "output_type": "projectile",
+      "category": "projectile",
+      "size": [
+        20,
+        12
+      ],
+      "margin": 3
+    },
+    {
+      "asset_id": "star_eclipse_split_bolt",
+      "output_type": "projectile",
+      "category": "projectile",
+      "size": [
+        32,
+        32
+      ],
+      "margin": 3
+    }
+  ]
+}

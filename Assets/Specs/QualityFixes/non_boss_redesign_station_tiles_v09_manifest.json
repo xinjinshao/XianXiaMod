@@ -1,0 +1,100 @@
+{
+  "schema": "xianxia_non_boss_redesign_manifest_v1",
+  "version": "v09",
+  "grid": {
+    "cols": 3,
+    "rows": 3
+  },
+  "assets": [
+    {
+      "asset_id": "alchemy_cauldron",
+      "output_type": "object",
+      "category": "station",
+      "size": [
+        32,
+        32
+      ],
+      "margin": 2
+    },
+    {
+      "asset_id": "artifact_forge",
+      "output_type": "object",
+      "category": "station",
+      "size": [
+        32,
+        48
+      ],
+      "margin": 2
+    },
+    {
+      "asset_id": "dao_severing_altar",
+      "output_type": "object",
+      "category": "station",
+      "size": [
+        80,
+        48
+      ],
+      "margin": 2
+    },
+    {
+      "asset_id": "earth_clay_furnace",
+      "output_type": "object",
+      "category": "station",
+      "size": [
+        48,
+        48
+      ],
+      "margin": 2
+    },
+    {
+      "asset_id": "heaven_fire_furnace",
+      "output_type": "object",
+      "category": "station",
+      "size": [
+        64,
+        64
+      ],
+      "margin": 2
+    },
+    {
+      "asset_id": "sect_trial_altar",
+      "output_type": "object",
+      "category": "station",
+      "size": [
+        64,
+        48
+      ],
+      "margin": 2
+    },
+    {
+      "asset_id": "simple_talisman_table",
+      "output_type": "object",
+      "category": "station",
+      "size": [
+        48,
+        32
+      ],
+      "margin": 2
+    },
+    {
+      "asset_id": "star_pattern_cauldron",
+      "output_type": "object",
+      "category": "station",
+      "size": [
+        64,
+        64
+      ],
+      "margin": 2
+    },
+    {
+      "asset_id": "thunder_pattern_forge",
+      "output_type": "object",
+      "category": "station",
+      "size": [
+        64,
+        48
+      ],
+      "margin": 2
+    }
+  ]
+}

@@ -1,0 +1,91 @@
+{
+  "schema": "xianxia_non_boss_redesign_manifest_v1",
+  "version": "v09",
+  "source": "Assets/Specs/art_asset_manifest.csv",
+  "grid": {
+    "cols": 4,
+    "rows": 2
+  },
+  "assets": [
+    {
+      "asset_id": "star_eclipsed_cultivator",
+      "output_type": "base",
+      "category": "enemy",
+      "size": [
+        64,
+        64
+      ],
+      "margin": 4
+    },
+    {
+      "asset_id": "star_abyss_larva",
+      "output_type": "base",
+      "category": "enemy",
+      "size": [
+        52,
+        36
+      ],
+      "margin": 4
+    },
+    {
+      "asset_id": "obsessed_sword_cultivator",
+      "output_type": "base",
+      "category": "enemy",
+      "size": [
+        72,
+        88
+      ],
+      "margin": 4
+    },
+    {
+      "asset_id": "scripture_archive_echo",
+      "output_type": "base",
+      "category": "enemy",
+      "size": [
+        64,
+        64
+      ],
+      "margin": 4
+    },
+    {
+      "asset_id": "celestial_puppet",
+      "output_type": "base",
+      "category": "enemy",
+      "size": [
+        72,
+        80
+      ],
+      "margin": 4
+    },
+    {
+      "asset_id": "heaven_tablet_guard",
+      "output_type": "base",
+      "category": "enemy",
+      "size": [
+        72,
+        88
+      ],
+      "margin": 4
+    },
+    {
+      "asset_id": "moonbone_cultivator",
+      "output_type": "base",
+      "category": "enemy",
+      "size": [
+        72,
+        88
+      ],
+      "margin": 4
+    },
+    {
+      "asset_id": "archived_immortal_soul",
+      "output_type": "base",
+      "category": "enemy",
+      "size": [
+        80,
+        80
+      ],
+      "margin": 4
+    }
+  ]
+}

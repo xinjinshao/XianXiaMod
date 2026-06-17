@@ -1,0 +1,16 @@
+{
+  "version": "non_boss_redesign_buffs_v09",
+  "grid": {"cols": 5, "rows": 2},
+  "assets": [
+    {"asset_id": "alchemy_insight_buff", "output_type": "buff_icon", "category": "buff", "size": [32, 32], "margin": 3},
+    {"asset_id": "archive_lock_buff", "output_type": "buff_icon", "category": "buff", "size": [32, 32], "margin": 3},
+    {"asset_id": "artifact_resonance_buff", "output_type": "buff_icon", "category": "buff", "size": [32, 32], "margin": 3},
+    {"asset_id": "qi_gathering_buff", "output_type": "buff_icon", "category": "buff", "size": [32, 32], "margin": 3},
+    {"asset_id": "spiritual_pressure_disorder_buff", "output_type": "buff_icon", "category": "buff", "size": [32, 32], "margin": 3},
+    {"asset_id": "spring_return_buff", "output_type": "buff_icon", "category": "buff", "size": [32, 32], "margin": 3},
+    {"asset_id": "spring_return_regen_buff", "output_type": "buff_icon", "category": "buff", "size": [32, 32], "margin": 3},
+    {"asset_id": "star_abyss_corrosion_buff", "output_type": "buff_icon", "category": "buff", "size": [32, 32], "margin": 3},
+    {"asset_id": "tribulation_pressure_buff", "output_type": "buff_icon", "category": "buff", "size": [32, 32], "margin": 3},
+    {"asset_id": "tribulation_resistance_buff", "output_type": "buff_icon", "category": "buff", "size": [32, 32], "margin": 3}
+  ]
+}

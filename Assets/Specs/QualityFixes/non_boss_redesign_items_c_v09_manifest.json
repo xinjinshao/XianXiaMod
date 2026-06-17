@@ -1,0 +1,13 @@
+{
+  "version": "non_boss_redesign_items_c_v09",
+  "grid": {"cols": 4, "rows": 2},
+  "assets": [
+    {"asset_id": "spirit_vein_incense", "output_type": "item_icon", "category": "item", "size": [32, 32], "margin": 3},
+    {"asset_id": "garden_broken_key", "output_type": "item_icon", "category": "item", "size": [32, 32], "margin": 3},
+    {"asset_id": "old_furnace_ember", "output_type": "item_icon", "category": "item", "size": [28, 28], "margin": 3},
+    {"asset_id": "thunder_calling_jade", "output_type": "item_icon", "category": "item", "size": [36, 36], "margin": 3},
+    {"asset_id": "star_abyss_membrane", "output_type": "item_icon", "category": "item", "size": [32, 32], "margin": 3},
+    {"asset_id": "heaven_tablet_rubbing", "output_type": "item_icon", "category": "item", "size": [32, 32], "margin": 3},
+    {"asset_id": "moonbone_ritual_talisman", "output_type": "item_icon", "category": "item", "size": [36, 36], "margin": 3}
+  ]
+}

@@ -167,11 +167,11 @@
 
 | 素材 | 名称 | ID | 类型 | 尺寸 |
 | --- | --- | --- | --- | --- |
-| <img src="../../Assets/Final/spiritual_energy_bar_frame/spiritual_energy_bar_frame__ui__v01.png" alt="灵气条框 ui" width="64"> | 灵气条框 | `spiritual_energy_bar_frame` | `ui` | 164x16 |
-| <img src="../../Assets/Final/spiritual_energy_bar_fill/spiritual_energy_bar_fill__ui__v01.png" alt="灵气条填充 ui" width="64"> | 灵气条填充 | `spiritual_energy_bar_fill` | `ui` | 160x12 |
+| <img src="../../Assets/Final/spiritual_energy_bar_frame/spiritual_energy_bar_frame__ui__v09.png" alt="灵气条框 ui" width="64"> | 灵气条框 | `spiritual_energy_bar_frame` | `ui` | 164x16 |
+| <img src="../../Assets/Final/spiritual_energy_bar_fill/spiritual_energy_bar_fill__ui__v09.png" alt="灵气条填充 ui" width="64"> | 灵气条填充 | `spiritual_energy_bar_fill` | `ui` | 160x12 |
 | <img src="../../Assets/Final/pressure_warning_icon/pressure_warning_icon__ui__v01.png" alt="灵压警告图标 ui" width="64"> | 灵压警告图标 | `pressure_warning_icon` | `ui` | 32x32 |
 | <img src="../../Assets/Final/artifact_slot_frame/artifact_slot_frame__ui__v01.png" alt="法宝槽 ui" width="64"> | 法宝槽 | `artifact_slot_frame` | `ui` | 40x40 |
-| <img src="../../Assets/Final/tribulation_warning_line/tribulation_warning_line__ui__v01.png" alt="天劫预警线 ui" width="64"> | 天劫预警线 | `tribulation_warning_line` | `ui` | 16x4 |
+| <img src="../../Assets/Final/tribulation_warning_line/tribulation_warning_line__ui__v09.png" alt="天劫预警线 ui" width="64"> | 天劫预警线 | `tribulation_warning_line` | `ui` | 16x4 |
 
 <!-- ART_SECTION:systems-ui-art:END -->
 

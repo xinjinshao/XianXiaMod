@@ -103,6 +103,18 @@ Docs/
 - 审阅时必须同时检查 `Content/` 真实 PNG、`Assets/Final/contact_sheet_v01.png` 总览和 `Wiki/Art_Gallery.md` 页面展示，三者都不能出现截断或占位感。
 - 每轮素材刷新后必须运行 `python Tools\clean_art_fragments.py`、`python Tools\enforce_art_padding.py` 和 `python Tools\verify_art_quality.py`；清理工具只能作为审计辅助，不能替代污染链重生。padding 工具按规则收缩非平铺资源并保留画布尺寸，审计工具把残片、可视安全边和低颜色占位风险作为阻断项。
 
+### 3.3 硬边像素、虚边与 alpha 规则
+
+从 2026-06-17 起，所有非 Boss 刷新资源还必须满足以下硬边规则：
+
+- 最终进入 `Content/` 的非平铺资源应呈现 Terraria/Calamity 式清晰像素边缘，普通图标、敌怪、NPC、武器、饰品、召唤物和 object tile 不得依赖半透明羽化外圈来塑形。
+- 去除色键背景后，必须执行 alpha 审计。普通非特效资源的半透明可见像素比例应控制在 12% 以下，低 alpha 像素比例应控制在 4% 以下；超过阈值视为“游戏内虚边风险”，必须重新生成或硬边重绘。
+- 光效、灵气和雷光可以存在，但必须有清晰实心像素核心；外圈柔光不能替代主体轮廓，不能让资源在游戏 UI 混合时出现一圈灰白或彩色虚边。
+- 投射物允许少量受控半透明效果，但飞剑、碎片、灵弹等应保持明确方向和足够填充率；除明确的细线/警戒线外，投射物不应退化成单色线、短点或低颜色占位符。
+- Buff 图标必须是“状态物件 + 能量形态”的像素图标，禁止圆形底板、几何按钮或单符号 UI 占位；制作台和对象 tile 必须表现实际物件结构。
+- 每轮刷新后必须运行 `python Tools\audit_art_redesign_quality.py`，并将输出写入 `Docs/art_quality_redesign_report.json`。报告中被标记为 `soft_edge_alpha`、`low_alpha_fringe`、`underfilled_projectile` 或 `low_projectile_color_depth` 的非豁免资源不得同步到 `Content/`。
+- 16x16 地形 tile、wall 等 tileable 资源继续豁免透明边距和硬边 alpha 阈值，但仍需检查接缝、颜色层次和是否像占位块。
+
 ## 4. 资产类型规则
 
 敌怪：
