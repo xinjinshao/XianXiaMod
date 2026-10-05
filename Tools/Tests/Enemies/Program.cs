@@ -60,3 +60,11 @@ for(int i=0;i<30;i++)hawk.PostAI();Check(Math.Abs(hawk.NPC.velocity.X-4.5f)<0.00
 hawk.NPC.localAI[0]=139;hawk.PostAI();Main.player[0].dead=true;hawk.NPC.netUpdate=false;hawk.PostAI();Check(hawk.NPC.localAI[0]==0&&hawk.NPC.localAI[1]==0&&hawk.NPC.netUpdate,"Losing target brakes and clears dive");
 Main.netMode=NetmodeID.MultiplayerClient;Main.dedServ=false;hawk.NPC.velocity=new(15,0);hawk.NPC.localAI[0]=139;hawk.NPC.netUpdate=false;hawk.PostAI();Check(hawk.NPC.localAI[0]==139&&hawk.NPC.velocity.X==15&&!hawk.NPC.netUpdate&&Dust.Calls==dust+1,"Client only renders trail and cannot transition dive");
 Console.WriteLine($"Enemy regression final count: {checks} assertions.");
+
+Main.netMode=NetmodeID.Server;Main.player[0].dead=false;Main.player[0].Center=new(500,0);var eclipse=new StarEclipsedCultivator();eclipse.SetDefaults();eclipse.NPC.life=1;beforeSpawns=Projectile.Spawns;
+for(int i=0;i<181;i++)eclipse.PostAI();Check(eclipse.NPC.velocity.X==0&&Projectile.Spawns==beforeSpawns+1,"No early retreat; server fires at 135 ticks");eclipse.NPC.netUpdate=false;eclipse.PostAI();Check(eclipse.NPC.velocity.X==-6&&eclipse.NPC.localAI[1]==0&&eclipse.NPC.netUpdate,"Low-life retreat after 182 ticks marks movement sync");
+eclipse.NPC.localAI[1]=100;eclipse.NPC.life=eclipse.NPC.lifeMax;eclipse.PostAI();Check(eclipse.NPC.localAI[1]==0,"Leaving low-life state resets retreat buildup");
+eclipse.NPC.localAI[0]=100;eclipse.NPC.localAI[1]=100;Main.player[0].dead=true;eclipse.PostAI();Check(eclipse.NPC.localAI[0]==0&&eclipse.NPC.localAI[1]==0,"No living target clears timers");
+Main.netMode=NetmodeID.MultiplayerClient;eclipse.NPC.localAI[0]=134;eclipse.NPC.localAI[1]=181;eclipse.NPC.life=1;float vx=eclipse.NPC.velocity.X;int projectiles=Projectile.Spawns;eclipse.PostAI();Check(eclipse.NPC.velocity.X==vx&&eclipse.NPC.localAI[0]==134&&eclipse.NPC.localAI[1]==181&&Projectile.Spawns==projectiles,"Client never executes retreat or shot timers");
+Main.netMode=NetmodeID.Server;Main.player[0].dead=false;Main.player[0].Center=new(100,0);eclipse.NPC.life=eclipse.NPC.lifeMax;eclipse.NPC.localAI[0]=30;eclipse.NPC.netUpdate=false;eclipse.PostAI();Check(eclipse.NPC.velocity.X<vx&&eclipse.NPC.netUpdate,"Server proximity avoidance periodically synchronizes movement");
+Console.WriteLine($"Enemy regression count: {checks} assertions.");

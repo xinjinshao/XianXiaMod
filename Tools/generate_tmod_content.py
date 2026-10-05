@@ -1477,39 +1477,36 @@ def enemy_behavior_code(asset_id: str) -> tuple[str, str]:
         return ("", """
     public override void PostAI()
     {
-        if (!global::XianXia.Common.Systems.EnemyTargeting.TryGetLivingTarget(NPC, out Player target)) return;
-
-        if (!target.active || target.dead)
+        if (Main.netMode == NetmodeID.MultiplayerClient) return;
+        if (!global::XianXia.Common.Systems.EnemyTargeting.TryGetLivingTarget(NPC, out Player target))
         {
+            NPC.localAI[0] = NPC.localAI[1] = 0f;
             return;
         }
-
-        float distance = Vector2.Distance(target.Center, NPC.Center);
-        if (distance < 240f)
+        Vector2 away = (NPC.Center - target.Center).SafeNormalize(Vector2.Zero);
+        if (Vector2.Distance(target.Center, NPC.Center) < 240f)
         {
-            NPC.velocity += (NPC.Center - target.Center).SafeNormalize(Vector2.Zero) * 0.12f;
+            NPC.velocity += away * 0.12f;
+            if (NPC.localAI[0] % 30f == 0f) NPC.netUpdate = true;
         }
-
-        if (NPC.life < NPC.lifeMax * 0.4f && NPC.localAI[1]++ > 180f)
+        if (NPC.life < NPC.lifeMax * 0.4f)
         {
-            NPC.localAI[1] = 0f;
-            NPC.velocity += (NPC.Center - target.Center).SafeNormalize(Vector2.Zero) * 6f;
+            if (++NPC.localAI[1] >= 182f)
+            {
+                NPC.localAI[1] = 0f;
+                NPC.velocity += away * 6f;
+                NPC.netUpdate = true;
+            }
         }
-
-        NPC.localAI[0]++;
-        if (Main.netMode != NetmodeID.MultiplayerClient && NPC.localAI[0] >= 135f)
-        {
-            NPC.localAI[0] = 0f;
-            Vector2 velocity = (target.Center - NPC.Center).SafeNormalize(Vector2.UnitY) * 7.5f;
-            Projectile.NewProjectile(
-                NPC.GetSource_FromAI(),
-                NPC.Center,
-                velocity,
-                ModContent.ProjectileType<global::XianXia.Content.Projectiles.BossSpiritBoltProjectile>(),
-                Math.Max(1, NPC.damage / 3),
-                1f);
-        }
+        else NPC.localAI[1] = 0f;
+        if (++NPC.localAI[0] < 135f) return;
+        NPC.localAI[0] = 0f;
+        Vector2 velocity = (target.Center - NPC.Center).SafeNormalize(Vector2.UnitY) * 7.5f;
+        Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center, velocity,
+            ModContent.ProjectileType<global::XianXia.Content.Projectiles.BossSpiritBoltProjectile>(),
+            Math.Max(1, NPC.damage / 3), 1f);
     }
+
 """)
 
     if asset_id == "star_abyss_larva":

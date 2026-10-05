@@ -1,5 +1,5 @@
 namespace Microsoft.Xna.Framework {
-public struct Vector2(float x,float y) { public float X=x,Y=y; public float LengthSquared()=>X*X+Y*Y;public static float Distance(Vector2 a,Vector2 b){var v=a-b;return MathF.Sqrt(v.X*v.X+v.Y*v.Y);} public static Vector2 operator +(Vector2 a,Vector2 b)=>new(a.X+b.X,a.Y+b.Y); public Vector2 RotatedBy(float a)=>new(X*MathF.Cos(a)-Y*MathF.Sin(a),X*MathF.Sin(a)+Y*MathF.Cos(a));public static Vector2 UnitX=>new(1,0);public static Vector2 UnitY=>new(0,1); public Vector2 SafeNormalize(Vector2 fallback){float length=MathF.Sqrt(X*X+Y*Y);return length>0?new(X/length,Y/length):fallback;} public static Vector2 operator -(Vector2 a,Vector2 b)=>new(a.X-b.X,a.Y-b.Y); public static Vector2 operator *(Vector2 a,float n)=>new(a.X*n,a.Y*n); }
+public struct Vector2(float x,float y) { public float X=x,Y=y; public float LengthSquared()=>X*X+Y*Y;public static float Distance(Vector2 a,Vector2 b){var v=a-b;return MathF.Sqrt(v.X*v.X+v.Y*v.Y);} public static Vector2 operator +(Vector2 a,Vector2 b)=>new(a.X+b.X,a.Y+b.Y); public Vector2 RotatedBy(float a)=>new(X*MathF.Cos(a)-Y*MathF.Sin(a),X*MathF.Sin(a)+Y*MathF.Cos(a));public static Vector2 Zero=>new(0,0);public static Vector2 UnitX=>new(1,0);public static Vector2 UnitY=>new(0,1); public Vector2 SafeNormalize(Vector2 fallback){float length=MathF.Sqrt(X*X+Y*Y);return length>0?new(X/length,Y/length):fallback;} public static Vector2 operator -(Vector2 a,Vector2 b)=>new(a.X-b.X,a.Y-b.Y); public static Vector2 operator *(Vector2 a,float n)=>new(a.X*n,a.Y*n); }
 }
 namespace Terraria {
 public static class Main {public static bool dedServ;public static IEnumerable<Player> ActivePlayers=>player.Where(p=>p.active);public static int netMode,maxPlayers=2;public static Player[] player=[new(),new()];public static bool hardMode;public static int[] npcFrameCount=new int[100];}
@@ -36,3 +36,6 @@ namespace XianXia.Content.Items.HandGenerated {public class TornScrollPage {}}
 namespace XianXia.Content.Biomes {public class ThunderMarshCloudsBiome {}}
 namespace XianXia.Content.Items.HandGenerated {public class ThunderPatternFeather {}}
 namespace XianXia.Content.Items.Materials {public class TribulationCloudDew {}}
+
+namespace XianXia.Content.Biomes {public class StarAbyssRiftBiome {}}
+namespace XianXia.Content.Items.Materials {public class StarEclipseCrystal {}}
