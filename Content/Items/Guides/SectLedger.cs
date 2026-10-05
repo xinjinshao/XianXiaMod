@@ -35,6 +35,7 @@ public class SectLedger : ModItem
         if (!Main.dedServ && Main.myPlayer == player.whoAmI && player.active && !player.dead)
         {
             Main.NewText(CultivationStatusText.Summary(player.GetModPlayer<XianXiaPlayer>()), 120, 245, 220);
+            Main.NewText(GetPreparation(player), 120, 245, 220);
             Main.NewText(GetNextGuidance(player), 120, 245, 220);
         }
 
@@ -48,6 +49,36 @@ public class SectLedger : ModItem
             .AddIngredient<LowGradeSpiritStone>(5)
             .AddTile(ModContent.TileType<global::XianXia.Content.Tiles.Stations.ArtifactForgeTile>())
             .Register();
+    }
+
+    private static string GetPreparation(Player player)
+    {
+        var cultivation = player.GetModPlayer<XianXiaPlayer>();
+        if (cultivation.cultivationStage >= CultivationStage.DaoSevering)
+            return Language.GetTextValue("Mods.XianXia.BreakthroughGuide.FinalRealm");
+        var target = (CultivationStage)((int)cultivation.cultivationStage + 1);
+        int item = target switch
+        {
+            CultivationStage.QiAwakening => ModContent.ItemType<global::XianXia.Content.Items.Consumables.QiDrawingTalisman>(),
+            CultivationStage.QiCondensation => ModContent.ItemType<QiCondensingPill>(),
+            CultivationStage.Foundation => ModContent.ItemType<FoundationPill>(),
+            CultivationStage.GoldenCore => ModContent.ItemType<StarEclipseCrystal>(),
+            CultivationStage.NascentSoul => ModContent.ItemType<OldHeavenDaoScroll>(),
+            CultivationStage.SpiritSevering => ModContent.ItemType<HeavenDaoFragment>(),
+            CultivationStage.Tribulation => ModContent.ItemType<Moonbone>(),
+            CultivationStage.DaoSevering => ModContent.ItemType<DaoSeveringDust>(),
+            _ => 0
+        };
+        if (item == 0) return Language.GetTextValue("Mods.XianXia.Progression.InvalidBreakthroughItem");
+        string failure = cultivation.GetBreakthroughFailure(target);
+        string boss = CultivationRules.GetRequiredBoss(target);
+        string availability = failure.Length == 0
+            ? Language.GetTextValue("Mods.XianXia.BreakthroughGuide.Ready")
+            : Language.GetTextValue("Mods.XianXia.Progression." + failure,
+                failure == "BreakthroughRequiresTrial" ? Language.GetTextValue("Mods.XianXia.Progression.TrialNames." + boss) : "");
+        return Language.GetTextValue("Mods.XianXia.BreakthroughGuide.Next",
+            CultivationStatusText.StageName(target), Lang.GetItemNameValue(item))
+            + "\n" + availability + "\n" + Language.GetTextValue("Mods.XianXia.BreakthroughGuide.Sources." + target);
     }
 
     private static string GetNextGuidance(Player player)

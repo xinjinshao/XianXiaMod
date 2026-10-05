@@ -1,0 +1,21 @@
+{
+  "Mods": {
+    "XianXia": {
+      "BreakthroughGuide": {
+        "Sources": {
+          "QiAwakening": "Qi-Drawing Talisman: craft at a Work Bench with 3 Low-Grade Spirit Stones and 2 Spirit Gel. Gather materials from spirit-vein enemies.",
+          "QiCondensation": "Qi-Condensing Pill: craft at an Earth Clay Furnace with 3 Greenwood Roots and 5 Low-Grade Spirit Stones. The mouse cursor must be empty when crafting. Gather roots in the Greenwood Herb Garden.",
+          "Foundation": "Foundation Pill: craft at an Alchemy Cauldron with 4 Greenwood Roots, 4 Furnace Slag Iron and 10 Low-Grade Spirit Stones. The mouse cursor must be empty when crafting. Slag comes from the Sunken Furnace Vein.",
+          "GoldenCore": "Star Eclipse Crystal: defeat the Abyssal Star Womb; in Expert/Master, open its treasure bag.",
+          "NascentSoul": "Old Heaven Dao Scroll: supplied by the Archive Scroll Spirit shop and sword-soul commission, subject to their requirements. This is a breakthrough item, not a firing magic weapon.",
+          "SpiritSevering": "Heaven Dao Fragment: defeat the Heaven Tablet Guardian or Broken Heaven Inspector; in Expert/Master, open their treasure bags.",
+          "Tribulation": "Moonbone: defeat the Moonbone Immortal; in Expert/Master, open its treasure bag.",
+          "DaoSevering": "Dao Severing Dust: defeat the Moonbone Immortal or Old Heaven Dao Core; in Expert/Master, open their treasure bags."
+        },
+        "Next": "Next realm: {0} | Hold and use: {1}",
+        "Ready": "Current breakthrough requirements are met. Prepare the item and use it while held. Advancement may begin a tribulation.",
+        "FinalRealm": "You have reached the current final realm. Continue with endgame routes and artifact growth."
+      }
+    }
+  }
+}
