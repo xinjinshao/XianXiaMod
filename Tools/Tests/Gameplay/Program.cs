@@ -447,3 +447,16 @@ Check(ReferenceEquals(projectileType.GetProperty("DamageType").GetValue(nativeCi
 Check((int)projectileType.GetField("penetrate").GetValue(nativeCinnabar)==2&&(bool)projectileType.GetField("tileCollide").GetValue(nativeCinnabar)&&(int)projectileType.GetField("timeLeft").GetValue(nativeCinnabar)==180,"Actual arrow penetration collision and lifetime");
 Check((bool)projectileType.GetField("usesLocalNPCImmunity").GetValue(nativeCinnabar)&&(int)projectileType.GetField("localNPCHitCooldown").GetValue(nativeCinnabar)==-1,"Actual arrow uses permanent local NPC immunity");
 Console.WriteLine($"Actual engine gameplay assertions including talisman bow/ammo: {assertions}.");
+
+var sealType=type.Assembly.GetType("XianXia.Content.Items.Weapons.HeavenTabletWardSeal",true);object actualSeal=Activator.CreateInstance(sealType),nativeSeal=Activator.CreateInstance(itemType);
+sealType.GetProperty("Entity",BindingFlags.Instance|BindingFlags.Public|BindingFlags.NonPublic).SetValue(actualSeal,nativeSeal);sealType.GetMethod("SetDefaults").Invoke(actualSeal,null);
+Check(ReferenceEquals(itemType.GetProperty("DamageType").GetValue(nativeSeal),meleeClass),"Actual tablet ward uses native melee class");
+Check((int)sealType.GetMethod("GetSpiritCost").Invoke(actualSeal,new object[]{null})==28,"Actual tablet ward declares 28 energy cost");
+Check((int)itemType.GetField("damage").GetValue(nativeSeal)==156&&(int)itemType.GetField("useTime").GetValue(nativeSeal)==48&&(float)itemType.GetField("knockBack").GetValue(nativeSeal)==7f,"Actual ward damage timing and knockback");
+var wardType=type.Assembly.GetType("XianXia.Content.Projectiles.HeavenTabletWardProjectile",true);object actualWard=Activator.CreateInstance(wardType),nativeWard=Activator.CreateInstance(projectileType);
+wardType.GetProperty("Entity",BindingFlags.Instance|BindingFlags.Public|BindingFlags.NonPublic).SetValue(actualWard,nativeWard);wardType.GetMethod("SetDefaults").Invoke(actualWard,null);
+Check(ReferenceEquals(projectileType.GetProperty("DamageType").GetValue(nativeWard),meleeClass)&&(int)projectileType.GetField("penetrate").GetValue(nativeWard)==3&&(int)projectileType.GetField("timeLeft").GetValue(nativeWard)==120,"Actual ward melee penetration and lifetime");
+Check((bool)projectileType.GetField("tileCollide").GetValue(nativeWard)&&(bool)projectileType.GetField("usesLocalNPCImmunity").GetValue(nativeWard)&&(int)projectileType.GetField("localNPCHitCooldown").GetValue(nativeWard)==20,"Actual ward native collision and local immunity");
+Check((int)projectileType.GetField("width").GetValue(nativeWard)==40&&(int)projectileType.GetField("height").GetValue(nativeWard)==40,"Actual ward declares a forty-pixel collision box");
+Check((int)type.Assembly.GetType("XianXia.Common.Players.HeavenTabletWardPlayer",true).GetField("DefenseBonus").GetRawConstantValue()==6,"Compiled ward declares a six-point temporary defense bonus");
+Console.WriteLine($"Actual engine gameplay assertions including tablet ward: {assertions}.");

@@ -238,7 +238,7 @@ namespace Terraria.ModLoader
     public static class ModContent {
         public static int TileType<T>() => typeof(T).Name switch { "ArtifactForgeTile"=>1,"ThunderPatternForgeTile"=>2,"HeavenFireFurnaceTile"=>3,_=>4 };
         public static int ItemType<T>()=>200;
-        public static int ProjectileType<T>()=>typeof(T).Name=="GreenwoodArrayField"?3:typeof(T).Name=="MedicineCauldronField"?4:typeof(T).Name=="MedicineSpiritBolt"?5:typeof(T).Name=="FurnaceHammerProjectile"?6:typeof(T).Name=="FurnaceImpactBurst"?7:2;
+        public static int ProjectileType<T>()=>typeof(T).Name=="GreenwoodArrayField"?3:typeof(T).Name=="MedicineCauldronField"?4:typeof(T).Name=="MedicineSpiritBolt"?5:typeof(T).Name=="FurnaceHammerProjectile"?6:typeof(T).Name=="FurnaceImpactBurst"?7:typeof(T).Name=="HeavenTabletWardProjectile"?8:2;
         public static int BuffType<T>()=>2;
         public static T GetInstance<T>() where T:new()=>new T();
     }
@@ -410,3 +410,5 @@ namespace XianXia.Content.Items.Materials {public class OldFurnaceEmber{} public
 namespace Terraria.ID {public static class ItemID {public const int FlamingArrow=41,WoodenArrow=40;}public static class ProjectileID {public const int WoodenArrowFriendly=1,FireArrow=2;}public static class AmmoID {public const int Arrow=40;}}
 namespace XianXia.Content.Items.HandGenerated {public class TornTalismanPaper{} public class CinnabarPowder{}}
 namespace XianXia.Content.Tiles.Stations {public class SimpleTalismanTableTile{}}
+
+namespace XianXia.Content.Items.Materials {public class HeavenDaoFragment{}}

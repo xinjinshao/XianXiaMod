@@ -1,0 +1,17 @@
+{
+  "Mods": {
+    "XianXia": {
+      "Items": {
+        "HeavenTabletWardSeal": {
+          "DisplayName": "Heaven Tablet Ward Seal",
+          "Tooltip": "Base cost: 28 spiritual energy; requires Spirit Severing, Hardmode, Plantera and Golem\nThrows a heavy ward; returns after 30 ticks or on terrain collision\nGrants 6 defense while holding this weapon with your visible ward within 160 pixels; does not stack\nHits up to 3 times; returning wards cannot strike enemies behind walls\nCrafted from the Heaven Tablet Seal boss material"
+        }
+      },
+      "Projectiles": {
+        "HeavenTabletWardProjectile": {
+          "DisplayName": "Heaven Tablet Ward"
+        }
+      }
+    }
+  }
+}

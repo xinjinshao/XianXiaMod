@@ -44,5 +44,8 @@
   <Compile Include="../../../Content/Items/Weapons/TalismanCrossbow.cs" Link="TalismanCrossbow.cs" />
   <Compile Include="../../../Content/Items/Weapons/CinnabarTalismanArrow.cs" Link="CinnabarTalismanArrow.cs" />
   <Compile Include="../../../Content/Projectiles/CinnabarArrowProjectile.cs" Link="CinnabarArrowProjectile.cs" />
+  <Compile Include="../../../Content/Items/Weapons/HeavenTabletWardSeal.cs" Link="HeavenTabletWardSeal.cs" />
+  <Compile Include="../../../Content/Projectiles/HeavenTabletWardProjectile.cs" Link="HeavenTabletWardProjectile.cs" />
+  <Compile Include="../../../Common/Players/HeavenTabletWardPlayer.cs" Link="HeavenTabletWardPlayer.cs" />
 </ItemGroup>
 </Project>

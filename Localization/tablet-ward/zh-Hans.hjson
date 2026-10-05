@@ -1,0 +1,17 @@
+{
+  "Mods": {
+    "XianXia": {
+      "Items": {
+        "HeavenTabletWardSeal": {
+          "DisplayName": "天碑御印",
+          "Tooltip": "基础消耗28灵气；需要化神境及困难模式、世纪之花、石巨人进度\n投出高击退御印，30tick后或碰撞地形时回收\n手持本武器且自己的御印在160像素内、视线通畅时，防御+6；不叠加\n御印最多命中3次，回收时不伤害墙后目标\n由Boss材料天碑镇印制作"
+        }
+      },
+      "Projectiles": {
+        "HeavenTabletWardProjectile": {
+          "DisplayName": "天碑御印"
+        }
+      }
+    }
+  }
+}

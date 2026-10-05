@@ -44,7 +44,7 @@
 
 | 职业 | 武器 | 饰品 | 说明 |
 | --- | --- | --- | --- |
-| 近战 | 天碑镇印 | 残天冠印 | 防御与压制 |
+| 近战 | [天碑御印](../Content/Equipment/Entries/Heaven_Tablet_Ward_Seal.md) | 残天冠印 | 附近御印提供防御，高击退回收攻击 |
 | 远程 | [天律弩阵](../Content/Equipment/Entries/Mechanism_Ranged_Weapons.md) | 残天冠印 | 天道弹道 |
 | 魔法 | 残天法旨 | 残天冠印 | 高消耗法术 |
 | 召唤 | 仙傀令 | 残天冠印 | 召唤仙傀 |
