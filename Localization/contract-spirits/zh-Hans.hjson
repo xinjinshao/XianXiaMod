@@ -1,0 +1,27 @@
+{
+  "Mods": {
+    "XianXia": {
+      "Buffs": {
+        "FurnaceAshSpiritBuff": {
+          "DisplayName": "炉灰器灵",
+          "Description": "炉灰器灵与你并肩作战"
+        },
+        "StarAbyssSpiritBuff": {
+          "DisplayName": "星渊幼体",
+          "Description": "星渊幼体向敌人发射灵弹"
+        }
+      },
+      "Projectiles": {
+        "FurnaceAshSpirit": {
+          "DisplayName": "炉灰器灵"
+        },
+        "StarAbyssSpirit": {
+          "DisplayName": "星渊幼体"
+        },
+        "ContractSpiritBolt": {
+          "DisplayName": "器灵灵弹"
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,27 @@
+{
+  "Mods": {
+    "XianXia": {
+      "Buffs": {
+        "FurnaceAshSpiritBuff": {
+          "DisplayName": "Furnace Ash Spirit",
+          "Description": "A furnace spirit fights at your side"
+        },
+        "StarAbyssSpiritBuff": {
+          "DisplayName": "Star Abyss Spirit",
+          "Description": "A star spirit fires at your enemies"
+        }
+      },
+      "Projectiles": {
+        "FurnaceAshSpirit": {
+          "DisplayName": "Furnace Ash Spirit"
+        },
+        "StarAbyssSpirit": {
+          "DisplayName": "Star Abyss Spirit"
+        },
+        "ContractSpiritBolt": {
+          "DisplayName": "Contract Spirit Bolt"
+        }
+      }
+    }
+  }
+}

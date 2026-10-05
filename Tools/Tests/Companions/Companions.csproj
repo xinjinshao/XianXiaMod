@@ -4,5 +4,9 @@
   <Compile Include="../../../Content/Projectiles/SmallArtifactSpirit.cs" Link="SmallArtifactSpirit.cs" />
   <Compile Include="../../../Content/Buffs/SmallArtifactSpiritBuff.cs" Link="SmallArtifactSpiritBuff.cs" />
   <Compile Include="../../../Content/Items/HandGenerated/SmallArtifactPendant.cs" Link="SmallArtifactPendant.cs" />
+  <Compile Include="../../../Content/Items/HandGenerated/SpiritContracts.cs" Link="SpiritContracts.cs" />
+  <Compile Include="../../../Content/Buffs/ContractSpiritBuffs.cs" Link="ContractSpiritBuffs.cs" />
+  <Compile Include="../../../Content/Projectiles/ContractSpirits.cs" Link="ContractSpirits.cs" />
+  <Compile Include="../../../Content/Projectiles/SpiritBoltProjectile.cs" Link="SpiritBoltProjectile.cs" />
  </ItemGroup>
 </Project>

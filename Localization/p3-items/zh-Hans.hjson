@@ -31,11 +31,11 @@ Mods: {
 			}
 			FurnaceAshSpiritContract: {
 				DisplayName: "炉灰器灵契"
-				Tooltip: "契约一只炉灰器灵为仆从。召唤伤害+8%。"
+				Tooltip: "装备时召唤伤害＋8%。手持消耗12魔力召唤炉灰器灵：基础伤害28，占1仆从位，每人最多1只，接触附加2秒燃烧。右键器灵Buff取消。"
 			}
 			StarAbyssLarvaContract: {
 				DisplayName: "星渊幼体契"
-				Tooltip: "与星渊幼体缔结契约。召唤伤害+10%，但灵气消耗略增。"
+				Tooltip: "装备时召唤伤害＋10%，灵气消耗＋5%。困难模式手持消耗16魔力召唤星渊幼体：基础伤害48，占1仆从位，每人最多1只，保持距离每秒发射召唤灵弹。右键器灵Buff取消。"
 			}
 			NascentSoulCloneTalisman: {
 				DisplayName: "元婴分身符"

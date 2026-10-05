@@ -1,7 +1,7 @@
 namespace Microsoft.Xna.Framework {
  public struct Rectangle {}
  public record struct Vector2(float X,float Y) {
-  public static Vector2 Zero=>new(0,0);
+  public static Vector2 Zero=>new(0,0); public static Vector2 UnitY=>new(0,1); public float ToRotation()=>MathF.Atan2(Y,X);
   public float LengthSquared()=>X*X+Y*Y;
   public Vector2 SafeNormalize(Vector2 fallback)=>LengthSquared()>0?this/MathF.Sqrt(LengthSquared()):fallback;
   public static float DistanceSquared(Vector2 a,Vector2 b)=>(a-b).LengthSquared();
@@ -15,7 +15,7 @@ namespace Terraria {
  using Microsoft.Xna.Framework;
  public static class Main {
   public static int myPlayer=0,maxNPCs=4,maxProjectiles=8;
-  public static bool dedServ;
+  public static bool dedServ,hardMode; public static RandomStub rand=new();
   public static bool[] projPet=new bool[16],buffNoSave=new bool[16],buffNoTimeDisplay=new bool[16],vanityPet=new bool[16];
   public static Player[] player=new Player[2];
   public static NPC[] npc=Enumerable.Range(0,4).Select(_=>new NPC()).ToArray();
@@ -27,7 +27,7 @@ namespace Terraria {
   public bool active=true,dead,HasMinionAttackTargetNPC;
   public int whoAmI,direction=1,MinionAttackTargetNPC,maxMinions=1,itemTime;
   public object GetSource_Buff(int index)=>null;
-  public float slotsMinions;
+  public float slotsMinions; public float SummonBonus; public ref float GetDamage(object damage)=>ref SummonBonus;
   public Vector2 Center;
   public int[] ownedProjectileCounts=new int[16],buffTime=new int[16];
   public bool Buff;
@@ -37,7 +37,7 @@ namespace Terraria {
   public T GetModPlayer<T>() where T:new()=>new T();
  }
  public class NPC {
-  public bool active,chaseable=true;
+  public bool active,chaseable=true; public struct HitInfo {} public int LastBuff,BuffDuration; public void AddBuff(int buff,int duration){LastBuff=buff;BuffDuration=duration;}
   public Vector2 Center,position;
   public int width=20,height=20;
   public bool CanBeChasedBy(object source)=>active&&chaseable;
@@ -45,7 +45,7 @@ namespace Terraria {
  public class Projectile {
   public int owner,type,width,height,penetrate,timeLeft,localNPCHitCooldown,originalDamage,damage,spriteDirection;
   public bool active,friendly,minion,tileCollide,ignoreWater,usesLocalNPCImmunity,netUpdate,netImportant;
-  public float minionSlots,rotation;
+  public float minionSlots,rotation; public float[] ai=new float[2]; public object GetSource_FromAI()=>null;
   public object DamageType;
   public Vector2 Center,position,velocity;
   public void Kill()=>active=false;
@@ -64,14 +64,15 @@ namespace Terraria {
  }
  public static class Collision { public static bool Visible=true; public static bool CanHitLine(Vector2 a,int b,int c,Vector2 d,int e,int f)=>Visible; }
  public static class Lighting {public static int Calls;public static void AddLight(Vector2 a,float b,float c,float d)=>Calls++;}
- public class Recipe {public Recipe AddIngredient<T>(int count=1)=>this;public Recipe AddIngredient(int type,int count=1)=>this;public Recipe AddTile(int type)=>this;public void Register(){} }
+ public class Condition {public static Condition Hardmode=new();}
+ public class Recipe {public Recipe AddCondition(Condition condition)=>this;public Recipe AddIngredient<T>(int count=1)=>this;public Recipe AddIngredient(int type,int count=1)=>this;public Recipe AddTile(int type)=>this;public void Register(){} }
 }
 namespace Terraria.ModLoader {
- public static class DamageClass {public static object Summon=new();}
- public static class ModContent {public static int ProjectileType<T>()=>1;public static int BuffType<T>()=>2;public static int TileType<T>()=>3;}
+ public static class DamageClass {public static object Summon=new(),Ranged=new();}
+ public static class ModContent {public static int ProjectileType<T>()=>typeof(T).Name switch {"FurnaceAshSpirit"=>3,"StarAbyssSpirit"=>4,"ContractSpiritBolt"=>5,_=>1};public static int BuffType<T>()=>typeof(T).Name switch {"FurnaceAshSpiritBuff"=>3,"StarAbyssSpiritBuff"=>4,_=>2};public static int TileType<T>()=>3;}
  public class ModProjectile {
   public int Type=1;public Terraria.Projectile Projectile=new(){active=true};public virtual string Texture=>"";
-  public virtual void SetStaticDefaults(){}public virtual void SetDefaults(){}public virtual bool MinionContactDamage()=>false;public virtual bool? CanCutTiles()=>null;public virtual bool? CanDamage()=>null;public virtual void AI(){}
+  public virtual void SetStaticDefaults(){}public virtual void SetDefaults(){}public virtual bool MinionContactDamage()=>false;public virtual bool? CanCutTiles()=>null;public virtual bool? CanDamage()=>null;public virtual void AI(){} public virtual void OnHitNPC(Terraria.NPC target,Terraria.NPC.HitInfo hit,int damageDone){}
  }
  public class ModBuff {public int Type=2;public virtual string Texture=>"";public virtual void SetStaticDefaults(){}public virtual void Update(Terraria.Player player,ref int index){} }
  public class ModItem {
@@ -83,12 +84,21 @@ namespace Terraria.ModLoader {
  }
 }
 namespace Terraria.ID {
- public static class ProjectileID {public static class Sets {public static bool[] MinionTargettingFeature=new bool[16],MinionSacrificable=new bool[16],CultistIsResistantTo=new bool[16];}}
+ public static class ProjectileID {public static class Sets {public static bool[] MinionShot=new bool[16],MinionTargettingFeature=new bool[16],MinionSacrificable=new bool[16],CultistIsResistantTo=new bool[16];}}
  public static class ItemID {public const int FallenStar=1;public static class Sets {public static float[] StaffMinionSlotsRequired=new float[16];}}
- public static class ItemRarityID {public const int Blue=1,Orange=2,Yellow=3;}
+ public static class ItemRarityID {public const int Blue=1,Orange=2,Yellow=3,LightRed=4;}
  public static class ItemUseStyleID {public const int HoldUp=1;}
 }
 namespace Terraria.DataStructures {public class EntitySource_ItemUse_WithAmmo{}}
-namespace XianXia.Common.Players {public class XianXiaPlayer{public int spiritualEnergyRegenBonus;}}
+namespace XianXia.Common.Players {public class XianXiaPlayer{public int spiritualEnergyRegenBonus; public float spiritualEnergyCostMultiplier=1;}}
 namespace XianXia.Content.Items.Materials {public class LowGradeSpiritStone{}}
 namespace XianXia.Content.Tiles.Stations {public class ArtifactForgeTile{}}
+
+namespace Terraria {
+ public class RandomStub {public bool NextBool(int value)=>true;}
+ public static class Dust {public static void NewDust(Microsoft.Xna.Framework.Vector2 position,int width,int height,int type,float Scale=1){}}
+}
+namespace Terraria.ID {public static class BuffID {public const int OnFire3=1;} public static class DustID {public const int GemEmerald=1;}}
+namespace XianXia.Content.Items.Materials {public class OldFurnaceEmber{} public class FurnaceSlagIron{} public class StarAbyssMembrane{}}
+namespace XianXia.Content.Items.HandGenerated {public class StarCalamityCore{}}
+namespace XianXia.Content.Tiles.Stations {public class StarPatternCauldronTile{}}

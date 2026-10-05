@@ -31,11 +31,11 @@ Mods: {
 			}
 			FurnaceAshSpiritContract: {
 				DisplayName: "Furnace Ash Spirit Contract"
-				Tooltip: "A contract binding a furnace ash spirit as a minion. Increases summon damage by 8%."
+				Tooltip: "Equipped: +8% summon damage. Use 12 mana to summon one Furnace Ash Spirit: 28 base damage, one minion slot, contact inflicts 2 seconds of fire. Cancel its buff to dismiss."
 			}
 			StarAbyssLarvaContract: {
 				DisplayName: "Star Abyss Larva Contract"
-				Tooltip: "A contract with a star abyss larva. Increases summon damage by 10% but raises spiritual energy costs slightly."
+				Tooltip: "Equipped: +10% summon damage and +5% spiritual energy cost. In Hardmode use 16 mana to summon one Star Abyss Spirit: 48 base damage, one minion slot, fires a summon bolt every second while keeping its distance. Cancel its buff to dismiss."
 			}
 			NascentSoulCloneTalisman: {
 				DisplayName: "Nascent Soul Clone Talisman"
