@@ -1,0 +1,20 @@
+{
+  "Mods": {
+    "XianXia": {
+      "Items": {
+        "BlackFurnaceWarhammer": {
+          "DisplayName": "玄炉重锤",
+          "Tooltip": "基础消耗12灵气；需要凝气境\n抛出受重力影响的高击退重锤\n重锤消失时释放一次半伤害、半击退的余烬冲击\n冲击不能穿墙，伤害窗口2tick，每个敌人最多受一次冲击伤害"
+        }
+      },
+      "Projectiles": {
+        "FurnaceHammerProjectile": {
+          "DisplayName": "玄炉重锤"
+        },
+        "FurnaceImpactBurst": {
+          "DisplayName": "余烬冲击"
+        }
+      }
+    }
+  }
+}

@@ -155,7 +155,7 @@ namespace Terraria
 
 namespace Terraria.ID
 {
-    public static class ItemUseStyleID { public const int HoldUp=1,Shoot=2; }
+    public static class ItemUseStyleID { public const int HoldUp=1,Shoot=2,Swing=3; }
     public static class SoundID { public const int Item4=1,Item20=2; }
     public static class BuffID { public const int Regeneration = 1,Ichor=2; }
     public static class NetmodeID { public const int SinglePlayer = 0, MultiplayerClient = 1, Server = 2; }
@@ -225,7 +225,7 @@ namespace Terraria.ModLoader
         public virtual bool? UseItem(Terraria.Item item, Terraria.Player player) => null;
     }
     public struct StatModifier { public float Bonus,Base; public static StatModifier operator +(StatModifier value,float amount) { value.Bonus+=amount; return value; } }
-    public class DamageClass { public static DamageClass Generic=new(),Magic=new(),Ranged=new(); }
+    public class DamageClass { public static DamageClass Generic=new(),Magic=new(),Ranged=new(),Melee=new(); }
     public class ModPlayer {
         public Terraria.Player Player;
         public virtual void Initialize() { }
@@ -238,7 +238,7 @@ namespace Terraria.ModLoader
     public static class ModContent {
         public static int TileType<T>() => typeof(T).Name switch { "ArtifactForgeTile"=>1,"ThunderPatternForgeTile"=>2,"HeavenFireFurnaceTile"=>3,_=>4 };
         public static int ItemType<T>()=>200;
-        public static int ProjectileType<T>()=>typeof(T).Name=="GreenwoodArrayField"?3:typeof(T).Name=="MedicineCauldronField"?4:typeof(T).Name=="MedicineSpiritBolt"?5:2;
+        public static int ProjectileType<T>()=>typeof(T).Name=="GreenwoodArrayField"?3:typeof(T).Name=="MedicineCauldronField"?4:typeof(T).Name=="MedicineSpiritBolt"?5:typeof(T).Name=="FurnaceHammerProjectile"?6:typeof(T).Name=="FurnaceImpactBurst"?7:2;
         public static int BuffType<T>()=>2;
         public static T GetInstance<T>() where T:new()=>new T();
     }
@@ -388,9 +388,9 @@ namespace Terraria {
  public class Recipe {public Recipe AddIngredient<T>(int amount=1)=>this;public Recipe AddTile(int tile)=>this;public Recipe AddCondition(Condition condition)=>this;public void Register(){}}
  public static class Lighting {public static int Calls;public static void AddLight(Microsoft.Xna.Framework.Vector2 center,float r,float g,float b)=>Calls++;}
 }
-namespace Terraria.ID {public static class ItemRarityID {public const int Red=10,Lime=8,Yellow=9;}}
+namespace Terraria.ID {public static class ItemRarityID {public const int Red=10,Lime=8,Yellow=9,Green=2;}}
 namespace Terraria.ModLoader {
- public class ModProjectile {public Terraria.Projectile Projectile=new();public virtual string Texture=>"";public virtual void SetDefaults(){}public virtual bool? CanDamage()=>null;public virtual void AI(){} public virtual bool OnTileCollide(Microsoft.Xna.Framework.Vector2 velocity)=>true;public virtual void OnHitNPC(Terraria.NPC npc,Terraria.NPC.HitInfo hit,int damage){}}
+ public class ModProjectile {public Terraria.Projectile Projectile=new();public virtual string Texture=>"";public virtual void SetDefaults(){}public virtual bool? CanDamage()=>null;public virtual void AI(){} public virtual void OnKill(int timeLeft){} public virtual bool? CanHitNPC(Terraria.NPC target)=>null;public virtual bool OnTileCollide(Microsoft.Xna.Framework.Vector2 velocity)=>true;public virtual void OnHitNPC(Terraria.NPC npc,Terraria.NPC.HitInfo hit,int damage){}}
 }
 namespace XianXia.Content.Items.Materials {public class Moonbone{}}
 namespace XianXia.Content.Items.HandGenerated {public class ArchiveRemnantLight{} public class ImperialDecreeItem{}}
@@ -404,3 +404,5 @@ namespace XianXia.Content.Items.Materials {public class ArtifactBlankShard{}}
 namespace Terraria {public static class Collision {public static bool Visible=true;public static bool CanHitLine(Microsoft.Xna.Framework.Vector2 start,int w,int h,Microsoft.Xna.Framework.Vector2 end,int ew,int eh)=>Visible;}}
 namespace XianXia.Content.Items.HandGenerated {public class MedicineKingWoodHeart{}}
 namespace XianXia.Content.Items.Materials {public class GreenwoodRoot{}}
+
+namespace XianXia.Content.Items.Materials {public class OldFurnaceEmber{} public class FurnaceSlagIron{}}

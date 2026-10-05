@@ -409,3 +409,23 @@ foreach(string medicineName in new[]{"MedicineCauldronField","MedicineSpiritBolt
  if(field)Check((bool)medicineProjectileType.GetMethod("CanDamage").Invoke(actualMedicineProjectile,null)==false,"Actual cauldron field has no contact damage");
 }
 Console.WriteLine($"Actual engine gameplay assertions including medicine cauldron: {assertions}.");
+
+var hammerType=type.Assembly.GetType("XianXia.Content.Items.Weapons.BlackFurnaceWarhammer",true);object actualHammer=Activator.CreateInstance(hammerType),nativeHammer=Activator.CreateInstance(itemType);
+hammerType.GetProperty("Entity",BindingFlags.Instance|BindingFlags.Public|BindingFlags.NonPublic).SetValue(actualHammer,nativeHammer);hammerType.GetMethod("SetDefaults").Invoke(actualHammer,null);
+var meleeClass=tagType.Assembly.GetType("Terraria.ModLoader.DamageClass",true).GetProperty("Melee").GetValue(null);
+Check(ReferenceEquals(itemType.GetProperty("DamageType").GetValue(nativeHammer),meleeClass),"Actual furnace hammer uses native melee class");
+Check((int)hammerType.GetMethod("GetSpiritCost").Invoke(actualHammer,new object[]{null})==12,"Actual hammer declares 12 energy cost");
+Check((int)itemType.GetField("damage").GetValue(nativeHammer)==54&&(int)itemType.GetField("useTime").GetValue(nativeHammer)==44&&(float)itemType.GetField("knockBack").GetValue(nativeHammer)==8f,"Actual hammer heavy damage timing and knockback");
+foreach(string furnaceName in new[]{"FurnaceHammerProjectile","FurnaceImpactBurst"}){
+ var furnaceType=type.Assembly.GetType("XianXia.Content.Projectiles."+furnaceName,true);object actualFurnace=Activator.CreateInstance(furnaceType),nativeFurnace=Activator.CreateInstance(projectileType);
+ furnaceType.GetProperty("Entity",BindingFlags.Instance|BindingFlags.Public|BindingFlags.NonPublic).SetValue(actualFurnace,nativeFurnace);furnaceType.GetMethod("SetDefaults").Invoke(actualFurnace,null);
+ bool burst=furnaceName=="FurnaceImpactBurst";
+ Check(ReferenceEquals(projectileType.GetProperty("DamageType").GetValue(nativeFurnace),meleeClass),"Actual hammer and impact preserve melee class");
+ Check((int)projectileType.GetField("timeLeft").GetValue(nativeFurnace)==(burst?10:90)&&(bool)projectileType.GetField("tileCollide").GetValue(nativeFurnace)==!burst,"Actual furnace projectile lifetime and terrain defaults");
+ if(burst){
+  Check((bool)projectileType.GetField("usesLocalNPCImmunity").GetValue(nativeFurnace)&&(int)projectileType.GetField("localNPCHitCooldown").GetValue(nativeFurnace)==-1,"Actual impact has native one-hit local immunity");
+  Check(furnaceType.GetMethod("CanDamage").Invoke(actualFurnace,null)==null,"Actual impact initial damage window");
+  projectileType.GetField("timeLeft").SetValue(nativeFurnace,8);Check((bool)furnaceType.GetMethod("CanDamage").Invoke(actualFurnace,null)==false,"Actual impact visual tail cannot damage");
+ }
+}
+Console.WriteLine($"Actual engine gameplay assertions including furnace hammer: {assertions}.");

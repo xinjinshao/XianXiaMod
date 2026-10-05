@@ -1,0 +1,20 @@
+{
+  "Mods": {
+    "XianXia": {
+      "Items": {
+        "BlackFurnaceWarhammer": {
+          "DisplayName": "Black Furnace Warhammer",
+          "Tooltip": "Base cost: 12 spiritual energy; requires Qi Condensation\nThrows a heavy hammer affected by gravity\nReleases one impact with half damage and knockback when it breaks\nImpact cannot hit through walls; damages for 2 ticks and hits each enemy once"
+        }
+      },
+      "Projectiles": {
+        "FurnaceHammerProjectile": {
+          "DisplayName": "Furnace Hammer"
+        },
+        "FurnaceImpactBurst": {
+          "DisplayName": "Furnace Impact"
+        }
+      }
+    }
+  }
+}

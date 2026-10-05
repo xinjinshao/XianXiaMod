@@ -25,9 +25,9 @@ def verify() -> None:
             raise SystemExit(f"Array eligibility and deployment identity differ: {path.name}")
         arrays += array
         checked += 1
-    if checked != 16 or arrays != 3:
-        raise SystemExit(f"Expected 16 energy weapons including 3 arrays, found {checked}/{arrays}")
-    print("Authority firing/cost coverage verified: 16 weapons / 3 arrays.")
+    if checked != 17 or arrays != 3:
+        raise SystemExit(f"Expected 17 energy weapons including 3 arrays, found {checked}/{arrays}")
+    print("Authority firing/cost coverage verified: 17 weapons / 3 arrays.")
 
 
 if __name__ == "__main__":

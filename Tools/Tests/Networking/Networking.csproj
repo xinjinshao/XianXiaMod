@@ -39,5 +39,7 @@
   <Compile Include="../../../Content/Projectiles/MechanismBolts.cs" Link="MechanismBolts.cs" />
   <Compile Include="../../../Content/Items/Weapons/GreenwoodMedicineCauldron.cs" Link="GreenwoodMedicineCauldron.cs" />
   <Compile Include="../../../Content/Projectiles/MedicineCauldronField.cs" Link="MedicineCauldronField.cs" />
+  <Compile Include="../../../Content/Items/Weapons/BlackFurnaceWarhammer.cs" Link="BlackFurnaceWarhammer.cs" />
+  <Compile Include="../../../Content/Projectiles/FurnaceHammerProjectile.cs" Link="FurnaceHammerProjectile.cs" />
 </ItemGroup>
 </Project>
