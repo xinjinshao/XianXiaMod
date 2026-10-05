@@ -9,7 +9,7 @@ using Terraria.ModLoader;
 
 namespace XianXia.Content.Items.BossSummons;
 
-public class SummonGardenBrokenKey : ModItem
+public class SummonGardenBrokenKey : global::XianXia.Common.Items.CultivationBossSummonItem
 
 {
 
@@ -41,6 +41,8 @@ public class SummonGardenBrokenKey : ModItem
 
 
 
+    public override int BossType => ModContent.NPCType<global::XianXia.Content.NPCs.Bosses.GardenWarden>();
+
     public override bool CanUseItem(Player player)
 
     {
@@ -61,17 +63,7 @@ public class SummonGardenBrokenKey : ModItem
 
 
 
-    public override bool? UseItem(Player player)
 
-    {
-
-        if (Main.netMode != NetmodeID.MultiplayerClient)
-
-            NPC.SpawnOnPlayer(player.whoAmI, ModContent.NPCType<global::XianXia.Content.NPCs.Bosses.GardenWarden>());
-
-        return true;
-
-    }
 
 
 

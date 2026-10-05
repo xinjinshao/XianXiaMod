@@ -40,6 +40,14 @@ public class ShatteredJadeWyrmMinion : ModNPC
 
     public override void AI()
     {
+        int parent = (int)NPC.ai[0];
+        if (parent < 0 || parent >= Main.maxNPCs || !Main.npc[parent].active
+            || Main.npc[parent].type != ModContent.NPCType<SpiritVeinWyrm>())
+        {
+            NPC.damage = 0;
+            if (Main.netMode != NetmodeID.MultiplayerClient) SegmentedWormAI.Deactivate(NPC);
+            return;
+        }
         EnsureSegments();
 
         Player target = Main.player[NPC.target];
@@ -49,10 +57,18 @@ public class ShatteredJadeWyrmMinion : ModNPC
             target = Main.player[NPC.target];
         }
 
-        NPC.localAI[0]++;
-        if (NPC.localAI[0] > Main.rand.Next(900, 1201))
+        if (!target.active || target.dead)
         {
-            NPC.active = false;
+            if (Main.netMode != NetmodeID.MultiplayerClient) SegmentedWormAI.Deactivate(NPC);
+            return;
+        }
+
+        NPC.localAI[0]++;
+        NPC.ai[3]++;
+        if (NPC.ai[3] >= 900f)
+        {
+            NPC.damage = 0;
+            if (Main.netMode != NetmodeID.MultiplayerClient) SegmentedWormAI.Deactivate(NPC);
             return;
         }
 
@@ -60,7 +76,7 @@ public class ShatteredJadeWyrmMinion : ModNPC
         Vector2 wave = toTarget.SafeNormalize(Vector2.UnitY).RotatedBy(MathHelper.PiOver2) * (float)System.Math.Sin(NPC.localAI[0] * 0.09f) * 32f;
         NPC.velocity = Vector2.Lerp(NPC.velocity, (toTarget + wave).SafeNormalize(Vector2.UnitY) * 4.5f, 0.06f);
         NPC.rotation = NPC.velocity.ToRotation();
-        Lighting.AddLight(NPC.Center, 0.03f, 0.18f, 0.14f);
+        if (!Main.dedServ) Lighting.AddLight(NPC.Center, 0.03f, 0.18f, 0.14f);
     }
 
     private void EnsureSegments()
@@ -70,14 +86,9 @@ public class ShatteredJadeWyrmMinion : ModNPC
             return;
         }
 
-        NPC.localAI[3] = 1f;
-        int previous = NPC.whoAmI;
-        for (int i = 0; i < BodySegments; i++)
-        {
-            previous = SegmentedWormAI.SpawnSegment(NPC, previous, ModContent.NPCType<ShatteredJadeWyrmMinionBody>(), i + 1);
-        }
-
-        SegmentedWormAI.SpawnSegment(NPC, previous, ModContent.NPCType<ShatteredJadeWyrmMinionTail>(), BodySegments + 1);
+        if (SegmentedWormAI.TrySpawnChain(NPC, ModContent.NPCType<ShatteredJadeWyrmMinionBody>(),
+            ModContent.NPCType<ShatteredJadeWyrmMinionTail>(), BodySegments))
+            NPC.localAI[3] = 1f;
     }
 }
 
@@ -102,7 +113,7 @@ public class ShatteredJadeWyrmMinionBody : ModNPC
 
     public override bool CheckActive() => false;
 
-    public override void AI() => SegmentedWormAI.FollowPreviousSegment(NPC, ShatteredJadeWyrmMinion.SegmentSpacing, 0.02f, 0.13f, 0.1f);
+    public override void AI() => SegmentedWormAI.FollowPreviousSegment(NPC, ShatteredJadeWyrmMinion.SegmentSpacing, 0.02f, 0.13f, 0.1f, ModContent.NPCType<ShatteredJadeWyrmMinion>());
 }
 
 public class ShatteredJadeWyrmMinionTail : ModNPC
@@ -126,5 +137,5 @@ public class ShatteredJadeWyrmMinionTail : ModNPC
 
     public override bool CheckActive() => false;
 
-    public override void AI() => SegmentedWormAI.FollowPreviousSegment(NPC, ShatteredJadeWyrmMinion.SegmentSpacing, 0.02f, 0.1f, 0.08f);
+    public override void AI() => SegmentedWormAI.FollowPreviousSegment(NPC, ShatteredJadeWyrmMinion.SegmentSpacing, 0.02f, 0.1f, 0.08f, ModContent.NPCType<ShatteredJadeWyrmMinion>());
 }

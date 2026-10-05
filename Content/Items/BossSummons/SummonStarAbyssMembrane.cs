@@ -9,7 +9,7 @@ using Terraria.ModLoader;
 
 namespace XianXia.Content.Items.BossSummons;
 
-public class SummonStarAbyssMembrane : ModItem
+public class SummonStarAbyssMembrane : global::XianXia.Common.Items.CultivationBossSummonItem
 
 {
 
@@ -41,6 +41,8 @@ public class SummonStarAbyssMembrane : ModItem
 
 
 
+    public override int BossType => ModContent.NPCType<global::XianXia.Content.NPCs.Bosses.AbyssalStarWomb>();
+
     public override bool CanUseItem(Player player)
 
     {
@@ -61,17 +63,7 @@ public class SummonStarAbyssMembrane : ModItem
 
 
 
-    public override bool? UseItem(Player player)
 
-    {
-
-        if (Main.netMode != NetmodeID.MultiplayerClient)
-
-            NPC.SpawnOnPlayer(player.whoAmI, ModContent.NPCType<global::XianXia.Content.NPCs.Bosses.AbyssalStarWomb>());
-
-        return true;
-
-    }
 
 
 

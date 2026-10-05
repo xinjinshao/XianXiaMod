@@ -7,11 +7,11 @@ using XianXia.Content.Tiles.Stations;
 
 namespace XianXia.Content.Items.Weapons;
 
-public class BrokenHeavenDecree : ModItem
+public class BrokenHeavenDecree : global::XianXia.Common.Items.CultivationWeaponItem
 
 {
 
-    public override void SetStaticDefaults() => Item.ResearchUnlockCount = 25;
+    public override void SetStaticDefaults() => Item.ResearchUnlockCount = 1;
 
     public override void SetDefaults()
 
@@ -35,7 +35,7 @@ public class BrokenHeavenDecree : ModItem
 
         Item.crit = 8;
 
-        Item.DamageType = DamageClass.Generic;
+        Item.DamageType = DamageClass.Magic;
 
         Item.useStyle = ItemUseStyleID.HoldUp;
 
@@ -61,10 +61,13 @@ public class BrokenHeavenDecree : ModItem
 
         return player.GetModPlayer<global::XianXia.Common.Players.XianXiaPlayer>()
 
-            .TryConsumeSpiritualEnergy(HasArtifactAwakening(player) ? 25 : 32);
+            .CanConsumeSpiritualEnergy(HasArtifactAwakening(player) ? 25 : 32);
 
     }
 
+
+
+    public override int GetSpiritCost(Player player) => HasArtifactAwakening(player) ? 25 : 32;
 
 
     private static bool HasArtifactAwakening(Player player)
@@ -129,7 +132,7 @@ public class BrokenHeavenDecree : ModItem
 
             .AddIngredient<global::XianXia.Content.Items.Materials.LowGradeSpiritStone>(12)
 
-            .AddTile(ModContent.TileType<global::XianXia.Content.Tiles.Stations.ArtifactForgeTile>())
+            .AddTile(ModContent.TileType<global::XianXia.Content.Tiles.Stations.HeavenFireFurnaceTile>())
 
             .Register();
 

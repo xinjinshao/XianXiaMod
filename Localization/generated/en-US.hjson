@@ -1,0 +1,376 @@
+Mods: {
+	XianXia: {
+		Items: {
+			ArtifactBlankShard: {
+				DisplayName: "Artifact Blank Shard"
+				Tooltip: "An unfinished artifact embryo. Used at the Artifact Forge to craft flying swords, array plates, and accessories."
+			}
+			BrokenHeavenCrownSeal: {
+				DisplayName: "Broken Heaven Crown Seal"
+				Tooltip: "A cracked seal from the Old Heaven Court. Equip to gain a significant damage boost at the cost of defense."
+			}
+			BrokenHeavenDecree: {
+				DisplayName: "Broken Heaven Decree"
+				Tooltip: "A divine decree that still carries judgment. Unleashes piercing judgment beams that ignore tile collision."
+			}
+			CinnabarTalismanFlameItem: {
+				DisplayName: "Cinnabar Talisman Flame"
+				Tooltip: "A talisman that burns with cinnabar fire. Ignites enemies with searing flames on hit."
+			}
+			CloudpiercerFlyingSword: {
+				DisplayName: "Cloudpiercer Flying Sword"
+				Tooltip: "A flying sword that pierces clouds. Releases a secondary cloud wisp projectile on impact."
+			}
+			DaoSeveringDust: {
+				DisplayName: "Dao Severing Dust"
+				Tooltip: "Fine dust left where the Dao has been cut. Use to attempt the final cultivation breakthrough to Dao Severing."
+			}
+			DaoSeveringRing: {
+				DisplayName: "Dao Severing Ring"
+				Tooltip: "A ring that severs attachment to the old Dao. Greatly increases damage but makes spiritual energy costs slightly higher."
+			}
+			FormlessSwordWheel: {
+				DisplayName: "Formless Sword Wheel"
+				Tooltip: "A spinning sword formation with no fixed form. Passes through multiple enemies with local immunity frames."
+			}
+			FoundationPill: {
+				DisplayName: "Foundation Pill"
+				Tooltip: "A pill that solidifies the cultivator's foundation. Use to attempt the breakthrough to Foundation stage."
+			}
+			FurnaceHeartRing: {
+				DisplayName: "Furnace Heart Ring"
+				Tooltip: "A ring forged from a furnace core. Grants bonus defense."
+			}
+			FurnaceSlagIron: {
+				DisplayName: "Furnace Slag Iron"
+				Tooltip: "Iron slag tempered in the Black Furnace. A core material for artifact forging and refining."
+			}
+			GardenBrokenKey: {
+				DisplayName: "Garden Broken Key"
+				Tooltip: "A broken key found in the herb garden. Combine with spirit stones to forge a boss summoning item."
+			}
+			GreenwoodArrayPlate: {
+				DisplayName: "Greenwood Array Plate"
+				Tooltip: "A formation plate carved from greenwood. Deploys a healing array field that restores life and spiritual energy to allies inside."
+			}
+			GreenwoodRoot: {
+				DisplayName: "Greenwood Root"
+				Tooltip: "A root saturated with herbal essence. A foundational material for alchemy and artifact crafting."
+			}
+			HeavenDaoFragment: {
+				DisplayName: "Heaven Dao Fragment"
+				Tooltip: "A shard of the old Heavenly Dao. Use to attempt the breakthrough to Spirit Severing stage."
+			}
+			HeavenTabletRubbing: {
+				DisplayName: "Heaven Tablet Rubbing"
+				Tooltip: "An ink rubbing of a fallen heaven tablet. Combine with spirit stones to forge a boss summoning item."
+			}
+			LightningWardJade: {
+				DisplayName: "Lightning Ward Jade"
+				Tooltip: "A jade talisman that wards off lightning. Increases endurance and slowly reduces spirit pressure over time."
+			}
+			Moonbone: {
+				DisplayName: "Moonbone"
+				Tooltip: "Bone fragments from the Moonbone Abyss. Use to attempt the breakthrough to Tribulation stage."
+			}
+			MoonboneDharmaSword: {
+				DisplayName: "Moonbone Dharma Sword"
+				Tooltip: "A dharma sword forged from moonbone. Shards slow on impact, piercing twice before fading."
+			}
+			MoonboneRitualTalisman: {
+				DisplayName: "Moonbone Ritual Talisman"
+				Tooltip: "A talisman used in moonbone rituals. Combine with spirit stones to forge a boss summoning item."
+			}
+			NascentSoulJadeBox: {
+				DisplayName: "Nascent Soul Jade Box"
+				Tooltip: "A jade box that nurtures the nascent soul. Increases maximum spiritual energy by 30."
+			}
+			OldFurnaceEmber: {
+				DisplayName: "Old Furnace Ember"
+				Tooltip: "A still-glowing ember from an ancient furnace. Combine with spirit stones to forge a boss summoning item."
+			}
+			OldHeavenDaoScroll: {
+				DisplayName: "Old Heaven Dao Scroll"
+				Tooltip: "Nascent Soul breakthrough consumable. Use at Golden Core after clearing the current trial and defeating Plantera and the Formless Sword Soul. Has no attack function."
+			}
+			QiCondensingPill: {
+				DisplayName: "Qi Condensing Pill"
+				Tooltip: "A pill that helps condense spiritual energy. Use to attempt the breakthrough to Qi Condensation stage."
+			}
+			QiGatheringPendant: {
+				DisplayName: "Qi Gathering Pendant"
+				Tooltip: "A pendant that draws in ambient qi. Increases spiritual energy regen and caps energy costs at 90%."
+			}
+			SectTrialToken: {
+				DisplayName: "Sect Trial Token"
+				Tooltip: "A token granting entry to sect trials. Combine with spirit stones to forge a boss summoning item."
+			}
+			SpiritwoodCharm: {
+				DisplayName: "Spiritwood Charm"
+				Tooltip: "A charm carved from spirit-infused wood. Grants increased life regeneration."
+			}
+			SpringReturnPill: {
+				DisplayName: "Spring Return Pill"
+				Tooltip: "A pill that brings the body back to spring. Greatly increases life regen and spiritual energy recovery for 60 minutes. Also reduces spirit pressure."
+			}
+			StarAbyssEye: {
+				DisplayName: "Star Abyss Eye"
+				Tooltip: "An eye torn from the star abyss. Grants increased generic damage."
+			}
+			StarAbyssForbiddenTalisman: {
+				DisplayName: "Star Abyss Forbidden Talisman"
+				Tooltip: "A forbidden talisman from the star abyss. Restores 80 spiritual energy instantly but increases spirit pressure by 25. Risk of spiritual pressure disorder."
+			}
+			StarAbyssMembrane: {
+				DisplayName: "Star Abyss Membrane"
+				Tooltip: "A membrane shed by star abyss creatures. Combine with spirit stones to forge a boss summoning item."
+			}
+			StarEclipseArbalest: {
+				DisplayName: "Star Eclipse Arbalest"
+				Tooltip: "An arbalest that fires star-eclipsing bolts. Projectiles split into two spirit bolts on the first enemy hit."
+			}
+			StarEclipseCrystal: {
+				DisplayName: "Star Eclipse Crystal"
+				Tooltip: "A crystal formed during a star eclipse. Use to attempt the breakthrough to Golden Core stage."
+			}
+			SummonGardenBrokenKey: {
+				DisplayName: "Garden Broken Key"
+				Tooltip: "Summons Garden Warden. Requires at least QiAwakening."
+			}
+			SummonHeavenTabletRubbing: {
+				DisplayName: "Heaven Tablet Rubbing"
+				Tooltip: "Summons Heaven Tablet Guardian. Requires at least NascentSoul."
+			}
+			SummonHeavenTabletRubbingBrokenHeavenInspector: {
+				DisplayName: "Heaven Tablet Rubbing"
+				Tooltip: "Summons Broken Heaven Inspector. Requires at least NascentSoul."
+			}
+			SummonMoonboneRitualTalisman: {
+				DisplayName: "Moonbone Ritual Talisman"
+				Tooltip: "Summons Moonbone Immortal. Requires at least Tribulation."
+			}
+			SummonMoonboneRitualTalismanOldHeavenDaoCore: {
+				DisplayName: "Moonbone Ritual Talisman"
+				Tooltip: "Summons Old Heaven Dao Core. Requires at least Tribulation."
+			}
+			SummonOldFurnaceEmber: {
+				DisplayName: "Old Furnace Ember"
+				Tooltip: "Summons Black Furnace Iron Golem. Requires at least QiAwakening."
+			}
+			SummonSectTrialToken: {
+				DisplayName: "Sect Trial Token"
+				Tooltip: "Summons Formless Sword Soul. Requires at least GoldenCore."
+			}
+			SummonSectTrialTokenGreenwoodMedicineKingEcho: {
+				DisplayName: "Sect Trial Token"
+				Tooltip: "Summons Greenwood Medicine King Echo. Requires at least GoldenCore."
+			}
+			SummonStarAbyssMembrane: {
+				DisplayName: "Star Abyss Membrane"
+				Tooltip: "Summons Abyssal Star Womb. Requires at least Foundation."
+			}
+			SummonThunderCallingJade: {
+				DisplayName: "Thunder Calling Jade"
+				Tooltip: "Summons Tribulation Cloud Avatar. Requires at least QiCondensation."
+			}
+			SummonThunderCallingJadeThunderMarshJiao: {
+				DisplayName: "Thunder Calling Jade"
+				Tooltip: "Summons Thunder Marsh Jiao. Requires at least Foundation."
+			}
+			ThunderCallingJade: {
+				DisplayName: "Thunder Calling Jade"
+				Tooltip: "A jade that calls thunder from the clouds. Combine with spirit stones to forge a boss summoning item."
+			}
+			ThunderPatternSwordCase: {
+				DisplayName: "Thunder Pattern Sword Case"
+				Tooltip: "A sword case etched with thunder patterns. Releases a penetrating sword that calls down lightning bolts on hit."
+			}
+			ThunderTalismanArrayPlate: {
+				DisplayName: "Thunder Talisman Array Plate"
+				Tooltip: "An array plate inscribed with thunder talismans. Deploys a lightning field that periodically rains thunderbolts."
+			}
+			TribulationCloudDew: {
+				DisplayName: "Tribulation Cloud Dew"
+				Tooltip: "Dew condensed within tribulation clouds. A key material for tribulation-resisting pills and thunder-element equipment."
+			}
+			TribulationResistingPill: {
+				DisplayName: "Tribulation Resisting Pill"
+				Tooltip: "A pill that helps resist heavenly tribulation. Grants Tribulation Resistance for 90 minutes and reduces spirit pressure."
+			}
+		}
+		NPCs: {
+			AbyssalStarWomb: {
+				DisplayName: "Abyssal Star Womb"
+			}
+			ArchiveScrollSpirit: {
+				DisplayName: "Archive Scroll Spirit"
+			}
+			ArchivedImmortalSoul: {
+				DisplayName: "Archived Immortal Soul"
+			}
+			BlackFurnaceIronGolem: {
+				DisplayName: "Black Furnace Iron Golem"
+			}
+			BrokenHeavenInspector: {
+				DisplayName: "Broken Heaven Inspector"
+			}
+			CelestialPuppet: {
+				DisplayName: "Celestial Puppet"
+			}
+			FallenHeavenMessenger: {
+				DisplayName: "Fallen Heaven Messenger"
+			}
+			FormlessSwordSoul: {
+				DisplayName: "Formless Sword Soul"
+			}
+			FurnaceAshGolem: {
+				DisplayName: "Furnace Ash Golem"
+			}
+			GardenWarden: {
+				DisplayName: "Garden Warden"
+			}
+			GreenwoodMedicineKingEcho: {
+				DisplayName: "Greenwood Medicine King Echo"
+			}
+			HeavenTabletGuard: {
+				DisplayName: "Heaven Tablet Guard"
+			}
+			HeavenTabletGuardian: {
+				DisplayName: "Heaven Tablet Guardian"
+			}
+			HerbGardenVineSpirit: {
+				DisplayName: "Herb Garden Vine Spirit"
+			}
+			HerbSectApprentice: {
+				DisplayName: "Herb Sect Apprentice"
+			}
+			IronShardSpirit: {
+				DisplayName: "Iron Shard Spirit"
+			}
+			MiasmaFlowerMoth: {
+				DisplayName: "Miasma Flower Moth"
+			}
+			MoonboneCultivator: {
+				DisplayName: "Moonbone Cultivator"
+			}
+			MoonboneImmortal: {
+				DisplayName: "Moonbone Immortal"
+			}
+			ObsessedSwordCultivator: {
+				DisplayName: "Obsessed Sword Cultivator"
+			}
+			OldHeavenDaoCore: {
+				DisplayName: "Old Heaven Dao Core"
+			}
+			ScriptureArchiveEcho: {
+				DisplayName: "Scripture Archive Echo"
+			}
+			StarAbyssLarva: {
+				DisplayName: "Star Abyss Larva"
+			}
+			StarEclipsedCultivator: {
+				DisplayName: "Star Eclipsed Cultivator"
+			}
+			ThunderMarshJiao: {
+				DisplayName: "Thunder Marsh Jiao"
+			}
+			ThunderPatternHawk: {
+				DisplayName: "Thunder Pattern Hawk"
+			}
+			TribulationCloudAvatar: {
+				DisplayName: "Tribulation Cloud Avatar"
+			}
+			TribulationCloudling: {
+				DisplayName: "Tribulation Cloudling"
+			}
+			TribulationObserver: {
+				DisplayName: "Tribulation Observer"
+			}
+			WanderingArtificer: {
+				DisplayName: "Wandering Artificer"
+			}
+		}
+		Tiles: {
+			BlackFurnaceWall: {
+				MapEntry: "Black Furnace Wall"
+			}
+			FallenHeavenJadeTile: {
+				MapEntry: "Fallen Heaven Jade"
+			}
+			FurnaceSlagTile: {
+				MapEntry: "Furnace Slag"
+			}
+			GreenwoodSoilTile: {
+				MapEntry: "Greenwood Soil"
+			}
+			MoonboneTile: {
+				MapEntry: "Moonbone Rock"
+			}
+			SectRuinBrickTile: {
+				MapEntry: "Sect Ruin Brick"
+			}
+			SpiritHerbTile: {
+				MapEntry: "Spirit Herb"
+			}
+			StarAbyssCrystalTile: {
+				MapEntry: "Star Abyss Crystal"
+			}
+			ThunderCloudTile: {
+				MapEntry: "Thunder Cloud"
+			}
+		}
+		Biomes: {
+			FallenHeavenPalaceBiome: {
+				DisplayName: "Fallen Heaven Palace"
+			}
+			GreenwoodHerbGardenBiome: {
+				DisplayName: "Greenwood Herb Garden"
+			}
+			MoonboneAbyssBiome: {
+				DisplayName: "Moonbone Abyss"
+			}
+			StarAbyssRiftBiome: {
+				DisplayName: "Star Abyss Rift"
+			}
+			SunkenFurnaceVeinBiome: {
+				DisplayName: "Sunken Furnace Vein"
+			}
+			TenThousandSectsRuinsBiome: {
+				DisplayName: "Ten Thousand Sects Ruins"
+			}
+			ThunderMarshCloudsBiome: {
+				DisplayName: "Thunder Marsh Clouds"
+			}
+		}
+		Buffs: {
+			AlchemyInsightBuff: {
+				DisplayName: "Alchemy Insight"
+				Description: "Near an alchemy cauldron, attuning to the herbal warmth. Increases spiritual energy recovery."
+			}
+			ArtifactResonanceBuff: {
+				DisplayName: "Artifact Resonance"
+				Description: "Near an artifact forge, resonating with crafted tools. Increases spiritual energy recovery."
+			}
+			QiGatheringBuff: {
+				DisplayName: "Qi Gathering"
+				Description: "Increases spiritual energy recovery and slightly lowers spiritual energy costs."
+			}
+			SpiritualPressureDisorderBuff: {
+				DisplayName: "Spiritual Pressure Disorder"
+				Description: "Reduces defense and movement speed."
+			}
+			SpringReturnBuff: {
+				DisplayName: "Spring Return"
+				Description: "Improves life regeneration and slowly restores spiritual energy."
+			}
+			TribulationPressureBuff: {
+				DisplayName: "Tribulation Pressure"
+				Description: "The tribulation has marked you, making damage dealt and received more volatile."
+			}
+			TribulationResistanceBuff: {
+				DisplayName: "Tribulation Resistance"
+				Description: "Reduces incoming damage and calms spirit pressure."
+			}
+		}
+	}
+}

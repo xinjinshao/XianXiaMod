@@ -10,8 +10,12 @@ namespace XianXia.Content.Items.Accessories;
 public class LightningWardJade : ModItem
 
 {
+    public override void ModifyTooltips(System.Collections.Generic.List<TooltipLine> tooltips)
+    {
+        tooltips.Add(new TooltipLine(Mod, "WardSkill", Terraria.Localization.Language.GetTextValue("Mods.XianXia.Skills.WardTooltip")));
+    }
 
-    public override void SetStaticDefaults() => Item.ResearchUnlockCount = 25;
+    public override void SetStaticDefaults() => Item.ResearchUnlockCount = 1;
 
     public override void SetDefaults()
 
@@ -55,7 +59,7 @@ public class LightningWardJade : ModItem
 
             .AddIngredient<global::XianXia.Content.Items.Materials.LowGradeSpiritStone>(8)
 
-            .AddTile(ModContent.TileType<global::XianXia.Content.Tiles.Stations.ArtifactForgeTile>())
+            .AddTile(ModContent.TileType<global::XianXia.Content.Tiles.Stations.ThunderPatternForgeTile>())
 
             .Register();
 

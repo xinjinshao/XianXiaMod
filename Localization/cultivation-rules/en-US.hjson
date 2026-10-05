@@ -1,0 +1,32 @@
+Mods: {
+    XianXia: {
+        Progression: {
+            BossSummonFailed: "Summoning failed; no material was consumed. Check your location, time, realm, prerequisites, and whether the boss is already present."
+            TribulationUnfinished: "Complete your current realm's tribulation before advancing. Use a Tribulation Training Token to retry a failed trial."
+            BreakthroughRequiresHardmode: "Defeat the Wall of Flesh and enter Hardmode before proceeding."
+            BreakthroughRequiresPlantera: "Defeat Plantera before proceeding."
+            BreakthroughRequiresGolem: "Defeat Golem before proceeding."
+            BreakthroughRequiresMoonLord: "Defeat the Moon Lord before proceeding."
+            BreakthroughRequiresTrial: "Complete the required trial first: {0}."
+            TribulationRetryUnavailable: "Retry is available only for an unfinished tribulation in your current realm, while no tribulation is active."
+            TrialNames: {
+                tribulation_cloud_avatar: "Tribulation Cloud Avatar"
+                abyssal_star_womb: "Abyssal Star Womb"
+                formless_sword_soul: "Formless Sword Soul"
+                heaven_tablet_guardian: "Heaven Tablet Guardian"
+                broken_heaven_inspector: "Broken Heaven Inspector"
+                old_heaven_dao_core: "Old Heaven Dao Core"
+            }
+        }
+        Items: {
+            SectLedger: {
+                Guidance: {
+                    QiCondensation: "Use a Qi Condensing Pill to reach Qi Condensation before the cloud trial."
+                    ActiveTribulation: "Your tribulation is active. Survive it before beginning another breakthrough."
+                    RetryTribulation: "Your current realm's tribulation remains unfinished. Craft a Tribulation Training Token at a work bench or buy one from the Tribulation Observer, then use it to retry."
+                    SpiritSevering: "After defeating Golem and the Heaven Tablet Guardian, use a Heaven Dao Fragment to reach Spirit Severing and complete its tribulation."
+                }
+            }
+        }
+    }
+}

@@ -49,16 +49,25 @@ def main() -> int:
         ("Content/Projectiles", "ModProjectile"),
         ("Content/Buffs", "ModBuff"),
     ]
+    bases: dict[str, str] = {}
+    declaration = r"public\s+(abstract\s+)?class\s+(\w+)\s*:\s*([\w:.]+)"
+    for folder in ("Common", "Content"):
+        for source in (ROOT / folder).rglob("*.cs"):
+            for _, name, parent in re.findall(declaration, source.read_text(encoding="utf-8")):
+                bases[name] = parent.split(".")[-1].split(":")[-1]
+    def derives_from(name: str, base: str) -> bool:
+        visited: set[str] = set()
+        while name not in visited:
+            if name == base:
+                return True
+            visited.add(name)
+            name = bases.get(name, "")
+        return False
     for folder, base_class in mod_texture_roots:
         for source in (ROOT / folder).rglob("*.cs"):
             text = source.read_text(encoding="utf-8")
-            if base_class not in text:
-                continue
-
-            matches = re.findall(rf"public\s+class\s+(\w+)\s*:\s*{base_class}", text)
-            if not matches:
-                invalid.append(f"{source.relative_to(ROOT)}: could not find {base_class} class name")
-                continue
+            matches = [name for abstract, name, _ in re.findall(declaration, text)
+                       if not abstract and derives_from(name, base_class)]
 
             for class_name in matches:
                 texture_override = re.search(r'override\s+string\s+Texture\s*=>\s*"XianXia/([^"]+)"', text)

@@ -57,7 +57,7 @@ public class MoonboneCultivator : ModNPC
 
         NPC.aiStyle = NPCAIStyleID.Fighter;
 
-        AIType = NPCID.CaveBat;
+        AIType = NPCID.Zombie;
 
 
 
@@ -68,6 +68,8 @@ public class MoonboneCultivator : ModNPC
     public override float SpawnChance(NPCSpawnInfo spawnInfo)
 
     {
+        if (!global::XianXia.Common.Systems.EnemySpawnRules.Allows(nameof(MoonboneCultivator), Main.hardMode, NPC.downedPlantBoss, NPC.downedGolemBoss, NPC.downedMoonlord)) return 0f;
+
 
         return spawnInfo.Player.InModBiome<global::XianXia.Content.Biomes.MoonboneAbyssBiome>() ? 0.18f : 0f;
 
@@ -79,17 +81,7 @@ public class MoonboneCultivator : ModNPC
 
     {
 
-        Player target = Main.player[NPC.target];
-
-        if (!target.active || target.dead)
-
-        {
-
-            NPC.TargetClosest(false);
-
-            target = Main.player[NPC.target];
-
-        }
+        if (!global::XianXia.Common.Systems.EnemyTargeting.TryGetLivingTarget(NPC, out Player target)) return;
 
 
 

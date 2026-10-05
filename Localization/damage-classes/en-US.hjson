@@ -1,0 +1,7 @@
+Mods: {
+ XianXia: {
+  DamageClasses: {
+   SpiritMagic: Magic-class spiritual weapon: benefits from vanilla magic damage/crit bonuses and uses spiritual energy; mana cost reductions do not reduce spiritual energy costs
+  }
+ }
+}

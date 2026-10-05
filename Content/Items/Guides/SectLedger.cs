@@ -54,6 +54,17 @@ public class SectLedger : ModItem
         XianXiaPlayer cultivation = player.GetModPlayer<XianXiaPlayer>();
         string reputation = Guidance("SectReputation").Format(DownedBossSystem.SectReputation);
 
+        if (cultivation.tribulationTimer > 0)
+            return WithCommission($"{reputation} {GuidanceValue("ActiveTribulation")}");
+        if (cultivation.CanRetryTribulation())
+            return WithCommission($"{reputation} {GuidanceValue("RetryTribulation")}");
+        string worldFailure = CultivationRules.GetWorldFailure(
+            (CultivationStage)((int)cultivation.cultivationStage + 1), Main.hardMode,
+            NPC.downedPlantBoss, NPC.downedGolemBoss, NPC.downedMoonlord);
+        if (cultivation.cultivationStage >= CultivationStage.Foundation
+            && cultivation.cultivationStage < CultivationStage.DaoSevering && worldFailure.Length > 0)
+            return WithCommission($"{reputation} {Language.GetTextValue($"Mods.XianXia.Progression.{worldFailure}")}");
+
         if (cultivation.cultivationStage < CultivationStage.QiAwakening)
         {
             return WithCommission($"{reputation} {GuidanceValue("AwakenQi")}");
@@ -64,9 +75,9 @@ public class SectLedger : ModItem
             return WithCommission($"{reputation} {GuidanceValue("SpiritVeinWyrm")}");
         }
 
-        if (cultivation.cultivationStage < CultivationStage.Foundation)
+        if (cultivation.cultivationStage < CultivationStage.QiCondensation)
         {
-            return WithCommission($"{reputation} {GuidanceValue("Foundation")}");
+            return WithCommission($"{reputation} {GuidanceValue("QiCondensation")}");
         }
 
         if (!DownedBossSystem.DownedBosses.Contains("garden_warden"))
@@ -83,6 +94,9 @@ public class SectLedger : ModItem
         {
             return WithCommission($"{reputation} {GuidanceValue("TribulationCloud")}");
         }
+
+        if (cultivation.cultivationStage < CultivationStage.Foundation)
+            return WithCommission($"{reputation} {GuidanceValue("Foundation")}");
 
         if (!DownedBossSystem.DownedBosses.Contains("thunder_marsh_jiao"))
         {
@@ -124,6 +138,9 @@ public class SectLedger : ModItem
             return WithCommission($"{reputation} {GuidanceValue("BrokenInspector")}");
         }
 
+        if (cultivation.cultivationStage < CultivationStage.SpiritSevering)
+            return WithCommission($"{reputation} {GuidanceValue("SpiritSevering")}");
+
         if (cultivation.cultivationStage < CultivationStage.Tribulation)
         {
             return WithCommission($"{reputation} {GuidanceValue("TribulationStage")}");
@@ -134,14 +151,14 @@ public class SectLedger : ModItem
             return WithCommission($"{reputation} {GuidanceValue("MoonboneImmortal")}");
         }
 
-        if (cultivation.cultivationStage < CultivationStage.DaoSevering)
-        {
-            return WithCommission($"{reputation} {Guidance("DaoSevering").Format(DownedBossSystem.SectReputation)}");
-        }
-
         if (!DownedBossSystem.DownedBosses.Contains("old_heaven_dao_core"))
         {
             return WithCommission($"{reputation} {GuidanceValue("OldHeavenCore")}");
+        }
+
+        if (cultivation.cultivationStage < CultivationStage.DaoSevering)
+        {
+            return WithCommission($"{reputation} {Guidance("DaoSevering").Format(DownedBossSystem.SectReputation)}");
         }
 
         return WithCommission($"{reputation} {Guidance("Endgame").Format(DownedBossSystem.SectReputation)}");

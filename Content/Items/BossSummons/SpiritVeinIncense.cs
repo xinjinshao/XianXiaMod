@@ -7,7 +7,7 @@ using XianXia.Content.NPCs.Bosses;
 
 namespace XianXia.Content.Items.BossSummons;
 
-public class SpiritVeinIncense : ModItem
+public class SpiritVeinIncense : global::XianXia.Common.Items.CultivationBossSummonItem
 {
     public override void SetStaticDefaults()
     {
@@ -28,19 +28,14 @@ public class SpiritVeinIncense : ModItem
         Item.rare = ItemRarityID.White;
     }
 
+    public override int BossType => ModContent.NPCType<SpiritVeinWyrm>();
+
     public override bool CanUseItem(Player player)
     {
         return player.GetModPlayer<XianXiaPlayer>().CanUseBossSummon(ModContent.NPCType<SpiritVeinWyrm>());
     }
 
-    public override bool? UseItem(Player player)
-    {
-        if (Main.netMode != NetmodeID.MultiplayerClient)
-        {
-            NPC.SpawnOnPlayer(player.whoAmI, ModContent.NPCType<SpiritVeinWyrm>());
-        }
-        return true;
-    }
+
 
     public override void AddRecipes()
     {

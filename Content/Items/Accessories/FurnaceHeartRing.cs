@@ -11,7 +11,7 @@ public class FurnaceHeartRing : ModItem
 
 {
 
-    public override void SetStaticDefaults() => Item.ResearchUnlockCount = 25;
+    public override void SetStaticDefaults() => Item.ResearchUnlockCount = 1;
 
     public override void SetDefaults()
 

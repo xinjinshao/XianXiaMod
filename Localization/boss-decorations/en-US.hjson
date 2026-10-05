@@ -1,0 +1,24 @@
+{
+  "Mods": {
+    "XianXia": {
+      "Tiles": {
+        "SpiritVeinWyrmTrophyTile": {
+          "MapEntry": "Spirit Vein Wyrm Trophy"
+        },
+        "AbyssalStarWombLampTile": {
+          "MapEntry": "Abyssal Star Womb Lamp"
+        },
+        "MedicineKingCauldronDecorationTile": {
+          "MapEntry": "Medicine King Cauldron Decoration"
+        },
+        "SilentTabletDecorationTile": {
+          "MapEntry": "Silent Tablet Decoration"
+        }
+      },
+      "BossDecorations": {
+        "PlaceableTooltip": "Placeable 2x3 decoration; recovered when mined",
+        "LampTooltip": "Emits violet light when placed"
+      }
+    }
+  }
+}

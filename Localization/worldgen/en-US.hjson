@@ -1,0 +1,7 @@
+Mods: {
+ XianXia: {
+  WorldGeneration: {
+   CultivationDomains: Carving cultivation domains
+  }
+ }
+}

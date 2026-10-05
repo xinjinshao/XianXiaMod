@@ -1,0 +1,56 @@
+{
+  "Mods": {
+    "XianXia": {
+      "Items": {
+        "SpiritVeinWyrmBag": {
+          "DisplayName": "灵脉蠕虫宝藏袋",
+          "Tooltip": "右键打开，获得对应首领的材料与奖励"
+        },
+        "GardenWardenBag": {
+          "DisplayName": "药宗守园人宝藏袋",
+          "Tooltip": "右键打开，获得对应首领的材料与奖励"
+        },
+        "BlackFurnaceIronGolemBag": {
+          "DisplayName": "玄炉铁傀宝藏袋",
+          "Tooltip": "右键打开，获得对应首领的材料与奖励"
+        },
+        "TribulationCloudAvatarBag": {
+          "DisplayName": "劫云化身宝藏袋",
+          "Tooltip": "右键打开，获得对应首领的材料与奖励"
+        },
+        "ThunderMarshJiaoBag": {
+          "DisplayName": "雷泽蛟宝藏袋",
+          "Tooltip": "右键打开，获得对应首领的材料与奖励"
+        },
+        "AbyssalStarWombBag": {
+          "DisplayName": "星渊胎主宝藏袋",
+          "Tooltip": "右键打开，获得对应首领的材料与奖励"
+        },
+        "FormlessSwordSoulBag": {
+          "DisplayName": "无相剑魄宝藏袋",
+          "Tooltip": "右键打开，获得对应首领的材料与奖励"
+        },
+        "GreenwoodMedicineKingEchoBag": {
+          "DisplayName": "青木药王残影宝藏袋",
+          "Tooltip": "右键打开，获得对应首领的材料与奖励"
+        },
+        "HeavenTabletGuardianBag": {
+          "DisplayName": "天碑守御宝藏袋",
+          "Tooltip": "右键打开，获得对应首领的材料与奖励"
+        },
+        "BrokenHeavenInspectorBag": {
+          "DisplayName": "残天监察使宝藏袋",
+          "Tooltip": "右键打开，获得对应首领的材料与奖励"
+        },
+        "MoonboneImmortalBag": {
+          "DisplayName": "月骸仙君宝藏袋",
+          "Tooltip": "右键打开，获得对应首领的材料与奖励"
+        },
+        "OldHeavenDaoCoreBag": {
+          "DisplayName": "旧天道核心宝藏袋",
+          "Tooltip": "右键打开，获得对应首领的材料与奖励"
+        }
+      }
+    }
+  }
+}

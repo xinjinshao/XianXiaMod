@@ -1,0 +1,56 @@
+{
+  "Mods": {
+    "XianXia": {
+      "Items": {
+        "VeinCoilCharm": {
+          "DisplayName": "灵脉盘环",
+          "Tooltip": "灵气恢复每周期增加1，防御增加2\n同一奖励的效果不会重复叠加"
+        },
+        "GardenLifeCharm": {
+          "DisplayName": "药园生息符",
+          "Tooltip": "生命恢复每秒增加1，免疫中毒\n同一奖励的效果不会重复叠加"
+        },
+        "FurnaceHeatGuard": {
+          "DisplayName": "玄炉隔火印",
+          "Tooltip": "防御增加6，免疫着火\n同一奖励的效果不会重复叠加"
+        },
+        "TribulationConductor": {
+          "DisplayName": "劫雷导灵环",
+          "Tooltip": "灵气消耗降低8%，受到的伤害降低3%\n同一奖励的效果不会重复叠加"
+        },
+        "JiaoStormStride": {
+          "DisplayName": "蛟雷踏云佩",
+          "Tooltip": "移动速度增加12%，跳跃速度增加1.5\n同一奖励的效果不会重复叠加"
+        },
+        "AbyssSpiritLens": {
+          "DisplayName": "星渊聚灵镜",
+          "Tooltip": "灵气恢复每周期增加2，魔法伤害增加6%\n同一奖励的效果不会重复叠加"
+        },
+        "FormlessSwordEmblem": {
+          "DisplayName": "无相剑徽",
+          "Tooltip": "近战伤害增加8%，近战护甲穿透增加8\n同一奖励的效果不会重复叠加"
+        },
+        "MedicineKingLifeSeal": {
+          "DisplayName": "药王养生印",
+          "Tooltip": "生命恢复每秒增加2，灵气恢复每周期增加1\n同一奖励的效果不会重复叠加"
+        },
+        "HeavenTabletBulwark": {
+          "DisplayName": "天碑御守",
+          "Tooltip": "受到的伤害降低6%，免疫击退\n同一奖励的效果不会重复叠加"
+        },
+        "InspectorQuiverSeal": {
+          "DisplayName": "监察箭印",
+          "Tooltip": "远程伤害增加8%，远程护甲穿透增加8\n同一奖励的效果不会重复叠加"
+        },
+        "MoonboneSpiritBond": {
+          "DisplayName": "月骸器灵契",
+          "Tooltip": "召唤栏增加1，召唤伤害增加8%\n同一奖励的效果不会重复叠加"
+        },
+        "OldHeavenResonator": {
+          "DisplayName": "旧天共鸣核",
+          "Tooltip": "伤害增加10%，防御增加6，灵气恢复每周期增加2\n同一奖励的效果不会重复叠加"
+        }
+      }
+    }
+  }
+}

@@ -1,5 +1,8 @@
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using Terraria;
+using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.ModLoader.IO;
 
@@ -13,7 +16,17 @@ public class DownedBossSystem : ModSystem
     public static int SectReputation { get; private set; }
 
     public enum EndgameRoute { None = 0, RebuildHeaven = 1, SeverHeaven = 2, AcceptStarAbyss = 3 }
-    public static EndgameRoute ChosenRoute { get; set; }
+    public static EndgameRoute ChosenRoute { get; private set; }
+
+    public static bool TryChooseRoute(EndgameRoute route)
+    {
+        if (Main.netMode == NetmodeID.MultiplayerClient || ChosenRoute != EndgameRoute.None
+            || route < EndgameRoute.RebuildHeaven || route > EndgameRoute.AcceptStarAbyss
+            || !DownedBosses.Contains("old_heaven_dao_core")) return false;
+        ChosenRoute = route;
+        SyncWorldProgress();
+        return true;
+    }
 
     private static readonly Dictionary<string, int> ReputationByBoss = new()
     {
@@ -75,12 +88,67 @@ public class DownedBossSystem : ModSystem
         {
             DownedBosses.Add("spirit_vein_wyrm");
         }
-        ChosenRoute = (EndgameRoute)tag.GetInt("chosenRoute");
+        int route = tag.GetInt("chosenRoute");
+        ChosenRoute = route >= 0 && route <= (int)EndgameRoute.AcceptStarAbyss
+            ? (EndgameRoute)route : EndgameRoute.None;
         RecalculateSectReputation();
+    }
+
+    // The dictionaries define a stable wire order; never use HashSet enumeration order.
+    public override void NetSend(BinaryWriter writer)
+    {
+        writer.Write(GetFlags(DownedBosses, ReputationByBoss.Keys));
+        writer.Write(GetFlags(ClaimedCommissions, ReputationByCommission.Keys));
+        writer.Write((byte)ChosenRoute);
+    }
+
+    public override void NetReceive(BinaryReader reader)
+    {
+        ushort bosses = reader.ReadUInt16();
+        ushort commissions = reader.ReadUInt16();
+        byte route = reader.ReadByte();
+        ReadFlags(bosses, DownedBosses, ReputationByBoss.Keys);
+        ReadFlags(commissions, ClaimedCommissions, ReputationByCommission.Keys);
+        DownedSpiritVeinWyrm = DownedBosses.Contains("spirit_vein_wyrm");
+        ChosenRoute = route <= (byte)EndgameRoute.AcceptStarAbyss ? (EndgameRoute)route : EndgameRoute.None;
+        RecalculateSectReputation();
+    }
+
+    private static ushort GetFlags(HashSet<string> values, IEnumerable<string> keys)
+    {
+        ushort flags = 0;
+        int bit = 0;
+        foreach (string key in keys.OrderBy(key => key, System.StringComparer.Ordinal))
+        {
+            if (values.Contains(key))
+                flags |= (ushort)(1 << bit);
+            bit++;
+        }
+        return flags;
+    }
+
+    private static void ReadFlags(ushort flags, HashSet<string> values, IEnumerable<string> keys)
+    {
+        values.Clear();
+        int bit = 0;
+        foreach (string key in keys.OrderBy(key => key, System.StringComparer.Ordinal))
+        {
+            if ((flags & (1 << bit)) != 0)
+                values.Add(key);
+            bit++;
+        }
+    }
+
+    private static void SyncWorldProgress()
+    {
+        if (Main.netMode == NetmodeID.Server)
+            NetMessage.SendData(MessageID.WorldData);
     }
 
     public static void MarkDowned(string bossId)
     {
+        if (Main.netMode == NetmodeID.MultiplayerClient || !ReputationByBoss.ContainsKey(bossId))
+            return;
         bool newlyDowned = DownedBosses.Add(bossId);
         if (bossId == "spirit_vein_wyrm")
         {
@@ -89,6 +157,7 @@ public class DownedBossSystem : ModSystem
         if (newlyDowned && ReputationByBoss.TryGetValue(bossId, out int value))
         {
             SectReputation += value;
+            SyncWorldProgress();
         }
     }
 
@@ -99,12 +168,17 @@ public class DownedBossSystem : ModSystem
 
     public static bool TryClaimCommission(string commissionId, int reputation)
     {
+        if (Main.netMode == NetmodeID.MultiplayerClient
+            || !ReputationByCommission.TryGetValue(commissionId, out int expectedReputation)
+            || reputation != expectedReputation)
+            return false;
         if (!ClaimedCommissions.Add(commissionId))
         {
             return false;
         }
 
-        SectReputation += reputation;
+        SectReputation += expectedReputation;
+        SyncWorldProgress();
         return true;
     }
 

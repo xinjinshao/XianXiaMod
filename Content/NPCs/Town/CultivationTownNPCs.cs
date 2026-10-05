@@ -21,6 +21,20 @@ namespace XianXia.Content.NPCs.Town;
 
 public abstract class CultivationTownNPC : ModNPC
 {
+    protected NetworkText commissionResponse = NetworkText.FromKey("Mods.XianXia.NPCs.Commission.Unavailable");
+
+    protected string CommissionText(string key, params object[] args)
+    {
+        commissionResponse = NetworkText.FromKey(key, args);
+        return commissionResponse.ToString();
+    }
+
+    public NetworkText ClaimCommissionOnServer(Player player)
+    {
+        TryClaimCommission(player, out _);
+        return commissionResponse;
+    }
+
     public override void SetStaticDefaults()
     {
         Main.npcFrameCount[Type] = global::XianXia.Common.Animation.NpcFrameAnimator.TownFrameCount;
@@ -118,14 +132,22 @@ public abstract class CultivationTownNPC : ModNPC
             return;
         }
 
-        Main.npcChatText = TryClaimCommission(Main.LocalPlayer, out string text)
-            ? text
-            : text;
+        if (Main.netMode == NetmodeID.MultiplayerClient)
+        {
+            ModPacket packet = Mod.GetPacket();
+            packet.Write((byte)1);
+            packet.Write((short)NPC.whoAmI);
+            packet.Send();
+            return;
+        }
+
+        TryClaimCommission(Main.LocalPlayer, out string text);
+        Main.npcChatText = text;
     }
 
     protected virtual bool TryClaimCommission(Player player, out string text)
     {
-        text = Language.GetTextValue("Mods.XianXia.NPCs.Commission.Unavailable");
+        text = CommissionText("Mods.XianXia.NPCs.Commission.Unavailable");
         return false;
     }
 
@@ -141,7 +163,7 @@ public abstract class CultivationTownNPC : ModNPC
             player.QuickSpawnItem(NPC.GetSource_FromThis(), type, stack);
         }
 
-        Main.npcChatText = Language.GetTextValue(textKey, reputation, DownedBossSystem.SectReputation);
+        CommissionText(textKey, reputation, DownedBossSystem.SectReputation);
         return true;
     }
 }
@@ -216,7 +238,7 @@ public class HerbSectApprentice : CultivationTownNPC
     {
         if (!Downed("garden_warden"))
         {
-            text = Language.GetTextValue("Mods.XianXia.NPCs.Commission.HerbSectApprentice.Locked");
+            text = CommissionText("Mods.XianXia.NPCs.Commission.HerbSectApprentice.Locked");
             return false;
         }
 
@@ -227,10 +249,10 @@ public class HerbSectApprentice : CultivationTownNPC
             "Mods.XianXia.NPCs.Commission.HerbSectApprentice.Claimed",
             (ModContent.ItemType<GreenwoodRoot>(), 10),
             (ModContent.ItemType<SpringReturnPill>(), 3));
-        text = Main.npcChatText;
+        text = commissionResponse.ToString();
         if (!claimed)
         {
-            text = Language.GetTextValue("Mods.XianXia.NPCs.Commission.AlreadyClaimed");
+            text = CommissionText("Mods.XianXia.NPCs.Commission.AlreadyClaimed");
         }
         return claimed;
     }
@@ -317,7 +339,7 @@ public class WanderingArtificer : CultivationTownNPC
     {
         if (!Downed("black_furnace_iron_golem"))
         {
-            text = Language.GetTextValue("Mods.XianXia.NPCs.Commission.WanderingArtificer.Locked");
+            text = CommissionText("Mods.XianXia.NPCs.Commission.WanderingArtificer.Locked");
             return false;
         }
 
@@ -328,10 +350,10 @@ public class WanderingArtificer : CultivationTownNPC
             "Mods.XianXia.NPCs.Commission.WanderingArtificer.Claimed",
             (ModContent.ItemType<FurnaceSlagIron>(), 10),
             (ModContent.ItemType<ArtifactBlankShard>(), 3));
-        text = Main.npcChatText;
+        text = commissionResponse.ToString();
         if (!claimed)
         {
-            text = Language.GetTextValue("Mods.XianXia.NPCs.Commission.AlreadyClaimed");
+            text = CommissionText("Mods.XianXia.NPCs.Commission.AlreadyClaimed");
         }
         return claimed;
     }
@@ -409,7 +431,7 @@ public class TribulationObserver : CultivationTownNPC
     {
         if (!Downed("thunder_marsh_jiao"))
         {
-            text = Language.GetTextValue("Mods.XianXia.NPCs.Commission.TribulationObserver.Locked");
+            text = CommissionText("Mods.XianXia.NPCs.Commission.TribulationObserver.Locked");
             return false;
         }
 
@@ -420,10 +442,10 @@ public class TribulationObserver : CultivationTownNPC
             "Mods.XianXia.NPCs.Commission.TribulationObserver.Claimed",
             (ModContent.ItemType<TribulationCloudDew>(), 8),
             (ModContent.ItemType<TribulationResistingPill>(), 3));
-        text = Main.npcChatText;
+        text = commissionResponse.ToString();
         if (!claimed)
         {
-            text = Language.GetTextValue("Mods.XianXia.NPCs.Commission.AlreadyClaimed");
+            text = CommissionText("Mods.XianXia.NPCs.Commission.AlreadyClaimed");
         }
         return claimed;
     }
@@ -509,7 +531,7 @@ public class ArchiveScrollSpirit : CultivationTownNPC
     {
         if (!Downed("formless_sword_soul"))
         {
-            text = Language.GetTextValue("Mods.XianXia.NPCs.Commission.ArchiveScrollSpirit.Locked");
+            text = CommissionText("Mods.XianXia.NPCs.Commission.ArchiveScrollSpirit.Locked");
             return false;
         }
 
@@ -520,10 +542,10 @@ public class ArchiveScrollSpirit : CultivationTownNPC
             "Mods.XianXia.NPCs.Commission.ArchiveScrollSpirit.Claimed",
             (ModContent.ItemType<SectTrialToken>(), 2),
             (ModContent.ItemType<OldHeavenDaoScroll>(), 1));
-        text = Main.npcChatText;
+        text = commissionResponse.ToString();
         if (!claimed)
         {
-            text = Language.GetTextValue("Mods.XianXia.NPCs.Commission.AlreadyClaimed");
+            text = CommissionText("Mods.XianXia.NPCs.Commission.AlreadyClaimed");
         }
         return claimed;
     }
@@ -616,7 +638,7 @@ public class FallenHeavenMessenger : CultivationTownNPC
     {
         if (!Downed("heaven_tablet_guardian"))
         {
-            text = Language.GetTextValue("Mods.XianXia.NPCs.Commission.FallenHeavenMessenger.Locked");
+            text = CommissionText("Mods.XianXia.NPCs.Commission.FallenHeavenMessenger.Locked");
             return false;
         }
 
@@ -627,10 +649,10 @@ public class FallenHeavenMessenger : CultivationTownNPC
             "Mods.XianXia.NPCs.Commission.FallenHeavenMessenger.Claimed",
             (ModContent.ItemType<HeavenDaoFragment>(), 6),
             (ModContent.ItemType<BrokenHeavenDecree>(), 1));
-        text = Main.npcChatText;
+        text = commissionResponse.ToString();
         if (!claimed)
         {
-            text = Language.GetTextValue("Mods.XianXia.NPCs.Commission.AlreadyClaimed");
+            text = CommissionText("Mods.XianXia.NPCs.Commission.AlreadyClaimed");
         }
         return claimed;
     }

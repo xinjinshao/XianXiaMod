@@ -1,4 +1,14 @@
 <Project Sdk="Microsoft.NET.Sdk">
-  <Import Project="$(USERPROFILE)\Documents\My Games\Terraria\tModLoader\ModSources\tModLoader.targets"
-          Condition="Exists('$(USERPROFILE)\Documents\My Games\Terraria\tModLoader\ModSources\tModLoader.targets')" />
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <LangVersion>12.0</LangVersion>
+    <TModLoaderTargets Condition="'$(TModLoaderTargets)' == ''">$(USERPROFILE)\Documents\My Games\Terraria\tModLoader\ModSources\tModLoader.targets</TModLoaderTargets>
+  </PropertyGroup>
+  <Import Project="$(TModLoaderTargets)" Condition="Exists('$(TModLoaderTargets)')" />
+  <ItemGroup>
+    <Compile Remove="Tools/Tests/**/*.cs" />
+  </ItemGroup>
+  <Target Name="RequireTModLoaderTargets" BeforeTargets="PrepareForBuild" Condition="!Exists('$(TModLoaderTargets)')">
+    <Error Text="tModLoader targets not found. Set -p:TModLoaderTargets to your installation's tMLMod.targets or ModSources/tModLoader.targets." />
+  </Target>
 </Project>

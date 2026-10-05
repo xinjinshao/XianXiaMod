@@ -1,0 +1,10 @@
+Mods: {
+ XianXia: {
+  Buffs: {
+   SmallArtifactSpiritBuff: {
+    DisplayName: Small Artifact Spirit
+    Description: A small spirit assists in combat; right-click this icon to dismiss it
+   }
+  }
+ }
+}

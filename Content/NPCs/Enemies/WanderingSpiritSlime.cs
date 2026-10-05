@@ -41,6 +41,8 @@ public class WanderingSpiritSlime : ModNPC
 
     public override float SpawnChance(NPCSpawnInfo spawnInfo)
     {
+        if (!global::XianXia.Common.Systems.EnemySpawnRules.Allows(nameof(WanderingSpiritSlime), Main.hardMode, NPC.downedPlantBoss, NPC.downedGolemBoss, NPC.downedMoonlord)) return 0f;
+
         return spawnInfo.Player.InModBiome<ShallowSpiritVeinsBiome>() ? 0.28f : 0f;
     }
 

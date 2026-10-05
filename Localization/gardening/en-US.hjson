@@ -1,0 +1,9 @@
+Mods: {
+ XianXia: {
+  Tiles: {
+   CultivatedSpiritHerbTile: {
+    MapEntry: Cultivated Spirit Herb
+   }
+  }
+ }
+}

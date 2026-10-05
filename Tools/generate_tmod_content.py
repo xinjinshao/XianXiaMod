@@ -144,7 +144,7 @@ ITEM_TOOLTIPS_ZH = {
     "greenwood_array_plate": "以青木雕刻的阵法盘。部署一个恢复领域，为范围内友方回复生命与灵气。",
     "thunder_talisman_array_plate": "铭刻雷符的阵法盘。部署一个雷电领域，定期降下雷霆。",
     "broken_heaven_decree": "仍带有审判之力的天庭法令。释放可穿透方块的裁决光束。",
-    "old_heaven_dao_scroll": "字迹仍在变化的旧天道卷轴。用于尝试突破至元婴境。",
+    "old_heaven_dao_scroll": "元婴突破消耗品。金丹境并完成当前天劫，击败世纪之花与无相剑魄后使用。没有攻击功能。",
     "star_eclipse_arbalest": "发射星蚀裂弹的弩机。首次命中敌人后分裂为两枚灵弹。",
     "qi_gathering_pendant": "汇聚周围灵气的吊坠。提升灵气恢复速度，灵气消耗上限降至90%。",
     "spiritwood_charm": "以灵木雕刻的护符。提升生命恢复速度。",
@@ -184,7 +184,7 @@ ITEM_TOOLTIPS_EN = {
     "greenwood_array_plate": "A formation plate carved from greenwood. Deploys a healing array field that restores life and spiritual energy to allies inside.",
     "thunder_talisman_array_plate": "An array plate inscribed with thunder talismans. Deploys a lightning field that periodically rains thunderbolts.",
     "broken_heaven_decree": "A divine decree that still carries judgment. Unleashes piercing judgment beams that ignore tile collision.",
-    "old_heaven_dao_scroll": "A scroll of the old Dao, its text still shifting. Use to attempt the breakthrough to Nascent Soul stage.",
+    "old_heaven_dao_scroll": "Nascent Soul breakthrough consumable. Use at Golden Core after clearing the current trial and defeating Plantera and the Formless Sword Soul. Has no attack function.",
     "star_eclipse_arbalest": "An arbalest that fires star-eclipsing bolts. Projectiles split into two spirit bolts on the first enemy hit.",
     "qi_gathering_pendant": "A pendant that draws in ambient qi. Increases spiritual energy regen and caps energy costs at 90%.",
     "spiritwood_charm": "A charm carved from spirit-infused wood. Grants increased life regeneration.",
@@ -334,7 +334,7 @@ BOSS_STAGE_REQUIREMENTS = {
     "heaven_tablet_guardian": "NascentSoul",
     "broken_heaven_inspector": "NascentSoul",
     "moonbone_immortal": "Tribulation",
-    "old_heaven_dao_core": "DaoSevering",
+    "old_heaven_dao_core": "Tribulation",
 }
 
 BOSS_UNIQUE_DROPS = {
@@ -344,6 +344,22 @@ BOSS_UNIQUE_DROPS = {
     "broken_heaven_inspector": ("ImperialDecreeItem", 1),
     "heaven_tablet_guardian": ("HeavenTabletSeal", 1),
     "old_heaven_dao_core": ("RouteMaterial", 1),
+}
+
+WEAPON_DAMAGE_CLASSES = {
+    "cloudpiercer_flying_sword": "Melee", "thunder_pattern_sword_case": "Melee",
+    "formless_sword_wheel": "Melee", "moonbone_dharma_sword": "Melee",
+    "cinnabar_talisman_flame_item": "Magic", "greenwood_array_plate": "Magic",
+    "thunder_talisman_array_plate": "Magic", "broken_heaven_decree": "Magic",
+    "star_eclipse_arbalest": "Ranged",
+}
+PROJECTILE_DAMAGE_CLASSES = {
+    "CloudpiercerSwordProjectile": "Melee", "CloudWispProjectile": "Melee",
+    "ThunderSwordProjectile": "Melee", "FormlessSwordWheelProjectile": "Melee",
+    "MoonboneShardProjectile": "Melee", "CinnabarTalismanFlame": "Magic",
+    "GreenwoodArrayField": "Magic", "ThunderTalismanArray": "Magic",
+    "DecreeJudgementBeam": "Magic", "MinorThunderboltProjectile": "Magic",
+    "StarEclipseSplitBolt": "Ranged", "SpiritBolt": "Ranged",
 }
 
 BOSS_RARE_DROPS = {
@@ -708,7 +724,7 @@ def generate_materials(existing: set[str]) -> None:
         Item.damage = {damage};
         Item.knockBack = {knockback}f;
         Item.crit = {crit};
-        Item.DamageType = DamageClass.Generic;
+        Item.DamageType = DamageClass.{WEAPON_DAMAGE_CLASSES[asset_id]};
         Item.useStyle = {use_style};
         Item.useTime = {use_time};
         Item.useAnimation = {use_time};
@@ -718,6 +734,14 @@ def generate_materials(existing: set[str]) -> None:
         Item.shootSpeed = {shoot_speed}f;"""
             use_item = f"""
     public override bool CanUseItem(Player player)
+    {{
+        return player.GetModPlayer<global::XianXia.Common.Players.XianXiaPlayer>()
+            .CanConsumeSpiritualEnergy(HasArtifactAwakening(player) ? {awakened_energy} : {energy});
+    }}
+
+    public override bool Shoot(Player player, Terraria.DataStructures.EntitySource_ItemUse_WithAmmo source,
+        Microsoft.Xna.Framework.Vector2 position, Microsoft.Xna.Framework.Vector2 velocity,
+        int type, int damage, float knockback)
     {{
         return player.GetModPlayer<global::XianXia.Common.Players.XianXiaPlayer>()
             .TryConsumeSpiritualEnergy(HasArtifactAwakening(player) ? {awakened_energy} : {energy});
@@ -782,11 +806,11 @@ def generate_materials(existing: set[str]) -> None:
                 "thunder_pattern_sword_case": "ThunderPatternForgeTile",
                 "formless_sword_wheel": "SectTrialAltarTile",
                 "moonbone_dharma_sword": "DaoSeveringAltarTile",
-                "cinnabar_talisman_flame_item": "ArtifactForgeTile",
+                "cinnabar_talisman_flame_item": "SimpleTalismanTableTile",
                 "greenwood_array_plate": "ArtifactForgeTile",
                 "thunder_talisman_array_plate": "ThunderPatternForgeTile",
                 "broken_heaven_decree": "HeavenFireFurnaceTile",
-                "star_eclipse_arbalest": "ArtifactForgeTile",
+                "star_eclipse_arbalest": "StarPatternCauldronTile",
                 "old_heaven_dao_scroll": "ArtifactForgeTile",
             }.get(asset_id, "ArtifactForgeTile")
             recipe = f"""
@@ -801,6 +825,13 @@ def generate_materials(existing: set[str]) -> None:
     }}
 """
         if asset_id in accessories:
+            accessory_station = {
+                "lightning_ward_jade": "ThunderPatternForgeTile",
+                "star_abyss_eye": "StarPatternCauldronTile",
+                "nascent_soul_jade_box": "SectTrialAltarTile",
+                "broken_heaven_crown_seal": "HeavenFireFurnaceTile",
+                "dao_severing_ring": "DaoSeveringAltarTile",
+            }.get(asset_id, "ArtifactForgeTile")
             ingredient = {
                 "qi_gathering_pendant": "GreenwoodRoot",
                 "spiritwood_charm": "GreenwoodRoot",
@@ -817,7 +848,7 @@ def generate_materials(existing: set[str]) -> None:
         CreateRecipe()
             .AddIngredient<global::XianXia.Content.Items.Materials.{ingredient}>(5)
             .AddIngredient<global::XianXia.Content.Items.Materials.LowGradeSpiritStone>(8)
-            .AddTile(ModContent.TileType<global::XianXia.Content.Tiles.Stations.ArtifactForgeTile>())
+            .AddTile(ModContent.TileType<global::XianXia.Content.Tiles.Stations.{accessory_station}>())
             .Register();
     }}
 """
@@ -882,7 +913,7 @@ def generate_materials(existing: set[str]) -> None:
         classes.append(f"""
 public class {class_name} : ModItem
 {{
-    public override void SetStaticDefaults() => Item.ResearchUnlockCount = 25;
+    public override void SetStaticDefaults() => Item.ResearchUnlockCount = {1 if asset_id in weapons or asset_id in accessories else 25};
     public override void SetDefaults()
     {{
         Item.width = 32;
@@ -912,6 +943,16 @@ def generate_projectiles(existing: set[str]) -> None:
         copy_asset(row["asset_id"], "projectile", class_name, CONTENT / "Projectiles")
         width, height = row["width"], row["height"]
         extra_defaults, extra_methods = projectile_behavior_code(class_name)
+        if class_name == "MinorThunderboltProjectile":
+            extra_methods += """
+    public override void OnSpawn(Terraria.DataStructures.IEntitySource source)
+    {
+        if (source is Terraria.DataStructures.EntitySource_Parent parent && parent.Entity is Projectile origin)
+            Projectile.DamageType = origin.DamageType == DamageClass.Melee ? DamageClass.Melee : DamageClass.Magic;
+    }
+    public override void SendExtraAI(System.IO.BinaryWriter writer) => writer.Write(Projectile.DamageType == DamageClass.Melee);
+    public override void ReceiveExtraAI(System.IO.BinaryReader reader) => Projectile.DamageType = reader.ReadBoolean() ? DamageClass.Melee : DamageClass.Magic;
+"""
         default_ai = "" if "public override void AI()" in extra_methods else """
     public override void AI()
     {
@@ -929,7 +970,7 @@ public class {class_name} : ModProjectile
         Projectile.height = {height};
         Projectile.friendly = true;
         Projectile.hostile = false;
-        Projectile.DamageType = DamageClass.Generic;
+        Projectile.DamageType = DamageClass.{PROJECTILE_DAMAGE_CLASSES.get(class_name, 'Generic')};
         Projectile.penetrate = 1;
         Projectile.timeLeft = 180;
         Projectile.tileCollide = true;
@@ -1225,9 +1266,11 @@ def generate_enemies(existing: set[str]) -> None:
         biome = BIOME_BY_ENEMY[asset_id]
         extra_defaults, extra_methods = enemy_behavior_code(asset_id)
         ai = "NPCAIStyleID.Fighter"
+        ai_type = "NPCID.Zombie"
         flags = ""
         if any(k in asset_id for k in ["moth", "spirit", "hawk", "echo", "soul", "cloud"]):
             ai = "NPCAIStyleID.Bat"
+            ai_type = "NPCID.CaveBat"
             flags = "        NPC.noGravity = true;\n"
         classes.append(f"""
 public class {class_name} : ModNPC
@@ -1249,12 +1292,13 @@ public class {class_name} : ModNPC
         NPC.HitSound = SoundID.NPCHit1;
         NPC.DeathSound = SoundID.NPCDeath1;
         NPC.aiStyle = {ai};
-        AIType = NPCID.CaveBat;
+        AIType = {ai_type};
 {flags}{extra_defaults}
     }}
 
     public override float SpawnChance(NPCSpawnInfo spawnInfo)
     {{
+        if (!global::XianXia.Common.Systems.EnemySpawnRules.Allows(nameof({class_name}), Main.hardMode, NPC.downedPlantBoss, NPC.downedGolemBoss, NPC.downedMoonlord)) return 0f;
         return spawnInfo.Player.InModBiome<global::XianXia.Content.Biomes.{biome}>() ? 0.18f : 0f;
     }}
 {extra_methods}
@@ -1273,43 +1317,32 @@ def enemy_behavior_code(asset_id: str) -> tuple[str, str]:
         return ("", """
     public override void PostAI()
     {
-        Player target = Main.player[NPC.target];
+        if (!global::XianXia.Common.Systems.EnemyTargeting.TryGetLivingTarget(NPC, out Player target)) return;
         float distance = Vector2.Distance(NPC.Center, target.Center);
-        if (target.active && !target.dead && distance < 160f)
-        {
-            NPC.velocity *= 0.92f;
-        }
-
-        NPC.localAI[0]++;
-        if (NPC.localAI[0] >= 90f)
+        if (distance < 160f) NPC.velocity *= 0.92f;
+        if (++NPC.localAI[0] >= 90f)
         {
             NPC.localAI[0] = 0f;
-            if (NPC.life < NPC.lifeMax)
+            if (Main.netMode != NetmodeID.MultiplayerClient && NPC.life > 0 && NPC.life < NPC.lifeMax)
             {
                 NPC.life += Math.Min(4, NPC.lifeMax - NPC.life);
+                NPC.netUpdate = true;
             }
-
-            for (int i = 0; i < 6; i++)
-            {
-                Dust.NewDust(NPC.position, NPC.width, NPC.height, DustID.Grass, 0f, -0.6f);
-            }
+            if (!Main.dedServ)
+                for (int i = 0; i < 6; i++)
+                    Dust.NewDust(NPC.position, NPC.width, NPC.height, DustID.Grass, 0f, -0.6f);
         }
-
         NPC.localAI[1]++;
-        if (Main.netMode != NetmodeID.MultiplayerClient && target.active && !target.dead
-            && NPC.localAI[1] >= 130f && distance > 160f && distance < 480f)
+        if (Main.netMode != NetmodeID.MultiplayerClient && NPC.localAI[1] >= 130f && distance > 160f && distance < 480f)
         {
             NPC.localAI[1] = 0f;
             Vector2 velocity = (target.Center - NPC.Center).SafeNormalize(Vector2.UnitY) * 6f;
-            Projectile.NewProjectile(
-                NPC.GetSource_FromAI(),
-                NPC.Center,
-                velocity,
+            Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center, velocity,
                 ModContent.ProjectileType<global::XianXia.Content.Projectiles.SpiritBoltProjectile>(),
-                Math.Max(1, NPC.damage / 3),
-                0.8f);
+                Math.Max(1, NPC.damage / 3), 0.8f);
         }
     }
+
 """)
 
     if asset_id == "miasma_flower_moth":
@@ -1317,26 +1350,21 @@ def enemy_behavior_code(asset_id: str) -> tuple[str, str]:
     public override void PostAI()
     {
         NPC.velocity *= 0.985f;
-        NPC.localAI[0]++;
-        if (NPC.localAI[0] >= 45f)
-        {
-            NPC.localAI[0] = 0f;
+        if (++NPC.localAI[0] < 45f) return;
+        NPC.localAI[0] = 0f;
+        if (Main.netMode != NetmodeID.MultiplayerClient)
             foreach (Player player in Main.ActivePlayers)
-            {
-                if (Vector2.Distance(player.Center, NPC.Center) <= 128f)
-                {
+                if (!player.dead && Vector2.Distance(player.Center, NPC.Center) <= 128f)
                     player.AddBuff(BuffID.Poisoned, 90);
-                }
-            }
-
+        if (!Main.dedServ)
             for (int i = 0; i < 10; i++)
             {
                 float angle = MathHelper.TwoPi * i / 10f;
                 Vector2 offset = new Vector2((float)Math.Cos(angle), (float)Math.Sin(angle)) * 48f;
                 Dust.NewDust(NPC.Center + offset, 4, 4, DustID.Poisoned, offset.X * 0.03f, offset.Y * 0.03f, 100, default, 0.7f);
             }
-        }
     }
+
 """)
 
     if asset_id == "furnace_ash_golem":
@@ -1365,12 +1393,7 @@ def enemy_behavior_code(asset_id: str) -> tuple[str, str]:
         return ("", """
     public override void PostAI()
     {
-        Player target = Main.player[NPC.target];
-        if (!target.active || target.dead)
-        {
-            NPC.TargetClosest(false);
-            target = Main.player[NPC.target];
-        }
+        if (!global::XianXia.Common.Systems.EnemyTargeting.TryGetLivingTarget(NPC, out Player target)) return;
 
         NPC.localAI[0]++;
         if (target.active && !target.dead && NPC.localAI[0] >= 75f)
@@ -1395,12 +1418,7 @@ def enemy_behavior_code(asset_id: str) -> tuple[str, str]:
         return ("", """
     public override void PostAI()
     {
-        Player target = Main.player[NPC.target];
-        if (!target.active || target.dead)
-        {
-            NPC.TargetClosest(false);
-            target = Main.player[NPC.target];
-        }
+        if (!global::XianXia.Common.Systems.EnemyTargeting.TryGetLivingTarget(NPC, out Player target)) return;
 
         NPC.localAI[0]++;
         if (Main.netMode != NetmodeID.MultiplayerClient && target.active && !target.dead && NPC.localAI[0] >= 150f)
@@ -1424,49 +1442,42 @@ def enemy_behavior_code(asset_id: str) -> tuple[str, str]:
         return ("", """
     public override void PostAI()
     {
-        Player target = Main.player[NPC.target];
-        if (!target.active || target.dead)
-        {
-            NPC.TargetClosest(false);
-            target = Main.player[NPC.target];
-        }
-
-        NPC.localAI[0]++;
-        bool diving = NPC.localAI[1] > 0f;
-        if (target.active && !target.dead && NPC.localAI[0] >= (diving ? 30f : 140f))
-        {
-            NPC.localAI[0] = 0f;
-            if (diving)
-            {
-                NPC.localAI[1] = 0f;
-                NPC.velocity *= 0.3f;
-            }
-            else
-            {
-                NPC.localAI[1] = 1f;
-                Vector2 direction = (target.Center - NPC.Center).SafeNormalize(Vector2.UnitY);
-                NPC.velocity = direction * 15f;
-            }
-            NPC.netUpdate = true;
-        }
-
-        if (NPC.velocity.LengthSquared() > 80f)
-        {
+        if (!Main.dedServ && NPC.velocity.LengthSquared() > 80f)
             Dust.NewDust(NPC.position, NPC.width, NPC.height, DustID.Electric, -NPC.velocity.X * 0.1f, -NPC.velocity.Y * 0.1f);
+        if (Main.netMode == NetmodeID.MultiplayerClient) return;
+        if (!global::XianXia.Common.Systems.EnemyTargeting.TryGetLivingTarget(NPC, out Player target))
+        {
+            if (NPC.localAI[1] > 0f)
+            {
+                NPC.velocity *= 0.3f;
+                NPC.netUpdate = true;
+            }
+            NPC.localAI[0] = NPC.localAI[1] = 0f;
+            return;
         }
+        bool diving = NPC.localAI[1] > 0f;
+        if (++NPC.localAI[0] < (diving ? 30f : 140f)) return;
+        NPC.localAI[0] = 0f;
+        if (diving)
+        {
+            NPC.localAI[1] = 0f;
+            NPC.velocity *= 0.3f;
+        }
+        else
+        {
+            NPC.localAI[1] = 1f;
+            NPC.velocity = (target.Center - NPC.Center).SafeNormalize(Vector2.UnitY) * 15f;
+        }
+        NPC.netUpdate = true;
     }
+
 """)
 
     if asset_id == "star_eclipsed_cultivator":
         return ("", """
     public override void PostAI()
     {
-        Player target = Main.player[NPC.target];
-        if (!target.active || target.dead)
-        {
-            NPC.TargetClosest(false);
-            target = Main.player[NPC.target];
-        }
+        if (!global::XianXia.Common.Systems.EnemyTargeting.TryGetLivingTarget(NPC, out Player target)) return;
 
         if (!target.active || target.dead)
         {
@@ -1505,12 +1516,7 @@ def enemy_behavior_code(asset_id: str) -> tuple[str, str]:
         return ("", """
     public override void PostAI()
     {
-        Player target = Main.player[NPC.target];
-        if (!target.active || target.dead)
-        {
-            NPC.TargetClosest(false);
-            target = Main.player[NPC.target];
-        }
+        if (!global::XianXia.Common.Systems.EnemyTargeting.TryGetLivingTarget(NPC, out Player target)) return;
 
         NPC.localAI[0]++;
         if (NPC.localAI[1] > 0f)
@@ -1538,96 +1544,126 @@ def enemy_behavior_code(asset_id: str) -> tuple[str, str]:
         NPC.knockBackResist = 0.25f;""", """
     public override void PostAI()
     {
-        Player target = Main.player[NPC.target];
-        if (!target.active || target.dead)
+        if (Main.netMode == NetmodeID.MultiplayerClient)
         {
-            NPC.TargetClosest(false);
-            target = Main.player[NPC.target];
+            if (NPC.localAI[2] > 0f && --NPC.localAI[2] == 0f) NPC.damage = NPC.defDamage;
+            return;
         }
-
-        bool guarding = target.active && !target.dead && Math.Abs(target.Center.X - NPC.Center.X) < 96f;
+        if (NPC.localAI[2] == 1f) NPC.netUpdate = true;
+        if (NPC.localAI[2] > 0f) NPC.localAI[2]--;
+        NPC.damage = NPC.localAI[2] > 0f ? (int)(NPC.defDamage * 1.3f) : NPC.defDamage;
+        NPC.defense = 34;
+        if (!global::XianXia.Common.Systems.EnemyTargeting.TryGetLivingTarget(NPC, out Player target))
+        {
+            if (NPC.localAI[2] > 0f) NPC.netUpdate = true;
+            NPC.localAI[0] = NPC.localAI[1] = NPC.localAI[2] = 0f;
+            NPC.damage = NPC.defDamage;
+            return;
+        }
+        bool guarding = Math.Abs(target.Center.X - NPC.Center.X) < 96f;
         if (guarding)
         {
             NPC.velocity.X *= 0.65f;
             NPC.defense = 42;
         }
-        else
+        if (++NPC.localAI[0] < 120f) return;
+        NPC.localAI[0] = 0f;
+        if (guarding && NPC.localAI[1] > 0f)
         {
-            NPC.defense = 34;
+            NPC.localAI[1] = 0f;
+            NPC.localAI[2] = 30f;
+            NPC.velocity = (target.Center - NPC.Center).SafeNormalize(Vector2.UnitX) * 12f;
+            NPC.damage = (int)(NPC.defDamage * 1.3f);
         }
-
-        NPC.localAI[0]++;
-        if (target.active && !target.dead && NPC.localAI[0] >= 120f)
-        {
-            NPC.localAI[0] = 0f;
-            if (guarding && NPC.localAI[1] > 0f)
-            {
-                NPC.localAI[1] = 0f;
-                NPC.velocity = (target.Center - NPC.Center).SafeNormalize(Vector2.UnitX) * 12f;
-                NPC.damage = (int)(NPC.damage * 1.3f);
-            }
-            else
-            {
-                NPC.velocity.X = Math.Sign(target.Center.X - NPC.Center.X) * 9f;
-            }
-            NPC.netUpdate = true;
-        }
+        else NPC.velocity.X = Math.Sign(target.Center.X - NPC.Center.X) * 9f;
+        NPC.netUpdate = true;
     }
 
     public override void OnHitByProjectile(Projectile projectile, NPC.HitInfo hit, int damageDone)
     {
-        if (Math.Abs(Main.player[projectile.owner].Center.X - NPC.Center.X) < 96f)
-        {
+        if (Main.netMode == NetmodeID.MultiplayerClient || projectile.owner < 0 || projectile.owner >= Main.maxPlayers) return;
+        Player attacker = Main.player[projectile.owner];
+        if (attacker.active && !attacker.dead && Math.Abs(attacker.Center.X - NPC.Center.X) < 96f)
             NPC.localAI[1] = 1f;
-        }
     }
+
+    public override void SendExtraAI(System.IO.BinaryWriter writer)
+    {
+        writer.Write((byte)Math.Clamp((int)NPC.localAI[2], 0, 30));
+        writer.Write(NPC.damage);
+    }
+
+    public override void ReceiveExtraAI(System.IO.BinaryReader reader)
+    {
+        NPC.localAI[2] = Math.Min(30, (int)reader.ReadByte());
+        NPC.damage = reader.ReadInt32();
+    }
+
+
 """)
 
     if asset_id == "scripture_archive_echo":
         return ("", """
     public override void PostAI()
     {
-        Player target = Main.player[NPC.target];
-        if (!target.active || target.dead)
+        if (NPC.localAI[2] > 0f) NPC.localAI[2]--;
+        if (Main.netMode == NetmodeID.MultiplayerClient)
         {
-            NPC.TargetClosest(false);
-            target = Main.player[NPC.target];
+            UpdateDefense();
+            return;
         }
-
-        NPC.localAI[0]++;
-        if (Main.netMode != NetmodeID.MultiplayerClient && target.active && !target.dead && NPC.localAI[0] >= 105f)
+        if (!global::XianXia.Common.Systems.EnemyTargeting.TryGetLivingTarget(NPC, out Player target))
         {
-            NPC.localAI[0] = 0f;
-            NPC.localAI[1]++;
-            if (NPC.localAI[1] % 3 == 0)
-            {
-                NPC.localAI[1] = 0f;
-                NPC.defense = 72;
-                for (int j = 0; j < 12; j++)
-                    Dust.NewDust(NPC.position, NPC.width, NPC.height, DustID.GoldCoin, 0f, -2f, 100, default, 0.6f);
-            }
-            else
-            {
-                NPC.defense = NPC.life < NPC.lifeMax / 2 ? 36 : 28;
-            }
-            for (int i = -1; i <= 1; i++)
-            {
-                Vector2 velocity = (target.Center - NPC.Center).SafeNormalize(Vector2.UnitY).RotatedBy(MathHelper.ToRadians(12f * i)) * 6.5f;
-                Projectile.NewProjectile(
-                    NPC.GetSource_FromAI(),
-                    NPC.Center,
-                    velocity,
-                    ModContent.ProjectileType<global::XianXia.Content.Projectiles.BossSpiritBoltProjectile>(),
-                    Math.Max(1, NPC.damage / 4),
-                    0.5f);
-            }
+            NPC.localAI[0] = NPC.localAI[1] = NPC.localAI[2] = 0f;
+            UpdateDefense();
+            return;
         }
-
-        if (NPC.defense == 72 && NPC.localAI[0] > 30f)
+        UpdateDefense();
+        if (++NPC.localAI[0] < 105f) return;
+        NPC.localAI[0] = 0f;
+        if (++NPC.localAI[1] >= 3f)
         {
-            NPC.defense = NPC.life < NPC.lifeMax / 2 ? 36 : 28;
+            NPC.localAI[1] = 0f;
+            NPC.localAI[2] = 30f;
+            UpdateDefense();
+            DrawShield();
+        }
+        for (int i = -1; i <= 1; i++)
+        {
+            Vector2 velocity = (target.Center - NPC.Center).SafeNormalize(Vector2.UnitY).RotatedBy(MathHelper.ToRadians(12f * i)) * 6.5f;
+            Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center, velocity,
+                ModContent.ProjectileType<global::XianXia.Content.Projectiles.BossSpiritBoltProjectile>(),
+                Math.Max(1, NPC.damage / 4), 0.5f);
         }
     }
+
+    private void UpdateDefense()
+    {
+        int defense = NPC.localAI[2] > 0f ? 72 : NPC.life < NPC.lifeMax / 2 ? 36 : 28;
+        if (NPC.defense != defense && Main.netMode != NetmodeID.MultiplayerClient) NPC.netUpdate = true;
+        NPC.defense = defense;
+    }
+
+    private void DrawShield()
+    {
+        if (Main.dedServ) return;
+        for (int j = 0; j < 12; j++)
+            Dust.NewDust(NPC.position, NPC.width, NPC.height, DustID.GoldCoin, 0f, -2f, 100, default, 0.6f);
+    }
+
+    public override void SendExtraAI(System.IO.BinaryWriter writer)
+    {
+        writer.Write((byte)Math.Clamp((int)NPC.localAI[2], 0, 30));
+    }
+
+    public override void ReceiveExtraAI(System.IO.BinaryReader reader)
+    {
+        bool wasShielded = NPC.localAI[2] > 0f;
+        NPC.localAI[2] = Math.Min(30, (int)reader.ReadByte());
+        UpdateDefense();
+        if (!wasShielded && NPC.localAI[2] > 0f) DrawShield();
+    }
+
 """)
 
     if asset_id == "celestial_puppet":
@@ -1635,34 +1671,40 @@ def enemy_behavior_code(asset_id: str) -> tuple[str, str]:
         NPC.knockBackResist = 0.15f;""", """
     public override void PostAI()
     {
-        NPC.localAI[0]++;
-        int phase = (int)(NPC.localAI[0] / 130f) % 3;
-        if (NPC.localAI[0] >= 130f)
+        if (Main.netMode == NetmodeID.MultiplayerClient) return;
+        if (NPC.target < 0 || NPC.target >= Main.maxPlayers
+            || !Main.player[NPC.target].active || Main.player[NPC.target].dead)
+            NPC.TargetClosest(false);
+        if (NPC.target < 0 || NPC.target >= Main.maxPlayers
+            || !Main.player[NPC.target].active || Main.player[NPC.target].dead)
         {
             NPC.localAI[0] = 0f;
-            Player target = Main.player[NPC.target];
-            switch (phase)
-            {
-                case 0:
-                    NPC.velocity.X = Math.Sign(target.Center.X - NPC.Center.X) * 7f;
-                    break;
-                case 1:
-                    NPC.velocity.Y -= 8f;
-                    if (Main.netMode != NetmodeID.MultiplayerClient)
-                    {
-                        Vector2 aim = (target.Center - NPC.Center).SafeNormalize(Vector2.UnitY) * 7f;
-                        Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center, aim,
-                            ModContent.ProjectileType<global::XianXia.Content.Projectiles.BossSpiritBoltProjectile>(),
-                            Math.Max(1, NPC.damage / 3), 0.5f);
-                    }
-                    break;
-                case 2:
-                    NPC.velocity = (target.Center - NPC.Center).SafeNormalize(Vector2.UnitY) * 10f;
-                    break;
-            }
-            NPC.netUpdate = true;
+            return;
         }
+        if (++NPC.localAI[0] < 130f) return;
+        NPC.localAI[0] = 0f;
+        int phase = (int)NPC.localAI[1];
+        NPC.localAI[1] = (phase + 1) % 3;
+        Player target = Main.player[NPC.target];
+        switch (phase)
+        {
+            case 0:
+                NPC.velocity.X = Math.Sign(target.Center.X - NPC.Center.X) * 7f;
+                break;
+            case 1:
+                NPC.velocity.Y -= 8f;
+                Vector2 aim = (target.Center - NPC.Center).SafeNormalize(Vector2.UnitY) * 7f;
+                Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center, aim,
+                    ModContent.ProjectileType<global::XianXia.Content.Projectiles.BossSpiritBoltProjectile>(),
+                    Math.Max(1, NPC.damage / 3), 0.5f);
+                break;
+            case 2:
+                NPC.velocity = (target.Center - NPC.Center).SafeNormalize(Vector2.UnitY) * 10f;
+                break;
+        }
+        NPC.netUpdate = true;
     }
+
 """)
 
     if asset_id == "heaven_tablet_guard":
@@ -1670,12 +1712,7 @@ def enemy_behavior_code(asset_id: str) -> tuple[str, str]:
         NPC.knockBackResist = 0.1f;""", """
     public override void PostAI()
     {
-        Player target = Main.player[NPC.target];
-        if (!target.active || target.dead)
-        {
-            NPC.TargetClosest(false);
-            target = Main.player[NPC.target];
-        }
+        if (!global::XianXia.Common.Systems.EnemyTargeting.TryGetLivingTarget(NPC, out Player target)) return;
 
         bool pushing = target.active && !target.dead && NPC.localAI[1] > 0f;
         if (pushing)
@@ -1713,12 +1750,7 @@ def enemy_behavior_code(asset_id: str) -> tuple[str, str]:
         return ("", """
     public override void PostAI()
     {
-        Player target = Main.player[NPC.target];
-        if (!target.active || target.dead)
-        {
-            NPC.TargetClosest(false);
-            target = Main.player[NPC.target];
-        }
+        if (!global::XianXia.Common.Systems.EnemyTargeting.TryGetLivingTarget(NPC, out Player target)) return;
 
         NPC.localAI[0]++;
         if (target.active && !target.dead && NPC.localAI[0] >= 70f)
@@ -1751,12 +1783,7 @@ def enemy_behavior_code(asset_id: str) -> tuple[str, str]:
 
     public override void PostAI()
     {
-        Player target = Main.player[NPC.target];
-        if (!target.active || target.dead)
-        {
-            NPC.TargetClosest(false);
-            target = Main.player[NPC.target];
-        }
+        if (!global::XianXia.Common.Systems.EnemyTargeting.TryGetLivingTarget(NPC, out Player target)) return;
 
         recentPositions[positionIndex % recentPositions.Length] = target.Center;
         positionIndex++;
@@ -1804,16 +1831,18 @@ public class {class_name} : ModNPC
         bestiaryEntry.Info.Add(new FlavorTextBestiaryInfoElement("Mods.XianXia.Bestiary.{class_name}.Text"));
     }}
 
+    public override void ApplyDifficultyAndPlayerScaling(int numPlayers, float balance, float bossAdjustment)
+    {{
+        NPC.lifeMax = BossStatRules.ScaleLife(NPC.lifeMax, balance, bossAdjustment);
+    }}
+
     public override void SetDefaults()
     {{
         NPC.width = 96;
         NPC.height = 96;
-        int baseLife = {life};
-        int baseDamage = {damage};
-        if (Main.expertMode) {{ baseLife = (int)(baseLife * 1.45f); baseDamage = (int)(baseDamage * 1.25f); }}
-        if (Main.masterMode) {{ baseLife = (int)(baseLife * 1.85f); baseDamage = (int)(baseDamage * 1.45f); }}
-        NPC.lifeMax = baseLife;
-        NPC.damage = baseDamage;
+        var stats = BossStatRules.Get(nameof({class_name}));
+        NPC.lifeMax = stats.Life;
+        NPC.damage = stats.Damage;
         NPC.defense = {defense};
         NPC.knockBackResist = 0f;
         NPC.value = Item.buyPrice(gold: 1);
@@ -1901,13 +1930,17 @@ public class {class_name} : ModNPC
 
     public override void ModifyNPCLoot(NPCLoot npcLoot)
     {{
-        npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<global::XianXia.Content.Items.Materials.{pascal(drop)}>(), 1, 16, 28));
-        npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<global::XianXia.Content.Items.Materials.{pascal(drop2)}>(), 1, 8, 16));
-        npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<global::XianXia.Content.Items.Materials.LowGradeSpiritStone>(), 1, 8, 16));
-        npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<global::XianXia.Content.Items.Materials.SpiritGel>(), 4, 3, 8));
-        npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<global::XianXia.Content.Items.Materials.ArtifactBlankShard>(), 8, 1, 3));
-        npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<global::XianXia.Content.Items.HandGenerated.{BOSS_RARE_DROPS.get(asset_id, ("ArtifactBlankShard", 100))[0]}>(), {BOSS_RARE_DROPS.get(asset_id, ("ArtifactBlankShard", 100))[1]}, 1, 1));
-        {f'npcloot.Add(ItemDropRule.Common(ModContent.ItemType<global::XianXia.Content.Items.HandGenerated.{BOSS_UNIQUE_DROPS[asset_id][0]}>(), 1, {BOSS_UNIQUE_DROPS[asset_id][1]}, {BOSS_UNIQUE_DROPS[asset_id][1]}));' if asset_id in BOSS_UNIQUE_DROPS else ''}
+        npcLoot.Add(ItemDropRule.BossBag(ModContent.ItemType<global::XianXia.Content.Items.TreasureBags.{class_name}Bag>()));
+        npcLoot.Add(ItemDropRule.MasterModeCommonDrop(ModContent.ItemType<global::XianXia.Content.Items.MasterRewards.{class_name}Monument>()));
+        var normal = new LeadingConditionRule(new Conditions.NotExpert());
+        normal.OnSuccess(ItemDropRule.Common(ModContent.ItemType<global::XianXia.Content.Items.Materials.{pascal(drop)}>(), 1, 16, 28));
+        normal.OnSuccess(ItemDropRule.Common(ModContent.ItemType<global::XianXia.Content.Items.Materials.{pascal(drop2)}>(), 1, 8, 16));
+        normal.OnSuccess(ItemDropRule.Common(ModContent.ItemType<global::XianXia.Content.Items.Materials.LowGradeSpiritStone>(), 1, 8, 16));
+        normal.OnSuccess(ItemDropRule.Common(ModContent.ItemType<global::XianXia.Content.Items.Materials.SpiritGel>(), 4, 3, 8));
+        normal.OnSuccess(ItemDropRule.Common(ModContent.ItemType<global::XianXia.Content.Items.Materials.ArtifactBlankShard>(), 8, 1, 3));
+        normal.OnSuccess(ItemDropRule.Common(ModContent.ItemType<global::XianXia.Content.Items.HandGenerated.{BOSS_RARE_DROPS.get(asset_id, ("ArtifactBlankShard", 100))[0]}>(), {BOSS_RARE_DROPS.get(asset_id, ("ArtifactBlankShard", 100))[1]}, 1, 1));
+        {f'normal.OnSuccess(ItemDropRule.Common(ModContent.ItemType<global::XianXia.Content.Items.HandGenerated.{BOSS_UNIQUE_DROPS[asset_id][0]}>(), 1, {BOSS_UNIQUE_DROPS[asset_id][1]}, {BOSS_UNIQUE_DROPS[asset_id][1]}));' if asset_id in BOSS_UNIQUE_DROPS else ''}
+        npcLoot.Add(normal);
     }}
 }}
 """)
@@ -2104,7 +2137,9 @@ def boss_pattern_code(asset_id: str) -> str:
 
     if asset_id == "old_heaven_dao_core":
         return f"""
-            int module = (int)(NPC.localAI[2]++ / 180f) % 3;
+            int module = (int)NPC.ai[3];
+            NPC.ai[3] = (module + 1) % 3;
+            NPC.netUpdate = true;
             int sDmg = Math.Max(18, NPC.damage / 3);
             if (module == 0) {{
                 int lanes = finalPhase ? 5 : phaseTwo ? 3 : 1;
@@ -2353,14 +2388,14 @@ def generate_localization() -> None:
 \t}}
 }}
 """
-    write(ROOT / "Localization" / "generated.zh-Hans.hjson", template.format(
+    write(ROOT / "Localization" / "generated" / "zh-Hans.hjson", template.format(
         items=hjson_block(item_zh),
         npcs=hjson_block(npc_zh),
         tiles=hjson_block(tile_zh),
         biomes=hjson_block(biome_zh),
         buffs=hjson_block(buff_zh),
     ))
-    write(ROOT / "Localization" / "generated.en-US.hjson", template.format(
+    write(ROOT / "Localization" / "generated" / "en-US.hjson", template.format(
         items=hjson_block(item_en),
         npcs=hjson_block(npc_en),
         tiles=hjson_block(tile_en),
@@ -2376,10 +2411,10 @@ def generate_localization() -> None:
 \t}}
 }}
 """
-    write(ROOT / "Localization" / "generated_bestiary.zh-Hans.hjson", bestiary_template.format(
+    write(ROOT / "Localization" / "generated_bestiary" / "zh-Hans.hjson", bestiary_template.format(
         bestiary=hjson_block(bestiary_zh),
     ))
-    write(ROOT / "Localization" / "generated_bestiary.en-US.hjson", bestiary_template.format(
+    write(ROOT / "Localization" / "generated_bestiary" / "en-US.hjson", bestiary_template.format(
         bestiary=hjson_block(bestiary_en),
     ))
 

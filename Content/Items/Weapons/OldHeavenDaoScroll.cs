@@ -7,6 +7,7 @@ using XianXia.Content.Tiles.Stations;
 
 namespace XianXia.Content.Items.Weapons;
 
+// Retained internal identity and legacy path for saved items; this is a breakthrough consumable.
 public class OldHeavenDaoScroll : ModItem
 
 {
@@ -58,6 +59,9 @@ public class OldHeavenDaoScroll : ModItem
     public override bool? UseItem(Player player)
 
     {
+        if (global::XianXia.Common.Systems.CultivationItemTransactions.RequestIfMultiplayer(player, Item))
+            return true;
+
 
         player.GetModPlayer<global::XianXia.Common.Players.XianXiaPlayer>().TryAdvanceCultivation(global::XianXia.Common.Players.CultivationStage.NascentSoul);
 

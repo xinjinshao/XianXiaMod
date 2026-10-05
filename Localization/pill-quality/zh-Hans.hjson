@@ -1,0 +1,14 @@
+Mods: {
+ XianXia: {
+  PillQuality: {
+   Coarse: 粗丹
+   Standard: 成丹
+   Fine: 良丹
+   Spirit: 灵丹
+   Tooltip: "品质：{0}（基础收益 {1}%）"
+   Bonus: "额外恢复 {0} 点灵气，获得 {1} 秒生命再生"
+   Breakthrough: 品质只影响恢复收益，符合条件的突破不会随机失败
+   EmptyCursor: 炼丹前请先放下鼠标上的物品，每炉独立生成品质
+  }
+ }
+}

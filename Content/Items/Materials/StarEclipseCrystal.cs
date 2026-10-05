@@ -58,6 +58,9 @@ public class StarEclipseCrystal : ModItem
     public override bool? UseItem(Player player)
 
     {
+        if (global::XianXia.Common.Systems.CultivationItemTransactions.RequestIfMultiplayer(player, Item))
+            return true;
+
 
         global::XianXia.Common.Players.XianXiaPlayer cultivation = player.GetModPlayer<global::XianXia.Common.Players.XianXiaPlayer>();
 

@@ -1,0 +1,21 @@
+Mods: {
+ XianXia: {
+  Items: {
+   DaoTransformationSeal: {
+    DisplayName: Artifact Dao Transformation Seal
+    Tooltip: Use near a Dao Severing Altar to transform an inscribed, level-three, awakened sample artifact along the world route; requires the Dao Severing realm and defeating the Old Heaven Dao Core
+   }
+  }
+  DaoArtifacts: {
+   Cost: Costs 1 seal and 36 Low Grade Spirit Stones near a Dao Severing Altar. One transformation; preserves the item, prefix, inscription and awakening.
+   Selection: "Target: {0}\nWorld route: {1}\nRequires Dao Severing, an inscribed / level-three / awakened sample, and defeating the Old Heaven Dao Core. Confirm costs 1 seal + 36 stones. Existing transformation cannot change route."
+   Row: "{0}. {1} · Dao: {2}"
+   Tooltip: "Dao transformation: {0}\nOnly works in matching-route worlds that defeated the Old Heaven Dao Core\nBase damage grows to sword 150 / array 80; prefixes and existing bonuses remain\nNormal costs: sword 20 / array 28, or 16 / 22 for Star Abyss; player multipliers still apply\nRebuild pulse heals 40 and sword burst heals the owner for 20; Sever adds 15% damage and bursts for triple weapon damage; Star Abyss active skills cost less and add 8 spiritual pressure"
+   ChangedInventory: The equipment, material or world route changed. Nothing consumed.
+   NeedAltar: Transformation requires a Dao Severing Altar. Nothing consumed.
+   Requirements: Requires a world route, Dao Severing, a defeated core, and an inscribed / level-three / awakened / untransformed sample artifact. Nothing consumed.
+   NeedStones: Requires 36 Low Grade Spirit Stones. Nothing consumed.
+   Success: Dao transformation completed. The original equipment state is preserved and bound to the world route.
+  }
+ }
+}

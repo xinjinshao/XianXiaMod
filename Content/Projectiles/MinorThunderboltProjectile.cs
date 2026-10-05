@@ -13,6 +13,13 @@ namespace XianXia.Content.Projectiles;
 public class MinorThunderboltProjectile : ModProjectile
 
 {
+    public override void OnSpawn(Terraria.DataStructures.IEntitySource source)
+    {
+        if (source is Terraria.DataStructures.EntitySource_Parent parent && parent.Entity is Projectile origin)
+            Projectile.DamageType = origin.DamageType == DamageClass.Melee ? DamageClass.Melee : DamageClass.Magic;
+    }
+    public override void SendExtraAI(System.IO.BinaryWriter writer) => writer.Write(Projectile.DamageType == DamageClass.Melee);
+    public override void ReceiveExtraAI(System.IO.BinaryReader reader) => Projectile.DamageType = reader.ReadBoolean() ? DamageClass.Melee : DamageClass.Magic;
 
     public override void SetDefaults()
 
@@ -26,7 +33,7 @@ public class MinorThunderboltProjectile : ModProjectile
 
         Projectile.hostile = false;
 
-        Projectile.DamageType = DamageClass.Generic;
+        Projectile.DamageType = DamageClass.Magic;
 
         Projectile.penetrate = 1;
 

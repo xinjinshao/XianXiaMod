@@ -9,7 +9,7 @@ using Terraria.ModLoader;
 
 namespace XianXia.Content.Items.BossSummons;
 
-public class SummonThunderCallingJade : ModItem
+public class SummonThunderCallingJade : global::XianXia.Common.Items.CultivationBossSummonItem
 
 {
 
@@ -41,6 +41,8 @@ public class SummonThunderCallingJade : ModItem
 
 
 
+    public override int BossType => ModContent.NPCType<global::XianXia.Content.NPCs.Bosses.TribulationCloudAvatar>();
+
     public override bool CanUseItem(Player player)
 
     {
@@ -61,17 +63,7 @@ public class SummonThunderCallingJade : ModItem
 
 
 
-    public override bool? UseItem(Player player)
 
-    {
-
-        if (Main.netMode != NetmodeID.MultiplayerClient)
-
-            NPC.SpawnOnPlayer(player.whoAmI, ModContent.NPCType<global::XianXia.Content.NPCs.Bosses.TribulationCloudAvatar>());
-
-        return true;
-
-    }
 
 
 

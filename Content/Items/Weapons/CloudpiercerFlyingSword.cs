@@ -7,11 +7,11 @@ using XianXia.Content.Tiles.Stations;
 
 namespace XianXia.Content.Items.Weapons;
 
-public class CloudpiercerFlyingSword : ModItem
+public class CloudpiercerFlyingSword : global::XianXia.Common.Items.CultivationWeaponItem
 
 {
 
-    public override void SetStaticDefaults() => Item.ResearchUnlockCount = 25;
+    public override void SetStaticDefaults() => Item.ResearchUnlockCount = 1;
 
     public override void SetDefaults()
 
@@ -35,7 +35,7 @@ public class CloudpiercerFlyingSword : ModItem
 
         Item.crit = 4;
 
-        Item.DamageType = DamageClass.Generic;
+        Item.DamageType = DamageClass.Melee;
 
         Item.useStyle = ItemUseStyleID.Swing;
 
@@ -58,26 +58,22 @@ public class CloudpiercerFlyingSword : ModItem
     public override bool CanUseItem(Player player)
 
     {
+        if (player.altFunctionUse == 2) return global::XianXia.Common.Systems.ArtifactSkillTransactions.CanUseAlternative(player, Item);
 
         return player.GetModPlayer<global::XianXia.Common.Players.XianXiaPlayer>()
 
-            .TryConsumeSpiritualEnergy(HasArtifactAwakening(player) ? 5 : 6);
+            .CanConsumeSpiritualEnergy(GetSpiritCost(player));
 
     }
 
 
 
-    private static bool HasArtifactAwakening(Player player)
+    public override int GetSpiritCost(Player player) => global::XianXia.Common.Items.RefinedArtifact.ActiveDaoRoute(Item) is var route
+        && route != global::XianXia.Common.Systems.DownedBossSystem.EndgameRoute.None
+        ? global::XianXia.Common.Systems.DaoArtifactRules.WeaponCost(Name,route) : HasArtifactAwakening(player) ? 5 : 6;
 
-    {
 
-        global::XianXia.Common.Players.XianXiaPlayer cultivation = player.GetModPlayer<global::XianXia.Common.Players.XianXiaPlayer>();
-
-        return cultivation.cultivationStage >= global::XianXia.Common.Players.CultivationStage.GoldenCore
-
-            && global::XianXia.Common.Systems.DownedBossSystem.SectReputation >= 32;
-
-    }
+    private bool HasArtifactAwakening(Player player) => global::XianXia.Common.Items.RefinedArtifact.IsAwakened(Item);
 
 
 
@@ -93,27 +89,7 @@ public class CloudpiercerFlyingSword : ModItem
 
 
 
-    public override void ModifyTooltips(System.Collections.Generic.List<TooltipLine> tooltips)
 
-    {
-
-        Player player = Main.LocalPlayer;
-
-        string key = HasArtifactAwakening(player)
-
-            ? "Mods.XianXia.Progression.ArtifactAwakeningReady"
-
-            : "Mods.XianXia.Progression.ArtifactAwakeningLocked";
-
-        tooltips.Add(new TooltipLine(
-
-            Mod,
-
-            "XianXiaArtifactAwakening",
-
-            Terraria.Localization.Language.GetTextValue(key, "GoldenCore", 32, 5, 10)));
-
-    }
 
 
 

@@ -1,0 +1,7 @@
+Mods: {
+ XianXia: {
+  WorldAudit: {
+   Description: Read-only scan of complete cultivation objects in the loaded world
+  }
+ }
+}

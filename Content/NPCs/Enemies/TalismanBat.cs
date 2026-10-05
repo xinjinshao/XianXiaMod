@@ -39,12 +39,14 @@ NPC.noGravity = true;
 
     public override float SpawnChance(NPCSpawnInfo spawnInfo)
     {
+        if (!global::XianXia.Common.Systems.EnemySpawnRules.Allows(nameof(TalismanBat), Main.hardMode, NPC.downedPlantBoss, NPC.downedGolemBoss, NPC.downedMoonlord)) return 0f;
+
         return spawnInfo.Player.InModBiome<ShallowSpiritVeinsBiome>() ? 0.18f : 0f;
     }
 
     public override void PostAI()
     {
-        Player target = Main.player[NPC.target];
+        if (!global::XianXia.Common.Systems.EnemyTargeting.TryGetLivingTarget(NPC, out Player target)) return;
         if (!target.active || target.dead)
             return;
 

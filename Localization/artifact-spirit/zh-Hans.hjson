@@ -1,0 +1,10 @@
+Mods: {
+ XianXia: {
+  Buffs: {
+   SmallArtifactSpiritBuff: {
+    DisplayName: 小器灵
+    Description: 小器灵协助战斗；右键此图标取消召唤
+   }
+  }
+ }
+}

@@ -1,0 +1,39 @@
+Mods: {
+ XianXia: {
+  Routes: {
+   Title: 终局路线
+   None: 尚未选择
+   RebuildHeaven: 重铸天道
+   SeverHeaven: 斩断天道
+   AcceptStarAbyss: 接纳星渊
+   Warning: "此选择属于整个世界，影响所有玩家的终局配方。服务器接受的第一次合法确认永久生效，本世界不能改选。确认消耗1路线材料；取消不消耗。请先与同伴商量。需要渡劫境、击败旧天道核心，并站在斩道台附近。"
+   RebuildHeavenDescription: 重铸秩序，解锁重天道心：防御+8、生命再生+1/秒、每次回气额外+2。
+   SeverHeavenDescription: 斩断束缚，解锁断天锋：所有伤害+12%、护甲穿透+10，灵气消耗增加12%。
+   AcceptStarAbyssDescription: 与星渊立约，解锁星渊契：所有伤害+8%、每次回气额外+4，每2秒增加2灵压。
+   ChooseFirst: 请先选择路线
+   Confirm: "确认全世界选择：{0}"
+   Cancel: 取消
+   AlreadyChosen: 本世界已选择终局路线，不能再次选择；未消耗材料。
+   Requirements: 需要渡劫境并击败旧天道核心；未消耗材料。
+   NeedAltar: 请站在斩道台附近；未消耗材料。
+   Completed: "本世界终局已完成：{0}。所有玩家共享此选择，专属配方已开放。"
+   RebuildHeavenCondition: 本世界选择重铸天道且已击败旧天道核心
+   SeverHeavenCondition: 本世界选择斩断天道且已击败旧天道核心
+   AcceptStarAbyssCondition: 本世界选择接纳星渊且已击败旧天道核心
+  }
+  Items: {
+   RebuiltHeavenHeart: {
+    DisplayName: 重天道心
+    Tooltip: "重铸天道世界专属饰品\n防御+8、生命再生+1/秒，每次回气额外+2\n只在选择该路线的世界生效"
+   }
+   SeveredHeavenEdge: {
+    DisplayName: 断天锋
+    Tooltip: "斩断天道世界专属饰品\n所有伤害+12%、护甲穿透+10，灵气消耗增加12%\n只在选择该路线的世界生效"
+   }
+   StarAbyssPact: {
+    DisplayName: 星渊契
+    Tooltip: "接纳星渊世界专属饰品\n所有伤害+8%，每次回气额外+4\n每2秒增加2灵压；只在选择该路线的世界生效"
+   }
+  }
+ }
+}

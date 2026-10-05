@@ -25,6 +25,7 @@ public class TribulationLightningProjectile : ModProjectile
     {
         Projectile.rotation = Projectile.velocity.ToRotation() + MathHelper.PiOver2;
         Projectile.velocity.Y = MathHelper.Clamp(Projectile.velocity.Y + 0.18f, 8f, 18f);
+        if (Main.dedServ) return;
         Lighting.AddLight(Projectile.Center, 0.15f, 0.25f, 0.35f);
 
         if (Main.rand.NextBool(3))

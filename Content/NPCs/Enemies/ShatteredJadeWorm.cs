@@ -38,6 +38,8 @@ public class ShatteredJadeWorm : ModNPC
 
     public override float SpawnChance(NPCSpawnInfo spawnInfo)
     {
+        if (!global::XianXia.Common.Systems.EnemySpawnRules.Allows(nameof(ShatteredJadeWorm), Main.hardMode, NPC.downedPlantBoss, NPC.downedGolemBoss, NPC.downedMoonlord)) return 0f;
+
         return spawnInfo.Player.InModBiome<ShallowSpiritVeinsBiome>() ? 0.2f : 0f;
     }
 
@@ -48,14 +50,7 @@ public class ShatteredJadeWorm : ModNPC
 
     public override void AI()
     {
-        Player target = Main.player[NPC.target];
-        if (!target.active || target.dead)
-        {
-            NPC.TargetClosest(false);
-            target = Main.player[NPC.target];
-            if (!target.active || target.dead)
-                return;
-        }
+        if (!global::XianXia.Common.Systems.EnemyTargeting.TryGetLivingTarget(NPC, out Player target)) return;
 
         NPC.ai[0]++;
         if (NPC.ai[0] < 120f)

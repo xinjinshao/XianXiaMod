@@ -12,7 +12,7 @@
 ## 召唤契约
 | 契约 | ID | 效果 | 阶段 |
 |------|-----|------|------|
-| 小器灵坠 | small_artifact_pendant | 灵气恢复+1 | Pre-Hardmode |
+| 小器灵坠 | small_artifact_pendant | 装备回气+1；手持召唤一只小器灵，占1仆从位 | Pre-Hardmode |
 | 炉灰器灵契 | furnace_ash_spirit_contract | 召唤伤害+8% | Pre-Hardmode |
 | 星渊幼体契 | star_abyss_larva_contract | 召唤伤害+10%，灵耗x1.05 | Hardmode |
 | 元婴分身符 | nascent_soul_clone_talisman | +1仆从，召唤伤害+12% | Post-Plantera |
@@ -28,4 +28,4 @@
 | 天庭路线提示 | 坠天信使 | Post-Golem |
 | 终局路线信物框 | 坠天信使 | 击败月骸仙君 |
 ## 代码实现
-✅ 全部物品实现 | ⚠️ 铭刻主动技能待实现(物品框架已完成)
+五种铭刻与清除石已接入目标选择、材料消费、实例保存和同步，具体效果与使用步骤见[炼器](../../../Systems/Refining.md)。小器灵坠的召唤样例已接入，见[器灵召唤](../../../Systems/Artifact_Spirits.md)，其它契约仍是辅助饰品，高阶召唤线待T17。两个法器样例已接入淬炼、觉醒、主动技能与道化；真实客户端、多人及全流程仍待验收。

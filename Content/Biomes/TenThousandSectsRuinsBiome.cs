@@ -28,6 +28,8 @@ public class TenThousandSectsRuinsBiome : ModBiome
 
     {
 
+        if (Main.netMode == Terraria.ID.NetmodeID.Server)
+            return player.GetModPlayer<global::XianXia.Common.Players.ServerBiomePlayer>().Count(ModContent.TileType<global::XianXia.Content.Tiles.SectRuinBrickTile>()) >= 180;
         return ModContent.GetInstance<GeneratedBiomeTileCountSystem>().tenThousandSectsRuinsBiomeTileCount >= 180;
 
     }

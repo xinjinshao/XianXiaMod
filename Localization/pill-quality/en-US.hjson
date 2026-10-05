@@ -1,0 +1,14 @@
+Mods: {
+ XianXia: {
+  PillQuality: {
+   Coarse: Coarse
+   Standard: Standard
+   Fine: Fine
+   Spirit: Spirit
+   Tooltip: "Quality: {0} (base benefits: {1}%)"
+   Bonus: "Restore {0} extra spiritual energy and gain {1} seconds of regeneration"
+   Breakthrough: Quality affects recovery; eligible breakthroughs never fail randomly
+   EmptyCursor: Put down your cursor item before brewing; each batch rolls its own quality
+  }
+ }
+}

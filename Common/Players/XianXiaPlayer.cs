@@ -27,12 +27,30 @@ public class XianXiaPlayer : ModPlayer
     public float spiritualEnergyCostMultiplier = 1f;
     public bool discoveredSpiritualEnergy;
     public CultivationStage cultivationStage;
+    public int arrayDeploymentCooldown;
+    public int activeSkillCooldown, wardGuardTimer;
+    public int skillRequestCooldown;
 
+    public bool NetworkInitialized { get; private set; }
+    public bool NetworkWasActive { get; set; }
+    public bool ApplyingProgressionItem { get; set; }
+    public int ProgressionItemCooldown { get; set; }
+    public int BossSummonCooldown { get; set; }
+    public int WeaponShotCooldown { get; set; }
+    public bool ApplyingWeaponShot { get; set; }
+    public bool IsResourceAuthority { get; private set; } = true;
+    public int tribulationWeakness;
+    public uint ResourceRevision { get; private set; }
+    private CultivationSnapshot lastSentSnapshot;
+    private int networkSyncTimer;
     private int regenTimer;
+    private ulong lastArrayRecoveryTick = ulong.MaxValue;
     private readonly HashSet<int> clearedTribulationStages = new();
 
     public override void Initialize()
     {
+        IsResourceAuthority = true;
+        lastArrayRecoveryTick = ulong.MaxValue;
         maxSpiritualEnergy = BaseMaxSpiritualEnergy;
         spiritualEnergy = 0;
         spiritPressure = 0;
@@ -43,10 +61,29 @@ public class XianXiaPlayer : ModPlayer
         clearedTribulationStages.Clear();
         cultivationStage = CultivationStage.None;
         discoveredSpiritualEnergy = false;
+        arrayDeploymentCooldown = 0;
+        activeSkillCooldown = wardGuardTimer = 0;
+        skillRequestCooldown = 0;
+        tribulationKind = TribulationKind.None;
+        tribulationAttempts = 0;
+        regenTimer = 0;
+        NetworkInitialized = false;
+        NetworkWasActive = false;
+        ResourceRevision = 0;
+        ApplyingProgressionItem = false;
+        ProgressionItemCooldown = 0;
+        BossSummonCooldown = WeaponShotCooldown = 0;
+        ApplyingWeaponShot = false;
+        tribulationWeakness = 0;
+        networkSyncTimer = 0;
+        lastSentSnapshot = default;
     }
+
+    public override void OnEnterWorld() => IsResourceAuthority = Main.netMode != NetmodeID.MultiplayerClient;
 
     public override void ResetEffects()
     {
+        IsResourceAuthority = Main.netMode != NetmodeID.MultiplayerClient;
         maxSpiritualEnergy = GetMaxSpiritualEnergy(cultivationStage) + tribulationComprehension * 5;
         spiritualEnergyRegenBonus = 0;
         spiritualEnergyCostMultiplier = 1f;
@@ -61,13 +98,40 @@ public class XianXiaPlayer : ModPlayer
 
     public override bool PreKill(double damage, int hitDirection, bool pvp, ref bool playSound, ref bool genDust, ref PlayerDeathReason damageSource)
     {
-        if (tribulationTimer > 0)
+        if (Main.netMode != NetmodeID.MultiplayerClient && tribulationTimer > 0)
             HandleTribulationFailure();
         return true;
     }
 
+    public override void UpdateDead()
+    {
+        if (activeSkillCooldown > 0) activeSkillCooldown--;
+        wardGuardTimer = 0;
+        if (Main.netMode == NetmodeID.MultiplayerClient) return;
+        HandleTribulationFailure();
+        SyncServerChanges();
+    }
+
     public override void PostUpdate()
     {
+        if (skillRequestCooldown > 0) skillRequestCooldown--;
+        if (activeSkillCooldown > 0) activeSkillCooldown--;
+        if (wardGuardTimer > 0) {
+            wardGuardTimer--;
+            Player.AddBuff(ModContent.BuffType<global::XianXia.Content.Buffs.ArtifactWardBuff>(), 2);
+        }
+        if (ProgressionItemCooldown > 0) ProgressionItemCooldown--;
+        if (BossSummonCooldown > 0) BossSummonCooldown--;
+        if (WeaponShotCooldown > 0) WeaponShotCooldown--;
+        if (Main.netMode == NetmodeID.Server && !NetworkInitialized) return;
+        if (tribulationWeakness > 0)
+        {
+            if (Main.netMode != NetmodeID.MultiplayerClient) tribulationWeakness--;
+            Player.AddBuff(BuffID.Weak, 2);
+        }
+        SyncServerChanges();
+        if (arrayDeploymentCooldown > 0)
+            arrayDeploymentCooldown--;
         if (!discoveredSpiritualEnergy)
         {
             return;
@@ -80,22 +144,60 @@ public class XianXiaPlayer : ModPlayer
 
         UpdateTribulation();
 
+        if (Main.netMode == NetmodeID.MultiplayerClient) return;
         regenTimer++;
         int interval = cultivationStage >= CultivationStage.QiAwakening ? Math.Max(18, 60 - (int)cultivationStage * 5) : 60;
         if (regenTimer >= interval)
         {
             regenTimer = 0;
             spiritualEnergy = Math.Clamp(spiritualEnergy + 1 + spiritualEnergyRegenBonus, 0, maxSpiritualEnergy);
-            if (spiritPressure > 0)
+            if (Main.netMode != NetmodeID.MultiplayerClient && spiritPressure > 0)
             {
                 spiritPressure--;
             }
         }
     }
 
+    public bool CanConsumeSpiritualEnergy(int amount)
+    {
+        return spiritualEnergy >= GetSpiritualEnergyCost(amount);
+    }
+
+    public bool CanDeployArray(int projectileType, int energyCost)
+    {
+        return arrayDeploymentCooldown == 0
+            && Player.ownedProjectileCounts[projectileType] == 0
+            && CanConsumeSpiritualEnergy(energyCost);
+    }
+
+    public bool TryDeployArray(int projectileType, int energyCost)
+    {
+        if (!CanDeployArray(projectileType, energyCost) || !TryConsumeSpiritualEnergy(energyCost))
+            return false;
+        arrayDeploymentCooldown = 60 * 8;
+        return true;
+    }
+
+    public bool TryArrayRecovery(ulong tick)
+    {
+        if (!IsResourceAuthority || tick == lastArrayRecoveryTick) return false;
+        lastArrayRecoveryTick = tick;
+        return true;
+    }
+
+    public int GetSpiritualEnergyCost(int amount)
+    {
+        if (amount <= 0)
+            return 0;
+        float multiplier = float.IsFinite(spiritualEnergyCostMultiplier)
+            ? Math.Clamp(spiritualEnergyCostMultiplier, 0f, 10f) : 1f;
+        return (int)MathF.Ceiling(amount * multiplier);
+    }
+
     public bool TryConsumeSpiritualEnergy(int amount)
     {
-        amount = (int)MathF.Ceiling(amount * spiritualEnergyCostMultiplier);
+        if (!IsResourceAuthority) return false;
+        amount = GetSpiritualEnergyCost(amount);
         if (amount <= 0)
         {
             return true;
@@ -113,12 +215,14 @@ public class XianXiaPlayer : ModPlayer
 
     public void RestoreSpiritualEnergy(int amount)
     {
+        if (!IsResourceAuthority) return;
         discoveredSpiritualEnergy = true;
         spiritualEnergy = Math.Clamp(spiritualEnergy + amount, 0, maxSpiritualEnergy);
     }
 
     public void UnlockQiAwakening()
     {
+        if (Main.netMode == NetmodeID.MultiplayerClient) return;
         discoveredSpiritualEnergy = true;
         if (cultivationStage < CultivationStage.QiAwakening)
         {
@@ -128,17 +232,18 @@ public class XianXiaPlayer : ModPlayer
         RestoreSpiritualEnergy(30);
     }
 
-    public bool TryAdvanceCultivation(CultivationStage targetStage)
+    public bool TryAdvanceCultivation(CultivationStage targetStage, float recoveryMultiplier = 1f)
     {
-        discoveredSpiritualEnergy = true;
-        if (!CanAdvanceCultivation(targetStage))
+        if (Main.netMode == NetmodeID.MultiplayerClient || !CanAdvanceCultivation(targetStage))
         {
             return false;
         }
 
+        discoveredSpiritualEnergy = true;
         cultivationStage = targetStage;
         maxSpiritualEnergy = GetMaxSpiritualEnergy(cultivationStage);
-        RestoreSpiritualEnergy(maxSpiritualEnergy / 3);
+        float recovery = float.IsFinite(recoveryMultiplier) ? Math.Clamp(recoveryMultiplier, 0.75f, 1.5f) : 1f;
+        RestoreSpiritualEnergy((int)MathF.Ceiling((maxSpiritualEnergy / 3) * recovery));
         spiritPressure = Math.Clamp(spiritPressure + (int)targetStage * 8, 0, 100);
         BeginTribulation(targetStage);
         if (Main.myPlayer == Player.whoAmI)
@@ -150,17 +255,38 @@ public class XianXiaPlayer : ModPlayer
 
     public bool CanAdvanceCultivation(CultivationStage targetStage)
     {
-        return targetStage > cultivationStage
-            && targetStage <= CultivationStage.DaoSevering
-            && (int)targetStage == (int)cultivationStage + 1;
+        return GetBreakthroughFailure(targetStage).Length == 0;
+    }
+
+    public string GetBreakthroughFailure(CultivationStage targetStage)
+    {
+        return CultivationRules.GetFailure(cultivationStage, targetStage, tribulationTimer,
+            clearedTribulationStages.Contains((int)cultivationStage), Main.hardMode,
+            NPC.downedPlantBoss, NPC.downedGolemBoss, NPC.downedMoonlord,
+            DownedBossSystem.DownedBosses.Contains);
+    }
+
+    public bool CanRetryTribulation() => CultivationRules.CanRetry(cultivationStage,
+        tribulationTimer, clearedTribulationStages.Contains((int)cultivationStage));
+
+    public bool TryRetryTribulation()
+    {
+        if (Main.netMode == NetmodeID.MultiplayerClient || !CanRetryTribulation() || Player.dead)
+            return false;
+        BeginTribulation(cultivationStage);
+        return true;
     }
 
     public bool CanUseBreakthroughItem(CultivationStage targetStage)
     {
-        bool canAdvance = CanAdvanceCultivation(targetStage);
+        string failure = GetBreakthroughFailure(targetStage);
+        bool canAdvance = failure.Length == 0;
         if (!canAdvance && Main.myPlayer == Player.whoAmI)
         {
-            Main.NewText(Language.GetTextValue("Mods.XianXia.Progression.InvalidBreakthroughItem"), 255, 210, 120);
+            string boss = CultivationRules.GetRequiredBoss(targetStage);
+            string name = failure == "BreakthroughRequiresTrial"
+                ? Language.GetTextValue($"Mods.XianXia.Progression.TrialNames.{boss}") : "";
+            Main.NewText(Language.GetTextValue($"Mods.XianXia.Progression.{failure}", name), 255, 210, 120);
         }
 
         return canAdvance;
@@ -203,6 +329,7 @@ public class XianXiaPlayer : ModPlayer
 
     public void ReduceSpiritPressure(int amount)
     {
+        if (!IsResourceAuthority) return;
         spiritPressure = Math.Clamp(spiritPressure - amount, 0, 100);
     }
 
@@ -268,6 +395,14 @@ public class XianXiaPlayer : ModPlayer
             return;
         }
 
+        if (Main.netMode == NetmodeID.MultiplayerClient)
+        {
+            Player.AddBuff(ModContent.BuffType<global::XianXia.Content.Buffs.TribulationPressureBuff>(), 2);
+            if (tribulationKind == TribulationKind.DaoSevering)
+                Player.AddBuff(ModContent.BuffType<global::XianXia.Content.Buffs.ArchiveLockBuff>(), 3);
+            return;
+        }
+
         tribulationTimer--;
         Player.AddBuff(ModContent.BuffType<global::XianXia.Content.Buffs.TribulationPressureBuff>(), 2);
 
@@ -279,14 +414,13 @@ public class XianXiaPlayer : ModPlayer
         if (tribulationKind == TribulationKind.HeavenTablet)
         {
             int htInterval = Math.Max(60, 200 - tribulationIntensity * 15);
-            if (Main.myPlayer == Player.whoAmI && tribulationTimer % htInterval == 0)
+            if (tribulationTimer % htInterval == 0)
             {
                 SpawnHeavenTabletSeal();
             }
         }
         else if (tribulationKind == TribulationKind.DaoSevering)
         {
-            if (Main.myPlayer == Player.whoAmI)
             {
                 Player.AddBuff(ModContent.BuffType<global::XianXia.Content.Buffs.ArchiveLockBuff>(), 3);
                 if (tribulationTimer % Math.Max(70, 280 - tribulationIntensity * 20) == 0)
@@ -296,7 +430,7 @@ public class XianXiaPlayer : ModPlayer
         else if (tribulationKind == TribulationKind.HeartDemon)
         {
             int hdInterval = Math.Max(90, 350 - tribulationIntensity * 25);
-            if (Main.myPlayer == Player.whoAmI && tribulationTimer % hdInterval == 0)
+            if (tribulationTimer % hdInterval == 0)
             {
                 SpawnHeartDemonEnemy();
             }
@@ -304,7 +438,7 @@ public class XianXiaPlayer : ModPlayer
         else
         {
             int interval = Math.Max(38, 110 - tribulationIntensity * 8);
-            if (Main.myPlayer == Player.whoAmI && tribulationTimer % interval == 0)
+            if (tribulationTimer % interval == 0)
             {
                 SpawnTribulationLightning();
             }
@@ -318,6 +452,8 @@ public class XianXiaPlayer : ModPlayer
 
     private void CompleteTribulation()
     {
+        if (Main.netMode == NetmodeID.MultiplayerClient) return;
+        AdvanceResourceRevision();
         int pressureReduced = 20 + tribulationIntensity * 2;
         int energyRestored = 20 + tribulationIntensity * 8;
         int completedStage = tribulationStage;
@@ -341,19 +477,26 @@ public class XianXiaPlayer : ModPlayer
         tribulationIntensity = 0;
         tribulationStage = 0;
         tribulationKind = TribulationKind.None;
+        if (Main.netMode == NetmodeID.Server) SyncPlayer(-1, -1, false);
     }
 
     public void HandleTribulationFailure()
     {
-        if (tribulationTimer <= 0)
+        if (Main.netMode == NetmodeID.MultiplayerClient || tribulationTimer <= 0)
             return;
 
         tribulationTimer = 0;
-        tribulationAttempts++;
+        tribulationStage = 0;
+        AdvanceResourceRevision();
+        tribulationIntensity = 0;
+        tribulationKind = TribulationKind.None;
+        tribulationAttempts = Math.Min(10, tribulationAttempts + 1);
         RestoreSpiritualEnergy(maxSpiritualEnergy / 4);
         ReduceSpiritPressure(10);
-        Player.AddBuff(BuffID.Weak, 60 * 60 * 3);
+        tribulationWeakness = 60 * 60 * 3;
+        Player.AddBuff(BuffID.Weak, tribulationWeakness);
         Player.AddBuff(ModContent.BuffType<global::XianXia.Content.Buffs.SpiritualPressureDisorderBuff>(), 60 * 2);
+        if (Main.netMode == NetmodeID.Server) SyncPlayer(-1, -1, false);
 
         if (Main.myPlayer == Player.whoAmI)
         {
@@ -382,6 +525,7 @@ public class XianXiaPlayer : ModPlayer
             Main.npc[id].lifeMax = (int)(Main.npc[id].lifeMax * 0.5f);
             Main.npc[id].life = Main.npc[id].lifeMax;
             Main.npc[id].damage = Math.Max(1, Main.npc[id].damage * 2 / 3);
+            Main.npc[id].netUpdate = true;
         }
     }
 
@@ -401,8 +545,8 @@ public class XianXiaPlayer : ModPlayer
         }
         if (tribulationIntensity >= 5)
             Projectile.NewProjectile(Player.GetSource_FromThis(),
-                Player.Center + new Vector2(0f, -400f), Vector2.UnitY * 10f,
-                ModContent.ProjectileType<global::XianXia.Content.Projectiles.TribulationLightningProjectile>(),
+                Player.Center + new Vector2(0f, -96f), Vector2.Zero,
+                ModContent.ProjectileType<global::XianXia.Content.Projectiles.TribulationWarningLineProjectile>(),
                 30 + tribulationIntensity * 6, 1.5f, Player.whoAmI);
     }
 
@@ -503,62 +647,170 @@ public class XianXiaPlayer : ModPlayer
         tag["clearedTribulationStages"] = clearedTribulationStages.ToList();
         tag["discoveredSpiritualEnergy"] = discoveredSpiritualEnergy;
         tag["cultivationStage"] = (int)cultivationStage;
+        tag["saveVersion"] = 3;
+        tag["activeSkillCooldown"] = activeSkillCooldown;
+        tag["tribulationWeakness"] = tribulationWeakness;
+        tag["arrayDeploymentCooldown"] = arrayDeploymentCooldown;
     }
 
     public override void LoadData(TagCompound tag)
     {
-        spiritualEnergy = tag.GetInt("spiritualEnergy");
-        spiritPressure = tag.GetInt("spiritPressure");
-        tribulationTimer = tag.GetInt("tribulationTimer");
-        tribulationIntensity = tag.GetInt("tribulationIntensity");
+        activeSkillCooldown = Math.Clamp(tag.GetInt("activeSkillCooldown"), 0, 1200);
+        wardGuardTimer = 0; // Temporary protection does not resume after loading.
+        tribulationWeakness = Math.Clamp(tag.GetInt("tribulationWeakness"), 0, 10800);
+        int savedStage = tag.GetInt("cultivationStage");
+        cultivationStage = savedStage >= 0 && savedStage <= 8 ? (CultivationStage)savedStage : CultivationStage.None;
+        spiritPressure = Math.Clamp(tag.GetInt("spiritPressure"), 0, 100);
+        tribulationTimer = Math.Clamp(tag.GetInt("tribulationTimer"), 0, 6000);
+        tribulationIntensity = Math.Clamp(tag.GetInt("tribulationIntensity"), 0, 8);
         tribulationStage = tag.GetInt("tribulationStage");
-        tribulationComprehension = tag.GetInt("tribulationComprehension");
-        tribulationKind = (TribulationKind)tag.GetInt("tribulationKind");
-        tribulationAttempts = tag.GetInt("tribulationAttempts");
+        tribulationKind = (TribulationKind)Math.Clamp(tag.GetInt("tribulationKind"), 0, 4);
+        tribulationAttempts = Math.Clamp(tag.GetInt("tribulationAttempts"), 0, 10);
         clearedTribulationStages.Clear();
         foreach (int stage in tag.GetList<int>("clearedTribulationStages"))
         {
-            clearedTribulationStages.Add(stage);
+            if (stage >= (int)CultivationStage.Foundation && stage <= (int)cultivationStage)
+                clearedTribulationStages.Add(stage);
         }
-        discoveredSpiritualEnergy = tag.GetBool("discoveredSpiritualEnergy");
-        cultivationStage = (CultivationStage)tag.GetInt("cultivationStage");
+        tribulationComprehension = clearedTribulationStages.Count;
+        maxSpiritualEnergy = GetMaxSpiritualEnergy(cultivationStage) + tribulationComprehension * 5;
+        spiritualEnergy = Math.Clamp(tag.GetInt("spiritualEnergy"), 0, maxSpiritualEnergy);
+        discoveredSpiritualEnergy = tag.GetBool("discoveredSpiritualEnergy") || cultivationStage > CultivationStage.None;
+        arrayDeploymentCooldown = Math.Clamp(tag.GetInt("arrayDeploymentCooldown"), 0, 60 * 8);
+        if (tribulationStage != (int)cultivationStage || cultivationStage < CultivationStage.Foundation
+            || clearedTribulationStages.Contains(tribulationStage))
+            tribulationTimer = 0;
+        if (tribulationTimer == 0)
+        {
+            tribulationKind = TribulationKind.None;
+            tribulationIntensity = 0;
+            tribulationStage = 0;
+        }
+        else
+        {
+            tribulationIntensity = Math.Clamp((int)cultivationStage - 1, 1, 8);
+            tribulationKind = cultivationStage switch
+            {
+                CultivationStage.Foundation or CultivationStage.GoldenCore => TribulationKind.Minor,
+                CultivationStage.NascentSoul => TribulationKind.HeartDemon,
+                CultivationStage.SpiritSevering => TribulationKind.HeavenTablet,
+                _ => TribulationKind.DaoSevering
+            };
+        }
+    }
+
+    public CultivationSnapshot CaptureSnapshot()
+    {
+        ushort mask = 0;
+        foreach (int stage in clearedTribulationStages) mask |= (ushort)(1 << stage);
+        return new(spiritualEnergy, (byte)cultivationStage, discoveredSpiritualEnergy,
+            (byte)spiritPressure, (ushort)tribulationTimer, (byte)tribulationIntensity,
+            (byte)tribulationStage, (byte)tribulationKind, (byte)tribulationAttempts,
+            mask, (ushort)arrayDeploymentCooldown, (ushort)tribulationWeakness, ResourceRevision,
+            (ushort)activeSkillCooldown, (ushort)wardGuardTimer);
+    }
+
+    public void NotifySnapshot(CultivationSnapshot state)
+    {
+        if (Main.netMode == NetmodeID.MultiplayerClient && Player.whoAmI == Main.myPlayer)
+        {
+            if (state.Stage > (int)cultivationStage)
+                Main.NewText(Language.GetTextValue("Mods.XianXia.Progression.Advanced", (CultivationStage)state.Stage), 120, 245, 220);
+            if (state.Timer > 0 && tribulationTimer == 0)
+            {
+                string key = state.Kind switch
+                {
+                    2 => "TribulationStartedHeartDemon", 3 => "TribulationStartedHeavenTablet",
+                    4 => "TribulationStartedDaoSevering", _ => "TribulationStarted"
+                };
+                Main.NewText(Language.GetTextValue($"Mods.XianXia.Progression.{key}", (CultivationStage)state.Stage), 160, 210, 255);
+            }
+            if (state.Attempts > tribulationAttempts)
+                Main.NewText(Language.GetTextValue("Mods.XianXia.Progression.TribulationFailed"), 255, 180, 140);
+            if (state.Comprehension > tribulationComprehension)
+                Main.NewText(Language.GetTextValue("Mods.XianXia.Progression.TribulationComprehensionGained", state.Comprehension * 5), 160, 210, 255);
+        }
+    }
+
+    public void ApplySnapshot(CultivationSnapshot state)
+    {
+        spiritualEnergy = state.Energy;
+        ResourceRevision = state.Revision;
+        cultivationStage = (CultivationStage)state.Stage;
+        discoveredSpiritualEnergy = state.Discovered;
+        spiritPressure = state.Pressure;
+        tribulationTimer = state.Timer;
+        tribulationIntensity = state.Intensity;
+        tribulationStage = state.TrialStage;
+        tribulationKind = (TribulationKind)state.Kind;
+        tribulationAttempts = state.Attempts;
+        tribulationWeakness = state.Weakness;
+        arrayDeploymentCooldown = state.ArrayCooldown;
+        activeSkillCooldown = state.SkillCooldown;
+        wardGuardTimer = state.WardTimer;
+        clearedTribulationStages.Clear();
+        for (int stage = 3; stage <= 8; stage++)
+            if ((state.ClearedStages & (1 << stage)) != 0) clearedTribulationStages.Add(stage);
+        tribulationComprehension = state.Comprehension;
+        maxSpiritualEnergy = GetMaxSpiritualEnergy(cultivationStage) + tribulationComprehension * 5;
+    }
+
+    // Terraria characters are client-owned. Import one bounded save snapshot on
+    // joining; runtime advancement and trial results cannot replace it afterward.
+    public bool TryInitializeNetwork(CultivationSnapshot state)
+    {
+        if (NetworkInitialized || !state.IsValid()) return false;
+        ApplySnapshot(state with { WardTimer = 0 });
+        ResourceRevision = 0;
+        NetworkInitialized = true;
+        regenTimer = 0;
+        return true;
+    }
+
+    public void ResetNetworkSession()
+    {
+        NetworkInitialized = NetworkWasActive = false;
+        ProgressionItemCooldown = networkSyncTimer = 0;
+        BossSummonCooldown = WeaponShotCooldown = 0;
+        ApplyingWeaponShot = false;
+        lastSentSnapshot = default;
+    }
+
+    public void AdvanceResourceRevision() => ResourceRevision++;
+
+    private void SyncServerChanges()
+    {
+        if (Main.netMode != NetmodeID.Server || !NetworkInitialized) return;
+        if (++networkSyncTimer < 30) return;
+        networkSyncTimer = 0;
+        CultivationSnapshot state = CaptureSnapshot();
+        if (state != lastSentSnapshot) SyncPlayer(-1, -1, false);
     }
 
     public override void CopyClientState(ModPlayer targetCopy)
     {
         XianXiaPlayer clone = (XianXiaPlayer)targetCopy;
         clone.spiritualEnergy = spiritualEnergy;
-        clone.maxSpiritualEnergy = maxSpiritualEnergy;
-        clone.spiritPressure = spiritPressure;
-        clone.tribulationTimer = tribulationTimer;
-        clone.tribulationIntensity = tribulationIntensity;
-        clone.tribulationStage = tribulationStage;
-        clone.tribulationComprehension = tribulationComprehension;
-        clone.clearedTribulationStages.Clear();
-        foreach (int stage in clearedTribulationStages)
-        {
-            clone.clearedTribulationStages.Add(stage);
-        }
-        clone.discoveredSpiritualEnergy = discoveredSpiritualEnergy;
         clone.cultivationStage = cultivationStage;
+        clone.arrayDeploymentCooldown = arrayDeploymentCooldown;
     }
 
     public override void SendClientChanges(ModPlayer clientPlayer)
     {
-        XianXiaPlayer old = (XianXiaPlayer)clientPlayer;
-        if (old.spiritualEnergy != spiritualEnergy || old.cultivationStage != cultivationStage)
-        {
-            SyncPlayer(toWho: -1, fromWho: Main.myPlayer, newPlayer: false);
-        }
+        // Actions are requests; clients never submit resource balances.
     }
 
     public override void SyncPlayer(int toWho, int fromWho, bool newPlayer)
     {
+        if (Main.netMode == NetmodeID.SinglePlayer) return;
+        if (Main.netMode == NetmodeID.Server && !NetworkInitialized) return;
+        if (Main.netMode == NetmodeID.MultiplayerClient && !newPlayer) return;
         ModPacket packet = Mod.GetPacket();
-        packet.Write((byte)0);
+        packet.Write((byte)(Main.netMode == NetmodeID.Server ? 4 : 3));
         packet.Write((byte)Player.whoAmI);
-        packet.Write(spiritualEnergy);
-        packet.Write((int)cultivationStage);
+        CultivationSnapshot state = CaptureSnapshot();
+        state.Write(packet);
         packet.Send(toWho, fromWho);
+        if (toWho == -1) lastSentSnapshot = state;
     }
 }

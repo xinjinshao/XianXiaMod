@@ -1,0 +1,34 @@
+Mods: {
+ XianXia: {
+  Keybinds: {
+   ArtifactSkill: {
+    DisplayName: Artifact active skill
+   }
+   WardSkill: {
+    DisplayName: Lightning Ward guard
+   }
+  }
+  Buffs: {
+   ArtifactWardBuff: {
+    DisplayName: Lightning Ward Guard
+    Description: Damage reduction +35 percentage points and defense +12; duration controlled by skill state
+   }
+  }
+  Skills: {
+   WardTooltip: Equip in a usable accessory slot to cast guard (default V, configurable): base cost 18 spiritual energy, 3-second duration, 20-second shared cooldown
+   Capacity: Not enough projectile capacity; nothing spent
+   Sword: Burst
+   Array: Pulse
+   Ward: Guard
+   Ready: Skills ready; configure keys in Mod Controls
+   Cooldown: "Shared skill cooldown: {0}s"
+   WardStatus: "Cooldown: {0}s | Guard: {1}s"
+   Unavailable: Hold the corresponding awakened artifact, or equip Lightning Ward Jade in an unlocked functional slot
+   CoolingDown: Shared active skill cooldown is not ready
+   NeedArray: Hold an awakened array plate and stand near your own Greenwood array
+   NoHealing: No friendly player in the array needs healing; nothing spent
+   NeedEnergy: Not enough spiritual energy; nothing spent
+   Success: Active skill cast
+  }
+ }
+}

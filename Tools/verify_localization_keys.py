@@ -15,14 +15,14 @@ def read_all(pattern: str) -> list[tuple[Path, str]]:
 def localization_keys_from_code() -> set[str]:
     keys: set[str] = set()
     bestiary_pattern = re.compile(r'FlavorTextBestiaryInfoElement\("Mods\.XianXia\.Bestiary\.([^"]+)"\)')
-    language_pattern = re.compile(r'Language\.GetTextValue\("Mods\.XianXia\.([^"]+)"')
+    # Dynamic key prefixes are checked by the feature-specific contract verifier.
+    language_pattern = re.compile(r'(?:Language\.GetTextValue|Language\.GetText|NetworkText\.FromKey|CommissionText)\("Mods\.XianXia\.([^"]+)"\s*(?=[,)])')
     config_class_pattern = re.compile(r"class\s+([A-Za-z0-9_]+)\s*:\s*ModConfig\b")
     config_member_pattern = re.compile(r"public\s+(?:[A-Za-z0-9_<>,.?]+)\s+([A-Za-z0-9_]+)\s*\{\s*get;\s*set;\s*\}")
     for path, text in read_all("*.cs"):
         if "FlavorTextBestiaryInfoElement" in text:
             keys.update(f"Bestiary.{key}" for key in bestiary_pattern.findall(text))
-        if "Language.GetTextValue" in text:
-            keys.update(language_pattern.findall(text))
+        keys.update(language_pattern.findall(text))
         if ": ModConfig" in text:
             for config_name in config_class_pattern.findall(text):
                 keys.add(f"Configs.{config_name}.DisplayName")
@@ -34,7 +34,7 @@ def localization_keys_from_code() -> set[str]:
 
 def localization_keys() -> set[str]:
     keys: set[str] = set()
-    key_pattern = re.compile(r"^\s*([A-Za-z0-9_.-]+)\s*:\s*(.*)$")
+    key_pattern = re.compile(r'^\s*"?([A-Za-z0-9_.-]+)"?\s*:\s*(.*)$')
 
     for _, text in read_all("*.hjson"):
         stack: list[str] = []

@@ -1,0 +1,56 @@
+{
+  "Mods": {
+    "XianXia": {
+      "Items": {
+        "VeinCoilCharm": {
+          "DisplayName": "VeinCoilCharm",
+          "Tooltip": "+1 spiritual energy regeneration per cycle; +2 defense\nDuplicate copies do not stack their effects"
+        },
+        "GardenLifeCharm": {
+          "DisplayName": "GardenLifeCharm",
+          "Tooltip": "+1 life regenerated per second; immunity to poison\nDuplicate copies do not stack their effects"
+        },
+        "FurnaceHeatGuard": {
+          "DisplayName": "FurnaceHeatGuard",
+          "Tooltip": "+6 defense; immunity to On Fire!\nDuplicate copies do not stack their effects"
+        },
+        "TribulationConductor": {
+          "DisplayName": "TribulationConductor",
+          "Tooltip": "8% reduced spiritual energy cost; 3% reduced damage taken\nDuplicate copies do not stack their effects"
+        },
+        "JiaoStormStride": {
+          "DisplayName": "JiaoStormStride",
+          "Tooltip": "12% increased movement speed; +1.5 jump speed\nDuplicate copies do not stack their effects"
+        },
+        "AbyssSpiritLens": {
+          "DisplayName": "AbyssSpiritLens",
+          "Tooltip": "+2 spiritual energy regeneration per cycle; 6% increased magic damage\nDuplicate copies do not stack their effects"
+        },
+        "FormlessSwordEmblem": {
+          "DisplayName": "FormlessSwordEmblem",
+          "Tooltip": "8% increased melee damage; +8 melee armor penetration\nDuplicate copies do not stack their effects"
+        },
+        "MedicineKingLifeSeal": {
+          "DisplayName": "MedicineKingLifeSeal",
+          "Tooltip": "+2 life regenerated per second; +1 spiritual energy regeneration per cycle\nDuplicate copies do not stack their effects"
+        },
+        "HeavenTabletBulwark": {
+          "DisplayName": "HeavenTabletBulwark",
+          "Tooltip": "6% reduced damage taken; immunity to knockback\nDuplicate copies do not stack their effects"
+        },
+        "InspectorQuiverSeal": {
+          "DisplayName": "InspectorQuiverSeal",
+          "Tooltip": "8% increased ranged damage; +8 ranged armor penetration\nDuplicate copies do not stack their effects"
+        },
+        "MoonboneSpiritBond": {
+          "DisplayName": "MoonboneSpiritBond",
+          "Tooltip": "+1 minion slot; 8% increased summon damage\nDuplicate copies do not stack their effects"
+        },
+        "OldHeavenResonator": {
+          "DisplayName": "OldHeavenResonator",
+          "Tooltip": "10% increased damage; +6 defense; +2 spiritual energy regeneration per cycle\nDuplicate copies do not stack their effects"
+        }
+      }
+    }
+  }
+}

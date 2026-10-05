@@ -9,7 +9,7 @@ using Terraria.ModLoader;
 
 namespace XianXia.Content.Items.BossSummons;
 
-public class SummonSectTrialTokenGreenwoodMedicineKingEcho : ModItem
+public class SummonSectTrialTokenGreenwoodMedicineKingEcho : global::XianXia.Common.Items.CultivationBossSummonItem
 
 {
 
@@ -41,6 +41,8 @@ public class SummonSectTrialTokenGreenwoodMedicineKingEcho : ModItem
 
 
 
+    public override int BossType => ModContent.NPCType<global::XianXia.Content.NPCs.Bosses.GreenwoodMedicineKingEcho>();
+
     public override bool CanUseItem(Player player)
 
     {
@@ -61,17 +63,7 @@ public class SummonSectTrialTokenGreenwoodMedicineKingEcho : ModItem
 
 
 
-    public override bool? UseItem(Player player)
 
-    {
-
-        if (Main.netMode != NetmodeID.MultiplayerClient)
-
-            NPC.SpawnOnPlayer(player.whoAmI, ModContent.NPCType<global::XianXia.Content.NPCs.Bosses.GreenwoodMedicineKingEcho>());
-
-        return true;
-
-    }
 
 
 

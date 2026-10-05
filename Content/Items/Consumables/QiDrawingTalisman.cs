@@ -29,6 +29,9 @@ public class QiDrawingTalisman : ModItem
 
     public override bool? UseItem(Player player)
     {
+        if (global::XianXia.Common.Systems.CultivationItemTransactions.RequestIfMultiplayer(player, Item))
+            return true;
+
         player.GetModPlayer<XianXiaPlayer>().UnlockQiAwakening();
         if (Main.myPlayer == player.whoAmI)
         {

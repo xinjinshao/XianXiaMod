@@ -9,6 +9,9 @@ public class BossArrayFieldProjectile : ModProjectile
 {
     public override string Texture => "XianXia/Content/Projectiles/ThunderTalismanArray";
 
+    public const int Lifetime = 120;
+    public const int WarningTicks = 45;
+
     public override void SetDefaults()
     {
         Projectile.width = 96;
@@ -16,7 +19,7 @@ public class BossArrayFieldProjectile : ModProjectile
         Projectile.hostile = true;
         Projectile.friendly = false;
         Projectile.penetrate = -1;
-        Projectile.timeLeft = 120;
+        Projectile.timeLeft = Lifetime;
         Projectile.tileCollide = false;
         Projectile.ignoreWater = true;
     }
@@ -25,9 +28,11 @@ public class BossArrayFieldProjectile : ModProjectile
     {
         Projectile.velocity *= 0f;
         Projectile.rotation += 0.035f;
-        Projectile.alpha = Projectile.timeLeft > 90
-            ? (int)MathHelper.Lerp(160f, 40f, (120f - Projectile.timeLeft) / 30f)
-            : (int)MathHelper.Lerp(40f, 190f, 1f - Projectile.timeLeft / 90f);
+        int age = Lifetime - Projectile.timeLeft;
+        Projectile.alpha = age < WarningTicks
+            ? (int)MathHelper.Lerp(200f, 40f, age / (float)WarningTicks)
+            : (int)MathHelper.Lerp(40f, 190f, (age - WarningTicks) / (float)(Lifetime - WarningTicks));
+        if (Main.dedServ) return;
 
         Lighting.AddLight(Projectile.Center, 0.12f, 0.05f, 0.24f);
         if (Main.rand.NextBool(4))
@@ -40,7 +45,7 @@ public class BossArrayFieldProjectile : ModProjectile
 
     public override bool? CanDamage()
     {
-        return Projectile.timeLeft < 96;
+        return Projectile.timeLeft > 0 && Projectile.timeLeft <= Lifetime - WarningTicks;
     }
 
     public override void OnHitPlayer(Player target, Player.HurtInfo info)

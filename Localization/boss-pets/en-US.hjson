@@ -1,0 +1,24 @@
+{
+  "Mods": {
+    "XianXia": {
+      "Buffs": {
+        "BlackFurnaceIronGolemPetBuff": {
+          "DisplayName": "BlackFurnaceIronGolemPet",
+          "Description": "A small companion follows you"
+        },
+        "SmallTabletPetBuff": {
+          "DisplayName": "SmallTabletPet",
+          "Description": "A small companion follows you"
+        }
+      },
+      "Projectiles": {
+        "BlackFurnaceIronGolemPetProjectile": {
+          "DisplayName": "BlackFurnaceIronGolemPet"
+        },
+        "SmallTabletPetProjectile": {
+          "DisplayName": "SmallTabletPet"
+        }
+      }
+    }
+  }
+}

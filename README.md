@@ -58,11 +58,32 @@ XianXiaMod 是一个 Terraria/tModLoader 仙侠主题内容 Mod。项目目标�
 
 ## 验证
 
+如果 tModLoader 或 .NET 安装位置与旧脚本默认值不同，可使用新的隔离验证脚本：
+
+```powershell
+powershell -ExecutionPolicy Bypass -File Tools\verify_build.ps1 -TModLoaderDir "你的tModLoader目录" -DotNetPath "你的dotnet.exe路径"
+```
+
+此脚本编译当前源码，将运行时内容暂存到内部名称正确的 `XianXia` 目录，打包后启动独立 dedicated server 检查加载。日志和包保存在 `.tml-test/run-*`，不修改已有游戏存档或已安装 Mod；`-SkipServerLoad` 可只编译打包。它不替代客户端和多人实机验收。
+
+行为回归检查：
+
+```powershell
+dotnet run --project Tools\Tests\Networking\Networking.csproj
+dotnet run --project Tools\Tests\Progression\Progression.csproj
+dotnet run --project Tools\Tests\Biomes\Biomes.csproj
+dotnet run --project Tools\Tests\Plants\Plants.csproj
+dotnet run --project Tools\Tests\Gameplay\Gameplay.csproj -- bin\Debug\net8.0\XianXia.dll "你的tModLoader目录"
+```
+
+Gameplay 检查需先完成项目编译。完整开发待办与实施记录见 [项目审查清单](Docs/PROJECT_TODO_AUDIT_2026-10-05.md)，状态所有权与协议见 [多人网络说明](Docs/NETWORKING.md)。
+
 每个开发批次都必须通过：
 
 ```powershell
 python Tools\verify_localization_keys.py
 python Tools\verify_png_assets.py
+python Tools\verify_biome_counts.py
 powershell -ExecutionPolicy Bypass -File Tools\verify_generated_content_fresh.ps1
 dotnet build XianXia.csproj
 powershell -ExecutionPolicy Bypass -File Tools\tmodloader_smoke_test.ps1

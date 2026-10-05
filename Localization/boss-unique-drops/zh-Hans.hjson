@@ -1,0 +1,30 @@
+Mods: {
+	XianXia: {
+		Items: {
+			FoundationSeal: {
+			 DisplayName: "筑基印"
+			 Tooltip: "劫云化身必掉；在器胚炉配合4炉渣铁制作3淬灵晶。"
+			}
+			MedicineKingWoodHeart: {
+			 DisplayName: "药王木心"
+			 Tooltip: "青木药王残影必掉；制作法器觉醒印的核心材料。"
+			}
+			StarCalamityCore: {
+			 DisplayName: "星灾灵核"
+			 Tooltip: "月骸仙君必掉；斩道台：1灵核、6月骸、6下品灵石制作月骸法剑。"
+			}
+			ImperialDecreeItem: {
+			 DisplayName: "天庭法旨"
+			 Tooltip: "残天监察使必掉；天火炉：1法旨、2天道碎片、6下品灵石制作残天法旨武器。"
+			}
+			HeavenTabletSeal: {
+			 DisplayName: "天碑镇印"
+			 Tooltip: "天碑守御必掉；天火炉：1镇印、4天道碎片、8下品灵石制作残天法旨武器。"
+			}
+			RouteMaterial: {
+			 DisplayName: "路线材料"
+			 Tooltip: "旧天道核心必掉；在斩道台附近使用，打开世界终局路线选择。确认消耗1件，影响所有玩家且本世界不能改选。也用于专属奖励配方。"
+			}
+		}
+	}
+}

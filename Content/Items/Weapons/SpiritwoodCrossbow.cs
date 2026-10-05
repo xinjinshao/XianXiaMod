@@ -8,7 +8,7 @@ using XianXia.Content.Tiles.Stations;
 
 namespace XianXia.Content.Items.Weapons;
 
-public class SpiritwoodCrossbow : ModItem
+public class SpiritwoodCrossbow : global::XianXia.Common.Items.CultivationWeaponItem
 {
     private const int SpiritCost = 2;
 
@@ -33,18 +33,11 @@ public class SpiritwoodCrossbow : ModItem
 
     public override bool CanUseItem(Player player)
     {
-        return player.GetModPlayer<XianXiaPlayer>().spiritualEnergy >= SpiritCost;
+        return player.GetModPlayer<XianXiaPlayer>().CanConsumeSpiritualEnergy(SpiritCost);
     }
 
-    public override bool Shoot(Player player, Terraria.DataStructures.EntitySource_ItemUse_WithAmmo source, Microsoft.Xna.Framework.Vector2 position, Microsoft.Xna.Framework.Vector2 velocity, int type, int damage, float knockback)
-    {
-        if (!player.GetModPlayer<XianXiaPlayer>().TryConsumeSpiritualEnergy(SpiritCost))
-        {
-            return false;
-        }
-        Projectile.NewProjectile(source, position, velocity, type, damage, knockback, player.whoAmI);
-        return false;
-    }
+    public override int GetSpiritCost(Player player) => SpiritCost;
+
 
     public override void AddRecipes()
     {

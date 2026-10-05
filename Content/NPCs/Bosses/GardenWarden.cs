@@ -37,6 +37,11 @@ public class GardenWarden : ModNPC
 
 
 
+    public override void ApplyDifficultyAndPlayerScaling(int numPlayers, float balance, float bossAdjustment)
+    {
+        NPC.lifeMax = BossStatRules.ScaleLife(NPC.lifeMax, balance, bossAdjustment);
+    }
+
     public override void SetDefaults()
 
     {
@@ -45,17 +50,9 @@ public class GardenWarden : ModNPC
 
         NPC.height = 96;
 
-        int baseLife = 2800;
-
-        int baseDamage = 28;
-
-        if (Main.expertMode) { baseLife = (int)(baseLife * 1.45f); baseDamage = (int)(baseDamage * 1.25f); }
-
-        if (Main.masterMode) { baseLife = (int)(baseLife * 1.85f); baseDamage = (int)(baseDamage * 1.45f); }
-
-        NPC.lifeMax = baseLife;
-
-        NPC.damage = baseDamage;
+        var stats = BossStatRules.Get(nameof(GardenWarden));
+        NPC.lifeMax = stats.Life;
+        NPC.damage = stats.Damage;
 
         NPC.defense = 10;
 
@@ -257,21 +254,17 @@ public class GardenWarden : ModNPC
 
 
     public override void ModifyNPCLoot(NPCLoot npcLoot)
-
     {
-
-        npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<global::XianXia.Content.Items.Materials.GreenwoodRoot>(), 1, 16, 28));
-
-        npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<global::XianXia.Content.Items.Materials.GreenwoodRoot>(), 1, 8, 16));
-
-        npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<global::XianXia.Content.Items.Materials.LowGradeSpiritStone>(), 1, 8, 16));
-
-        npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<global::XianXia.Content.Items.Materials.SpiritGel>(), 4, 3, 8));
-
-        npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<global::XianXia.Content.Items.Materials.ArtifactBlankShard>(), 8, 1, 3));
-
-        npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<global::XianXia.Content.Items.HandGenerated.GardenWardenMask>(), 7, 1, 1));
-
+        npcLoot.Add(ItemDropRule.BossBag(ModContent.ItemType<global::XianXia.Content.Items.TreasureBags.GardenWardenBag>()));
+        npcLoot.Add(ItemDropRule.MasterModeCommonDrop(ModContent.ItemType<global::XianXia.Content.Items.MasterRewards.GardenWardenMonument>()));
+        var normal = new LeadingConditionRule(new Conditions.NotExpert());
+        normal.OnSuccess(ItemDropRule.Common(ModContent.ItemType<global::XianXia.Content.Items.Materials.GreenwoodRoot>(), 1, 16, 28));
+        normal.OnSuccess(ItemDropRule.Common(ModContent.ItemType<global::XianXia.Content.Items.Materials.GreenwoodRoot>(), 1, 8, 16));
+        normal.OnSuccess(ItemDropRule.Common(ModContent.ItemType<global::XianXia.Content.Items.Materials.LowGradeSpiritStone>(), 1, 8, 16));
+        normal.OnSuccess(ItemDropRule.Common(ModContent.ItemType<global::XianXia.Content.Items.Materials.SpiritGel>(), 4, 3, 8));
+        normal.OnSuccess(ItemDropRule.Common(ModContent.ItemType<global::XianXia.Content.Items.Materials.ArtifactBlankShard>(), 8, 1, 3));
+        normal.OnSuccess(ItemDropRule.Common(ModContent.ItemType<global::XianXia.Content.Items.HandGenerated.GardenWardenMask>(), 7, 1, 1));
+        npcLoot.Add(normal);
     }
 
 }

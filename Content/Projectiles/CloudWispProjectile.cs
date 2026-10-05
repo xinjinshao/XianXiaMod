@@ -26,7 +26,7 @@ public class CloudWispProjectile : ModProjectile
 
         Projectile.hostile = false;
 
-        Projectile.DamageType = DamageClass.Generic;
+        Projectile.DamageType = DamageClass.Melee;
 
         Projectile.penetrate = 1;
 

@@ -57,7 +57,7 @@ public class FurnaceAshGolem : ModNPC
 
         NPC.aiStyle = NPCAIStyleID.Fighter;
 
-        AIType = NPCID.CaveBat;
+        AIType = NPCID.Zombie;
 
 
 
@@ -70,6 +70,8 @@ public class FurnaceAshGolem : ModNPC
     public override float SpawnChance(NPCSpawnInfo spawnInfo)
 
     {
+        if (!global::XianXia.Common.Systems.EnemySpawnRules.Allows(nameof(FurnaceAshGolem), Main.hardMode, NPC.downedPlantBoss, NPC.downedGolemBoss, NPC.downedMoonlord)) return 0f;
+
 
         return spawnInfo.Player.InModBiome<global::XianXia.Content.Biomes.SunkenFurnaceVeinBiome>() ? 0.18f : 0f;
 

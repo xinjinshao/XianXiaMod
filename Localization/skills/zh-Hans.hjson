@@ -1,0 +1,34 @@
+Mods: {
+ XianXia: {
+  Keybinds: {
+   ArtifactSkill: {
+    DisplayName: 法器主动技能
+   }
+   WardSkill: {
+    DisplayName: 鸣雷玉护体
+   }
+  }
+  Buffs: {
+   ArtifactWardBuff: {
+    DisplayName: 鸣雷护体
+    Description: 伤害减免增加35个百分点，防御+12；持续时间由技能状态决定
+   }
+  }
+  Skills: {
+   WardTooltip: 装备于可用饰品栏时可施放护体（默认V，可改键）：基础消耗18灵气，持续3秒，共享冷却20秒
+   Capacity: 弹幕空间不足，未消费
+   Sword: 剑爆发
+   Array: 阵脉冲
+   Ward: 护体
+   Ready: 技能就绪（键位可在模组控制中设置）
+   Cooldown: "共享技能冷却：{0}秒"
+   WardStatus: "冷却：{0}秒 · 护体：{1}秒"
+   Unavailable: 此技能需持有已觉醒的对应法器，或在可用饰品栏装备鸣雷玉
+   CoolingDown: 主动技能共享冷却尚未结束
+   NeedArray: 请持有觉醒阵盘并站在自己的青木恢复阵附近
+   NoHealing: 阵内没有需要治疗的友方，未消费
+   NeedEnergy: 灵气不足，未消费
+   Success: 主动技能施放成功
+  }
+ }
+}

@@ -1,0 +1,32 @@
+Mods: {
+    XianXia: {
+        Progression: {
+            BossSummonFailed: "召唤未完成，材料未消耗。请检查地点、时辰、修为、前置讨伐与 Boss 是否已存在。"
+            TribulationUnfinished: "先完成当前境界的天劫，再继续突破。失败后可使用天劫训练令重试。"
+            BreakthroughRequiresHardmode: "先击败血肉墙，进入困难模式后再继续推进。"
+            BreakthroughRequiresPlantera: "先击败世纪之花，再继续推进。"
+            BreakthroughRequiresGolem: "先击败石巨人，再继续推进。"
+            BreakthroughRequiresMoonLord: "先击败月亮领主，再继续推进。"
+            BreakthroughRequiresTrial: "先完成前置试炼：{0}。"
+            TribulationRetryUnavailable: "仅能重试当前境界尚未完成的天劫，且不能在天劫进行中重复开启。"
+            TrialNames: {
+                tribulation_cloud_avatar: "劫云化身"
+                abyssal_star_womb: "星渊胎主"
+                formless_sword_soul: "无相剑魄"
+                heaven_tablet_guardian: "天碑守御"
+                broken_heaven_inspector: "残天监察使"
+                old_heaven_dao_core: "旧天道核心"
+            }
+        }
+        Items: {
+            SectLedger: {
+                Guidance: {
+                    QiCondensation: "先使用凝气丹突破凝气境，再准备挑战劫云化身。"
+                    ActiveTribulation: "天劫正在进行。先渡过这场试炼，再准备下一次突破。"
+                    RetryTribulation: "当前境界的天劫尚未完成。在工作台制作天劫训练令，或向观劫客购买，使用后可重试。"
+                    SpiritSevering: "击败石巨人与天碑守御后，使用天道碎片突破斩灵境，完成天碑劫。"
+                }
+            }
+        }
+    }
+}

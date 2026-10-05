@@ -9,7 +9,7 @@ using Terraria.ModLoader;
 
 namespace XianXia.Content.Items.BossSummons;
 
-public class SummonHeavenTabletRubbing : ModItem
+public class SummonHeavenTabletRubbing : global::XianXia.Common.Items.CultivationBossSummonItem
 
 {
 
@@ -41,6 +41,8 @@ public class SummonHeavenTabletRubbing : ModItem
 
 
 
+    public override int BossType => ModContent.NPCType<global::XianXia.Content.NPCs.Bosses.HeavenTabletGuardian>();
+
     public override bool CanUseItem(Player player)
 
     {
@@ -61,17 +63,7 @@ public class SummonHeavenTabletRubbing : ModItem
 
 
 
-    public override bool? UseItem(Player player)
 
-    {
-
-        if (Main.netMode != NetmodeID.MultiplayerClient)
-
-            NPC.SpawnOnPlayer(player.whoAmI, ModContent.NPCType<global::XianXia.Content.NPCs.Bosses.HeavenTabletGuardian>());
-
-        return true;
-
-    }
 
 
 

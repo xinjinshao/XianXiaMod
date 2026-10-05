@@ -17,7 +17,7 @@
 | 青木阵盘 | `greenwood_array_plate` | 魔法/阵法 | Pre-Hardmode | 18/秒 | 36 | 0 | 4% | 16 灵气 | 0 | Orange | 1 金 20 银 | 1 |
 | 雷符阵盘 | `thunder_talisman_array_plate` | 魔法/阵法 | Hardmode | 46/秒 | 34 | 0 | 6% | 24 灵气 | 0 | Light Red | 5 金 | 1 |
 | 残天法旨 | `broken_heaven_decree` | 魔法/天道 | Post-Golem | 165 | 42 | 5.0 | 8% | 32 灵气 | 0 | Yellow | 16 金 | 1 |
-| 旧天道残卷 | `old_heaven_dao_scroll` | 魔法/终局 | Post-Moon Lord | 310 | 38 | 5.0 | 10% | 45 灵气 | 0 | Purple | 35 金 | 1 |
+| 旧天道残卷 | `old_heaven_dao_scroll` | 元婴突破消耗品 | Post-Plantera | — | 20 | — | — | — | 30 | Yellow | 10 银（基准价值） | 25 |
 | 灵木短弩 | `spiritwood_crossbow` | 远程 | Pre-Boss | 12 | 30 | 2.0 | 4% | 灵气箭 | 10 | Blue | 18 银 | 1 |
 | 星蚀弩机 | `star_eclipse_arbalest` | 远程/星渊 | Hardmode | 68 | 24 | 2.5 | 6% | 星蚀弹 | 12 | Light Red | 5 金 | 1 |
 
@@ -79,7 +79,7 @@
 | 青木阵盘 | Pre-Hardmode | 放置小型恢复/伤害阵 | 56x56 圆盘，绿木纹，阵图不写字 |
 | 雷符阵盘 | Hardmode | 区域落雷 | 60x60 紫蓝阵盘，雷纹 |
 | 残天法旨 | Post-Golem | 高消耗直线审判 | 56x56 白玉卷轴，金线 |
-| 旧天道残卷 | Post-Moon Lord | 终局术法，按路线变形 | 72x72 破卷与黑白裂隙 |
+| 旧天道残卷 | Post-Plantera | 元婴突破消耗品；无攻击功能 | 72x72 卷轴图标 |
 
 ## 远程与机关
 

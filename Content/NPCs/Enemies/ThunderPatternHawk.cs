@@ -70,6 +70,8 @@ public class ThunderPatternHawk : ModNPC
     public override float SpawnChance(NPCSpawnInfo spawnInfo)
 
     {
+        if (!global::XianXia.Common.Systems.EnemySpawnRules.Allows(nameof(ThunderPatternHawk), Main.hardMode, NPC.downedPlantBoss, NPC.downedGolemBoss, NPC.downedMoonlord)) return 0f;
+
 
         return spawnInfo.Player.InModBiome<global::XianXia.Content.Biomes.ThunderMarshCloudsBiome>() ? 0.18f : 0f;
 
@@ -78,72 +80,35 @@ public class ThunderPatternHawk : ModNPC
 
 
     public override void PostAI()
-
     {
-
-        Player target = Main.player[NPC.target];
-
-        if (!target.active || target.dead)
-
-        {
-
-            NPC.TargetClosest(false);
-
-            target = Main.player[NPC.target];
-
-        }
-
-
-
-        NPC.localAI[0]++;
-
-        bool diving = NPC.localAI[1] > 0f;
-
-        if (target.active && !target.dead && NPC.localAI[0] >= (diving ? 30f : 140f))
-
-        {
-
-            NPC.localAI[0] = 0f;
-
-            if (diving)
-
-            {
-
-                NPC.localAI[1] = 0f;
-
-                NPC.velocity *= 0.3f;
-
-            }
-
-            else
-
-            {
-
-                NPC.localAI[1] = 1f;
-
-                Vector2 direction = (target.Center - NPC.Center).SafeNormalize(Vector2.UnitY);
-
-                NPC.velocity = direction * 15f;
-
-            }
-
-            NPC.netUpdate = true;
-
-        }
-
-
-
-        if (NPC.velocity.LengthSquared() > 80f)
-
-        {
-
+        if (!Main.dedServ && NPC.velocity.LengthSquared() > 80f)
             Dust.NewDust(NPC.position, NPC.width, NPC.height, DustID.Electric, -NPC.velocity.X * 0.1f, -NPC.velocity.Y * 0.1f);
-
+        if (Main.netMode == NetmodeID.MultiplayerClient) return;
+        if (!global::XianXia.Common.Systems.EnemyTargeting.TryGetLivingTarget(NPC, out Player target))
+        {
+            if (NPC.localAI[1] > 0f)
+            {
+                NPC.velocity *= 0.3f;
+                NPC.netUpdate = true;
+            }
+            NPC.localAI[0] = NPC.localAI[1] = 0f;
+            return;
         }
-
+        bool diving = NPC.localAI[1] > 0f;
+        if (++NPC.localAI[0] < (diving ? 30f : 140f)) return;
+        NPC.localAI[0] = 0f;
+        if (diving)
+        {
+            NPC.localAI[1] = 0f;
+            NPC.velocity *= 0.3f;
+        }
+        else
+        {
+            NPC.localAI[1] = 1f;
+            NPC.velocity = (target.Center - NPC.Center).SafeNormalize(Vector2.UnitY) * 15f;
+        }
+        NPC.netUpdate = true;
     }
-
-
 
     public override void ModifyNPCLoot(NPCLoot npcLoot)
 

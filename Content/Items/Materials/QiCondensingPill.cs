@@ -58,14 +58,18 @@ public class QiCondensingPill : ModItem
     public override bool? UseItem(Player player)
 
     {
+        if (global::XianXia.Common.Systems.CultivationItemTransactions.RequestIfMultiplayer(player, Item))
+            return true;
+
 
         global::XianXia.Common.Players.XianXiaPlayer cultivation = player.GetModPlayer<global::XianXia.Common.Players.XianXiaPlayer>();
 
-        if (cultivation.TryAdvanceCultivation(global::XianXia.Common.Players.CultivationStage.QiCondensation)
+        if (cultivation.TryAdvanceCultivation(global::XianXia.Common.Players.CultivationStage.QiCondensation,
+                global::XianXia.Common.Systems.PillQualitySystem.BenefitMultiplier(Item))
 
             && player.HasBuff(ModContent.BuffType<global::XianXia.Content.Buffs.AlchemyInsightBuff>()))
 
-            cultivation.ReduceSpiritPressure(6);
+            cultivation.ReduceSpiritPressure(global::XianXia.Common.Systems.PillQualitySystem.Scale(Item, 6));
 
         return true;
 
@@ -83,8 +87,9 @@ public class QiCondensingPill : ModItem
 
             .AddIngredient<global::XianXia.Content.Items.Materials.LowGradeSpiritStone>(5)
 
-            .AddTile(ModContent.TileType<global::XianXia.Content.Tiles.Stations.AlchemyCauldronTile>())
+            .AddTile(ModContent.TileType<global::XianXia.Content.Tiles.Stations.EarthClayFurnaceTile>())
 
+            .AddCondition(new Condition(Terraria.Localization.Language.GetText("Mods.XianXia.PillQuality.EmptyCursor"), () => Main.mouseItem.IsAir))
             .Register();
 
     }

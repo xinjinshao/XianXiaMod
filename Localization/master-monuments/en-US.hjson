@@ -1,0 +1,94 @@
+{
+  "Mods": {
+    "XianXia": {
+      "Items": {
+        "SpiritVeinWyrmMonument": {
+          "DisplayName": "SpiritVeinWyrm Master Monument",
+          "Tooltip": "Can be placed\nCommemorates defeating this boss in Master Mode\nDecorative; grants no combat bonuses"
+        },
+        "GardenWardenMonument": {
+          "DisplayName": "GardenWarden Master Monument",
+          "Tooltip": "Can be placed\nCommemorates defeating this boss in Master Mode\nDecorative; grants no combat bonuses"
+        },
+        "BlackFurnaceIronGolemMonument": {
+          "DisplayName": "BlackFurnaceIronGolem Master Monument",
+          "Tooltip": "Can be placed\nCommemorates defeating this boss in Master Mode\nDecorative; grants no combat bonuses"
+        },
+        "TribulationCloudAvatarMonument": {
+          "DisplayName": "TribulationCloudAvatar Master Monument",
+          "Tooltip": "Can be placed\nCommemorates defeating this boss in Master Mode\nDecorative; grants no combat bonuses"
+        },
+        "ThunderMarshJiaoMonument": {
+          "DisplayName": "ThunderMarshJiao Master Monument",
+          "Tooltip": "Can be placed\nCommemorates defeating this boss in Master Mode\nDecorative; grants no combat bonuses"
+        },
+        "AbyssalStarWombMonument": {
+          "DisplayName": "AbyssalStarWomb Master Monument",
+          "Tooltip": "Can be placed\nCommemorates defeating this boss in Master Mode\nDecorative; grants no combat bonuses"
+        },
+        "FormlessSwordSoulMonument": {
+          "DisplayName": "FormlessSwordSoul Master Monument",
+          "Tooltip": "Can be placed\nCommemorates defeating this boss in Master Mode\nDecorative; grants no combat bonuses"
+        },
+        "GreenwoodMedicineKingEchoMonument": {
+          "DisplayName": "GreenwoodMedicineKingEcho Master Monument",
+          "Tooltip": "Can be placed\nCommemorates defeating this boss in Master Mode\nDecorative; grants no combat bonuses"
+        },
+        "HeavenTabletGuardianMonument": {
+          "DisplayName": "HeavenTabletGuardian Master Monument",
+          "Tooltip": "Can be placed\nCommemorates defeating this boss in Master Mode\nDecorative; grants no combat bonuses"
+        },
+        "BrokenHeavenInspectorMonument": {
+          "DisplayName": "BrokenHeavenInspector Master Monument",
+          "Tooltip": "Can be placed\nCommemorates defeating this boss in Master Mode\nDecorative; grants no combat bonuses"
+        },
+        "MoonboneImmortalMonument": {
+          "DisplayName": "MoonboneImmortal Master Monument",
+          "Tooltip": "Can be placed\nCommemorates defeating this boss in Master Mode\nDecorative; grants no combat bonuses"
+        },
+        "OldHeavenDaoCoreMonument": {
+          "DisplayName": "OldHeavenDaoCore Master Monument",
+          "Tooltip": "Can be placed\nCommemorates defeating this boss in Master Mode\nDecorative; grants no combat bonuses"
+        }
+      },
+      "Tiles": {
+        "SpiritVeinWyrmMonumentTile": {
+          "MapEntry": "SpiritVeinWyrm Master Monument"
+        },
+        "GardenWardenMonumentTile": {
+          "MapEntry": "GardenWarden Master Monument"
+        },
+        "BlackFurnaceIronGolemMonumentTile": {
+          "MapEntry": "BlackFurnaceIronGolem Master Monument"
+        },
+        "TribulationCloudAvatarMonumentTile": {
+          "MapEntry": "TribulationCloudAvatar Master Monument"
+        },
+        "ThunderMarshJiaoMonumentTile": {
+          "MapEntry": "ThunderMarshJiao Master Monument"
+        },
+        "AbyssalStarWombMonumentTile": {
+          "MapEntry": "AbyssalStarWomb Master Monument"
+        },
+        "FormlessSwordSoulMonumentTile": {
+          "MapEntry": "FormlessSwordSoul Master Monument"
+        },
+        "GreenwoodMedicineKingEchoMonumentTile": {
+          "MapEntry": "GreenwoodMedicineKingEcho Master Monument"
+        },
+        "HeavenTabletGuardianMonumentTile": {
+          "MapEntry": "HeavenTabletGuardian Master Monument"
+        },
+        "BrokenHeavenInspectorMonumentTile": {
+          "MapEntry": "BrokenHeavenInspector Master Monument"
+        },
+        "MoonboneImmortalMonumentTile": {
+          "MapEntry": "MoonboneImmortal Master Monument"
+        },
+        "OldHeavenDaoCoreMonumentTile": {
+          "MapEntry": "OldHeavenDaoCore Master Monument"
+        }
+      }
+    }
+  }
+}

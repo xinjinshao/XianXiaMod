@@ -70,6 +70,8 @@ public class MiasmaFlowerMoth : ModNPC
     public override float SpawnChance(NPCSpawnInfo spawnInfo)
 
     {
+        if (!global::XianXia.Common.Systems.EnemySpawnRules.Allows(nameof(MiasmaFlowerMoth), Main.hardMode, NPC.downedPlantBoss, NPC.downedGolemBoss, NPC.downedMoonlord)) return 0f;
+
 
         return spawnInfo.Player.InModBiome<global::XianXia.Content.Biomes.GreenwoodHerbGardenBiome>() ? 0.18f : 0f;
 
@@ -78,52 +80,22 @@ public class MiasmaFlowerMoth : ModNPC
 
 
     public override void PostAI()
-
     {
-
         NPC.velocity *= 0.985f;
-
-        NPC.localAI[0]++;
-
-        if (NPC.localAI[0] >= 45f)
-
-        {
-
-            NPC.localAI[0] = 0f;
-
+        if (++NPC.localAI[0] < 45f) return;
+        NPC.localAI[0] = 0f;
+        if (Main.netMode != NetmodeID.MultiplayerClient)
             foreach (Player player in Main.ActivePlayers)
-
-            {
-
-                if (Vector2.Distance(player.Center, NPC.Center) <= 128f)
-
-                {
-
+                if (!player.dead && Vector2.Distance(player.Center, NPC.Center) <= 128f)
                     player.AddBuff(BuffID.Poisoned, 90);
-
-                }
-
-            }
-
-
-
+        if (!Main.dedServ)
             for (int i = 0; i < 10; i++)
-
             {
-
                 float angle = MathHelper.TwoPi * i / 10f;
-
                 Vector2 offset = new Vector2((float)Math.Cos(angle), (float)Math.Sin(angle)) * 48f;
-
                 Dust.NewDust(NPC.Center + offset, 4, 4, DustID.Poisoned, offset.X * 0.03f, offset.Y * 0.03f, 100, default, 0.7f);
-
             }
-
-        }
-
     }
-
-
 
     public override void ModifyNPCLoot(NPCLoot npcLoot)
 

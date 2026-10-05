@@ -8,6 +8,15 @@ public static class BossSummonRules
 {
     public static bool CanUseGeneratedBossSummon(Player player, string bossId)
     {
+        string worldFailure = Common.Players.CultivationRules.GetWorldFailure(
+            Common.Players.CultivationRules.GetBossWorldStage(bossId), Main.hardMode,
+            NPC.downedPlantBoss, NPC.downedGolemBoss, NPC.downedMoonlord);
+        if (worldFailure.Length > 0)
+        {
+            if (Main.myPlayer == player.whoAmI)
+                Main.NewText(Language.GetTextValue($"Mods.XianXia.Progression.{worldFailure}"), 255, 210, 120);
+            return false;
+        }
         if (!IsAtRequiredSite(player, bossId, out string siteKey))
         {
             if (Main.myPlayer == player.whoAmI)

@@ -8,7 +8,7 @@ using XianXia.Content.Tiles.Stations;
 
 namespace XianXia.Content.Items.Weapons;
 
-public class WoodgrainFlyingSword : ModItem
+public class WoodgrainFlyingSword : global::XianXia.Common.Items.CultivationWeaponItem
 {
     private const int SpiritCost = 4;
 
@@ -17,7 +17,7 @@ public class WoodgrainFlyingSword : ModItem
         Item.width = 56;
         Item.height = 56;
         Item.damage = 14;
-        Item.DamageType = DamageClass.MeleeNoSpeed;
+        Item.DamageType = DamageClass.Melee;
         Item.knockBack = 3f;
         Item.crit = 4;
         Item.useTime = 28;
@@ -35,18 +35,11 @@ public class WoodgrainFlyingSword : ModItem
 
     public override bool CanUseItem(Player player)
     {
-        return player.GetModPlayer<XianXiaPlayer>().spiritualEnergy >= SpiritCost;
+        return player.GetModPlayer<XianXiaPlayer>().CanConsumeSpiritualEnergy(SpiritCost);
     }
 
-    public override bool Shoot(Player player, Terraria.DataStructures.EntitySource_ItemUse_WithAmmo source, Microsoft.Xna.Framework.Vector2 position, Microsoft.Xna.Framework.Vector2 velocity, int type, int damage, float knockback)
-    {
-        if (!player.GetModPlayer<XianXiaPlayer>().TryConsumeSpiritualEnergy(SpiritCost))
-        {
-            return false;
-        }
-        Projectile.NewProjectile(source, position, velocity, type, damage, knockback, player.whoAmI);
-        return false;
-    }
+    public override int GetSpiritCost(Player player) => SpiritCost;
+
 
     public override void AddRecipes()
     {

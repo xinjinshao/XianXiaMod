@@ -13,7 +13,9 @@
 | [青木阵盘](Greenwood_Array_Plate.md) | 18 | 36 | 16 | Pre-Hardmode |
 | [雷符阵盘](Thunder_Talisman_Array_Plate.md) | 46 | 34 | 24 | Hardmode |
 | [残天法令](Broken_Heaven_Decree.md) | 165 | 42 | 32 | Post-Golem |
-| [旧天道残卷](Old_Heaven_Dao_Scroll.md) | — | — | — | Post-Moon Lord |
+
+旧天道残卷已归入[突破消耗品](../../Items/Entries/Old_Heaven_Dao_Scroll.md)，不属于武器。
+
 ## 远程
 | [灵木短弩](Spiritwood_Crossbow.md) | 12 | 30 | — | Pre-Boss |
 | [星蚀弩机](Star_Eclipse_Arbalest.md) | 68 | 24 | 16 | Hardmode |

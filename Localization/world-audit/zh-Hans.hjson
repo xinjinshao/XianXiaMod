@@ -1,0 +1,7 @@
+Mods: {
+ XianXia: {
+  WorldAudit: {
+   Description: 只读检查已加载世界中完整的修行生态物件
+  }
+ }
+}

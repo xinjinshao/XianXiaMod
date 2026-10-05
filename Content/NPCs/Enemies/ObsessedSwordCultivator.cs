@@ -57,7 +57,7 @@ public class ObsessedSwordCultivator : ModNPC
 
         NPC.aiStyle = NPCAIStyleID.Fighter;
 
-        AIType = NPCID.CaveBat;
+        AIType = NPCID.Zombie;
 
 
 
@@ -70,6 +70,8 @@ public class ObsessedSwordCultivator : ModNPC
     public override float SpawnChance(NPCSpawnInfo spawnInfo)
 
     {
+        if (!global::XianXia.Common.Systems.EnemySpawnRules.Allows(nameof(ObsessedSwordCultivator), Main.hardMode, NPC.downedPlantBoss, NPC.downedGolemBoss, NPC.downedMoonlord)) return 0f;
+
 
         return spawnInfo.Player.InModBiome<global::XianXia.Content.Biomes.TenThousandSectsRuinsBiome>() ? 0.18f : 0f;
 
@@ -78,96 +80,61 @@ public class ObsessedSwordCultivator : ModNPC
 
 
     public override void PostAI()
-
     {
-
-        Player target = Main.player[NPC.target];
-
-        if (!target.active || target.dead)
-
+        if (Main.netMode == NetmodeID.MultiplayerClient)
         {
-
-            NPC.TargetClosest(false);
-
-            target = Main.player[NPC.target];
-
+            if (NPC.localAI[2] > 0f && --NPC.localAI[2] == 0f) NPC.damage = NPC.defDamage;
+            return;
         }
-
-
-
-        bool guarding = target.active && !target.dead && Math.Abs(target.Center.X - NPC.Center.X) < 96f;
-
+        if (NPC.localAI[2] == 1f) NPC.netUpdate = true;
+        if (NPC.localAI[2] > 0f) NPC.localAI[2]--;
+        NPC.damage = NPC.localAI[2] > 0f ? (int)(NPC.defDamage * 1.3f) : NPC.defDamage;
+        NPC.defense = 34;
+        if (!global::XianXia.Common.Systems.EnemyTargeting.TryGetLivingTarget(NPC, out Player target))
+        {
+            if (NPC.localAI[2] > 0f) NPC.netUpdate = true;
+            NPC.localAI[0] = NPC.localAI[1] = NPC.localAI[2] = 0f;
+            NPC.damage = NPC.defDamage;
+            return;
+        }
+        bool guarding = Math.Abs(target.Center.X - NPC.Center.X) < 96f;
         if (guarding)
-
         {
-
             NPC.velocity.X *= 0.65f;
-
             NPC.defense = 42;
-
         }
-
-        else
-
+        if (++NPC.localAI[0] < 120f) return;
+        NPC.localAI[0] = 0f;
+        if (guarding && NPC.localAI[1] > 0f)
         {
-
-            NPC.defense = 34;
-
+            NPC.localAI[1] = 0f;
+            NPC.localAI[2] = 30f;
+            NPC.velocity = (target.Center - NPC.Center).SafeNormalize(Vector2.UnitX) * 12f;
+            NPC.damage = (int)(NPC.defDamage * 1.3f);
         }
-
-
-
-        NPC.localAI[0]++;
-
-        if (target.active && !target.dead && NPC.localAI[0] >= 120f)
-
-        {
-
-            NPC.localAI[0] = 0f;
-
-            if (guarding && NPC.localAI[1] > 0f)
-
-            {
-
-                NPC.localAI[1] = 0f;
-
-                NPC.velocity = (target.Center - NPC.Center).SafeNormalize(Vector2.UnitX) * 12f;
-
-                NPC.damage = (int)(NPC.damage * 1.3f);
-
-            }
-
-            else
-
-            {
-
-                NPC.velocity.X = Math.Sign(target.Center.X - NPC.Center.X) * 9f;
-
-            }
-
-            NPC.netUpdate = true;
-
-        }
-
+        else NPC.velocity.X = Math.Sign(target.Center.X - NPC.Center.X) * 9f;
+        NPC.netUpdate = true;
     }
-
-
 
     public override void OnHitByProjectile(Projectile projectile, NPC.HitInfo hit, int damageDone)
-
     {
-
-        if (Math.Abs(Main.player[projectile.owner].Center.X - NPC.Center.X) < 96f)
-
-        {
-
+        if (Main.netMode == NetmodeID.MultiplayerClient || projectile.owner < 0 || projectile.owner >= Main.maxPlayers) return;
+        Player attacker = Main.player[projectile.owner];
+        if (attacker.active && !attacker.dead && Math.Abs(attacker.Center.X - NPC.Center.X) < 96f)
             NPC.localAI[1] = 1f;
-
-        }
-
     }
 
+    public override void SendExtraAI(System.IO.BinaryWriter writer)
+    {
+        writer.Write((byte)Math.Clamp((int)NPC.localAI[2], 0, 30));
+        writer.Write(NPC.damage);
+    }
 
+    public override void ReceiveExtraAI(System.IO.BinaryReader reader)
+    {
+        NPC.localAI[2] = Math.Min(30, (int)reader.ReadByte());
+        NPC.damage = reader.ReadInt32();
+    }
 
     public override void ModifyNPCLoot(NPCLoot npcLoot)
 

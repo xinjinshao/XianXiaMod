@@ -26,7 +26,7 @@ public class ThunderTalismanArray : ModProjectile
 
         Projectile.hostile = false;
 
-        Projectile.DamageType = DamageClass.Generic;
+        Projectile.DamageType = DamageClass.Magic;
 
         Projectile.penetrate = 1;
 
@@ -62,7 +62,7 @@ public class ThunderTalismanArray : ModProjectile
 
         Projectile.rotation += 0.035f;
 
-        if (Projectile.owner == Main.myPlayer && Projectile.timeLeft % 45 == 0)
+        if (Main.netMode != NetmodeID.MultiplayerClient && Projectile.timeLeft % 45 == 0)
 
         {
 

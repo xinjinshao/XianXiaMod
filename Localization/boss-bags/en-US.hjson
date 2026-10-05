@@ -1,0 +1,56 @@
+{
+  "Mods": {
+    "XianXia": {
+      "Items": {
+        "SpiritVeinWyrmBag": {
+          "DisplayName": "Spirit Vein Wyrm Treasure Bag",
+          "Tooltip": "Right click to receive materials and rewards from this boss"
+        },
+        "GardenWardenBag": {
+          "DisplayName": "Garden Warden Treasure Bag",
+          "Tooltip": "Right click to receive materials and rewards from this boss"
+        },
+        "BlackFurnaceIronGolemBag": {
+          "DisplayName": "Black Furnace Iron Golem Treasure Bag",
+          "Tooltip": "Right click to receive materials and rewards from this boss"
+        },
+        "TribulationCloudAvatarBag": {
+          "DisplayName": "Tribulation Cloud Avatar Treasure Bag",
+          "Tooltip": "Right click to receive materials and rewards from this boss"
+        },
+        "ThunderMarshJiaoBag": {
+          "DisplayName": "Thunder Marsh Jiao Treasure Bag",
+          "Tooltip": "Right click to receive materials and rewards from this boss"
+        },
+        "AbyssalStarWombBag": {
+          "DisplayName": "Abyssal Star Womb Treasure Bag",
+          "Tooltip": "Right click to receive materials and rewards from this boss"
+        },
+        "FormlessSwordSoulBag": {
+          "DisplayName": "Formless Sword Soul Treasure Bag",
+          "Tooltip": "Right click to receive materials and rewards from this boss"
+        },
+        "GreenwoodMedicineKingEchoBag": {
+          "DisplayName": "Greenwood Medicine King Echo Treasure Bag",
+          "Tooltip": "Right click to receive materials and rewards from this boss"
+        },
+        "HeavenTabletGuardianBag": {
+          "DisplayName": "Heaven Tablet Guardian Treasure Bag",
+          "Tooltip": "Right click to receive materials and rewards from this boss"
+        },
+        "BrokenHeavenInspectorBag": {
+          "DisplayName": "Broken Heaven Inspector Treasure Bag",
+          "Tooltip": "Right click to receive materials and rewards from this boss"
+        },
+        "MoonboneImmortalBag": {
+          "DisplayName": "Moonbone Immortal Treasure Bag",
+          "Tooltip": "Right click to receive materials and rewards from this boss"
+        },
+        "OldHeavenDaoCoreBag": {
+          "DisplayName": "Old Heaven Dao Core Treasure Bag",
+          "Tooltip": "Right click to receive materials and rewards from this boss"
+        }
+      }
+    }
+  }
+}

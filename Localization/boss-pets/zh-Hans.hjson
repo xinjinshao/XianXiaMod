@@ -1,0 +1,24 @@
+{
+  "Mods": {
+    "XianXia": {
+      "Buffs": {
+        "BlackFurnaceIronGolemPetBuff": {
+          "DisplayName": "小玄炉铁傀",
+          "Description": "陪伴你的小宠物"
+        },
+        "SmallTabletPetBuff": {
+          "DisplayName": "小天碑",
+          "Description": "陪伴你的小宠物"
+        }
+      },
+      "Projectiles": {
+        "BlackFurnaceIronGolemPetProjectile": {
+          "DisplayName": "小玄炉铁傀"
+        },
+        "SmallTabletPetProjectile": {
+          "DisplayName": "小天碑"
+        }
+      }
+    }
+  }
+}

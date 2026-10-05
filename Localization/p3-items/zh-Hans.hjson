@@ -1,0 +1,92 @@
+Mods: {
+	XianXia: {
+		Items: {
+			GreenwoodInscriptionNeedle: {
+				DisplayName: "青木铭刻针"
+				Tooltip: "为本Mod武器或饰品铭刻青木纹，增加灵气和生命恢复。"
+			}
+			FurnaceInscriptionNeedle: {
+				DisplayName: "玄炉铭刻针"
+				Tooltip: "为本Mod武器或饰品铭刻玄炉纹，增加破甲、武器重击或饰品防御。"
+			}
+			ThunderInscriptionNeedle: {
+				DisplayName: "雷泽铭刻针"
+				Tooltip: "为本Mod武器或饰品铭刻雷纹，增加攻击与移动速度。"
+			}
+			StarAbyssInscriptionNeedle: {
+				DisplayName: "星渊铭刻针"
+				Tooltip: "为本Mod武器或饰品铭刻星渊纹，增加伤害并附带灵压代价。"
+			}
+			BrokenHeavenInscriptionNeedle: {
+				DisplayName: "残天铭刻针"
+				Tooltip: "为本Mod武器或饰品铭刻残天纹，增加暴击与击退，同时提高灵耗。"
+			}
+			InscriptionRemovalStone: {
+				DisplayName: "铭刻清除石"
+				Tooltip: "清除装备上的当前铭刻，保留装备和前缀。"
+			}
+			SmallArtifactPendant: {
+				DisplayName: "小器灵坠"
+				Tooltip: "装备时每次回气额外+1；手持使用消耗10魔力召唤小器灵（基础召唤伤害12，占1仆从位，每人最多1只）。右键器灵Buff取消；仆从位不足时不能召唤。"
+			}
+			FurnaceAshSpiritContract: {
+				DisplayName: "炉灰器灵契"
+				Tooltip: "契约一只炉灰器灵为仆从。召唤伤害+8%。"
+			}
+			StarAbyssLarvaContract: {
+				DisplayName: "星渊幼体契"
+				Tooltip: "与星渊幼体缔结契约。召唤伤害+10%，但灵气消耗略增。"
+			}
+			NascentSoulCloneTalisman: {
+				DisplayName: "元婴分身符"
+				Tooltip: "化出元婴分身的符箓。+1 最大仆从，召唤伤害+12%。"
+			}
+			CelestialPuppetToken: {
+				DisplayName: "仙傀令"
+				Tooltip: "操控天庭傀儡的令牌。+1 最大仆从，召唤伤害+14%。"
+			}
+			ArchivedImmortalSoulContract: {
+				DisplayName: "归档仙魂契"
+				Tooltip: "与归档仙魂缔结契约。+2 最大仆从，召唤伤害+18%。"
+			}
+			LightningAvoidanceRune: {
+				DisplayName: "避雷符"
+				Tooltip: "获得30分钟的抗劫状态。"
+			}
+			TribulationTrainingToken: {
+				DisplayName: "天劫训练令"
+				Tooltip: "重试当前境界尚未完成的天劫，无需再次消耗突破材料。可重复使用；天劫进行中或已完成时不可使用。"
+			}
+			BlankSectScroll: {
+				DisplayName: "空白残卷"
+				Tooltip: "空白卷轴，可记录宗门传承与配方。"
+			}
+			SpiritHerbSeeds: {
+				DisplayName: "灵草种子"
+				Tooltip: "种在平整泥土、草地、丛林草、青木土、灵苔、花盆或种植箱上\n经历幼苗、生长和成熟三个阶段；成熟植株发出绿光\n成熟收获1青木根和1–3种子；未成熟仅返还1种子\n积水暂停生长，岩浆会摧毁植株"
+			}
+			HeavenDaoRouteHint: {
+				DisplayName: "天庭路线提示"
+				Tooltip: "揭示三条终局修行路线之一的需求。"
+			}
+			EndgameRouteFrame: {
+				DisplayName: "终局路线信物框"
+				Tooltip: "展示你已选择的终局路线的玉框。"
+			}
+		}
+		Buffs: {
+			SpringReturnRegenBuff: {
+				DisplayName: "回春再生"
+				Description: "身体重返春天活力。生命恢复与灵气恢复均获提升。"
+			}
+			StarAbyssCorrosionBuff: {
+				DisplayName: "星渊侵蚀"
+				Description: "星渊之力腐蚀了你的防御。防御降低，灵压持续增长。"
+			}
+			ArchiveLockBuff: {
+				DisplayName: "归档锁"
+				Description: "归档锁限制了你的行动。速度、加速度与跳跃高度降低。"
+			}
+		}
+	}
+}

@@ -9,7 +9,7 @@ using Terraria.ModLoader;
 
 namespace XianXia.Content.Items.BossSummons;
 
-public class SummonMoonboneRitualTalismanOldHeavenDaoCore : ModItem
+public class SummonMoonboneRitualTalismanOldHeavenDaoCore : global::XianXia.Common.Items.CultivationBossSummonItem
 
 {
 
@@ -41,6 +41,8 @@ public class SummonMoonboneRitualTalismanOldHeavenDaoCore : ModItem
 
 
 
+    public override int BossType => ModContent.NPCType<global::XianXia.Content.NPCs.Bosses.OldHeavenDaoCore>();
+
     public override bool CanUseItem(Player player)
 
     {
@@ -51,7 +53,7 @@ public class SummonMoonboneRitualTalismanOldHeavenDaoCore : ModItem
 
                 ModContent.NPCType<global::XianXia.Content.NPCs.Bosses.OldHeavenDaoCore>(),
 
-                global::XianXia.Common.Players.CultivationStage.DaoSevering,
+                global::XianXia.Common.Players.CultivationStage.Tribulation,
 
                 "moonbone_immortal")
 
@@ -61,17 +63,7 @@ public class SummonMoonboneRitualTalismanOldHeavenDaoCore : ModItem
 
 
 
-    public override bool? UseItem(Player player)
 
-    {
-
-        if (Main.netMode != NetmodeID.MultiplayerClient)
-
-            NPC.SpawnOnPlayer(player.whoAmI, ModContent.NPCType<global::XianXia.Content.NPCs.Bosses.OldHeavenDaoCore>());
-
-        return true;
-
-    }
 
 
 

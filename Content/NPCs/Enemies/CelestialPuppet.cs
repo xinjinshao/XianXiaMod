@@ -57,7 +57,7 @@ public class CelestialPuppet : ModNPC
 
         NPC.aiStyle = NPCAIStyleID.Fighter;
 
-        AIType = NPCID.CaveBat;
+        AIType = NPCID.Zombie;
 
 
 
@@ -70,6 +70,8 @@ public class CelestialPuppet : ModNPC
     public override float SpawnChance(NPCSpawnInfo spawnInfo)
 
     {
+        if (!global::XianXia.Common.Systems.EnemySpawnRules.Allows(nameof(CelestialPuppet), Main.hardMode, NPC.downedPlantBoss, NPC.downedGolemBoss, NPC.downedMoonlord)) return 0f;
+
 
         return spawnInfo.Player.InModBiome<global::XianXia.Content.Biomes.FallenHeavenPalaceBiome>() ? 0.18f : 0f;
 
@@ -78,66 +80,40 @@ public class CelestialPuppet : ModNPC
 
 
     public override void PostAI()
-
     {
-
-        NPC.localAI[0]++;
-
-        int phase = (int)(NPC.localAI[0] / 130f) % 3;
-
-        if (NPC.localAI[0] >= 130f)
-
+        if (Main.netMode == NetmodeID.MultiplayerClient) return;
+        if (NPC.target < 0 || NPC.target >= Main.maxPlayers
+            || !Main.player[NPC.target].active || Main.player[NPC.target].dead)
+            NPC.TargetClosest(false);
+        if (NPC.target < 0 || NPC.target >= Main.maxPlayers
+            || !Main.player[NPC.target].active || Main.player[NPC.target].dead)
         {
-
             NPC.localAI[0] = 0f;
-
-            Player target = Main.player[NPC.target];
-
-            switch (phase)
-
-            {
-
-                case 0:
-
-                    NPC.velocity.X = Math.Sign(target.Center.X - NPC.Center.X) * 7f;
-
-                    break;
-
-                case 1:
-
-                    NPC.velocity.Y -= 8f;
-
-                    if (Main.netMode != NetmodeID.MultiplayerClient)
-
-                    {
-
-                        Vector2 aim = (target.Center - NPC.Center).SafeNormalize(Vector2.UnitY) * 7f;
-
-                        Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center, aim,
-
-                            ModContent.ProjectileType<global::XianXia.Content.Projectiles.BossSpiritBoltProjectile>(),
-
-                            Math.Max(1, NPC.damage / 3), 0.5f);
-
-                    }
-
-                    break;
-
-                case 2:
-
-                    NPC.velocity = (target.Center - NPC.Center).SafeNormalize(Vector2.UnitY) * 10f;
-
-                    break;
-
-            }
-
-            NPC.netUpdate = true;
-
+            return;
         }
-
+        if (++NPC.localAI[0] < 130f) return;
+        NPC.localAI[0] = 0f;
+        int phase = (int)NPC.localAI[1];
+        NPC.localAI[1] = (phase + 1) % 3;
+        Player target = Main.player[NPC.target];
+        switch (phase)
+        {
+            case 0:
+                NPC.velocity.X = Math.Sign(target.Center.X - NPC.Center.X) * 7f;
+                break;
+            case 1:
+                NPC.velocity.Y -= 8f;
+                Vector2 aim = (target.Center - NPC.Center).SafeNormalize(Vector2.UnitY) * 7f;
+                Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center, aim,
+                    ModContent.ProjectileType<global::XianXia.Content.Projectiles.BossSpiritBoltProjectile>(),
+                    Math.Max(1, NPC.damage / 3), 0.5f);
+                break;
+            case 2:
+                NPC.velocity = (target.Center - NPC.Center).SafeNormalize(Vector2.UnitY) * 10f;
+                break;
+        }
+        NPC.netUpdate = true;
     }
-
-
 
     public override void ModifyNPCLoot(NPCLoot npcLoot)
 

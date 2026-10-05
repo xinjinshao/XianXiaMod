@@ -28,16 +28,18 @@ public class SpiritVeinWyrm : ModNPC
         bestiaryEntry.Info.Add(new FlavorTextBestiaryInfoElement("Mods.XianXia.Bestiary.SpiritVeinWyrm"));
     }
 
+    public override void ApplyDifficultyAndPlayerScaling(int numPlayers, float balance, float bossAdjustment)
+    {
+        NPC.lifeMax = BossStatRules.ScaleLife(NPC.lifeMax, balance, bossAdjustment);
+    }
+
     public override void SetDefaults()
     {
         NPC.width = 52;
         NPC.height = 52;
-        int baseLife = 1200;
-        int baseDamage = 22;
-        if (Main.expertMode) { baseLife = (int)(baseLife * 1.45f); baseDamage = (int)(baseDamage * 1.25f); }
-        if (Main.masterMode) { baseLife = (int)(baseLife * 1.85f); baseDamage = (int)(baseDamage * 1.45f); }
-        NPC.lifeMax = baseLife;
-        NPC.damage = baseDamage;
+        var stats = BossStatRules.Get(nameof(SpiritVeinWyrm));
+        NPC.lifeMax = stats.Life;
+        NPC.damage = stats.Damage;
         NPC.defense = 6;
         NPC.knockBackResist = 0f;
         NPC.value = Item.buyPrice(silver: 80);
@@ -113,11 +115,15 @@ public class SpiritVeinWyrm : ModNPC
 
     public override void ModifyNPCLoot(NPCLoot npcLoot)
     {
-        npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<LowGradeSpiritStone>(), 1, 12, 18));
-        npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<SpiritGel>(), 1, 20, 35));
-        npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<global::XianXia.Content.Items.HandGenerated.SpiritVeinWyrmTrophy>(), 10, 1, 1));
-        npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<global::XianXia.Content.Items.HandGenerated.LowGradeSpiritCore>(), 1, 1, 1));
-        npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<global::XianXia.Content.Items.HandGenerated.SpiritVeinScale>(), 1, 12, 18));
+        npcLoot.Add(ItemDropRule.BossBag(ModContent.ItemType<global::XianXia.Content.Items.TreasureBags.SpiritVeinWyrmBag>()));
+        npcLoot.Add(ItemDropRule.MasterModeCommonDrop(ModContent.ItemType<global::XianXia.Content.Items.MasterRewards.SpiritVeinWyrmMonument>()));
+        var normal = new LeadingConditionRule(new Conditions.NotExpert());
+        normal.OnSuccess(ItemDropRule.Common(ModContent.ItemType<LowGradeSpiritStone>(), 1, 12, 18));
+        normal.OnSuccess(ItemDropRule.Common(ModContent.ItemType<SpiritGel>(), 1, 20, 35));
+        normal.OnSuccess(ItemDropRule.Common(ModContent.ItemType<global::XianXia.Content.Items.HandGenerated.SpiritVeinWyrmTrophy>(), 10, 1, 1));
+        normal.OnSuccess(ItemDropRule.Common(ModContent.ItemType<global::XianXia.Content.Items.HandGenerated.LowGradeSpiritCore>(), 1, 1, 1));
+        normal.OnSuccess(ItemDropRule.Common(ModContent.ItemType<global::XianXia.Content.Items.HandGenerated.SpiritVeinScale>(), 1, 12, 18));
+        npcLoot.Add(normal);
     }
 
     private void EnsureSegments()
@@ -127,14 +133,9 @@ public class SpiritVeinWyrm : ModNPC
             return;
         }
 
-        NPC.localAI[3] = 1f;
-        int previous = NPC.whoAmI;
-        for (int i = 0; i < BodySegments; i++)
-        {
-            previous = SegmentedWormAI.SpawnSegment(NPC, previous, ModContent.NPCType<SpiritVeinWyrmBody>(), i + 1);
-        }
-
-        SegmentedWormAI.SpawnSegment(NPC, previous, ModContent.NPCType<SpiritVeinWyrmTail>(), BodySegments + 1);
+        if (SegmentedWormAI.TrySpawnChain(NPC, ModContent.NPCType<SpiritVeinWyrmBody>(),
+            ModContent.NPCType<SpiritVeinWyrmTail>(), BodySegments))
+            NPC.localAI[3] = 1f;
     }
 
     private void AnnouncePhases(bool phaseTwo, bool finalPhase)
@@ -175,6 +176,8 @@ public class SpiritVeinWyrm : ModNPC
                 (int)NPC.Center.Y + Main.rand.Next(-40, 41),
                 ModContent.NPCType<ShatteredJadeWyrmMinion>(),
                 ai0: NPC.whoAmI);
+            if (id < 0 || id >= Main.maxNPCs || !Main.npc[id].active) continue;
+            Main.npc[id].netUpdate = true;
             Main.npc[id].velocity = new Vector2(Main.rand.NextFloat(-3f, 3f), Main.rand.NextFloat(-3f, 3f));
         }
     }
@@ -228,7 +231,7 @@ public class SpiritVeinWyrmBody : ModNPC
 
     public override bool CheckActive() => false;
 
-    public override void AI() => SegmentedWormAI.FollowPreviousSegment(NPC, SpiritVeinWyrm.SegmentSpacing, 0.03f, 0.22f, 0.16f);
+    public override void AI() => SegmentedWormAI.FollowPreviousSegment(NPC, SpiritVeinWyrm.SegmentSpacing, 0.03f, 0.22f, 0.16f, ModContent.NPCType<SpiritVeinWyrm>());
 }
 
 public class SpiritVeinWyrmTail : ModNPC
@@ -252,5 +255,5 @@ public class SpiritVeinWyrmTail : ModNPC
 
     public override bool CheckActive() => false;
 
-    public override void AI() => SegmentedWormAI.FollowPreviousSegment(NPC, SpiritVeinWyrm.SegmentSpacing, 0.02f, 0.16f, 0.12f);
+    public override void AI() => SegmentedWormAI.FollowPreviousSegment(NPC, SpiritVeinWyrm.SegmentSpacing, 0.02f, 0.16f, 0.12f, ModContent.NPCType<SpiritVeinWyrm>());
 }

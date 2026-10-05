@@ -1,0 +1,7 @@
+Mods: {
+ XianXia: {
+  DamageClasses: {
+   SpiritMagic: 魔法职业灵气武器：受原版魔法伤害/暴击等加成，使用灵气；魔力减耗不降低灵气消耗
+  }
+ }
+}

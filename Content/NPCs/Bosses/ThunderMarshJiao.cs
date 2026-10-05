@@ -26,16 +26,18 @@ public class ThunderMarshJiao : ModNPC
         bestiaryEntry.Info.Add(new FlavorTextBestiaryInfoElement("Mods.XianXia.Bestiary.ThunderMarshJiao.Text"));
     }
 
+    public override void ApplyDifficultyAndPlayerScaling(int numPlayers, float balance, float bossAdjustment)
+    {
+        NPC.lifeMax = BossStatRules.ScaleLife(NPC.lifeMax, balance, bossAdjustment);
+    }
+
     public override void SetDefaults()
     {
         NPC.width = 78;
         NPC.height = 66;
-        int baseLife = 18000;
-        int baseDamage = 58;
-        if (Main.expertMode) { baseLife = (int)(baseLife * 1.45f); baseDamage = (int)(baseDamage * 1.25f); }
-        if (Main.masterMode) { baseLife = (int)(baseLife * 1.85f); baseDamage = (int)(baseDamage * 1.45f); }
-        NPC.lifeMax = baseLife;
-        NPC.damage = baseDamage;
+        var stats = BossStatRules.Get(nameof(ThunderMarshJiao));
+        NPC.lifeMax = stats.Life;
+        NPC.damage = stats.Damage;
         NPC.defense = 26;
         NPC.knockBackResist = 0f;
         NPC.value = Item.buyPrice(gold: 1);
@@ -106,12 +108,16 @@ public class ThunderMarshJiao : ModNPC
 
     public override void ModifyNPCLoot(NPCLoot npcLoot)
     {
-        npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<global::XianXia.Content.Items.Materials.TribulationCloudDew>(), 1, 16, 28));
-        npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<global::XianXia.Content.Items.Materials.TribulationCloudDew>(), 1, 8, 16));
-        npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<global::XianXia.Content.Items.Materials.LowGradeSpiritStone>(), 1, 8, 16));
-        npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<global::XianXia.Content.Items.Materials.SpiritGel>(), 4, 3, 8));
-        npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<global::XianXia.Content.Items.Materials.ArtifactBlankShard>(), 8, 1, 3));
-        npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<global::XianXia.Content.Items.HandGenerated.ThunderMarshJiaoWing>(), 12, 1, 1));
+        npcLoot.Add(ItemDropRule.BossBag(ModContent.ItemType<global::XianXia.Content.Items.TreasureBags.ThunderMarshJiaoBag>()));
+        npcLoot.Add(ItemDropRule.MasterModeCommonDrop(ModContent.ItemType<global::XianXia.Content.Items.MasterRewards.ThunderMarshJiaoMonument>()));
+        var normal = new LeadingConditionRule(new Conditions.NotExpert());
+        normal.OnSuccess(ItemDropRule.Common(ModContent.ItemType<global::XianXia.Content.Items.Materials.TribulationCloudDew>(), 1, 16, 28));
+        normal.OnSuccess(ItemDropRule.Common(ModContent.ItemType<global::XianXia.Content.Items.Materials.TribulationCloudDew>(), 1, 8, 16));
+        normal.OnSuccess(ItemDropRule.Common(ModContent.ItemType<global::XianXia.Content.Items.Materials.LowGradeSpiritStone>(), 1, 8, 16));
+        normal.OnSuccess(ItemDropRule.Common(ModContent.ItemType<global::XianXia.Content.Items.Materials.SpiritGel>(), 4, 3, 8));
+        normal.OnSuccess(ItemDropRule.Common(ModContent.ItemType<global::XianXia.Content.Items.Materials.ArtifactBlankShard>(), 8, 1, 3));
+        normal.OnSuccess(ItemDropRule.Common(ModContent.ItemType<global::XianXia.Content.Items.HandGenerated.ThunderMarshJiaoWing>(), 12, 1, 1));
+        npcLoot.Add(normal);
     }
 
     private void EnsureSegments()
@@ -121,14 +127,9 @@ public class ThunderMarshJiao : ModNPC
             return;
         }
 
-        NPC.localAI[3] = 1f;
-        int previous = NPC.whoAmI;
-        for (int i = 0; i < BodySegments; i++)
-        {
-            previous = SegmentedWormAI.SpawnSegment(NPC, previous, ModContent.NPCType<ThunderMarshJiaoBody>(), i + 1);
-        }
-
-        SegmentedWormAI.SpawnSegment(NPC, previous, ModContent.NPCType<ThunderMarshJiaoTail>(), BodySegments + 1);
+        if (SegmentedWormAI.TrySpawnChain(NPC, ModContent.NPCType<ThunderMarshJiaoBody>(),
+            ModContent.NPCType<ThunderMarshJiaoTail>(), BodySegments))
+            NPC.localAI[3] = 1f;
     }
 
     private void AnnouncePhases(bool phaseTwo, bool brokenHorn)
@@ -233,7 +234,7 @@ public class ThunderMarshJiaoBody : ModNPC
 
     public override bool CheckActive() => false;
 
-    public override void AI() => SegmentedWormAI.FollowPreviousSegment(NPC, ThunderMarshJiao.SegmentSpacing, 0.1f, 0.08f, 0.2f);
+    public override void AI() => SegmentedWormAI.FollowPreviousSegment(NPC, ThunderMarshJiao.SegmentSpacing, 0.1f, 0.08f, 0.2f, ModContent.NPCType<ThunderMarshJiao>());
 }
 
 public class ThunderMarshJiaoTail : ModNPC
@@ -259,7 +260,7 @@ public class ThunderMarshJiaoTail : ModNPC
 
     public override void AI()
     {
-        SegmentedWormAI.FollowPreviousSegment(NPC, ThunderMarshJiao.SegmentSpacing, 0.1f, 0.08f, 0.2f);
+        SegmentedWormAI.FollowPreviousSegment(NPC, ThunderMarshJiao.SegmentSpacing, 0.1f, 0.08f, 0.2f, ModContent.NPCType<ThunderMarshJiao>());
         int headIndex = (int)NPC.ai[1];
         if (headIndex < 0 || headIndex >= Main.maxNPCs)
         {

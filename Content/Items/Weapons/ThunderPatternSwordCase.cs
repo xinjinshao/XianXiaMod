@@ -7,11 +7,11 @@ using XianXia.Content.Tiles.Stations;
 
 namespace XianXia.Content.Items.Weapons;
 
-public class ThunderPatternSwordCase : ModItem
+public class ThunderPatternSwordCase : global::XianXia.Common.Items.CultivationWeaponItem
 
 {
 
-    public override void SetStaticDefaults() => Item.ResearchUnlockCount = 25;
+    public override void SetStaticDefaults() => Item.ResearchUnlockCount = 1;
 
     public override void SetDefaults()
 
@@ -35,7 +35,7 @@ public class ThunderPatternSwordCase : ModItem
 
         Item.crit = 6;
 
-        Item.DamageType = DamageClass.Generic;
+        Item.DamageType = DamageClass.Melee;
 
         Item.useStyle = ItemUseStyleID.HoldUp;
 
@@ -61,10 +61,13 @@ public class ThunderPatternSwordCase : ModItem
 
         return player.GetModPlayer<global::XianXia.Common.Players.XianXiaPlayer>()
 
-            .TryConsumeSpiritualEnergy(HasArtifactAwakening(player) ? 7 : 9);
+            .CanConsumeSpiritualEnergy(HasArtifactAwakening(player) ? 7 : 9);
 
     }
 
+
+
+    public override int GetSpiritCost(Player player) => HasArtifactAwakening(player) ? 7 : 9;
 
 
     private static bool HasArtifactAwakening(Player player)
@@ -129,7 +132,7 @@ public class ThunderPatternSwordCase : ModItem
 
             .AddIngredient<global::XianXia.Content.Items.Materials.LowGradeSpiritStone>(12)
 
-            .AddTile(ModContent.TileType<global::XianXia.Content.Tiles.Stations.ArtifactForgeTile>())
+            .AddTile(ModContent.TileType<global::XianXia.Content.Tiles.Stations.ThunderPatternForgeTile>())
 
             .Register();
 

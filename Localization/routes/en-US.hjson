@@ -1,0 +1,39 @@
+Mods: {
+ XianXia: {
+  Routes: {
+   Title: Endgame Route
+   None: Undecided
+   RebuildHeaven: Rebuild Heaven
+   SeverHeaven: Sever Heaven
+   AcceptStarAbyss: Accept Star Abyss
+   Warning: "This choice belongs to the whole world and affects every player's endgame recipes. The first valid confirmation accepted by the server is permanent for this world. Confirming consumes 1 Route Material; canceling costs nothing. Discuss it with your companions first. Requires the Tribulation realm, defeating the Old Heaven Dao Core, and standing near a Dao Severing Altar."
+   RebuildHeavenDescription: Restore order. Unlock the Rebuilt Heaven Heart: +8 defense, +1 life regeneration per second, and +2 energy per regeneration pulse.
+   SeverHeavenDescription: Break the bonds. Unlock the Severed Heaven Edge: +12% damage and +10 armor penetration, with 12% higher spiritual energy costs.
+   AcceptStarAbyssDescription: Make a pact. Unlock the Star Abyss Pact: +8% damage and +4 energy per regeneration pulse, with +2 spiritual pressure every 2 seconds.
+   ChooseFirst: Select a route first
+   Confirm: "Confirm world route: {0}"
+   Cancel: Cancel
+   AlreadyChosen: This world's route is already chosen and cannot be changed. No material consumed.
+   Requirements: Requires the Tribulation realm and defeating the Old Heaven Dao Core. No material consumed.
+   NeedAltar: Stand near a Dao Severing Altar. No material consumed.
+   Completed: "World ending completed: {0}. All players share this choice. Exclusive recipes unlocked."
+   RebuildHeavenCondition: This world chose Rebuild Heaven and defeated the Old Heaven Dao Core
+   SeverHeavenCondition: This world chose Sever Heaven and defeated the Old Heaven Dao Core
+   AcceptStarAbyssCondition: This world chose Accept Star Abyss and defeated the Old Heaven Dao Core
+  }
+  Items: {
+   RebuiltHeavenHeart: {
+    DisplayName: Rebuilt Heaven Heart
+    Tooltip: "Rebuild Heaven world accessory\n+8 defense, +1 life regeneration per second, +2 energy per regeneration pulse\nOnly works in worlds that chose its route"
+   }
+   SeveredHeavenEdge: {
+    DisplayName: Severed Heaven Edge
+    Tooltip: "Sever Heaven world accessory\n+12% damage and +10 armor penetration, 12% higher spiritual energy costs\nOnly works in worlds that chose its route"
+   }
+   StarAbyssPact: {
+    DisplayName: Star Abyss Pact
+    Tooltip: "Accept Star Abyss world accessory\n+8% damage and +4 energy per regeneration pulse\n+2 spiritual pressure every 2 seconds; only works in worlds that chose its route"
+   }
+  }
+ }
+}

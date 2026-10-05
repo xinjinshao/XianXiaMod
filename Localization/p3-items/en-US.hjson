@@ -1,0 +1,92 @@
+Mods: {
+	XianXia: {
+		Items: {
+			GreenwoodInscriptionNeedle: {
+				DisplayName: "Greenwood Inscription Needle"
+				Tooltip: "Inscribes mod weapons or accessories with Greenwood recovery effects."
+			}
+			FurnaceInscriptionNeedle: {
+				DisplayName: "Furnace Inscription Needle"
+				Tooltip: "Inscribes mod weapons or accessories with armor penetration, heavy strikes or defense."
+			}
+			ThunderInscriptionNeedle: {
+				DisplayName: "Thunder Inscription Needle"
+				Tooltip: "Inscribes mod weapons or accessories with attack and movement speed."
+			}
+			StarAbyssInscriptionNeedle: {
+				DisplayName: "Star Abyss Inscription Needle"
+				Tooltip: "Inscribes mod weapons or accessories with damage and spiritual pressure drawbacks."
+			}
+			BrokenHeavenInscriptionNeedle: {
+				DisplayName: "Broken Heaven Inscription Needle"
+				Tooltip: "Inscribes mod weapons or accessories with critical chance, knockback and higher energy costs."
+			}
+			InscriptionRemovalStone: {
+				DisplayName: "Inscription Removal Stone"
+				Tooltip: "Removes an equipment inscription while keeping the equipment and its prefix."
+			}
+			SmallArtifactPendant: {
+				DisplayName: "Small Artifact Pendant"
+				Tooltip: "Equipped: +1 energy per regeneration pulse. Hold and use to summon a small spirit for 10 mana (12 base summon damage, 1 minion slot, at most one per player). Right-click its buff to dismiss. Requires a free minion slot."
+			}
+			FurnaceAshSpiritContract: {
+				DisplayName: "Furnace Ash Spirit Contract"
+				Tooltip: "A contract binding a furnace ash spirit as a minion. Increases summon damage by 8%."
+			}
+			StarAbyssLarvaContract: {
+				DisplayName: "Star Abyss Larva Contract"
+				Tooltip: "A contract with a star abyss larva. Increases summon damage by 10% but raises spiritual energy costs slightly."
+			}
+			NascentSoulCloneTalisman: {
+				DisplayName: "Nascent Soul Clone Talisman"
+				Tooltip: "A talisman that creates a nascent soul clone. +1 max minion, +12% summon damage."
+			}
+			CelestialPuppetToken: {
+				DisplayName: "Celestial Puppet Token"
+				Tooltip: "A token commanding a celestial puppet. +1 max minion, +14% summon damage."
+			}
+			ArchivedImmortalSoulContract: {
+				DisplayName: "Archived Immortal Soul Contract"
+				Tooltip: "A contract with an archived immortal soul. +2 max minions, +18% summon damage."
+			}
+			LightningAvoidanceRune: {
+				DisplayName: "Lightning Avoidance Rune"
+				Tooltip: "Grants temporary tribulation resistance for 30 minutes."
+			}
+			TribulationTrainingToken: {
+				DisplayName: "Tribulation Training Token"
+				Tooltip: "Restarts the unfinished tribulation of your current realm without another breakthrough item. Reusable; cannot be used during an active or completed trial."
+			}
+			BlankSectScroll: {
+				DisplayName: "Blank Sect Scroll"
+				Tooltip: "A blank scroll ready to record sect lore and recipes."
+			}
+			SpiritHerbSeeds: {
+				DisplayName: "Spirit Herb Seeds"
+				Tooltip: "Plant on level dirt, grass, jungle grass, Greenwood Soil, Spirit Moss, pots or planter boxes\nGrows through three stages; mature plants glow green\nMature harvest: 1 Greenwood Root and 1–3 seeds; immature harvest: 1 seed\nFlooding pauses growth; lava destroys the plant"
+			}
+			HeavenDaoRouteHint: {
+				DisplayName: "Heaven Dao Route Hint"
+				Tooltip: "Reveals the requirements for one of the three endgame cultivation routes."
+			}
+			EndgameRouteFrame: {
+				DisplayName: "Endgame Route Frame"
+				Tooltip: "A jade frame that displays your chosen endgame route."
+			}
+		}
+		Buffs: {
+			SpringReturnRegenBuff: {
+				DisplayName: "Spring Return Regen"
+				Description: "The body returns to spring vitality. Life regeneration and spiritual energy recovery are increased."
+			}
+			StarAbyssCorrosionBuff: {
+				DisplayName: "Star Abyss Corrosion"
+				Description: "The star abyss corrodes your defenses. Defense reduced and spirit pressure grows."
+			}
+			ArchiveLockBuff: {
+				DisplayName: "Archive Lock"
+				Description: "An archive lock restricts your movement. Reduced speed, acceleration, and jump height."
+			}
+		}
+	}
+}

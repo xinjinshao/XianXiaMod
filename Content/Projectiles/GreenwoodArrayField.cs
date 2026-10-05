@@ -26,7 +26,7 @@ public class GreenwoodArrayField : ModProjectile
 
         Projectile.hostile = false;
 
-        Projectile.DamageType = DamageClass.Generic;
+        Projectile.DamageType = DamageClass.Magic;
 
         Projectile.penetrate = 1;
 
@@ -64,11 +64,22 @@ public class GreenwoodArrayField : ModProjectile
 
         Player owner = Main.player[Projectile.owner];
 
-        if (owner.active && owner.Hitbox.Intersects(Projectile.Hitbox) && Main.GameUpdateCount % 60 == 0)
+        if (Main.netMode != NetmodeID.MultiplayerClient && owner.active && !owner.dead
+            && owner.Hitbox.Intersects(Projectile.Hitbox) && Main.GameUpdateCount % 60 == 0
+            && owner.GetModPlayer<global::XianXia.Common.Players.XianXiaPlayer>().TryArrayRecovery(Main.GameUpdateCount))
 
         {
 
-            owner.statLife = Math.Min(owner.statLifeMax2, owner.statLife + 1);
+            int healed = Math.Min(1, Math.Max(0, owner.statLifeMax2 - owner.statLife));
+            if (healed > 0)
+            {
+                if (Main.netMode == NetmodeID.Server)
+                {
+                    owner.statLife += healed;
+                    NetMessage.SendData(MessageID.SpiritHeal, owner.whoAmI, -1, null, owner.whoAmI, healed);
+                }
+                else owner.Heal(healed);
+            }
 
             owner.GetModPlayer<global::XianXia.Common.Players.XianXiaPlayer>().RestoreSpiritualEnergy(1);
 

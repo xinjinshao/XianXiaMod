@@ -1,0 +1,8 @@
+<Project Sdk="Microsoft.NET.Sdk">
+ <PropertyGroup><OutputType>Exe</OutputType><TargetFramework>net8.0</TargetFramework><ImplicitUsings>enable</ImplicitUsings></PropertyGroup>
+ <ItemGroup>
+  <Compile Include="../../../Content/Projectiles/SmallArtifactSpirit.cs" Link="SmallArtifactSpirit.cs" />
+  <Compile Include="../../../Content/Buffs/SmallArtifactSpiritBuff.cs" Link="SmallArtifactSpiritBuff.cs" />
+  <Compile Include="../../../Content/Items/HandGenerated/SmallArtifactPendant.cs" Link="SmallArtifactPendant.cs" />
+ </ItemGroup>
+</Project>

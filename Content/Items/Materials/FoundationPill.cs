@@ -58,14 +58,18 @@ public class FoundationPill : ModItem
     public override bool? UseItem(Player player)
 
     {
+        if (global::XianXia.Common.Systems.CultivationItemTransactions.RequestIfMultiplayer(player, Item))
+            return true;
+
 
         global::XianXia.Common.Players.XianXiaPlayer cultivation = player.GetModPlayer<global::XianXia.Common.Players.XianXiaPlayer>();
 
-        if (cultivation.TryAdvanceCultivation(global::XianXia.Common.Players.CultivationStage.Foundation)
+        if (cultivation.TryAdvanceCultivation(global::XianXia.Common.Players.CultivationStage.Foundation,
+                global::XianXia.Common.Systems.PillQualitySystem.BenefitMultiplier(Item))
 
             && player.HasBuff(ModContent.BuffType<global::XianXia.Content.Buffs.AlchemyInsightBuff>()))
 
-            cultivation.ReduceSpiritPressure(8);
+            cultivation.ReduceSpiritPressure(global::XianXia.Common.Systems.PillQualitySystem.Scale(Item, 8));
 
         return true;
 
@@ -87,6 +91,7 @@ public class FoundationPill : ModItem
 
             .AddTile(ModContent.TileType<global::XianXia.Content.Tiles.Stations.AlchemyCauldronTile>())
 
+            .AddCondition(new Condition(Terraria.Localization.Language.GetText("Mods.XianXia.PillQuality.EmptyCursor"), () => Main.mouseItem.IsAir))
             .Register();
 
     }

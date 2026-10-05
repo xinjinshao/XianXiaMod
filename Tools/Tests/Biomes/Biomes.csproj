@@ -1,0 +1,16 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="../../../Common/Players/BiomeObjectEffectsPlayer.cs" Link="BiomeObjectEffectsPlayer.cs" />
+    <Compile Include="../../../Common/Players/ServerBiomePlayer.cs" Link="ServerBiomePlayer.cs" />
+    <Compile Include="../../../Common/Players/BiomeEffectsPlayer.cs" Link="BiomeEffectsPlayer.cs" />
+    <Compile Include="../../../Content/Projectiles/GreenwoodArrayField.cs" Link="GreenwoodArrayField.cs" />
+    <Compile Include="../../../Content/Projectiles/ThunderTalismanArray.cs" Link="ThunderTalismanArray.cs" />
+    <Compile Include="../../../Content/Projectiles/MinorThunderboltProjectile.cs" Link="MinorThunderboltProjectile.cs" />
+    <Compile Include="../../../Common/Systems/AmbientLightningSystem.cs" Link="AmbientLightningSystem.cs" />
+  </ItemGroup>
+</Project>

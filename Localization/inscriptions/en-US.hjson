@@ -1,0 +1,43 @@
+Mods: {
+ XianXia: {
+  Inscriptions: {
+   None: Uninscribed
+   Greenwood: Greenwood
+   Furnace: Furnace
+   Thunder: Thunder
+   StarAbyss: Star Abyss
+   BrokenHeaven: Broken Heaven
+   Applied: "Inscription: {0}"
+   GreenwoodWeapon: While held, restore 1 extra energy per recovery; life regeneration +2 (normally +1 life/second)
+   GreenwoodAccessory: While equipped, restore 1 extra energy per recovery; life regeneration +2 (normally +1 life/second)
+   FurnaceWeapon: Weapon damage +8%, knockback +20%; while held, armor penetration +6
+   FurnaceAccessory: While equipped, defense +3 and armor penetration +6
+   ThunderWeapon: While held, attack speed +8% and movement speed +8%
+   ThunderAccessory: While equipped, attack speed +8% and movement speed +8%
+   StarAbyssWeapon: Weapon damage +15%; gain 4 pressure per 2 cumulative held seconds; existing pressure recovery still applies
+   StarAbyssAccessory: While equipped, all damage +8%; gain 4 pressure per 2 cumulative equipped seconds; existing recovery still applies
+   BrokenHeavenWeapon: Weapon critical chance +8 points and knockback +30%; while held, spiritual energy cost x1.15
+   BrokenHeavenAccessory: While equipped, all critical chance +4 points, knockback +15%, spiritual energy cost x1.15
+   Stacking: Identical held/equipped passives apply once; weapon damage, critical chance and knockback are calculated separately
+   ToolHelp: Use near an Artifact Forge, Thunder Pattern Forge, Heaven Fire Furnace or Dao Severing Altar to select inventory equipment
+   Title: "Artificing · {0}"
+   ChooseTarget: Select non-consumable mod weapons or functional accessories; unequip accessories first
+   Selection: "Target: {0}\n{1} → {2}; replaces the old inscription"
+   NeedleCost: "Cost: 1 needle + {0} low-grade stones; canceling and unchanged inscriptions cost nothing"
+   RemovalCost: Costs 1 removal stone; keeps the equipment and its prefix
+   TargetRow: "Slot {0} · {1} · {2}"
+   NoTargets: No eligible equipment in inventory
+   Page: "Page {0}/{1}"
+   Previous: Previous
+   Next: Next
+   Confirm: Confirm material cost
+   Close: Cancel
+   ChangedInventory: Equipment or materials changed; select again. No materials consumed
+   NeedForge: Move near an artificing station and try again. No materials consumed
+   NoChange: Inscription unchanged. No materials consumed
+   NeedStones: Not enough low-grade spirit stones. No materials consumed
+   Success: Inscription applied; the old inscription was replaced
+   Removed: Inscription removed; equipment prefix retained
+  }
+ }
+}

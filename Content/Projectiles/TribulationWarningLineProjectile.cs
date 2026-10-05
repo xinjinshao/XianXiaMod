@@ -24,6 +24,7 @@ public class TribulationWarningLineProjectile : ModProjectile
     {
         Projectile.velocity = Vector2.Zero;
         Projectile.alpha = (int)MathHelper.Lerp(40f, 180f, Projectile.timeLeft / 36f);
+        if (Main.dedServ) return;
         Lighting.AddLight(Projectile.Center, 0.12f, 0.22f, 0.35f);
 
         if (Main.rand.NextBool(2))
@@ -36,7 +37,7 @@ public class TribulationWarningLineProjectile : ModProjectile
 
     public override void OnKill(int timeLeft)
     {
-        if (Main.netMode == NetmodeID.MultiplayerClient)
+        if (Main.netMode == NetmodeID.MultiplayerClient || timeLeft > 0)
         {
             return;
         }

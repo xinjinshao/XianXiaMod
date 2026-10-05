@@ -26,7 +26,7 @@ public class FormlessSwordWheelProjectile : ModProjectile
 
         Projectile.hostile = false;
 
-        Projectile.DamageType = DamageClass.Generic;
+        Projectile.DamageType = DamageClass.Melee;
 
         Projectile.penetrate = 1;
 

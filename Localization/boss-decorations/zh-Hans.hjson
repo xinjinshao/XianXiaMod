@@ -1,0 +1,24 @@
+{
+  "Mods": {
+    "XianXia": {
+      "Tiles": {
+        "SpiritVeinWyrmTrophyTile": {
+          "MapEntry": "灵脉蠕虫战利品"
+        },
+        "AbyssalStarWombLampTile": {
+          "MapEntry": "星渊胎主灯"
+        },
+        "MedicineKingCauldronDecorationTile": {
+          "MapEntry": "药王鼎装饰"
+        },
+        "SilentTabletDecorationTile": {
+          "MapEntry": "无声碑装饰"
+        }
+      },
+      "BossDecorations": {
+        "PlaceableTooltip": "可放置为2×3装饰物件，拆除返还",
+        "LampTooltip": "放置后发出紫色光芒"
+      }
+    }
+  }
+}

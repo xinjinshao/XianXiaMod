@@ -70,6 +70,8 @@ public class HerbGardenVineSpirit : ModNPC
     public override float SpawnChance(NPCSpawnInfo spawnInfo)
 
     {
+        if (!global::XianXia.Common.Systems.EnemySpawnRules.Allows(nameof(HerbGardenVineSpirit), Main.hardMode, NPC.downedPlantBoss, NPC.downedGolemBoss, NPC.downedMoonlord)) return 0f;
+
 
         return spawnInfo.Player.InModBiome<global::XianXia.Content.Biomes.GreenwoodHerbGardenBiome>() ? 0.18f : 0f;
 
@@ -78,84 +80,32 @@ public class HerbGardenVineSpirit : ModNPC
 
 
     public override void PostAI()
-
     {
-
-        Player target = Main.player[NPC.target];
-
+        if (!global::XianXia.Common.Systems.EnemyTargeting.TryGetLivingTarget(NPC, out Player target)) return;
         float distance = Vector2.Distance(NPC.Center, target.Center);
-
-        if (target.active && !target.dead && distance < 160f)
-
+        if (distance < 160f) NPC.velocity *= 0.92f;
+        if (++NPC.localAI[0] >= 90f)
         {
-
-            NPC.velocity *= 0.92f;
-
-        }
-
-
-
-        NPC.localAI[0]++;
-
-        if (NPC.localAI[0] >= 90f)
-
-        {
-
             NPC.localAI[0] = 0f;
-
-            if (NPC.life < NPC.lifeMax)
-
+            if (Main.netMode != NetmodeID.MultiplayerClient && NPC.life > 0 && NPC.life < NPC.lifeMax)
             {
-
                 NPC.life += Math.Min(4, NPC.lifeMax - NPC.life);
-
+                NPC.netUpdate = true;
             }
-
-
-
-            for (int i = 0; i < 6; i++)
-
-            {
-
-                Dust.NewDust(NPC.position, NPC.width, NPC.height, DustID.Grass, 0f, -0.6f);
-
-            }
-
+            if (!Main.dedServ)
+                for (int i = 0; i < 6; i++)
+                    Dust.NewDust(NPC.position, NPC.width, NPC.height, DustID.Grass, 0f, -0.6f);
         }
-
-
-
         NPC.localAI[1]++;
-
-        if (Main.netMode != NetmodeID.MultiplayerClient && target.active && !target.dead
-
-            && NPC.localAI[1] >= 130f && distance > 160f && distance < 480f)
-
+        if (Main.netMode != NetmodeID.MultiplayerClient && NPC.localAI[1] >= 130f && distance > 160f && distance < 480f)
         {
-
             NPC.localAI[1] = 0f;
-
             Vector2 velocity = (target.Center - NPC.Center).SafeNormalize(Vector2.UnitY) * 6f;
-
-            Projectile.NewProjectile(
-
-                NPC.GetSource_FromAI(),
-
-                NPC.Center,
-
-                velocity,
-
+            Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center, velocity,
                 ModContent.ProjectileType<global::XianXia.Content.Projectiles.SpiritBoltProjectile>(),
-
-                Math.Max(1, NPC.damage / 3),
-
-                0.8f);
-
+                Math.Max(1, NPC.damage / 3), 0.8f);
         }
-
     }
-
-
 
     public override void ModifyNPCLoot(NPCLoot npcLoot)
 

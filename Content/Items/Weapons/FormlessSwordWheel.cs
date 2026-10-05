@@ -7,11 +7,11 @@ using XianXia.Content.Tiles.Stations;
 
 namespace XianXia.Content.Items.Weapons;
 
-public class FormlessSwordWheel : ModItem
+public class FormlessSwordWheel : global::XianXia.Common.Items.CultivationWeaponItem
 
 {
 
-    public override void SetStaticDefaults() => Item.ResearchUnlockCount = 25;
+    public override void SetStaticDefaults() => Item.ResearchUnlockCount = 1;
 
     public override void SetDefaults()
 
@@ -35,7 +35,7 @@ public class FormlessSwordWheel : ModItem
 
         Item.crit = 8;
 
-        Item.DamageType = DamageClass.Generic;
+        Item.DamageType = DamageClass.Melee;
 
         Item.useStyle = ItemUseStyleID.Swing;
 
@@ -61,10 +61,13 @@ public class FormlessSwordWheel : ModItem
 
         return player.GetModPlayer<global::XianXia.Common.Players.XianXiaPlayer>()
 
-            .TryConsumeSpiritualEnergy(HasArtifactAwakening(player) ? 11 : 14);
+            .CanConsumeSpiritualEnergy(HasArtifactAwakening(player) ? 11 : 14);
 
     }
 
+
+
+    public override int GetSpiritCost(Player player) => HasArtifactAwakening(player) ? 11 : 14;
 
 
     private static bool HasArtifactAwakening(Player player)
@@ -129,7 +132,7 @@ public class FormlessSwordWheel : ModItem
 
             .AddIngredient<global::XianXia.Content.Items.Materials.LowGradeSpiritStone>(12)
 
-            .AddTile(ModContent.TileType<global::XianXia.Content.Tiles.Stations.ArtifactForgeTile>())
+            .AddTile(ModContent.TileType<global::XianXia.Content.Tiles.Stations.SectTrialAltarTile>())
 
             .Register();
 

@@ -26,7 +26,7 @@ public class CloudpiercerSwordProjectile : ModProjectile
 
         Projectile.hostile = false;
 
-        Projectile.DamageType = DamageClass.Generic;
+        Projectile.DamageType = DamageClass.Melee;
 
         Projectile.penetrate = 1;
 
@@ -66,7 +66,7 @@ public class CloudpiercerSwordProjectile : ModProjectile
 
     {
 
-        if (Projectile.owner == Main.myPlayer)
+        if (Main.netMode != NetmodeID.MultiplayerClient)
 
         {
 

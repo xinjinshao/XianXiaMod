@@ -26,7 +26,7 @@ public class CinnabarTalismanFlame : ModProjectile
 
         Projectile.hostile = false;
 
-        Projectile.DamageType = DamageClass.Generic;
+        Projectile.DamageType = DamageClass.Magic;
 
         Projectile.penetrate = 1;
 

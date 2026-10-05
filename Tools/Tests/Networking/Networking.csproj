@@ -1,0 +1,35 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="../../../Common/Systems/DownedBossSystem.cs" Link="DownedBossSystem.cs" />
+    <Compile Include="../../../Common/Players/CultivationStage.cs" Link="CultivationStage.cs" />
+    <Compile Include="../../../Common/Players/CultivationSnapshot.cs" Link="CultivationSnapshot.cs" />
+    <Compile Include="../../../Common/Systems/CultivationItemTransactions.cs" Link="CultivationItemTransactions.cs" />
+    <Compile Include="../../../Common/Systems/CultivationNetworkingSystem.cs" Link="CultivationNetworkingSystem.cs" />
+    <Compile Include="../../../Common/Items/CultivationBossSummonItem.cs" Link="CultivationBossSummonItem.cs" />
+    <Compile Include="../../../Common/Systems/BossSummonTransactions.cs" Link="BossSummonTransactions.cs" />
+    <Compile Include="../../../Common/Systems/BossSummonRules.cs" Link="BossSummonRules.cs" />
+    <Compile Include="../../../Common/Players/CultivationRules.cs" Link="CultivationRules.cs" />
+    <Compile Include="../../../Common/Items/CultivationWeaponItem.cs" Link="CultivationWeaponItem.cs" />
+    <Compile Include="../../../Common/Systems/WeaponShotTransactions.cs" Link="WeaponShotTransactions.cs" />
+    <Compile Include="../../../Common/Systems/PillQualitySystem.cs" Link="PillQualitySystem.cs" />
+    <Compile Include="../../../Common/Systems/PillQualityRules.cs" Link="PillQualityRules.cs" />
+    <Compile Include="../../../Common/Systems/InscriptionRules.cs" Link="InscriptionRules.cs" />
+    <Compile Include="../../../Common/Systems/RefinementRules.cs" Link="RefinementRules.cs" />
+    <Compile Include="../../../Common/Systems/ArtifactSkillRules.cs" Link="ArtifactSkillRules.cs" />
+    <Compile Include="../../../Common/Systems/EndgameRouteTransactions.cs" Link="EndgameRouteTransactions.cs" />
+    <Compile Include="../../../Common/Systems/DaoArtifactRules.cs" Link="DaoArtifactRules.cs" />
+    <Compile Include="../../../Common/Systems/DaoArtifactTransactions.cs" Link="DaoArtifactTransactions.cs" />
+    <Compile Include="../../../Common/Systems/ArtifactSkillTransactions.cs" Link="ArtifactSkillTransactions.cs" />
+    <Compile Include="../../../Common/Items/RefinedArtifact.cs" Link="RefinedArtifact.cs" />
+    <Compile Include="../../../Common/Systems/InscriptionTransactions.cs" Link="InscriptionTransactions.cs" />
+    <Compile Include="../../../Common/Players/InscriptionPlayer.cs" Link="InscriptionPlayer.cs" />
+    <Compile Include="../../../Common/Items/InscribedEquipment.cs" Link="InscribedEquipment.cs" />
+    <Compile Include="../../../Common/Items/InscriptionToolItem.cs" Link="InscriptionToolItem.cs" />
+    <Compile Include="../../../XianXia.cs" Link="XianXia.cs" />
+  </ItemGroup>
+</Project>

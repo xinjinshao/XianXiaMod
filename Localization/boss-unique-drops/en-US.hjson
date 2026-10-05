@@ -1,0 +1,30 @@
+Mods: {
+	XianXia: {
+		Items: {
+			FoundationSeal: {
+			 DisplayName: "Foundation Seal"
+			 Tooltip: "Guaranteed drop from the Tribulation Cloud Avatar; combine with 4 Furnace Slag Iron at an Artifact Forge for 3 Quenching Crystals."
+			}
+			MedicineKingWoodHeart: {
+			 DisplayName: "Medicine King Wood Heart"
+			 Tooltip: "Guaranteed drop from the Greenwood Medicine King Echo; required to craft an Artifact Awakening Seal."
+			}
+			StarCalamityCore: {
+			 DisplayName: "Star Calamity Core"
+			 Tooltip: "Guaranteed Moonbone Immortal drop; at a Dao Severing Altar, combine with 6 Moonbone and 6 Low Grade Spirit Stones for a Moonbone Dharma Sword."
+			}
+			ImperialDecreeItem: {
+			 DisplayName: "Imperial Decree"
+			 Tooltip: "Guaranteed Broken Heaven Inspector drop; at a Heaven Fire Furnace, combine with 2 Heaven Dao Fragments and 6 Low Grade Spirit Stones for a Broken Heaven Decree weapon."
+			}
+			HeavenTabletSeal: {
+			 DisplayName: "Heaven Tablet Seal"
+			 Tooltip: "Guaranteed Heaven Tablet Guardian drop; at a Heaven Fire Furnace, combine with 4 Heaven Dao Fragments and 8 Low Grade Spirit Stones for a Broken Heaven Decree weapon."
+			}
+			RouteMaterial: {
+			 DisplayName: "Route Material"
+			 Tooltip: "Guaranteed Old Heaven Dao Core drop. Use near a Dao Severing Altar to choose the world ending. Confirmation consumes one and permanently affects all players in this world. Also used for exclusive rewards."
+			}
+		}
+	}
+}

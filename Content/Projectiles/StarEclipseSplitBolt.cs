@@ -26,7 +26,7 @@ public class StarEclipseSplitBolt : ModProjectile
 
         Projectile.hostile = false;
 
-        Projectile.DamageType = DamageClass.Generic;
+        Projectile.DamageType = DamageClass.Ranged;
 
         Projectile.penetrate = 1;
 

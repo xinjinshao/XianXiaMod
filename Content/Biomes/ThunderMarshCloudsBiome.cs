@@ -28,6 +28,8 @@ public class ThunderMarshCloudsBiome : ModBiome
 
     {
 
+        if (Main.netMode == Terraria.ID.NetmodeID.Server)
+            return player.GetModPlayer<global::XianXia.Common.Players.ServerBiomePlayer>().Count(ModContent.TileType<global::XianXia.Content.Tiles.ThunderCloudTile>()) >= 100;
         return ModContent.GetInstance<GeneratedBiomeTileCountSystem>().thunderMarshCloudsBiomeTileCount >= 100;
 
     }

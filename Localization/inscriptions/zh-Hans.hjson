@@ -1,0 +1,43 @@
+Mods: {
+ XianXia: {
+  Inscriptions: {
+   None: 无铭刻
+   Greenwood: 青木
+   Furnace: 玄炉
+   Thunder: 雷泽
+   StarAbyss: 星渊
+   BrokenHeaven: 残天
+   Applied: "铭刻：{0}"
+   GreenwoodWeapon: 持有时每次灵气恢复额外+1，生命再生值+2（通常+1生命/秒）
+   GreenwoodAccessory: 装备时每次灵气恢复额外+1，生命再生值+2（通常+1生命/秒）
+   FurnaceWeapon: 武器伤害+8%，击退+20%；持有时护甲穿透+6
+   FurnaceAccessory: 装备时防御+3、护甲穿透+6
+   ThunderWeapon: 持有时攻击速度+8%、移动速度+8%
+   ThunderAccessory: 装备时攻击速度+8%、移动速度+8%
+   StarAbyssWeapon: 武器伤害+15%；累计持有2秒增加4灵压，原有灵压恢复仍生效
+   StarAbyssAccessory: 装备时所有伤害+8%；累计装备2秒增加4灵压，原有灵压恢复仍生效
+   BrokenHeavenWeapon: 武器暴击率+8个百分点、击退+30%；持有时灵气消耗x1.15
+   BrokenHeavenAccessory: 装备时所有暴击率+4个百分点、击退+15%、灵气消耗x1.15
+   Stacking: 同类铭刻的持有/装备被动只生效一次；武器自身伤害、暴击与击退效果单独计算
+   ToolHelp: 在器胚炉、雷纹锻台、天火炉或斩道台附近使用，打开面板选择背包装备
+   Title: "炼器工作台 · {0}"
+   ChooseTarget: 选择背包中的本Mod非消耗武器或非时装饰品；已装备的饰品需先取下
+   Selection: "目标：{0}\n{1} → {2}；旧铭刻会被覆盖"
+   NeedleCost: "确认消耗：1铭刻针＋{0}下品灵石；取消和无变化不消耗"
+   RemovalCost: 确认消耗1清除石；仅清除铭刻，保留前缀与装备
+   TargetRow: "格{0} · {1} · {2}"
+   NoTargets: 背包中没有可铭刻的装备
+   Page: "第{0}/{1}页"
+   Previous: 上一页
+   Next: 下一页
+   Confirm: 确认消耗材料
+   Close: 取消
+   ChangedInventory: 装备或材料已变化，请重新选择；未消耗材料
+   NeedForge: 请靠近炼器工作台后重试；未消耗材料
+   NoChange: 铭刻没有变化；未消耗材料
+   NeedStones: 下品灵石不足；未消耗材料
+   Success: 铭刻已完成，旧铭刻已覆盖
+   Removed: 铭刻已清除，装备前缀保留
+  }
+ }
+}

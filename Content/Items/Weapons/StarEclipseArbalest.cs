@@ -7,11 +7,11 @@ using XianXia.Content.Tiles.Stations;
 
 namespace XianXia.Content.Items.Weapons;
 
-public class StarEclipseArbalest : ModItem
+public class StarEclipseArbalest : global::XianXia.Common.Items.CultivationWeaponItem
 
 {
 
-    public override void SetStaticDefaults() => Item.ResearchUnlockCount = 25;
+    public override void SetStaticDefaults() => Item.ResearchUnlockCount = 1;
 
     public override void SetDefaults()
 
@@ -35,7 +35,7 @@ public class StarEclipseArbalest : ModItem
 
         Item.crit = 6;
 
-        Item.DamageType = DamageClass.Generic;
+        Item.DamageType = DamageClass.Ranged;
 
         Item.useStyle = ItemUseStyleID.Shoot;
 
@@ -61,10 +61,13 @@ public class StarEclipseArbalest : ModItem
 
         return player.GetModPlayer<global::XianXia.Common.Players.XianXiaPlayer>()
 
-            .TryConsumeSpiritualEnergy(HasArtifactAwakening(player) ? 13 : 16);
+            .CanConsumeSpiritualEnergy(HasArtifactAwakening(player) ? 13 : 16);
 
     }
 
+
+
+    public override int GetSpiritCost(Player player) => HasArtifactAwakening(player) ? 13 : 16;
 
 
     private static bool HasArtifactAwakening(Player player)
@@ -129,7 +132,7 @@ public class StarEclipseArbalest : ModItem
 
             .AddIngredient<global::XianXia.Content.Items.Materials.LowGradeSpiritStone>(12)
 
-            .AddTile(ModContent.TileType<global::XianXia.Content.Tiles.Stations.ArtifactForgeTile>())
+            .AddTile(ModContent.TileType<global::XianXia.Content.Tiles.Stations.StarPatternCauldronTile>())
 
             .Register();
 

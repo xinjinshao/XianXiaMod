@@ -1,0 +1,34 @@
+Mods: {
+ XianXia: {
+  Items: {
+   ArtifactAwakeningSeal: {
+    DisplayName: Artifact Awakening Seal
+    Tooltip: "Craft at a Star Pattern Cauldron using 2 artifact shards, 6 tribulation cloud dew and 4 Greenwood Roots\nUse near an artificing station to awaken an inscribed refinement-3 sword or array sample\nRequires Nascent Soul and Medicine King Echo; costs 24 extra low-grade stones\nAdds 10% weapon damage and lowers base energy cost; artifact active skills available (Q or right-click; configurable)"
+   }
+   ArtifactQuenchingCrystal: {
+    DisplayName: Artifact Quenching Crystal
+    Tooltip: "Use near an artificing station to refine an inscribed Cloudpiercer Flying Sword or Greenwood Array Plate\nLevel 1: Foundation + Iron Golem; level 2: Golden Core + Thunder Marsh Jiao; level 3: Nascent Soul + Formless Sword Soul\nEach level adds 4% weapon damage, up to 3; keeps equipment, prefix and inscription"
+   }
+  }
+  Refinement: {
+   AwakeningCost: Costs 1 awakening seal and 24 low-grade stones; already awakened equipment and failures cost nothing
+   AwakeningChooseTarget: Select an inscribed level-3 sample; requires Nascent Soul and defeating Greenwood Medicine King Echo
+   AwakeningSelection: "Awaken: {0}; keeps inscription, refinement and prefix"
+   AwakeningRow: "Slot {0} · {1} · {2}"
+   AwakeState: Awakened
+   DormantState: Dormant
+   Awakened: Crafted awakening adds 10% weapon damage; base spirit cost becomes 5 for the sword or 14 for the array; artifact active skills available (Q or right-click; configurable)
+   Unawakened: Dormant; reach refinement 3, retain an inscription and use an awakening seal; realm/reputation no longer automatically awakens this sample
+   AwakeningRequirements: Requires refinement 3, an inscription, Nascent Soul and defeating Medicine King Echo; equipment must be dormant. No materials consumed
+   AwakeningSuccess: Equipment awakened; refinement, inscription and prefix retained
+   Tooltip: "Refinement: {0}/{1} (+{2}% weapon damage)"
+   ToolCost: Each level costs 1 quenching crystal and 6/12/18 low-grade stones; canceling, failure and maximum level cost nothing
+   Cost: "Cost: 1 crystal + {0} low-grade stones; maximum level cannot advance"
+   ChooseTarget: Select an inscribed Cloudpiercer Flying Sword or Greenwood Array Plate; crystal tooltip lists progression gates
+   Selection: "Target: {0}\nRefinement {1} → {2}; keeps inscription and prefix"
+   Row: "Slot {0} · {1} · refinement {2}/3"
+   Requirements: Requires an inscribed sample below level 3; level 1 needs Foundation + Iron Golem, level 2 Golden Core + Thunder Jiao, level 3 Nascent Soul + Sword Soul. No materials consumed
+   Success: Refinement complete; inscription and prefix retained
+  }
+ }
+}

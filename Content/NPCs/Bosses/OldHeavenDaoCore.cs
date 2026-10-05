@@ -37,6 +37,11 @@ public class OldHeavenDaoCore : ModNPC
 
 
 
+    public override void ApplyDifficultyAndPlayerScaling(int numPlayers, float balance, float bossAdjustment)
+    {
+        NPC.lifeMax = BossStatRules.ScaleLife(NPC.lifeMax, balance, bossAdjustment);
+    }
+
     public override void SetDefaults()
 
     {
@@ -45,17 +50,9 @@ public class OldHeavenDaoCore : ModNPC
 
         NPC.height = 96;
 
-        int baseLife = 650000;
-
-        int baseDamage = 220;
-
-        if (Main.expertMode) { baseLife = (int)(baseLife * 1.45f); baseDamage = (int)(baseDamage * 1.25f); }
-
-        if (Main.masterMode) { baseLife = (int)(baseLife * 1.85f); baseDamage = (int)(baseDamage * 1.45f); }
-
-        NPC.lifeMax = baseLife;
-
-        NPC.damage = baseDamage;
+        var stats = BossStatRules.Get(nameof(OldHeavenDaoCore));
+        NPC.lifeMax = stats.Life;
+        NPC.damage = stats.Damage;
 
         NPC.defense = 100;
 
@@ -210,7 +207,9 @@ public class OldHeavenDaoCore : ModNPC
 
 
 
-            int module = (int)(NPC.localAI[2]++ / 180f) % 3;
+            int module = (int)NPC.ai[3];
+            NPC.ai[3] = (module + 1) % 3;
+            NPC.netUpdate = true;
 
             int sDmg = Math.Max(18, NPC.damage / 3);
 
@@ -281,21 +280,18 @@ public class OldHeavenDaoCore : ModNPC
 
 
     public override void ModifyNPCLoot(NPCLoot npcLoot)
-
     {
-
-        npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<global::XianXia.Content.Items.Materials.DaoSeveringDust>(), 1, 16, 28));
-
-        npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<global::XianXia.Content.Items.Materials.DaoSeveringDust>(), 1, 8, 16));
-
-        npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<global::XianXia.Content.Items.Materials.LowGradeSpiritStone>(), 1, 8, 16));
-
-        npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<global::XianXia.Content.Items.Materials.SpiritGel>(), 4, 3, 8));
-
-        npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<global::XianXia.Content.Items.Materials.ArtifactBlankShard>(), 8, 1, 3));
-
-        npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<global::XianXia.Content.Items.HandGenerated.SilentTabletDecoration>(), 1, 1, 1));
-
+        npcLoot.Add(ItemDropRule.BossBag(ModContent.ItemType<global::XianXia.Content.Items.TreasureBags.OldHeavenDaoCoreBag>()));
+        npcLoot.Add(ItemDropRule.MasterModeCommonDrop(ModContent.ItemType<global::XianXia.Content.Items.MasterRewards.OldHeavenDaoCoreMonument>()));
+        var normal = new LeadingConditionRule(new Conditions.NotExpert());
+        normal.OnSuccess(ItemDropRule.Common(ModContent.ItemType<global::XianXia.Content.Items.HandGenerated.RouteMaterial>(), 1));
+        normal.OnSuccess(ItemDropRule.Common(ModContent.ItemType<global::XianXia.Content.Items.Materials.DaoSeveringDust>(), 1, 16, 28));
+        normal.OnSuccess(ItemDropRule.Common(ModContent.ItemType<global::XianXia.Content.Items.Materials.DaoSeveringDust>(), 1, 8, 16));
+        normal.OnSuccess(ItemDropRule.Common(ModContent.ItemType<global::XianXia.Content.Items.Materials.LowGradeSpiritStone>(), 1, 8, 16));
+        normal.OnSuccess(ItemDropRule.Common(ModContent.ItemType<global::XianXia.Content.Items.Materials.SpiritGel>(), 4, 3, 8));
+        normal.OnSuccess(ItemDropRule.Common(ModContent.ItemType<global::XianXia.Content.Items.Materials.ArtifactBlankShard>(), 8, 1, 3));
+        normal.OnSuccess(ItemDropRule.Common(ModContent.ItemType<global::XianXia.Content.Items.HandGenerated.SilentTabletDecoration>(), 1, 1, 1));
+        npcLoot.Add(normal);
     }
 
 }

@@ -1,0 +1,94 @@
+{
+  "Mods": {
+    "XianXia": {
+      "Items": {
+        "SpiritVeinWyrmMonument": {
+          "DisplayName": "灵脉蠕虫大师纪念碑",
+          "Tooltip": "可放置\n大师模式击败对应首领的纪念物\n纯装饰，不提供战斗加成"
+        },
+        "GardenWardenMonument": {
+          "DisplayName": "药宗守园人大师纪念碑",
+          "Tooltip": "可放置\n大师模式击败对应首领的纪念物\n纯装饰，不提供战斗加成"
+        },
+        "BlackFurnaceIronGolemMonument": {
+          "DisplayName": "玄炉铁傀大师纪念碑",
+          "Tooltip": "可放置\n大师模式击败对应首领的纪念物\n纯装饰，不提供战斗加成"
+        },
+        "TribulationCloudAvatarMonument": {
+          "DisplayName": "劫云化身大师纪念碑",
+          "Tooltip": "可放置\n大师模式击败对应首领的纪念物\n纯装饰，不提供战斗加成"
+        },
+        "ThunderMarshJiaoMonument": {
+          "DisplayName": "雷泽蛟大师纪念碑",
+          "Tooltip": "可放置\n大师模式击败对应首领的纪念物\n纯装饰，不提供战斗加成"
+        },
+        "AbyssalStarWombMonument": {
+          "DisplayName": "星渊胎主大师纪念碑",
+          "Tooltip": "可放置\n大师模式击败对应首领的纪念物\n纯装饰，不提供战斗加成"
+        },
+        "FormlessSwordSoulMonument": {
+          "DisplayName": "无相剑魄大师纪念碑",
+          "Tooltip": "可放置\n大师模式击败对应首领的纪念物\n纯装饰，不提供战斗加成"
+        },
+        "GreenwoodMedicineKingEchoMonument": {
+          "DisplayName": "青木药王残影大师纪念碑",
+          "Tooltip": "可放置\n大师模式击败对应首领的纪念物\n纯装饰，不提供战斗加成"
+        },
+        "HeavenTabletGuardianMonument": {
+          "DisplayName": "天碑守御大师纪念碑",
+          "Tooltip": "可放置\n大师模式击败对应首领的纪念物\n纯装饰，不提供战斗加成"
+        },
+        "BrokenHeavenInspectorMonument": {
+          "DisplayName": "残天监察使大师纪念碑",
+          "Tooltip": "可放置\n大师模式击败对应首领的纪念物\n纯装饰，不提供战斗加成"
+        },
+        "MoonboneImmortalMonument": {
+          "DisplayName": "月骸仙君大师纪念碑",
+          "Tooltip": "可放置\n大师模式击败对应首领的纪念物\n纯装饰，不提供战斗加成"
+        },
+        "OldHeavenDaoCoreMonument": {
+          "DisplayName": "旧天道核心大师纪念碑",
+          "Tooltip": "可放置\n大师模式击败对应首领的纪念物\n纯装饰，不提供战斗加成"
+        }
+      },
+      "Tiles": {
+        "SpiritVeinWyrmMonumentTile": {
+          "MapEntry": "灵脉蠕虫大师纪念碑"
+        },
+        "GardenWardenMonumentTile": {
+          "MapEntry": "药宗守园人大师纪念碑"
+        },
+        "BlackFurnaceIronGolemMonumentTile": {
+          "MapEntry": "玄炉铁傀大师纪念碑"
+        },
+        "TribulationCloudAvatarMonumentTile": {
+          "MapEntry": "劫云化身大师纪念碑"
+        },
+        "ThunderMarshJiaoMonumentTile": {
+          "MapEntry": "雷泽蛟大师纪念碑"
+        },
+        "AbyssalStarWombMonumentTile": {
+          "MapEntry": "星渊胎主大师纪念碑"
+        },
+        "FormlessSwordSoulMonumentTile": {
+          "MapEntry": "无相剑魄大师纪念碑"
+        },
+        "GreenwoodMedicineKingEchoMonumentTile": {
+          "MapEntry": "青木药王残影大师纪念碑"
+        },
+        "HeavenTabletGuardianMonumentTile": {
+          "MapEntry": "天碑守御大师纪念碑"
+        },
+        "BrokenHeavenInspectorMonumentTile": {
+          "MapEntry": "残天监察使大师纪念碑"
+        },
+        "MoonboneImmortalMonumentTile": {
+          "MapEntry": "月骸仙君大师纪念碑"
+        },
+        "OldHeavenDaoCoreMonumentTile": {
+          "MapEntry": "旧天道核心大师纪念碑"
+        }
+      }
+    }
+  }
+}
