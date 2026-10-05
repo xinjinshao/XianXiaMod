@@ -24,3 +24,21 @@ public class StarAbyssSpiritBuff : ContractSpiritBuff
     public override string Texture => "XianXia/Content/Items/HandGenerated/StarAbyssLarvaContract";
     protected override int Spirit => ModContent.ProjectileType<StarAbyssSpirit>();
 }
+
+public class NascentSoulSpiritBuff : ContractSpiritBuff
+{
+    public override string Texture => "XianXia/Content/Items/HandGenerated/NascentSoulCloneTalisman";
+    protected override int Spirit => ModContent.ProjectileType<NascentSoulSpirit>();
+}
+
+public class CelestialPuppetSpiritBuff : ContractSpiritBuff
+{
+    public override string Texture => "XianXia/Content/Items/HandGenerated/CelestialPuppetToken";
+    protected override int Spirit => ModContent.ProjectileType<CelestialPuppetSpirit>();
+}
+
+public class ArchivedSoulSpiritBuff : ContractSpiritBuff
+{
+    public override string Texture => "XianXia/Content/Items/HandGenerated/ArchivedImmortalSoulContract";
+    protected override int Spirit => ModContent.ProjectileType<ArchivedSoulSpirit>();
+}

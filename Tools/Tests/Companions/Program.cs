@@ -87,3 +87,51 @@ foreach(var pair in new (XianXia.Content.Buffs.ContractSpiritBuff Buff,int Id)[]
  Check(index==-1&&!Game.player[0].Buff,"Another minion type cannot maintain a canceled contract spirit buff");
 }
 Console.WriteLine($"Including separate contract buff lifecycles: {assertions} assertions.");
+
+foreach(var contract in new XianXia.Content.Items.HandGenerated.SpiritContractItem[]{new XianXia.Content.Items.HandGenerated.NascentSoulCloneTalisman(),new XianXia.Content.Items.HandGenerated.CelestialPuppetToken(),new XianXia.Content.Items.HandGenerated.ArchivedImmortalSoulContract()}) {
+ Setup();Game.hardMode=true;NPC.downedPlantBoss=NPC.downedGolemBoss=NPC.downedMoonlord=true;Game.player[0].maxMinions=2;Game.player[0].Buff=false;
+ contract.SetStaticDefaults();contract.SetDefaults();bool soul=contract is XianXia.Content.Items.HandGenerated.ArchivedImmortalSoulContract;
+ Check(contract.Item.DamageType==Terraria.ModLoader.DamageClass.Summon&&contract.Item.accessory,"High contract keeps summon class and original accessory role");
+ Check(contract.CanUseItem(Game.player[0]),"High contract can use adequate minion capacity");
+ contract.Shoot(Game.player[0],null,Vector2.Zero,Vector2.Zero,999,200,0);
+ Check(Game.projectile[0].type==contract.Item.shoot&&Game.projectile[0].originalDamage==contract.Item.damage,"High contract spawns canonical minion with original base damage");
+ Check(!contract.CanUseItem(Game.player[0]),"High contract enforces one same-type minion");
+ Setup();Game.player[0].slotsMinions=1;Game.player[0].maxMinions=1;Check(!contract.CanUseItem(Game.player[0]),"High contract cannot bypass occupied slots");
+ Setup();Game.player[0].maxMinions=1;Check(contract.CanUseItem(Game.player[0])==!soul,"Archived soul requires two slots even with no existing minions");
+ for(int flags=0;flags<16;flags++){
+  Setup();Game.player[0].maxMinions=2;
+  Game.hardMode=(flags&1)!=0;NPC.downedPlantBoss=(flags&2)!=0;NPC.downedGolemBoss=(flags&4)!=0;NPC.downedMoonlord=(flags&8)!=0;
+  bool stage=contract is XianXia.Content.Items.HandGenerated.NascentSoulCloneTalisman?NPC.downedPlantBoss:contract is XianXia.Content.Items.HandGenerated.CelestialPuppetToken?NPC.downedGolemBoss:NPC.downedMoonlord;
+  Check(contract.CanUseItem(Game.player[0])==(Game.hardMode&&stage),"High contract checks native world stage on use");
+ }
+}
+foreach(var fan in new XianXia.Content.Projectiles.FanContractSpirit[]{new XianXia.Content.Projectiles.NascentSoulSpirit(),new XianXia.Content.Projectiles.ArchivedSoulSpirit()}){
+ Setup();fan.SetDefaults();fan.Projectile.damage=120;Game.npc[0].active=true;Game.npc[0].Center=new(300,0);
+ bool soul=fan is XianXia.Content.Projectiles.ArchivedSoulSpirit;int period=soul?90:75;
+ for(int i=0;i<period-1;i++)fan.AI();Check(!Game.ActiveProjectiles.Any(),"High spirit waits through windup before volley");
+ fan.AI();Check(Game.ActiveProjectiles.Count()==(soul?3:2)&&Game.ActiveProjectiles.All(p=>p.damage==90&&p.type==5),"High spirit fires correct fan count and bounded per-bolt damage");
+ Check(!fan.Projectile.friendly&&fan.Projectile.minionSlots==(soul?2:1),"Ranged high spirit has no contact damage and proper native slot cost");
+ Check(Game.projectile[0].velocity.Y<0&&Game.ActiveProjectiles.Last().velocity.Y>0,"High spirit fan spreads to both sides of aim");
+ Setup();Game.myPlayer=255;fan.Projectile.ai[0]=0;for(int i=0;i<period+1;i++)fan.AI();Check(!Game.ActiveProjectiles.Any(),"Server cannot repeat owner high-spirit volleys");
+}
+Setup();var puppet=new XianXia.Content.Projectiles.CelestialPuppetSpirit();puppet.SetDefaults();Game.npc[0].active=true;Game.npc[0].Center=new(300,0);
+for(int i=0;i<89;i++)puppet.AI();Check(!puppet.Projectile.friendly&&puppet.Projectile.ai[1]==0,"Puppet has no contact damage during windup");
+puppet.AI();Check(puppet.Projectile.ai[1]==18&&puppet.Projectile.netUpdate&&puppet.Projectile.velocity.X>20,"Owner starts a synchronized bounded dash");
+puppet.AI();Check(puppet.Projectile.friendly&&puppet.Projectile.ai[1]==17,"Puppet enables contact only during dash");
+for(int i=0;i<17;i++)puppet.AI();Check(!puppet.Projectile.friendly&&puppet.Projectile.ai[1]==0,"Puppet restores harmless state at dash expiration");
+puppet.Projectile.ai[1]=10;Game.npc[0].active=false;puppet.AI();Check(!puppet.Projectile.friendly&&puppet.Projectile.ai[1]==0,"Puppet abandons a dash when its target disappears");
+Setup();Game.myPlayer=255;puppet=new();puppet.SetDefaults();Game.npc[0].active=true;Game.npc[0].Center=new(300,0);for(int i=0;i<100;i++)puppet.AI();Check(puppet.Projectile.ai[1]==0,"Server never starts a competing puppet dash");
+puppet.Projectile.ai[1]=1;puppet.AI();Check(puppet.Projectile.ai[1]==0&&!puppet.Projectile.friendly,"Remote prediction expires synchronized dash safely");
+Console.WriteLine($"Including high contract spirits: {assertions} assertions.");
+
+foreach(var pair in new (XianXia.Content.Buffs.ContractSpiritBuff Buff,int Id)[]{(new XianXia.Content.Buffs.NascentSoulSpiritBuff(),6),(new XianXia.Content.Buffs.CelestialPuppetSpiritBuff(),7),(new XianXia.Content.Buffs.ArchivedSoulSpiritBuff(),8)}){
+ Setup();pair.Buff.Type=pair.Id;pair.Buff.SetStaticDefaults();Check(Game.buffNoSave[pair.Id]&&Game.buffNoTimeDisplay[pair.Id],"High spirit buff does not persist to saves");
+ Game.player[0].ownedProjectileCounts[pair.Id]=1;int index=0;pair.Buff.Update(Game.player[0],ref index);Check(Game.player[0].buffTime[0]==18000,"High buff recognizes correct spirit type");
+ Game.player[0].ownedProjectileCounts[pair.Id]=0;Game.player[0].ownedProjectileCounts[1]=1;pair.Buff.Update(Game.player[0],ref index);Check(index==-1&&!Game.player[0].Buff,"Other minions cannot keep high contract buff alive");
+}
+foreach(var entry in new (XianXia.Content.Items.HandGenerated.SpiritContractItem Item,int Bonus,float Damage,float Slots)[]{(new XianXia.Content.Items.HandGenerated.NascentSoulCloneTalisman(),1,0.12f,1),(new XianXia.Content.Items.HandGenerated.CelestialPuppetToken(),1,0.14f,1),(new XianXia.Content.Items.HandGenerated.ArchivedImmortalSoulContract(),2,0.18f,2)}){
+ Setup();entry.Item.UpdateAccessory(Game.player[0],true);Check(Game.player[0].maxMinions==1+entry.Bonus,"High contract keeps original maximum-minion bonus even when hidden");
+ Check(Game.player[0].SummonBonus==entry.Damage,"High contract keeps original summon damage bonus");
+ entry.Item.SetStaticDefaults();Check(Terraria.ID.ItemID.Sets.StaffMinionSlotsRequired[entry.Item.Type]==entry.Slots,"Native summon metadata agrees with contract slot requirement");
+}
+Console.WriteLine($"Including high buff and equipment lifecycle: {assertions} assertions.");

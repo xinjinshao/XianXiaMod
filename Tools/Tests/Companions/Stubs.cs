@@ -1,7 +1,7 @@
 namespace Microsoft.Xna.Framework {
  public struct Rectangle {}
  public record struct Vector2(float X,float Y) {
-  public static Vector2 Zero=>new(0,0); public static Vector2 UnitY=>new(0,1); public float ToRotation()=>MathF.Atan2(Y,X);
+  public static Vector2 Zero=>new(0,0); public static Vector2 UnitY=>new(0,1); public Vector2 RotatedBy(double angle)=>new((float)(X*Math.Cos(angle)-Y*Math.Sin(angle)),(float)(X*Math.Sin(angle)+Y*Math.Cos(angle))); public float ToRotation()=>MathF.Atan2(Y,X);
   public float LengthSquared()=>X*X+Y*Y;
   public Vector2 SafeNormalize(Vector2 fallback)=>LengthSquared()>0?this/MathF.Sqrt(LengthSquared()):fallback;
   public static float DistanceSquared(Vector2 a,Vector2 b)=>(a-b).LengthSquared();
@@ -37,7 +37,7 @@ namespace Terraria {
   public T GetModPlayer<T>() where T:new()=>new T();
  }
  public class NPC {
-  public bool active,chaseable=true; public struct HitInfo {} public int LastBuff,BuffDuration; public void AddBuff(int buff,int duration){LastBuff=buff;BuffDuration=duration;}
+  public static bool downedPlantBoss,downedGolemBoss,downedMoonlord; public bool active,chaseable=true; public struct HitInfo {} public int LastBuff,BuffDuration; public void AddBuff(int buff,int duration){LastBuff=buff;BuffDuration=duration;}
   public Vector2 Center,position;
   public int width=20,height=20;
   public bool CanBeChasedBy(object source)=>active&&chaseable;
@@ -64,12 +64,12 @@ namespace Terraria {
  }
  public static class Collision { public static bool Visible=true; public static bool CanHitLine(Vector2 a,int b,int c,Vector2 d,int e,int f)=>Visible; }
  public static class Lighting {public static int Calls;public static void AddLight(Vector2 a,float b,float c,float d)=>Calls++;}
- public class Condition {public static Condition Hardmode=new();}
+ public class Condition {public static Condition Hardmode=new(),DownedPlantera=new(),DownedGolem=new(),DownedMoonLord=new();}
  public class Recipe {public Recipe AddCondition(Condition condition)=>this;public Recipe AddIngredient<T>(int count=1)=>this;public Recipe AddIngredient(int type,int count=1)=>this;public Recipe AddTile(int type)=>this;public void Register(){} }
 }
 namespace Terraria.ModLoader {
  public static class DamageClass {public static object Summon=new(),Ranged=new();}
- public static class ModContent {public static int ProjectileType<T>()=>typeof(T).Name switch {"FurnaceAshSpirit"=>3,"StarAbyssSpirit"=>4,"ContractSpiritBolt"=>5,_=>1};public static int BuffType<T>()=>typeof(T).Name switch {"FurnaceAshSpiritBuff"=>3,"StarAbyssSpiritBuff"=>4,_=>2};public static int TileType<T>()=>3;}
+ public static class ModContent {public static int ProjectileType<T>()=>typeof(T).Name switch {"FurnaceAshSpirit"=>3,"StarAbyssSpirit"=>4,"ContractSpiritBolt"=>5,"NascentSoulSpirit"=>6,"CelestialPuppetSpirit"=>7,"ArchivedSoulSpirit"=>8,_=>1};public static int BuffType<T>()=>typeof(T).Name switch {"FurnaceAshSpiritBuff"=>3,"StarAbyssSpiritBuff"=>4,"NascentSoulSpiritBuff"=>6,"CelestialPuppetSpiritBuff"=>7,"ArchivedSoulSpiritBuff"=>8,_=>2};public static int TileType<T>()=>3;}
  public class ModProjectile {
   public int Type=1;public Terraria.Projectile Projectile=new(){active=true};public virtual string Texture=>"";
   public virtual void SetStaticDefaults(){}public virtual void SetDefaults(){}public virtual bool MinionContactDamage()=>false;public virtual bool? CanCutTiles()=>null;public virtual bool? CanDamage()=>null;public virtual void AI(){} public virtual void OnHitNPC(Terraria.NPC target,Terraria.NPC.HitInfo hit,int damageDone){}
@@ -86,7 +86,7 @@ namespace Terraria.ModLoader {
 namespace Terraria.ID {
  public static class ProjectileID {public static class Sets {public static bool[] MinionShot=new bool[16],MinionTargettingFeature=new bool[16],MinionSacrificable=new bool[16],CultistIsResistantTo=new bool[16];}}
  public static class ItemID {public const int FallenStar=1;public static class Sets {public static float[] StaffMinionSlotsRequired=new float[16];}}
- public static class ItemRarityID {public const int Blue=1,Orange=2,Yellow=3,LightRed=4;}
+ public static class ItemRarityID {public const int Blue=1,Orange=2,Yellow=3,LightRed=4,Lime=5,Red=6;}
  public static class ItemUseStyleID {public const int HoldUp=1;}
 }
 namespace Terraria.DataStructures {public class EntitySource_ItemUse_WithAmmo{}}
@@ -102,3 +102,7 @@ namespace Terraria.ID {public static class BuffID {public const int OnFire3=1;} 
 namespace XianXia.Content.Items.Materials {public class OldFurnaceEmber{} public class FurnaceSlagIron{} public class StarAbyssMembrane{}}
 namespace XianXia.Content.Items.HandGenerated {public class StarCalamityCore{}}
 namespace XianXia.Content.Tiles.Stations {public class StarPatternCauldronTile{}}
+
+namespace XianXia.Content.Items.HandGenerated {public class BrokenSwordIntent{} public class TornScrollPage{} public class HeavenTabletSeal{} public class ArchiveRemnantLight{}}
+namespace XianXia.Content.Items.Materials {public class HeavenDaoFragment{} public class Moonbone{}}
+namespace XianXia.Content.Tiles.Stations {public class SectTrialAltarTile{} public class HeavenFireFurnaceTile{} public class DaoSeveringAltarTile{}}

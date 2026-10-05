@@ -14,10 +14,11 @@ namespace XianXia.Content.Items.HandGenerated;
 public abstract class SpiritContractItem : ModItem
 {
     protected virtual bool Ready => true;
+    protected virtual float Slots => 1f;
     public override void SetStaticDefaults()
     {
         Item.ResearchUnlockCount = 1;
-        ItemID.Sets.StaffMinionSlotsRequired[Type] = 1;
+        ItemID.Sets.StaffMinionSlotsRequired[Type] = Slots;
     }
     protected void Configure(int damage, int mana, int projectile, int buff, int price, int rarity)
     {
@@ -30,7 +31,7 @@ public abstract class SpiritContractItem : ModItem
     }
     public override bool CanUseItem(Player player)
     {
-        if (!Ready || !player.active || player.dead || player.slotsMinions + 1 > player.maxMinions) return false;
+        if (!Ready || !player.active || player.dead || player.slotsMinions + Slots > player.maxMinions) return false;
         bool capacity = false;
         for (int i = 0; i < Main.maxProjectiles; i++) if (!Main.projectile[i].active) { capacity = true; break; }
         if (!capacity) return false;
@@ -75,4 +76,42 @@ public class StarAbyssLarvaContract : SpiritContractItem
     public override void AddRecipes() => CreateRecipe().AddIngredient<StarCalamityCore>()
         .AddIngredient<StarAbyssMembrane>(8).AddIngredient<LowGradeSpiritStone>(16)
         .AddTile(ModContent.TileType<StarPatternCauldronTile>()).AddCondition(Condition.Hardmode).Register();
+}
+
+
+public class NascentSoulCloneTalisman : SpiritContractItem
+{
+    protected override bool Ready => Main.hardMode && NPC.downedPlantBoss;
+    public override void SetDefaults() => Configure(62, 20, ModContent.ProjectileType<NascentSoulSpirit>(),
+        ModContent.BuffType<NascentSoulSpiritBuff>(), 5, ItemRarityID.Lime);
+    public override void UpdateAccessory(Player player, bool hideVisual)
+    { player.maxMinions += 1; player.GetDamage(DamageClass.Summon) += 0.12f; }
+    public override void AddRecipes() => CreateRecipe().AddIngredient<BrokenSwordIntent>(8)
+        .AddIngredient<TornScrollPage>(12).AddIngredient<LowGradeSpiritStone>(20)
+        .AddTile(ModContent.TileType<SectTrialAltarTile>()).AddCondition(Condition.DownedPlantera).Register();
+}
+
+public class CelestialPuppetToken : SpiritContractItem
+{
+    protected override bool Ready => Main.hardMode && NPC.downedGolemBoss;
+    public override void SetDefaults() => Configure(90, 24, ModContent.ProjectileType<CelestialPuppetSpirit>(),
+        ModContent.BuffType<CelestialPuppetSpiritBuff>(), 8, ItemRarityID.Yellow);
+    public override void UpdateAccessory(Player player, bool hideVisual)
+    { player.maxMinions += 1; player.GetDamage(DamageClass.Summon) += 0.14f; }
+    public override void AddRecipes() => CreateRecipe().AddIngredient<HeavenTabletSeal>()
+        .AddIngredient<HeavenDaoFragment>(12).AddIngredient<LowGradeSpiritStone>(24)
+        .AddTile(ModContent.TileType<HeavenFireFurnaceTile>()).AddCondition(Condition.DownedGolem).Register();
+}
+
+public class ArchivedImmortalSoulContract : SpiritContractItem
+{
+    protected override bool Ready => Main.hardMode && NPC.downedMoonlord;
+    protected override float Slots => 2f;
+    public override void SetDefaults() => Configure(120, 30, ModContent.ProjectileType<ArchivedSoulSpirit>(),
+        ModContent.BuffType<ArchivedSoulSpiritBuff>(), 12, ItemRarityID.Red);
+    public override void UpdateAccessory(Player player, bool hideVisual)
+    { player.maxMinions += 2; player.GetDamage(DamageClass.Summon) += 0.18f; }
+    public override void AddRecipes() => CreateRecipe().AddIngredient<Moonbone>(20)
+        .AddIngredient<ArchiveRemnantLight>(8).AddIngredient<LowGradeSpiritStone>(36)
+        .AddTile(ModContent.TileType<DaoSeveringAltarTile>()).AddCondition(Condition.DownedMoonLord).Register();
 }

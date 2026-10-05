@@ -9,6 +9,18 @@
         "StarAbyssSpiritBuff": {
           "DisplayName": "星渊幼体",
           "Description": "星渊幼体向敌人发射灵弹"
+        },
+        "NascentSoulSpiritBuff": {
+          "DisplayName": "元婴分身",
+          "Description": "元婴分身与你并肩作战"
+        },
+        "CelestialPuppetSpiritBuff": {
+          "DisplayName": "仙傀",
+          "Description": "仙傀与你并肩作战"
+        },
+        "ArchivedSoulSpiritBuff": {
+          "DisplayName": "归档仙魂",
+          "Description": "归档仙魂与你并肩作战"
         }
       },
       "Projectiles": {
@@ -20,6 +32,15 @@
         },
         "ContractSpiritBolt": {
           "DisplayName": "器灵灵弹"
+        },
+        "NascentSoulSpirit": {
+          "DisplayName": "元婴分身"
+        },
+        "CelestialPuppetSpirit": {
+          "DisplayName": "仙傀"
+        },
+        "ArchivedSoulSpirit": {
+          "DisplayName": "归档仙魂"
         }
       }
     }

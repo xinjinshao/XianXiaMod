@@ -9,6 +9,18 @@
         "StarAbyssSpiritBuff": {
           "DisplayName": "Star Abyss Spirit",
           "Description": "A star spirit fires at your enemies"
+        },
+        "NascentSoulSpiritBuff": {
+          "DisplayName": "Nascent Soul",
+          "Description": "Nascent Soul fights at your side"
+        },
+        "CelestialPuppetSpiritBuff": {
+          "DisplayName": "Celestial Puppet",
+          "Description": "Celestial Puppet fights at your side"
+        },
+        "ArchivedSoulSpiritBuff": {
+          "DisplayName": "Archived Soul",
+          "Description": "Archived Soul fights at your side"
         }
       },
       "Projectiles": {
@@ -20,6 +32,15 @@
         },
         "ContractSpiritBolt": {
           "DisplayName": "Contract Spirit Bolt"
+        },
+        "NascentSoulSpirit": {
+          "DisplayName": "Nascent Soul"
+        },
+        "CelestialPuppetSpirit": {
+          "DisplayName": "Celestial Puppet"
+        },
+        "ArchivedSoulSpirit": {
+          "DisplayName": "Archived Soul"
         }
       }
     }

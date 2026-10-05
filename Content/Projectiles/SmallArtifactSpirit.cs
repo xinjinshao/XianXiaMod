@@ -10,6 +10,7 @@ public class SmallArtifactSpirit : ModProjectile
 {
     protected virtual int SpiritBuff => ModContent.BuffType<SmallArtifactSpiritBuff>();
     protected virtual float AttackRange => 700f;
+    protected virtual float CombatSpeed => 10f;
     protected virtual Vector2 AimPosition(Player owner, NPC target) => target.Center;
     protected virtual void AttackTarget(Player owner, NPC target) { }
     public override string Texture => "XianXia/Content/Items/HandGenerated/SmallArtifactPendant";
@@ -55,7 +56,7 @@ public class SmallArtifactSpirit : ModProjectile
         Projectile.friendly = target != null && MinionContactDamage();
         Vector2 delta = (target != null ? AimPosition(owner, target) : idle) - Projectile.Center;
         AttackTarget(owner, target);
-        float speed = target != null ? 10 : delta.LengthSquared() > 400*400 ? 14 : 6;
+        float speed = target != null ? CombatSpeed : delta.LengthSquared() > 400*400 ? 14 : 6;
         Vector2 desired = delta.LengthSquared() > 16*16 ? delta.SafeNormalize(Vector2.Zero)*speed : Vector2.Zero;
         Projectile.velocity = (Projectile.velocity*11+desired)/12;
         Projectile.rotation = Projectile.velocity.X*0.04f;

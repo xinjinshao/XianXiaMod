@@ -39,15 +39,15 @@ Mods: {
 			}
 			NascentSoulCloneTalisman: {
 				DisplayName: "元婴分身符"
-				Tooltip: "化出元婴分身的符箓。+1 最大仆从，召唤伤害+12%。"
+				Tooltip: "装备时＋1仆从位、召唤伤害＋12%。世纪之花后手持消耗20魔力召唤元婴分身：基础伤害62，占1仆从位，每75tick发射两枚各75%伤害的灵弹。右键对应Buff取消。"
 			}
 			CelestialPuppetToken: {
 				DisplayName: "仙傀令"
-				Tooltip: "操控天庭傀儡的令牌。+1 最大仆从，召唤伤害+14%。"
+				Tooltip: "装备时＋1仆从位、召唤伤害＋14%。石巨人后手持消耗24魔力召唤仙傀：基础伤害90，占1仆从位，蓄力90tick后冲刺18tick，仅冲刺期间造成接触伤害。右键对应Buff取消。"
 			}
 			ArchivedImmortalSoulContract: {
 				DisplayName: "归档仙魂契"
-				Tooltip: "与归档仙魂缔结契约。+2 最大仆从，召唤伤害+18%。"
+				Tooltip: "装备时＋2仆从位、召唤伤害＋18%。月亮领主后手持消耗30魔力召唤归档仙魂：基础伤害120，占2仆从位，每90tick发射三枚各75%伤害的灵弹。右键对应Buff取消。"
 			}
 			LightningAvoidanceRune: {
 				DisplayName: "避雷符"

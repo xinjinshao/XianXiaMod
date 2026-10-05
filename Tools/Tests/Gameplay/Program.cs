@@ -351,13 +351,13 @@ foreach(string name in new[]{"GardenWardenMask","InspectorMask","FormlessSwordSo
 Console.WriteLine($"Actual engine gameplay assertions including vanity rewards: {assertions}.");
 
 var summonClass=tagType.Assembly.GetType("Terraria.ModLoader.DamageClass",true).GetProperty("Summon").GetValue(null);
-foreach(string spiritName in new[]{"FurnaceAshSpirit","StarAbyssSpirit","ContractSpiritBolt"}){
+foreach(string spiritName in new[]{"FurnaceAshSpirit","StarAbyssSpirit","ContractSpiritBolt","NascentSoulSpirit","CelestialPuppetSpirit","ArchivedSoulSpirit"}){
  var spiritType=type.Assembly.GetType("XianXia.Content.Projectiles."+spiritName,true);
  object actualSpirit=Activator.CreateInstance(spiritType);object nativeSpirit=Activator.CreateInstance(projectileType);
  spiritType.GetProperty("Entity",BindingFlags.Instance|BindingFlags.Public|BindingFlags.NonPublic).SetValue(actualSpirit,nativeSpirit);
  spiritType.GetMethod("SetDefaults").Invoke(actualSpirit,null);
  Check(ReferenceEquals(projectileType.GetProperty("DamageType").GetValue(nativeSpirit),summonClass),spiritName+" uses actual engine summon damage");
  if(spiritName=="ContractSpiritBolt")Check((bool)projectileType.GetField("friendly").GetValue(nativeSpirit)&&(bool)projectileType.GetField("tileCollide").GetValue(nativeSpirit),"Actual contract shot collides with terrain and damages enemies");
- else Check((bool)projectileType.GetField("minion").GetValue(nativeSpirit)&&(float)projectileType.GetField("minionSlots").GetValue(nativeSpirit)==1f,"Actual contract spirit occupies one native minion slot");
+ else Check((bool)projectileType.GetField("minion").GetValue(nativeSpirit)&&(float)projectileType.GetField("minionSlots").GetValue(nativeSpirit)==(spiritName=="ArchivedSoulSpirit"?2f:1f),"Actual contract spirit occupies its configured native minion slots");
 }
 Console.WriteLine($"Actual engine gameplay assertions including contract spirits: {assertions}.");

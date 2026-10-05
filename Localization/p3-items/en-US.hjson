@@ -39,15 +39,15 @@ Mods: {
 			}
 			NascentSoulCloneTalisman: {
 				DisplayName: "Nascent Soul Clone Talisman"
-				Tooltip: "A talisman that creates a nascent soul clone. +1 max minion, +12% summon damage."
+				Tooltip: "Equipped: +1 minion slot and +12% summon damage. After Plantera use 20 mana to summon a Nascent Soul: 62 base damage, one slot, two bolts at 75% damage every 75 ticks. Cancel its buff to dismiss."
 			}
 			CelestialPuppetToken: {
 				DisplayName: "Celestial Puppet Token"
-				Tooltip: "A token commanding a celestial puppet. +1 max minion, +14% summon damage."
+				Tooltip: "Equipped: +1 minion slot and +14% summon damage. After Golem use 24 mana to summon a Celestial Puppet: 90 base damage, one slot, charges for 90 ticks then dashes for 18 ticks. Contact damage only during the dash. Cancel its buff to dismiss."
 			}
 			ArchivedImmortalSoulContract: {
 				DisplayName: "Archived Immortal Soul Contract"
-				Tooltip: "A contract with an archived immortal soul. +2 max minions, +18% summon damage."
+				Tooltip: "Equipped: +2 minion slots and +18% summon damage. After Moon Lord use 30 mana to summon an Archived Soul: 120 base damage, two slots, three bolts at 75% damage every 90 ticks. Cancel its buff to dismiss."
 			}
 			LightningAvoidanceRune: {
 				DisplayName: "Lightning Avoidance Rune"
