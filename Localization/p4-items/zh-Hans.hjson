@@ -5,13 +5,13 @@ Mods: {
 			GardenWardenMask: { DisplayName: "守园人面具" Tooltip: "" }
 			BlackFurnaceIronGolemPet: { DisplayName: "玄炉铁傀宠物" Tooltip: "" }
 			TribulationCloudBottle: { DisplayName: "劫云瓶" Tooltip: "提供云朵二段跳并免疫带电\n与云朵瓶同时装备不会增加额外跳跃" }
-			ThunderMarshJiaoWing: { DisplayName: "雷泽蛟翼" Tooltip: "" }
+			ThunderMarshJiaoWing: { DisplayName: "雷泽蛟翼" Tooltip: "允许飞行和缓慢下落\n飞行时间：2秒" }
 			AbyssalStarWombLamp: { DisplayName: "星渊胎主灯" Tooltip: "" }
 			FormlessSwordSoulCostume: { DisplayName: "无相剑魄时装" Tooltip: "" }
 			MedicineKingCauldronDecoration: { DisplayName: "药王鼎" Tooltip: "" }
 			SmallTabletPet: { DisplayName: "小天碑宠物" Tooltip: "" }
 			InspectorMask: { DisplayName: "监察使面具" Tooltip: "" }
-			MoonboneImmortalWingAccessory: { DisplayName: "月骸仙君翅饰" Tooltip: "" }
+			MoonboneImmortalWingAccessory: { DisplayName: "月骸仙君翅饰" Tooltip: "允许飞行和缓慢下落\n飞行时间：3秒" }
 			SilentTabletDecoration: { DisplayName: "沉默天碑" Tooltip: "首次击败旧天道核心 100% 掉落。" }
 		}
 		Tiles: {

@@ -5,13 +5,13 @@ Mods: {
 			GardenWardenMask: { DisplayName: "Garden Warden Mask" Tooltip: "" }
 			BlackFurnaceIronGolemPet: { DisplayName: "Black Furnace Iron Golem Pet" Tooltip: "" }
 			TribulationCloudBottle: { DisplayName: "Tribulation Cloud in a Bottle" Tooltip: "Grants a cloud double jump and immunity to Electrified\nDoes not add another jump when combined with Cloud in a Bottle" }
-			ThunderMarshJiaoWing: { DisplayName: "Thunder Marsh Jiao Wing" Tooltip: "" }
+			ThunderMarshJiaoWing: { DisplayName: "Thunder Marsh Jiao Wing" Tooltip: "Allows flight and slow fall\nFlight time: 2 seconds" }
 			AbyssalStarWombLamp: { DisplayName: "Abyssal Star Womb Lamp" Tooltip: "" }
 			FormlessSwordSoulCostume: { DisplayName: "Formless Sword Soul Costume" Tooltip: "" }
 			MedicineKingCauldronDecoration: { DisplayName: "Medicine King Cauldron" Tooltip: "" }
 			SmallTabletPet: { DisplayName: "Small Tablet Pet" Tooltip: "" }
 			InspectorMask: { DisplayName: "Broken Heaven Inspector Mask" Tooltip: "" }
-			MoonboneImmortalWingAccessory: { DisplayName: "Moonbone Immortal Wing" Tooltip: "" }
+			MoonboneImmortalWingAccessory: { DisplayName: "Moonbone Immortal Wing" Tooltip: "Allows flight and slow fall\nFlight time: 3 seconds" }
 			SilentTabletDecoration: { DisplayName: "Silent Heavenly Tablet" Tooltip: "100% drop on first Old Heaven Dao Core kill." }
 		}
 		Tiles: {

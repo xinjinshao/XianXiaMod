@@ -297,3 +297,32 @@ Check(((bool[])nativePlayerType.GetField("buffImmune").GetValue(bottlePlayer))[e
 bottleType.GetMethod("UpdateAccessory").Invoke(bottle,new[]{bottlePlayer,(object)true});
 Check((bool)getJump.Invoke(bottlePlayer,new[]{cloudJump}).GetType().GetProperty("Enabled").GetValue(getJump.Invoke(bottlePlayer,new[]{cloudJump})),"Hiding accessory visuals retains the native jump");
 Console.WriteLine($"Actual engine gameplay assertions including rare reward: {assertions}.");
+
+// Test each reward's real native stats in an isolated process. Registration itself
+// is exercised by normal mod loading; this harness supplies existing array slots.
+var flightBase=type.Assembly.GetType("XianXia.Content.Items.HandGenerated.FlightReward",true);
+var statsType=tagType.Assembly.GetType("Terraria.ID.ArmorIDs+Wing+Sets",true);
+var statsField=statsType.GetField("Stats");
+// The standalone assembly harness does not run the engine set factory.
+var wingStats=Array.CreateInstance(statsField.FieldType.GetElementType(),3);
+statsField.SetValue(null,wingStats);
+int testSlot=1;
+foreach(var reward in new[]{("ThunderMarshJiaoWing",120,6f,1.5f),("MoonboneImmortalWingAccessory",180,9f,2.5f)}) {
+ var rewardType=type.Assembly.GetType("XianXia.Content.Items.HandGenerated."+reward.Item1,true);
+ object wings=Activator.CreateInstance(rewardType);
+ object wingItem=Activator.CreateInstance(itemType);
+ rewardType.GetProperty("Entity",BindingFlags.Instance|BindingFlags.Public|BindingFlags.NonPublic).SetValue(wings,wingItem);
+ flightBase.GetField("wingSlot",BindingFlags.Instance|BindingFlags.NonPublic).SetValue(wings,testSlot);
+ rewardType.GetMethod("SetStaticDefaults").Invoke(wings,null);
+ rewardType.GetMethod("SetDefaults").Invoke(wings,null);
+ Check((bool)itemType.GetField("accessory").GetValue(wingItem)&&!(bool)itemType.GetField("vanity").GetValue(wingItem),reward.Item1+" is a functional accessory");
+ Check((int)itemType.GetField("wingSlot").GetValue(wingItem)==testSlot,reward.Item1+" uses its registered equip slot");
+ object stats=wingStats.GetValue(testSlot);
+ Check((int)stats.GetType().GetField("FlyTime").GetValue(stats)==reward.Item2,reward.Item1+" has stage-specific flight time");
+ Check((float)stats.GetType().GetField("AccRunSpeedOverride").GetValue(stats)==reward.Item3&&(float)stats.GetType().GetField("AccRunAccelerationMult").GetValue(stats)==reward.Item4,reward.Item1+" has stage-specific speed and acceleration");
+ object[] vertical={null,0f,0f,0f,0f,0f};
+ rewardType.GetMethod("VerticalWingSpeeds").Invoke(wings,vertical);
+ Check((float)vertical[1]==0.85f&&(float)vertical[5]==0.135f,reward.Item1+" supplies native ascent parameters");
+ testSlot++;
+}
+Console.WriteLine($"Actual engine gameplay assertions including flight rewards: {assertions}.");
