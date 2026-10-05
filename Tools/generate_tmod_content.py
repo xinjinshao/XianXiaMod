@@ -1393,25 +1393,28 @@ def enemy_behavior_code(asset_id: str) -> tuple[str, str]:
         return ("", """
     public override void PostAI()
     {
-        if (!global::XianXia.Common.Systems.EnemyTargeting.TryGetLivingTarget(NPC, out Player target)) return;
-
-        NPC.localAI[0]++;
-        if (target.active && !target.dead && NPC.localAI[0] >= 75f)
+        NPC.rotation = NPC.velocity.X * 0.04f;
+        if (Main.netMode == NetmodeID.MultiplayerClient) return;
+        if (!global::XianXia.Common.Systems.EnemyTargeting.TryGetLivingTarget(NPC, out Player target))
         {
             NPC.localAI[0] = 0f;
-            float swarmBonus = 1f;
-            foreach (NPC other in Main.ActiveNPCs)
-            {
-                if (other.whoAmI != NPC.whoAmI && other.type == NPC.type && Vector2.Distance(NPC.Center, other.Center) < 200f)
-                    swarmBonus += 0.25f;
-            }
-            Vector2 direction = (target.Center - NPC.Center).SafeNormalize(Vector2.UnitX);
-            NPC.velocity = direction * (11f * swarmBonus);
-            NPC.netUpdate = true;
+            return;
         }
-
+        if (++NPC.localAI[0] < 75f) return;
+        NPC.localAI[0] = 0f;
+        float swarmBonus = 1f;
+        foreach (NPC other in Main.ActiveNPCs)
+        {
+            if (other.whoAmI == NPC.whoAmI || other.type != NPC.type
+                || Vector2.Distance(NPC.Center, other.Center) >= 200f) continue;
+            swarmBonus += 0.25f;
+            if (swarmBonus >= 2f) break;
+        }
+        NPC.velocity = (target.Center - NPC.Center).SafeNormalize(Vector2.UnitX) * (11f * swarmBonus);
         NPC.rotation = NPC.velocity.X * 0.04f;
+        NPC.netUpdate = true;
     }
+
 """)
 
     if asset_id == "tribulation_cloudling":
