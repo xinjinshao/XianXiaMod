@@ -89,9 +89,9 @@ namespace Terraria
     {
         public Terraria.ModLoader.ModItem ModItem;
         public int type, stack, shoot = 2, damage = 20, useTime = 30;
-        public int maxStack=1,ammo,prefix,width,height,value,rare,useStyle,useAnimation,ResearchUnlockCount;
+        public int maxStack=1,useAmmo,ammo,prefix,width,height,value,rare,useStyle,useAnimation,ResearchUnlockCount;
         public object UseSound;
-        public bool accessory,vanity,noMelee; public int crit; public object DamageType;
+        public bool accessory,vanity,noMelee,autoReuse; public int crit; public object DamageType;
         public static int buyPrice(int gold=0)=>gold*10000;
         public bool IsAir=>type==0||stack<=0;
         public float shootSpeed = 10f, knockBack = 2f;
@@ -107,7 +107,7 @@ namespace Terraria
     public class Tile { public bool HasTile; public ushort TileType; }
     public class Projectile
     {
-        public bool active,friendly,hostile,tileCollide,ignoreWater,usesLocalNPCImmunity,netUpdate;
+        public bool active,friendly,hostile,tileCollide,ignoreWater,usesLocalNPCImmunity,netUpdate,arrow;
         public int width,height,penetrate,timeLeft,localNPCHitCooldown; public float rotation; public float[] ai=new float[2]; public object DamageType;
         public int owner, type, damage, identity; public float knockBack;
         public object GetSource_FromAI()=>new(); public void Kill()=>active=false;
@@ -156,8 +156,8 @@ namespace Terraria
 namespace Terraria.ID
 {
     public static class ItemUseStyleID { public const int HoldUp=1,Shoot=2,Swing=3; }
-    public static class SoundID { public const int Item4=1,Item20=2; }
-    public static class BuffID { public const int Regeneration = 1,Ichor=2; }
+    public static class SoundID { public const int Item4=1,Item20=2,Item5=3; }
+    public static class BuffID { public const int Regeneration = 1,Ichor=2,OnFire3=3; }
     public static class NetmodeID { public const int SinglePlayer = 0, MultiplayerClient = 1, Server = 2; }
     public static class MessageID { public const int WorldData = 7, SyncEquipment = 5,SpiritHeal=66,KillProjectile=29; }
 }
@@ -167,7 +167,7 @@ namespace Terraria.ModLoader
     public class ModItem
     {
         public Mod Mod;
-        public virtual string Texture=>""; public virtual void AddRecipes(){} public Terraria.Recipe CreateRecipe()=>new();
+        public virtual string Texture=>""; public virtual void AddRecipes(){} public Terraria.Recipe CreateRecipe(int amount=1)=>new();
         public Terraria.Item Item = new();
         public string Name;
         public bool Allowed = true;
@@ -385,7 +385,7 @@ namespace XianXia.Content.Buffs { public class ArtifactWardBuff { } }
 
 namespace Terraria {
  public class Condition {public static Condition DownedMoonLord=new(),DownedPlantera=new(),DownedGolem=new();}
- public class Recipe {public Recipe AddIngredient<T>(int amount=1)=>this;public Recipe AddTile(int tile)=>this;public Recipe AddCondition(Condition condition)=>this;public void Register(){}}
+ public class Recipe {public Recipe AddIngredient<T>(int amount=1)=>this;public Recipe AddIngredient(int type,int amount=1)=>this;public Recipe AddTile(int tile)=>this;public Recipe AddCondition(Condition condition)=>this;public void Register(){}}
  public static class Lighting {public static int Calls;public static void AddLight(Microsoft.Xna.Framework.Vector2 center,float r,float g,float b)=>Calls++;}
 }
 namespace Terraria.ID {public static class ItemRarityID {public const int Red=10,Lime=8,Yellow=9,Green=2;}}
@@ -406,3 +406,7 @@ namespace XianXia.Content.Items.HandGenerated {public class MedicineKingWoodHear
 namespace XianXia.Content.Items.Materials {public class GreenwoodRoot{}}
 
 namespace XianXia.Content.Items.Materials {public class OldFurnaceEmber{} public class FurnaceSlagIron{}}
+
+namespace Terraria.ID {public static class ItemID {public const int FlamingArrow=41,WoodenArrow=40;}public static class ProjectileID {public const int WoodenArrowFriendly=1,FireArrow=2;}public static class AmmoID {public const int Arrow=40;}}
+namespace XianXia.Content.Items.HandGenerated {public class TornTalismanPaper{} public class CinnabarPowder{}}
+namespace XianXia.Content.Tiles.Stations {public class SimpleTalismanTableTile{}}

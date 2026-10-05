@@ -1,0 +1,21 @@
+{
+  "Mods": {
+    "XianXia": {
+      "Items": {
+        "TalismanCrossbow": {
+          "DisplayName": "Talisman Crossbow",
+          "Tooltip": "Uses native arrow ammunition; costs no spiritual energy\nSupports ordinary arrows and cinnabar talisman arrows; selected ammo supplies its damage and projectile"
+        },
+        "CinnabarTalismanArrow": {
+          "DisplayName": "Cinnabar Talisman Arrow",
+          "Tooltip": "Consumable arrow ammunition for native bows\nHits up to two different enemies and inflicts burning for 2 seconds\nCollides with terrain; begins falling after 20 ticks"
+        }
+      },
+      "Projectiles": {
+        "CinnabarArrowProjectile": {
+          "DisplayName": "Cinnabar Talisman Arrow"
+        }
+      }
+    }
+  }
+}

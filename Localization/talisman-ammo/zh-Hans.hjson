@@ -1,0 +1,21 @@
+{
+  "Mods": {
+    "XianXia": {
+      "Items": {
+        "TalismanCrossbow": {
+          "DisplayName": "符弩",
+          "Tooltip": "使用原版箭矢弹药，不消耗灵气\n可装填普通箭或朱砂符箭，伤害和弹道由所选箭矢决定"
+        },
+        "CinnabarTalismanArrow": {
+          "DisplayName": "朱砂符箭",
+          "Tooltip": "可供原版弓弩装填的消耗箭矢\n最多命中两个不同敌人，施加2秒燃烧\n碰撞地形，飞行20tick后开始下落"
+        }
+      },
+      "Projectiles": {
+        "CinnabarArrowProjectile": {
+          "DisplayName": "朱砂符箭"
+        }
+      }
+    }
+  }
+}

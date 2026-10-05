@@ -41,5 +41,8 @@
   <Compile Include="../../../Content/Projectiles/MedicineCauldronField.cs" Link="MedicineCauldronField.cs" />
   <Compile Include="../../../Content/Items/Weapons/BlackFurnaceWarhammer.cs" Link="BlackFurnaceWarhammer.cs" />
   <Compile Include="../../../Content/Projectiles/FurnaceHammerProjectile.cs" Link="FurnaceHammerProjectile.cs" />
+  <Compile Include="../../../Content/Items/Weapons/TalismanCrossbow.cs" Link="TalismanCrossbow.cs" />
+  <Compile Include="../../../Content/Items/Weapons/CinnabarTalismanArrow.cs" Link="CinnabarTalismanArrow.cs" />
+  <Compile Include="../../../Content/Projectiles/CinnabarArrowProjectile.cs" Link="CinnabarArrowProjectile.cs" />
 </ItemGroup>
 </Project>

@@ -429,3 +429,21 @@ foreach(string furnaceName in new[]{"FurnaceHammerProjectile","FurnaceImpactBurs
  }
 }
 Console.WriteLine($"Actual engine gameplay assertions including furnace hammer: {assertions}.");
+
+var ammoIdType=tagType.Assembly.GetType("Terraria.ID.AmmoID",true);int nativeArrowAmmo=(int)ammoIdType.GetField("Arrow").GetValue(null);
+foreach(string ammoName in new[]{"TalismanCrossbow","CinnabarTalismanArrow"}){
+ var ammoType=type.Assembly.GetType("XianXia.Content.Items.Weapons."+ammoName,true);object actualAmmo=Activator.CreateInstance(ammoType),nativeAmmo=Activator.CreateInstance(itemType);
+ ammoType.GetProperty("Entity",BindingFlags.Instance|BindingFlags.Public|BindingFlags.NonPublic).SetValue(actualAmmo,nativeAmmo);ammoType.GetMethod("SetDefaults").Invoke(actualAmmo,null);
+ bool ammunition=ammoName=="CinnabarTalismanArrow";
+ Check(ReferenceEquals(itemType.GetProperty("DamageType").GetValue(nativeAmmo),rangedClass),"Actual native bow/ammunition uses ranged damage");
+ Check((int)itemType.GetField(ammunition?"ammo":"useAmmo").GetValue(nativeAmmo)==nativeArrowAmmo,"Actual bow and ammo match official engine arrow ID");
+ Check((int)itemType.GetField("damage").GetValue(nativeAmmo)==(ammunition?8:32),"Actual native bow/ammunition base damage");
+ if(ammunition)Check((bool)itemType.GetField("consumable").GetValue(nativeAmmo)&&(int)itemType.GetField("maxStack").GetValue(nativeAmmo)==9999,"Actual cinnabar arrows are consumable native stacks");
+ else Check((int)itemType.GetField("useTime").GetValue(nativeAmmo)==28&&(bool)itemType.GetField("autoReuse").GetValue(nativeAmmo),"Actual crossbow native timing and repeat use");
+}
+var cinnabarType=type.Assembly.GetType("XianXia.Content.Projectiles.CinnabarArrowProjectile",true);object actualCinnabar=Activator.CreateInstance(cinnabarType),nativeCinnabar=Activator.CreateInstance(projectileType);
+cinnabarType.GetProperty("Entity",BindingFlags.Instance|BindingFlags.Public|BindingFlags.NonPublic).SetValue(actualCinnabar,nativeCinnabar);cinnabarType.GetMethod("SetDefaults").Invoke(actualCinnabar,null);
+Check(ReferenceEquals(projectileType.GetProperty("DamageType").GetValue(nativeCinnabar),rangedClass)&&(bool)projectileType.GetField("arrow").GetValue(nativeCinnabar),"Actual cinnabar projectile is a native ranged arrow");
+Check((int)projectileType.GetField("penetrate").GetValue(nativeCinnabar)==2&&(bool)projectileType.GetField("tileCollide").GetValue(nativeCinnabar)&&(int)projectileType.GetField("timeLeft").GetValue(nativeCinnabar)==180,"Actual arrow penetration collision and lifetime");
+Check((bool)projectileType.GetField("usesLocalNPCImmunity").GetValue(nativeCinnabar)&&(int)projectileType.GetField("localNPCHitCooldown").GetValue(nativeCinnabar)==-1,"Actual arrow uses permanent local NPC immunity");
+Console.WriteLine($"Actual engine gameplay assertions including talisman bow/ammo: {assertions}.");

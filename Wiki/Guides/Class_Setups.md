@@ -18,7 +18,7 @@
 | 职业 | 武器 | 饰品 | 说明 |
 | --- | --- | --- | --- |
 | 近战 | 破云飞剑、[玄炉重锤](../Content/Equipment/Entries/Black_Furnace_Warhammer.md) | 炉心戒 | 飞剑机动，重器爆发 |
-| 远程 | 符弩、朱砂符箭 | 聚气坠 | 状态与穿透 |
+| 远程 | [符弩、朱砂符箭](../Content/Equipment/Entries/Talisman_Crossbow.md) | 聚气坠 | 原版箭矢弹药，燃烧与两次命中 |
 | 魔法 | 朱砂符火、青木阵盘 | 灵木护符 | 持续伤害 |
 | 召唤 | 炉灰器灵 | 小器灵坠 | 入门召唤线 |
 
