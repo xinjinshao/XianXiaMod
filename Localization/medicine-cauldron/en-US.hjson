@@ -1,0 +1,20 @@
+{
+  "Mods": {
+    "XianXia": {
+      "Items": {
+        "GreenwoodMedicineCauldron": {
+          "DisplayName": "Greenwood Medicine Cauldron",
+          "Tooltip": "Base cost: 32 spiritual energy; no mana cost\nRequires Nascent Soul, Hardmode and Plantera\nDeploys a 5-second field at your position; fires two medicine spirits each second at visible enemies within 600 pixels\nShares the 8-second array deployment cooldown; one cauldron field per player\nEnds when its owner dies, disconnects or moves over 1600 pixels away"
+        }
+      },
+      "Projectiles": {
+        "MedicineCauldronField": {
+          "DisplayName": "Medicine Cauldron Field"
+        },
+        "MedicineSpiritBolt": {
+          "DisplayName": "Medicine Spirit"
+        }
+      }
+    }
+  }
+}

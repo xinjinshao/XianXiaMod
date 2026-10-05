@@ -13,6 +13,7 @@ namespace Microsoft.Xna.Framework
         public Point ToTileCoordinates() => new((int)(X / 16),(int)(Y / 16));
         public Vector2 RotatedBy(double radians) => new(X*(float)Math.Cos(radians)-Y*(float)Math.Sin(radians),X*(float)Math.Sin(radians)+Y*(float)Math.Cos(radians));
         public float ToRotation()=>MathF.Atan2(Y,X);
+        public static Vector2 Zero => new(0,0);
         public static Vector2 UnitX => new(1,0);
         public static Vector2 operator -(Vector2 a, Vector2 b) => new(a.X-b.X,a.Y-b.Y);
         public static Vector2 operator *(Vector2 a, float b) => new(a.X*b,a.Y*b);
@@ -108,7 +109,8 @@ namespace Terraria
     {
         public bool active,friendly,hostile,tileCollide,ignoreWater,usesLocalNPCImmunity,netUpdate;
         public int width,height,penetrate,timeLeft,localNPCHitCooldown; public float rotation; public float[] ai=new float[2]; public object DamageType;
-        public int owner, type, damage, identity;
+        public int owner, type, damage, identity; public float knockBack;
+        public object GetSource_FromAI()=>new(); public void Kill()=>active=false;
         private static int nextIdentity;
         public Microsoft.Xna.Framework.Vector2 velocity;
         public Microsoft.Xna.Framework.Vector2 Center;
@@ -127,7 +129,8 @@ namespace Terraria
     public class NPC
     {
         public struct HitInfo{} public int LastBuff,BuffDuration; public void AddBuff(int type,int duration){LastBuff=type;BuffDuration=duration;}
-        public bool active = true;
+        public bool active = true, friendly, dontTakeDamage;
+        public bool CanBeChasedBy(object source)=>active&&!friendly&&!dontTakeDamage;
         public Microsoft.Xna.Framework.Vector2 Center;
         public object ModNPC;
         public int type;
@@ -235,7 +238,7 @@ namespace Terraria.ModLoader
     public static class ModContent {
         public static int TileType<T>() => typeof(T).Name switch { "ArtifactForgeTile"=>1,"ThunderPatternForgeTile"=>2,"HeavenFireFurnaceTile"=>3,_=>4 };
         public static int ItemType<T>()=>200;
-        public static int ProjectileType<T>()=>typeof(T).Name=="GreenwoodArrayField"?3:2;
+        public static int ProjectileType<T>()=>typeof(T).Name=="GreenwoodArrayField"?3:typeof(T).Name=="MedicineCauldronField"?4:typeof(T).Name=="MedicineSpiritBolt"?5:2;
         public static int BuffType<T>()=>2;
         public static T GetInstance<T>() where T:new()=>new T();
     }
@@ -303,6 +306,7 @@ namespace XianXia.Common.Players
         public void RestoreSpiritualEnergy(int amount) => spiritualEnergy = Math.Clamp(spiritualEnergy + amount, 0, maxSpiritualEnergy);
         public bool TryConsumeSpiritualEnergy(int amount) { if (spiritualEnergy < amount) return false; spiritualEnergy -= amount; return true; }
         public bool CanConsumeSpiritualEnergy(int amount)=>spiritualEnergy>=amount;
+        public bool CanDeployArray(int type,int amount)=>arrayDeploymentCooldown==0&&Terraria.Main.player[0].ownedProjectileCounts[type]==0&&CanConsumeSpiritualEnergy(amount);
         public bool TryDeployArray(int type, int amount)
         {
             if (arrayDeploymentCooldown != 0 || Terraria.Main.player[0].ownedProjectileCounts[type] > 0 || !TryConsumeSpiritualEnergy(amount)) return false;
@@ -396,3 +400,7 @@ namespace XianXia.Content.Items.Materials {public class HeavenTabletRubbing{}}
 namespace XianXia.Content.Tiles.Stations {public class SectTrialAltarTile{}}
 
 namespace XianXia.Content.Items.Materials {public class ArtifactBlankShard{}}
+
+namespace Terraria {public static class Collision {public static bool Visible=true;public static bool CanHitLine(Microsoft.Xna.Framework.Vector2 start,int w,int h,Microsoft.Xna.Framework.Vector2 end,int ew,int eh)=>Visible;}}
+namespace XianXia.Content.Items.HandGenerated {public class MedicineKingWoodHeart{}}
+namespace XianXia.Content.Items.Materials {public class GreenwoodRoot{}}

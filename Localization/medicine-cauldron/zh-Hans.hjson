@@ -1,0 +1,20 @@
+{
+  "Mods": {
+    "XianXia": {
+      "Items": {
+        "GreenwoodMedicineCauldron": {
+          "DisplayName": "青木药王鼎",
+          "Tooltip": "基础消耗32灵气，不消耗魔力\n需要元婴境、困难模式与世纪之花进度\n在脚下部署5秒法阵，每秒召出两枚药灵弹攻击600像素内可见敌人\n共用8秒法阵部署冷却，每人同时只能持有一个药王法阵\n主人死亡、离开或距离超过1600像素时消散"
+        }
+      },
+      "Projectiles": {
+        "MedicineCauldronField": {
+          "DisplayName": "药王法阵"
+        },
+        "MedicineSpiritBolt": {
+          "DisplayName": "药灵"
+        }
+      }
+    }
+  }
+}

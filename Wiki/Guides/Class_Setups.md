@@ -37,7 +37,7 @@
 | --- | --- | --- | --- |
 | 近战 | 无相剑轮 | 元婴玉匣 | 移动变招 |
 | 远程 | [宗门机关弩](../Content/Equipment/Entries/Mechanism_Ranged_Weapons.md) | 星渊眼 | 机关弹幕 |
-| 魔法 | 青木药王鼎 | 元婴玉匣 | 召唤药灵和法阵 |
+| 魔法 | [青木药王鼎](../Content/Equipment/Entries/Greenwood_Medicine_Cauldron.md) | 元婴玉匣 | 定时药灵法阵，共用部署冷却 |
 | 召唤 | 元婴分身符 | 元婴玉匣 | 分身体系成型 |
 
 ## Post-Golem

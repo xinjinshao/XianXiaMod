@@ -872,6 +872,43 @@ bouncing.Projectile.velocity=new Microsoft.Xna.Framework.Vector2(-4,0);Check(!bo
 Check(bouncing.OnTileCollide(new Microsoft.Xna.Framework.Vector2(-4,-3))&&bouncing.Projectile.ai[0]==2,"Third collision destroys through native hook without increasing bounce counter");
 bouncing.Projectile.ai[0]=0;bouncing.Projectile.velocity=default;Check(!bouncing.OnTileCollide(new Microsoft.Xna.Framework.Vector2(4,3))&&bouncing.Projectile.velocity.X==-4&&bouncing.Projectile.velocity.Y==-3,"Corner reflects both axes");
 
+var cauldron=new XianXia.Content.Items.Weapons.GreenwoodMedicineCauldron {Mod=mod,Name="GreenwoodMedicineCauldron"};cauldron.SetDefaults();cauldron.Item.type=910;cauldron.Item.stack=1;cauldron.Item.ModItem=cauldron;caster.inventory[0]=cauldron.Item;
+caster.State.spiritualEnergy=100;caster.State.arrayDeploymentCooldown=0;Array.Clear(caster.ownedProjectileCounts);
+for(int stage=0;stage<=8;stage++)for(int flags=0;flags<16;flags++){
+ caster.State.cultivationStage=(CultivationStage)stage;Game.hardMode=(flags&1)!=0;Terraria.NPC.downedPlantBoss=(flags&2)!=0;Terraria.NPC.downedGolemBoss=(flags&4)!=0;Terraria.NPC.downedMoonlord=(flags&8)!=0;
+ Check(cauldron.CanUseItem(caster)==(stage>=5&&(flags&3)==3),"Medicine cauldron realm and native world gates");
+}
+Game.hardMode=Terraria.NPC.downedPlantBoss=true;caster.State.cultivationStage=CultivationStage.NascentSoul;
+caster.State.spiritualEnergy=31;Check(!cauldron.CanUseItem(caster),"Cauldron insufficient energy");caster.State.spiritualEnergy=100;
+caster.State.arrayDeploymentCooldown=1;Check(!cauldron.CanUseItem(caster),"Cauldron obeys shared deployment cooldown");caster.State.arrayDeploymentCooldown=0;
+caster.ownedProjectileCounts[cauldron.Item.shoot]=1;Check(!cauldron.CanUseItem(caster),"Cauldron cannot duplicate existing array");Array.Clear(caster.ownedProjectileCounts);
+void CauldronShot()=>Packet(0,w=>{w.Write((byte)8);w.Write((byte)0);w.Write(910);w.Write(100f);w.Write(0f);});
+Game.netMode=NetmodeID.Server;caster.State.WeaponShotCooldown=0;foreach(var shot in Game.projectile)shot.active=false;
+CauldronShot();CauldronShot();Check(Game.projectile.Count(p=>p.active)==1&&caster.State.spiritualEnergy==68&&caster.State.arrayDeploymentCooldown==480,"Cauldron server charges once and starts shared cooldown");
+Check(Game.projectile.Single(p=>p.active).damage==caster.GetWeaponDamage(cauldron.Item)&&Game.projectile.Single(p=>p.active).velocity.LengthSquared()==0,"Cauldron server uses canonical damage and stationary deployment");
+foreach(var shot in Game.projectile)shot.active=false;Array.Clear(caster.ownedProjectileCounts);caster.State.WeaponShotCooldown=0;caster.State.arrayDeploymentCooldown=0;caster.State.spiritualEnergy=100;Terraria.Projectile.AllowSpawn=false;CauldronShot();Check(caster.State.spiritualEnergy==100&&caster.State.arrayDeploymentCooldown==0,"Cauldron failed spawn rolls back energy and array cooldown");Terraria.Projectile.AllowSpawn=true;
+Game.netMode=NetmodeID.MultiplayerClient;cauldron.Shoot(caster,null,default,default,4,999,99);Check(caster.State.spiritualEnergy==100&&!Game.projectile.Any(p=>p.active),"Cauldron client only requests deployment");
+var medicineField=new XianXia.Content.Projectiles.MedicineCauldronField();medicineField.SetDefaults();medicineField.Projectile.owner=0;medicineField.Projectile.active=true;medicineField.Projectile.damage=87;medicineField.Projectile.knockBack=3;
+Check(medicineField.CanDamage()==false&&medicineField.Projectile.timeLeft==300&&!medicineField.Projectile.tileCollide&&medicineField.Projectile.DamageType==Terraria.ModLoader.DamageClass.Magic,"Cauldron field is bounded magic deployment without contact damage");
+foreach(var enemy in Game.npc)enemy.active=false;Game.npc[0].active=true;Game.npc[0].Center=new Microsoft.Xna.Framework.Vector2(100,0);caster.Center=medicineField.Projectile.Center=default;
+Game.dedServ=true;int medicineLights=Terraria.Lighting.Calls;medicineField.Projectile.ai[0]=59;medicineField.AI();Check(!Game.projectile.Any(p=>p.active)&&medicineField.Projectile.ai[0]==59,"Remote client cannot advance wave clock or spawn spirits");
+Game.netMode=NetmodeID.Server;medicineField.AI();Check(Game.projectile.Count(p=>p.active)==2&&Game.projectile.All(p=>!p.active||p.owner==0&&p.damage==87&&p.type==5),"Server wave emits exactly two canonical magic spirits");
+Check(Terraria.Lighting.Calls==medicineLights&&medicineField.Projectile.ai[0]==0,"Server wave resets clock without graphical work");
+foreach(var shot in Game.projectile)shot.active=false;medicineField.Projectile.ai[0]=0;for(int i=0;i<59;i++)medicineField.AI();Check(!Game.projectile.Any(p=>p.active),"No wave before 60 ticks");medicineField.AI();Check(Game.projectile.Count(p=>p.active)==2,"Wave at 60 ticks");
+foreach(var shot in Game.projectile)shot.active=false;Terraria.Collision.Visible=false;medicineField.Projectile.ai[0]=59;medicineField.AI();Check(!Game.projectile.Any(p=>p.active)&&medicineField.Projectile.ai[0]==0,"Blocked line of sight discards wave");Terraria.Collision.Visible=true;
+Game.npc[0].Center=new Microsoft.Xna.Framework.Vector2(601,0);medicineField.Projectile.ai[0]=59;medicineField.AI();Check(!Game.projectile.Any(p=>p.active),"Out-of-range target is ignored");
+Game.npc[0].Center=new Microsoft.Xna.Framework.Vector2(100,0);Game.npc[0].friendly=true;medicineField.Projectile.ai[0]=59;medicineField.AI();Check(!Game.projectile.Any(p=>p.active),"Friendly NPC cannot be targeted");Game.npc[0].friendly=false;
+Game.npc[0].dontTakeDamage=true;medicineField.Projectile.ai[0]=59;medicineField.AI();Check(!Game.projectile.Any(p=>p.active),"Invulnerable NPC cannot be targeted");Game.npc[0].dontTakeDamage=false;
+foreach(var enemy in Game.npc)enemy.active=false;medicineField.Projectile.ai[0]=59;medicineField.AI();Game.npc[0].active=true;medicineField.AI();Check(!Game.projectile.Any(p=>p.active)&&medicineField.Projectile.ai[0]==1,"Empty wave cannot stockpile attacks for acquired target");
+medicineField.Projectile.owner=-1;medicineField.Projectile.active=true;medicineField.AI();Check(!medicineField.Projectile.active,"Invalid cauldron owner cleanup");medicineField.Projectile.owner=Game.maxPlayers;medicineField.Projectile.active=true;medicineField.AI();Check(!medicineField.Projectile.active,"Upper invalid owner cleanup");
+medicineField.Projectile.owner=0;medicineField.Projectile.active=true;caster.dead=true;medicineField.AI();Check(!medicineField.Projectile.active,"Dead owner ends cauldron");caster.dead=false;
+medicineField.Projectile.active=true;caster.active=false;medicineField.AI();Check(!medicineField.Projectile.active,"Disconnected owner ends cauldron");caster.active=true;
+medicineField.Projectile.active=true;caster.Center=new Microsoft.Xna.Framework.Vector2(1601,0);medicineField.AI();Check(!medicineField.Projectile.active,"Distant owner ends cauldron");caster.Center=default;
+medicineField.Projectile.active=true;medicineField.Projectile.ai[0]=59;Game.npc[1].active=true;Game.npc[1].Center=new Microsoft.Xna.Framework.Vector2(-50,0);medicineField.AI();Check(Game.projectile.Count(p=>p.active)==2&&Game.projectile.Where(p=>p.active).All(p=>p.velocity.X<0),"Cauldron prefers nearest visible enemy");
+foreach(var shot in Game.projectile)shot.active=false;Game.netMode=NetmodeID.SinglePlayer;medicineField.Projectile.ai[0]=59;medicineField.AI();Check(Game.projectile.Count(p=>p.active)==2,"Single-player authority emits one wave");
+foreach(var shot in Game.projectile)shot.active=false;Game.netMode=NetmodeID.Server;Terraria.Projectile.AllowSpawn=false;medicineField.Projectile.ai[0]=59;medicineField.AI();Terraria.Projectile.AllowSpawn=true;medicineField.AI();Check(!Game.projectile.Any(p=>p.active)&&medicineField.Projectile.ai[0]==1,"Failed wave is discarded without immediate catch-up spawn");
+var medicineBolt=new XianXia.Content.Projectiles.MedicineSpiritBolt();medicineBolt.SetDefaults();Check(medicineBolt.Projectile.DamageType==Terraria.ModLoader.DamageClass.Magic&&medicineBolt.Projectile.tileCollide&&medicineBolt.Projectile.penetrate==1&&medicineBolt.Projectile.timeLeft==90,"Medicine spirit remains magic with bounded lifetime and terrain collision");medicineBolt.AI();Check(Terraria.Lighting.Calls==medicineLights,"Medicine spirit server skips lighting");Game.dedServ=false;medicineBolt.AI();Check(Terraria.Lighting.Calls==medicineLights+1,"Medicine spirit client retains lighting");
+
 Console.WriteLine($"Networking/artificing/skills/routes/Dao regression passed: {assertions} assertions. Engine boundaries are stubbed; live multiplayer remains required.");
 
 sealed class TestBossSummon : XianXia.Common.Items.CultivationBossSummonItem

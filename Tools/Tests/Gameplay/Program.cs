@@ -394,3 +394,18 @@ for(int n=0;n<3;n++){
  Check(ReferenceEquals(projectileType.GetProperty("DamageType").GetValue(nativeMechanism),rangedClass)&&(bool)projectileType.GetField("tileCollide").GetValue(nativeMechanism)&&(int)projectileType.GetField("penetrate").GetValue(nativeMechanism)==mechanismHits[n],"Actual mechanism projectile collision and penetration");
 }
 Console.WriteLine($"Actual engine gameplay assertions including ranged progression: {assertions}.");
+
+var medicineType=type.Assembly.GetType("XianXia.Content.Items.Weapons.GreenwoodMedicineCauldron",true);object actualMedicine=Activator.CreateInstance(medicineType),nativeMedicine=Activator.CreateInstance(itemType);
+medicineType.GetProperty("Entity",BindingFlags.Instance|BindingFlags.Public|BindingFlags.NonPublic).SetValue(actualMedicine,nativeMedicine);medicineType.GetMethod("SetDefaults").Invoke(actualMedicine,null);
+Check(ReferenceEquals(itemType.GetProperty("DamageType").GetValue(nativeMedicine),magicClass)&&(int)itemType.GetField("mana").GetValue(nativeMedicine)==0,"Actual cauldron uses magic without mana cost");
+Check((bool)medicineType.GetProperty("DeploysArray").GetValue(actualMedicine)&&(int)medicineType.GetMethod("GetSpiritCost").Invoke(actualMedicine,new object[]{null})==32,"Actual cauldron uses shared array transaction and 32 energy");
+Check((int)itemType.GetField("damage").GetValue(nativeMedicine)==82&&(int)itemType.GetField("useTime").GetValue(nativeMedicine)==40&&(float)itemType.GetField("shootSpeed").GetValue(nativeMedicine)==0f,"Actual cauldron damage timing and stationary placement");
+foreach(string medicineName in new[]{"MedicineCauldronField","MedicineSpiritBolt"}){
+ var medicineProjectileType=type.Assembly.GetType("XianXia.Content.Projectiles."+medicineName,true);object actualMedicineProjectile=Activator.CreateInstance(medicineProjectileType),nativeMedicineProjectile=Activator.CreateInstance(projectileType);
+ medicineProjectileType.GetProperty("Entity",BindingFlags.Instance|BindingFlags.Public|BindingFlags.NonPublic).SetValue(actualMedicineProjectile,nativeMedicineProjectile);medicineProjectileType.GetMethod("SetDefaults").Invoke(actualMedicineProjectile,null);
+ Check(ReferenceEquals(projectileType.GetProperty("DamageType").GetValue(nativeMedicineProjectile),magicClass),"Actual medicine field and spirit preserve magic class");
+ bool field=medicineName=="MedicineCauldronField";
+ Check((int)projectileType.GetField("timeLeft").GetValue(nativeMedicineProjectile)==(field?300:90)&&(bool)projectileType.GetField("tileCollide").GetValue(nativeMedicineProjectile)==!field,"Actual medicine lifetime and terrain defaults");
+ if(field)Check((bool)medicineProjectileType.GetMethod("CanDamage").Invoke(actualMedicineProjectile,null)==false,"Actual cauldron field has no contact damage");
+}
+Console.WriteLine($"Actual engine gameplay assertions including medicine cauldron: {assertions}.");
