@@ -46,23 +46,19 @@ NPC.noGravity = true;
 
     public override void PostAI()
     {
-        if (!global::XianXia.Common.Systems.EnemyTargeting.TryGetLivingTarget(NPC, out Player target)) return;
-        if (!target.active || target.dead)
-            return;
-
-        NPC.localAI[0]++;
-        if (Main.netMode != NetmodeID.MultiplayerClient && NPC.localAI[0] >= 120f && Main.rand.NextFloat() < 0.15f)
+        if (Main.netMode == NetmodeID.MultiplayerClient) return;
+        if (!global::XianXia.Common.Systems.EnemyTargeting.TryGetLivingTarget(NPC, out Player target))
         {
             NPC.localAI[0] = 0f;
-            Vector2 velocity = (target.Center - NPC.Center).SafeNormalize(Vector2.UnitY) * 5f;
-            Projectile.NewProjectile(
-                NPC.GetSource_FromAI(),
-                NPC.Center,
-                velocity,
-                ModContent.ProjectileType<global::XianXia.Content.Projectiles.SpiritBoltProjectile>(),
-                Math.Max(1, NPC.damage / 3),
-                0.5f);
+            return;
         }
+        if (++NPC.localAI[0] < 120f) return;
+        NPC.localAI[0] = 0f;
+        if (Main.rand.NextFloat() >= 0.15f) return;
+        Vector2 velocity = (target.Center - NPC.Center).SafeNormalize(Vector2.UnitY) * 5f;
+        Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center, velocity,
+            ModContent.ProjectileType<global::XianXia.Content.Projectiles.EnemySpiritBoltProjectile>(),
+            Math.Max(1, NPC.damage / 3), 0.5f);
     }
 
     public override void ModifyNPCLoot(NPCLoot npcLoot)

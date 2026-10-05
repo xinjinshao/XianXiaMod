@@ -102,7 +102,7 @@ public class HerbGardenVineSpirit : ModNPC
             NPC.localAI[1] = 0f;
             Vector2 velocity = (target.Center - NPC.Center).SafeNormalize(Vector2.UnitY) * 6f;
             Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center, velocity,
-                ModContent.ProjectileType<global::XianXia.Content.Projectiles.SpiritBoltProjectile>(),
+                ModContent.ProjectileType<global::XianXia.Content.Projectiles.EnemySpiritBoltProjectile>(),
                 Math.Max(1, NPC.damage / 3), 0.8f);
         }
     }

@@ -263,3 +263,15 @@ foreach(object malformed in new[]{Tag(("refinement",3),("awakened",true),("daoRo
  Check(DaoRoute(refinedLoaded)==0,"Invalid or legacy actual item saves cannot gain free Dao transformation.");
 }
 Console.WriteLine($"Gameplay/save/Dao regression passed: {assertions} assertions against compiled mod and official engine.");
+
+// Verify actual projectile defaults against official engine types, not a stub.
+var enemyBoltType=type.Assembly.GetType("XianXia.Content.Projectiles.EnemySpiritBoltProjectile",true);
+object bolt=Activator.CreateInstance(enemyBoltType);
+var projectileType=tagType.Assembly.GetType("Terraria.Projectile",true);
+object nativeProjectile=Activator.CreateInstance(projectileType);
+var entityProperty=enemyBoltType.GetProperty("Entity",BindingFlags.Instance|BindingFlags.Public|BindingFlags.NonPublic);
+entityProperty.SetValue(bolt,nativeProjectile);
+enemyBoltType.GetMethod("SetDefaults").Invoke(bolt,null);
+Check((bool)projectileType.GetField("hostile").GetValue(nativeProjectile)&&!(bool)projectileType.GetField("friendly").GetValue(nativeProjectile),"Early enemy bolt is hostile and never friendly");
+Check((bool)projectileType.GetField("tileCollide").GetValue(nativeProjectile)&&(int)projectileType.GetField("timeLeft").GetValue(nativeProjectile)==180,"Early enemy bolt retains terrain collision and lifetime");
+Console.WriteLine($"Actual engine gameplay assertions including hostile bolt: {assertions}.");

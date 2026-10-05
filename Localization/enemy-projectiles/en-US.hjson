@@ -1,0 +1,11 @@
+{
+  "Mods": {
+    "XianXia": {
+      "Projectiles": {
+        "EnemySpiritBoltProjectile": {
+          "DisplayName": "Hostile Spirit Bolt"
+        }
+      }
+    }
+  }
+}

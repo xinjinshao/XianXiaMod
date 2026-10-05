@@ -1,0 +1,11 @@
+{
+  "Mods": {
+    "XianXia": {
+      "Projectiles": {
+        "EnemySpiritBoltProjectile": {
+          "DisplayName": "敌对灵弹"
+        }
+      }
+    }
+  }
+}
