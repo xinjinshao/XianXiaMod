@@ -1,0 +1,44 @@
+{
+  "Mods": {
+    "XianXia": {
+      "TownGuidance": {
+        "Dialogue": {
+          "HerbSectApprentice": {
+            "Ready": "Herbs have spirit, and pill fire needs patience. Pills help your journey; they cannot walk it for you.",
+            "Early": "Greenwood roots nourish pills; spirit stones awaken qi. First gather your qi, then prepare for Foundation.",
+            "Pressure": "Your spiritual pressure is high. Stabilize it before attempting another breakthrough."
+          },
+          "WanderingArtificer": {
+            "Ready": "Good materials are meant to be used. Experiment with swords, cases and array plates.",
+            "Foundation": "The artifact forge is ready. Use its recipes to craft weapons, then follow each artifact tool's requirements for further growth.",
+            "Early": "Wooden swords and short crossbows will serve you in the spirit veins. Defeat the wyrm and bring back its materials."
+          },
+          "TribulationObserver": {
+            "Ready": "Understand what the heavens demand, and you will weather their lightning.",
+            "Early": "Lightning is an account to settle. After Foundation, your name will appear in that account.",
+            "Active": "Watch the lightning markers and preserve your energy. Surviving the trial makes the realm your own."
+          },
+          "ArchiveScrollSpirit": {
+            "Ready": "The sect fell, but its rules remain. Old arts still demand a new price.",
+            "Reputation": "Your sect reputation is {0}. The old records recognize both victories and patience.",
+            "SwordSoul": "The formless sword soul still guards the broken tablet. Listen to its sword song before drawing your blade.",
+            "Early": "The sect trial token carries an obligation. Reach Golden Core and study the old records."
+          },
+          "FallenHeavenMessenger": {
+            "Ready": "The old Heavenly Dao leaves no answers, only fragments that still demand them.",
+            "Reputation": "Your sect reputation is {0}. More victories are needed before the late sect supplies become available.",
+            "Guardian": "The tablet guardian remains. It does not hate you; it has yet to recognize you.",
+            "Early": "You cannot yet hear what lies behind the heavenly tablets. Return when your Nascent Soul takes form."
+          }
+        },
+        "Services": {
+          "HerbSectApprentice": "Alchemy and gardening: the shop stocks pills and spirit-herb seeds. Craft pills at a cauldron; quality is fixed when crafted. Use the Sect Ledger for your next breakthrough. Shop prices and use requirements are shown on each item.",
+          "WanderingArtificer": "Inscriptions and artificing: buy a needle or removal stone, use it near an Artifact Forge, then select an inventory target. Quenching crystals, awakening seals and Dao seals use the same interface. The interface lists costs; invalid requests report the reason. Needles are tools, not accessories.",
+          "TribulationObserver": "Trials and retries: the shop stocks the Tribulation Gauge and Training Token. Use the Sect Ledger to check preparation. After a failed trial, the token only works when a retry is available. Recover and watch lightning markers before trying again.",
+          "ArchiveScrollSpirit": "Archives and spirits: buy a Sect Ledger for progress and commissions. Hold and use the Small Artifact Pendant or a spirit contract to summon; accessory bonuses are separate. Check mana, minion slots and world requirements. Remove the matching buff to dismiss its spirit.",
+          "FallenHeavenMessenger": "Endgame routes: the shop sells a route hint. Defeat the Old Heavenly Dao Core for route material, then use it near a Dao-Severing Altar to open the route interface. Review effects and costs first; the world route cannot be changed after confirmation."
+        }
+      }
+    }
+  }
+}

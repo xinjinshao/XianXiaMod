@@ -35,6 +35,10 @@ public abstract class CultivationTownNPC : ModNPC
         return commissionResponse;
     }
 
+    protected static string ServiceChat(string npc, string dialogue, params object[] args) =>
+        Language.GetTextValue($"Mods.XianXia.TownGuidance.Dialogue.{npc}.{dialogue}", args)
+        + "\n\n" + Language.GetTextValue($"Mods.XianXia.TownGuidance.Services.{npc}");
+
     public override void SetStaticDefaults()
     {
         Main.npcFrameCount[Type] = global::XianXia.Common.Animation.NpcFrameAnimator.TownFrameCount;
@@ -198,15 +202,15 @@ public class HerbSectApprentice : CultivationTownNPC
         XianXiaPlayer cultivation = LocalCultivation;
         if (cultivation.spiritPressure >= 70)
         {
-            return "你的灵压浮在皮肉上，先用回春丹和抗劫丹稳住，别急着再破境。";
+            return ServiceChat(nameof(HerbSectApprentice), "Pressure");
         }
 
         if (cultivation.cultivationStage < CultivationStage.QiCondensation)
         {
-            return "青木根能养丹，灵石能引气。先凝住第一口真气，再谈筑基。";
+            return ServiceChat(nameof(HerbSectApprentice), "Early");
         }
 
-        return "草木有灵，丹火要慢。筑基之前，丹药只是助缘，不是替你走路。";
+        return ServiceChat(nameof(HerbSectApprentice), "Ready");
     }
 
     public override void AddShops()
@@ -223,6 +227,7 @@ public class HerbSectApprentice : CultivationTownNPC
         shop.Add<SpiritHerbSeeds>();
         shop.Add<BlankSectScroll>();
         shop.Add<LightningAvoidanceRune>();
+        shop.Add<SectLedger>();
         shop.Register();
     }
 
@@ -285,15 +290,15 @@ public class WanderingArtificer : CultivationTownNPC
     {
         if (!DownedBossSystem.DownedSpiritVeinWyrm)
         {
-            return "木剑和短弩够你探灵脉。等灵脉蠕虫伏下，我再教你铸真正的法器。";
+            return ServiceChat(nameof(WanderingArtificer), "Early");
         }
 
         if (!LocalAtStage(CultivationStage.Foundation))
         {
-            return "器胚炉已经热了，但你的气还散。筑基后再碰破云剑，别让剑带着你走。";
+            return ServiceChat(nameof(WanderingArtificer), "Foundation");
         }
 
-        return "好材料不是拿来供着的。剑、匣、阵盘，都要先敢用坏。";
+        return ServiceChat(nameof(WanderingArtificer), "Ready");
     }
 
     public override void AddShops()
@@ -387,15 +392,15 @@ public class TribulationObserver : CultivationTownNPC
     {
         if (LocalCultivation.tribulationTimer > 0)
         {
-            return "别躲进屋里数雷。看清落点，留一口灵气，雷过之后才算你自己的境界。";
+            return ServiceChat(nameof(TribulationObserver), "Active");
         }
 
         if (!LocalAtStage(CultivationStage.Foundation))
         {
-            return "天雷不是罚，是账。筑基之后，这账才会真正写上你的名字。";
+            return ServiceChat(nameof(TribulationObserver), "Early");
         }
 
-        return "天雷不是罚，是账。你欠得越明白，挨得越稳。";
+        return ServiceChat(nameof(TribulationObserver), "Ready");
     }
 
     public override void AddShops()
@@ -479,20 +484,20 @@ public class ArchiveScrollSpirit : CultivationTownNPC
     {
         if (!LocalAtStage(CultivationStage.GoldenCore))
         {
-            return "宗门试炼令不是门票，是债券。等你结成金丹，再来翻旧卷。";
+            return ServiceChat(nameof(ArchiveScrollSpirit), "Early");
         }
 
         if (!Downed("formless_sword_soul"))
         {
-            return "无相剑魂还守着残碑。你若听见剑鸣，不要先拔剑，先听完。";
+            return ServiceChat(nameof(ArchiveScrollSpirit), "SwordSoul");
         }
 
         if (!DownedBossSystem.HasSectReputation(80))
         {
-            return $"你的宗门声望已有 {DownedBossSystem.SectReputation}。旧卷认可战绩，也认可耐心。";
+            return ServiceChat(nameof(ArchiveScrollSpirit), "Reputation", DownedBossSystem.SectReputation);
         }
 
-        return "宗门毁了，规矩还在。你若想借旧法，就得先付新代价。";
+        return ServiceChat(nameof(ArchiveScrollSpirit), "Ready");
     }
 
     public override void AddShops()
@@ -579,20 +584,20 @@ public class FallenHeavenMessenger : CultivationTownNPC
     {
         if (!LocalAtStage(CultivationStage.NascentSoul))
         {
-            return "你还听不见天碑背面的噪音。等元婴成形，再来问旧天道。";
+            return ServiceChat(nameof(FallenHeavenMessenger), "Early");
         }
 
         if (!Downed("heaven_tablet_guardian"))
         {
-            return "天碑守卫仍在。它不恨你，只是不承认你。";
+            return ServiceChat(nameof(FallenHeavenMessenger), "Guardian");
         }
 
         if (!DownedBossSystem.HasSectReputation(160))
         {
-            return $"天道碎片认得战绩。你的宗门声望是 {DownedBossSystem.SectReputation}，还不足以换取斩道之物。";
+            return ServiceChat(nameof(FallenHeavenMessenger), "Reputation", DownedBossSystem.SectReputation);
         }
 
-        return "旧天道不会回答你，但它留下的碎片仍会索取答案。";
+        return ServiceChat(nameof(FallenHeavenMessenger), "Ready");
     }
 
     public override void AddShops()
@@ -602,7 +607,6 @@ public class FallenHeavenMessenger : CultivationTownNPC
         shop.Add<BrokenHeavenDecree>();
         shop.Add<BrokenHeavenCrownSeal>();
         shop.Add<DaoSeveringRing>();
-        shop.Add<HeavenDaoFragment>();
         shop.Add<LowGradeSpiritStone>();
         shop.Add<BrokenHeavenInscriptionNeedle>();
         shop.Add<HeavenDaoRouteHint>();
