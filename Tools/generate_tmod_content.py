@@ -1714,38 +1714,60 @@ def enemy_behavior_code(asset_id: str) -> tuple[str, str]:
         NPC.knockBackResist = 0.1f;""", """
     public override void PostAI()
     {
-        if (!global::XianXia.Common.Systems.EnemyTargeting.TryGetLivingTarget(NPC, out Player target)) return;
-
-        bool pushing = target.active && !target.dead && NPC.localAI[1] > 0f;
-        if (pushing)
+        if (Main.netMode == NetmodeID.MultiplayerClient) return;
+        int oldDefense = NPC.defense;
+        if (!global::XianXia.Common.Systems.EnemyTargeting.TryGetLivingTarget(NPC, out Player target))
+        {
+            if (NPC.localAI[1] > 0f) NPC.netUpdate = true;
+            NPC.localAI[0] = NPC.localAI[1] = 0f;
+            NPC.defense = NPC.velocity.X == 0f ? 62 : 54;
+        }
+        else if (NPC.localAI[1] > 0f)
         {
             NPC.localAI[1]--;
-            NPC.defense = 82;
             NPC.velocity.X = Math.Sign(target.Center.X - NPC.Center.X) * 3f;
-            if (Main.netMode != NetmodeID.MultiplayerClient && NPC.localAI[1] % 45 == 0)
+            if (NPC.localAI[1] % 45f == 0f)
             {
                 Vector2 bolt = (target.Center - NPC.Center).SafeNormalize(Vector2.UnitX) * 6f;
                 Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center, bolt,
                     ModContent.ProjectileType<global::XianXia.Content.Projectiles.BossSpiritBoltProjectile>(),
                     Math.Max(1, NPC.damage / 3), 1f);
+                NPC.netUpdate = true;
             }
             if (Vector2.Distance(NPC.Center, target.Center) < 48f)
             {
                 target.velocity += (target.Center - NPC.Center).SafeNormalize(Vector2.UnitX) * 2f;
                 NPC.localAI[1] = 0f;
+                NPC.netUpdate = true;
             }
+            NPC.defense = NPC.localAI[1] > 0f ? 82 : NPC.velocity.X == 0f ? 62 : 54;
         }
         else
         {
             NPC.defense = NPC.velocity.X == 0f ? 62 : 54;
-            NPC.localAI[0]++;
-            if (NPC.localAI[0] >= 160f)
+            if (++NPC.localAI[0] >= 160f)
             {
                 NPC.localAI[0] = 0f;
                 NPC.localAI[1] = 180f;
+                NPC.defense = 82;
+                NPC.netUpdate = true;
             }
         }
+        if (oldDefense != NPC.defense) NPC.netUpdate = true;
     }
+
+    public override void SendExtraAI(System.IO.BinaryWriter writer)
+    {
+        writer.Write((byte)Math.Clamp((int)NPC.localAI[1], 0, 180));
+        writer.Write(NPC.defense);
+    }
+
+    public override void ReceiveExtraAI(System.IO.BinaryReader reader)
+    {
+        NPC.localAI[1] = Math.Min(180, (int)reader.ReadByte());
+        NPC.defense = reader.ReadInt32();
+    }
+
 """)
 
     if asset_id == "moonbone_cultivator":

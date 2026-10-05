@@ -44,3 +44,5 @@ namespace Terraria {public static class Lighting {public static int Calls;public
 namespace XianXia.Content.Biomes {public class MoonboneAbyssBiome {}}
 namespace XianXia.Content.Items.Materials {public class Moonbone {}}
 namespace XianXia.Content.Items.HandGenerated {public class AbyssDust {}public class DarkBlueSpiritFluid {}public class ColdMoonDust {}}
+
+namespace XianXia.Content.Items.HandGenerated {public class BrokenDecreeItem {}}
