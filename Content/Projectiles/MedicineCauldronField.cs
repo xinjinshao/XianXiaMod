@@ -15,6 +15,7 @@ public class MedicineCauldronField : ModProjectile
         Projectile.DamageType = DamageClass.Magic;
         Projectile.penetrate = -1; Projectile.timeLeft = 300;
         Projectile.tileCollide = false; Projectile.ignoreWater = true;
+        Projectile.netImportant = true;
     }
     public override bool? CanDamage() => false;
     public override void AI()

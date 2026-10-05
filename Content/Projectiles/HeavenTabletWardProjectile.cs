@@ -49,11 +49,7 @@ public class HeavenTabletWardProjectile : ModProjectile
     private void EndWard()
     {
         if (Main.netMode == NetmodeID.MultiplayerClient) return;
-        int identity = Projectile.identity, owner = Projectile.owner;
-        Projectile.Kill();
-        // The server terminates a player-owned projectile, so explicitly notify its peers.
-        if (Main.netMode == NetmodeID.Server && owner >= 0 && owner < Main.maxPlayers)
-            NetMessage.SendData(MessageID.KillProjectile, -1, -1, null, identity, owner);
+        Projectile.Kill(); // ServerPlayerProjectileSync broadcasts the native death hook.
     }
     public override bool OnTileCollide(Vector2 oldVelocity)
     {

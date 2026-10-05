@@ -35,6 +35,7 @@ public class ThunderTalismanArray : ModProjectile
         Projectile.tileCollide = true;
 
         Projectile.ignoreWater = true;
+        Projectile.netImportant = true;
 
 
 

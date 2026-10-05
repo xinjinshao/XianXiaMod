@@ -460,3 +460,10 @@ Check((bool)projectileType.GetField("tileCollide").GetValue(nativeWard)&&(bool)p
 Check((int)projectileType.GetField("width").GetValue(nativeWard)==40&&(int)projectileType.GetField("height").GetValue(nativeWard)==40,"Actual ward declares a forty-pixel collision box");
 Check((int)type.Assembly.GetType("XianXia.Common.Players.HeavenTabletWardPlayer",true).GetField("DefenseBonus").GetRawConstantValue()==6,"Compiled ward declares a six-point temporary defense bonus");
 Console.WriteLine($"Actual engine gameplay assertions including tablet ward: {assertions}.");
+
+foreach(string persistentFieldName in new[]{"GreenwoodArrayField","ThunderTalismanArray","MedicineCauldronField"}){
+ var persistentType=type.Assembly.GetType("XianXia.Content.Projectiles."+persistentFieldName,true);object actualPersistent=Activator.CreateInstance(persistentType),nativePersistent=Activator.CreateInstance(projectileType);
+ persistentType.GetProperty("Entity",BindingFlags.Instance|BindingFlags.Public|BindingFlags.NonPublic).SetValue(actualPersistent,nativePersistent);persistentType.GetMethod("SetDefaults").Invoke(actualPersistent,null);
+ Check((bool)projectileType.GetField("netImportant").GetValue(nativePersistent),"Actual persistent magic field opts into official native late-join synchronization");
+}
+Console.WriteLine($"Actual engine gameplay assertions including persistent field sync: {assertions}.");

@@ -107,10 +107,11 @@ namespace Terraria
     public class Tile { public bool HasTile; public ushort TileType; }
     public class Projectile
     {
-        public bool active,friendly,hostile,tileCollide,ignoreWater,usesLocalNPCImmunity,netUpdate,arrow;
+        public bool active,friendly,hostile,tileCollide,ignoreWater,usesLocalNPCImmunity,netUpdate,arrow,netImportant;
         public int width,height,penetrate,timeLeft,localNPCHitCooldown; public float rotation; public float[] ai=new float[2]; public object DamageType;
+        public Terraria.ModLoader.ModProjectile ModProjectile;public int whoAmI;
         public int owner, type, damage, identity; public float knockBack;
-        public object GetSource_FromAI()=>new(); public void Kill()=>active=false;
+        public object GetSource_FromAI()=>new(); public void Kill(){if(!active)return;new XianXia.Common.Systems.ServerPlayerProjectileSync().OnKill(this,timeLeft);active=false;}
         private static int nextIdentity;
         public Microsoft.Xna.Framework.Vector2 velocity;
         public Microsoft.Xna.Framework.Vector2 Center;
@@ -147,9 +148,10 @@ namespace Terraria
     }
     public static class NetMessage
     {
+        public static readonly List<(int Message,int Number,float Number2)> Sent=new();
         public static int Broadcasts;
         public static int WorldSends;
-        public static void SendData(int message, int toWho = -1, int fromWho = -1, object text = null, int number = 0, float number2 = 0) { Broadcasts++; if(message==Terraria.ID.MessageID.WorldData) WorldSends++; }
+        public static void SendData(int message, int toWho = -1, int fromWho = -1, object text = null, int number = 0, float number2 = 0) { Sent.Add((message,number,number2));Broadcasts++; if(message==Terraria.ID.MessageID.WorldData) WorldSends++; }
     }
 }
 
@@ -159,7 +161,7 @@ namespace Terraria.ID
     public static class SoundID { public const int Item4=1,Item20=2,Item5=3; }
     public static class BuffID { public const int Regeneration = 1,Ichor=2,OnFire3=3; }
     public static class NetmodeID { public const int SinglePlayer = 0, MultiplayerClient = 1, Server = 2; }
-    public static class MessageID { public const int WorldData = 7, SyncEquipment = 5,SpiritHeal=66,KillProjectile=29; }
+    public static class MessageID { public const int WorldData = 7, SyncEquipment = 5,SpiritHeal=66,KillProjectile=29,SyncProjectile=27; }
 }
 
 namespace Terraria.ModLoader
@@ -367,9 +369,10 @@ namespace XianXia.Content.Biomes
 
 namespace Terraria.DataStructures
 {
+    public interface IEntitySource{}
     public class ItemCreationContext { }
     public class RecipeItemCreationContext : ItemCreationContext { }
-    public class EntitySource_ItemUse_WithAmmo
+    public class EntitySource_ItemUse_WithAmmo : IEntitySource
     {
         public EntitySource_ItemUse_WithAmmo(Terraria.Player player, Terraria.Item item, int ammo) { }
     }
@@ -390,7 +393,7 @@ namespace Terraria {
 }
 namespace Terraria.ID {public static class ItemRarityID {public const int Red=10,Lime=8,Yellow=9,Green=2;}}
 namespace Terraria.ModLoader {
- public class ModProjectile {public Terraria.Projectile Projectile=new();public virtual string Texture=>"";public virtual void SetDefaults(){}public virtual bool? CanDamage()=>null;public virtual void AI(){} public virtual void OnKill(int timeLeft){} public virtual bool? CanHitNPC(Terraria.NPC target)=>null;public virtual bool OnTileCollide(Microsoft.Xna.Framework.Vector2 velocity)=>true;public virtual void OnHitNPC(Terraria.NPC npc,Terraria.NPC.HitInfo hit,int damage){}}
+ public class ModProjectile {public Mod Mod;public Terraria.Projectile Projectile=new();public ModProjectile(){Projectile.ModProjectile=this;}public virtual string Texture=>"";public virtual void SetDefaults(){}public virtual bool? CanDamage()=>null;public virtual void AI(){} public virtual void OnKill(int timeLeft){} public virtual bool? CanHitNPC(Terraria.NPC target)=>null;public virtual bool OnTileCollide(Microsoft.Xna.Framework.Vector2 velocity)=>true;public virtual void OnHitNPC(Terraria.NPC npc,Terraria.NPC.HitInfo hit,int damage){}}
 }
 namespace XianXia.Content.Items.Materials {public class Moonbone{}}
 namespace XianXia.Content.Items.HandGenerated {public class ArchiveRemnantLight{} public class ImperialDecreeItem{}}
@@ -412,3 +415,5 @@ namespace XianXia.Content.Items.HandGenerated {public class TornTalismanPaper{} 
 namespace XianXia.Content.Tiles.Stations {public class SimpleTalismanTableTile{}}
 
 namespace XianXia.Content.Items.Materials {public class HeavenDaoFragment{}}
+
+namespace Terraria.ModLoader {public class GlobalProjectile {public virtual void OnSpawn(Terraria.Projectile p,Terraria.DataStructures.IEntitySource source){} public virtual void PostAI(Terraria.Projectile p){} public virtual void OnKill(Terraria.Projectile p,int timeLeft){}}}

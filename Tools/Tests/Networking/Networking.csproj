@@ -47,5 +47,6 @@
   <Compile Include="../../../Content/Items/Weapons/HeavenTabletWardSeal.cs" Link="HeavenTabletWardSeal.cs" />
   <Compile Include="../../../Content/Projectiles/HeavenTabletWardProjectile.cs" Link="HeavenTabletWardProjectile.cs" />
   <Compile Include="../../../Common/Players/HeavenTabletWardPlayer.cs" Link="HeavenTabletWardPlayer.cs" />
+  <Compile Include="../../../Common/Systems/ServerPlayerProjectileSync.cs" Link="ServerPlayerProjectileSync.cs" />
 </ItemGroup>
 </Project>

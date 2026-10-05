@@ -1081,6 +1081,7 @@ def projectile_behavior_code(class_name: str) -> tuple[str, str]:
         Projectile.penetrate = -1;
         Projectile.timeLeft = 300;
         Projectile.tileCollide = false;
+        Projectile.netImportant = true;
         Projectile.usesLocalNPCImmunity = true;
         Projectile.localNPCHitCooldown = 30;""", """
 
@@ -1103,6 +1104,7 @@ def projectile_behavior_code(class_name: str) -> tuple[str, str]:
         Projectile.penetrate = -1;
         Projectile.timeLeft = 240;
         Projectile.tileCollide = false;
+        Projectile.netImportant = true;
         Projectile.usesLocalNPCImmunity = true;
         Projectile.localNPCHitCooldown = 30;""", """
 

@@ -635,3 +635,14 @@ Networking累计22870条源码回归通过，新增10条覆盖原生弹药分类
 独立HeavenTabletWardPlayer每帧在原生装备属性阶段根据同步弹体重新计算：活着、手持御印、自己活跃御印在160像素内且视线通畅则防御+6，多枚不叠加；不持久化资源、不创建Buff或额外状态包。物品/弹体复用材料图标，独立美术待T49。中英文提示、配装/配方/职业/Wiki材料用途同步，明确材料与武器不同身份。
 
 Networking累计23044条源码回归通过，新增174条覆盖9境界×16世界标志、灵气不足、真实8号扣费/重复节流/规范伤害/失败回滚/客户端只请求、29/30tick回收边界、地形转态、视线命中、所有者上下界/死亡/断线/远离/回收清理与销毁广播、三网络角色下防御重算/非叠加、距离/墙体/持有者/换手/死亡/消失过滤。引擎边界模拟。Gameplay累计166条编译产物对官方引擎回归通过，新增7条验证实际Melee/成本/物品数值、弹体穿透/寿命/碰撞尺寸/免疫及防御常量；不启动Main或执行真实碰撞/装备更新循环。构建0警告0错误、打包与隔离专服加载通过，日志run-a141a69ba5bc4472af476f5863fcfbaa；18灵气武器/3法阵契约、本地化键及diff检查通过。真实SP/MP回收平滑、视线碰撞、原生属性重置/弹体计数时序和职业平衡仍待验收；T21/T43/R17保持未勾选。本轮提交推送GitHub。
+
+
+## 第66轮：服务器生成玩家所属弹体的原生广播与法阵迟加入
+
+核对官方Projectile文档与NewProjectile补丁：netUpdate仅对owner生效，NewProjectile自动发送条件也是Owner==Main.myPlayer。现有灵气发射和若干子弹体由服务器生成、保留真实玩家owner，不能仅依赖原生owner驱动同步。新增ServerPlayerProjectileSync GlobalProjectile，严格限于服务器、本模组Mod实例、合法玩家owner且非服务器自身owner：OnSpawn以whoAmI槽位发送原生SyncProjectile；PostAI仅在netUpdate为true时发送并清脏标志；OnKill以identity/owner发送原生KillProjectile。原版/其它Mod、单人/客户端和服务器自有弹体保留原路径，未新增协议包、未改变原版库存及击中信任模型。天碑御印原独立死亡广播移入统一hook，避免重复。
+
+青木法阵、雷符法阵、药王法阵设置netImportant，供原生迟加入同步；两旧法阵生成模板同步字段，未全量重生成。成本、时长、部署上限不变。此修复覆盖服务器创建/标脏/结束的实际hook调用边界；不能用它声称所有SP/MP问题已解决。
+
+Networking累计23060条源码回归通过，新增16条核对实际服务器sentinel下创建消息的槽位、销毁消息的identity/owner、脏状态一次发送/未变化不发、SP/客户端保留原标志、非法/服务器owner、原版和其它Mod排除、非活跃弹体不创建/更新、原生模拟Kill只发送一次、药王法阵死亡清理广播及迟加入标志。此前天碑销毁断言改为经真实Global hook的模拟原生Kill执行。消息序列化/接收和真实网络时序仍为未验收边界。Gameplay累计169条对编译产物/官方引擎回归通过，新增3条验证三法阵实际netImportant。构建0警告0错误、打包与隔离专服加载通过，日志run-777cb02420a946b1afb27d5cfe6c0824；内容契约、本地化及diff检查通过。R01/R02/R31继续未勾选，双客户端创建、ExtraAI、反弹/回收、提前死亡、迟加入、NPC伤害和网络负载仍需原生验收。
+
+依据与边界见[弹体网络说明](../Wiki/Systems/Projectile_Networking.md)，参考[官方文档](https://docs.tmodloader.net/docs/stable/class_projectile.html)和[官方补丁](https://github.com/tModLoader/tModLoader/blob/stable/patches/tModLoader/Terraria/Projectile.cs.patch)。本轮提交推送GitHub。
