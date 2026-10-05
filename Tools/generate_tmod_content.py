@@ -1382,6 +1382,7 @@ def enemy_behavior_code(asset_id: str) -> tuple[str, str]:
 
     public override void HitEffect(NPC.HitInfo hit)
     {
+        if (Main.dedServ) return;
         for (int i = 0; i < 6; i++)
         {
             Dust.NewDust(NPC.position, NPC.width, NPC.height, DustID.Torch, hit.HitDirection * 1.2f, -1.4f);
@@ -1578,6 +1579,7 @@ def enemy_behavior_code(asset_id: str) -> tuple[str, str]:
             return;
         }
         bool guarding = Math.Abs(target.Center.X - NPC.Center.X) < 96f;
+        if (guarding && NPC.justHit) NPC.localAI[1] = 1f;
         if (guarding)
         {
             NPC.velocity.X *= 0.65f;

@@ -98,6 +98,9 @@ public class ObsessedSwordCultivator : ModNPC
             return;
         }
         bool guarding = Math.Abs(target.Center.X - NPC.Center.X) < 96f;
+        // Player-owned hit callbacks can run only on that client. Native
+        // damage received by the server still exposes justHit during AI.
+        if (guarding && NPC.justHit) NPC.localAI[1] = 1f;
         if (guarding)
         {
             NPC.velocity.X *= 0.65f;

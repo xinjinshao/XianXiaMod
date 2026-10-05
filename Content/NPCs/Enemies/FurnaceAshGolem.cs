@@ -102,6 +102,7 @@ public class FurnaceAshGolem : ModNPC
     public override void HitEffect(NPC.HitInfo hit)
 
     {
+        if (Main.dedServ) return;
 
         for (int i = 0; i < 6; i++)
 
