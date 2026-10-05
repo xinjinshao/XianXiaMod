@@ -67,7 +67,7 @@ Mods: {
 			}
 			HeavenDaoRouteHint: {
 				DisplayName: "Heaven Dao Route Hint"
-				Tooltip: "Reveals the requirements for one of the three endgame cultivation routes."
+				Tooltip: "Use to read all three route effects, requirements and the current world route.\nReusable; spends no route material and changes no world choice."
 			}
 			EndgameRouteFrame: {
 				DisplayName: "Endgame Route Frame"

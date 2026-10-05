@@ -67,7 +67,7 @@ Mods: {
 			}
 			HeavenDaoRouteHint: {
 				DisplayName: "天庭路线提示"
-				Tooltip: "揭示三条终局修行路线之一的需求。"
+				Tooltip: "使用后阅读三条终局路线的效果、选择条件与本世界当前路线\n可重复阅读；不消耗路线材料，不改变世界选择。"
 			}
 			EndgameRouteFrame: {
 				DisplayName: "终局路线信物框"

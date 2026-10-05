@@ -1,0 +1,10 @@
+{
+  "Mods": {
+    "XianXia": {
+      "RouteGuide": {
+        "Current": "Current world route: {0}.",
+        "Materials": "Use route material and confirm near a Dao-Severing Altar to choose. Selection costs one route material; crafting an accessory needs another plus its boss materials. Defeat the core again for more. Reading this guide spends no materials and changes no route."
+      }
+    }
+  }
+}
