@@ -361,3 +361,19 @@ foreach(string spiritName in new[]{"FurnaceAshSpirit","StarAbyssSpirit","Contrac
  else Check((bool)projectileType.GetField("minion").GetValue(nativeSpirit)&&(float)projectileType.GetField("minionSlots").GetValue(nativeSpirit)==(spiritName=="ArchivedSoulSpirit"?2f:1f),"Actual contract spirit occupies its configured native minion slots");
 }
 Console.WriteLine($"Actual engine gameplay assertions including contract spirits: {assertions}.");
+
+var codexType=type.Assembly.GetType("XianXia.Content.Items.Weapons.ArchiveStarCodex",true);
+object actualCodex=Activator.CreateInstance(codexType);object nativeCodex=Activator.CreateInstance(itemType);
+codexType.GetProperty("Entity",BindingFlags.Instance|BindingFlags.Public|BindingFlags.NonPublic).SetValue(actualCodex,nativeCodex);
+codexType.GetMethod("SetDefaults").Invoke(actualCodex,null);
+var magicClass=tagType.Assembly.GetType("Terraria.ModLoader.DamageClass",true).GetProperty("Magic").GetValue(null);
+Check(ReferenceEquals(itemType.GetProperty("DamageType").GetValue(nativeCodex),magicClass)&&(int)itemType.GetField("mana").GetValue(nativeCodex)==0,"Real codex uses magic damage without mana cost");
+Check((int)codexType.GetMethod("GetSpiritCost").Invoke(actualCodex,new object[]{null})==36,"Real codex declares exactly 36 base spirit cost");
+Check((int)itemType.GetField("damage").GetValue(nativeCodex)==230&&(int)itemType.GetField("useTime").GetValue(nativeCodex)==48,"Real codex has final-stage base damage and timing");
+var orbType=type.Assembly.GetType("XianXia.Content.Projectiles.ArchiveStarOrb",true);object actualOrb=Activator.CreateInstance(orbType);object nativeOrb=Activator.CreateInstance(projectileType);
+orbType.GetProperty("Entity",BindingFlags.Instance|BindingFlags.Public|BindingFlags.NonPublic).SetValue(actualOrb,nativeOrb);orbType.GetMethod("SetDefaults").Invoke(actualOrb,null);
+Check(ReferenceEquals(projectileType.GetProperty("DamageType").GetValue(nativeOrb),magicClass)&&(bool)projectileType.GetField("tileCollide").GetValue(nativeOrb)&&(int)projectileType.GetField("penetrate").GetValue(nativeOrb)==4,"Real orb has magic collision and bounded penetration defaults");
+Check((bool)orbType.GetMethod("CanDamage").Invoke(actualOrb,null)==false,"Real orb denies damage before charge");
+((float[])projectileType.GetField("ai").GetValue(nativeOrb))[0]=18;
+Check(orbType.GetMethod("CanDamage").Invoke(actualOrb,null)==null,"Real orb defers to native damage rules after charge");
+Console.WriteLine($"Actual engine gameplay assertions including final magic codex: {assertions}.");

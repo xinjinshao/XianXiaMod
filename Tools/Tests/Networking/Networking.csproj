@@ -31,5 +31,5 @@
     <Compile Include="../../../Common/Items/InscribedEquipment.cs" Link="InscribedEquipment.cs" />
     <Compile Include="../../../Common/Items/InscriptionToolItem.cs" Link="InscriptionToolItem.cs" />
     <Compile Include="../../../XianXia.cs" Link="XianXia.cs" />
-  </ItemGroup>
+  <Compile Include="../../../Content/Items/Weapons/ArchiveStarCodex.cs" Link="ArchiveStarCodex.cs" /><Compile Include="../../../Content/Projectiles/ArchiveStarOrb.cs" Link="ArchiveStarOrb.cs" /></ItemGroup>
 </Project>

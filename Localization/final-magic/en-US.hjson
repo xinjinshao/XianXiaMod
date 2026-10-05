@@ -1,0 +1,17 @@
+{
+  "Mods": {
+    "XianXia": {
+      "Items": {
+        "ArchiveStarCodex": {
+          "DisplayName": "Archive Star Codex",
+          "Tooltip": "Costs 36 base spiritual energy, not mana\nRequires Tribulation realm and Hardmode, Plantera, Golem and Moon Lord progression\nFires a star orb that activates after 18 ticks, with four hits of penetration and terrain collision"
+        }
+      },
+      "Projectiles": {
+        "ArchiveStarOrb": {
+          "DisplayName": "Archive Star Orb"
+        }
+      }
+    }
+  }
+}

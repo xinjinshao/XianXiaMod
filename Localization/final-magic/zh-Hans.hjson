@@ -1,0 +1,17 @@
+{
+  "Mods": {
+    "XianXia": {
+      "Items": {
+        "ArchiveStarCodex": {
+          "DisplayName": "归星道典",
+          "Tooltip": "基础消耗36灵气，不消耗魔力\n需要渡劫境及困难模式、世纪之花、石巨人和月亮领主进度\n发射18tick蓄能后激活的归星法弹，最多穿透4次，不能穿墙"
+        }
+      },
+      "Projectiles": {
+        "ArchiveStarOrb": {
+          "DisplayName": "归星法弹"
+        }
+      }
+    }
+  }
+}

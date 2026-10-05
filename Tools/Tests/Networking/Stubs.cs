@@ -12,6 +12,7 @@ namespace Microsoft.Xna.Framework
         public Vector2(float x, float y) { X = x; Y = y; }
         public Point ToTileCoordinates() => new((int)(X / 16),(int)(Y / 16));
         public Vector2 RotatedBy(double radians) => new(X*(float)Math.Cos(radians)-Y*(float)Math.Sin(radians),X*(float)Math.Sin(radians)+Y*(float)Math.Cos(radians));
+        public float ToRotation()=>MathF.Atan2(Y,X);
         public static Vector2 UnitX => new(1,0);
         public static Vector2 operator -(Vector2 a, Vector2 b) => new(a.X-b.X,a.Y-b.Y);
         public static Vector2 operator *(Vector2 a, float b) => new(a.X*b,a.Y*b);
@@ -36,7 +37,7 @@ namespace Terraria
         public static Player LocalPlayer => player[myPlayer];
         public static IEnumerable<Player> ActivePlayers=>player.Where(p=>p.active);
         public static string npcChatText;
-        public static bool hardMode, dayTime;
+        public static bool hardMode, dayTime,dedServ;
         public static int maxProjectiles = 8;
         public static RandomStub rand = new();
         public static Microsoft.Xna.Framework.Vector2 MouseWorld;
@@ -89,7 +90,8 @@ namespace Terraria
         public int type, stack, shoot = 2, damage = 20, useTime = 30;
         public int maxStack=1,ammo,prefix,width,height,value,rare,useStyle,useAnimation,ResearchUnlockCount;
         public object UseSound;
-        public bool accessory,vanity;
+        public bool accessory,vanity,noMelee; public int crit; public object DamageType;
+        public static int buyPrice(int gold=0)=>gold*10000;
         public bool IsAir=>type==0||stack<=0;
         public float shootSpeed = 10f, knockBack = 2f;
         public bool consumable;
@@ -104,7 +106,8 @@ namespace Terraria
     public class Tile { public bool HasTile; public ushort TileType; }
     public class Projectile
     {
-        public bool active;
+        public bool active,friendly,hostile,tileCollide,ignoreWater,usesLocalNPCImmunity;
+        public int width,height,penetrate,timeLeft,localNPCHitCooldown; public float rotation; public float[] ai=new float[2]; public object DamageType;
         public int owner, type, damage, identity;
         private static int nextIdentity;
         public Microsoft.Xna.Framework.Vector2 velocity;
@@ -149,7 +152,7 @@ namespace Terraria
 namespace Terraria.ID
 {
     public static class ItemUseStyleID { public const int HoldUp=1; }
-    public static class SoundID { public const int Item4=1; }
+    public static class SoundID { public const int Item4=1,Item20=2; }
     public static class BuffID { public const int Regeneration = 1; }
     public static class NetmodeID { public const int SinglePlayer = 0, MultiplayerClient = 1, Server = 2; }
     public static class MessageID { public const int WorldData = 7, SyncEquipment = 5,SpiritHeal=66,KillProjectile=29; }
@@ -160,6 +163,7 @@ namespace Terraria.ModLoader
     public class ModItem
     {
         public Mod Mod;
+        public virtual string Texture=>""; public virtual void AddRecipes(){} public Terraria.Recipe CreateRecipe()=>new();
         public Terraria.Item Item = new();
         public string Name;
         public bool Allowed = true;
@@ -217,7 +221,7 @@ namespace Terraria.ModLoader
         public virtual bool? UseItem(Terraria.Item item, Terraria.Player player) => null;
     }
     public struct StatModifier { public float Bonus,Base; public static StatModifier operator +(StatModifier value,float amount) { value.Bonus+=amount; return value; } }
-    public class DamageClass { public static DamageClass Generic=new(); }
+    public class DamageClass { public static DamageClass Generic=new(),Magic=new(); }
     public class ModPlayer {
         public Terraria.Player Player;
         public virtual void Initialize() { }
@@ -373,3 +377,15 @@ namespace XianXia.Content.Items.HandGenerated { public class RouteMaterial { } }
 namespace XianXia.Content.Items.Accessories { public class LightningWardJade { } }
 namespace XianXia.Content.Projectiles { public class GreenwoodArrayField { } public class CloudpiercerSwordProjectile { } }
 namespace XianXia.Content.Buffs { public class ArtifactWardBuff { } }
+
+namespace Terraria {
+ public class Condition {public static Condition DownedMoonLord=new();}
+ public class Recipe {public Recipe AddIngredient<T>(int amount=1)=>this;public Recipe AddTile(int tile)=>this;public Recipe AddCondition(Condition condition)=>this;public void Register(){}}
+ public static class Lighting {public static int Calls;public static void AddLight(Microsoft.Xna.Framework.Vector2 center,float r,float g,float b)=>Calls++;}
+}
+namespace Terraria.ID {public static class ItemRarityID {public const int Red=10;}}
+namespace Terraria.ModLoader {
+ public class ModProjectile {public Terraria.Projectile Projectile=new();public virtual string Texture=>"";public virtual void SetDefaults(){}public virtual bool? CanDamage()=>null;public virtual void AI(){}}
+}
+namespace XianXia.Content.Items.Materials {public class Moonbone{}}
+namespace XianXia.Content.Items.HandGenerated {public class ArchiveRemnantLight{} public class ImperialDecreeItem{}}

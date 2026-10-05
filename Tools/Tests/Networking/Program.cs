@@ -814,6 +814,34 @@ SetupDao();Dao();Game.player[0].selectedItem=1;Game.player[0].statLife=85;Skill(
 Check(Game.player[0].statLife==100,"Rebuild sword burst actually heals the owner without exceeding maximum health.");
 SetupDao();Dao();Game.player[0].selectedItem=1;Game.player[0].statLife=50;Terraria.Projectile.AllowSpawn=false;Skill();
 Check(Game.player[0].statLife==50 && Game.player[0].State.spiritualEnergy==100,"A failed Rebuild burst neither grants free healing nor spends energy.");
+// Exercise the new actual weapon through the existing server packet path.
+var codex=new XianXia.Content.Items.Weapons.ArchiveStarCodex {Mod=mod,Name="ArchiveStarCodex"};codex.SetDefaults();
+var caster=Game.player[0];caster.active=true;caster.dead=caster.noItems=caster.CCed=false;caster.selectedItem=0;caster.altFunctionUse=0;
+codex.Item.type=900;codex.Item.stack=1;codex.Item.ModItem=codex;caster.inventory[0]=codex.Item;
+caster.State.NetworkInitialized=true;caster.State.spiritualEnergy=100;
+for(int stage=0;stage<=8;stage++)for(int flags=0;flags<16;flags++){
+ caster.State.cultivationStage=(CultivationStage)stage;
+ Game.hardMode=(flags&1)!=0;Terraria.NPC.downedPlantBoss=(flags&2)!=0;Terraria.NPC.downedGolemBoss=(flags&4)!=0;Terraria.NPC.downedMoonlord=(flags&8)!=0;
+ Check(codex.CanUseItem(caster)==(stage>=7&&flags==15),"Codex requires final realm and all native world stage gates");
+}
+Game.hardMode=Terraria.NPC.downedPlantBoss=Terraria.NPC.downedGolemBoss=Terraria.NPC.downedMoonlord=true;
+caster.State.cultivationStage=CultivationStage.Tribulation;caster.State.spiritualEnergy=35;Check(!codex.CanUseItem(caster),"Codex refuses insufficient energy before firing");
+void CodexShot(float x=100)=>Packet(0,w=>{w.Write((byte)8);w.Write((byte)0);w.Write(900);w.Write(x);w.Write(0f);});
+Game.netMode=NetmodeID.Server;caster.State.spiritualEnergy=100;caster.State.WeaponShotCooldown=0;
+foreach(var shot in Game.projectile)shot.active=false;Array.Clear(caster.ownedProjectileCounts);Terraria.Projectile.AllowSpawn=true;Terraria.ModLoader.CombinedHooks.SuppressDefault=false;Terraria.ModLoader.CombinedHooks.AllowShoot=true;
+CodexShot();CodexShot();Check(Game.projectile.Count(p=>p.active)==1&&caster.State.spiritualEnergy==64,"Actual codex packet spends 36 energy once and throttles duplicate requests");
+Check(Game.projectile.Single(p=>p.active).damage==caster.GetWeaponDamage(codex.Item),"Actual codex server packet uses canonical weapon damage");
+foreach(var shot in Game.projectile)shot.active=false;caster.State.WeaponShotCooldown=0;caster.State.spiritualEnergy=100;Terraria.Projectile.AllowSpawn=false;CodexShot();Check(caster.State.spiritualEnergy==100&&!Game.projectile.Any(p=>p.active),"Actual codex spawn failure restores energy");
+Terraria.Projectile.AllowSpawn=true;caster.State.WeaponShotCooldown=0;CodexShot(float.NaN);Check(caster.State.spiritualEnergy==100&&!Game.projectile.Any(p=>p.active),"Actual codex rejects nonfinite aim");
+Game.netMode=NetmodeID.MultiplayerClient;codex.Shoot(caster,null,default,default,2,999,99);Check(caster.State.spiritualEnergy==100&&!Game.projectile.Any(p=>p.active),"Actual codex client cannot spend energy or create its own cast");
+var orb=new XianXia.Content.Projectiles.ArchiveStarOrb();orb.SetDefaults();Check(orb.Projectile.DamageType==Terraria.ModLoader.DamageClass.Magic&&orb.Projectile.friendly&&!orb.Projectile.hostile,"Codex orb belongs to magic and damages enemies");
+Check(orb.Projectile.tileCollide&&orb.Projectile.penetrate==4&&orb.Projectile.localNPCHitCooldown==20,"Codex orb preserves bounded penetration and terrain collision");
+Game.dedServ=true;int lightBefore=Terraria.Lighting.Calls;Check(orb.CanDamage()==false,"Codex orb is harmless at cast start");
+for(int i=0;i<17;i++)orb.AI();Check(orb.CanDamage()==false,"Codex orb cannot damage during its 18-tick charge");
+orb.AI();Check(orb.CanDamage()==null,"Codex orb activates native damage after charging");
+for(int i=0;i<10000;i++)orb.AI();Check(orb.Projectile.ai[0]==18&&Terraria.Lighting.Calls==lightBefore,"Codex age counter is bounded and server renders no lighting");
+Game.dedServ=false;orb.AI();Check(Terraria.Lighting.Calls==lightBefore+1,"Codex client retains lighting");
+
 Console.WriteLine($"Networking/artificing/skills/routes/Dao regression passed: {assertions} assertions. Engine boundaries are stubbed; live multiplayer remains required.");
 
 sealed class TestBossSummon : XianXia.Common.Items.CultivationBossSummonItem
