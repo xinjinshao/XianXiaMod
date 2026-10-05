@@ -2,15 +2,15 @@ Mods: {
 	XianXia: {
 		Items: {
 			SpiritVeinWyrmTrophy: { DisplayName: "Spirit Vein Wyrm Trophy" Tooltip: "" }
-			GardenWardenMask: { DisplayName: "Garden Warden Mask" Tooltip: "" }
+			GardenWardenMask: { DisplayName: "Garden Warden Mask" Tooltip: "Equip in the head vanity slot" }
 			BlackFurnaceIronGolemPet: { DisplayName: "Black Furnace Iron Golem Pet" Tooltip: "" }
 			TribulationCloudBottle: { DisplayName: "Tribulation Cloud in a Bottle" Tooltip: "Grants a cloud double jump and immunity to Electrified\nDoes not add another jump when combined with Cloud in a Bottle" }
 			ThunderMarshJiaoWing: { DisplayName: "Thunder Marsh Jiao Wing" Tooltip: "Allows flight and slow fall\nFlight time: 2 seconds" }
 			AbyssalStarWombLamp: { DisplayName: "Abyssal Star Womb Lamp" Tooltip: "" }
-			FormlessSwordSoulCostume: { DisplayName: "Formless Sword Soul Costume" Tooltip: "" }
+			FormlessSwordSoulCostume: { DisplayName: "Formless Sword Soul Costume" Tooltip: "Equip in the body vanity slot" }
 			MedicineKingCauldronDecoration: { DisplayName: "Medicine King Cauldron" Tooltip: "" }
 			SmallTabletPet: { DisplayName: "Small Tablet Pet" Tooltip: "" }
-			InspectorMask: { DisplayName: "Broken Heaven Inspector Mask" Tooltip: "" }
+			InspectorMask: { DisplayName: "Broken Heaven Inspector Mask" Tooltip: "Equip in the head vanity slot" }
 			MoonboneImmortalWingAccessory: { DisplayName: "Moonbone Immortal Wing" Tooltip: "Allows flight and slow fall\nFlight time: 3 seconds" }
 			SilentTabletDecoration: { DisplayName: "Silent Heavenly Tablet" Tooltip: "100% drop on first Old Heaven Dao Core kill." }
 		}

@@ -326,3 +326,26 @@ foreach(var reward in new[]{("ThunderMarshJiaoWing",120,6f,1.5f),("MoonboneImmor
  testSlot++;
 }
 Console.WriteLine($"Actual engine gameplay assertions including flight rewards: {assertions}.");
+
+// Real vanity defaults and robe matching, with explicitly injected test slots.
+var maskBase=type.Assembly.GetType("XianXia.Content.Items.HandGenerated.BossMaskReward",true);
+foreach(string name in new[]{"GardenWardenMask","InspectorMask","FormlessSwordSoulCostume"}) {
+ var vanityType=type.Assembly.GetType("XianXia.Content.Items.HandGenerated."+name,true);
+ object vanity=Activator.CreateInstance(vanityType);
+ object nativeVanity=Activator.CreateInstance(itemType);
+ vanityType.GetProperty("Entity",BindingFlags.Instance|BindingFlags.Public|BindingFlags.NonPublic).SetValue(vanity,nativeVanity);
+ bool costume=name=="FormlessSwordSoulCostume";
+ var slotOwner=costume?vanityType:maskBase;
+ slotOwner.GetField(costume?"bodySlot":"headSlot",BindingFlags.Instance|BindingFlags.NonPublic).SetValue(vanity,300);
+ if(costume) vanityType.GetField("robeSlot",BindingFlags.Instance|BindingFlags.NonPublic).SetValue(vanity,301);
+ vanityType.GetMethod("SetDefaults").Invoke(vanity,null);
+ Check((bool)itemType.GetField("vanity").GetValue(nativeVanity)&&!(bool)itemType.GetField("accessory").GetValue(nativeVanity),name+" occupies an armor vanity slot");
+ Check((int)itemType.GetField(costume?"bodySlot":"headSlot").GetValue(nativeVanity)==300,name+" retains registered equip slot");
+ Check((int)itemType.GetField("defense").GetValue(nativeVanity)==0,name+" grants no unintended defense");
+ if(costume)foreach(bool male in new[]{true,false}) {
+  object[] match={male,5,false};
+  vanityType.GetMethod("SetMatch").Invoke(vanity,match);
+  Check((int)match[1]==301&&(bool)match[2],"Sword soul robe matches lower-body frames for either character style");
+ }
+}
+Console.WriteLine($"Actual engine gameplay assertions including vanity rewards: {assertions}.");
