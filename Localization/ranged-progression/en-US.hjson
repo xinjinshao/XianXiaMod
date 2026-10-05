@@ -1,0 +1,31 @@
+{
+  "Mods": {
+    "XianXia": {
+      "Items": {
+        "SectMechanismCrossbow": {
+          "DisplayName": "Sect Mechanism Crossbow",
+          "Tooltip": "Base cost: 20 spiritual energy; requires Nascent Soul, Hardmode and Plantera\nHits up to 3 times; collides with terrain"
+        },
+        "HeavenLawArbalest": {
+          "DisplayName": "Heaven Law Arbalest",
+          "Tooltip": "Base cost: 28 spiritual energy; requires Spirit Severing, Hardmode, Plantera and Golem\nHits up to 2 times; inflicts Ichor for 2 seconds"
+        },
+        "StarCalamityMechanismCase": {
+          "DisplayName": "Star Calamity Mechanism Case",
+          "Tooltip": "Base cost: 36 spiritual energy; requires Tribulation, Hardmode, Plantera, Golem and Moon Lord\nHits up to 4 times; bounces twice, then breaks on terrain"
+        }
+      },
+      "Projectiles": {
+        "SectMechanismBolt": {
+          "DisplayName": "Sect Mechanism Crossbow"
+        },
+        "HeavenLawBolt": {
+          "DisplayName": "Heaven Law Arbalest"
+        },
+        "StarCalamityMechanismBolt": {
+          "DisplayName": "Star Calamity Mechanism Case"
+        }
+      }
+    }
+  }
+}

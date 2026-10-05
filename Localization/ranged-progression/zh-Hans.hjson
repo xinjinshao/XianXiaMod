@@ -1,0 +1,31 @@
+{
+  "Mods": {
+    "XianXia": {
+      "Items": {
+        "SectMechanismCrossbow": {
+          "DisplayName": "宗门机关弩",
+          "Tooltip": "基础消耗20灵气；需要元婴境及困难模式、世纪之花进度\n机关弹最多命中3次，碰撞地形"
+        },
+        "HeavenLawArbalest": {
+          "DisplayName": "天律弩阵",
+          "Tooltip": "基础消耗28灵气；需要化神境及困难模式、世纪之花、石巨人进度\n最多命中2次，命中施加2秒灵液减益"
+        },
+        "StarCalamityMechanismCase": {
+          "DisplayName": "星灾机关匣",
+          "Tooltip": "基础消耗36灵气；需要渡劫境及困难模式、世纪之花、石巨人、月亮领主进度\n最多命中4次，可反弹2次，第三次地形碰撞销毁"
+        }
+      },
+      "Projectiles": {
+        "SectMechanismBolt": {
+          "DisplayName": "宗门机关弩"
+        },
+        "HeavenLawBolt": {
+          "DisplayName": "天律弩阵"
+        },
+        "StarCalamityMechanismBolt": {
+          "DisplayName": "星灾机关匣"
+        }
+      }
+    }
+  }
+}

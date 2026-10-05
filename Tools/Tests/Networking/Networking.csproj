@@ -31,5 +31,5 @@
     <Compile Include="../../../Common/Items/InscribedEquipment.cs" Link="InscribedEquipment.cs" />
     <Compile Include="../../../Common/Items/InscriptionToolItem.cs" Link="InscriptionToolItem.cs" />
     <Compile Include="../../../XianXia.cs" Link="XianXia.cs" />
-  <Compile Include="../../../Content/Items/Weapons/ArchiveStarCodex.cs" Link="ArchiveStarCodex.cs" /><Compile Include="../../../Content/Projectiles/ArchiveStarOrb.cs" Link="ArchiveStarOrb.cs" /></ItemGroup>
+  <Compile Include="../../../Content/Items/Weapons/ArchiveStarCodex.cs" Link="ArchiveStarCodex.cs" /><Compile Include="../../../Content/Projectiles/ArchiveStarOrb.cs" Link="ArchiveStarOrb.cs" /><Compile Include="../../../Content/Items/Weapons/SectMechanismCrossbow.cs" Link="SectMechanismCrossbow.cs" /><Compile Include="../../../Content/Items/Weapons/HeavenLawArbalest.cs" Link="HeavenLawArbalest.cs" /><Compile Include="../../../Content/Items/Weapons/StarCalamityMechanismCase.cs" Link="StarCalamityMechanismCase.cs" /><Compile Include="../../../Content/Projectiles/MechanismBolts.cs" Link="MechanismBolts.cs" /></ItemGroup>
 </Project>

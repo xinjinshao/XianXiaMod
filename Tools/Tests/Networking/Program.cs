@@ -842,6 +842,36 @@ orb.AI();Check(orb.CanDamage()==null,"Codex orb activates native damage after ch
 for(int i=0;i<10000;i++)orb.AI();Check(orb.Projectile.ai[0]==18&&Terraria.Lighting.Calls==lightBefore,"Codex age counter is bounded and server renders no lighting");
 Game.dedServ=false;orb.AI();Check(Terraria.Lighting.Calls==lightBefore+1,"Codex client retains lighting");
 
+// Real ranged implementations exercise the shared authority transaction.
+var rangedWeapons=new XianXia.Common.Items.CultivationWeaponItem[]{new XianXia.Content.Items.Weapons.SectMechanismCrossbow(),new XianXia.Content.Items.Weapons.HeavenLawArbalest(),new XianXia.Content.Items.Weapons.StarCalamityMechanismCase()};
+for(int n=0;n<rangedWeapons.Length;n++){
+ var rangedWeapon=rangedWeapons[n];rangedWeapon.Mod=mod;rangedWeapon.SetDefaults();rangedWeapon.Item.type=901+n;rangedWeapon.Item.stack=1;rangedWeapon.Item.ModItem=rangedWeapon;caster.inventory[0]=rangedWeapon.Item;
+ int cost=rangedWeapon.GetSpiritCost(caster),required=5+n,mask=n==0?3:n==1?7:15;
+ caster.State.spiritualEnergy=100;
+ for(int stage=0;stage<=8;stage++)for(int flags=0;flags<16;flags++){
+  caster.State.cultivationStage=(CultivationStage)stage;Game.hardMode=(flags&1)!=0;Terraria.NPC.downedPlantBoss=(flags&2)!=0;Terraria.NPC.downedGolemBoss=(flags&4)!=0;Terraria.NPC.downedMoonlord=(flags&8)!=0;
+  Check(rangedWeapon.CanUseItem(caster)==(stage>=required&&(flags&mask)==mask),"Ranged realm and world gates");
+ }
+ Game.hardMode=Terraria.NPC.downedPlantBoss=Terraria.NPC.downedGolemBoss=Terraria.NPC.downedMoonlord=true;caster.State.cultivationStage=(CultivationStage)required;
+ caster.State.spiritualEnergy=cost-1;Check(!rangedWeapon.CanUseItem(caster),"Ranged energy gate");
+ void RangedShot()=>Packet(0,w=>{w.Write((byte)8);w.Write((byte)0);w.Write(rangedWeapon.Item.type);w.Write(100f);w.Write(0f);});
+ Game.netMode=NetmodeID.Server;caster.State.spiritualEnergy=100;caster.State.WeaponShotCooldown=0;foreach(var shot in Game.projectile)shot.active=false;
+ RangedShot();RangedShot();Check(Game.projectile.Count(p=>p.active)==1&&caster.State.spiritualEnergy==100-cost,"Ranged server spends once and throttles duplicates");
+ Check(Game.projectile.Single(p=>p.active).damage==caster.GetWeaponDamage(rangedWeapon.Item),"Ranged canonical damage");
+ foreach(var shot in Game.projectile)shot.active=false;caster.State.WeaponShotCooldown=0;caster.State.spiritualEnergy=100;Terraria.Projectile.AllowSpawn=false;RangedShot();Check(caster.State.spiritualEnergy==100,"Ranged failed spawn rollback");Terraria.Projectile.AllowSpawn=true;
+ Game.netMode=NetmodeID.MultiplayerClient;rangedWeapon.Shoot(caster,null,default,default,2,999,99);Check(caster.State.spiritualEnergy==100&&!Game.projectile.Any(p=>p.active),"Ranged client only requests shot");
+}
+foreach(var bolt in new XianXia.Content.Projectiles.MechanismBolt[]{new XianXia.Content.Projectiles.SectMechanismBolt(),new XianXia.Content.Projectiles.HeavenLawBolt(),new XianXia.Content.Projectiles.StarCalamityMechanismBolt()}){
+ bolt.SetDefaults();Check(bolt.Projectile.DamageType==Terraria.ModLoader.DamageClass.Ranged&&bolt.Projectile.friendly&&!bolt.Projectile.hostile&&bolt.Projectile.tileCollide&&bolt.Projectile.timeLeft==150&&bolt.Projectile.localNPCHitCooldown==20,"Mechanism projectile native collision and ranged defaults");
+ Game.dedServ=true;int lights=Terraria.Lighting.Calls;bolt.AI();Check(Terraria.Lighting.Calls==lights,"Mechanism server skips lighting");
+}
+var lawBolt=new XianXia.Content.Projectiles.HeavenLawBolt();var victim=new Terraria.NPC();lawBolt.OnHitNPC(victim,default,10);Check(victim.LastBuff==Terraria.ID.BuffID.Ichor&&victim.BuffDuration==120,"Heaven law applies bounded native Ichor");
+var bouncing=new XianXia.Content.Projectiles.StarCalamityMechanismBolt();bouncing.SetDefaults();
+bouncing.Projectile.velocity=new Microsoft.Xna.Framework.Vector2(0,3);Check(!bouncing.OnTileCollide(new Microsoft.Xna.Framework.Vector2(4,3))&&bouncing.Projectile.velocity.X==-4&&bouncing.Projectile.velocity.Y==3&&bouncing.Projectile.netUpdate,"First wall bounce reflects only blocked axis and syncs");
+bouncing.Projectile.velocity=new Microsoft.Xna.Framework.Vector2(-4,0);Check(!bouncing.OnTileCollide(new Microsoft.Xna.Framework.Vector2(-4,3))&&bouncing.Projectile.velocity.Y==-3,"Second floor bounce");
+Check(bouncing.OnTileCollide(new Microsoft.Xna.Framework.Vector2(-4,-3))&&bouncing.Projectile.ai[0]==2,"Third collision destroys through native hook without increasing bounce counter");
+bouncing.Projectile.ai[0]=0;bouncing.Projectile.velocity=default;Check(!bouncing.OnTileCollide(new Microsoft.Xna.Framework.Vector2(4,3))&&bouncing.Projectile.velocity.X==-4&&bouncing.Projectile.velocity.Y==-3,"Corner reflects both axes");
+
 Console.WriteLine($"Networking/artificing/skills/routes/Dao regression passed: {assertions} assertions. Engine boundaries are stubbed; live multiplayer remains required.");
 
 sealed class TestBossSummon : XianXia.Common.Items.CultivationBossSummonItem

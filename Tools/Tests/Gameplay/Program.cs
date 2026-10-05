@@ -377,3 +377,20 @@ Check((bool)orbType.GetMethod("CanDamage").Invoke(actualOrb,null)==false,"Real o
 ((float[])projectileType.GetField("ai").GetValue(nativeOrb))[0]=18;
 Check(orbType.GetMethod("CanDamage").Invoke(actualOrb,null)==null,"Real orb defers to native damage rules after charge");
 Console.WriteLine($"Actual engine gameplay assertions including final magic codex: {assertions}.");
+
+var rangedClass=tagType.Assembly.GetType("Terraria.ModLoader.DamageClass",true).GetProperty("Ranged").GetValue(null);
+string[] rangedNames={"SectMechanismCrossbow","HeavenLawArbalest","StarCalamityMechanismCase"};int[] rangedCosts={20,28,36},rangedDamage={110,170,260},rangedTime={26,36,44};
+for(int n=0;n<3;n++){
+ var rangedType=type.Assembly.GetType("XianXia.Content.Items.Weapons."+rangedNames[n],true);object actualRanged=Activator.CreateInstance(rangedType),nativeRanged=Activator.CreateInstance(itemType);
+ rangedType.GetProperty("Entity",BindingFlags.Instance|BindingFlags.Public|BindingFlags.NonPublic).SetValue(actualRanged,nativeRanged);rangedType.GetMethod("SetDefaults").Invoke(actualRanged,null);
+ Check(ReferenceEquals(itemType.GetProperty("DamageType").GetValue(nativeRanged),rangedClass),"Actual mechanism weapon uses native ranged class");
+ Check((int)rangedType.GetMethod("GetSpiritCost").Invoke(actualRanged,new object[]{null})==rangedCosts[n],"Actual ranged base energy cost");
+ Check((int)itemType.GetField("damage").GetValue(nativeRanged)==rangedDamage[n]&&(int)itemType.GetField("useTime").GetValue(nativeRanged)==rangedTime[n],"Actual ranged damage and timing");
+}
+string[] mechanismNames={"SectMechanismBolt","HeavenLawBolt","StarCalamityMechanismBolt"};int[] mechanismHits={3,2,4};
+for(int n=0;n<3;n++){
+ var mechanismType=type.Assembly.GetType("XianXia.Content.Projectiles."+mechanismNames[n],true);object actualMechanism=Activator.CreateInstance(mechanismType),nativeMechanism=Activator.CreateInstance(projectileType);
+ mechanismType.GetProperty("Entity",BindingFlags.Instance|BindingFlags.Public|BindingFlags.NonPublic).SetValue(actualMechanism,nativeMechanism);mechanismType.GetMethod("SetDefaults").Invoke(actualMechanism,null);
+ Check(ReferenceEquals(projectileType.GetProperty("DamageType").GetValue(nativeMechanism),rangedClass)&&(bool)projectileType.GetField("tileCollide").GetValue(nativeMechanism)&&(int)projectileType.GetField("penetrate").GetValue(nativeMechanism)==mechanismHits[n],"Actual mechanism projectile collision and penetration");
+}
+Console.WriteLine($"Actual engine gameplay assertions including ranged progression: {assertions}.");

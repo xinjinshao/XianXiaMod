@@ -106,7 +106,7 @@ namespace Terraria
     public class Tile { public bool HasTile; public ushort TileType; }
     public class Projectile
     {
-        public bool active,friendly,hostile,tileCollide,ignoreWater,usesLocalNPCImmunity;
+        public bool active,friendly,hostile,tileCollide,ignoreWater,usesLocalNPCImmunity,netUpdate;
         public int width,height,penetrate,timeLeft,localNPCHitCooldown; public float rotation; public float[] ai=new float[2]; public object DamageType;
         public int owner, type, damage, identity;
         private static int nextIdentity;
@@ -126,6 +126,7 @@ namespace Terraria
     }
     public class NPC
     {
+        public struct HitInfo{} public int LastBuff,BuffDuration; public void AddBuff(int type,int duration){LastBuff=type;BuffDuration=duration;}
         public bool active = true;
         public Microsoft.Xna.Framework.Vector2 Center;
         public object ModNPC;
@@ -151,9 +152,9 @@ namespace Terraria
 
 namespace Terraria.ID
 {
-    public static class ItemUseStyleID { public const int HoldUp=1; }
+    public static class ItemUseStyleID { public const int HoldUp=1,Shoot=2; }
     public static class SoundID { public const int Item4=1,Item20=2; }
-    public static class BuffID { public const int Regeneration = 1; }
+    public static class BuffID { public const int Regeneration = 1,Ichor=2; }
     public static class NetmodeID { public const int SinglePlayer = 0, MultiplayerClient = 1, Server = 2; }
     public static class MessageID { public const int WorldData = 7, SyncEquipment = 5,SpiritHeal=66,KillProjectile=29; }
 }
@@ -221,7 +222,7 @@ namespace Terraria.ModLoader
         public virtual bool? UseItem(Terraria.Item item, Terraria.Player player) => null;
     }
     public struct StatModifier { public float Bonus,Base; public static StatModifier operator +(StatModifier value,float amount) { value.Bonus+=amount; return value; } }
-    public class DamageClass { public static DamageClass Generic=new(),Magic=new(); }
+    public class DamageClass { public static DamageClass Generic=new(),Magic=new(),Ranged=new(); }
     public class ModPlayer {
         public Terraria.Player Player;
         public virtual void Initialize() { }
@@ -379,13 +380,19 @@ namespace XianXia.Content.Projectiles { public class GreenwoodArrayField { } pub
 namespace XianXia.Content.Buffs { public class ArtifactWardBuff { } }
 
 namespace Terraria {
- public class Condition {public static Condition DownedMoonLord=new();}
+ public class Condition {public static Condition DownedMoonLord=new(),DownedPlantera=new(),DownedGolem=new();}
  public class Recipe {public Recipe AddIngredient<T>(int amount=1)=>this;public Recipe AddTile(int tile)=>this;public Recipe AddCondition(Condition condition)=>this;public void Register(){}}
  public static class Lighting {public static int Calls;public static void AddLight(Microsoft.Xna.Framework.Vector2 center,float r,float g,float b)=>Calls++;}
 }
-namespace Terraria.ID {public static class ItemRarityID {public const int Red=10;}}
+namespace Terraria.ID {public static class ItemRarityID {public const int Red=10,Lime=8,Yellow=9;}}
 namespace Terraria.ModLoader {
- public class ModProjectile {public Terraria.Projectile Projectile=new();public virtual string Texture=>"";public virtual void SetDefaults(){}public virtual bool? CanDamage()=>null;public virtual void AI(){}}
+ public class ModProjectile {public Terraria.Projectile Projectile=new();public virtual string Texture=>"";public virtual void SetDefaults(){}public virtual bool? CanDamage()=>null;public virtual void AI(){} public virtual bool OnTileCollide(Microsoft.Xna.Framework.Vector2 velocity)=>true;public virtual void OnHitNPC(Terraria.NPC npc,Terraria.NPC.HitInfo hit,int damage){}}
 }
 namespace XianXia.Content.Items.Materials {public class Moonbone{}}
 namespace XianXia.Content.Items.HandGenerated {public class ArchiveRemnantLight{} public class ImperialDecreeItem{}}
+
+namespace XianXia.Content.Items.HandGenerated {public class TornScrollPage{} public class HeavenTabletSeal{} public class StarCalamityCore{}}
+namespace XianXia.Content.Items.Materials {public class HeavenTabletRubbing{}}
+namespace XianXia.Content.Tiles.Stations {public class SectTrialAltarTile{}}
+
+namespace XianXia.Content.Items.Materials {public class ArtifactBlankShard{}}
