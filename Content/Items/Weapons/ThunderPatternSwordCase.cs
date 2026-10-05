@@ -114,7 +114,7 @@ public class ThunderPatternSwordCase : global::XianXia.Common.Items.CultivationW
 
             "XianXiaArtifactAwakening",
 
-            Terraria.Localization.Language.GetTextValue(key, "GoldenCore", 40, 7, 12)));
+            Terraria.Localization.Language.GetTextValue(key, global::XianXia.Common.Players.CultivationStatusText.StageName(global::XianXia.Common.Players.CultivationStage.GoldenCore), 40, 7, 12)));
 
     }
 

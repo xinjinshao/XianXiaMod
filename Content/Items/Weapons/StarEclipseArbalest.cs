@@ -114,7 +114,7 @@ public class StarEclipseArbalest : global::XianXia.Common.Items.CultivationWeapo
 
             "XianXiaArtifactAwakening",
 
-            Terraria.Localization.Language.GetTextValue(key, "GoldenCore", 48, 13, 12)));
+            Terraria.Localization.Language.GetTextValue(key, global::XianXia.Common.Players.CultivationStatusText.StageName(global::XianXia.Common.Players.CultivationStage.GoldenCore), 48, 13, 12)));
 
     }
 

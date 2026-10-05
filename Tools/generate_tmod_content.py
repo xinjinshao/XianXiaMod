@@ -770,7 +770,7 @@ def generate_materials(existing: set[str]) -> None:
         tooltips.Add(new TooltipLine(
             Mod,
             "XianXiaArtifactAwakening",
-            Terraria.Localization.Language.GetTextValue(key, "{stage}", {reputation}, {awakened_energy}, {int(round(damage_bonus * 100))})));
+            Terraria.Localization.Language.GetTextValue(key, global::XianXia.Common.Players.CultivationStatusText.StageName(global::XianXia.Common.Players.CultivationStage.{stage}), {reputation}, {awakened_energy}, {int(round(damage_bonus * 100))})));
     }}
 """
             ingredient = {

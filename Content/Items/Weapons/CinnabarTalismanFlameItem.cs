@@ -114,7 +114,7 @@ public class CinnabarTalismanFlameItem : global::XianXia.Common.Items.Cultivatio
 
             "XianXiaArtifactAwakening",
 
-            Terraria.Localization.Language.GetTextValue(key, "Foundation", 24, 4, 10)));
+            Terraria.Localization.Language.GetTextValue(key, global::XianXia.Common.Players.CultivationStatusText.StageName(global::XianXia.Common.Players.CultivationStage.Foundation), 24, 4, 10)));
 
     }
 

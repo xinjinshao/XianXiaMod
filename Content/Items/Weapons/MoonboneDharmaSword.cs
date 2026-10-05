@@ -114,7 +114,7 @@ public class MoonboneDharmaSword : global::XianXia.Common.Items.CultivationWeapo
 
             "XianXiaArtifactAwakening",
 
-            Terraria.Localization.Language.GetTextValue(key, "Tribulation", 96, 17, 18)));
+            Terraria.Localization.Language.GetTextValue(key, global::XianXia.Common.Players.CultivationStatusText.StageName(global::XianXia.Common.Players.CultivationStage.Tribulation), 96, 17, 18)));
 
     }
 

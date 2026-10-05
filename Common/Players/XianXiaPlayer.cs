@@ -248,7 +248,7 @@ public class XianXiaPlayer : ModPlayer
         BeginTribulation(targetStage);
         if (Main.myPlayer == Player.whoAmI)
         {
-            Main.NewText(Language.GetTextValue("Mods.XianXia.Progression.Advanced", targetStage), 120, 245, 220);
+            Main.NewText(Language.GetTextValue("Mods.XianXia.Progression.Advanced", CultivationStatusText.StageName(targetStage)), 120, 245, 220);
         }
         return true;
     }
@@ -308,7 +308,7 @@ public class XianXiaPlayer : ModPlayer
         {
             if (Main.myPlayer == Player.whoAmI)
             {
-                Main.NewText(Language.GetTextValue("Mods.XianXia.Progression.BossStageRequired", requiredStage), 255, 210, 120);
+                Main.NewText(Language.GetTextValue("Mods.XianXia.Progression.BossStageRequired", CultivationStatusText.StageName(requiredStage)), 255, 210, 120);
             }
 
             return false;
@@ -378,10 +378,10 @@ public class XianXiaPlayer : ModPlayer
         {
             string msg = tribulationKind switch
             {
-                TribulationKind.HeavenTablet => Language.GetTextValue("Mods.XianXia.Progression.TribulationStartedHeavenTablet", stage),
-                TribulationKind.DaoSevering => Language.GetTextValue("Mods.XianXia.Progression.TribulationStartedDaoSevering", stage),
-                TribulationKind.HeartDemon => Language.GetTextValue("Mods.XianXia.Progression.TribulationStartedHeartDemon", stage),
-                _ => Language.GetTextValue("Mods.XianXia.Progression.TribulationStarted", stage),
+                TribulationKind.HeavenTablet => Language.GetTextValue("Mods.XianXia.Progression.TribulationStartedHeavenTablet", CultivationStatusText.StageName(stage)),
+                TribulationKind.DaoSevering => Language.GetTextValue("Mods.XianXia.Progression.TribulationStartedDaoSevering", CultivationStatusText.StageName(stage)),
+                TribulationKind.HeartDemon => Language.GetTextValue("Mods.XianXia.Progression.TribulationStartedHeartDemon", CultivationStatusText.StageName(stage)),
+                _ => Language.GetTextValue("Mods.XianXia.Progression.TribulationStarted", CultivationStatusText.StageName(stage)),
             };
             Main.NewText(msg, 160, 210, 255);
         }
@@ -715,7 +715,7 @@ public class XianXiaPlayer : ModPlayer
         if (Main.netMode == NetmodeID.MultiplayerClient && Player.whoAmI == Main.myPlayer)
         {
             if (state.Stage > (int)cultivationStage)
-                Main.NewText(Language.GetTextValue("Mods.XianXia.Progression.Advanced", (CultivationStage)state.Stage), 120, 245, 220);
+                Main.NewText(Language.GetTextValue("Mods.XianXia.Progression.Advanced", CultivationStatusText.StageName((CultivationStage)state.Stage)), 120, 245, 220);
             if (state.Timer > 0 && tribulationTimer == 0)
             {
                 string key = state.Kind switch
@@ -723,7 +723,7 @@ public class XianXiaPlayer : ModPlayer
                     2 => "TribulationStartedHeartDemon", 3 => "TribulationStartedHeavenTablet",
                     4 => "TribulationStartedDaoSevering", _ => "TribulationStarted"
                 };
-                Main.NewText(Language.GetTextValue($"Mods.XianXia.Progression.{key}", (CultivationStage)state.Stage), 160, 210, 255);
+                Main.NewText(Language.GetTextValue($"Mods.XianXia.Progression.{key}", CultivationStatusText.StageName((CultivationStage)state.Stage)), 160, 210, 255);
             }
             if (state.Attempts > tribulationAttempts)
                 Main.NewText(Language.GetTextValue("Mods.XianXia.Progression.TribulationFailed"), 255, 180, 140);

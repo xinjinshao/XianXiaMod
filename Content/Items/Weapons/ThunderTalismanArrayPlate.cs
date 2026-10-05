@@ -115,7 +115,7 @@ public class ThunderTalismanArrayPlate : global::XianXia.Common.Items.Cultivatio
 
             "XianXiaArtifactAwakening",
 
-            Terraria.Localization.Language.GetTextValue(key, "GoldenCore", 44, 20, 12)));
+            Terraria.Localization.Language.GetTextValue(key, global::XianXia.Common.Players.CultivationStatusText.StageName(global::XianXia.Common.Players.CultivationStage.GoldenCore), 44, 20, 12)));
 
     }
 

@@ -114,7 +114,7 @@ public class BrokenHeavenDecree : global::XianXia.Common.Items.CultivationWeapon
 
             "XianXiaArtifactAwakening",
 
-            Terraria.Localization.Language.GetTextValue(key, "NascentSoul", 72, 25, 16)));
+            Terraria.Localization.Language.GetTextValue(key, global::XianXia.Common.Players.CultivationStatusText.StageName(global::XianXia.Common.Players.CultivationStage.NascentSoul), 72, 25, 16)));
 
     }
 
