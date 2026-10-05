@@ -39,6 +39,19 @@ public abstract class CultivationTownNPC : ModNPC
         Language.GetTextValue($"Mods.XianXia.TownGuidance.Dialogue.{npc}.{dialogue}", args)
         + "\n\n" + Language.GetTextValue($"Mods.XianXia.TownGuidance.Services.{npc}");
 
+    protected static bool TryRouteChat(string npc, out string chat)
+    {
+        string dialogue = DownedBossSystem.ChosenRoute switch
+        {
+            DownedBossSystem.EndgameRoute.RebuildHeaven => "RebuildEnding",
+            DownedBossSystem.EndgameRoute.SeverHeaven => "SeverEnding",
+            DownedBossSystem.EndgameRoute.AcceptStarAbyss => "StarAbyssEnding",
+            _ => null
+        };
+        chat = dialogue == null ? null : ServiceChat(npc, dialogue);
+        return dialogue != null;
+    }
+
     public override void SetStaticDefaults()
     {
         Main.npcFrameCount[Type] = global::XianXia.Common.Animation.NpcFrameAnimator.TownFrameCount;
@@ -199,6 +212,7 @@ public class HerbSectApprentice : CultivationTownNPC
 
     public override string GetChat()
     {
+        if (TryRouteChat(nameof(HerbSectApprentice), out string routeChat)) return routeChat;
         XianXiaPlayer cultivation = LocalCultivation;
         if (cultivation.spiritPressure >= 70)
         {
@@ -288,6 +302,7 @@ public class WanderingArtificer : CultivationTownNPC
 
     public override string GetChat()
     {
+        if (TryRouteChat(nameof(WanderingArtificer), out string routeChat)) return routeChat;
         if (!DownedBossSystem.DownedSpiritVeinWyrm)
         {
             return ServiceChat(nameof(WanderingArtificer), "Early");
@@ -390,6 +405,7 @@ public class TribulationObserver : CultivationTownNPC
 
     public override string GetChat()
     {
+        if (TryRouteChat(nameof(TribulationObserver), out string routeChat)) return routeChat;
         if (LocalCultivation.tribulationTimer > 0)
         {
             return ServiceChat(nameof(TribulationObserver), "Active");
@@ -482,6 +498,7 @@ public class ArchiveScrollSpirit : CultivationTownNPC
 
     public override string GetChat()
     {
+        if (TryRouteChat(nameof(ArchiveScrollSpirit), out string routeChat)) return routeChat;
         if (!LocalAtStage(CultivationStage.GoldenCore))
         {
             return ServiceChat(nameof(ArchiveScrollSpirit), "Early");
@@ -582,6 +599,9 @@ public class FallenHeavenMessenger : CultivationTownNPC
 
     public override string GetChat()
     {
+        if (TryRouteChat(nameof(FallenHeavenMessenger), out string routeChat)) return routeChat;
+        if (Downed("old_heaven_dao_core"))
+            return ServiceChat(nameof(FallenHeavenMessenger), "CoreDefeated");
         if (!LocalAtStage(CultivationStage.NascentSoul))
         {
             return ServiceChat(nameof(FallenHeavenMessenger), "Early");

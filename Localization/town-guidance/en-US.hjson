@@ -6,29 +6,45 @@
           "HerbSectApprentice": {
             "Ready": "Herbs have spirit, and pill fire needs patience. Pills help your journey; they cannot walk it for you.",
             "Early": "Greenwood roots nourish pills; spirit stones awaken qi. First gather your qi, then prepare for Foundation.",
-            "Pressure": "Your spiritual pressure is high. Stabilize it before attempting another breakthrough."
+            "Pressure": "Your spiritual pressure is high. Stabilize it before attempting another breakthrough.",
+            "RebuildEnding": "The heavens are rebuilt, but herbs still need tending each season. You restored the sky; I will keep a cauldron burning for those beneath it.",
+            "SeverEnding": "The Heavenly Dao is severed, but herbs still grow. Carry medicine and look after those who travel with you.",
+            "StarAbyssEnding": "The Star Abyss is accepted, and unfamiliar qi reaches the garden. Watch your spiritual pressure as you learn to live with it."
           },
           "WanderingArtificer": {
             "Ready": "Good materials are meant to be used. Experiment with swords, cases and array plates.",
             "Foundation": "The artifact forge is ready. Use its recipes to craft weapons, then follow each artifact tool's requirements for further growth.",
-            "Early": "Wooden swords and short crossbows will serve you in the spirit veins. Defeat the wyrm and bring back its materials."
+            "Early": "Wooden swords and short crossbows will serve you in the spirit veins. Defeat the wyrm and bring back its materials.",
+            "RebuildEnding": "New heavenly laws need new artifacts. I will repair the old forge; you can craft the Rebuilt Heaven Heart and continue your artifacts' growth.",
+            "SeverEnding": "The Dao is severed, but craftsmanship still feeds the forge. The Severed Heaven Edge grants strength at a greater energy cost.",
+            "StarAbyssEnding": "The abyss gives old materials a new purpose. The Star Abyss Pact aids your attacks, but its growing spiritual pressure is yours to bear."
           },
           "TribulationObserver": {
             "Ready": "Understand what the heavens demand, and you will weather their lightning.",
             "Early": "Lightning is an account to settle. After Foundation, your name will appear in that account.",
-            "Active": "Watch the lightning markers and preserve your energy. Surviving the trial makes the realm your own."
+            "Active": "Watch the lightning markers and preserve your energy. Surviving the trial makes the realm your own.",
+            "RebuildEnding": "Rebuilding the Dao does not make every future lightning strike yield. You changed the world's direction; cultivation still takes preparation.",
+            "SeverEnding": "You severed the old Dao, but cultivation still carries risks. Check your condition before your next trial.",
+            "StarAbyssEnding": "The abyss's power builds spiritual pressure. While wearing the Star Abyss Pact, prepare your condition before facing a trial."
           },
           "ArchiveScrollSpirit": {
             "Ready": "The sect fell, but its rules remain. Old arts still demand a new price.",
             "Reputation": "Your sect reputation is {0}. The old records recognize both victories and patience.",
             "SwordSoul": "The formless sword soul still guards the broken tablet. Listen to its sword song before drawing your blade.",
-            "Early": "The sect trial token carries an obligation. Reach Golden Core and study the old records."
+            "Early": "The sect trial token carries an obligation. Reach Golden Core and study the old records.",
+            "RebuildEnding": "I have recorded this page: rebuild the Heavenly Dao. The sect archives now hold a story of restoration alongside their stories of ruin.",
+            "SeverEnding": "I have recorded this page: sever the Heavenly Dao. Those who follow will know that someone chose to bear the road ahead.",
+            "StarAbyssEnding": "I have recorded this page: accept the Star Abyss. The archives preserve the choice; the living must answer for its cost."
           },
           "FallenHeavenMessenger": {
             "Ready": "The old Heavenly Dao leaves no answers, only fragments that still demand them.",
             "Reputation": "Your sect reputation is {0}. More victories are needed before the late sect supplies become available.",
             "Guardian": "The tablet guardian remains. It does not hate you; it has yet to recognize you.",
-            "Early": "You cannot yet hear what lies behind the heavenly tablets. Return when your Nascent Soul takes form."
+            "Early": "You cannot yet hear what lies behind the heavenly tablets. Return when your Nascent Soul takes form.",
+            "RebuildEnding": "You chose to rebuild. This world's route is settled. Craft the Rebuilt Heaven Heart at a Dao Severing Altar to give the new heavens a foundation.",
+            "SeverEnding": "You chose to sever. This world cannot accept another route. Craft the Severed Heaven Edge at a Dao Severing Altar and bear the cost of your choice.",
+            "StarAbyssEnding": "You chose to accept. The Star Abyss is this world's route. Craft the Star Abyss Pact at a Dao Severing Altar, and watch the pressure that comes with its power.",
+            "CoreDefeated": "The Old Heaven Dao Core has fallen, but this world has no route yet. Reach the Tribulation realm, then use its route material near a Dao Severing Altar. Read the route hint before confirming the permanent world choice. A route reward needs another route material."
           }
         },
         "Services": {
@@ -36,7 +52,7 @@
           "WanderingArtificer": "Inscriptions and artificing: buy a needle or removal stone, use it near an Artifact Forge, then select an inventory target. Quenching crystals, awakening seals and Dao seals use the same interface. The interface lists costs; invalid requests report the reason. Needles are tools, not accessories.",
           "TribulationObserver": "Trials and retries: the shop stocks the Tribulation Gauge and Training Token. Use the Sect Ledger to check preparation. After a failed trial, the token only works when a retry is available. Recover and watch lightning markers before trying again.",
           "ArchiveScrollSpirit": "Archives and spirits: buy a Sect Ledger for progress and commissions. Hold and use the Small Artifact Pendant or a spirit contract to summon; accessory bonuses are separate. Check mana, minion slots and world requirements. Remove the matching buff to dismiss its spirit.",
-          "FallenHeavenMessenger": "Endgame routes: the shop sells a route hint. Defeat the Old Heavenly Dao Core for route material, then use it near a Dao-Severing Altar to open the route interface. Review effects and costs first; the world route cannot be changed after confirmation."
+          "FallenHeavenMessenger": "Endgame routes: the shop sells a route hint. Defeat the Old Heaven Dao Core for route material, then use it near a Dao Severing Altar to open the route interface. Review effects and costs first; the world route cannot be changed after confirmation."
         }
       }
     }
