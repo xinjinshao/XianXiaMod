@@ -1,0 +1,28 @@
+{
+  "Mods": {
+    "XianXia": {
+      "Items": {
+        "SwordTabletPlaceable": {
+          "DisplayName": "Sword Tablet",
+          "Tooltip": "Place on a two-block solid base with 3 blocks of vertical clearance\nNearby grants tribulation resistance; identical tablets do not stack\nMining with at least 150 pickaxe power returns the object"
+        },
+        "SingingThunderStonePlaceable": {
+          "DisplayName": "Singing Thunder Stone",
+          "Tooltip": "Place on a two-block solid base with 2 blocks of vertical clearance\nNearby grants +1 spiritual energy regeneration; identical stones do not stack\nMining with at least 110 pickaxe power returns the object"
+        },
+        "RiftMembranePlaceable": {
+          "DisplayName": "Rift Membrane",
+          "Tooltip": "Place on a two-block solid base with 2 blocks of vertical clearance\nNearby adds 1 spirit pressure every 2 seconds; identical membranes do not stack\nMining with at least 110 pickaxe power returns the object"
+        },
+        "BrokenHeavenTabletPlaceable": {
+          "DisplayName": "Broken Heaven Tablet",
+          "Tooltip": "Place on a two-block solid base with 4 blocks of vertical clearance\nA luminous tablet for decoration\nMining with at least 200 pickaxe power returns the object"
+        },
+        "ArchiveLightPillarPlaceable": {
+          "DisplayName": "Archive Light Pillar",
+          "Tooltip": "Place on a two-block solid base with 6 blocks of vertical clearance\nA luminous pillar for decoration\nMining with at least 225 pickaxe power returns the object"
+        }
+      }
+    }
+  }
+}

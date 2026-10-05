@@ -1,0 +1,28 @@
+{
+  "Mods": {
+    "XianXia": {
+      "Items": {
+        "SwordTabletPlaceable": {
+          "DisplayName": "剑碑",
+          "Tooltip": "放置于两格宽的实体底座上（需要3格高的空位）\n附近提供抗劫效果，同类剑碑不叠加\n以至少150镐力采挖后返还物件"
+        },
+        "SingingThunderStonePlaceable": {
+          "DisplayName": "鸣雷石",
+          "Tooltip": "放置于两格宽的实体底座上（需要2格高的空位）\n附近提供灵气回复＋1，同类鸣雷石不叠加\n以至少110镐力采挖后返还物件"
+        },
+        "RiftMembranePlaceable": {
+          "DisplayName": "裂隙膜",
+          "Tooltip": "放置于两格宽的实体底座上（需要2格高的空位）\n附近每2秒增加1灵压，同类裂隙膜不叠加\n以至少110镐力采挖后返还物件"
+        },
+        "BrokenHeavenTabletPlaceable": {
+          "DisplayName": "残天碑",
+          "Tooltip": "放置于两格宽的实体底座上（需要4格高的空位）\n发光的残天装饰石碑\n以至少200镐力采挖后返还物件"
+        },
+        "ArchiveLightPillarPlaceable": {
+          "DisplayName": "无声光柱",
+          "Tooltip": "放置于两格宽的实体底座上（需要6格高的空位）\n发光的归档装饰光柱\n以至少225镐力采挖后返还物件"
+        }
+      }
+    }
+  }
+}

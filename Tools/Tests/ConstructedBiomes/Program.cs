@@ -52,3 +52,27 @@ foreach(var domain in domains){
  Game.GameUpdateCount+=60;Check(domain.Biome.IsBiomeActive(mixedPlayer),"Natural and constructed blocks combine on actual server scan");
 }
 Console.WriteLine($"Constructed biome regression passed: {assertions} assertions against actual block/tile/recipe/biome/scan sources with engine stubs.");
+
+var objects=new (BiomeObjectItem Item,ModTile Tile,int Height,int Pick,int Tier)[]{
+ (new SwordTabletPlaceable(),new XianXia.Content.Tiles.SwordTabletTile(),3,150,2),
+ (new SingingThunderStonePlaceable(),new XianXia.Content.Tiles.SingingThunderStoneTile(),2,110,1),
+ (new RiftMembranePlaceable(),new XianXia.Content.Tiles.RiftMembraneTile(),2,110,1),
+ (new BrokenHeavenTabletPlaceable(),new XianXia.Content.Tiles.BrokenHeavenTabletTile(),4,200,3),
+ (new ArchiveLightPillarPlaceable(),new XianXia.Content.Tiles.ArchiveLightPillarTile(),6,225,4)
+};
+foreach(var entry in objects){
+ entry.Item.SetStaticDefaults();entry.Item.SetDefaults();entry.Item.AddRecipes();entry.Tile.SetStaticDefaults();
+ Check(entry.Item.Item.createTile==entry.Tile.Type,"Object item places matching tile");
+ Check(entry.Tile.RegisteredDrop==ModContent.Id(entry.Item.GetType()),"Object mining returns one matching placeable");
+ Check(entry.Item.Item.maxStack==99&&entry.Item.Item.ResearchUnlockCount==1&&entry.Item.Item.value==0,"Object stacks, researches once and cannot be sold for profit");
+ var data=Terraria.ObjectData.TileObjectData.Registered[entry.Tile.Type];
+ Check(data.Width==2&&data.Height==entry.Height&&data.Origin.Y==entry.Height-1,"Object preserves correct native footprint and origin");
+ Check(data.CoordinatePadding==0&&data.CoordinateHeights.Length==entry.Height&&data.CoordinateHeights.All(h=>h==16),"Object preserves original 16-pixel tile sheet layout");
+ Check(entry.Tile.MinPick==entry.Pick&&entry.Pick<=225,"Object can be recovered with original-game progression tools");
+ var recipe=Recipe.All.Last();Check(recipe.Ingredients.Count==3&&recipe.Amount==1&&recipe.Tiles.Single()==Terraria.ID.TileID.WorkBenches,"Object recipe is accessible without a generated structure");
+ for(int flags=0;flags<16;flags++){
+  Game.hardMode=(flags&1)!=0;NPC.downedPlantBoss=(flags&2)!=0;NPC.downedGolemBoss=(flags&4)!=0;NPC.downedMoonlord=(flags&8)!=0;
+  Check(recipe.Conditions.All(c=>c.Check())==((flags&(1<<(entry.Tier-1)))!=0),"Object recipe retains intended stage gate");
+ }
+}
+Console.WriteLine($"Including placeable biome objects: {assertions} assertions.");

@@ -21,6 +21,7 @@ public class SwordTabletTile : ModTile
         TileObjectData.newTile.AnchorBottom = new AnchorData(AnchorType.SolidTile | AnchorType.SolidWithTop | AnchorType.Table, 2, 0);
         TileObjectData.newTile.LavaDeath = false;
         TileObjectData.addTile(Type);
+        RegisterItemDrop(ModContent.ItemType<global::XianXia.Content.Items.Construction.SwordTabletPlaceable>());
         Main.tileSolid[Type] = false; Main.tileFrameImportant[Type] = true; Main.tileNoAttach[Type] = true;
         Main.tileLavaDeath[Type] = false; AddMapEntry(new Color(160, 200, 220), CreateMapEntryName());
         DustType = DustID.Stone; MineResist = 3f; MinPick = 150;
@@ -41,6 +42,7 @@ public class BrokenHeavenTabletTile : ModTile
         TileObjectData.newTile.AnchorBottom = new AnchorData(AnchorType.SolidTile | AnchorType.SolidWithTop | AnchorType.Table, 2, 0);
         TileObjectData.newTile.LavaDeath = false;
         TileObjectData.addTile(Type);
+        RegisterItemDrop(ModContent.ItemType<global::XianXia.Content.Items.Construction.BrokenHeavenTabletPlaceable>());
         Main.tileSolid[Type] = false; Main.tileFrameImportant[Type] = true; Main.tileNoAttach[Type] = true;
         Main.tileLavaDeath[Type] = false; Main.tileLighted[Type] = true;
         AddMapEntry(new Color(220, 210, 160), CreateMapEntryName());
@@ -62,10 +64,11 @@ public class ArchiveLightPillarTile : ModTile
         TileObjectData.newTile.AnchorBottom = new AnchorData(AnchorType.SolidTile | AnchorType.SolidWithTop | AnchorType.Table, 2, 0);
         TileObjectData.newTile.LavaDeath = false;
         TileObjectData.addTile(Type);
+        RegisterItemDrop(ModContent.ItemType<global::XianXia.Content.Items.Construction.ArchiveLightPillarPlaceable>());
         Main.tileSolid[Type] = false; Main.tileFrameImportant[Type] = true; Main.tileNoAttach[Type] = true;
         Main.tileLavaDeath[Type] = false; Main.tileLighted[Type] = true;
         AddMapEntry(new Color(220, 220, 240), CreateMapEntryName());
-        DustType = DustID.IceTorch; MineResist = 5f; MinPick = 250;
+        DustType = DustID.IceTorch; MineResist = 5f; MinPick = 225;
     }
     public override void ModifyLight(int i, int j, ref float r, ref float g, ref float b) { r = 0.2f; g = 0.22f; b = 0.35f; }
 }
@@ -83,6 +86,7 @@ public class SingingThunderStoneTile : ModTile
         TileObjectData.newTile.AnchorBottom = new AnchorData(AnchorType.SolidTile | AnchorType.SolidWithTop | AnchorType.Table, 2, 0);
         TileObjectData.newTile.LavaDeath = false;
         TileObjectData.addTile(Type);
+        RegisterItemDrop(ModContent.ItemType<global::XianXia.Content.Items.Construction.SingingThunderStonePlaceable>());
         Main.tileSolid[Type] = false; Main.tileFrameImportant[Type] = true; Main.tileNoAttach[Type] = true;
         Main.tileLavaDeath[Type] = false; Main.tileLighted[Type] = true;
         AddMapEntry(new Color(140, 130, 220), CreateMapEntryName());
@@ -104,6 +108,7 @@ public class RiftMembraneTile : ModTile
         TileObjectData.newTile.AnchorBottom = new AnchorData(AnchorType.SolidTile | AnchorType.SolidWithTop | AnchorType.Table, 2, 0);
         TileObjectData.newTile.LavaDeath = false;
         TileObjectData.addTile(Type);
+        RegisterItemDrop(ModContent.ItemType<global::XianXia.Content.Items.Construction.RiftMembranePlaceable>());
         Main.tileSolid[Type] = false; Main.tileFrameImportant[Type] = true; Main.tileNoAttach[Type] = true;
         Main.tileLavaDeath[Type] = false; Main.tileLighted[Type] = true;
         AddMapEntry(new Color(40, 40, 100), CreateMapEntryName());

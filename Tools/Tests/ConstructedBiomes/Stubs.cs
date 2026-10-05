@@ -7,7 +7,7 @@ namespace Terraria {
  public static class Main {
   public static int netMode,maxTilesX=60,maxTilesY=60,buffScanAreaWidth=50,buffScanAreaHeight=50; public static ulong GameUpdateCount;
   public static bool hardMode; public static Tile[,] tile=new Tile[60,60];
-  public static bool[] tileSolid=new bool[512],tileMergeDirt=new bool[512],tileBlockLight=new bool[512];
+  public static bool[] tileSolid=new bool[512],tileMergeDirt=new bool[512],tileBlockLight=new bool[512],tileFrameImportant=new bool[512],tileNoAttach=new bool[512],tileLavaDeath=new bool[512],tileLighted=new bool[512];
  }
  public static class NPC { public static bool downedPlantBoss,downedGolemBoss,downedMoonlord; }
  public struct Tile { public bool HasTile; public ushort TileType; }
@@ -36,10 +36,10 @@ namespace Terraria {
 }
 namespace Terraria.ID {
  public static class NetmodeID { public const int Server=2; }
- public static class ItemID { public const int StoneBlock=1,DirtBlock=2,AshBlock=3,Cloud=4,FallenStar=5; }
+ public static class ItemID { public const int StoneBlock=1,DirtBlock=2,AshBlock=3,Cloud=4,FallenStar=5,Bone=6,GoldBar=7; }
  public static class TileID { public const int WorkBenches=1; }
- public static class ItemRarityID { public const int White=0; }
- public static class DustID { public const int Stone=1; }
+ public static class ItemRarityID { public const int White=0,LightRed=4; }
+ public static class DustID { public const int Stone=1,GoldCoin=2,IceTorch=3,Electric=4,GemSapphire=5; }
 }
 namespace Terraria.ModLoader {
  public class ModPlayer { public Terraria.Player Player; }
@@ -57,8 +57,10 @@ namespace Terraria.ModLoader {
   public Terraria.Recipe CreateRecipe(int amount=1)=>new(){Result=ModContent.Id(GetType()),Amount=amount};
  }
  public class ModTile {
-  public int Type=>ModContent.Id(GetType()); public int DustType,RegisteredDrop; public float MineResist;
+  public int Type=>ModContent.Id(GetType()); public int DustType,RegisteredDrop; public float MineResist; public int MinPick;
   public virtual string Texture=>""; public virtual void SetStaticDefaults(){}
+  public virtual bool CanExplode(int i,int j)=>true;
+  public virtual void ModifyLight(int i,int j,ref float r,ref float g,ref float b){}
   public void RegisterItemDrop(int id)=>RegisteredDrop=id;
   public object CreateMapEntryName()=>null; public void AddMapEntry(Microsoft.Xna.Framework.Color c,object name){}
  }
@@ -74,4 +76,16 @@ namespace XianXia.Content.Items.Materials { public class LowGradeSpiritStone {} 
 namespace XianXia.Content.Tiles {
  public class SpiritOreTile{} public class SpiritMossTile{} public class GreenwoodSoilTile{} public class SpiritHerbTile{}
  public class FurnaceSlagTile{} public class ThunderCloudTile{} public class StarAbyssCrystalTile{} public class SectRuinBrickTile{} public class FallenHeavenJadeTile{} public class MoonboneTile{}
+}
+
+namespace Terraria.DataStructures { public record struct Point16(int X,int Y); public record struct AnchorData(Terraria.Enums.AnchorType Type,int Width,int Offset); }
+namespace Terraria.Enums { [Flags] public enum AnchorType { SolidTile=1,SolidWithTop=2,Table=4 } }
+namespace Terraria.ObjectData {
+ public class TileObjectData {
+  public int Width,Height,CoordinatePadding; public int[] CoordinateHeights; public Terraria.DataStructures.Point16 Origin;
+  public Terraria.DataStructures.AnchorData AnchorBottom; public bool LavaDeath;
+  public static TileObjectData newTile=new(),Style1x1=new();public static Dictionary<int,TileObjectData> Registered=new();
+  public void CopyFrom(TileObjectData other){}
+  public static void addTile(int id){Registered[id]=newTile;newTile=new();}
+ }
 }
