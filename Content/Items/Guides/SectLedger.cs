@@ -32,8 +32,9 @@ public class SectLedger : ModItem
 
     public override bool? UseItem(Player player)
     {
-        if (Main.myPlayer == player.whoAmI)
+        if (!Main.dedServ && Main.myPlayer == player.whoAmI && player.active && !player.dead)
         {
+            Main.NewText(CultivationStatusText.Summary(player.GetModPlayer<XianXiaPlayer>()), 120, 245, 220);
             Main.NewText(GetNextGuidance(player), 120, 245, 220);
         }
 

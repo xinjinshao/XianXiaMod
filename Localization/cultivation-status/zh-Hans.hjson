@@ -1,0 +1,24 @@
+{
+  "Mods": {
+    "XianXia": {
+      "CultivationStatus": {
+        "Realms": {
+          "None": "未启灵",
+          "QiAwakening": "引气",
+          "QiCondensation": "凝气",
+          "Foundation": "筑基",
+          "GoldenCore": "金丹",
+          "NascentSoul": "元婴",
+          "SpiritSevering": "化神",
+          "Tribulation": "渡劫",
+          "DaoSevering": "斩道"
+        },
+        "Resources": "境界：{0} | 灵气：{1}/{2} | 灵压：{3}",
+        "ActiveTrial": "天劫进行中：剩余{0}秒（存活倒计时）",
+        "RetryTrial": "当前境界天劫未完成：使用天劫训练令重试",
+        "NoActiveTrial": "当前没有进行中的天劫",
+        "Weakness": "天劫虚弱：剩余{0}秒"
+      }
+    }
+  }
+}

@@ -1,0 +1,24 @@
+{
+  "Mods": {
+    "XianXia": {
+      "CultivationStatus": {
+        "Realms": {
+          "None": "Unawakened",
+          "QiAwakening": "Qi Awakening",
+          "QiCondensation": "Qi Condensation",
+          "Foundation": "Foundation",
+          "GoldenCore": "Golden Core",
+          "NascentSoul": "Nascent Soul",
+          "SpiritSevering": "Spirit Severing",
+          "Tribulation": "Tribulation",
+          "DaoSevering": "Dao Severing"
+        },
+        "Resources": "Realm: {0} | Energy: {1}/{2} | Pressure: {3}",
+        "ActiveTrial": "Trial active: {0}s remaining (survival timer)",
+        "RetryTrial": "Current realm trial unfinished: use a Training Token to retry",
+        "NoActiveTrial": "No trial currently active",
+        "Weakness": "Tribulation weakness: {0}s remaining"
+      }
+    }
+  }
+}

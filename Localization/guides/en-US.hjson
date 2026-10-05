@@ -3,7 +3,7 @@ Mods: {
 		Items: {
 			SectLedger: {
 				DisplayName: Sect Ledger
-				Tooltip: Use to read the next cultivation objective recorded by the fallen sect.
+				Tooltip: Use to read your realm, energy, pressure, trial status and next cultivation objective.
 				Guidance: {
 					SectReputation: "Sect reputation: {0}."
 					AwakenQi: The ledger points to shallow spirit veins: craft or use a Qi-Drawing Talisman to awaken spiritual energy.

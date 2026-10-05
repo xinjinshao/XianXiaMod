@@ -22,7 +22,9 @@ public class SpiritualEnergyUIState : UIState
 
     protected override void DrawSelf(SpriteBatch spriteBatch)
     {
+        if (Main.gameMenu || Main.dedServ) return;
         Player player = Main.LocalPlayer;
+        if (!player.active || player.dead) return;
         XianXiaPlayer modPlayer = player.GetModPlayer<XianXiaPlayer>();
         if (!modPlayer.discoveredSpiritualEnergy)
         {
@@ -51,5 +53,11 @@ public class SpiritualEnergyUIState : UIState
             Vector2.Zero,
             0.8f
         );
+        Vector2 mouse = Main.MouseScreen / Main.UIScale;
+        if (new Rectangle((int)position.X, (int)position.Y, frame.Width, frame.Height).Contains(mouse.ToPoint()))
+        {
+            player.mouseInterface = true;
+            Main.instance.MouseText(CultivationStatusText.Summary(modPlayer));
+        }
     }
 }
