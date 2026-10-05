@@ -275,3 +275,25 @@ enemyBoltType.GetMethod("SetDefaults").Invoke(bolt,null);
 Check((bool)projectileType.GetField("hostile").GetValue(nativeProjectile)&&!(bool)projectileType.GetField("friendly").GetValue(nativeProjectile),"Early enemy bolt is hostile and never friendly");
 Check((bool)projectileType.GetField("tileCollide").GetValue(nativeProjectile)&&(int)projectileType.GetField("timeLeft").GetValue(nativeProjectile)==180,"Early enemy bolt retains terrain collision and lifetime");
 Console.WriteLine($"Actual engine gameplay assertions including hostile bolt: {assertions}.");
+
+// Execute the real reward against the engine's native extra-jump state.
+var bottleType=type.Assembly.GetType("XianXia.Content.Items.HandGenerated.TribulationCloudBottle",true);
+object bottle=Activator.CreateInstance(bottleType);
+var itemType=tagType.Assembly.GetType("Terraria.Item",true);
+object nativeBottle=Activator.CreateInstance(itemType);
+bottleType.GetProperty("Entity",BindingFlags.Instance|BindingFlags.Public|BindingFlags.NonPublic).SetValue(bottle,nativeBottle);
+bottleType.GetMethod("SetDefaults").Invoke(bottle,null);
+Check((bool)itemType.GetField("accessory").GetValue(nativeBottle)&&!(bool)itemType.GetField("vanity").GetValue(nativeBottle),"Cloud bottle is a functional accessory");
+var nativePlayerType=tagType.Assembly.GetType("Terraria.Player",true);
+object bottlePlayer=Activator.CreateInstance(nativePlayerType);
+var jumpType=tagType.Assembly.GetType("Terraria.ModLoader.ExtraJump",true);
+object cloudJump=jumpType.GetProperty("CloudInABottle").GetValue(null);
+var getJump=nativePlayerType.GetMethods().Single(m=>m.Name=="GetJumpState"&&m.GetParameters().Length==1).MakeGenericMethod(cloudJump.GetType());
+bottleType.GetMethod("UpdateAccessory").Invoke(bottle,new[]{bottlePlayer,(object)false});
+object jumpState=getJump.Invoke(bottlePlayer,new[]{cloudJump});
+Check((bool)jumpState.GetType().GetProperty("Enabled").GetValue(jumpState),"Actual reward enables native cloud extra jump");
+int electrified=(int)tagType.Assembly.GetType("Terraria.ID.BuffID",true).GetField("Electrified").GetRawConstantValue();
+Check(((bool[])nativePlayerType.GetField("buffImmune").GetValue(bottlePlayer))[electrified],"Actual reward grants Electrified immunity");
+bottleType.GetMethod("UpdateAccessory").Invoke(bottle,new[]{bottlePlayer,(object)true});
+Check((bool)getJump.Invoke(bottlePlayer,new[]{cloudJump}).GetType().GetProperty("Enabled").GetValue(getJump.Invoke(bottlePlayer,new[]{cloudJump})),"Hiding accessory visuals retains the native jump");
+Console.WriteLine($"Actual engine gameplay assertions including rare reward: {assertions}.");
