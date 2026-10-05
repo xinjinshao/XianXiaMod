@@ -13,3 +13,6 @@ ServerPlayerProjectileSync仅处理本模组、服务器端、owner在玩家范�
 青木法阵、雷符法阵与药王法阵设置netImportant，供原生迟加入同步；两旧法阵生成模板同步此默认值，未重生成文件。正常持续时间、资源成本与部署上限不变。
 
 依据：[官方Projectile文档](https://docs.tmodloader.net/docs/stable/class_projectile.html)的netUpdate/netImportant说明、[官方NewProjectile补丁](https://github.com/tModLoader/tModLoader/blob/stable/patches/tModLoader/Terraria/Projectile.cs.patch)的所有者自动发送条件。已通过源码边界回归、实际编译产物默认值及专服加载。尚需双客户端验证初始创建、弹跳/回收状态、销毁时序、迟加入、ExtraAI内容与实际网络负载；不能以模拟消息调用次数代替原生联机验收。
+
+
+青木与雷符法阵仅保留活跃、生存、距离不超过1600像素的主人；否则服务器清理，客户端先禁用伤害并等待销毁同步。青木恢复只对领域内主人有效，每60tick最多回复1生命/1灵气，共享逐玩家恢复限制；雷符法阵维持240tick寿命与timeLeft整除45时的权威落雷，正常完整生命周期最多5次。两法阵与共享小雷击跳过专服照明，生成模板同步对应边界。

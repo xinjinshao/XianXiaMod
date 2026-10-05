@@ -646,3 +646,12 @@ Networking累计23044条源码回归通过，新增174条覆盖9境界×16世界
 Networking累计23060条源码回归通过，新增16条核对实际服务器sentinel下创建消息的槽位、销毁消息的identity/owner、脏状态一次发送/未变化不发、SP/客户端保留原标志、非法/服务器owner、原版和其它Mod排除、非活跃弹体不创建/更新、原生模拟Kill只发送一次、药王法阵死亡清理广播及迟加入标志。此前天碑销毁断言改为经真实Global hook的模拟原生Kill执行。消息序列化/接收和真实网络时序仍为未验收边界。Gameplay累计169条对编译产物/官方引擎回归通过，新增3条验证三法阵实际netImportant。构建0警告0错误、打包与隔离专服加载通过，日志run-777cb02420a946b1afb27d5cfe6c0824；内容契约、本地化及diff检查通过。R01/R02/R31继续未勾选，双客户端创建、ExtraAI、反弹/回收、提前死亡、迟加入、NPC伤害和网络负载仍需原生验收。
 
 依据与边界见[弹体网络说明](../Wiki/Systems/Projectile_Networking.md)，参考[官方文档](https://docs.tmodloader.net/docs/stable/class_projectile.html)和[官方补丁](https://github.com/tModLoader/tModLoader/blob/stable/patches/tModLoader/Terraria/Projectile.cs.patch)。本轮提交推送GitHub。
+
+
+## 第67轮：旧法阵主人生命周期与专服图形隔离
+
+复核青木法阵和雷符法阵：原先直接读取Main.player[owner]且未限制无效/死亡/断线/远离主人，雷符法阵仍可能在主人死亡后释放落雷，两者及共享小雷击无条件调用Lighting。两法阵现通过LivingOwner检查owner在玩家范围、活跃存活且距离不超过1600像素；无有效主人时服务器/单人端Kill（沿用第66轮Global原生销毁广播），客户端先通过CanDamage=false禁伤并等待同步。保留96×96、Magic、本地免疫30、无限穿透与迟加入标志。
+
+青木法阵仍存活300tick，逐玩家TryArrayRecovery限制同一GameUpdateCount最多恢复一次，只有领域内主人在60tick边界回复1生命/1灵气；保留服务器SpiritHeal通知和单人Heal，上限不溢出。雷符法阵仍240tick、timeLeft整除45时由服务器/单人释放半伤害小雷击，完整生命周期五次，客户端不重复生成；无有效主人先清理，不放最后一发。两法阵与MinorThunderboltProjectile跳过专服Lighting，客户端保留。两法阵行为模板同步了完整边界及原先源码已有但模板缺失的恢复权限/非叠加；生成器通用弹幕AI也加专服照明检查，未全量重生成。中英文提示纠正“青木恢复友方”为只恢复主人，并说明时长与清理距离，提示模板同步。
+
+Networking累计23092条源码回归通过，本轮新增32条涵盖两法阵的owner上下界、死亡/断线/距离阈值与销毁消息、客户端孤儿禁伤、逐玩家恢复节奏/重叠非叠加/离开领域/只恢复主人/上限/SP与MP角色、雷符五次波数与伤害/客户端不发/主人死亡不发、共享雷击Melee/Magic来源继承及服务器图形隔离。碰撞、恢复权限缓存、消息与原生寿命推进为模拟边界。Gameplay169条编译产物对官方引擎回归通过（本轮无新增，三法阵迟加入默认值保持），构建0警告0错误、打包与专服加载通过，日志run-59846f8cdb3c4a378508c67b49623b0f；内容契约、本地化键、生成器语法与diff检查通过。真实双客户端清理/治疗消息/命中与迟加入及专服压力测试仍待验收；R01/R31继续未勾选。本轮提交推送GitHub。

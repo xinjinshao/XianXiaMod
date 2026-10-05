@@ -51,7 +51,7 @@ Mods: {
 			}
 			GreenwoodArrayPlate: {
 				DisplayName: "青木阵盘"
-				Tooltip: "以青木雕刻的阵法盘。部署一个恢复领域，为范围内友方回复生命与灵气。"
+				Tooltip: "部署5秒青木领域；主人站在领域内时，每秒回复1生命和1灵气，同一玩家不叠加\n主人死亡、离开或距离超过1600像素时消散"
 			}
 			GreenwoodRoot: {
 				DisplayName: "青木根"
@@ -187,7 +187,7 @@ Mods: {
 			}
 			ThunderTalismanArrayPlate: {
 				DisplayName: "雷符阵盘"
-				Tooltip: "铭刻雷符的阵法盘。部署一个雷电领域，定期降下雷霆。"
+				Tooltip: "部署4秒雷电领域，按45tick间隔释放半伤害落雷\n主人死亡、离开或距离超过1600像素时消散"
 			}
 			TribulationCloudDew: {
 				DisplayName: "劫云露"

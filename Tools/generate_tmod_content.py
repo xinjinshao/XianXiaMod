@@ -141,8 +141,8 @@ ITEM_TOOLTIPS_ZH = {
     "formless_sword_wheel": "无形无相的旋转剑阵。可穿透多个敌人，拥有局部无敌帧。",
     "moonbone_dharma_sword": "以月骨锻造的法剑。弹片命中后减速，可贯穿两次。",
     "cinnabar_talisman_flame_item": "燃烧朱砂的符箓。命中敌人时施加灼热烈焰。",
-    "greenwood_array_plate": "以青木雕刻的阵法盘。部署一个恢复领域，为范围内友方回复生命与灵气。",
-    "thunder_talisman_array_plate": "铭刻雷符的阵法盘。部署一个雷电领域，定期降下雷霆。",
+    "greenwood_array_plate": "部署5秒青木领域；主人站在领域内时，每秒回复1生命和1灵气，同一玩家不叠加\n主人死亡、离开或距离超过1600像素时消散",
+    "thunder_talisman_array_plate": "部署4秒雷电领域，按45tick间隔释放半伤害落雷\n主人死亡、离开或距离超过1600像素时消散",
     "broken_heaven_decree": "仍带有审判之力的天庭法令。释放可穿透方块的裁决光束。",
     "old_heaven_dao_scroll": "元婴突破消耗品。金丹境并完成当前天劫，击败世纪之花与无相剑魄后使用。没有攻击功能。",
     "star_eclipse_arbalest": "发射星蚀裂弹的弩机。首次命中敌人后分裂为两枚灵弹。",
@@ -181,8 +181,8 @@ ITEM_TOOLTIPS_EN = {
     "formless_sword_wheel": "A spinning sword formation with no fixed form. Passes through multiple enemies with local immunity frames.",
     "moonbone_dharma_sword": "A dharma sword forged from moonbone. Shards slow on impact, piercing twice before fading.",
     "cinnabar_talisman_flame_item": "A talisman that burns with cinnabar fire. Ignites enemies with searing flames on hit.",
-    "greenwood_array_plate": "A formation plate carved from greenwood. Deploys a healing array field that restores life and spiritual energy to allies inside.",
-    "thunder_talisman_array_plate": "An array plate inscribed with thunder talismans. Deploys a lightning field that periodically rains thunderbolts.",
+    "greenwood_array_plate": "Deploys a 5-second greenwood field; restores 1 life and 1 spiritual energy per second to its owner while inside, without stacking\nEnds when its owner dies, disconnects or moves over 1600 pixels away",
+    "thunder_talisman_array_plate": "Deploys a 4-second lightning field that releases half-damage bolts at 45-tick intervals\nEnds when its owner dies, disconnects or moves over 1600 pixels away",
     "broken_heaven_decree": "A divine decree that still carries judgment. Unleashes piercing judgment beams that ignore tile collision.",
     "old_heaven_dao_scroll": "Nascent Soul breakthrough consumable. Use at Golden Core after clearing the current trial and defeating Plantera and the Formless Sword Soul. Has no attack function.",
     "star_eclipse_arbalest": "An arbalest that fires star-eclipsing bolts. Projectiles split into two spirit bolts on the first enemy hit.",
@@ -958,7 +958,7 @@ def generate_projectiles(existing: set[str]) -> None:
     {
         if (Projectile.velocity.LengthSquared() > 0.01f)
             Projectile.rotation = Projectile.velocity.ToRotation();
-        Lighting.AddLight(Projectile.Center, 0.06f, 0.18f, 0.2f);
+        if (!Main.dedServ) Lighting.AddLight(Projectile.Center, 0.06f, 0.18f, 0.2f);
     }
 """
         classes.append(f"""
@@ -1078,52 +1078,83 @@ def projectile_behavior_code(class_name: str) -> tuple[str, str]:
 
     if class_name == "GreenwoodArrayField":
         return ("""
-        Projectile.penetrate = -1;
-        Projectile.timeLeft = 300;
-        Projectile.tileCollide = false;
-        Projectile.netImportant = true;
-        Projectile.usesLocalNPCImmunity = true;
-        Projectile.localNPCHitCooldown = 30;""", """
-
+        Projectile.width = Projectile.height = 96;
+        Projectile.friendly = true; Projectile.hostile = false;
+        Projectile.DamageType = DamageClass.Magic;
+        Projectile.penetrate = -1; Projectile.timeLeft = 300;
+        Projectile.tileCollide = false; Projectile.ignoreWater = true; Projectile.netImportant = true;
+        Projectile.usesLocalNPCImmunity = true; Projectile.localNPCHitCooldown = 30;""", """
+    private Player LivingOwner
+    {
+        get
+        {
+            if (Projectile.owner < 0 || Projectile.owner >= Main.maxPlayers) return null;
+            Player owner = Main.player[Projectile.owner];
+            return owner.active && !owner.dead && Vector2.DistanceSquared(owner.Center, Projectile.Center) <= 1600f * 1600f ? owner : null;
+        }
+    }
+    public override bool? CanDamage() => LivingOwner == null ? false : null;
     public override void AI()
     {
         Projectile.velocity = Vector2.Zero;
-        Projectile.rotation += 0.02f;
-        Player owner = Main.player[Projectile.owner];
-        if (owner.active && owner.Hitbox.Intersects(Projectile.Hitbox) && Main.GameUpdateCount % 60 == 0)
+        Player owner = LivingOwner;
+        if (owner == null)
         {
-            owner.statLife = Math.Min(owner.statLifeMax2, owner.statLife + 1);
-            owner.GetModPlayer<global::XianXia.Common.Players.XianXiaPlayer>().RestoreSpiritualEnergy(1);
+            if (Main.netMode != NetmodeID.MultiplayerClient) Projectile.Kill();
+            return;
         }
-        Lighting.AddLight(Projectile.Center, 0.05f, 0.24f, 0.12f);
+        Projectile.rotation += 0.02f;
+        if (!Main.dedServ) Lighting.AddLight(Projectile.Center, 0.05f, 0.24f, 0.12f);
+        if (Main.netMode == NetmodeID.MultiplayerClient || !owner.Hitbox.Intersects(Projectile.Hitbox)
+            || Main.GameUpdateCount % 60 != 0
+            || !owner.GetModPlayer<global::XianXia.Common.Players.XianXiaPlayer>().TryArrayRecovery(Main.GameUpdateCount)) return;
+        int healed = Math.Min(1, Math.Max(0, owner.statLifeMax2 - owner.statLife));
+        if (healed > 0)
+        {
+            if (Main.netMode == NetmodeID.Server)
+            {
+                owner.statLife += healed;
+                NetMessage.SendData(MessageID.SpiritHeal, owner.whoAmI, -1, null, owner.whoAmI, healed);
+            }
+            else owner.Heal(healed);
+        }
+        owner.GetModPlayer<global::XianXia.Common.Players.XianXiaPlayer>().RestoreSpiritualEnergy(1);
     }
 """)
 
     if class_name == "ThunderTalismanArray":
         return ("""
-        Projectile.penetrate = -1;
-        Projectile.timeLeft = 240;
-        Projectile.tileCollide = false;
-        Projectile.netImportant = true;
-        Projectile.usesLocalNPCImmunity = true;
-        Projectile.localNPCHitCooldown = 30;""", """
-
+        Projectile.width = Projectile.height = 96;
+        Projectile.friendly = true; Projectile.hostile = false;
+        Projectile.DamageType = DamageClass.Magic;
+        Projectile.penetrate = -1; Projectile.timeLeft = 240;
+        Projectile.tileCollide = false; Projectile.ignoreWater = true; Projectile.netImportant = true;
+        Projectile.usesLocalNPCImmunity = true; Projectile.localNPCHitCooldown = 30;""", """
+    private Player LivingOwner
+    {
+        get
+        {
+            if (Projectile.owner < 0 || Projectile.owner >= Main.maxPlayers) return null;
+            Player owner = Main.player[Projectile.owner];
+            return owner.active && !owner.dead && Vector2.DistanceSquared(owner.Center, Projectile.Center) <= 1600f * 1600f ? owner : null;
+        }
+    }
+    public override bool? CanDamage() => LivingOwner == null ? false : null;
     public override void AI()
     {
         Projectile.velocity = Vector2.Zero;
-        Projectile.rotation += 0.035f;
-        if (Projectile.owner == Main.myPlayer && Projectile.timeLeft % 45 == 0)
+        Player owner = LivingOwner;
+        if (owner == null)
         {
-            Projectile.NewProjectile(
-                Projectile.GetSource_FromAI(),
-                Projectile.Center + new Vector2(Main.rand.NextFloat(-48f, 48f), -220f),
-                Vector2.UnitY * 13f,
-                ModContent.ProjectileType<MinorThunderboltProjectile>(),
-                Math.Max(1, Projectile.damage / 2),
-                0.5f,
-                Projectile.owner);
+            if (Main.netMode != NetmodeID.MultiplayerClient) Projectile.Kill();
+            return;
         }
-        Lighting.AddLight(Projectile.Center, 0.12f, 0.08f, 0.25f);
+        Projectile.rotation += 0.035f;
+        if (!Main.dedServ) Lighting.AddLight(Projectile.Center, 0.12f, 0.08f, 0.25f);
+        if (Main.netMode == NetmodeID.MultiplayerClient || Projectile.timeLeft % 45 != 0) return;
+        Projectile.NewProjectile(Projectile.GetSource_FromAI(),
+            Projectile.Center + new Vector2(Main.rand.NextFloat(-48f, 48f), -220f), Vector2.UnitY * 13f,
+            ModContent.ProjectileType<MinorThunderboltProjectile>(), Math.Max(1, Projectile.damage / 2), 0.5f, Projectile.owner);
     }
 """)
 

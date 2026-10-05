@@ -48,5 +48,8 @@
   <Compile Include="../../../Content/Projectiles/HeavenTabletWardProjectile.cs" Link="HeavenTabletWardProjectile.cs" />
   <Compile Include="../../../Common/Players/HeavenTabletWardPlayer.cs" Link="HeavenTabletWardPlayer.cs" />
   <Compile Include="../../../Common/Systems/ServerPlayerProjectileSync.cs" Link="ServerPlayerProjectileSync.cs" />
+  <Compile Include="../../../Content/Projectiles/GreenwoodArrayField.cs" Link="GreenwoodArrayField.cs" />
+  <Compile Include="../../../Content/Projectiles/ThunderTalismanArray.cs" Link="ThunderTalismanArray.cs" />
+  <Compile Include="../../../Content/Projectiles/MinorThunderboltProjectile.cs" Link="MinorThunderboltProjectile.cs" />
 </ItemGroup>
 </Project>

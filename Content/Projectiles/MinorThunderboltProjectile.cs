@@ -57,7 +57,7 @@ public class MinorThunderboltProjectile : ModProjectile
 
             Projectile.rotation = Projectile.velocity.ToRotation();
 
-        Lighting.AddLight(Projectile.Center, 0.06f, 0.18f, 0.2f);
+        if (!Main.dedServ) Lighting.AddLight(Projectile.Center, 0.06f, 0.18f, 0.2f);
 
     }
 

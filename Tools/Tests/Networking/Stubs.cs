@@ -13,6 +13,8 @@ namespace Microsoft.Xna.Framework
         public Point ToTileCoordinates() => new((int)(X / 16),(int)(Y / 16));
         public Vector2 RotatedBy(double radians) => new(X*(float)Math.Cos(radians)-Y*(float)Math.Sin(radians),X*(float)Math.Sin(radians)+Y*(float)Math.Cos(radians));
         public float ToRotation()=>MathF.Atan2(Y,X);
+        public static Vector2 UnitY => new(0,1);
+        public static Vector2 operator +(Vector2 a,Vector2 b)=>new(a.X+b.X,a.Y+b.Y);
         public static Vector2 Zero => new(0,0);
         public static Vector2 UnitX => new(1,0);
         public static Vector2 operator -(Vector2 a, Vector2 b) => new(a.X-b.X,a.Y-b.Y);
@@ -28,6 +30,7 @@ namespace Terraria
 {
     public static class Main
     {
+        public static ulong GameUpdateCount;
         public static int netMode, maxPlayers = 4, maxNPCs = 4, myPlayer;
         public static int maxTilesX=30,maxTilesY=30;
         public static Tile[,] tile = CreateTiles();
@@ -46,7 +49,7 @@ namespace Terraria
         public static readonly List<string> Chat = new();
         public static void NewText(string value, byte r, byte g, byte b) => Chat.Add(value);
     }
-    public class RandomStub { public float Roll = 0.9f; public float NextFloat() => Roll; }
+    public class RandomStub { public float Roll = 0.9f; public float NextFloat() => Roll; public float NextFloat(float min,float max)=>min+(max-min)*Roll; }
     public class Player
     {
         public bool active = true, dead, noItems, CCed;
@@ -67,6 +70,7 @@ namespace Terraria
         public ref Terraria.ModLoader.StatModifier GetKnockback(Terraria.ModLoader.DamageClass damage)=>ref knockbackModifier;
         public int[] buffTime = new int[22], ownedProjectileCounts = new int[16];
         public void AddBuff(int type, int time) => buffTime[type] = time;
+        public Microsoft.Xna.Framework.Rectangle Hitbox => new((int)Center.X-10,(int)Center.Y-20,20,40);
         public Microsoft.Xna.Framework.Vector2 MountedCenter => Center;
         public Microsoft.Xna.Framework.Vector2 RotatedRelativePoint(Microsoft.Xna.Framework.Vector2 value) => value;
         public int GetWeaponDamage(Item item) => item.damage + 5;
@@ -111,6 +115,7 @@ namespace Terraria
         public int width,height,penetrate,timeLeft,localNPCHitCooldown; public float rotation; public float[] ai=new float[2]; public object DamageType;
         public Terraria.ModLoader.ModProjectile ModProjectile;public int whoAmI;
         public int owner, type, damage, identity; public float knockBack;
+        public Microsoft.Xna.Framework.Rectangle Hitbox=>new((int)Center.X-width/2,(int)Center.Y-height/2,width,height);
         public object GetSource_FromAI()=>new(); public void Kill(){if(!active)return;new XianXia.Common.Systems.ServerPlayerProjectileSync().OnKill(this,timeLeft);active=false;}
         private static int nextIdentity;
         public Microsoft.Xna.Framework.Vector2 velocity;
@@ -240,7 +245,7 @@ namespace Terraria.ModLoader
     public static class ModContent {
         public static int TileType<T>() => typeof(T).Name switch { "ArtifactForgeTile"=>1,"ThunderPatternForgeTile"=>2,"HeavenFireFurnaceTile"=>3,_=>4 };
         public static int ItemType<T>()=>200;
-        public static int ProjectileType<T>()=>typeof(T).Name=="GreenwoodArrayField"?3:typeof(T).Name=="MedicineCauldronField"?4:typeof(T).Name=="MedicineSpiritBolt"?5:typeof(T).Name=="FurnaceHammerProjectile"?6:typeof(T).Name=="FurnaceImpactBurst"?7:typeof(T).Name=="HeavenTabletWardProjectile"?8:2;
+        public static int ProjectileType<T>()=>typeof(T).Name=="GreenwoodArrayField"?3:typeof(T).Name=="MedicineCauldronField"?4:typeof(T).Name=="MedicineSpiritBolt"?5:typeof(T).Name=="FurnaceHammerProjectile"?6:typeof(T).Name=="FurnaceImpactBurst"?7:typeof(T).Name=="HeavenTabletWardProjectile"?8:typeof(T).Name=="ThunderTalismanArray"?9:typeof(T).Name=="MinorThunderboltProjectile"?10:2;
         public static int BuffType<T>()=>2;
         public static T GetInstance<T>() where T:new()=>new T();
     }
@@ -307,6 +312,7 @@ namespace XianXia.Common.Players
         public bool ApplyingWeaponShot;
         public void RestoreSpiritualEnergy(int amount) => spiritualEnergy = Math.Clamp(spiritualEnergy + amount, 0, maxSpiritualEnergy);
         public bool TryConsumeSpiritualEnergy(int amount) { if (spiritualEnergy < amount) return false; spiritualEnergy -= amount; return true; }
+        private ulong lastRecoveryTick=ulong.MaxValue; public bool TryArrayRecovery(ulong tick){if(Terraria.Main.netMode==Terraria.ID.NetmodeID.MultiplayerClient||tick==lastRecoveryTick)return false;lastRecoveryTick=tick;return true;}
         public bool CanConsumeSpiritualEnergy(int amount)=>spiritualEnergy>=amount;
         public bool CanDeployArray(int type,int amount)=>arrayDeploymentCooldown==0&&Terraria.Main.player[0].ownedProjectileCounts[type]==0&&CanConsumeSpiritualEnergy(amount);
         public bool TryDeployArray(int type, int amount)
@@ -383,7 +389,7 @@ namespace XianXia.Content.Items.Materials { public class LowGradeSpiritStone { }
 namespace XianXia.Content.Tiles.Stations { public class ArtifactForgeTile { } public class ThunderPatternForgeTile { } public class HeavenFireFurnaceTile { } public class DaoSeveringAltarTile { } }
 namespace XianXia.Content.Items.HandGenerated { public class RouteMaterial { } }
 namespace XianXia.Content.Items.Accessories { public class LightningWardJade { } }
-namespace XianXia.Content.Projectiles { public class GreenwoodArrayField { } public class CloudpiercerSwordProjectile { } }
+namespace XianXia.Content.Projectiles { public class CloudpiercerSwordProjectile { } }
 namespace XianXia.Content.Buffs { public class ArtifactWardBuff { } }
 
 namespace Terraria {
@@ -393,7 +399,7 @@ namespace Terraria {
 }
 namespace Terraria.ID {public static class ItemRarityID {public const int Red=10,Lime=8,Yellow=9,Green=2;}}
 namespace Terraria.ModLoader {
- public class ModProjectile {public Mod Mod;public Terraria.Projectile Projectile=new();public ModProjectile(){Projectile.ModProjectile=this;}public virtual string Texture=>"";public virtual void SetDefaults(){}public virtual bool? CanDamage()=>null;public virtual void AI(){} public virtual void OnKill(int timeLeft){} public virtual bool? CanHitNPC(Terraria.NPC target)=>null;public virtual bool OnTileCollide(Microsoft.Xna.Framework.Vector2 velocity)=>true;public virtual void OnHitNPC(Terraria.NPC npc,Terraria.NPC.HitInfo hit,int damage){}}
+ public class ModProjectile {public Mod Mod;public Terraria.Projectile Projectile=new();public ModProjectile(){Projectile.ModProjectile=this;}public virtual string Texture=>"";public virtual void SetDefaults(){}public virtual bool? CanDamage()=>null;public virtual void AI(){} public virtual void OnSpawn(Terraria.DataStructures.IEntitySource source){} public virtual void SendExtraAI(System.IO.BinaryWriter writer){} public virtual void ReceiveExtraAI(System.IO.BinaryReader reader){} public virtual void OnKill(int timeLeft){} public virtual bool? CanHitNPC(Terraria.NPC target)=>null;public virtual bool OnTileCollide(Microsoft.Xna.Framework.Vector2 velocity)=>true;public virtual void OnHitNPC(Terraria.NPC npc,Terraria.NPC.HitInfo hit,int damage){}}
 }
 namespace XianXia.Content.Items.Materials {public class Moonbone{}}
 namespace XianXia.Content.Items.HandGenerated {public class ArchiveRemnantLight{} public class ImperialDecreeItem{}}
@@ -417,3 +423,6 @@ namespace XianXia.Content.Tiles.Stations {public class SimpleTalismanTableTile{}
 namespace XianXia.Content.Items.Materials {public class HeavenDaoFragment{}}
 
 namespace Terraria.ModLoader {public class GlobalProjectile {public virtual void OnSpawn(Terraria.Projectile p,Terraria.DataStructures.IEntitySource source){} public virtual void PostAI(Terraria.Projectile p){} public virtual void OnKill(Terraria.Projectile p,int timeLeft){}}}
+
+namespace Microsoft.Xna.Framework {public record struct Rectangle(int X,int Y,int Width,int Height) {public bool Intersects(Rectangle r)=>X<r.X+r.Width&&X+Width>r.X&&Y<r.Y+r.Height&&Y+Height>r.Y;}}
+namespace Terraria.DataStructures {public class EntitySource_Parent : IEntitySource {public object Entity;public EntitySource_Parent(object entity){Entity=entity;}}}

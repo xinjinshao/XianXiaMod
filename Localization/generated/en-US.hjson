@@ -51,7 +51,7 @@ Mods: {
 			}
 			GreenwoodArrayPlate: {
 				DisplayName: "Greenwood Array Plate"
-				Tooltip: "A formation plate carved from greenwood. Deploys a healing array field that restores life and spiritual energy to allies inside."
+				Tooltip: "Deploys a 5-second greenwood field; restores 1 life and 1 spiritual energy per second to its owner while inside, without stacking\nEnds when its owner dies, disconnects or moves over 1600 pixels away"
 			}
 			GreenwoodRoot: {
 				DisplayName: "Greenwood Root"
@@ -187,7 +187,7 @@ Mods: {
 			}
 			ThunderTalismanArrayPlate: {
 				DisplayName: "Thunder Talisman Array Plate"
-				Tooltip: "An array plate inscribed with thunder talismans. Deploys a lightning field that periodically rains thunderbolts."
+				Tooltip: "Deploys a 4-second lightning field that releases half-damage bolts at 45-tick intervals\nEnds when its owner dies, disconnects or moves over 1600 pixels away"
 			}
 			TribulationCloudDew: {
 				DisplayName: "Tribulation Cloud Dew"
