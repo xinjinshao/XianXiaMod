@@ -32,19 +32,19 @@ public class GeneratedBiomeTileCountSystem : ModSystem
 
     {
 
-        greenwoodHerbGardenBiomeTileCount = tileCounts[ModContent.TileType<global::XianXia.Content.Tiles.GreenwoodSoilTile>()] + tileCounts[ModContent.TileType<global::XianXia.Content.Tiles.SpiritHerbTile>()];
+        greenwoodHerbGardenBiomeTileCount = tileCounts[ModContent.TileType<global::XianXia.Content.Tiles.GreenwoodSoilTile>()] + tileCounts[ModContent.TileType<global::XianXia.Content.Tiles.Construction.GreenwoodConstructedTile>()] + tileCounts[ModContent.TileType<global::XianXia.Content.Tiles.SpiritHerbTile>()];
 
-        sunkenFurnaceVeinBiomeTileCount = tileCounts[ModContent.TileType<global::XianXia.Content.Tiles.FurnaceSlagTile>()];
+        sunkenFurnaceVeinBiomeTileCount = tileCounts[ModContent.TileType<global::XianXia.Content.Tiles.FurnaceSlagTile>()] + tileCounts[ModContent.TileType<global::XianXia.Content.Tiles.Construction.FurnaceConstructedTile>()];
 
-        thunderMarshCloudsBiomeTileCount = tileCounts[ModContent.TileType<global::XianXia.Content.Tiles.ThunderCloudTile>()];
+        thunderMarshCloudsBiomeTileCount = tileCounts[ModContent.TileType<global::XianXia.Content.Tiles.ThunderCloudTile>()] + tileCounts[ModContent.TileType<global::XianXia.Content.Tiles.Construction.ThunderConstructedTile>()];
 
-        starAbyssRiftBiomeTileCount = tileCounts[ModContent.TileType<global::XianXia.Content.Tiles.StarAbyssCrystalTile>()];
+        starAbyssRiftBiomeTileCount = tileCounts[ModContent.TileType<global::XianXia.Content.Tiles.StarAbyssCrystalTile>()] + tileCounts[ModContent.TileType<global::XianXia.Content.Tiles.Construction.StarAbyssConstructedTile>()];
 
-        tenThousandSectsRuinsBiomeTileCount = tileCounts[ModContent.TileType<global::XianXia.Content.Tiles.SectRuinBrickTile>()];
+        tenThousandSectsRuinsBiomeTileCount = tileCounts[ModContent.TileType<global::XianXia.Content.Tiles.SectRuinBrickTile>()] + tileCounts[ModContent.TileType<global::XianXia.Content.Tiles.Construction.SectRuinConstructedTile>()];
 
-        fallenHeavenPalaceBiomeTileCount = tileCounts[ModContent.TileType<global::XianXia.Content.Tiles.FallenHeavenJadeTile>()];
+        fallenHeavenPalaceBiomeTileCount = tileCounts[ModContent.TileType<global::XianXia.Content.Tiles.FallenHeavenJadeTile>()] + tileCounts[ModContent.TileType<global::XianXia.Content.Tiles.Construction.FallenHeavenConstructedTile>()];
 
-        moonboneAbyssBiomeTileCount = tileCounts[ModContent.TileType<global::XianXia.Content.Tiles.MoonboneTile>()];
+        moonboneAbyssBiomeTileCount = tileCounts[ModContent.TileType<global::XianXia.Content.Tiles.MoonboneTile>()] + tileCounts[ModContent.TileType<global::XianXia.Content.Tiles.Construction.MoonboneConstructedTile>()];
 
     }
 

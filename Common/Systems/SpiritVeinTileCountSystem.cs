@@ -12,6 +12,6 @@ public class SpiritVeinTileCountSystem : ModSystem
     {
         spiritVeinTileCount =
             tileCounts[ModContent.TileType<SpiritOreTile>()] +
-            tileCounts[ModContent.TileType<SpiritMossTile>()];
+            tileCounts[ModContent.TileType<SpiritMossTile>()] + tileCounts[ModContent.TileType<global::XianXia.Content.Tiles.Construction.SpiritVeinConstructedTile>()];
     }
 }

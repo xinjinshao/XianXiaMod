@@ -1221,6 +1221,10 @@ def generate_biomes() -> None:
     for class_name, zh, en, tile_classes, threshold in BIOMES:
         terms = " + ".join(f"tileCounts[ModContent.TileType<global::XianXia.Content.Tiles.Generated.{t}>()]" for t in tile_classes)
         prop = class_name[0].lower() + class_name[1:] + "TileCount"
+        artificial_tiles = {'GreenwoodSoilTile': 'GreenwoodConstructedTile', 'FurnaceSlagTile': 'FurnaceConstructedTile', 'ThunderCloudTile': 'ThunderConstructedTile', 'StarAbyssCrystalTile': 'StarAbyssConstructedTile', 'SectRuinBrickTile': 'SectRuinConstructedTile', 'FallenHeavenJadeTile': 'FallenHeavenConstructedTile', 'MoonboneTile': 'MoonboneConstructedTile'}
+        for natural, artificial in artificial_tiles.items():
+            if natural in terms:
+                terms += f" + tileCounts[ModContent.TileType<global::XianXia.Content.Tiles.Construction.{artificial}>()]"
         tile_count_terms.append((prop, terms))
         classes.append(f"""
 public class {class_name} : ModBiome
@@ -1233,6 +1237,8 @@ public class {class_name} : ModBiome
 
     public override bool IsBiomeActive(Player player)
     {{
+        if (Main.netMode == Terraria.ID.NetmodeID.Server)
+            return {terms.replace("tileCounts[", "player.GetModPlayer<global::XianXia.Common.Players.ServerBiomePlayer>().Count(").replace("]", ")")} >= {threshold};
         return ModContent.GetInstance<GeneratedBiomeTileCountSystem>().{prop} >= {threshold};
     }}
 }}

@@ -18,7 +18,7 @@ public class ShallowSpiritVeinsBiome : ModBiome
     {
         if (Main.netMode == Terraria.ID.NetmodeID.Server)
             return player.GetModPlayer<global::XianXia.Common.Players.ServerBiomePlayer>().Count(ModContent.TileType<global::XianXia.Content.Tiles.SpiritOreTile>())
-                + player.GetModPlayer<global::XianXia.Common.Players.ServerBiomePlayer>().Count(ModContent.TileType<global::XianXia.Content.Tiles.SpiritMossTile>()) >= 40;
+                + player.GetModPlayer<global::XianXia.Common.Players.ServerBiomePlayer>().Count(ModContent.TileType<global::XianXia.Content.Tiles.SpiritMossTile>()) + player.GetModPlayer<global::XianXia.Common.Players.ServerBiomePlayer>().Count(ModContent.TileType<global::XianXia.Content.Tiles.Construction.SpiritVeinConstructedTile>()) >= 40;
         return ModContent.GetInstance<SpiritVeinTileCountSystem>().spiritVeinTileCount >= 40;
     }
 }

@@ -1,0 +1,66 @@
+{
+  "Mods": {
+    "XianXia": {
+      "Items": {
+        "SpiritVeinBiomeBlock": {
+          "DisplayName": "灵脉苔砖",
+          "Tooltip": "放置在附近形成对应生态（需要40块）\n拆除返还地块，不产出天然材料"
+        },
+        "GreenwoodBiomeBlock": {
+          "DisplayName": "青木土砖",
+          "Tooltip": "放置在附近形成对应生态（需要120块）\n拆除返还地块，不产出天然材料"
+        },
+        "FurnaceBiomeBlock": {
+          "DisplayName": "玄炉渣砖",
+          "Tooltip": "放置在附近形成对应生态（需要120块）\n拆除返还地块，不产出天然材料"
+        },
+        "ThunderBiomeBlock": {
+          "DisplayName": "劫云凝砖",
+          "Tooltip": "放置在附近形成对应生态（需要100块）\n拆除返还地块，不产出天然材料"
+        },
+        "StarAbyssBiomeBlock": {
+          "DisplayName": "星渊晶砖",
+          "Tooltip": "放置在附近形成对应生态（需要140块）\n拆除返还地块，不产出天然材料"
+        },
+        "SectRuinBiomeBlock": {
+          "DisplayName": "宗门遗砖",
+          "Tooltip": "放置在附近形成对应生态（需要180块）\n拆除返还地块，不产出天然材料"
+        },
+        "FallenHeavenBiomeBlock": {
+          "DisplayName": "残天玉砖",
+          "Tooltip": "放置在附近形成对应生态（需要160块）\n拆除返还地块，不产出天然材料"
+        },
+        "MoonboneBiomeBlock": {
+          "DisplayName": "月骸骨砖",
+          "Tooltip": "放置在附近形成对应生态（需要200块）\n拆除返还地块，不产出天然材料"
+        }
+      },
+      "Tiles": {
+        "SpiritVeinConstructedTile": {
+          "MapEntry": "灵脉苔砖"
+        },
+        "GreenwoodConstructedTile": {
+          "MapEntry": "青木土砖"
+        },
+        "FurnaceConstructedTile": {
+          "MapEntry": "玄炉渣砖"
+        },
+        "ThunderConstructedTile": {
+          "MapEntry": "劫云凝砖"
+        },
+        "StarAbyssConstructedTile": {
+          "MapEntry": "星渊晶砖"
+        },
+        "SectRuinConstructedTile": {
+          "MapEntry": "宗门遗砖"
+        },
+        "FallenHeavenConstructedTile": {
+          "MapEntry": "残天玉砖"
+        },
+        "MoonboneConstructedTile": {
+          "MapEntry": "月骸骨砖"
+        }
+      }
+    }
+  }
+}

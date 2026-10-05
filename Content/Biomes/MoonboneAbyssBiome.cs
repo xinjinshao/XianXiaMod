@@ -29,7 +29,7 @@ public class MoonboneAbyssBiome : ModBiome
     {
 
         if (Main.netMode == Terraria.ID.NetmodeID.Server)
-            return player.GetModPlayer<global::XianXia.Common.Players.ServerBiomePlayer>().Count(ModContent.TileType<global::XianXia.Content.Tiles.MoonboneTile>()) >= 200;
+            return player.GetModPlayer<global::XianXia.Common.Players.ServerBiomePlayer>().Count(ModContent.TileType<global::XianXia.Content.Tiles.MoonboneTile>()) + player.GetModPlayer<global::XianXia.Common.Players.ServerBiomePlayer>().Count(ModContent.TileType<global::XianXia.Content.Tiles.Construction.MoonboneConstructedTile>()) >= 200;
         return ModContent.GetInstance<GeneratedBiomeTileCountSystem>().moonboneAbyssBiomeTileCount >= 200;
 
     }

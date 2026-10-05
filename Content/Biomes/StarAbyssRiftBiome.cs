@@ -29,7 +29,7 @@ public class StarAbyssRiftBiome : ModBiome
     {
 
         if (Main.netMode == Terraria.ID.NetmodeID.Server)
-            return player.GetModPlayer<global::XianXia.Common.Players.ServerBiomePlayer>().Count(ModContent.TileType<global::XianXia.Content.Tiles.StarAbyssCrystalTile>()) >= 140;
+            return player.GetModPlayer<global::XianXia.Common.Players.ServerBiomePlayer>().Count(ModContent.TileType<global::XianXia.Content.Tiles.StarAbyssCrystalTile>()) + player.GetModPlayer<global::XianXia.Common.Players.ServerBiomePlayer>().Count(ModContent.TileType<global::XianXia.Content.Tiles.Construction.StarAbyssConstructedTile>()) >= 140;
         return ModContent.GetInstance<GeneratedBiomeTileCountSystem>().starAbyssRiftBiomeTileCount >= 140;
 
     }

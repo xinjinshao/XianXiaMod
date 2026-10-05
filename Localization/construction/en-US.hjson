@@ -1,0 +1,66 @@
+{
+  "Mods": {
+    "XianXia": {
+      "Items": {
+        "SpiritVeinBiomeBlock": {
+          "DisplayName": "Spirit Vein Moss Brick",
+          "Tooltip": "Place 40 nearby blocks to form the corresponding biome\nMining returns this block, not natural materials"
+        },
+        "GreenwoodBiomeBlock": {
+          "DisplayName": "Greenwood Soil Brick",
+          "Tooltip": "Place 120 nearby blocks to form the corresponding biome\nMining returns this block, not natural materials"
+        },
+        "FurnaceBiomeBlock": {
+          "DisplayName": "Furnace Slag Brick",
+          "Tooltip": "Place 120 nearby blocks to form the corresponding biome\nMining returns this block, not natural materials"
+        },
+        "ThunderBiomeBlock": {
+          "DisplayName": "Tribulation Cloud Brick",
+          "Tooltip": "Place 100 nearby blocks to form the corresponding biome\nMining returns this block, not natural materials"
+        },
+        "StarAbyssBiomeBlock": {
+          "DisplayName": "Star Abyss Crystal Brick",
+          "Tooltip": "Place 140 nearby blocks to form the corresponding biome\nMining returns this block, not natural materials"
+        },
+        "SectRuinBiomeBlock": {
+          "DisplayName": "Sect Ruin Brick",
+          "Tooltip": "Place 180 nearby blocks to form the corresponding biome\nMining returns this block, not natural materials"
+        },
+        "FallenHeavenBiomeBlock": {
+          "DisplayName": "Fallen Heaven Jade Brick",
+          "Tooltip": "Place 160 nearby blocks to form the corresponding biome\nMining returns this block, not natural materials"
+        },
+        "MoonboneBiomeBlock": {
+          "DisplayName": "Moonbone Brick",
+          "Tooltip": "Place 200 nearby blocks to form the corresponding biome\nMining returns this block, not natural materials"
+        }
+      },
+      "Tiles": {
+        "SpiritVeinConstructedTile": {
+          "MapEntry": "Spirit Vein Moss Brick"
+        },
+        "GreenwoodConstructedTile": {
+          "MapEntry": "Greenwood Soil Brick"
+        },
+        "FurnaceConstructedTile": {
+          "MapEntry": "Furnace Slag Brick"
+        },
+        "ThunderConstructedTile": {
+          "MapEntry": "Tribulation Cloud Brick"
+        },
+        "StarAbyssConstructedTile": {
+          "MapEntry": "Star Abyss Crystal Brick"
+        },
+        "SectRuinConstructedTile": {
+          "MapEntry": "Sect Ruin Brick"
+        },
+        "FallenHeavenConstructedTile": {
+          "MapEntry": "Fallen Heaven Jade Brick"
+        },
+        "MoonboneConstructedTile": {
+          "MapEntry": "Moonbone Brick"
+        }
+      }
+    }
+  }
+}

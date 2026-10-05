@@ -29,7 +29,7 @@ public class FallenHeavenPalaceBiome : ModBiome
     {
 
         if (Main.netMode == Terraria.ID.NetmodeID.Server)
-            return player.GetModPlayer<global::XianXia.Common.Players.ServerBiomePlayer>().Count(ModContent.TileType<global::XianXia.Content.Tiles.FallenHeavenJadeTile>()) >= 160;
+            return player.GetModPlayer<global::XianXia.Common.Players.ServerBiomePlayer>().Count(ModContent.TileType<global::XianXia.Content.Tiles.FallenHeavenJadeTile>()) + player.GetModPlayer<global::XianXia.Common.Players.ServerBiomePlayer>().Count(ModContent.TileType<global::XianXia.Content.Tiles.Construction.FallenHeavenConstructedTile>()) >= 160;
         return ModContent.GetInstance<GeneratedBiomeTileCountSystem>().fallenHeavenPalaceBiomeTileCount >= 160;
 
     }
