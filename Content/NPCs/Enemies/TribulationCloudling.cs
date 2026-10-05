@@ -80,46 +80,36 @@ public class TribulationCloudling : ModNPC
 
 
     public override void PostAI()
-
     {
-
-        if (!global::XianXia.Common.Systems.EnemyTargeting.TryGetLivingTarget(NPC, out Player target)) return;
-
-
-
-        NPC.localAI[0]++;
-
-        if (Main.netMode != NetmodeID.MultiplayerClient && target.active && !target.dead && NPC.localAI[0] >= 150f)
-
+        if (Main.netMode == NetmodeID.MultiplayerClient) return;
+        if (!global::XianXia.Common.Systems.EnemyTargeting.TryGetLivingTarget(NPC, out Player target))
         {
-
             NPC.localAI[0] = 0f;
-
-            Vector2 predicted = target.Center + target.velocity * 30f;
-
-            NPC.Center = predicted + new Vector2(Main.rand.NextFloat(-120f, 120f), Main.rand.NextFloat(-160f, -80f));
-
-            Projectile.NewProjectile(
-
-                NPC.GetSource_FromAI(),
-
-                predicted + new Vector2(0f, -340f),
-
-                Vector2.UnitY * 8f,
-
-                ModContent.ProjectileType<global::XianXia.Content.Projectiles.TribulationWarningLineProjectile>(),
-
-                Math.Max(1, NPC.damage / 2),
-
-                0f);
-
-            NPC.netUpdate = true;
-
+            return;
         }
-
+        if (++NPC.localAI[0] < 150f) return;
+        NPC.localAI[0] = 0f;
+        Vector2 predicted = target.Center + target.velocity * 30f;
+        if (!float.IsFinite(predicted.X) || !float.IsFinite(predicted.Y)) predicted = target.Center;
+        predicted.X = Math.Clamp(predicted.X, 32f, Main.maxTilesX * 16f - 32f);
+        predicted.Y = Math.Clamp(predicted.Y, 32f, Main.maxTilesY * 16f - 32f);
+        for (int attempt = 0; attempt < 12; attempt++)
+        {
+            Vector2 destination = predicted + new Vector2(Main.rand.NextFloat(-120f, 120f), Main.rand.NextFloat(-160f, -80f));
+            destination.X = Math.Clamp(destination.X, NPC.width / 2f + 16f, Main.maxTilesX * 16f - NPC.width / 2f - 16f);
+            destination.Y = Math.Clamp(destination.Y, NPC.height / 2f + 16f, Main.maxTilesY * 16f - NPC.height / 2f - 16f);
+            Vector2 topLeft = destination - new Vector2(NPC.width / 2f, NPC.height / 2f);
+            if (Collision.SolidCollision(topLeft, NPC.width, NPC.height)) continue;
+            NPC.Center = destination;
+            NPC.velocity = Vector2.Zero;
+            Projectile.NewProjectile(NPC.GetSource_FromAI(), predicted, Vector2.Zero,
+                ModContent.ProjectileType<global::XianXia.Content.Projectiles.TribulationWarningLineProjectile>(),
+                Math.Max(1, NPC.damage / 2), 0f);
+            NPC.netUpdate = true;
+            return;
+        }
+        // No safe destination: skip this attack rather than teleport into terrain.
     }
-
-
 
     public override void ModifyNPCLoot(NPCLoot npcLoot)
 
