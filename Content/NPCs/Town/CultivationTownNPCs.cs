@@ -610,6 +610,7 @@ public class FallenHeavenMessenger : CultivationTownNPC
         shop.Add<LowGradeSpiritStone>();
         shop.Add<BrokenHeavenInscriptionNeedle>();
         shop.Add<HeavenDaoRouteHint>();
+        shop.Add<EndgameRouteFrame>();
         shop.Register();
     }
 

@@ -1,0 +1,11 @@
+{
+  "Mods": {
+    "XianXia": {
+      "Tiles": {
+        "EndgameRouteFrameTile": {
+          "MapEntry": "Endgame Route Frame"
+        }
+      }
+    }
+  }
+}

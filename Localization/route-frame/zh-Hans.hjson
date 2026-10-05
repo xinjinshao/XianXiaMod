@@ -1,0 +1,11 @@
+{
+  "Mods": {
+    "XianXia": {
+      "Tiles": {
+        "EndgameRouteFrameTile": {
+          "MapEntry": "终局路线信物框"
+        }
+      }
+    }
+  }
+}

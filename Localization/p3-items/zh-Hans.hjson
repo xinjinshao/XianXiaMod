@@ -71,7 +71,7 @@ Mods: {
 			}
 			EndgameRouteFrame: {
 				DisplayName: "终局路线信物框"
-				Tooltip: "展示你已选择的终局路线的玉框。"
+				Tooltip: "可放置的2×3路线摆件；需要两格支撑\n右键查看当前世界路线与效果；光色随路线变化\n拆除返还本物品；在其它世界展示该世界路线"
 			}
 		}
 		Buffs: {

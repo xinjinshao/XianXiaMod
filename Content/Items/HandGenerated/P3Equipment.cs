@@ -56,4 +56,3 @@ public class SpiritHerbSeeds : ModItem
         Item.rare = ItemRarityID.White;
     }
 }
-public class EndgameRouteFrame : ModItem { public override void SetStaticDefaults() => Item.ResearchUnlockCount = 1; public override void SetDefaults() { Item.width = 32; Item.height = 32; Item.maxStack = 1; Item.value = Item.buyPrice(gold: 15); Item.rare = ItemRarityID.Red; } }

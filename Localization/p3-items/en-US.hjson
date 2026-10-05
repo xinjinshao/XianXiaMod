@@ -71,7 +71,7 @@ Mods: {
 			}
 			EndgameRouteFrame: {
 				DisplayName: "Endgame Route Frame"
-				Tooltip: "A jade frame that displays your chosen endgame route."
+				Tooltip: "Placeable 2×3 route display; requires two supporting tiles\nRight-click to read the current world route and effects; light changes with the route\nMining returns this item; other worlds display their own route"
 			}
 		}
 		Buffs: {

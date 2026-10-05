@@ -13,6 +13,20 @@ var tileSpiritVeinWyrmTrophy=new XianXia.Content.Tiles.BossDecorations.SpiritVei
 var tileAbyssalStarWombLamp=new XianXia.Content.Tiles.BossDecorations.AbyssalStarWombLampTile();tileAbyssalStarWombLamp.SetStaticDefaults();Check(tileAbyssalStarWombLamp.Drop==Terraria.ModLoader.ModContent.ItemType<XianXia.Content.Items.HandGenerated.AbyssalStarWombLamp>(),"AbyssalStarWombLamp returns same item");
 var tileMedicineKingCauldronDecoration=new XianXia.Content.Tiles.BossDecorations.MedicineKingCauldronDecorationTile();tileMedicineKingCauldronDecoration.SetStaticDefaults();Check(tileMedicineKingCauldronDecoration.Drop==Terraria.ModLoader.ModContent.ItemType<XianXia.Content.Items.HandGenerated.MedicineKingCauldronDecoration>(),"MedicineKingCauldronDecoration returns same item");
 var tileSilentTabletDecoration=new XianXia.Content.Tiles.BossDecorations.SilentTabletDecorationTile();tileSilentTabletDecoration.SetStaticDefaults();Check(tileSilentTabletDecoration.Drop==Terraria.ModLoader.ModContent.ItemType<XianXia.Content.Items.HandGenerated.SilentTabletDecoration>(),"SilentTabletDecoration returns same item");
+var frame=new XianXia.Content.Tiles.BossDecorations.EndgameRouteFrameTile();frame.SetStaticDefaults();
+Check(frame.Drop==Terraria.ModLoader.ModContent.ItemType<XianXia.Content.Items.HandGenerated.EndgameRouteFrame>(),"Frame drops original item");
+Check(TileObjectData.Registered.Width==2&&TileObjectData.Registered.Height==3&&Main.tileLighted[frame.Type],"Frame registers footprint and light");
+var colors=new[]{(.08f,.08f,.08f),(.12f,.3f,.18f),(.32f,.08f,.06f),(.18f,.1f,.35f)};
+for(int route=0;route<4;route++){
+ XianXia.Common.Systems.DownedBossSystem.ChosenRoute=(XianXia.Common.Systems.DownedBossSystem.EndgameRoute)route;
+ frame.ModifyLight(0,0,ref r,ref g,ref b);var color=colors[route];
+ Check(Math.Abs(r-color.Item1)<.001f&&Math.Abs(g-color.Item2)<.001f&&Math.Abs(b-color.Item3)<.001f,"Live route color "+route);
+ Main.Chat.Clear();Check(frame.RightClick(0,0),"Right click handled "+route);
+ Check(Main.Chat.Count==(route==0?1:2)&&Main.Chat[0].Contains("Routes."+XianXia.Common.Systems.DownedBossSystem.ChosenRoute),"Current route text "+route);
+ if(route>0)Check(Main.Chat[1].Contains(XianXia.Common.Systems.DownedBossSystem.ChosenRoute+"Description"),"Uses route effect key "+route);
+ Check((int)XianXia.Common.Systems.DownedBossSystem.ChosenRoute==route,"Read does not change route "+route);
+}
+Main.dedServ=true;Main.Chat.Clear();Check(frame.RightClick(0,0)&&Main.Chat.Count==0,"Dedicated server produces no chat");Main.dedServ=false;
 Console.WriteLine($"Master monument actual-hook regression passed: {assertions} assertions; mocked engine registration boundary.");
 class TestItem:MasterBossMonument { protected override int MonumentTile=>7; }
 class TestTile:MasterBossMonumentTile { protected override int MonumentItem=>91; }
