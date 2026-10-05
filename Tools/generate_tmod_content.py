@@ -1513,18 +1513,22 @@ def enemy_behavior_code(asset_id: str) -> tuple[str, str]:
         return ("", """
     public override void PostAI()
     {
-        if (!global::XianXia.Common.Systems.EnemyTargeting.TryGetLivingTarget(NPC, out Player target)) return;
-
+        if (Main.netMode == NetmodeID.MultiplayerClient) return;
+        if (!global::XianXia.Common.Systems.EnemyTargeting.TryGetLivingTarget(NPC, out Player target))
+        {
+            if (NPC.localAI[1] > 0f) NPC.netUpdate = true;
+            NPC.localAI[0] = NPC.localAI[1] = 0f;
+            return;
+        }
         NPC.localAI[0]++;
+        float distance = Vector2.Distance(target.Center, NPC.Center);
         if (NPC.localAI[1] > 0f)
         {
             NPC.localAI[1]--;
-            if (target.active && !target.dead && Vector2.Distance(target.Center, NPC.Center) < 40f)
-            {
-                target.velocity *= 0.6f;
-            }
+            if (distance < 40f) target.AddBuff(BuffID.Slow, 2);
+            if (NPC.localAI[1] == 0f) NPC.netUpdate = true;
         }
-        else if (target.active && !target.dead && NPC.localAI[0] >= 90f && Vector2.Distance(target.Center, NPC.Center) < 260f)
+        else if (NPC.localAI[0] >= 90f && distance < 260f)
         {
             NPC.localAI[0] = 0f;
             Vector2 leap = (target.Center - NPC.Center).SafeNormalize(Vector2.UnitX) * 8f;
@@ -1534,6 +1538,7 @@ def enemy_behavior_code(asset_id: str) -> tuple[str, str]:
             NPC.netUpdate = true;
         }
     }
+
 """)
 
     if asset_id == "obsessed_sword_cultivator":
@@ -1747,30 +1752,24 @@ def enemy_behavior_code(asset_id: str) -> tuple[str, str]:
         return ("", """
     public override void PostAI()
     {
-        if (!global::XianXia.Common.Systems.EnemyTargeting.TryGetLivingTarget(NPC, out Player target)) return;
-
-        NPC.localAI[0]++;
-        if (target.active && !target.dead && NPC.localAI[0] >= 70f)
+        if (!Main.dedServ) Lighting.AddLight(NPC.Center, 0.08f, 0.18f, 0.24f);
+        if (Main.netMode == NetmodeID.MultiplayerClient) return;
+        if (!global::XianXia.Common.Systems.EnemyTargeting.TryGetLivingTarget(NPC, out Player target))
         {
             NPC.localAI[0] = 0f;
-            if (Main.netMode != NetmodeID.MultiplayerClient)
-            {
-                Vector2 predicted = target.Center + target.velocity * 18f;
-                Vector2 velocity = (predicted - NPC.Center).SafeNormalize(Vector2.UnitY) * 9f;
-                Projectile.NewProjectile(
-                    NPC.GetSource_FromAI(),
-                    NPC.Center,
-                    velocity,
-                    ModContent.ProjectileType<global::XianXia.Content.Projectiles.BossSpiritBoltProjectile>(),
-                    Math.Max(1, NPC.damage / 2),
-                    1f);
-            }
-            NPC.velocity = (target.Center - NPC.Center).SafeNormalize(Vector2.UnitX) * 12f;
-            NPC.netUpdate = true;
+            return;
         }
-
-        Lighting.AddLight(NPC.Center, 0.08f, 0.18f, 0.24f);
+        if (++NPC.localAI[0] < 70f) return;
+        NPC.localAI[0] = 0f;
+        Vector2 predicted = target.Center + target.velocity * 18f;
+        Vector2 velocity = (predicted - NPC.Center).SafeNormalize(Vector2.UnitY) * 9f;
+        Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center, velocity,
+            ModContent.ProjectileType<global::XianXia.Content.Projectiles.BossSpiritBoltProjectile>(),
+            Math.Max(1, NPC.damage / 2), 1f);
+        NPC.velocity = (target.Center - NPC.Center).SafeNormalize(Vector2.UnitX) * 12f;
+        NPC.netUpdate = true;
     }
+
 """)
 
     if asset_id == "archived_immortal_soul":

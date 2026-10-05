@@ -78,58 +78,24 @@ public class MoonboneCultivator : ModNPC
 
 
     public override void PostAI()
-
     {
-
-        if (!global::XianXia.Common.Systems.EnemyTargeting.TryGetLivingTarget(NPC, out Player target)) return;
-
-
-
-        NPC.localAI[0]++;
-
-        if (target.active && !target.dead && NPC.localAI[0] >= 70f)
-
+        if (!Main.dedServ) Lighting.AddLight(NPC.Center, 0.08f, 0.18f, 0.24f);
+        if (Main.netMode == NetmodeID.MultiplayerClient) return;
+        if (!global::XianXia.Common.Systems.EnemyTargeting.TryGetLivingTarget(NPC, out Player target))
         {
-
             NPC.localAI[0] = 0f;
-
-            if (Main.netMode != NetmodeID.MultiplayerClient)
-
-            {
-
-                Vector2 predicted = target.Center + target.velocity * 18f;
-
-                Vector2 velocity = (predicted - NPC.Center).SafeNormalize(Vector2.UnitY) * 9f;
-
-                Projectile.NewProjectile(
-
-                    NPC.GetSource_FromAI(),
-
-                    NPC.Center,
-
-                    velocity,
-
-                    ModContent.ProjectileType<global::XianXia.Content.Projectiles.BossSpiritBoltProjectile>(),
-
-                    Math.Max(1, NPC.damage / 2),
-
-                    1f);
-
-            }
-
-            NPC.velocity = (target.Center - NPC.Center).SafeNormalize(Vector2.UnitX) * 12f;
-
-            NPC.netUpdate = true;
-
+            return;
         }
-
-
-
-        Lighting.AddLight(NPC.Center, 0.08f, 0.18f, 0.24f);
-
+        if (++NPC.localAI[0] < 70f) return;
+        NPC.localAI[0] = 0f;
+        Vector2 predicted = target.Center + target.velocity * 18f;
+        Vector2 velocity = (predicted - NPC.Center).SafeNormalize(Vector2.UnitY) * 9f;
+        Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center, velocity,
+            ModContent.ProjectileType<global::XianXia.Content.Projectiles.BossSpiritBoltProjectile>(),
+            Math.Max(1, NPC.damage / 2), 1f);
+        NPC.velocity = (target.Center - NPC.Center).SafeNormalize(Vector2.UnitX) * 12f;
+        NPC.netUpdate = true;
     }
-
-
 
     public override void ModifyNPCLoot(NPCLoot npcLoot)
 

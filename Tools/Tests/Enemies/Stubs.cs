@@ -3,7 +3,7 @@ public struct Vector2(float x,float y) { public float X=x,Y=y; public float Leng
 }
 namespace Terraria {
 public static class Main {public static bool dedServ;public static IEnumerable<Player> ActivePlayers=>player.Where(p=>p.active);public static int netMode,maxPlayers=2;public static Player[] player=[new(),new()];public static bool hardMode;public static int[] npcFrameCount=new int[100];}
-public class Player {public int Buffs;public void AddBuff(int type,int time)=>Buffs++;public bool active=true,dead;public Microsoft.Xna.Framework.Vector2 Center;public bool InModBiome<T>()=>true;}
+public class Player {public Microsoft.Xna.Framework.Vector2 velocity;public int Buffs;public void AddBuff(int type,int time)=>Buffs++;public bool active=true,dead;public Microsoft.Xna.Framework.Vector2 Center;public bool InModBiome<T>()=>true;}
 public class NPC {public struct HitInfo {} public int defDamage;public static bool downedPlantBoss,downedGolemBoss,downedMoonlord;public bool noGravity;public int life;public int width,height,lifeMax,damage,defense,aiStyle,target;public float value,knockBackResist;public object HitSound,DeathSound;public bool netUpdate;public float[] localAI=new float[4];public Microsoft.Xna.Framework.Vector2 velocity,Center,position;public object GetSource_FromAI()=>null;public void TargetClosest(bool face){target=255;for(int i=0;i<Main.maxPlayers;i++)if(Main.player[i].active&&!Main.player[i].dead){target=i;break;}}}
 public class Projectile {public int owner;public static int Spawns;public static int NewProjectile(object source,Microsoft.Xna.Framework.Vector2 position,Microsoft.Xna.Framework.Vector2 velocity,int type,int damage,float knockback){Spawns++;return 0;}}
 }
@@ -20,7 +20,7 @@ namespace XianXia.Content.Items.Materials {public class HeavenDaoFragment {}}
 
 namespace Microsoft.Xna.Framework {public static class MathHelper {public static float ToRadians(float degrees)=>degrees*MathF.PI/180;public const float TwoPi=MathF.PI*2;}}
 namespace Terraria {public static class Dust {public static int Calls;public static void NewDust(Microsoft.Xna.Framework.Vector2 p,int width,int height,int type,float vx,float vy,int alpha=0,object color=null,float scale=1)=>Calls++;}}
-namespace Terraria.ID {public static class BuffID {public const int Poisoned=20;}public static class DustID {public const int Grass=1,Poisoned=2,GoldCoin=3,Electric=4;}}
+namespace Terraria.ID {public static class BuffID {public const int Poisoned=20,Slow=32;}public static class DustID {public const int Grass=1,Poisoned=2,GoldCoin=3,Electric=4;}}
 namespace XianXia.Content.Biomes {public class GreenwoodHerbGardenBiome {}}
 namespace XianXia.Content.Projectiles {public class SpiritBoltProjectile {}}
 namespace XianXia.Content.Items.HandGenerated {public class SpiritHerbRoot {} public class HerbDew {} public class CinnabarPowder {}}
@@ -39,3 +39,8 @@ namespace XianXia.Content.Items.Materials {public class TribulationCloudDew {}}
 
 namespace XianXia.Content.Biomes {public class StarAbyssRiftBiome {}}
 namespace XianXia.Content.Items.Materials {public class StarEclipseCrystal {}}
+
+namespace Terraria {public static class Lighting {public static int Calls;public static void AddLight(Microsoft.Xna.Framework.Vector2 center,float r,float g,float b)=>Calls++;}}
+namespace XianXia.Content.Biomes {public class MoonboneAbyssBiome {}}
+namespace XianXia.Content.Items.Materials {public class Moonbone {}}
+namespace XianXia.Content.Items.HandGenerated {public class AbyssDust {}public class DarkBlueSpiritFluid {}public class ColdMoonDust {}}

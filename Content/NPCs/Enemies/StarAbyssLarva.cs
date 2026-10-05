@@ -78,52 +78,32 @@ public class StarAbyssLarva : ModNPC
 
 
     public override void PostAI()
-
     {
-
-        if (!global::XianXia.Common.Systems.EnemyTargeting.TryGetLivingTarget(NPC, out Player target)) return;
-
-
-
+        if (Main.netMode == NetmodeID.MultiplayerClient) return;
+        if (!global::XianXia.Common.Systems.EnemyTargeting.TryGetLivingTarget(NPC, out Player target))
+        {
+            if (NPC.localAI[1] > 0f) NPC.netUpdate = true;
+            NPC.localAI[0] = NPC.localAI[1] = 0f;
+            return;
+        }
         NPC.localAI[0]++;
-
+        float distance = Vector2.Distance(target.Center, NPC.Center);
         if (NPC.localAI[1] > 0f)
-
         {
-
             NPC.localAI[1]--;
-
-            if (target.active && !target.dead && Vector2.Distance(target.Center, NPC.Center) < 40f)
-
-            {
-
-                target.velocity *= 0.6f;
-
-            }
-
+            if (distance < 40f) target.AddBuff(BuffID.Slow, 2);
+            if (NPC.localAI[1] == 0f) NPC.netUpdate = true;
         }
-
-        else if (target.active && !target.dead && NPC.localAI[0] >= 90f && Vector2.Distance(target.Center, NPC.Center) < 260f)
-
+        else if (NPC.localAI[0] >= 90f && distance < 260f)
         {
-
             NPC.localAI[0] = 0f;
-
             Vector2 leap = (target.Center - NPC.Center).SafeNormalize(Vector2.UnitX) * 8f;
-
             leap.Y -= 4f;
-
             NPC.velocity = leap;
-
             NPC.localAI[1] = 90f;
-
             NPC.netUpdate = true;
-
         }
-
     }
-
-
 
     public override void ModifyNPCLoot(NPCLoot npcLoot)
 
