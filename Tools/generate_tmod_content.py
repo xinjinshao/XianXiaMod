@@ -1799,34 +1799,42 @@ def enemy_behavior_code(asset_id: str) -> tuple[str, str]:
 
     if asset_id == "archived_immortal_soul":
         return ("", """
-    private Vector2[] recentPositions = new Vector2[20];
-    private int positionIndex;
+    private readonly Vector2[] recentPositions = new Vector2[20];
+    private int positionIndex, positionCount, historyTarget = -1;
 
     public override void PostAI()
     {
-        if (!global::XianXia.Common.Systems.EnemyTargeting.TryGetLivingTarget(NPC, out Player target)) return;
-
-        recentPositions[positionIndex % recentPositions.Length] = target.Center;
-        positionIndex++;
-
-        NPC.localAI[0]++;
-        if (Main.netMode != NetmodeID.MultiplayerClient && target.active && !target.dead && NPC.localAI[0] >= 95f)
+        if (Main.netMode == NetmodeID.MultiplayerClient) return;
+        if (!global::XianXia.Common.Systems.EnemyTargeting.TryGetLivingTarget(NPC, out Player target))
         {
-            NPC.localAI[0] = 0f;
-            Vector2 oldPos = recentPositions[(positionIndex - 18 + recentPositions.Length) % recentPositions.Length];
-            if (oldPos != Vector2.Zero)
-            {
-                Vector2 velocity = (target.Center - oldPos).SafeNormalize(Vector2.UnitY) * 7f;
-                Projectile.NewProjectile(
-                    NPC.GetSource_FromAI(),
-                    NPC.Center,
-                    velocity,
-                    ModContent.ProjectileType<global::XianXia.Content.Projectiles.BossSpiritBoltProjectile>(),
-                    Math.Max(1, NPC.damage / 3),
-                    1f);
-            }
+            ResetHistory();
+            return;
         }
+        if (historyTarget != NPC.target)
+        {
+            ResetHistory();
+            historyTarget = NPC.target;
+        }
+        recentPositions[positionIndex] = target.Center;
+        positionIndex = (positionIndex + 1) % recentPositions.Length;
+        positionCount = Math.Min(positionCount + 1, recentPositions.Length);
+        if (++NPC.localAI[0] < 95f) return;
+        NPC.localAI[0] = 0f;
+        if (positionCount < 18) return;
+        Vector2 oldPos = recentPositions[(positionIndex - 18 + recentPositions.Length) % recentPositions.Length];
+        Vector2 velocity = (target.Center - oldPos).SafeNormalize(Vector2.UnitY) * 7f;
+        Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center, velocity,
+            ModContent.ProjectileType<global::XianXia.Content.Projectiles.BossSpiritBoltProjectile>(),
+            Math.Max(1, NPC.damage / 3), 1f);
     }
+
+    private void ResetHistory()
+    {
+        positionIndex = positionCount = 0;
+        historyTarget = -1;
+        NPC.localAI[0] = 0f;
+    }
+
 """)
 
     return ("", "")

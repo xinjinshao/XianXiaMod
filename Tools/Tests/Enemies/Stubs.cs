@@ -55,3 +55,6 @@ namespace XianXia.Content.Items.Materials {public class ArtifactBlankShard {}pub
 
 namespace Terraria {public class RandomStub {public float Value;public int Calls;public float NextFloat(){Calls++;return Value;}}}
 namespace XianXia.Content.Projectiles {public class EnemySpiritBoltProjectile {}}
+
+namespace XianXia.Content.Items.Materials {public class DaoSeveringDust {}}
+namespace XianXia.Content.Items.HandGenerated {public class ArchiveRemnantLight {}}
