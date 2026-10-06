@@ -75,3 +75,9 @@ foreach(var (enemy,tier) in enemies) for(int mask=0;mask<16;mask++) {
 }
 Check(!XianXia.Common.Systems.EnemySpawnRules.Allows("UnknownEnemy",true,true,true,true),"Unconfigured enemies cannot silently bypass progression.");
 Console.WriteLine($"Progression/enemy unlock regression passed: {assertions} assertions against actual policy sources.");
+
+foreach(bool awake in new[]{false,true})foreach(bool cooling in new[]{false,true})
+ foreach(int maximum in new[]{0,40,100})foreach(int energy in new[]{-1,0,39,40,99,100})
+  Check(XianXia.Common.Systems.QiRecoveryRules.CanUse(awake,energy,maximum,cooling)==(awake&&!cooling&&maximum>0&&energy>=0&&energy<maximum),"Recovery pill boundary");
+Check(XianXia.Common.Systems.QiRecoveryRules.BaseRecovery==40&&XianXia.Common.Systems.QiRecoveryRules.PressureCost==10&&XianXia.Common.Systems.QiRecoveryRules.CooldownTicks==1800,"Fixed recovery tradeoff");
+Console.WriteLine($"Progression including recovery pill eligibility: {assertions} assertions; actual policy sources, no engine buff execution.");

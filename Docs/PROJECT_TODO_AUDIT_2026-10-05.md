@@ -764,3 +764,10 @@ CanUseBossSummon原先将requiredDownedBoss内部ID直接插入聊天。改为�
 既有Networking23092条事务回归通过（本轮未新增模拟UI测试）；最终构建0警告0错误、打包与专服加载通过，日志run-f652a706cb5740e9a86010cfb07bfa15；内容契约、本地化键与diff检查通过。实际装备变化、多人路线更新、预览提示和缩放点击仍待图形客户端验收，R15/R26保持未勾选。本轮提交推送GitHub。
 
 第82轮提交后纠正：铭刻专项验证只读取Localization/inscriptions两文化文件，独立反馈文件虽原生加载/通用键检查通过，专项契约仍报TargetChanged缺失；将提示合并至原两文化文件，删除本轮新建独立文件，完整内容契约与本地化复核通过后另提交修正。
+
+
+## 第83轮：品质回气丹、固定灵压代价与冷却（2026-10-06）
+
+R19/T22缺直接回气丹药，新增手写QiRecoveryPill与QiRecoveryRules、QiRecoveryCooldownBuff。已启灵、当前灵气非负且未满/上限正数/无冷却时可用；恢复基础40经PillQualitySystem.Scale处理，上限由原RestoreSpiritualEnergy钳制，灵压固定+10钳制100，固定1800tick冷却。冷却为可保存的原生debuff，NurseCannotRemoveDebuff=true，品质不缩短冷却；实际死亡/重连/换世界Buff生命周期仍待实机验证。炼丹炉青木根2+下品灵石4+瓶装水1产出2粒，空鼠标品质制作边界；加入PillQualitySystem与CultivationItemTransactions同名白名单，保持既有高品质额外恢复/再生及存储堆叠规则。UseItem权限分流后再复核CanUse，服务器现有事务判定实际状态/Buff变化并消费一次；客户端不直接扣库存。暂复用春回丹和灵压图标，中英文提示与Wiki同步。
+
+Progression累计552条规则回归通过（本轮73条条件矩阵及固定代价），Networking累计23096条通过（新增4条白名单/品质注册、单次事务消费/效果、即时重放、拒绝不消费，药效与Buff是模拟边界，并非实际ModItem调用或Buff寿命证明）。品质制作契约扩为5种配方通过，PNG1243、内容/本地化/diff通过。构建0警告0错误、打包与专服加载通过，日志run-5ad30a27bf344e269e6979df0af2217e。实际品质制作/库存生命周期、多人用药、真实冷却保存和战斗平衡未验收，R19/R01未勾选。本轮提交推送GitHub。

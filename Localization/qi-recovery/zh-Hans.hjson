@@ -1,0 +1,18 @@
+{
+  "Mods": {
+    "XianXia": {
+      "Items": {
+        "QiRecoveryPill": {
+          "DisplayName": "回气丹",
+          "Tooltip": "已启灵且灵气未满时使用；恢复40灵气（随品质变化）\n固定增加10灵压，30秒内不能再次使用回气丹\n高品质额外效果沿用丹药品质规则；冷却不因品质缩短"
+        }
+      },
+      "Buffs": {
+        "QiRecoveryCooldownBuff": {
+          "DisplayName": "回气药滞",
+          "Description": "暂时不能使用回气丹；护士无法移除"
+        }
+      }
+    }
+  }
+}

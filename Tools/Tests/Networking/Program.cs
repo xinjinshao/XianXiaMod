@@ -165,6 +165,15 @@ Game.player[0].State.ProgressionItemCooldown = 0;
 held.ModItem.Name = "OtherItem";
 Use();
 Check(held.ModItem.Uses == 2, "Unregistered item cannot use progression transaction.");
+// New recovery pill runs through the same production inventory transaction.
+held.ModItem.Name = "QiRecoveryPill"; held.stack = 3; held.ModItem.Allowed = true;
+Check(CultivationItemTransactions.IsProgressionItem(held) && PillQualitySystem.IsPill(held), "Recovery pill registered in authority and stored-quality paths");
+Game.player[0].State.spiritualEnergy = 0; Game.player[0].State.ProgressionItemCooldown = 0;
+held.ModItem.Effect = p => { p.State.RestoreSpiritualEnergy(40); p.AddBuff(2,1800); };
+Use(); Check(held.stack == 2 && Game.player[0].State.spiritualEnergy == Math.Min(40, Game.player[0].State.maxSpiritualEnergy) && Game.player[0].buffTime[2] == 1800,"Recovery transaction applies effect and consumes one");
+int recoveryUses=held.ModItem.Uses;Use();Check(held.stack==2&&held.ModItem.Uses==recoveryUses,"Immediate recovery replay does not consume twice");
+Game.player[0].State.ProgressionItemCooldown=0;held.ModItem.Allowed=false;Use();Check(held.stack==2&&held.ModItem.Uses==recoveryUses,"Cooldown/full-energy eligibility rejection preserves inventory");
+held.ModItem.Name="FoundationPill";held.ModItem.Allowed=true;held.ModItem.Effect=_=>{};Game.player[0].buffTime[2]=0;Game.player[0].State.ProgressionItemCooldown=0;
 var consumption = new CultivationItemTransactions();
 Game.netMode = NetmodeID.MultiplayerClient;
 held.ModItem.Name = "FoundationPill";

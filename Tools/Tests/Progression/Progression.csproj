@@ -8,5 +8,5 @@
     <Compile Include="../../../Common/Players/CultivationStage.cs" Link="CultivationStage.cs" />
     <Compile Include="../../../Common/Players/CultivationRules.cs" Link="CultivationRules.cs" />
     <Compile Include="../../../Common/Systems/EnemySpawnRules.cs" Link="EnemySpawnRules.cs" />
-  </ItemGroup>
+  <Compile Include="../../../Common/Systems/QiRecoveryRules.cs" /></ItemGroup>
 </Project>
