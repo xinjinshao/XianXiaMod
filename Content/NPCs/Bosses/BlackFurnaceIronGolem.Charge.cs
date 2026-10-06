@@ -9,12 +9,13 @@ namespace XianXia.Content.NPCs.Bosses;
 public partial class BlackFurnaceIronGolem
 {
     public const int ChargeWarningTicks = 40, ChargeDashTicks = 24, ChargeRecoveryTicks = 40;
-    private bool chargeDashing;
+    private bool chargeDashing, chargeFrame;
     private int chargeTarget = -1;
     private Player chargePlayer;
     internal bool UpdateFurnaceCharge(Player target, bool finalPhase)
     {
         chargeDashing = false;
+        chargeFrame = false;
         if (!float.IsFinite(NPC.ai[1]) || NPC.ai[1] < -(ChargeWarningTicks + ChargeDashTicks + ChargeRecoveryTicks)
             || NPC.ai[1] > 180f || (NPC.ai[1] < 0f && !float.IsFinite(NPC.ai[3]))) {
             NPC.velocity = Vector2.Zero;
@@ -22,6 +23,7 @@ public partial class BlackFurnaceIronGolem
                 NPC.ai[0] = NPC.ai[1] = NPC.ai[2] = NPC.ai[3] = 0f;
                 NPC.netUpdate = true;
             }
+            chargeFrame = true;
             return true;
         }
         if (NPC.ai[1] < 0f && Main.netMode != NetmodeID.MultiplayerClient && chargeTarget >= 0
@@ -31,6 +33,7 @@ public partial class BlackFurnaceIronGolem
             chargeTarget = -1;
             chargePlayer = null;
             NPC.netUpdate = true;
+            chargeFrame = true;
             return true;
         }
         if (NPC.ai[1] >= 0f) {
@@ -60,8 +63,17 @@ public partial class BlackFurnaceIronGolem
                 if (elapsed == ChargeWarningTicks || elapsed == ChargeWarningTicks + ChargeDashTicks) NPC.netUpdate = true;
             }
         }
+        chargeFrame = true;
         return true;
     }
+    public override bool CanHitPlayer(Player target, ref int cooldownSlot) =>
+        global::XianXia.Common.Systems.BossTargeting.HasLivingTarget(NPC) && target.active && !target.dead
+        && float.IsFinite(target.Center.X) && float.IsFinite(target.Center.Y)
+        && float.IsFinite(NPC.ai[1]) && NPC.ai[1] <= 180f
+        && NPC.ai[1] >= -(ChargeWarningTicks + ChargeDashTicks + ChargeRecoveryTicks)
+        && ((!chargeFrame && NPC.ai[1] >= 0f) || (chargeDashing && float.IsFinite(NPC.ai[3])))
+        && Collision.CanHitLine(NPC.Center, 1, 1, target.Center, 1, 1);
+
     public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
     {
         if (Main.dedServ || NPC.ai[1] >= 0f || NPC.ai[1] < -ChargeWarningTicks
