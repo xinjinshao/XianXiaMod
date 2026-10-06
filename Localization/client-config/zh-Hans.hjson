@@ -1,0 +1,19 @@
+{
+  "Mods": {
+    "XianXia": {
+      "Configs": {
+        "XianXiaClientConfig": {
+          "DisplayName": "修行界面（客户端）",
+          "EnergyBarX": {
+            "Label": "灵气条横坐标",
+            "Tooltip": "UI像素，默认28；界面缩放和屏幕边缘会自动限制位置。设置保存后生效。"
+          },
+          "EnergyBarY": {
+            "Label": "灵气条纵坐标",
+            "Tooltip": "UI像素，默认84；Shift拖动是会话位置，离开世界后恢复本设置。"
+          }
+        }
+      }
+    }
+  }
+}

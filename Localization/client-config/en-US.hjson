@@ -1,0 +1,19 @@
+{
+  "Mods": {
+    "XianXia": {
+      "Configs": {
+        "XianXiaClientConfig": {
+          "DisplayName": "Cultivation UI (client)",
+          "EnergyBarX": {
+            "Label": "Energy bar horizontal position",
+            "Tooltip": "UI pixels, default 28. Position is clamped to the scaled screen. Apply settings to save."
+          },
+          "EnergyBarY": {
+            "Label": "Energy bar vertical position",
+            "Tooltip": "UI pixels, default 84. Shift-drag moves it for this session; leaving the world restores this setting."
+          }
+        }
+      }
+    }
+  }
+}

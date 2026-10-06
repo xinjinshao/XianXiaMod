@@ -726,4 +726,11 @@ CanUseBossSummon原先将requiredDownedBoss内部ID直接插入聊天。改为�
 
 新增Tools/run_source_checks.py统一入口，执行两组Python范围回归、内容契约、本地化键、PNG以及15个.NET8 Release源码项目，子进程失败立即传播非零状态；可指定dotnet路径，CultivationStatus传入实际仓库目录。新增GitHub Actions工作流，在push/PR/手动触发时于Windows/Python3.12/.NET8运行同一命令，contents只读、20分钟上限、同分支新运行取消旧运行。新增说明明确Gameplay/LocalizationPaths依赖官方引擎仍留本地，原生打包/专服/真实世界生成/客户端验收不由源码CI证明。
 
-首次统一检查暴露PNG验证器无法识别朱砂符箭原版ID贴图的误报，已识别明确Terraria ItemID/ProjectileID路径，四项回归确认原版路径可通过且缺失自定义/未知路径仍失败；原版ID有效性仍由原生构建/加载验证。Biomes旧模拟ModProjectile缺CanDamage、Projectile缺netImportant/Kill和Main缺maxPlayers，按当前生产源码接口补齐，未放宽生产行为或断言。最终20个入口步骤全部本地通过（PNG1243、Networking23092、15个源码项目等），diff检查通过；此次只修改工具/工作流/测试边界，未重复运行模组打包。GitHub托管执行结果尚待推送后确认，原生CI及完整文化/实机矩阵继续待做，R32未勾选。本轮提交推送GitHub。
+首次统一检查暴露PNG验证器无法识别朱砂符箭原版ID贴图的误报，已识别明确Terraria ItemID/ProjectileID路径，四项回归确认原版路径可通过且缺失自定义/未知路径仍失败；原版ID有效性仍由原生构建/加载验证。Biomes旧模拟ModProjectile缺CanDamage、Projectile缺netImportant/Kill和Main缺maxPlayers，按当前生产源码接口补齐，未放宽生产行为或断言。最终20个入口步骤全部本地通过（PNG1243、Networking23092、15个源码项目等），diff检查通过；此次只修改工具/工作流/测试边界，未重复运行模组打包。第77轮提交9014327的GitHub运行37414748104已完成success（托管20项检查通过），原生CI及完整文化/实机矩阵继续待做，R32未勾选。本轮提交推送GitHub。
+
+
+## 第78轮：灵气条客户端位置配置与会话拖动（2026-10-06）
+
+灵气条原固定28/84 UI像素。新增ClientSide XianXiaClientConfig横/纵坐标，默认28/84、范围0–4000，走原生配置保存入口；不影响服务器配置或资源数据。灵气UI读取设置，按screenWidth/UIScale、screenHeight/UIScale及贴图尺寸限制位置；Update中只在活跃存活且发现灵气时响应Shift+左键新按下，按UI坐标记录鼠标偏移、持续拖动并阻止世界鼠标操作，释放Shift/左键停止。临时位置仅当前世界会话有效，OnWorldUnload重置，配置坐标改变也清除临时位置；双语悬停提示说明保存设置与临时拖动的区别。主动技能面板暂保持固定布局。
+
+构建0警告0错误、打包与专服加载通过，日志run-7215ad4d2bbe4fc5a8a46ae0d70c6c50；38条既有状态双语回归、内容契约、本地化键、PNG与diff检查通过。本轮UI操作未新增镜像输入测试，未运行图形客户端；实际拖动/配置保存、分辨率和UI缩放、控制器及其它面板体验仍待验收或实现，R26保持未勾选。本轮提交推送GitHub。

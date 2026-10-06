@@ -17,7 +17,8 @@
         "ActiveTrial": "Trial active: {0}s remaining (survival timer)",
         "RetryTrial": "Current realm trial unfinished: use a Training Token to retry",
         "NoActiveTrial": "No trial currently active",
-        "Weakness": "Tribulation weakness: {0}s remaining"
+        "Weakness": "Tribulation weakness: {0}s remaining",
+        "DragHint": "Hold Shift and drag with the left mouse button for this world session. Save a position through client settings."
       }
     }
   }

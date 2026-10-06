@@ -36,6 +36,8 @@ public class SpiritualEnergyUISystem : ModSystem
         skillInterface = null;
     }
 
+    public override void OnWorldUnload() => state?.ResetPosition();
+
     public override void UpdateUI(GameTime gameTime)
     {
         userInterface?.Update(gameTime);
