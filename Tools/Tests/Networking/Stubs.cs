@@ -69,7 +69,7 @@ namespace Terraria
         public ref Terraria.ModLoader.StatModifier GetDamage(Terraria.ModLoader.DamageClass damage)=>ref damageModifier;
         public ref Terraria.ModLoader.StatModifier GetKnockback(Terraria.ModLoader.DamageClass damage)=>ref knockbackModifier;
         public int[] buffTime = new int[22], ownedProjectileCounts = new int[16];
-        public void AddBuff(int type, int time) => buffTime[type] = time;
+        public void AddBuff(int type, int time) => buffTime[type] = time; public bool HasBuff(int type)=>buffTime[type]>0;
         public Microsoft.Xna.Framework.Rectangle Hitbox => new((int)Center.X-10,(int)Center.Y-20,20,40);
         public Microsoft.Xna.Framework.Vector2 MountedCenter => Center;
         public Microsoft.Xna.Framework.Vector2 RotatedRelativePoint(Microsoft.Xna.Framework.Vector2 value) => value;
@@ -96,7 +96,7 @@ namespace Terraria
         public int maxStack=1,useAmmo,ammo,prefix,width,height,value,rare,useStyle,useAnimation,ResearchUnlockCount;
         public object UseSound;
         public bool accessory,vanity,noMelee,autoReuse; public int crit; public object DamageType;
-        public static int buyPrice(int gold=0)=>gold*10000;
+        public static int buyPrice(int gold=0,int silver=0)=>gold*10000+silver*100;
         public bool IsAir=>type==0||stack<=0;
         public float shootSpeed = 10f, knockBack = 2f;
         public bool consumable;
@@ -162,8 +162,8 @@ namespace Terraria
 
 namespace Terraria.ID
 {
-    public static class ItemUseStyleID { public const int HoldUp=1,Shoot=2,Swing=3; }
-    public static class SoundID { public const int Item4=1,Item20=2,Item5=3; }
+    public static class ItemUseStyleID { public const int HoldUp=1,Shoot=2,Swing=3,DrinkLiquid=4; }
+    public static class SoundID { public const int Item4=1,Item20=2,Item5=3,Item3=4; }
     public static class BuffID { public const int Regeneration = 1,Ichor=2,OnFire3=3; }
     public static class NetmodeID { public const int SinglePlayer = 0, MultiplayerClient = 1, Server = 2; }
     public static class MessageID { public const int WorldData = 7, SyncEquipment = 5,SpiritHeal=66,KillProjectile=29,SyncProjectile=27; }
@@ -284,7 +284,7 @@ namespace Terraria.ModLoader.IO
 
 namespace Terraria.Localization
 {
-    public static class Language { public static string GetTextValue(string key, params object[] values) => key; }
+    public static class Language { public static object GetText(string key)=>key; public static string GetTextValue(string key, params object[] values) => key; }
     public class NetworkText
     {
         private readonly string text;
@@ -306,7 +306,7 @@ namespace XianXia.Common.Players
         public float spiritualEnergyCostMultiplier=1f;
         public CultivationStage cultivationStage;
         public int maxSpiritualEnergy = 40, arrayDeploymentCooldown;
-        public bool NetworkInitialized, ApplyingProgressionItem, NetworkWasActive;
+        public bool discoveredSpiritualEnergy=true; public bool NetworkInitialized, ApplyingProgressionItem, NetworkWasActive;
         public void ResetNetworkSession() { NetworkInitialized = NetworkWasActive = false; ProgressionItemCooldown = BossSummonCooldown = 0; }
         public int ProgressionItemCooldown, BossSummonCooldown, WeaponShotCooldown;
         public bool ApplyingWeaponShot;
@@ -386,18 +386,18 @@ namespace Terraria.DataStructures
 
 namespace XianXia.Common.Systems { public class InscriptionUISystem { public void Open(int slot) { } } }
 namespace XianXia.Content.Items.Materials { public class LowGradeSpiritStone { } }
-namespace XianXia.Content.Tiles.Stations { public class ArtifactForgeTile { } public class ThunderPatternForgeTile { } public class HeavenFireFurnaceTile { } public class DaoSeveringAltarTile { } }
+namespace XianXia.Content.Tiles.Stations { public class AlchemyCauldronTile {} public class ArtifactForgeTile { } public class ThunderPatternForgeTile { } public class HeavenFireFurnaceTile { } public class DaoSeveringAltarTile { } }
 namespace XianXia.Content.Items.HandGenerated { public class RouteMaterial { } }
 namespace XianXia.Content.Items.Accessories { public class LightningWardJade { } }
 namespace XianXia.Content.Projectiles { public class CloudpiercerSwordProjectile { } }
-namespace XianXia.Content.Buffs { public class ArtifactWardBuff { } }
+namespace XianXia.Content.Buffs { public class QiRecoveryCooldownBuff {} public class ArtifactWardBuff { } }
 
 namespace Terraria {
- public class Condition {public static Condition DownedMoonLord=new(),DownedPlantera=new(),DownedGolem=new();}
+ public class Condition {public Condition(){} public Condition(object description,Func<bool> predicate){} public static Condition DownedMoonLord=new(),DownedPlantera=new(),DownedGolem=new();}
  public class Recipe {public Recipe AddIngredient<T>(int amount=1)=>this;public Recipe AddIngredient(int type,int amount=1)=>this;public Recipe AddTile(int tile)=>this;public Recipe AddCondition(Condition condition)=>this;public void Register(){}}
  public static class Lighting {public static int Calls;public static void AddLight(Microsoft.Xna.Framework.Vector2 center,float r,float g,float b)=>Calls++;}
 }
-namespace Terraria.ID {public static class ItemRarityID {public const int Red=10,Lime=8,Yellow=9,Green=2;}}
+namespace Terraria.ID {public static class ItemRarityID {public const int Red=10,Lime=8,Yellow=9,Green=2,Blue=1;}}
 namespace Terraria.ModLoader {
  public class ModProjectile {public Mod Mod;public Terraria.Projectile Projectile=new();public ModProjectile(){Projectile.ModProjectile=this;}public virtual string Texture=>"";public virtual void SetDefaults(){}public virtual bool? CanDamage()=>null;public virtual void AI(){} public virtual void OnSpawn(Terraria.DataStructures.IEntitySource source){} public virtual void SendExtraAI(System.IO.BinaryWriter writer){} public virtual void ReceiveExtraAI(System.IO.BinaryReader reader){} public virtual void OnKill(int timeLeft){} public virtual bool? CanHitNPC(Terraria.NPC target)=>null;public virtual bool OnTileCollide(Microsoft.Xna.Framework.Vector2 velocity)=>true;public virtual void OnHitNPC(Terraria.NPC npc,Terraria.NPC.HitInfo hit,int damage){}}
 }
@@ -416,7 +416,7 @@ namespace XianXia.Content.Items.Materials {public class GreenwoodRoot{}}
 
 namespace XianXia.Content.Items.Materials {public class OldFurnaceEmber{} public class FurnaceSlagIron{}}
 
-namespace Terraria.ID {public static class ItemID {public const int FlamingArrow=41,WoodenArrow=40;}public static class ProjectileID {public const int WoodenArrowFriendly=1,FireArrow=2;}public static class AmmoID {public const int Arrow=40;}}
+namespace Terraria.ID {public static class ItemID { public const int BottledWater=6;public const int FlamingArrow=41,WoodenArrow=40;}public static class ProjectileID {public const int WoodenArrowFriendly=1,FireArrow=2;}public static class AmmoID {public const int Arrow=40;}}
 namespace XianXia.Content.Items.HandGenerated {public class TornTalismanPaper{} public class CinnabarPowder{}}
 namespace XianXia.Content.Tiles.Stations {public class SimpleTalismanTableTile{}}
 

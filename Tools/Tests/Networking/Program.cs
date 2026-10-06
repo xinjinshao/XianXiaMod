@@ -1026,6 +1026,34 @@ inheritedBolt.OnSpawn(new Terraria.DataStructures.EntitySource_Parent(lightningF
 
 Console.WriteLine($"Networking/artificing/skills/routes/Dao regression passed: {assertions} assertions. Engine boundaries are stubbed; live multiplayer remains required.");
 
+// Actual recovery ModItem hooks plus production server inventory transaction.
+Game.netMode=NetmodeID.Server;Game.myPlayer=255;
+var recoveryPlayer=Game.player[0];recoveryPlayer.active=true;recoveryPlayer.dead=false;recoveryPlayer.noItems=recoveryPlayer.CCed=false;recoveryPlayer.selectedItem=0;
+recoveryPlayer.State.NetworkInitialized=true;recoveryPlayer.State.discoveredSpiritualEnergy=true;recoveryPlayer.State.maxSpiritualEnergy=200;
+var realPill=new XianXia.Content.Items.Materials.QiRecoveryPill{Mod=mod,Name="QiRecoveryPill"};realPill.SetDefaults();realPill.Item.type=951;realPill.Item.stack=10;realPill.Item.ModItem=realPill;recoveryPlayer.inventory[0]=realPill.Item;
+foreach(var recoveryQuality in new[]{PillQuality.Coarse,PillQuality.Standard,PillQuality.Fine,PillQuality.Spirit}){
+ recoveryPlayer.buffTime= new int[22];recoveryPlayer.State.spiritualEnergy=0;recoveryPlayer.State.spiritPressure=95;recoveryPlayer.State.ProgressionItemCooldown=0;
+ realPill.Item.GetGlobalItem<PillQualitySystem>().LoadData(realPill.Item,new Terraria.ModLoader.IO.TagCompound{{"quality",(int)recoveryQuality},{"crafted",true}});
+ int stack=realPill.Item.stack;
+ Check(realPill.CanUseItem(recoveryPlayer),"Actual pill usable with missing energy");
+ CultivationItemTransactions.HandleRequest(recoveryPlayer,0,951);
+ Check(realPill.Item.stack==stack-1&&recoveryPlayer.State.spiritualEnergy==PillQualityRules.Scale(40,recoveryQuality)+PillQualityRules.BonusEnergy(recoveryQuality),"Actual graded recovery and quality bonus execute once");
+ Check(recoveryPlayer.State.spiritPressure==100&&recoveryPlayer.buffTime[2]==1800,"Actual fixed pressure clamp and cooldown across qualities");
+ recoveryPlayer.State.ProgressionItemCooldown=0;CultivationItemTransactions.HandleRequest(recoveryPlayer,0,951);
+ Check(realPill.Item.stack==stack-1,"Actual cooldown rejects without consuming");
+}
+recoveryPlayer.buffTime=new int[22];recoveryPlayer.State.spiritualEnergy=198;recoveryPlayer.State.ProgressionItemCooldown=0;CultivationItemTransactions.HandleRequest(recoveryPlayer,0,951);
+Check(recoveryPlayer.State.spiritualEnergy==200,"Actual recovery and extra bonus clamp to energy maximum");
+recoveryPlayer.buffTime=new int[22];Check(!realPill.CanUseItem(recoveryPlayer),"Actual full-energy rejection");
+recoveryPlayer.State.spiritualEnergy=0;recoveryPlayer.State.discoveredSpiritualEnergy=false;Check(!realPill.CanUseItem(recoveryPlayer),"Actual unawakened rejection");recoveryPlayer.State.discoveredSpiritualEnergy=true;
+int noEffectEnergy=recoveryPlayer.State.spiritualEnergy;realPill.UseItem(recoveryPlayer);Check(recoveryPlayer.State.spiritualEnergy==noEffectEnergy,"Replicated server use hook does not bypass transaction");
+Game.netMode=NetmodeID.MultiplayerClient;Game.myPlayer=0;int oldStack=realPill.Item.stack;int beforeRecoveryPackets=ModPacket.Sent.Count;realPill.UseItem(recoveryPlayer);
+Check(recoveryPlayer.State.spiritualEnergy==noEffectEnergy&&realPill.Item.stack==oldStack&&!new CultivationItemTransactions().ConsumeItem(realPill.Item,recoveryPlayer),"Client requests without restoring or consuming");
+Check(ModPacket.Sent.Count==beforeRecoveryPackets+1&&ModPacket.Sent.Last().Data[0]==5,"Actual client pill sends canonical inventory request");
+recoveryPlayer.dead=true;Check(!realPill.CanUseItem(recoveryPlayer),"Dead owner cannot use recovery pill");recoveryPlayer.dead=false;recoveryPlayer.active=false;Check(!realPill.CanUseItem(recoveryPlayer),"Inactive owner cannot use recovery pill");recoveryPlayer.active=true;
+Game.netMode=NetmodeID.SinglePlayer;recoveryPlayer.State.spiritPressure=0;recoveryPlayer.buffTime=new int[22];realPill.UseItem(recoveryPlayer);
+Check(recoveryPlayer.State.spiritualEnergy==60&&recoveryPlayer.State.spiritPressure==10&&recoveryPlayer.buffTime[2]==1800,"Actual singleplayer ModItem applies stored spirit quality, pressure and cooldown");
+Console.WriteLine($"Networking including actual recovery pill hooks: {assertions} assertions; buff/inventory engine boundaries mocked.");
 sealed class TestBossSummon : XianXia.Common.Items.CultivationBossSummonItem
 {
     public override int BossType => 100;

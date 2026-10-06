@@ -771,3 +771,10 @@ CanUseBossSummon原先将requiredDownedBoss内部ID直接插入聊天。改为�
 R19/T22缺直接回气丹药，新增手写QiRecoveryPill与QiRecoveryRules、QiRecoveryCooldownBuff。已启灵、当前灵气非负且未满/上限正数/无冷却时可用；恢复基础40经PillQualitySystem.Scale处理，上限由原RestoreSpiritualEnergy钳制，灵压固定+10钳制100，固定1800tick冷却。冷却为可保存的原生debuff，NurseCannotRemoveDebuff=true，品质不缩短冷却；实际死亡/重连/换世界Buff生命周期仍待实机验证。炼丹炉青木根2+下品灵石4+瓶装水1产出2粒，空鼠标品质制作边界；加入PillQualitySystem与CultivationItemTransactions同名白名单，保持既有高品质额外恢复/再生及存储堆叠规则。UseItem权限分流后再复核CanUse，服务器现有事务判定实际状态/Buff变化并消费一次；客户端不直接扣库存。暂复用春回丹和灵压图标，中英文提示与Wiki同步。
 
 Progression累计552条规则回归通过（本轮73条条件矩阵及固定代价），Networking累计23096条通过（新增4条白名单/品质注册、单次事务消费/效果、即时重放、拒绝不消费，药效与Buff是模拟边界，并非实际ModItem调用或Buff寿命证明）。品质制作契约扩为5种配方通过，PNG1243、内容/本地化/diff通过。构建0警告0错误、打包与专服加载通过，日志run-5ad30a27bf344e269e6979df0af2217e。实际品质制作/库存生命周期、多人用药、真实冷却保存和战斗平衡未验收，R19/R01未勾选。本轮提交推送GitHub。
+
+
+## 第84轮：回气丹实际使用钩子与品质事务回归（2026-10-06）
+
+第83轮事务药效为模拟委托，本轮Networking直接链接生产QiRecoveryPill与QiRecoveryRules，执行实际SetDefaults/CanUseItem/UseItem，并通过生产CultivationItemTransactions.HandleRequest及PillQualitySystem.ApplyUseBonus结算。测试边界补DrinkLiquid/SoundID/Blue/BottledWater、HasBuff、价格银币、条件描述、丹炉与冷却Buff类型；没有替换回气丹钩子或改生产逻辑。新增25条覆盖四种持久品质恢复与附加奖励一次结算、恢复/灵压上限、所有品质固定1800tick、冷却拒绝保留库存、未启灵/满灵气/死亡/非活跃拒绝、服务器普通复制UseItem不执行、客户端真实5号请求且不恢复/消费，以及单人UseItem实际品质/代价/冷却。
+
+Networking累计23121条通过，内容契约和diff通过。本轮只修改测试基础与证据记录，不重复打包。实际原生buff槽映射/倒计时/保存、全球UseItem引擎调用顺序、库存与双客户端仍为模拟边界或待验收；R19/R01不勾选。源码CI已自动包含Networking，因此后续改动直接跑该实际钩子。本轮提交推送GitHub。
