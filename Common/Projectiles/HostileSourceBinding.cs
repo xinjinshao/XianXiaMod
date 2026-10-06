@@ -62,9 +62,16 @@ internal sealed class HostileSourceBinding
     {
         if (sourceCancelled) { projectile.timeLeft = System.Math.Min(projectile.timeLeft, fadeTicks); return; }
         if (Main.netMode == NetmodeID.MultiplayerClient || (sourceSlot == -1 && sourceType == 0 && sourcePlayerSlot == -1) || IsValid()) return;
+        CancelOnAuthority(projectile, fadeTicks);
+    }
+
+    public void CancelOnAuthority(Projectile projectile, int fadeTicks)
+    {
+        if (Main.netMode == NetmodeID.MultiplayerClient) return;
+        bool changed = !sourceCancelled;
         sourceCancelled = true;
         projectile.timeLeft = System.Math.Min(projectile.timeLeft, fadeTicks);
-        projectile.netUpdate = true;
+        if (changed) projectile.netUpdate = true;
     }
 
     public IEntitySource StrikeSource(Projectile fallback) => sourcePlayer != null ? sourcePlayer.GetSource_FromThis()

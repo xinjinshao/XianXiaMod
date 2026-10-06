@@ -1022,3 +1022,14 @@ Telegraphs793→891项，增加八类玩家来源失效×三模式、新会话�
 Telegraphs891→994项，NPC/玩家失效×三模式、有效天然释放一次、原Entity转发、19字节截断原子性、非法年龄、透明淡出和旧年龄限制，法阵原回归仍通过。Gameplay944→950项使用官方NPC来源和实际编译预警，验证迟加入标记/无伤/失效6tick/自然清理不进入原生创建/19字节；另真实调用官方NewInstance证明独立来源组件，不只假设构造器独立。最终完整34步/25.NET入口通过，原生构建0警告0错误、打包与专服加载run-abc399889db64217ad246506fef06ebe通过；PackageContents366条目/362资源/1465与LocalizationPaths110+2通过（初次及中间原生检查亦通过）。
 
 没有真实世界或客户端联机；已释放雷击来源、客户端实例/会话即时比较、运输延迟/晚加入和实际走位仍待验收，R04未勾选。任务清单、网络与源码说明同步，本轮提交推送GitHub。
+
+
+## 第111轮：已释放雷击的来源失效清理与伤害/Buff过滤（2026-10-06）
+
+上一轮138a75f的GitHub Source/Native checks均success。继续R04把TribulationLightningProjectile绑定预警转发的原NPC/玩家来源，接同一HostileSourceBinding、19字节ExtraAI、netImportant。CanDamage/CanHitPlayer/OnHitPlayer一致拒绝失效来源，权威6tick无伤淡出/netUpdate，客户端取消同步后同样限制淡出；失效期间速度归零并退出加速/粒子。正常18×64判定、120寿命、下落加速和180tick灵压紊乱保留，新增CanHitLine墙体过滤与目标存活/有限坐标检查。
+
+坏位置/速度拒绝伤害；AI锁定invalidGeometry并通过新增共享CancelOnAuthority发送取消，修正“NaN速度归零后重新变成可伤害”的可能性，非权威只保持无伤/停移，不自行取消实体。非法年龄亦锁定无伤，19字节截断读保持原状态。共享CancelOnAuthority幂等发dirty标记，旧法阵与预警规则继续通过。
+
+Telegraphs994→1,109项，NPC/玩家三种失效×三模式、有效源/迟加入标记、权威6tick/停移/不施Buff、正常180tick效果、墙体与19字节截断，另三模式坏速度修正后仍无伤及坏位置。Gameplay950→956项用官方NPC/实际编译雷击验证有效源、来源失效立即无伤、6tick/netUpdate、停移、19字节与官方NewInstance的独立组件。完整34步/25.NET源码入口通过；原生构建0警告0错误、打包/专服加载run-00061815d3d34e619f85d0e000a8254e通过（初次run-ddaf5c55dea9411fa83571babe290816亦通过）；PackageContents366条目/362资源/1465与LocalizationPaths110+2通过。
+
+没有真实世界/客户端联机；客户端当前实例/会话编号、取消运输延迟、晚加入及实际避让仍待验收，R04未勾选。任务清单、网络及源码说明同步，本轮提交推送GitHub。

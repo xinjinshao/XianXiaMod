@@ -63,7 +63,7 @@ CI运行只读新鲜度检查，生成结果变化时须显式更新这四份输
 
 ## 原生包内容与默认配置
 
-Native checks另运行PackageContents，使用官方TmodFile打开实际.tmod，核对内部名称、build.txt版本、归档哈希、当前描述及Common/Content/Localization的所有PNG/HJSON（接受官方转换后的rawimg）；拒绝隐藏/越界条目、Assets/Docs/Wiki/Tools/bin/obj/README和源码/工具扩展。它不是读取源码文件名后假定打包正确。默认配置在Gameplay编译产物回归中验证，当前累计950条。
+Native checks另运行PackageContents，使用官方TmodFile打开实际.tmod，核对内部名称、build.txt版本、归档哈希、当前描述及Common/Content/Localization的所有PNG/HJSON（接受官方转换后的rawimg）；拒绝隐藏/越界条目、Assets/Docs/Wiki/Tools/bin/obj/README和源码/工具扩展。它不是读取源码文件名后假定打包正确。默认配置在Gameplay编译产物回归中验证，当前累计956条。
 
 ```powershell
 dotnet run --project Tools/Tests/PackageContents/PackageContents.csproj -- <XianXia.tmod路径> <官方引擎目录> <仓库根目录>
@@ -140,3 +140,12 @@ Telegraphs671→793项，增加七类来源失效×三模式、权威槽位复�
 成功释放用原NPC.GetSource_FromAI或Player.GetSource_FromThis，让雷击携带原始来源，避免只留下即将删除的预警实体；目前雷击自身尚未读取/绑定该来源。Telegraphs891→994项，覆盖NPC/玩家失效×三模式、自然释放一次/原来源转发、19字节逐段截断、非法年龄和取消透明/客户端年龄限制，法阵原回归继续通过。Gameplay944→950项，用官方来源验证实际预警常量/无伤/失效淡出/撤场/19字节及真实ModProjectile.NewInstance的来源组件独立性。
 
 完整34步/25.NET入口、原生构建/专服加载、打包及本地化路径通过。客户端即时实例/会话比较与已释放雷击的生命周期、真实运输/避让仍待验收。
+
+
+## 已释放雷击的来源与命中过滤
+
+第111轮TribulationLightningProjectile接同一HostileSourceBinding和19字节ExtraAI、netImportant。NPC/玩家来源失效即时拒绝CanDamage/CanHitPlayer/OnHitPlayer，权威6tick淡出并netUpdate，客户端已取消后也限制淡出；失效期间停止移动，不继续加速或粒子。正常寿命120、18×64判定、下落加速与3秒灵压紊乱保留，墙体线检查阻止玩家命中与Buff。
+
+非有限位置/速度不造成伤害；AI锁定坏几何并在权威同步取消，即使把NaN速度归零也不能恢复伤害。无效年龄同样不再恢复。Telegraphs994→1,109项，覆盖已释放雷击的NPC/玩家失效×三模式、取消/停移/无Buff、自然Buff与墙体、19字节截断、非有限数据和权威几何取消；原法阵/预警回归继续通过。Gameplay950→956项用实际编译雷击与官方NPC来源验证有效/失效伤害、6tick/netUpdate、停移、19字节及官方NewInstance独立来源组件。
+
+完整34步入口、原生构建/专服加载、打包及官方本地化路径通过。客户端同槽位新实例/新渡劫会话仍依赖取消包，真实运输、晚加入与躲避仍待验收。
