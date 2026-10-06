@@ -3,20 +3,20 @@
     "XianXia": {
       "Buffs": {
         "BlackFurnaceIronGolemPetBuff": {
-          "DisplayName": "BlackFurnaceIronGolemPet",
+          "DisplayName": "Black Furnace Iron Golem Pet",
           "Description": "A small companion follows you"
         },
         "SmallTabletPetBuff": {
-          "DisplayName": "SmallTabletPet",
+          "DisplayName": "Small Tablet Pet",
           "Description": "A small companion follows you"
         }
       },
       "Projectiles": {
         "BlackFurnaceIronGolemPetProjectile": {
-          "DisplayName": "BlackFurnaceIronGolemPet"
+          "DisplayName": "Black Furnace Iron Golem Pet"
         },
         "SmallTabletPetProjectile": {
-          "DisplayName": "SmallTabletPet"
+          "DisplayName": "Small Tablet Pet"
         }
       }
     }
