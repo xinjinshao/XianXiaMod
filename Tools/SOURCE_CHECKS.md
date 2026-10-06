@@ -50,3 +50,12 @@ python Tools/Tests/test_generator_ownership.py
 ```
 
 CI运行只读新鲜度检查，生成结果变化时须显式更新这四份输出并评审内容；空格式行差异不作为过期，但实际值差异会失败。8项隔离回归执行真实主入口并保护手写哨兵、检查旧入口/资产复制拒绝、路径边界、换行/重复运行、只读校验状态恢复及失败传播。校验不写工作区，不重新生成玩法文件。
+
+
+## GitHub 原生构建与加载 CI
+
+`.github/workflows/native-checks.yml`在push、pull_request和手动触发时独立运行Windows原生检查。下载[官方v2026.08.3.0发布包](https://github.com/tModLoader/tModLoader/releases/tag/v2026.08.3.0)，固定SHA256为`61e865f3702b12ce4a26c5a90b9de99a12c65ffc228455eb3390ce54af1eab15`，校验后解压到runner临时目录；不使用latest、不依赖Steam、本地安装或仓库内引擎副本。升级时必须同时审核版本/摘要和原生回归。
+
+流程调用既有verify_build.ps1完成编译、隔离打包、专服内容与配方加载及经济导出，再执行Gameplay编译产物回归、LocalizationPaths官方加载器路径回归和三价格场景金币转换检查。任何非零退出均失败；经济阶段要求唯一快照，避免读错旧结果。源码28步检查保留在独立Source checks工作流。
+
+无论成功失败，上传专服标准/错误日志、引擎详细日志、经济快照/报告及生成模组包，保留14天，支持定位加载前失败。引擎下载或摘要校验失败也会阻止通过。此流程不启动游戏世界，不验证图形、多人实战、Boss平衡或完整通关；包仅为诊断产物，不自动发布。

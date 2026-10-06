@@ -1,0 +1,68 @@
+name: Native checks
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: native-checks-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  native-checks:
+    runs-on: windows-latest
+    timeout-minutes: 25
+    env:
+      TML_ROOT: ${{ runner.temp }}/XianXia-tModLoader
+      TML_ARCHIVE: ${{ runner.temp }}/XianXia-tModLoader.zip
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+      - name: Install pinned official tModLoader
+        shell: pwsh
+        run: |
+          $ErrorActionPreference = 'Stop'
+          Invoke-WebRequest 'https://github.com/tModLoader/tModLoader/releases/download/v2026.08.3.0/tModLoader.zip' -OutFile $env:TML_ARCHIVE
+          $expectedHash = '61e865f3702b12ce4a26c5a90b9de99a12c65ffc228455eb3390ce54af1eab15'
+          if ((Get-FileHash -LiteralPath $env:TML_ARCHIVE -Algorithm SHA256).Hash.ToLowerInvariant() -ne $expectedHash) { throw 'Official engine archive checksum mismatch' }
+          Expand-Archive -LiteralPath $env:TML_ARCHIVE -DestinationPath $env:TML_ROOT
+          foreach ($requiredFile in @('tModLoader.dll', 'tMLMod.targets')) {
+            if (!(Test-Path -LiteralPath (Join-Path $env:TML_ROOT $requiredFile))) { throw "Missing engine file: $requiredFile" }
+          }
+      - name: Compile, package and load dedicated server with economy export
+        shell: pwsh
+        run: Tools/verify_build.ps1 -TModLoaderDir $env:TML_ROOT -ExportEconomyAudit
+      - name: Run regressions against compiled mod and official assemblies
+        shell: pwsh
+        run: |
+          dotnet run --project Tools/Tests/Gameplay/Gameplay.csproj -- "$pwd/bin/Debug/net8.0/XianXia.dll" $env:TML_ROOT
+          if ($LASTEXITCODE -ne 0) { throw 'Native gameplay regression failed' }
+          dotnet run --project Tools/Tests/LocalizationPaths/LocalizationPaths.Tests.csproj -- "$pwd" $env:TML_ROOT
+          if ($LASTEXITCODE -ne 0) { throw 'Native localization path regression failed' }
+      - name: Check registered economy in all price profiles
+        shell: pwsh
+        run: |
+          $snapshots = @(Get-ChildItem -Path '.tml-test/run-*/economy-audit.json')
+          if ($snapshots.Count -ne 1) { throw "Expected exactly one economy snapshot, found $($snapshots.Count)" }
+          python Tools/audit_economy.py $snapshots[0].FullName --report .tml-test/economy-report.md --check
+          if ($LASTEXITCODE -ne 0) { throw 'Registered economy audit failed' }
+      - name: Preserve package and diagnostics
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: native-checks-${{ github.run_id }}-${{ github.run_attempt }}
+          if-no-files-found: warn
+          retention-days: 14
+          path: |
+            .tml-test/**/server.log
+            .tml-test/**/server.err.log
+            .tml-test/**/tmodloader-server.log
+            .tml-test/**/economy-audit.json
+            .tml-test/economy-report.md
+            .tml-test/**/XianXia.tmod
+            ${{ runner.temp }}/XianXia-tModLoader/tModLoader-Logs/**
