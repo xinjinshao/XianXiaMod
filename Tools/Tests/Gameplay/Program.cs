@@ -200,26 +200,35 @@ LoadInscription(copiedInscription,Tag());
 Check(Inscription(copiedInscription)==0,"Legacy actual saves keep equipment uninscribed.");
 Console.WriteLine($"Gameplay/save/inscription regression passed: {assertions} assertions against compiled mod and official engine.");
 
+// Native metadata hooks receive their owning item; bind a real sample instead of null.
+var refinementItemType=tagType.Assembly.GetType("Terraria.Item",true);
+object refinementOwner=Activator.CreateInstance(refinementItemType);
+var refinementSampleType=type.Assembly.GetType("XianXia.Content.Items.Weapons.CloudpiercerFlyingSword",true);
+object refinementSample=Activator.CreateInstance(refinementSampleType);
+refinementSampleType.GetProperty("Entity",BindingFlags.Instance|BindingFlags.Public|BindingFlags.NonPublic).SetValue(refinementSample,refinementOwner);
+refinementSampleType.GetProperty("Mod",BindingFlags.Instance|BindingFlags.Public|BindingFlags.NonPublic).SetValue(refinementSample,Activator.CreateInstance(type.Assembly.GetType("XianXia.XianXia",true)));
+refinementItemType.GetProperty("ModItem",BindingFlags.Instance|BindingFlags.Public|BindingFlags.NonPublic).SetValue(refinementOwner,refinementSample);
+foreach(var pair in new[]{("type",1),("stack",1),("maxStack",1),("damage",28)})refinementItemType.GetField(pair.Item1).SetValue(refinementOwner,pair.Item2);
 Type refinedType=type.Assembly.GetType("XianXia.Common.Items.RefinedArtifact",true);
 object refined=Activator.CreateInstance(refinedType);
 int Refinement(object item)=>Convert.ToInt32(refinedType.GetProperty("Level").GetValue(item));
 Check(Refinement(refined)==0,"Actual legacy artifact defaults to refinement level zero.");
 refinedType.GetMethod("SetLevel").Invoke(refined,new object[]{3});
 Check((bool)refinedType.GetMethod("TryAwaken").Invoke(refined,null),"Actual maximum-level artifact can complete the awakening transition.");
-object refinementSave=Tag();refinedType.GetMethod("SaveData").Invoke(refined,new[]{null,refinementSave});
+object refinementSave=Tag();refinedType.GetMethod("SaveData").Invoke(refined,new[]{refinementOwner,refinementSave});
 object refinedLoaded=Activator.CreateInstance(refinedType);
-refinedType.GetMethod("LoadData").Invoke(refinedLoaded,new[]{null,refinementSave});
+refinedType.GetMethod("LoadData").Invoke(refinedLoaded,new[]{refinementOwner,refinementSave});
 Check(Refinement(refinedLoaded)==3,"Actual item save retains maximum refinement level.");
 Check((bool)refinedType.GetProperty("Awakened").GetValue(refinedLoaded),"Actual saved equipment retains crafted awakening.");
 object refinedCloned=refinedType.GetMethod("Clone",new[]{qualityType.BaseType.Assembly.GetType("Terraria.Item"),qualityType.BaseType.Assembly.GetType("Terraria.Item")}).Invoke(refined,new object[]{null,null});
 refinedType.GetMethod("SetLevel").Invoke(refinedCloned,new object[]{1});
 Check(Refinement(refined)==3 && Refinement(refinedCloned)==1,"Actual refinement clone is independent from the source.");
 using(var data=new MemoryStream()) {
- using(var writer=new BinaryWriter(data,System.Text.Encoding.UTF8,true)) refinedType.GetMethod("NetSend").Invoke(refined,new object[]{null,writer});
- data.Position=0;using var reader=new BinaryReader(data);refinedType.GetMethod("NetReceive").Invoke(refinedLoaded,new object[]{null,reader});
+ using(var writer=new BinaryWriter(data,System.Text.Encoding.UTF8,true)) refinedType.GetMethod("NetSend").Invoke(refined,new object[]{refinementOwner,writer});
+ data.Position=0;using var reader=new BinaryReader(data);refinedType.GetMethod("NetReceive").Invoke(refinedLoaded,new object[]{refinementOwner,reader});
  Check(Refinement(refinedLoaded)==3 && data.Length==3,"Actual refinement item networking retains level, awakening and route metadata.");
 }
-refinedType.GetMethod("LoadData").Invoke(refinedLoaded,new[]{null,Tag(("refinement",999))});
+refinedType.GetMethod("LoadData").Invoke(refinedLoaded,new[]{refinementOwner,Tag(("refinement",999))});
 Check(Refinement(refinedLoaded)==0,"Invalid real item save cannot grant excessive refinement.");
 Console.WriteLine($"Gameplay/save/refinement regression passed: {assertions} assertions against compiled mod and official engine.");
 
@@ -243,23 +252,23 @@ object rebuild=Enum.ToObject(routeType,1);
 Check((bool)refinedType.GetMethod("TryTransform").Invoke(refined,new[]{rebuild}),"Actual awakened artifact can receive its permanent Dao route.");
 Check(!(bool)refinedType.GetMethod("TryTransform").Invoke(refined,new[]{Enum.ToObject(routeType,2)}),"Actual artifact cannot replace an existing Dao route.");
 int DaoRoute(object item)=>Convert.ToInt32(refinedType.GetProperty("DaoRoute").GetValue(item));
-object daoSave=Tag();refinedType.GetMethod("SaveData").Invoke(refined,new[]{null,daoSave});
-refinedType.GetMethod("LoadData").Invoke(refinedLoaded,new[]{null,daoSave});
+object daoSave=Tag();refinedType.GetMethod("SaveData").Invoke(refined,new[]{refinementOwner,daoSave});
+refinedType.GetMethod("LoadData").Invoke(refinedLoaded,new[]{refinementOwner,daoSave});
 Check(DaoRoute(refinedLoaded)==1,"Actual item save preserves Dao transformation.");
 object daoClone=refinedType.GetMethod("Clone",new[]{qualityType.BaseType.Assembly.GetType("Terraria.Item"),qualityType.BaseType.Assembly.GetType("Terraria.Item")}).Invoke(refined,new object[]{null,null});
 refinedType.GetMethod("SetLevel").Invoke(daoClone,new object[]{1});
 Check(DaoRoute(daoClone)==0 && DaoRoute(refined)==1,"Actual clone changes cannot overwrite the source's Dao route.");
 using(var data=new MemoryStream()) {
- using(var writer=new BinaryWriter(data,System.Text.Encoding.UTF8,true))refinedType.GetMethod("NetSend").Invoke(refined,new object[]{null,writer});
- data.Position=0;using var reader=new BinaryReader(data);refinedType.GetMethod("NetReceive").Invoke(refinedLoaded,new object[]{null,reader});
+ using(var writer=new BinaryWriter(data,System.Text.Encoding.UTF8,true))refinedType.GetMethod("NetSend").Invoke(refined,new object[]{refinementOwner,writer});
+ data.Position=0;using var reader=new BinaryReader(data);refinedType.GetMethod("NetReceive").Invoke(refinedLoaded,new object[]{refinementOwner,reader});
  Check(data.Length==3 && DaoRoute(refinedLoaded)==1,"Actual item payload preserves refinement, awakening and Dao route together.");
  for(int size=0;size<3;size++) {
-  try { using var shortReader=new BinaryReader(new MemoryStream(data.ToArray()[..size]));refinedType.GetMethod("NetReceive").Invoke(refinedLoaded,new object[]{null,shortReader});throw new Exception("Expected incomplete metadata rejection"); }
+  try { using var shortReader=new BinaryReader(new MemoryStream(data.ToArray()[..size]));refinedType.GetMethod("NetReceive").Invoke(refinedLoaded,new object[]{refinementOwner,shortReader});throw new Exception("Expected incomplete metadata rejection"); }
   catch(TargetInvocationException error) when(error.InnerException is EndOfStreamException) { Check(DaoRoute(refinedLoaded)==1 && Refinement(refinedLoaded)==3,"Incomplete actual metadata cannot partially erase advancement."); }
  }
 }
 foreach(object malformed in new[]{Tag(("refinement",3),("awakened",true),("daoRoute",999)),Tag(("refinement",2),("awakened",true),("daoRoute",1)),Tag(("refinement",3),("daoRoute",1)),Tag(("refinement",3),("awakened",true))}) {
- refinedType.GetMethod("LoadData").Invoke(refinedLoaded,new[]{null,malformed});
+ refinedType.GetMethod("LoadData").Invoke(refinedLoaded,new[]{refinementOwner,malformed});
  Check(DaoRoute(refinedLoaded)==0,"Invalid or legacy actual item saves cannot gain free Dao transformation.");
 }
 Console.WriteLine($"Gameplay/save/Dao regression passed: {assertions} assertions against compiled mod and official engine.");
@@ -467,3 +476,31 @@ foreach(string persistentFieldName in new[]{"GreenwoodArrayField","ThunderTalism
  Check((bool)projectileType.GetField("netImportant").GetValue(nativePersistent),"Actual persistent magic field opts into official native late-join synchronization");
 }
 Console.WriteLine($"Actual engine gameplay assertions including persistent field sync: {assertions}.");
+
+// Execute the eligibility and metadata hooks with actual new weapon defaults and native Item instances.
+foreach(string weaponName in new[]{"WoodgrainFlyingSword","SpiritwoodCrossbow","TalismanCrossbow","StarEclipseArbalest","SectMechanismCrossbow","HeavenLawArbalest","StarCalamityMechanismCase","CinnabarTalismanFlameItem","BlackFurnaceWarhammer","ThunderPatternSwordCase","ThunderTalismanArrayPlate","FormlessSwordWheel","GreenwoodMedicineCauldron","HeavenTabletWardSeal","MoonboneDharmaSword","BrokenHeavenDecree","ArchiveStarCodex"}){
+ var growthWeaponType=type.Assembly.GetType("XianXia.Content.Items.Weapons."+weaponName,true);
+ object growthWeapon=Activator.CreateInstance(growthWeaponType),growthOwner=Activator.CreateInstance(refinementItemType);
+ growthWeaponType.GetProperty("Entity",BindingFlags.Instance|BindingFlags.Public|BindingFlags.NonPublic).SetValue(growthWeapon,growthOwner);
+ growthWeaponType.GetProperty("Mod",BindingFlags.Instance|BindingFlags.Public|BindingFlags.NonPublic).SetValue(growthWeapon,Activator.CreateInstance(type.Assembly.GetType("XianXia.XianXia",true)));
+ refinementItemType.GetProperty("ModItem",BindingFlags.Instance|BindingFlags.Public|BindingFlags.NonPublic).SetValue(growthOwner,growthWeapon);
+ foreach(var pair in new[]{("type",1),("stack",1),("maxStack",1)})refinementItemType.GetField(pair.Item1).SetValue(growthOwner,pair.Item2);
+ growthWeaponType.GetMethod("SetDefaults").Invoke(growthWeapon,null);
+ object growthMeta=Activator.CreateInstance(refinedType);
+ Check((bool)refinedType.GetMethod("SupportsRefinement").Invoke(null,new[]{growthOwner})&&(bool)refinedType.GetMethod("AppliesToEntity").Invoke(growthMeta,new object[]{growthOwner,false}),weaponName+" actual defaults attach per-item refinement");
+ Check(!(bool)refinedType.GetMethod("IsSample").Invoke(null,new[]{growthOwner}),weaponName+" remains outside undefined advanced crafting");
+ refinedType.GetMethod("LoadData").Invoke(growthMeta,new[]{growthOwner,Tag(("refinement",3),("awakened",true),("daoRoute",1))});
+ Check(Refinement(growthMeta)==3&&!(bool)refinedType.GetProperty("Awakened").GetValue(growthMeta)&&DaoRoute(growthMeta)==0,weaponName+" actual save loader keeps refinement and strips unsupported advanced flags");
+ object growthSave=Tag();refinedType.GetMethod("SaveData").Invoke(growthMeta,new[]{growthOwner,growthSave});
+ Check(!Convert.ToBoolean(tagType.GetMethod("GetBool").Invoke(growthSave,new object[]{"awakened"}))&&Convert.ToInt32(tagType.GetMethod("GetInt").Invoke(growthSave,new object[]{"daoRoute"}))==0,weaponName+" native TagCompound stores no sample flags");
+ using(var growthBytes=new MemoryStream()){
+  using(var writer=new BinaryWriter(growthBytes,System.Text.Encoding.UTF8,true))refinedType.GetMethod("NetSend").Invoke(growthMeta,new object[]{growthOwner,writer});
+  Check(growthBytes.ToArray().SequenceEqual(new byte[]{3,0,0}),weaponName+" actual wire payload is bounded refinement only");
+  object growthClone=refinedType.GetMethod("Clone",new[]{refinementItemType,refinementItemType}).Invoke(growthMeta,new[]{growthOwner,growthOwner});
+  refinedType.GetMethod("SetLevel").Invoke(growthClone,new object[]{1});
+  Check(Refinement(growthMeta)==3&&Refinement(growthClone)==1,weaponName+" native metadata clone is independent");
+ }
+ using(var growthBytes=new MemoryStream(new byte[]{3,1,1}))refinedType.GetMethod("NetReceive").Invoke(growthMeta,new object[]{growthOwner,new BinaryReader(growthBytes)});
+ Check(Refinement(growthMeta)==3&&!(bool)refinedType.GetProperty("Awakened").GetValue(growthMeta)&&DaoRoute(growthMeta)==0,weaponName+" native receive rejects sample metadata on a basic weapon");
+}
+Console.WriteLine($"Actual engine gameplay assertions including expanded refinement: {assertions}.");

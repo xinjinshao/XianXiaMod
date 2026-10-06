@@ -68,7 +68,7 @@ public static class InscriptionTransactions
                 || !RefinementRules.CanAwaken(previousLevel, previous != 0, previousAwakened,
                     player.GetModPlayer<XianXiaPlayer>().cultivationStage, DownedBossSystem.DownedBosses.Contains("greenwood_medicine_king_echo"))))
                 result = "Mods.XianXia.Refinement.AwakeningRequirements";
-            else if (material.RefinesArtifact && (!RefinedArtifact.IsSample(target)
+            else if (material.RefinesArtifact && (!RefinedArtifact.SupportsRefinement(target)
                 || !RefinementRules.CanAdvance(previousLevel, previous != 0, player.GetModPlayer<XianXiaPlayer>().cultivationStage,
                     DownedBossSystem.DownedBosses.Contains(RefinementRules.RequiredBoss(previousLevel)))))
                 result = "Mods.XianXia.Refinement.Requirements";

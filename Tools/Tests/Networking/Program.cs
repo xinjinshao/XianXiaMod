@@ -593,7 +593,7 @@ void SetupRefinement(int level=0, int stones=6, string name="CloudpiercerFlyingS
  SetupInscription(InscriptionKind.None,InscriptionKind.Greenwood,stones);
  ((TestInscriptionTool)Game.player[0].inventory[0].ModItem).Refining=true;
  Game.player[0].inventory[1].ModItem.Name=name;
- if(XianXia.Common.Items.RefinedArtifact.IsSample(Game.player[0].inventory[1]))
+ if(XianXia.Common.Items.RefinedArtifact.SupportsRefinement(Game.player[0].inventory[1]))
   Game.player[0].inventory[1].GetGlobalItem<XianXia.Common.Items.RefinedArtifact>().SetLevel(level);
  Game.player[0].State.cultivationStage=CultivationStage.NascentSoul;
  DownedBossSystem.DownedBosses.Clear();
@@ -621,7 +621,7 @@ Check(Game.player[0].inventory[0].stack==2 && XianXia.Common.Items.RefinedArtifa
 SetupRefinement(1,12);Refine(0);
 Check(Game.player[0].inventory[0].stack==2,"Stale refinement selection is rejected before any material mutation.");
 SetupRefinement(name:"OtherWeapon");Refine();
-Check(Game.player[0].inventory[0].stack==2,"Non-sample weapons cannot be refined.");
+Check(Game.player[0].inventory[0].stack==1 && XianXia.Common.Items.RefinedArtifact.GetLevel(Game.player[0].inventory[1])==1,"Eligible non-sample weapons now support refinement.");
 SetupRefinement(2,18);Game.player[0].State.cultivationStage=CultivationStage.GoldenCore;Refine(2);
 Check(Game.player[0].inventory[0].stack==2,"Level three requires Nascent Soul despite earlier-level qualification.");
 SetupRefinement(2,18);DownedBossSystem.DownedBosses.Remove("formless_sword_soul");Refine(2);
@@ -630,10 +630,10 @@ SetupRefinement(2,3);((TestInscriptionTool)Game.player[0].inventory[0].ModItem).
 InscriptionTransactions.HandleRequest(Game.player[0],0,600,1,601,300,1,2);
 Check(CurrentInscription()==InscriptionKind.None && XianXia.Common.Items.RefinedArtifact.GetLevel(Game.player[0].inventory[1])==2,"Removing an inscription retains the equipment's existing refinement level.");
 var refinedData=new XianXia.Common.Items.RefinedArtifact();refinedData.SetLevel(3);
-var refinedSave=new Terraria.ModLoader.IO.TagCompound();refinedData.SaveData(null,refinedSave);
-var refinedCopy=new XianXia.Common.Items.RefinedArtifact();refinedCopy.LoadData(null,refinedSave);
+var refinedSave=new Terraria.ModLoader.IO.TagCompound();refinedData.SaveData(Game.player[0].inventory[1],refinedSave);
+var refinedCopy=new XianXia.Common.Items.RefinedArtifact();refinedCopy.LoadData(Game.player[0].inventory[1],refinedSave);
 Check(refinedCopy.Level==3,"Refinement level persists independently of inscriptions.");
-refinedCopy.LoadData(null,new Terraria.ModLoader.IO.TagCompound { ["refinement"]=999 });
+refinedCopy.LoadData(Game.player[0].inventory[1],new Terraria.ModLoader.IO.TagCompound { ["refinement"]=999 });
 Check(refinedCopy.Level==0,"Invalid saved refinement safely resets to unrefined.");
 var refinedDamage=new StatModifier();refinedData.ModifyWeaponDamage(null,null,ref refinedDamage);
 Check(Math.Abs(refinedDamage.Bonus-0.12f)<0.001f,"Maximum refinement adds the actual 12% weapon damage modifier.");
@@ -668,19 +668,19 @@ Check(Game.player[0].inventory[0].stack==2,"Already awakened equipment cannot sp
 var awakeMeta=new XianXia.Common.Items.RefinedArtifact();
 Check(!awakeMeta.TryAwaken(),"An unrefined artifact cannot directly gain crafted awakening.");
 awakeMeta.SetLevel(3);Check(awakeMeta.TryAwaken() && !awakeMeta.TryAwaken(),"Awakening is a one-way transition at maximum refinement.");
-var awakeSave=new Terraria.ModLoader.IO.TagCompound();awakeMeta.SaveData(null,awakeSave);
-var awakeCopy=new XianXia.Common.Items.RefinedArtifact();awakeCopy.LoadData(null,awakeSave);
+var awakeSave=new Terraria.ModLoader.IO.TagCompound();awakeMeta.SaveData(Game.player[0].inventory[1],awakeSave);
+var awakeCopy=new XianXia.Common.Items.RefinedArtifact();awakeCopy.LoadData(Game.player[0].inventory[1],awakeSave);
 Check(awakeCopy.Awakened && awakeCopy.Level==3,"Item save retains the permanent crafted awakening.");
 using(var bytes=new MemoryStream()) {
- using(var writer=new BinaryWriter(bytes,Encoding.UTF8,true)) awakeMeta.NetSend(null,writer);
- bytes.Position=0;using var reader=new BinaryReader(bytes);awakeCopy.NetReceive(null,reader);
+ using(var writer=new BinaryWriter(bytes,Encoding.UTF8,true)) awakeMeta.NetSend(Game.player[0].inventory[1],writer);
+ bytes.Position=0;using var reader=new BinaryReader(bytes);awakeCopy.NetReceive(Game.player[0].inventory[1],reader);
  Check(awakeCopy.Awakened && bytes.Length==3,"Item networking retains level, awakening and route together.");
 }
-try { using var reader=new BinaryReader(new MemoryStream(new byte[]{0}));awakeCopy.NetReceive(null,reader);throw new Exception("Expected short metadata"); }
+try { using var reader=new BinaryReader(new MemoryStream(new byte[]{0}));awakeCopy.NetReceive(Game.player[0].inventory[1],reader);throw new Exception("Expected short metadata"); }
 catch(EndOfStreamException) {Check(awakeCopy.Level==3 && awakeCopy.Awakened,"Short metadata cannot partially clear existing advancement.");}
-awakeCopy.LoadData(null,new Terraria.ModLoader.IO.TagCompound { ["refinement"]=1,["awakened"]=true });
+awakeCopy.LoadData(Game.player[0].inventory[1],new Terraria.ModLoader.IO.TagCompound { ["refinement"]=1,["awakened"]=true });
 Check(!awakeCopy.Awakened,"Malformed low-level save cannot grant awakening.");
-awakeCopy.LoadData(null,new Terraria.ModLoader.IO.TagCompound { ["refinement"]=3 });
+awakeCopy.LoadData(Game.player[0].inventory[1],new Terraria.ModLoader.IO.TagCompound { ["refinement"]=3 });
 Check(!awakeCopy.Awakened,"Legacy level-three equipment still needs the explicit awakening process.");
 void SetupSkill(string name="CloudpiercerFlyingSword") {
  SetupAwakening(name);Game.player[0].inventory[1].GetGlobalItem<XianXia.Common.Items.RefinedArtifact>().TryAwaken();
@@ -1113,6 +1113,28 @@ Check(!realPill.CanUseItem(recoveryPlayer),"Burst fatigue also rejects recovery"
 var burstEffect=new XianXia.Content.Buffs.ThunderBurstBuff();recoveryPlayer.statDefense=20;recoveryPlayer.damageModifier=new Terraria.ModLoader.StatModifier();recoveryPlayer.State.spiritualEnergyCostMultiplier=1.12f;int burstIndex=5;burstEffect.Update(recoveryPlayer,ref burstIndex);
 Check(recoveryPlayer.statDefense==14&&Math.Abs(recoveryPlayer.damageModifier.Bonus-.12f)<.001f,"Burst actual generic damage and defense tradeoff");
 Check(Math.Abs(recoveryPlayer.State.spiritualEnergyCostMultiplier-1.344f)<.001f,"Burst energy penalty composes with existing cost modifiers");
+// Expanded refinement uses the actual common transaction and per-item source hooks.
+foreach(string expandedName in new[]{"WoodgrainFlyingSword","SpiritwoodCrossbow","TalismanCrossbow","StarEclipseArbalest","SectMechanismCrossbow","HeavenLawArbalest","StarCalamityMechanismCase","CinnabarTalismanFlameItem","BlackFurnaceWarhammer","ThunderPatternSwordCase","ThunderTalismanArrayPlate","FormlessSwordWheel","GreenwoodMedicineCauldron","HeavenTabletWardSeal","MoonboneDharmaSword","BrokenHeavenDecree","ArchiveStarCodex"}) {
+ for(byte current=0;current<3;current++){
+  SetupRefinement(current,RefinementRules.StoneCost(current),expandedName);var expandedItem=Game.player[0].inventory[1];Refine(current);
+  Check(XianXia.Common.Items.RefinedArtifact.GetLevel(expandedItem)==current+1&&Game.player[0].inventory[0].stack==1&&Game.player[0].inventory[2].IsAir,"Expanded weapon tier uses exact shared transaction cost");
+  Check(expandedItem.prefix==300&&CurrentInscription()==InscriptionKind.Greenwood,"Expanded weapon retains prefix and inscription");
+  var expandedDamage=new StatModifier();expandedItem.GetGlobalItem<XianXia.Common.Items.RefinedArtifact>().ModifyWeaponDamage(expandedItem,Game.player[0],ref expandedDamage);
+  Check(Math.Abs(expandedDamage.Bonus-(current+1)*.04f)<.001f&&expandedDamage.Base==0,"Expanded hook applies bounded damage without sample Dao scaling");
+ }
+ SetupAwakening(expandedName);Awaken();Check(Game.player[0].inventory[0].stack==2&&!XianXia.Common.Items.RefinedArtifact.IsAwakened(Game.player[0].inventory[1]),"Expanded weapons cannot spend awakening seals without a defined advanced path");
+ var plain=Game.player[0].inventory[1];var meta=plain.GetGlobalItem<XianXia.Common.Items.RefinedArtifact>();
+ var forged=new Terraria.ModLoader.IO.TagCompound{{"refinement",3},{"awakened",true},{"daoRoute",1}};meta.LoadData(plain,forged);
+ Check(meta.Level==3&&!meta.Awakened&&meta.DaoRoute==DownedBossSystem.EndgameRoute.None,"Expanded save cannot import sample awakening/Dao flags");
+ using(var bytes=new MemoryStream(new byte[]{3,1,1}))meta.NetReceive(plain,new BinaryReader(bytes));
+ Check(meta.Level==3&&!meta.Awakened&&meta.DaoRoute==DownedBossSystem.EndgameRoute.None,"Expanded network metadata cannot grant sample advanced state");
+ var persisted=new Terraria.ModLoader.IO.TagCompound();meta.SaveData(plain,persisted);var expandedLoaded=new XianXia.Common.Items.RefinedArtifact();expandedLoaded.LoadData(plain,persisted);
+ Check(expandedLoaded.Level==3&&!expandedLoaded.Awakened,"Expanded refinement persists independently of advanced flags");
+ var expandedTips=new List<TooltipLine>();meta.ModifyTooltips(plain,expandedTips);Check(expandedTips.Count==2&&expandedTips[1].Text.Contains("Refinement.BasicArtifact"),"Expanded tooltip explains its defined growth scope");
+}
+foreach(Action reject in new Action[]{()=>Game.player[0].inventory[1].accessory=true,()=>Game.player[0].inventory[1].consumable=true,()=>Game.player[0].inventory[1].ammo=1,()=>Game.player[0].inventory[1].maxStack=2,()=>Game.player[0].inventory[1].vanity=true,()=>Game.player[0].inventory[1].damage=0,()=>Game.player[0].inventory[1].ModItem.Mod=new Mod()}){
+ SetupRefinement(name:"SpiritwoodCrossbow");reject();Refine();Check(Game.player[0].inventory[0].stack==2&&Game.player[0].inventory[2].stack==6&&!XianXia.Common.Items.RefinedArtifact.SupportsRefinement(Game.player[0].inventory[1]),"Ineligible categories/origins cannot spend refinement materials");
+}
 Console.WriteLine($"Networking including actual recovery pill hooks: {assertions} assertions; buff/inventory engine boundaries mocked.");
 sealed class TestBossSummon : XianXia.Common.Items.CultivationBossSummonItem
 {
