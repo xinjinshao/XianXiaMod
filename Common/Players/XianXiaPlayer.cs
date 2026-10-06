@@ -20,6 +20,16 @@ public class XianXiaPlayer : ModPlayer
     public int maxSpiritualEnergy;
     public int spiritPressure;
     public int spiritualEnergyRegenBonus;
+    private static long nextTribulationSession;
+    private long tribulationSession;
+    internal long TribulationSession {
+        get {
+            if (tribulationTimer <= 0) return 0;
+            if (tribulationSession == 0 && Main.netMode != NetmodeID.MultiplayerClient)
+                tribulationSession = System.Threading.Interlocked.Increment(ref nextTribulationSession);
+            return tribulationSession;
+        }
+    }
     public int tribulationTimer;
     public int tribulationIntensity;
     public int tribulationStage;
@@ -50,6 +60,7 @@ public class XianXiaPlayer : ModPlayer
     public override void Initialize()
     {
         IsResourceAuthority = true;
+        tribulationSession = 0;
         lastArrayRecoveryTick = ulong.MaxValue;
         maxSpiritualEnergy = BaseMaxSpiritualEnergy;
         spiritualEnergy = 0;
@@ -353,6 +364,8 @@ public class XianXiaPlayer : ModPlayer
             return;
         }
 
+        tribulationSession = Main.netMode == NetmodeID.MultiplayerClient ? 0
+            : System.Threading.Interlocked.Increment(ref nextTribulationSession);
         tribulationKind = stage switch
         {
             CultivationStage.Foundation or CultivationStage.GoldenCore => TribulationKind.Minor,
@@ -656,6 +669,7 @@ public class XianXiaPlayer : ModPlayer
 
     public override void LoadData(TagCompound tag)
     {
+        tribulationSession = 0;
         activeSkillCooldown = Math.Clamp(tag.GetInt("activeSkillCooldown"), 0, 1200);
         wardGuardTimer = 0; // Temporary protection does not resume after loading.
         tribulationWeakness = Math.Clamp(tag.GetInt("tribulationWeakness"), 0, 10800);

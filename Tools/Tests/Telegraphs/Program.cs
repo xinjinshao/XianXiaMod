@@ -27,14 +27,14 @@ foreach(int mode in new[]{0,NetmodeID.Server,NetmodeID.MultiplayerClient}) {
 for(short remaining=0;remaining<=120;remaining++) {
  using var bytes=new MemoryStream();field.Projectile.timeLeft=remaining;
  using(var writer=new BinaryWriter(bytes,System.Text.Encoding.UTF8,true))field.SendExtraAI(writer);
- Check(bytes.Length==9,"Field age and source use nine-byte payload");bytes.Position=0;field.Projectile.timeLeft=120;
+ Check(bytes.Length==19,"Field age and source use nineteen-byte payload");bytes.Position=0;field.Projectile.timeLeft=120;
  field.ReceiveExtraAI(new BinaryReader(bytes));Check(field.Projectile.timeLeft==remaining,"Late join restores actual remaining age");
 }
 foreach(short remaining in new short[]{-1,121,short.MinValue,short.MaxValue}) {
- using var bytes=new MemoryStream();using(var writer=new BinaryWriter(bytes,System.Text.Encoding.UTF8,true)){writer.Write(remaining);writer.Write(false);writer.Write((short)-1);writer.Write(0);}
+ using var bytes=new MemoryStream();using(var writer=new BinaryWriter(bytes,System.Text.Encoding.UTF8,true)){writer.Write(remaining);writer.Write(false);writer.Write((short)-1);writer.Write(0);writer.Write((short)-1);writer.Write(0L);}
  bytes.Position=0;field.ReceiveExtraAI(new BinaryReader(bytes));Check(field.Projectile.timeLeft==0&&field.CanDamage()==false,"Invalid age becomes harmless expiry");
  field.Projectile.timeLeft=remaining;using var sent=new MemoryStream();using(var writer=new BinaryWriter(sent,System.Text.Encoding.UTF8,true))field.SendExtraAI(writer);
- Check(sent.ToArray().SequenceEqual(new byte[]{0,0,0,255,255,0,0,0,0}),"Sender cannot wrap invalid field age");
+ Check(sent.ToArray().SequenceEqual(new byte[]{0,0,0,255,255,0,0,0,0,255,255,0,0,0,0,0,0,0,0}),"Sender cannot wrap invalid field age");
 }
 foreach(byte[] partial in new[]{Array.Empty<byte>(),new byte[]{75}}) {
  field.Projectile.timeLeft=40;using var bytes=new MemoryStream(partial);bool rejected=false;
@@ -59,9 +59,17 @@ foreach(int mode in new[]{0,1,2})foreach(int reason in Enumerable.Range(0,7)){
  bool clientSameTypeReplacement=mode==1&&reason==6;
  Check(linked.CanDamage()==clientSameTypeReplacement,"invalid source blocks damage; client instance replacement awaits authority cancellation");linked.AI();
  Check(linked.Projectile.timeLeft==(mode==1?50:15),"authority source failure enters fade");Check(linked.Projectile.netUpdate==(mode!=1),"authority broadcasts cancellation");
- if(mode!=1){var canceled=SourceWire(linked);parent.active=true;parent.life=100;parent.target=0;Main.player[0].dead=false;Main.netMode=1;var remoteField=new BossArrayFieldProjectile();remoteField.SetDefaults();using var stream=new MemoryStream(canceled);remoteField.ReceiveExtraAI(new BinaryReader(stream));remoteField.Projectile.timeLeft=50;Check(remoteField.CanDamage()==false,"cancel packet cannot revive old field");using var oldPacket=new MemoryStream();using(var writer=new BinaryWriter(oldPacket,System.Text.Encoding.UTF8,true)){writer.Write((short)50);writer.Write(false);writer.Write((short)3);writer.Write(parent.type);}oldPacket.Position=0;remoteField.ReceiveExtraAI(new BinaryReader(oldPacket));Check(remoteField.CanDamage()==false,"later uncancelled source data cannot revive cancellation");}
+ if(mode!=1){var canceled=SourceWire(linked);parent.active=true;parent.life=100;parent.target=0;Main.player[0].dead=false;Main.netMode=1;var remoteField=new BossArrayFieldProjectile();remoteField.SetDefaults();using var stream=new MemoryStream(canceled);remoteField.ReceiveExtraAI(new BinaryReader(stream));remoteField.Projectile.timeLeft=50;Check(remoteField.CanDamage()==false,"cancel packet cannot revive old field");using var oldPacket=new MemoryStream();using(var writer=new BinaryWriter(oldPacket,System.Text.Encoding.UTF8,true)){writer.Write((short)50);writer.Write(false);writer.Write((short)3);writer.Write(parent.type);writer.Write((short)-1);writer.Write(0L);}oldPacket.Position=0;remoteField.ReceiveExtraAI(new BinaryReader(oldPacket));Check(remoteField.CanDamage()==false,"later uncancelled source data cannot revive cancellation");}
 }
 Main.netMode=0;Main.npc=Enumerable.Range(0,Main.maxNPCs).Select(i=>new NPC{whoAmI=i,active=false}).ToArray();Main.npc[3].active=true;Main.player=[new(),new()];var atomic=new BossArrayFieldProjectile();atomic.SetDefaults();atomic.OnSpawn(new Terraria.DataStructures.EntitySource_Parent(Main.npc[3]));var fullPacket=SourceWire(atomic);
-for(int length=0;length<9;length++){var before=SourceWire(atomic);try{using var stream=new MemoryStream(fullPacket[..length]);atomic.ReceiveExtraAI(new BinaryReader(stream));throw new Exception("truncated source accepted");}catch(EndOfStreamException){}Check(SourceWire(atomic).SequenceEqual(before),"source+age packet read atomic");}
-var playerField=new BossArrayFieldProjectile();playerField.SetDefaults();playerField.OnSpawn(new Terraria.DataStructures.EntitySource_Parent(new Player()));playerField.Projectile.timeLeft=50;Check(playerField.CanDamage()==true,"player tribulation behavior retained pending its lifecycle binding");
+for(int length=0;length<19;length++){var before=SourceWire(atomic);try{using var stream=new MemoryStream(fullPacket[..length]);atomic.ReceiveExtraAI(new BinaryReader(stream));throw new Exception("truncated source accepted");}catch(EndOfStreamException){}Check(SourceWire(atomic).SequenceEqual(before),"source+age packet read atomic");}
+var playerSource=new Player();playerSource.Cultivation.tribulationTimer=120;Main.player[0]=playerSource;var playerField=new BossArrayFieldProjectile();playerField.SetDefaults();playerField.OnSpawn(new Terraria.DataStructures.EntitySource_Parent(playerSource));playerField.Projectile.timeLeft=50;Check(playerField.CanDamage()==true,"active player tribulation source remains harmful");
+
+foreach(int mode in new[]{0,1,2})foreach(int reason in Enumerable.Range(0,8)){
+ Main.netMode=0;Main.player=[new(),new(){active=false}];var owner=Main.player[0];owner.Cultivation.tribulationTimer=120;owner.Cultivation.TribulationSession=42;
+ var hazard=new BossArrayFieldProjectile();hazard.SetDefaults();hazard.OnSpawn(new Terraria.DataStructures.EntitySource_Parent(owner));hazard.Projectile.timeLeft=50;Check(hazard.CanDamage()==true,"active captured tribulation can damage");Main.netMode=mode;
+ switch(reason){case 0:owner.active=false;break;case 1:owner.dead=true;break;case 2:owner.Cultivation.tribulationTimer=0;break;case 3:owner.Cultivation.TribulationSession++;break;case 4:owner.Center=new(float.NaN,0);break;case 5:owner.velocity=new(float.PositiveInfinity,0);break;case 6:Main.player[0]=new(){Cultivation=new(){tribulationTimer=120,TribulationSession=43}};break;case 7:owner.Cultivation.TribulationSession=0;break;}
+ bool awaitsSessionCancel=mode==1&&(reason==3||reason==6||reason==7);Check(hazard.CanDamage()==awaitsSessionCancel,"invalid tribulation rejects damage; client session change awaits authority");hazard.AI();Check(hazard.Projectile.timeLeft==(mode==1?50:15),"tribulation authority cancellation enters fade");
+ if(mode!=1){var payload=SourceWire(hazard);Main.netMode=1;Main.player[0]=new(){Cultivation=new(){tribulationTimer=120,TribulationSession=44}};var remote=new BossArrayFieldProjectile();remote.SetDefaults();using var stream=new MemoryStream(payload);remote.ReceiveExtraAI(new BinaryReader(stream));remote.Projectile.timeLeft=50;Check(remote.CanDamage()==false,"new tribulation cannot revive old canceled player field");}
+}
 Console.WriteLine($"Actual telegraph hook regression passed: {assertions} assertions; mocked graphics/spawn boundary.");

@@ -31,7 +31,7 @@ public partial class BossArrayFieldProjectile : ModProjectile
     public override void AI()
     {
         Projectile.velocity = Vector2.Zero;
-        CancelInvalidBossSource();
+        CancelInvalidSource();
         if (Main.netMode != NetmodeID.MultiplayerClient
             && (Projectile.timeLeft == Lifetime - WarningTicks || Projectile.timeLeft == FadeTicks)) Projectile.netUpdate = true;
         Projectile.rotation += 0.035f;
@@ -66,6 +66,8 @@ public partial class BossArrayFieldProjectile : ModProjectile
         writer.Write(sourceCancelled);
         writer.Write(sourceSlot);
         writer.Write(sourceType);
+        writer.Write(sourcePlayerSlot);
+        writer.Write(sourcePlayerSession);
     }
 
     public override void ReceiveExtraAI(BinaryReader reader)
@@ -74,10 +76,14 @@ public partial class BossArrayFieldProjectile : ModProjectile
         bool cancelled = reader.ReadBoolean();
         short slot = reader.ReadInt16();
         int type = reader.ReadInt32();
+        short playerSlot = reader.ReadInt16();
+        long session = reader.ReadInt64();
         Projectile.timeLeft = remaining >= 0 && remaining <= Lifetime ? remaining : 0;
         sourceCancelled |= cancelled;
         sourceSlot = slot;
         sourceType = type;
+        sourcePlayerSlot = playerSlot;
+        sourcePlayerSession = session > 0 ? session : 0;
     }
 
     public override void OnHitPlayer(Player target, Player.HurtInfo info)

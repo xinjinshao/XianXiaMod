@@ -1000,3 +1000,14 @@ ExtraAI扩展为9字节：原Int16年龄、Boolean取消、Int16来源槽、Int3
 Telegraphs实际钩子671→793项，七种失败×三模式、来源有效/取消后淡出与广播、同槽位换ModNPC、取消数据锁定、逐字节截断原子性，保留原预警/伤害/淡出、绘图与Buff回归。Gameplay933→937项，官方EntitySource_Parent捕获实际NPC、换ModNPC拒绝伤害、编译AI15tick/netUpdate及9字节格式。完整34步/25.NET入口通过；原生构建0警告0错误、打包与专服加载run-9ae6471d456c4eba93323c1292297c78通过；PackageContents366条目/362资源/1465及LocalizationPaths110+2通过（初次run-0d8e730b62b14d2d87aad580a272c4a6亦通过）。
 
 没有运行真实多人/图形世界；玩家天劫来源、客户端实例编号、取消包运输延迟与实际躲避继续待验收，R04未勾选。清单、网络与源码说明同步，本轮提交推送GitHub。
+
+
+## 第109轮：玩家天劫法阵的权威会话与结束清理（2026-10-06）
+
+上一轮8fdd59c的GitHub Source/Native checks均success。继续R04补天碑/斩道天劫的玩家来源法阵：此前无NPC来源即不检查，玩家死亡/天劫失败/结束或重开后旧场仍可能伤害。本轮XianXiaPlayer增加权威单调Int64渡劫会话，每次Begin重分配，Initialize/LoadData清空运行身份，已恢复的活动渡劫惰性分配新号；timer0读0，客户端不分配，不保存会话也不改既有玩家snapshot格式。
+
+法阵OnSpawn捕获Player来源及会话，active/未死/有限状态/timer>0参与伤害过滤，权威另检查玩家引用与会话。失败/结束/断线/新会话立即无伤，AI锁定取消、15tick淡出/netUpdate。ExtraAI原9字节NPC前缀后增加2字节玩家槽+8字节会话，合计19字节，全部读完再赋值，取消不回退。客户端能立即识别死亡/结束；同槽位重新渡劫尚依赖取消包，不声称客户端有无延迟会话比较。
+
+Telegraphs793→891项，增加八类玩家来源失效×三模式、新会话不能复活已取消场、19字节截断原子读取，保留Boss来源、窗口/绘图/Buff回归。Gameplay937→944项，实际编译getter、Begin两次同阶段不同会话、结束读0、实际TagCompound载入重建、客户端不分配及Initialize重置通过。完整34步/25.NET源码入口通过；原生构建0警告0错误、打包/专服加载run-7451f3c4d3734db6961063ff3e7dba5b通过（初次run-6e769b6272eb44b59e13baeff88f57f7亦通过）；PackageContents366条目/362资源/1465与LocalizationPaths110+2通过。
+
+没有运行真实客户端或多人世界；会话的客户端即时比较、真实乱序/晚加入延迟、其它天劫预警/弹幕来源与实际躲避仍待验收，R04保持未勾选。任务清单、网络/源码说明同步，本轮提交推送GitHub。

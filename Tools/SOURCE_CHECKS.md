@@ -63,7 +63,7 @@ CI运行只读新鲜度检查，生成结果变化时须显式更新这四份输
 
 ## 原生包内容与默认配置
 
-Native checks另运行PackageContents，使用官方TmodFile打开实际.tmod，核对内部名称、build.txt版本、归档哈希、当前描述及Common/Content/Localization的所有PNG/HJSON（接受官方转换后的rawimg）；拒绝隐藏/越界条目、Assets/Docs/Wiki/Tools/bin/obj/README和源码/工具扩展。它不是读取源码文件名后假定打包正确。默认配置在Gameplay编译产物回归中验证，当前累计937条。
+Native checks另运行PackageContents，使用官方TmodFile打开实际.tmod，核对内部名称、build.txt版本、归档哈希、当前描述及Common/Content/Localization的所有PNG/HJSON（接受官方转换后的rawimg）；拒绝隐藏/越界条目、Assets/Docs/Wiki/Tools/bin/obj/README和源码/工具扩展。它不是读取源码文件名后假定打包正确。默认配置在Gameplay编译产物回归中验证，当前累计944条。
 
 ```powershell
 dotnet run --project Tools/Tests/PackageContents/PackageContents.csproj -- <XianXia.tmod路径> <官方引擎目录> <仓库根目录>
@@ -122,3 +122,12 @@ Gameplay增加6项实际编译常量与无效战斗/第一阶段/客户端不初
 Telegraphs671→793项，增加七类来源失效×三模式、权威槽位复用、取消包与取消锁定、9字节逐段截断原子性，仍保留全部预警/有效/淡出、墙体/命中Buff和绘制检查。Gameplay933→937项，实际官方NPC父来源/ModNPC替换和编译AI淡出同步验证。完整34步入口、原生构建/专服加载、官方本地化路径与打包检查通过。
 
 客户端同类型同槽位换实例仍依赖服务器取消包，尚无该弹体跨客户端实例编号；玩家来源天劫法阵保持原行为，其会话取消仍待补齐。未启动真实世界/联机；R04不因此完成。
+
+
+## 玩家天劫法阵会话清理
+
+第109轮XianXiaPlayer为权威渡劫分配单调Int64会话：每次BeginTribulation重分配，Initialize/LoadData清空运行身份，已加载的活动渡劫在权威首次读取时分配新身份；timer0无活动会话，客户端不分配。身份不保存、不改变原玩家snapshot布局，仅随法阵ExtraAI发送。
+
+法阵OnSpawn捕获Player来源槽位与会话，要求来源玩家active/未死、有限位置/速度、timer>0；权威还比较玩家引用与会话。结束/失败/断线/新会话让旧法阵无伤取消并15tick淡出。9字节NPC来源前缀后增加Int16玩家槽与Int64会话，共19字节，完整读取后赋值。Telegraphs793→891项，新增八类玩家来源失败×三模式、取消不能在新会话恢复，逐字节截断扩展至19字节；Boss来源检查继续通过。Gameplay937→944项实际编译Begin、加载、Initialize、getter及客户端拒绝分配检查通过。
+
+客户端死亡/结束立即无伤；同槽位重新渡劫仍依赖服务器取消包，尚未在玩家snapshot同步会话ID，不声称无延迟的客户端跨会话隔离。其它天劫预警/弹幕来源和真实联机继续待验收。

@@ -564,13 +564,13 @@ foreach(int remaining in new[]{0,1,15,16,75,76,120,121}) {
  Check((bool)actualFieldType.GetMethod("CanDamage").Invoke(actualField,null)==(remaining>15&&remaining<=75),"Native compiled warning/active/fade boundary");
 }
 foreach(short remaining in new short[]{0,1,15,16,75,76,120}) {
- using var bytes=new MemoryStream();using(var writer=new BinaryWriter(bytes,System.Text.Encoding.UTF8,true)){writer.Write(remaining);writer.Write(false);writer.Write((short)-1);writer.Write(0);}bytes.Position=0;
+ using var bytes=new MemoryStream();using(var writer=new BinaryWriter(bytes,System.Text.Encoding.UTF8,true)){writer.Write(remaining);writer.Write(false);writer.Write((short)-1);writer.Write(0);writer.Write((short)-1);writer.Write(0L);}bytes.Position=0;
  actualFieldType.GetMethod("ReceiveExtraAI").Invoke(actualField,new object[]{new BinaryReader(bytes)});
  Check((int)projectileType.GetField("timeLeft").GetValue(nativeField)==remaining,"Native field receives exact remaining phase age");
  using var sent=new MemoryStream();using(var writer=new BinaryWriter(sent,System.Text.Encoding.UTF8,true))actualFieldType.GetMethod("SendExtraAI").Invoke(actualField,new object[]{writer});
- Check(sent.ToArray().SequenceEqual(BitConverter.GetBytes(remaining).Concat(new byte[]{0,255,255,0,0,0,0})),"Native field writes bounded age and source state");
+ Check(sent.ToArray().SequenceEqual(BitConverter.GetBytes(remaining).Concat(new byte[]{0,255,255,0,0,0,0,255,255,0,0,0,0,0,0,0,0})),"Native field writes bounded age and source state");
 }
-using(var bytes=new MemoryStream()){using(var writer=new BinaryWriter(bytes,System.Text.Encoding.UTF8,true)){writer.Write((short)121);writer.Write(false);writer.Write((short)-1);writer.Write(0);}bytes.Position=0;actualFieldType.GetMethod("ReceiveExtraAI").Invoke(actualField,new object[]{new BinaryReader(bytes)});Check((int)projectileType.GetField("timeLeft").GetValue(nativeField)==0,"Native field invalid lifetime expires harmlessly");}
+using(var bytes=new MemoryStream()){using(var writer=new BinaryWriter(bytes,System.Text.Encoding.UTF8,true)){writer.Write((short)121);writer.Write(false);writer.Write((short)-1);writer.Write(0);writer.Write((short)-1);writer.Write(0L);}bytes.Position=0;actualFieldType.GetMethod("ReceiveExtraAI").Invoke(actualField,new object[]{new BinaryReader(bytes)});Check((int)projectileType.GetField("timeLeft").GetValue(nativeField)==0,"Native field invalid lifetime expires harmlessly");}
 Console.WriteLine($"Actual engine gameplay assertions including shared field telegraph: {assertions}.");
 
 
@@ -705,7 +705,7 @@ try {
   object savedSourceMod=nativeTargetNpcType.GetProperty("ModNPC").GetValue(parentNpc),newSourceMod=Activator.CreateInstance(nativeWyrmType);nativeWyrmType.GetProperty("Entity",BindingFlags.Instance|BindingFlags.Public|BindingFlags.NonPublic).SetValue(newSourceMod,parentNpc);nativeTargetNpcType.GetProperty("ModNPC").SetValue(parentNpc,newSourceMod);
   Check(!(bool)actualFieldType.GetMethod("CanDamage").Invoke(bossSourceField,null),"Compiled source field immediately blocks same-slot new ModNPC on authority");actualFieldType.GetMethod("AI").Invoke(bossSourceField,null);
   Check((int)projectileType.GetField("timeLeft").GetValue(bossSourceProjectile)==15&&(bool)projectileType.GetField("netUpdate").GetValue(bossSourceProjectile),"Compiled source field enters synchronized harmless fade");
-  using(var sourcePacket=new MemoryStream()){using(var writer=new BinaryWriter(sourcePacket,System.Text.Encoding.UTF8,true))actualFieldType.GetMethod("SendExtraAI").Invoke(bossSourceField,new object[]{writer});Check(sourcePacket.Length==9,"Compiled field source packet nine bytes");}
+  using(var sourcePacket=new MemoryStream()){using(var writer=new BinaryWriter(sourcePacket,System.Text.Encoding.UTF8,true))actualFieldType.GetMethod("SendExtraAI").Invoke(bossSourceField,new object[]{writer});Check(sourcePacket.Length==19,"Compiled field source packet nineteen bytes");}
   nativeTargetNpcType.GetProperty("ModNPC").SetValue(parentNpc,savedSourceMod);
   var compiledLinkType=type.Assembly.GetType("XianXia.Common.NPCs.LinkedWormNPC",true);var compiledWormAI=type.Assembly.GetType("XianXia.Content.NPCs.Bosses.SegmentedWormAI",true);
   foreach(string family in new[]{"SpiritVeinWyrm","ThunderMarshJiao","ShatteredJadeWyrmMinion"}){
@@ -740,6 +740,14 @@ try {
   compiledSplitType.GetMethod("SpawnSplitMinions",BindingFlags.Instance|BindingFlags.NonPublic).Invoke(splitBoss,new object[]{splitScenario!=0});
   Check((int)compiledSplitType.GetField("plannedChildren",BindingFlags.Instance|BindingFlags.NonPublic).GetValue(splitBoss)==0,"Compiled invalid battle/client/first phase never starts quota");
  }
+ nativeTargetMain.GetField("netMode").SetValue(null,0);
+ var sessionProperty=type.GetProperty("TribulationSession",BindingFlags.Instance|BindingFlags.NonPublic);object sessionCultivation=Activator.CreateInstance(type),sessionOwner=Activator.CreateInstance(nativeTargetPlayerType);type.GetMethod("Initialize").Invoke(sessionCultivation,null);type.GetProperty("Entity",BindingFlags.Instance|BindingFlags.Public|BindingFlags.NonPublic).SetValue(sessionCultivation,sessionOwner);
+ int localPlayer=(int)nativeTargetMain.GetField("myPlayer").GetValue(null);nativeTargetPlayerType.GetField("whoAmI").SetValue(sessionOwner,localPlayer==nativeTargetMax-1?nativeTargetMax-2:nativeTargetMax-1);
+ type.GetField("tribulationTimer").SetValue(sessionCultivation,120);long restoredSession=(long)sessionProperty.GetValue(sessionCultivation);Check(restoredSession>0&&(long)sessionProperty.GetValue(sessionCultivation)==restoredSession,"Compiled restored active tribulation allocates stable authority session");
+ object foundationStage=Enum.Parse(type.GetField("cultivationStage").FieldType,"Foundation");var beginSession=type.GetMethod("BeginTribulation",BindingFlags.Instance|BindingFlags.NonPublic);beginSession.Invoke(sessionCultivation,new[]{foundationStage});long firstAttempt=(long)sessionProperty.GetValue(sessionCultivation);Check(firstAttempt>0&&firstAttempt!=restoredSession,"Compiled beginning tribulation replaces prior session");beginSession.Invoke(sessionCultivation,new[]{foundationStage});long secondAttempt=(long)sessionProperty.GetValue(sessionCultivation);Check(secondAttempt!=firstAttempt,"Compiled same-stage restart cannot inherit old hazards");
+ type.GetField("tribulationTimer").SetValue(sessionCultivation,0);Check((long)sessionProperty.GetValue(sessionCultivation)==0,"Compiled ended/failed tribulation has no active session");
+ int foundationValue=Convert.ToInt32(foundationStage);type.GetMethod("LoadData").Invoke(sessionCultivation,new[]{Tag(("cultivationStage",foundationValue),("tribulationStage",foundationValue),("tribulationTimer",120))});Check((long)sessionProperty.GetValue(sessionCultivation)>0&&(long)sessionProperty.GetValue(sessionCultivation)!=secondAttempt,"Compiled load starts fresh active identity without persisting old session");
+ nativeTargetMain.GetField("netMode").SetValue(null,1);object clientSession=Activator.CreateInstance(type);type.GetMethod("Initialize").Invoke(clientSession,null);type.GetField("tribulationTimer").SetValue(clientSession,120);Check((long)sessionProperty.GetValue(clientSession)==0,"Compiled client does not allocate authority session");type.GetMethod("Initialize").Invoke(sessionCultivation,null);Check((long)sessionProperty.GetValue(sessionCultivation)==0,"Compiled initialization resets active session");
 } finally {
  nativeTargetMain.GetField("player").SetValue(null,nativeTargetOldPlayers);
  nativeTargetMain.GetField("netMode").SetValue(null,nativeTargetOldMode);
