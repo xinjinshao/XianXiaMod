@@ -19,10 +19,11 @@ public partial class SpiritVeinWyrm
         }
     }
 
-    public override void SendExtraAI(BinaryWriter writer) => writer.Write(SummonSession);
+    public override void SendExtraAI(BinaryWriter writer) { writer.Write(SummonSession); base.SendExtraAI(writer); }
     public override void ReceiveExtraAI(BinaryReader reader)
     {
         long received = reader.ReadInt64();
+        base.ReceiveExtraAI(reader);
         summonSession = received > 0 ? received : 0;
     }
 }

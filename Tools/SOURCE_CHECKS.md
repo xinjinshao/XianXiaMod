@@ -63,7 +63,7 @@ CI运行只读新鲜度检查，生成结果变化时须显式更新这四份输
 
 ## 原生包内容与默认配置
 
-Native checks另运行PackageContents，使用官方TmodFile打开实际.tmod，核对内部名称、build.txt版本、归档哈希、当前描述及Common/Content/Localization的所有PNG/HJSON（接受官方转换后的rawimg）；拒绝隐藏/越界条目、Assets/Docs/Wiki/Tools/bin/obj/README和源码/工具扩展。它不是读取源码文件名后假定打包正确。默认配置在Gameplay编译产物回归中验证，当前累计877条。
+Native checks另运行PackageContents，使用官方TmodFile打开实际.tmod，核对内部名称、build.txt版本、归档哈希、当前描述及Common/Content/Localization的所有PNG/HJSON（接受官方转换后的rawimg）；拒绝隐藏/越界条目、Assets/Docs/Wiki/Tools/bin/obj/README和源码/工具扩展。它不是读取源码文件名后假定打包正确。默认配置在Gameplay编译产物回归中验证，当前累计927条。
 
 ```powershell
 dotnet run --project Tools/Tests/PackageContents/PackageContents.csproj -- <XianXia.tmod路径> <官方引擎目录> <仓库根目录>
@@ -97,3 +97,12 @@ Gameplay新增21项编译产物常量/ExtraAI长度及原子截断读取/来源�
 WyrmSummons链接实际幼虫头体尾AI、来源partial、SpiritVeinWyrm实例partial、SegmentedWormAI及BossTargeting，2,208项覆盖十四类失败来源/年龄×三模式、同槽位父实例替换、900tick精确到期、服务端整链5节段/重复创建拒绝及清理、客户端1000tick预测不推进年龄/不创建链、父子目标不同步无伤等待与恢复、截断读取原子性。体尾的接触钩子直接检查父来源，避免依赖头部AI先执行；失效时客户端damage0保留实体，权威端清理。
 
 幼虫来源10字节ExtraAI、父实例8字节，age使用既有NPC.ai[3]由权威每60tick标记同步。Gameplay另增加22项实际编译方法检查，使用官方EntitySource_Parent、NPC.ModNPC关联捕获正实例编号，验证完整/截断来源、同槽位换实例、到期、客户端年龄以及体尾先于头部的接触过滤，累计877项。未启动真实世界；原生创建/运输、节段自身跨代关联与穿透伤害仍需验收。
+
+
+## 三组蠕虫节段实例关联
+
+第106轮LinkedWormNPC抽象基类只用于灵脉蠕虫、雷泽蛟、碎玉幼虫的头体尾，序列化24字节：本实例/头实例/前节实例各Int64，客户端不分配编号。创建时绑定头与前节，跟随及接触钩子先检查来源实例、realLife、有限整数索引、正生命和有限坐标；同槽位同类型替换不能接管旧链。失效客户端静止无伤等待，权威直接清理并幂等同步；雷泽蛟尾部关联失效不追加弹幕。
+
+Worms由22增至99条，包括头/前节替换×三模式、非法/小数/NaN/Inf索引、24字节截断原子读取、无效实例、客户端补父包恢复、溢出几何/死前节与极大bodyCount拒绝。WyrmSummons补继承数据读取边界，2,256条通过。当前幼虫34字节、灵脉蠕虫32字节ExtraAI，后24字节为共用关联字段；雷泽蛟头与六类体尾为24字节，天然其它NPC不增加字段。Gameplay增加50条（总927），包含三类实际NPC正确绑定、同槽位新头/新前节的接触拒绝及无奖励撤场；不是仅用伪造类型测共用方法。
+
+完整33步/24.NET源码入口与原生打包/专服加载通过。未启动真实世界；实际网络运输、穿透共享伤害及晚加入性能仍待验收。

@@ -12,9 +12,10 @@ using XianXia.Content.Items.Materials;
 namespace XianXia.Content.NPCs.Bosses;
 
 [AutoloadBossHead]
-public partial class SpiritVeinWyrm : ModNPC
+public partial class SpiritVeinWyrm : global::XianXia.Common.NPCs.LinkedWormNPC
 {
     private const int BodySegments = 7;
+    internal override bool IsWormHead => true;
     internal const float SegmentSpacing = 34f;
     private bool spawnedChildren;
 
@@ -214,7 +215,7 @@ public partial class SpiritVeinWyrm : ModNPC
     }
 }
 
-public class SpiritVeinWyrmBody : ModNPC
+public class SpiritVeinWyrmBody : global::XianXia.Common.NPCs.LinkedWormNPC
 {
     public override void SetStaticDefaults() => Main.npcFrameCount[Type] = 1;
 
@@ -238,7 +239,7 @@ public class SpiritVeinWyrmBody : ModNPC
     public override void AI() => SegmentedWormAI.FollowPreviousSegment(NPC, SpiritVeinWyrm.SegmentSpacing, 0.03f, 0.22f, 0.16f, ModContent.NPCType<SpiritVeinWyrm>());
 }
 
-public class SpiritVeinWyrmTail : ModNPC
+public class SpiritVeinWyrmTail : global::XianXia.Common.NPCs.LinkedWormNPC
 {
     public override void SetStaticDefaults() => Main.npcFrameCount[Type] = 1;
 

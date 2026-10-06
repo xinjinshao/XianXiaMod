@@ -11,8 +11,9 @@ using XianXia.Common.Systems;
 namespace XianXia.Content.NPCs.Bosses;
 
 [AutoloadBossHead]
-public class ThunderMarshJiao : ModNPC
+public class ThunderMarshJiao : global::XianXia.Common.NPCs.LinkedWormNPC
 {
+    internal override bool IsWormHead => true;
     internal const float SegmentSpacing = 48f;
     private const int BodySegments = 13;
 
@@ -217,7 +218,7 @@ public class ThunderMarshJiao : ModNPC
     }
 }
 
-public class ThunderMarshJiaoBody : ModNPC
+public class ThunderMarshJiaoBody : global::XianXia.Common.NPCs.LinkedWormNPC
 {
     public override void SetStaticDefaults() => Main.npcFrameCount[Type] = 1;
 
@@ -241,7 +242,7 @@ public class ThunderMarshJiaoBody : ModNPC
     public override void AI() => SegmentedWormAI.FollowPreviousSegment(NPC, ThunderMarshJiao.SegmentSpacing, 0.1f, 0.08f, 0.2f, ModContent.NPCType<ThunderMarshJiao>());
 }
 
-public class ThunderMarshJiaoTail : ModNPC
+public class ThunderMarshJiaoTail : global::XianXia.Common.NPCs.LinkedWormNPC
 {
     public override void SetStaticDefaults() => Main.npcFrameCount[Type] = 1;
 
@@ -265,6 +266,7 @@ public class ThunderMarshJiaoTail : ModNPC
     public override void AI()
     {
         SegmentedWormAI.FollowPreviousSegment(NPC, ThunderMarshJiao.SegmentSpacing, 0.1f, 0.08f, 0.2f, ModContent.NPCType<ThunderMarshJiao>());
+        if (!SegmentedWormAI.HasValidLinks(NPC, out _)) { NPC.localAI[0] = 0f; return; }
         int headIndex = (int)NPC.ai[1];
         if (headIndex < 0 || headIndex >= Main.maxNPCs)
         {

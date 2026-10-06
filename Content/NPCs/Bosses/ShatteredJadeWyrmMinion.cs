@@ -6,8 +6,9 @@ using Terraria.ModLoader;
 
 namespace XianXia.Content.NPCs.Bosses;
 
-public partial class ShatteredJadeWyrmMinion : ModNPC
+public partial class ShatteredJadeWyrmMinion : global::XianXia.Common.NPCs.LinkedWormNPC
 {
+    internal override bool IsWormHead => true;
     internal const float SegmentSpacing = 18f;
     private const int BodySegments = 4;
 
@@ -73,7 +74,7 @@ public partial class ShatteredJadeWyrmMinion : ModNPC
     }
 }
 
-public class ShatteredJadeWyrmMinionBody : ModNPC
+public class ShatteredJadeWyrmMinionBody : global::XianXia.Common.NPCs.LinkedWormNPC
 {
     public override void SetStaticDefaults() => Main.npcFrameCount[Type] = 1;
 
@@ -99,7 +100,7 @@ public class ShatteredJadeWyrmMinionBody : ModNPC
     public override void AI() => ShatteredJadeWyrmMinion.FollowSummonSegment(NPC, 0.13f, 0.1f);
 }
 
-public class ShatteredJadeWyrmMinionTail : ModNPC
+public class ShatteredJadeWyrmMinionTail : global::XianXia.Common.NPCs.LinkedWormNPC
 {
     public override void SetStaticDefaults() => Main.npcFrameCount[Type] = 1;
 

@@ -677,14 +677,18 @@ try {
   var nativeParentSourceType=projectileType.Assembly.GetType("Terraria.DataStructures.EntitySource_Parent",true);
   object source=Activator.CreateInstance(nativeParentSourceType,new object[]{parentNpc,null});nativeWyrmChildType.GetMethod("OnSpawn").Invoke(child,new[]{source});
   byte[] WyrmChildWire(){using var stream=new MemoryStream();using var writer=new BinaryWriter(stream);nativeWyrmChildType.GetMethod("SendExtraAI").Invoke(child,new object[]{writer});return stream.ToArray();}
-  var boundWire=WyrmChildWire();Check(boundWire.Length==10&&BitConverter.ToInt16(boundWire)==3&&BitConverter.ToInt64(boundWire,2)>0,"Official parent source captures slot and positive wyrm instance");
-  for(int length=0;length<10;length++){using var stream=new MemoryStream(boundWire[..length]);try{nativeWyrmChildType.GetMethod("ReceiveExtraAI").Invoke(child,new object[]{new BinaryReader(stream)});throw new Exception("Accepted truncated wyrm source");}catch(TargetInvocationException ex)when(ex.InnerException is EndOfStreamException){}Check(WyrmChildWire().SequenceEqual(boundWire),"Compiled wyrm source read atomic");}
+  var boundWire=WyrmChildWire();Check(boundWire.Length==34&&BitConverter.ToInt16(boundWire)==3&&BitConverter.ToInt64(boundWire,2)>0,"Official parent source captures slot and positive wyrm instance");
+  for(int length=0;length<34;length++){using var stream=new MemoryStream(boundWire[..length]);try{nativeWyrmChildType.GetMethod("ReceiveExtraAI").Invoke(child,new object[]{new BinaryReader(stream)});throw new Exception("Accepted truncated wyrm source");}catch(TargetInvocationException ex)when(ex.InnerException is EndOfStreamException){}Check(WyrmChildWire().SequenceEqual(boundWire),"Compiled wyrm source read atomic");}
   var childAge=(float[])nativeTargetNpcType.GetField("ai").GetValue(childNpc);
   Check((bool)nativeWyrmChildType.GetMethod("PreAI").Invoke(child,null)&&childAge[3]==1,"Compiled valid wyrm source advances authority age");
   nativeTargetMain.GetField("netMode").SetValue(null,1);Check((bool)nativeWyrmChildType.GetMethod("PreAI").Invoke(child,null)&&childAge[3]==1,"Compiled client source never advances age");
   foreach(string suffix in new[]{"Body","Tail"}){
    var segmentType=type.Assembly.GetType("XianXia.Content.NPCs.Bosses.ShatteredJadeWyrmMinion"+suffix,true);object segment=Activator.CreateInstance(segmentType),segmentNpc=npcTable.GetValue(5);
    segmentType.GetProperty("Entity",BindingFlags.Instance|BindingFlags.Public|BindingFlags.NonPublic).SetValue(segment,segmentNpc);nativeTargetNpcType.GetField("active").SetValue(segmentNpc,true);nativeTargetNpcType.GetField("life").SetValue(segmentNpc,70);nativeTargetNpcType.GetField("realLife").SetValue(segmentNpc,4);((float[])nativeTargetNpcType.GetField("ai").GetValue(segmentNpc))[1]=4;
+   nativeTargetMain.GetField("netMode").SetValue(null,0);nativeTargetNpcType.GetProperty("ModNPC").SetValue(segmentNpc,segment);((float[])nativeTargetNpcType.GetField("ai").GetValue(segmentNpc))[0]=4;
+   segmentType.BaseType.GetMethod("Bind",BindingFlags.Instance|BindingFlags.NonPublic).Invoke(segment,new[]{child,child});
+   using(var linkBytes=new MemoryStream()){using var writer=new BinaryWriter(linkBytes);segmentType.GetMethod("SendExtraAI").Invoke(segment,new object[]{writer});Check(linkBytes.Length==24,"Compiled segment carries only twenty-four linkage bytes");}
+   nativeTargetMain.GetField("netMode").SetValue(null,1);
    object[] segmentContact={nativeTargetPlayers.GetValue(0),0};Check((bool)segmentType.GetMethod("CanHitPlayer").Invoke(segment,segmentContact),"Compiled live wyrm "+suffix+" contact allowed");
    nativeTargetNpcType.GetField("active").SetValue(parentNpc,false);Check(!(bool)segmentType.GetMethod("CanHitPlayer").Invoke(segment,segmentContact),"Compiled parent loss blocks "+suffix+" before child head AI");
    segmentType.GetMethod("AI").Invoke(segment,null);Check((bool)nativeTargetNpcType.GetField("active").GetValue(segmentNpc)&&(int)nativeTargetNpcType.GetField("damage").GetValue(segmentNpc)==0,"Compiled client "+suffix+" remains harmless awaiting authority");nativeTargetNpcType.GetField("active").SetValue(parentNpc,true);
@@ -694,10 +698,34 @@ try {
   object replacement=Activator.CreateInstance(nativeWyrmType);nativeWyrmType.GetProperty("Entity",BindingFlags.Instance|BindingFlags.Public|BindingFlags.NonPublic).SetValue(replacement,parentNpc);nativeTargetNpcType.GetProperty("ModNPC").SetValue(parentNpc,replacement);
   object[] childContact={nativeTargetPlayers.GetValue(0),0};Check(!(bool)nativeWyrmChildType.GetMethod("CanHitPlayer").Invoke(child,childContact),"Compiled same-slot new wyrm instance denies old child contact");
   Check(!(bool)nativeWyrmChildType.GetMethod("PreAI").Invoke(child,null)&&!(bool)nativeTargetNpcType.GetField("active").GetValue(childNpc),"Compiled same-slot new wyrm clears old child");
+  var compiledLinkType=type.Assembly.GetType("XianXia.Common.NPCs.LinkedWormNPC",true);var compiledWormAI=type.Assembly.GetType("XianXia.Content.NPCs.Bosses.SegmentedWormAI",true);
+  foreach(string family in new[]{"SpiritVeinWyrm","ThunderMarshJiao","ShatteredJadeWyrmMinion"}){
+   nativeTargetMain.GetField("netMode").SetValue(null,0);
+   var familyHeadType=type.Assembly.GetType("XianXia.Content.NPCs.Bosses."+family,true);var familyBodyType=type.Assembly.GetType("XianXia.Content.NPCs.Bosses."+family+"Body",true);
+   object familyHead=Activator.CreateInstance(familyHeadType),familyPrevious=Activator.CreateInstance(familyBodyType),familySegment=Activator.CreateInstance(familyBodyType);
+   foreach(var pair in new[]{(familyHead,0),(familyPrevious,1),(familySegment,2)}){
+    var entity=npcTable.GetValue(pair.Item2);pair.Item1.GetType().GetProperty("Entity",BindingFlags.Instance|BindingFlags.Public|BindingFlags.NonPublic).SetValue(pair.Item1,entity);nativeTargetNpcType.GetProperty("ModNPC").SetValue(entity,pair.Item1);
+    nativeTargetNpcType.GetField("active").SetValue(entity,true);nativeTargetNpcType.GetField("life").SetValue(entity,70);nativeTargetNpcType.GetField("whoAmI").SetValue(entity,pair.Item2);nativeTargetNpcType.GetField("type").SetValue(entity,pair.Item2==0?50:51);nativeTargetNpcType.GetField("target").SetValue(entity,0);nativeTargetNpcType.GetField("realLife").SetValue(entity,0);
+    var segmentAi=(float[])nativeTargetNpcType.GetField("ai").GetValue(entity);Array.Clear(segmentAi);segmentAi[0]=pair.Item2==2?1:0;
+   }
+   if(family=="ShatteredJadeWyrmMinion")familyHeadType.GetMethod("OnSpawn").Invoke(familyHead,new[]{Activator.CreateInstance(nativeParentSourceType,new object[]{parentNpc,null})});
+   compiledLinkType.GetMethod("Bind",BindingFlags.Instance|BindingFlags.NonPublic).Invoke(familyPrevious,new[]{familyHead,familyHead});compiledLinkType.GetMethod("Bind",BindingFlags.Instance|BindingFlags.NonPublic).Invoke(familySegment,new[]{familyHead,familyPrevious});
+   var currentEntity=npcTable.GetValue(2);object[] linkageArgs={currentEntity,null};object[] familyContact={nativeTargetPlayers.GetValue(0),0};
+   Check((bool)compiledWormAI.GetMethod("HasValidLinks").Invoke(null,linkageArgs),"Official "+family+" linkage accepts correct instance chain");Check((bool)familyBodyType.GetMethod("CanHitPlayer").Invoke(familySegment,familyContact),"Official "+family+" correct chain contact allowed");
+   foreach(bool replaceHead in new[]{false,true}){
+    int slot=replaceHead?0:1;var replacementType=replaceHead?familyHeadType:familyBodyType;object replaced=replaceHead?familyHead:familyPrevious,replacementMod=Activator.CreateInstance(replacementType),replacementEntity=npcTable.GetValue(slot);
+    replacementType.GetProperty("Entity",BindingFlags.Instance|BindingFlags.Public|BindingFlags.NonPublic).SetValue(replacementMod,replacementEntity);nativeTargetNpcType.GetProperty("ModNPC").SetValue(replacementEntity,replacementMod);
+    if(!replaceHead)compiledLinkType.GetMethod("Bind",BindingFlags.Instance|BindingFlags.NonPublic).Invoke(replacementMod,new[]{familyHead,familyHead});
+    if(replaceHead&&family=="ShatteredJadeWyrmMinion")familyHeadType.GetMethod("OnSpawn").Invoke(replacementMod,new[]{Activator.CreateInstance(nativeParentSourceType,new object[]{parentNpc,null})});
+    Check(!(bool)compiledWormAI.GetMethod("HasValidLinks").Invoke(null,linkageArgs),"Official "+family+" same-slot generation replacement rejected");Check(!(bool)familyBodyType.GetMethod("CanHitPlayer").Invoke(familySegment,familyContact),"Official "+family+" stale generation cannot contact before AI");
+    compiledWormAI.GetMethod("FollowPreviousSegment").Invoke(null,new object[]{currentEntity,18f,0f,0f,0f,50});Check(!(bool)nativeTargetNpcType.GetField("active").GetValue(currentEntity)&&(int)nativeTargetNpcType.GetField("damage").GetValue(currentEntity)==0,"Official "+family+" stale generation clears without reward hooks");
+    nativeTargetNpcType.GetProperty("ModNPC").SetValue(replacementEntity,replaced);nativeTargetNpcType.GetField("active").SetValue(currentEntity,true);
+   }
+  }
  } finally {nativeTargetMain.GetField("npc").SetValue(null,nativeOldNpcTable);}
 } finally {
  nativeTargetMain.GetField("player").SetValue(null,nativeTargetOldPlayers);
  nativeTargetMain.GetField("netMode").SetValue(null,nativeTargetOldMode);
  nativeTargetMain.GetField("dedServ").SetValue(null,nativeTargetOldDedicated);
 }
-Console.WriteLine($"Actual engine gameplay assertions including eleven boss target hooks: {assertions}.");
+Console.WriteLine($"Actual engine gameplay assertions including boss targets and worm instance links: {assertions}.");

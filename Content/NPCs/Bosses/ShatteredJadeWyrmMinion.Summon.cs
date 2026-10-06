@@ -72,7 +72,8 @@ public partial class ShatteredJadeWyrmMinion
         if (!segment.active || segment.life <= 0 || !float.IsFinite(rawHead)
             || rawHead < 0 || rawHead >= Main.maxNPCs || rawHead != (int)rawHead
             || segment.realLife != (int)rawHead) return false;
-        return Main.npc[(int)rawHead]?.ModNPC is ShatteredJadeWyrmMinion minion
+        return SegmentedWormAI.HasValidLinks(segment, out NPC head)
+            && head.ModNPC is ShatteredJadeWyrmMinion minion
             && minion.HasSummonTarget();
     }
 
@@ -94,12 +95,14 @@ public partial class ShatteredJadeWyrmMinion
     {
         writer.Write(parentSlot);
         writer.Write(parentSession);
+        base.SendExtraAI(writer);
     }
 
     public override void ReceiveExtraAI(BinaryReader reader)
     {
         short slot = reader.ReadInt16();
         long session = reader.ReadInt64();
+        base.ReceiveExtraAI(reader);
         parentSlot = slot >= 0 && slot < Main.maxNPCs ? slot : (short)-1;
         parentSession = session > 0 ? session : 0;
     }
