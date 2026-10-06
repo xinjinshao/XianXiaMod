@@ -12,9 +12,6 @@ jobs:
   native-checks:
     runs-on: windows-latest
     timeout-minutes: 25
-    env:
-      TML_ROOT: ${{ runner.temp }}/XianXia-tModLoader
-      TML_ARCHIVE: ${{ runner.temp }}/XianXia-tModLoader.zip
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
@@ -27,6 +24,9 @@ jobs:
         shell: pwsh
         run: |
           $ErrorActionPreference = 'Stop'
+          $env:TML_ROOT = Join-Path $env:RUNNER_TEMP 'XianXia-tModLoader'
+          $env:TML_ARCHIVE = Join-Path $env:RUNNER_TEMP 'XianXia-tModLoader.zip'
+          "TML_ROOT=$env:TML_ROOT" | Out-File -LiteralPath $env:GITHUB_ENV -Encoding utf8 -Append
           Invoke-WebRequest 'https://github.com/tModLoader/tModLoader/releases/download/v2026.08.3.0/tModLoader.zip' -OutFile $env:TML_ARCHIVE
           $expectedHash = '61e865f3702b12ce4a26c5a90b9de99a12c65ffc228455eb3390ce54af1eab15'
           if ((Get-FileHash -LiteralPath $env:TML_ARCHIVE -Algorithm SHA256).Hash.ToLowerInvariant() -ne $expectedHash) { throw 'Official engine archive checksum mismatch' }
