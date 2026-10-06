@@ -723,6 +723,14 @@ try {
    }
   }
  } finally {nativeTargetMain.GetField("npc").SetValue(null,nativeOldNpcTable);}
+ var compiledSplitType=type.Assembly.GetType("XianXia.Content.NPCs.Bosses.SpiritVeinWyrm",true);
+ Check((int)compiledSplitType.GetField("SplitRetryInterval").GetRawConstantValue()==60,"Compiled split retries every sixty ticks");
+ foreach(int splitScenario in new[]{0,1,2,3,4}){
+  object splitBoss=Activator.CreateInstance(compiledSplitType),splitEntity=Activator.CreateInstance(nativeTargetNpcType);compiledSplitType.GetProperty("Entity",BindingFlags.Instance|BindingFlags.Public|BindingFlags.NonPublic).SetValue(splitBoss,splitEntity);
+  nativeTargetNpcType.GetField("active").SetValue(splitEntity,splitScenario!=2);nativeTargetNpcType.GetField("life").SetValue(splitEntity,splitScenario==3?0:100);nativeTargetNpcType.GetField("target").SetValue(splitEntity,splitScenario==4?int.MaxValue:0);nativeTargetMain.GetField("netMode").SetValue(null,splitScenario==1?1:0);
+  compiledSplitType.GetMethod("SpawnSplitMinions",BindingFlags.Instance|BindingFlags.NonPublic).Invoke(splitBoss,new object[]{splitScenario!=0});
+  Check((int)compiledSplitType.GetField("plannedChildren",BindingFlags.Instance|BindingFlags.NonPublic).GetValue(splitBoss)==0,"Compiled invalid battle/client/first phase never starts quota");
+ }
 } finally {
  nativeTargetMain.GetField("player").SetValue(null,nativeTargetOldPlayers);
  nativeTargetMain.GetField("netMode").SetValue(null,nativeTargetOldMode);

@@ -6,7 +6,7 @@
 python Tools/run_source_checks.py
 ```
 
-也可通过 `--dotnet <SDK可执行文件>` 指定已有SDK。入口按顺序执行两组Python范围回归、10项经济图分析回归、8项生成器归属回归、6项生成召唤文本回归与只读输出新鲜度、内容契约、本地化键、PNG检查与24个Release源码回归项目；任何子命令失败立即返回非零状态，不继续后续检查。不要把输出中的模拟引擎边界当成实机验收。
+也可通过 `--dotnet <SDK可执行文件>` 指定已有SDK。入口按顺序执行两组Python范围回归、10项经济图分析回归、8项生成器归属回归、6项生成召唤文本回归与只读输出新鲜度、内容契约、本地化键、PNG检查与25个Release源码回归项目；任何子命令失败立即返回非零状态，不继续后续检查。不要把输出中的模拟引擎边界当成实机验收。
 
 `.github/workflows/source-checks.yml` 在push、pull_request和手动触发时运行同一入口，Windows runner使用Python 3.12和.NET 8；仅需仓库读取权限，相同分支的新运行取消旧运行。
 
@@ -56,14 +56,14 @@ CI运行只读新鲜度检查，生成结果变化时须显式更新这四份输
 
 `.github/workflows/native-checks.yml`在push、pull_request和手动触发时独立运行Windows原生检查。下载[官方v2026.08.3.0发布包](https://github.com/tModLoader/tModLoader/releases/tag/v2026.08.3.0)，固定SHA256为`61e865f3702b12ce4a26c5a90b9de99a12c65ffc228455eb3390ce54af1eab15`，校验后解压到runner临时目录；不使用latest、不依赖Steam、本地安装或仓库内引擎副本。升级时必须同时审核版本/摘要和原生回归。
 
-流程调用既有verify_build.ps1完成编译、隔离打包、专服内容与配方加载及经济导出，再执行Gameplay编译产物回归、LocalizationPaths官方加载器路径回归和三价格场景金币转换检查。任何非零退出均失败；经济阶段要求唯一快照，避免读错旧结果。源码33步检查保留在独立Source checks工作流。
+流程调用既有verify_build.ps1完成编译、隔离打包、专服内容与配方加载及经济导出，再执行Gameplay编译产物回归、LocalizationPaths官方加载器路径回归和三价格场景金币转换检查。任何非零退出均失败；经济阶段要求唯一快照，避免读错旧结果。源码34步检查保留在独立Source checks工作流。
 
 无论成功失败，上传专服标准/错误日志、引擎详细日志、经济快照/报告及生成模组包，保留14天，支持定位加载前失败。引擎下载或摘要校验失败也会阻止通过。此流程不启动游戏世界，不验证图形、多人实战、Boss平衡或完整通关；包仅为诊断产物，不自动发布。
 
 
 ## 原生包内容与默认配置
 
-Native checks另运行PackageContents，使用官方TmodFile打开实际.tmod，核对内部名称、build.txt版本、归档哈希、当前描述及Common/Content/Localization的所有PNG/HJSON（接受官方转换后的rawimg）；拒绝隐藏/越界条目、Assets/Docs/Wiki/Tools/bin/obj/README和源码/工具扩展。它不是读取源码文件名后假定打包正确。默认配置在Gameplay编译产物回归中验证，当前累计927条。
+Native checks另运行PackageContents，使用官方TmodFile打开实际.tmod，核对内部名称、build.txt版本、归档哈希、当前描述及Common/Content/Localization的所有PNG/HJSON（接受官方转换后的rawimg）；拒绝隐藏/越界条目、Assets/Docs/Wiki/Tools/bin/obj/README和源码/工具扩展。它不是读取源码文件名后假定打包正确。默认配置在Gameplay编译产物回归中验证，当前累计933条。
 
 ```powershell
 dotnet run --project Tools/Tests/PackageContents/PackageContents.csproj -- <XianXia.tmod路径> <官方引擎目录> <仓库根目录>
@@ -106,3 +106,10 @@ WyrmSummons链接实际幼虫头体尾AI、来源partial、SpiritVeinWyrm实例p
 Worms由22增至99条，包括头/前节替换×三模式、非法/小数/NaN/Inf索引、24字节截断原子读取、无效实例、客户端补父包恢复、溢出几何/死前节与极大bodyCount拒绝。WyrmSummons补继承数据读取边界，2,256条通过。当前幼虫34字节、灵脉蠕虫32字节ExtraAI，后24字节为共用关联字段；雷泽蛟头与六类体尾为24字节，天然其它NPC不增加字段。Gameplay增加50条（总927），包含三类实际NPC正确绑定、同槽位新头/新前节的接触拒绝及无奖励撤场；不是仅用伪造类型测共用方法。
 
 完整33步/24.NET源码入口与原生打包/专服加载通过。未启动真实世界；实际网络运输、穿透共享伤害及晚加入性能仍待验收。
+
+
+## 灵脉蠕虫分裂容量重试
+
+WyrmSplit链接实际SpawnSplitMinions partial和BossTargeting，74项覆盖2/3固定配额、全表拥塞后第60tick恢复、部分创建失败只补缺额、0–18空槽边界、每条幼虫头+4体+1尾容量预检、哨兵/错误类型、长期拥塞只选择一次配额及无效战斗/客户端无RNG。已成功创建的配额不因击杀或到期重新补充，避免无限刷取。预检不是全局槽位预留，实际幼虫链仍用整链失败回滚/重试。
+
+Gameplay增加6项实际编译常量与无效战斗/第一阶段/客户端不初始化配额检查，累计933项。实际NPC创建和网络运输在该源码项目中模拟，原生构建与专服加载通过不证明真实拥塞战斗。
