@@ -1,6 +1,8 @@
 using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.ID;
+using Terraria.GameContent;
+using Microsoft.Xna.Framework.Graphics;
 
 namespace XianXia.Content.NPCs.Bosses;
 
@@ -11,6 +13,15 @@ public partial class BlackFurnaceIronGolem
     internal bool UpdateFurnaceCharge(Player target, bool finalPhase)
     {
         chargeDashing = false;
+        if (!float.IsFinite(NPC.ai[1]) || NPC.ai[1] < -(ChargeWarningTicks + ChargeDashTicks + ChargeRecoveryTicks)
+            || NPC.ai[1] > 180f || (NPC.ai[1] < 0f && !float.IsFinite(NPC.ai[3]))) {
+            NPC.velocity = Vector2.Zero;
+            if (Main.netMode != NetmodeID.MultiplayerClient) {
+                NPC.ai[0] = NPC.ai[1] = NPC.ai[2] = NPC.ai[3] = 0f;
+                NPC.netUpdate = true;
+            }
+            return true;
+        }
         if (NPC.ai[1] >= 0f) {
             if (!finalPhase || Main.netMode == NetmodeID.MultiplayerClient) return false;
             if (++NPC.ai[1] < 180f) return false;
@@ -36,6 +47,26 @@ public partial class BlackFurnaceIronGolem
                 if (elapsed == ChargeWarningTicks || elapsed == ChargeWarningTicks + ChargeDashTicks) NPC.netUpdate = true;
             }
         }
+        return true;
+    }
+    public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
+    {
+        if (Main.dedServ || NPC.ai[1] >= 0f || NPC.ai[1] < -ChargeWarningTicks
+            || !float.IsFinite(NPC.ai[1]) || !float.IsFinite(NPC.ai[3])
+            || !float.IsFinite(NPC.Center.X) || !float.IsFinite(NPC.Center.Y)) return true;
+        Vector2 direction = new Vector2(1f, 0f).RotatedBy(NPC.ai[3]);
+        Vector2 side = direction.RotatedBy(MathHelper.PiOver2);
+        float along = System.MathF.Abs(direction.X) * NPC.width + System.MathF.Abs(direction.Y) * NPC.height;
+        float across = System.MathF.Abs(direction.Y) * NPC.width + System.MathF.Abs(direction.X) * NPC.height;
+        float length = 14f * ChargeDashTicks + along;
+        Vector2 start = NPC.Center - direction * (along * 0.5f) - screenPos;
+        var pixel = TextureAssets.MagicPixel.Value;
+        // The corridor includes the projected rectangular hitbox for diagonal dashes.
+        spriteBatch.Draw(pixel, start - side * (across * 0.5f), null, Color.OrangeRed * 0.12f,
+            NPC.ai[3], Vector2.Zero, new Vector2(length, across), SpriteEffects.None, 0f);
+        foreach (float sign in new[] { -1f, 1f })
+            spriteBatch.Draw(pixel, start + side * (sign * across * 0.5f), null, Color.OrangeRed * 0.75f,
+                NPC.ai[3], Vector2.Zero, new Vector2(length, 2f), SpriteEffects.None, 0f);
         return true;
     }
 }

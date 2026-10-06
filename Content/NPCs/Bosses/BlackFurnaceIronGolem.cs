@@ -84,7 +84,9 @@ public partial class BlackFurnaceIronGolem : ModNPC
     }
 
     public override bool CanHitPlayer(Player target, ref int cooldownSlot) =>
-        global::XianXia.Common.Systems.BossTargeting.HasLivingTarget(NPC) && target.active && !target.dead && (NPC.ai[1] >= 0f || chargeDashing);
+        global::XianXia.Common.Systems.BossTargeting.HasLivingTarget(NPC) && target.active && !target.dead && float.IsFinite(NPC.ai[1]) && NPC.ai[1] <= 180f
+        && NPC.ai[1] >= -(ChargeWarningTicks + ChargeDashTicks + ChargeRecoveryTicks)
+        && (NPC.ai[1] >= 0f || (chargeDashing && float.IsFinite(NPC.ai[3])));
 
     public override void AI()
 
