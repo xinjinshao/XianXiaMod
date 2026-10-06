@@ -51,6 +51,25 @@ public class DownedBossSystem : ModSystem
         ["tribulation_observer_thunder"] = 12,
         ["archive_scroll_spirit_trial"] = 16,
         ["fallen_heaven_messenger_tablet"] = 24,
+        ["herb_sect_apprentice_king"] = 12,
+        ["wandering_artificer_sword"] = 16,
+        ["tribulation_observer_inspector"] = 18,
+        ["archive_scroll_spirit_moon"] = 24,
+        ["fallen_heaven_messenger_core"] = 30,
+    };
+
+    // Preserve the original five wire bits; append new commissions without reordering.
+    private static readonly string[] CommissionWireOrder = {
+        "archive_scroll_spirit_trial",
+        "fallen_heaven_messenger_tablet",
+        "herb_sect_apprentice_garden",
+        "tribulation_observer_thunder",
+        "wandering_artificer_furnace",
+        "herb_sect_apprentice_king",
+        "wandering_artificer_sword",
+        "tribulation_observer_inspector",
+        "archive_scroll_spirit_moon",
+        "fallen_heaven_messenger_core",
     };
 
     public override void ClearWorld()
@@ -94,11 +113,11 @@ public class DownedBossSystem : ModSystem
         RecalculateSectReputation();
     }
 
-    // The dictionaries define a stable wire order; never use HashSet enumeration order.
+    // Boss IDs use ordinal order; commissions use append-only bits, never HashSet order.
     public override void NetSend(BinaryWriter writer)
     {
-        writer.Write(GetFlags(DownedBosses, ReputationByBoss.Keys));
-        writer.Write(GetFlags(ClaimedCommissions, ReputationByCommission.Keys));
+        writer.Write(GetFlags(DownedBosses, ReputationByBoss.Keys.OrderBy(key => key, System.StringComparer.Ordinal)));
+        writer.Write(GetFlags(ClaimedCommissions, CommissionWireOrder));
         writer.Write((byte)ChosenRoute);
     }
 
@@ -107,8 +126,8 @@ public class DownedBossSystem : ModSystem
         ushort bosses = reader.ReadUInt16();
         ushort commissions = reader.ReadUInt16();
         byte route = reader.ReadByte();
-        ReadFlags(bosses, DownedBosses, ReputationByBoss.Keys);
-        ReadFlags(commissions, ClaimedCommissions, ReputationByCommission.Keys);
+        ReadFlags(bosses, DownedBosses, ReputationByBoss.Keys.OrderBy(key => key, System.StringComparer.Ordinal));
+        ReadFlags(commissions, ClaimedCommissions, CommissionWireOrder);
         DownedSpiritVeinWyrm = DownedBosses.Contains("spirit_vein_wyrm");
         ChosenRoute = route <= (byte)EndgameRoute.AcceptStarAbyss ? (EndgameRoute)route : EndgameRoute.None;
         RecalculateSectReputation();
@@ -118,7 +137,7 @@ public class DownedBossSystem : ModSystem
     {
         ushort flags = 0;
         int bit = 0;
-        foreach (string key in keys.OrderBy(key => key, System.StringComparer.Ordinal))
+        foreach (string key in keys)
         {
             if (values.Contains(key))
                 flags |= (ushort)(1 << bit);
@@ -131,7 +150,7 @@ public class DownedBossSystem : ModSystem
     {
         values.Clear();
         int bit = 0;
-        foreach (string key in keys.OrderBy(key => key, System.StringComparer.Ordinal))
+        foreach (string key in keys)
         {
             if ((flags & (1 << bit)) != 0)
                 values.Add(key);

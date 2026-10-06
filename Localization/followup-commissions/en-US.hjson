@@ -1,0 +1,38 @@
+{
+  "Mods": {
+    "XianXia": {
+      "FollowupCommissions": {
+        "HerbSectApprentice": {
+          "Locked": "Follow-up \"Garden Renewal\": the first commission is complete. Requires Nascent Soul, Hardmode, Plantera and Greenwood Medicine King Echo defeated. Return to the Commission button for 5 Qi Recovery Pills and 3 Wind Step Pills and 12 shared reputation; no material cost.",
+          "Ready": "Follow-up \"Garden Renewal\" is ready! Click Commission for 5 Qi Recovery Pills and 3 Wind Step Pills and 12 shared reputation, once per world.",
+          "Completed": "Follow-up \"Garden Renewal\" has already been claimed by a cultivator in this world.",
+          "Claimed": "You completed \"Garden Renewal\". You received 5 Qi Recovery Pills and 3 Wind Step Pills; shared sect reputation +{0}, world total {1}."
+        },
+        "WanderingArtificer": {
+          "Locked": "Follow-up \"Reforge the Old Sword\": the first commission is complete. Requires Nascent Soul, Hardmode, Plantera and Formless Sword Soul defeated. Return to the Commission button for 2 Artifact Quenching Crystals and 6 Artifact Blank Shards and 16 shared reputation; no material cost.",
+          "Ready": "Follow-up \"Reforge the Old Sword\" is ready! Click Commission for 2 Artifact Quenching Crystals and 6 Artifact Blank Shards and 16 shared reputation, once per world.",
+          "Completed": "Follow-up \"Reforge the Old Sword\" has already been claimed by a cultivator in this world.",
+          "Claimed": "You completed \"Reforge the Old Sword\". You received 2 Artifact Quenching Crystals and 6 Artifact Blank Shards; shared sect reputation +{0}, world total {1}."
+        },
+        "TribulationObserver": {
+          "Locked": "Follow-up \"Rewrite the Trial Laws\": the first commission is complete. Requires Spirit Severing, Hardmode, Plantera, Golem and Broken Heaven Inspector defeated. Return to the Commission button for 3 Thunder Burst Pills and 4 Tribulation Resisting Pills and 18 shared reputation; no material cost.",
+          "Ready": "Follow-up \"Rewrite the Trial Laws\" is ready! Click Commission for 3 Thunder Burst Pills and 4 Tribulation Resisting Pills and 18 shared reputation, once per world.",
+          "Completed": "Follow-up \"Rewrite the Trial Laws\" has already been claimed by a cultivator in this world.",
+          "Claimed": "You completed \"Rewrite the Trial Laws\". You received 3 Thunder Burst Pills and 4 Tribulation Resisting Pills; shared sect reputation +{0}, world total {1}."
+        },
+        "ArchiveScrollSpirit": {
+          "Locked": "Follow-up \"Archive the Moonbone\": the first commission is complete. Requires Tribulation, Hardmode, Plantera, Golem, Moon Lord and Moonbone Immortal defeated. Return to the Commission button for 4 Archive Remnant Lights and 6 Cold Moon Dust and 24 shared reputation; no material cost.",
+          "Ready": "Follow-up \"Archive the Moonbone\" is ready! Click Commission for 4 Archive Remnant Lights and 6 Cold Moon Dust and 24 shared reputation, once per world.",
+          "Completed": "Follow-up \"Archive the Moonbone\" has already been claimed by a cultivator in this world.",
+          "Claimed": "You completed \"Archive the Moonbone\". You received 4 Archive Remnant Lights and 6 Cold Moon Dust; shared sect reputation +{0}, world total {1}."
+        },
+        "FallenHeavenMessenger": {
+          "Locked": "Follow-up \"Witness the Ending\": the first commission is complete. Requires Tribulation, Hardmode, Plantera, Golem, Moon Lord and Old Heaven Dao Core defeated. Return to the Commission button for 8 Heaven Dao Fragments and 6 Qi Recovery Pills and 30 shared reputation; no material cost.",
+          "Ready": "Follow-up \"Witness the Ending\" is ready! Click Commission for 8 Heaven Dao Fragments and 6 Qi Recovery Pills and 30 shared reputation, once per world.",
+          "Completed": "Follow-up \"Witness the Ending\" has already been claimed by a cultivator in this world.",
+          "Claimed": "You completed \"Witness the Ending\". You received 8 Heaven Dao Fragments and 6 Qi Recovery Pills; shared sect reputation +{0}, world total {1}."
+        }
+      }
+    }
+  }
+}

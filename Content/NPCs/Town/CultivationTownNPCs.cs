@@ -37,7 +37,8 @@ public abstract class CultivationTownNPC : ModNPC
 
     protected static string ServiceChat(string npc, string dialogue, params object[] args) =>
         Language.GetTextValue($"Mods.XianXia.TownGuidance.Dialogue.{npc}.{dialogue}", args)
-        + "\n\n" + Language.GetTextValue($"Mods.XianXia.TownGuidance.Services.{npc}");
+        + "\n\n" + Language.GetTextValue($"Mods.XianXia.TownGuidance.Services.{npc}")
+        + FollowupCommissions.Hint(npc, Main.LocalPlayer);
 
     protected static bool TryRouteChat(string npc, out string chat)
     {
@@ -168,6 +169,13 @@ public abstract class CultivationTownNPC : ModNPC
         return false;
     }
 
+    protected bool ClaimFollowupCommission(Player player, out string text)
+    {
+        bool claimed = FollowupCommissions.TryClaim(player, NPC, Name, out commissionResponse);
+        text = commissionResponse.ToString();
+        return claimed;
+    }
+
     protected bool ClaimCommission(Player player, string key, int reputation, string textKey, params (int Type, int Stack)[] rewards)
     {
         if (!DownedBossSystem.TryClaimCommission(key, reputation))
@@ -255,6 +263,9 @@ public class HerbSectApprentice : CultivationTownNPC
 
     protected override bool TryClaimCommission(Player player, out string text)
     {
+        if (DownedBossSystem.ClaimedCommissions.Contains("herb_sect_apprentice_garden"))
+            return ClaimFollowupCommission(player, out text);
+
         if (!Downed("garden_warden"))
         {
             text = CommissionText("Mods.XianXia.NPCs.Commission.HerbSectApprentice.Locked");
@@ -357,6 +368,9 @@ public class WanderingArtificer : CultivationTownNPC
 
     protected override bool TryClaimCommission(Player player, out string text)
     {
+        if (DownedBossSystem.ClaimedCommissions.Contains("wandering_artificer_furnace"))
+            return ClaimFollowupCommission(player, out text);
+
         if (!Downed("black_furnace_iron_golem"))
         {
             text = CommissionText("Mods.XianXia.NPCs.Commission.WanderingArtificer.Locked");
@@ -450,6 +464,9 @@ public class TribulationObserver : CultivationTownNPC
 
     protected override bool TryClaimCommission(Player player, out string text)
     {
+        if (DownedBossSystem.ClaimedCommissions.Contains("tribulation_observer_thunder"))
+            return ClaimFollowupCommission(player, out text);
+
         if (!Downed("thunder_marsh_jiao"))
         {
             text = CommissionText("Mods.XianXia.NPCs.Commission.TribulationObserver.Locked");
@@ -551,6 +568,9 @@ public class ArchiveScrollSpirit : CultivationTownNPC
 
     protected override bool TryClaimCommission(Player player, out string text)
     {
+        if (DownedBossSystem.ClaimedCommissions.Contains("archive_scroll_spirit_trial"))
+            return ClaimFollowupCommission(player, out text);
+
         if (!Downed("formless_sword_soul"))
         {
             text = CommissionText("Mods.XianXia.NPCs.Commission.ArchiveScrollSpirit.Locked");
@@ -661,6 +681,9 @@ public class FallenHeavenMessenger : CultivationTownNPC
 
     protected override bool TryClaimCommission(Player player, out string text)
     {
+        if (DownedBossSystem.ClaimedCommissions.Contains("fallen_heaven_messenger_tablet"))
+            return ClaimFollowupCommission(player, out text);
+
         if (!Downed("heaven_tablet_guardian"))
         {
             text = CommissionText("Mods.XianXia.NPCs.Commission.FallenHeavenMessenger.Locked");

@@ -32,7 +32,7 @@ Check(DownedBossSystem.SectReputation == 13, "Client cannot mutate world progres
 
 // Wire-format coverage: every boss subset and every commission subset, with all routes.
 int[] bossReputation = {18,10,36,24,10,24,36,60,80,5,18,12}; // Ordinal wire order.
-int[] commissionReputation = {16,24,8,12,8};
+int[] commissionReputation = {16,24,8,12,8,12,16,18,24,30};
 int Expected(ushort mask, int[] values) => values.Select((value, bit) => (mask & (1 << bit)) != 0 ? value : 0).Sum();
 byte[] Snapshot(ushort bosses, ushort commissions, byte route)
 {
@@ -54,7 +54,7 @@ void RoundTrip(ushort bosses, ushort commissions, byte route)
     Check(output.ToArray().SequenceEqual(bytes), "Snapshot must round-trip exactly, replacing stale flags.");
 }
 for (ushort mask = 0; mask < 4096; mask++) RoundTrip(mask, 0, (byte)(mask % 4));
-for (ushort mask = 0; mask < 32; mask++) RoundTrip(4095, mask, (byte)(mask % 4));
+for (ushort mask = 0; mask < 1024; mask++) RoundTrip(4095, mask, (byte)(mask % 4));
 using (var reader = new BinaryReader(new MemoryStream(Snapshot(0, 0, 255)))) world.NetReceive(reader);
 Check(DownedBossSystem.ChosenRoute == DownedBossSystem.EndgameRoute.None, "Invalid route must be sanitized.");
 

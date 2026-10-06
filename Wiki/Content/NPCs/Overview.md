@@ -12,6 +12,8 @@
 | [经阁卷灵](Entries/Archive_Scroll_Spirit.md) | <img src="../../../Assets/Final/archive_scroll_spirit/archive_scroll_spirit__body__v01.png" width="48"> | 金丹境或持有试炼令 | 出售宗门物品、试炼提示 | 宗门记忆集合 |
 | [坠天信使](Entries/Fallen_Heaven_Messenger.md) | <img src="../../../Assets/Final/fallen_heaven_messenger/fallen_heaven_messenger__body__v01.png" width="48"> | 元婴境或击败天碑守御 | 出售天道物品、路线提示 | 残天司半叛离个体 |
 
+五位NPC各有原始委托和一项[跨阶段后续任务](../../Systems/Commissions.md)，由第二个对话按钮领取，奖励按世界限领一次。
+
 ## NPC 设计规则
 
 - NPC 的功能必须随进度逐步解锁。
