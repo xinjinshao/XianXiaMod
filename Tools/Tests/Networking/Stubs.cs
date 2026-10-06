@@ -246,7 +246,7 @@ namespace Terraria.ModLoader
         public static int TileType<T>() => typeof(T).Name switch { "ArtifactForgeTile"=>1,"ThunderPatternForgeTile"=>2,"HeavenFireFurnaceTile"=>3,_=>4 };
         public static int ItemType<T>()=>200;
         public static int ProjectileType<T>()=>typeof(T).Name=="GreenwoodArrayField"?3:typeof(T).Name=="MedicineCauldronField"?4:typeof(T).Name=="MedicineSpiritBolt"?5:typeof(T).Name=="FurnaceHammerProjectile"?6:typeof(T).Name=="FurnaceImpactBurst"?7:typeof(T).Name=="HeavenTabletWardProjectile"?8:typeof(T).Name=="ThunderTalismanArray"?9:typeof(T).Name=="MinorThunderboltProjectile"?10:2;
-        public static int BuffType<T>()=>typeof(T).Name=="FurnaceGuardBuff"?3:typeof(T).Name=="WindStepBuff"?4:2;
+        public static int BuffType<T>()=>typeof(T).Name=="FurnaceGuardBuff"?3:typeof(T).Name=="WindStepBuff"?4:typeof(T).Name=="ThunderBurstBuff"?5:2;
         public static T GetInstance<T>() where T:new()=>new T();
     }
     public class ModSystem
@@ -428,3 +428,5 @@ namespace Microsoft.Xna.Framework {public record struct Rectangle(int X,int Y,in
 namespace Terraria.DataStructures {public class EntitySource_Parent : IEntitySource {public object Entity;public EntitySource_Parent(object entity){Entity=entity;}}}
 
 namespace Terraria.ModLoader { public class ModBuff { public int Type=3;public virtual string Texture=>"";public virtual void SetStaticDefaults(){}public virtual void Update(Terraria.Player player,ref int buffIndex){} } }
+
+namespace XianXia.Content.Items.Materials { public class TribulationCloudDew {} }

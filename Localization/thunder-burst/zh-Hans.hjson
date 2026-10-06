@@ -1,0 +1,18 @@
+{
+  "Mods": {
+    "XianXia": {
+      "Items": {
+        "ThunderBurstPill": {
+          "DisplayName": "雷息爆发丹",
+          "Tooltip": "筑基境起可用；伤害+12%，防御-6，灵气费用提高20%\n基础持续20秒，品质只影响时长；不能刷新，与护体/踏风互斥\n四种新丹药共享30秒药滞；高品质附加奖励沿用丹药规则"
+        }
+      },
+      "Buffs": {
+        "ThunderBurstBuff": {
+          "DisplayName": "雷息爆发",
+          "Description": "伤害+12%，防御-6，灵气费用提高20%"
+        }
+      }
+    }
+  }
+}

@@ -22,6 +22,7 @@ public class FurnaceGuardPill : ModItem
         && player.GetModPlayer<XianXiaPlayer>().cultivationStage >= CultivationStage.QiCondensation
         && !player.HasBuff(ModContent.BuffType<FurnaceGuardBuff>())
         && !player.HasBuff(ModContent.BuffType<WindStepBuff>())
+        && !player.HasBuff(ModContent.BuffType<ThunderBurstBuff>())
         && !player.HasBuff(ModContent.BuffType<QiRecoveryCooldownBuff>());
     public override bool? UseItem(Player player)
     {

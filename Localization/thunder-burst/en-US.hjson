@@ -1,0 +1,18 @@
+{
+  "Mods": {
+    "XianXia": {
+      "Items": {
+        "ThunderBurstPill": {
+          "DisplayName": "Thunder Burst Pill",
+          "Tooltip": "Requires Foundation; +12% damage, -6 defense, 20% higher energy costs\nBase duration 20 seconds, scaled by quality; cannot refresh or combine with Guard/Wind Step\nFour new pills share 30-second fatigue; higher-quality bonuses follow pill rules"
+        }
+      },
+      "Buffs": {
+        "ThunderBurstBuff": {
+          "DisplayName": "Thunder Burst",
+          "Description": "+12% damage, -6 defense, 20% higher energy costs"
+        }
+      }
+    }
+  }
+}

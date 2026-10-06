@@ -1092,6 +1092,27 @@ recoveryPlayer.buffTime=new int[22];recoveryPlayer.State.ProgressionItemCooldown
 Check(!realPill.CanUseItem(recoveryPlayer)&&!guardPill.CanUseItem(recoveryPlayer),"Mobility fatigue blocks both other pills");
 var windEffect=new XianXia.Content.Buffs.WindStepBuff();recoveryPlayer.statDefense=20;recoveryPlayer.moveSpeed=1;int windIndex=4;windEffect.Update(recoveryPlayer,ref windIndex);
 Check(recoveryPlayer.statDefense==16&&Math.Abs(recoveryPlayer.moveSpeed-1.15f)<.001f,"Actual movement buff applies defense tradeoff");
+// Actual short burst item and generic stat tradeoffs.
+var burstPill=new XianXia.Content.Items.Materials.ThunderBurstPill{Mod=mod,Name="ThunderBurstPill"};burstPill.SetDefaults();burstPill.Item.type=954;burstPill.Item.stack=10;burstPill.Item.ModItem=burstPill;recoveryPlayer.inventory[0]=burstPill.Item;recoveryPlayer.buffTime=new int[22];
+Check(CultivationItemTransactions.IsProgressionItem(burstPill.Item)&&PillQualitySystem.IsPill(burstPill.Item),"Burst joins authority and stored-quality paths");
+recoveryPlayer.State.cultivationStage=CultivationStage.QiCondensation;Check(!burstPill.CanUseItem(recoveryPlayer),"Burst requires Foundation");recoveryPlayer.State.cultivationStage=CultivationStage.Foundation;
+foreach(var burstQuality in new[]{PillQuality.Coarse,PillQuality.Standard,PillQuality.Fine,PillQuality.Spirit}){
+ recoveryPlayer.buffTime=new int[22];recoveryPlayer.State.ProgressionItemCooldown=0;
+ burstPill.Item.GetGlobalItem<PillQualitySystem>().LoadData(burstPill.Item,new Terraria.ModLoader.IO.TagCompound{{"quality",(int)burstQuality},{"crafted",true}});
+ int stack=burstPill.Item.stack;Check(burstPill.CanUseItem(recoveryPlayer),"Burst eligible before dosing");CultivationItemTransactions.HandleRequest(recoveryPlayer,0,954);
+ Check(burstPill.Item.stack==stack-1&&recoveryPlayer.buffTime[5]==PillQualityRules.Scale(1200,burstQuality)&&recoveryPlayer.buffTime[2]==1800,"Burst duration graded, fatigue fixed, consumed once");
+ recoveryPlayer.State.ProgressionItemCooldown=0;CultivationItemTransactions.HandleRequest(recoveryPlayer,0,954);Check(burstPill.Item.stack==stack-1,"Cannot refresh active burst");
+ recoveryPlayer.buffTime[2]=0;Check(!guardPill.CanUseItem(recoveryPlayer)&&!windPill.CanUseItem(recoveryPlayer),"Both other stances reject active burst even without fatigue");
+}
+foreach(int otherBuff in new[]{3,4}){
+ recoveryPlayer.buffTime=new int[22];recoveryPlayer.buffTime[otherBuff]=100;Check(!burstPill.CanUseItem(recoveryPlayer),"Burst cannot combine with existing stance");
+}
+recoveryPlayer.buffTime=new int[22];recoveryPlayer.buffTime[2]=100;Check(!burstPill.CanUseItem(recoveryPlayer),"Shared fatigue rejects burst");
+recoveryPlayer.buffTime=new int[22];recoveryPlayer.State.ProgressionItemCooldown=0;CultivationItemTransactions.HandleRequest(recoveryPlayer,0,954);recoveryPlayer.State.spiritualEnergy=0;
+Check(!realPill.CanUseItem(recoveryPlayer),"Burst fatigue also rejects recovery");
+var burstEffect=new XianXia.Content.Buffs.ThunderBurstBuff();recoveryPlayer.statDefense=20;recoveryPlayer.damageModifier=new Terraria.ModLoader.StatModifier();recoveryPlayer.State.spiritualEnergyCostMultiplier=1.12f;int burstIndex=5;burstEffect.Update(recoveryPlayer,ref burstIndex);
+Check(recoveryPlayer.statDefense==14&&Math.Abs(recoveryPlayer.damageModifier.Bonus-.12f)<.001f,"Burst actual generic damage and defense tradeoff");
+Check(Math.Abs(recoveryPlayer.State.spiritualEnergyCostMultiplier-1.344f)<.001f,"Burst energy penalty composes with existing cost modifiers");
 Console.WriteLine($"Networking including actual recovery pill hooks: {assertions} assertions; buff/inventory engine boundaries mocked.");
 sealed class TestBossSummon : XianXia.Common.Items.CultivationBossSummonItem
 {
