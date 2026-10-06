@@ -63,7 +63,7 @@ CI运行只读新鲜度检查，生成结果变化时须显式更新这四份输
 
 ## 原生包内容与默认配置
 
-Native checks另运行PackageContents，使用官方TmodFile打开实际.tmod，核对内部名称、build.txt版本、归档哈希、当前描述及Common/Content/Localization的所有PNG/HJSON（接受官方转换后的rawimg）；拒绝隐藏/越界条目、Assets/Docs/Wiki/Tools/bin/obj/README和源码/工具扩展。它不是读取源码文件名后假定打包正确。默认配置在Gameplay编译产物回归中验证，当前累计933条。
+Native checks另运行PackageContents，使用官方TmodFile打开实际.tmod，核对内部名称、build.txt版本、归档哈希、当前描述及Common/Content/Localization的所有PNG/HJSON（接受官方转换后的rawimg）；拒绝隐藏/越界条目、Assets/Docs/Wiki/Tools/bin/obj/README和源码/工具扩展。它不是读取源码文件名后假定打包正确。默认配置在Gameplay编译产物回归中验证，当前累计937条。
 
 ```powershell
 dotnet run --project Tools/Tests/PackageContents/PackageContents.csproj -- <XianXia.tmod路径> <官方引擎目录> <仓库根目录>
@@ -113,3 +113,12 @@ Worms由22增至99条，包括头/前节替换×三模式、非法/小数/NaN/In
 WyrmSplit链接实际SpawnSplitMinions partial和BossTargeting，74项覆盖2/3固定配额、全表拥塞后第60tick恢复、部分创建失败只补缺额、0–18空槽边界、每条幼虫头+4体+1尾容量预检、哨兵/错误类型、长期拥塞只选择一次配额及无效战斗/客户端无RNG。已成功创建的配额不因击杀或到期重新补充，避免无限刷取。预检不是全局槽位预留，实际幼虫链仍用整链失败回滚/重试。
 
 Gameplay增加6项实际编译常量与无效战斗/第一阶段/客户端不初始化配额检查，累计933项。实际NPC创建和网络运输在该源码项目中模拟，原生构建与专服加载通过不证明真实拥塞战斗。
+
+
+## 共用敌方法阵的Boss来源撤场
+
+第108轮法阵OnSpawn从NPC父来源捕获槽位、类型、NPC对象与ModNPC实例。CanDamage/CanHitPlayer/OnHitPlayer即时要求来源存活、有效目标/有限状态；权威端另外检查对象与ModNPC实例，避免同槽位新Boss接管。失败锁定取消状态，剩余寿命压到15tick淡出并netUpdate；客户端收到取消后无法被后续未取消包恢复。原2字节年龄扩展为9字节（Int16年龄、Boolean取消、Int16来源槽、Int32来源类型），完整读取后赋值。
+
+Telegraphs671→793项，增加七类来源失效×三模式、权威槽位复用、取消包与取消锁定、9字节逐段截断原子性，仍保留全部预警/有效/淡出、墙体/命中Buff和绘制检查。Gameplay933→937项，实际官方NPC父来源/ModNPC替换和编译AI淡出同步验证。完整34步入口、原生构建/专服加载、官方本地化路径与打包检查通过。
+
+客户端同类型同槽位换实例仍依赖服务器取消包，尚无该弹体跨客户端实例编号；玩家来源天劫法阵保持原行为，其会话取消仍待补齐。未启动真实世界/联机；R04不因此完成。

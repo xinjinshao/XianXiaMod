@@ -43,7 +43,7 @@ def main() -> None:
 
     require_text(
         "Content/Projectiles/BossArrayFieldProjectile.cs",
-        "public class BossArrayFieldProjectile",
+        "public partial class BossArrayFieldProjectile",
         "SpiritualPressureDisorderBuff",
         "CanDamage()",
     )

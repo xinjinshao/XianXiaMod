@@ -564,13 +564,13 @@ foreach(int remaining in new[]{0,1,15,16,75,76,120,121}) {
  Check((bool)actualFieldType.GetMethod("CanDamage").Invoke(actualField,null)==(remaining>15&&remaining<=75),"Native compiled warning/active/fade boundary");
 }
 foreach(short remaining in new short[]{0,1,15,16,75,76,120}) {
- using var bytes=new MemoryStream();using(var writer=new BinaryWriter(bytes,System.Text.Encoding.UTF8,true))writer.Write(remaining);bytes.Position=0;
+ using var bytes=new MemoryStream();using(var writer=new BinaryWriter(bytes,System.Text.Encoding.UTF8,true)){writer.Write(remaining);writer.Write(false);writer.Write((short)-1);writer.Write(0);}bytes.Position=0;
  actualFieldType.GetMethod("ReceiveExtraAI").Invoke(actualField,new object[]{new BinaryReader(bytes)});
  Check((int)projectileType.GetField("timeLeft").GetValue(nativeField)==remaining,"Native field receives exact remaining phase age");
  using var sent=new MemoryStream();using(var writer=new BinaryWriter(sent,System.Text.Encoding.UTF8,true))actualFieldType.GetMethod("SendExtraAI").Invoke(actualField,new object[]{writer});
- Check(sent.ToArray().SequenceEqual(BitConverter.GetBytes(remaining)),"Native field writes bounded two-byte age");
+ Check(sent.ToArray().SequenceEqual(BitConverter.GetBytes(remaining).Concat(new byte[]{0,255,255,0,0,0,0})),"Native field writes bounded age and source state");
 }
-using(var bytes=new MemoryStream()){using(var writer=new BinaryWriter(bytes,System.Text.Encoding.UTF8,true))writer.Write((short)121);bytes.Position=0;actualFieldType.GetMethod("ReceiveExtraAI").Invoke(actualField,new object[]{new BinaryReader(bytes)});Check((int)projectileType.GetField("timeLeft").GetValue(nativeField)==0,"Native field invalid lifetime expires harmlessly");}
+using(var bytes=new MemoryStream()){using(var writer=new BinaryWriter(bytes,System.Text.Encoding.UTF8,true)){writer.Write((short)121);writer.Write(false);writer.Write((short)-1);writer.Write(0);}bytes.Position=0;actualFieldType.GetMethod("ReceiveExtraAI").Invoke(actualField,new object[]{new BinaryReader(bytes)});Check((int)projectileType.GetField("timeLeft").GetValue(nativeField)==0,"Native field invalid lifetime expires harmlessly");}
 Console.WriteLine($"Actual engine gameplay assertions including shared field telegraph: {assertions}.");
 
 
@@ -698,6 +698,15 @@ try {
   object replacement=Activator.CreateInstance(nativeWyrmType);nativeWyrmType.GetProperty("Entity",BindingFlags.Instance|BindingFlags.Public|BindingFlags.NonPublic).SetValue(replacement,parentNpc);nativeTargetNpcType.GetProperty("ModNPC").SetValue(parentNpc,replacement);
   object[] childContact={nativeTargetPlayers.GetValue(0),0};Check(!(bool)nativeWyrmChildType.GetMethod("CanHitPlayer").Invoke(child,childContact),"Compiled same-slot new wyrm instance denies old child contact");
   Check(!(bool)nativeWyrmChildType.GetMethod("PreAI").Invoke(child,null)&&!(bool)nativeTargetNpcType.GetField("active").GetValue(childNpc),"Compiled same-slot new wyrm clears old child");
+  nativeTargetMain.GetField("netMode").SetValue(null,0);
+  object bossSourceField=Activator.CreateInstance(actualFieldType),bossSourceProjectile=Activator.CreateInstance(projectileType);
+  actualFieldType.GetProperty("Entity",BindingFlags.Instance|BindingFlags.Public|BindingFlags.NonPublic).SetValue(bossSourceField,bossSourceProjectile);actualFieldType.GetMethod("SetDefaults").Invoke(bossSourceField,null);actualFieldType.GetMethod("OnSpawn").Invoke(bossSourceField,new[]{Activator.CreateInstance(nativeParentSourceType,new object[]{parentNpc,null})});projectileType.GetField("timeLeft").SetValue(bossSourceProjectile,50);
+  Check((bool)actualFieldType.GetMethod("CanDamage").Invoke(bossSourceField,null),"Official NPC parent field preserves valid damage phase");
+  object savedSourceMod=nativeTargetNpcType.GetProperty("ModNPC").GetValue(parentNpc),newSourceMod=Activator.CreateInstance(nativeWyrmType);nativeWyrmType.GetProperty("Entity",BindingFlags.Instance|BindingFlags.Public|BindingFlags.NonPublic).SetValue(newSourceMod,parentNpc);nativeTargetNpcType.GetProperty("ModNPC").SetValue(parentNpc,newSourceMod);
+  Check(!(bool)actualFieldType.GetMethod("CanDamage").Invoke(bossSourceField,null),"Compiled source field immediately blocks same-slot new ModNPC on authority");actualFieldType.GetMethod("AI").Invoke(bossSourceField,null);
+  Check((int)projectileType.GetField("timeLeft").GetValue(bossSourceProjectile)==15&&(bool)projectileType.GetField("netUpdate").GetValue(bossSourceProjectile),"Compiled source field enters synchronized harmless fade");
+  using(var sourcePacket=new MemoryStream()){using(var writer=new BinaryWriter(sourcePacket,System.Text.Encoding.UTF8,true))actualFieldType.GetMethod("SendExtraAI").Invoke(bossSourceField,new object[]{writer});Check(sourcePacket.Length==9,"Compiled field source packet nine bytes");}
+  nativeTargetNpcType.GetProperty("ModNPC").SetValue(parentNpc,savedSourceMod);
   var compiledLinkType=type.Assembly.GetType("XianXia.Common.NPCs.LinkedWormNPC",true);var compiledWormAI=type.Assembly.GetType("XianXia.Content.NPCs.Bosses.SegmentedWormAI",true);
   foreach(string family in new[]{"SpiritVeinWyrm","ThunderMarshJiao","ShatteredJadeWyrmMinion"}){
    nativeTargetMain.GetField("netMode").SetValue(null,0);

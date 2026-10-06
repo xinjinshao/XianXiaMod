@@ -7,7 +7,7 @@ using Terraria.ModLoader;
 
 namespace XianXia.Content.Projectiles;
 
-public class BossArrayFieldProjectile : ModProjectile
+public partial class BossArrayFieldProjectile : ModProjectile
 {
     public override string Texture => "XianXia/Content/Projectiles/ThunderTalismanArray";
 
@@ -31,6 +31,7 @@ public class BossArrayFieldProjectile : ModProjectile
     public override void AI()
     {
         Projectile.velocity = Vector2.Zero;
+        CancelInvalidBossSource();
         if (Main.netMode != NetmodeID.MultiplayerClient
             && (Projectile.timeLeft == Lifetime - WarningTicks || Projectile.timeLeft == FadeTicks)) Projectile.netUpdate = true;
         Projectile.rotation += 0.035f;
@@ -51,7 +52,7 @@ public class BossArrayFieldProjectile : ModProjectile
 
     public override bool? CanDamage()
     {
-        return Projectile.timeLeft > FadeTicks && Projectile.timeLeft <= Lifetime - WarningTicks;
+        return SourceAllowsDamage() && Projectile.timeLeft > FadeTicks && Projectile.timeLeft <= Lifetime - WarningTicks;
     }
 
     public override bool CanHitPlayer(Player target) => CanDamage() == true
@@ -62,12 +63,21 @@ public class BossArrayFieldProjectile : ModProjectile
     {
         int remaining = Projectile.timeLeft;
         writer.Write((short)(remaining >= 0 && remaining <= Lifetime ? remaining : 0));
+        writer.Write(sourceCancelled);
+        writer.Write(sourceSlot);
+        writer.Write(sourceType);
     }
 
     public override void ReceiveExtraAI(BinaryReader reader)
     {
         int remaining = reader.ReadInt16();
+        bool cancelled = reader.ReadBoolean();
+        short slot = reader.ReadInt16();
+        int type = reader.ReadInt32();
         Projectile.timeLeft = remaining >= 0 && remaining <= Lifetime ? remaining : 0;
+        sourceCancelled |= cancelled;
+        sourceSlot = slot;
+        sourceType = type;
     }
 
     public override void OnHitPlayer(Player target, Player.HurtInfo info)
