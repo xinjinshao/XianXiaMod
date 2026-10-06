@@ -135,15 +135,15 @@ Mods: {
 			}
 			SummonGardenBrokenKey: {
 				DisplayName: "Garden Broken Key"
-				Tooltip: "Summons Garden Warden. Requires at least QiAwakening."
+				Tooltip: "Summons Garden Warden. Requires at least Qi Awakening."
 			}
 			SummonHeavenTabletRubbing: {
 				DisplayName: "Heaven Tablet Rubbing"
-				Tooltip: "Summons Heaven Tablet Guardian. Requires at least NascentSoul."
+				Tooltip: "Summons Heaven Tablet Guardian. Requires at least Nascent Soul."
 			}
 			SummonHeavenTabletRubbingBrokenHeavenInspector: {
 				DisplayName: "Heaven Tablet Rubbing"
-				Tooltip: "Summons Broken Heaven Inspector. Requires at least NascentSoul."
+				Tooltip: "Summons Broken Heaven Inspector. Requires at least Nascent Soul."
 			}
 			SummonMoonboneRitualTalisman: {
 				DisplayName: "Moonbone Ritual Talisman"
@@ -155,15 +155,15 @@ Mods: {
 			}
 			SummonOldFurnaceEmber: {
 				DisplayName: "Old Furnace Ember"
-				Tooltip: "Summons Black Furnace Iron Golem. Requires at least QiAwakening."
+				Tooltip: "Summons Black Furnace Iron Golem. Requires at least Qi Awakening."
 			}
 			SummonSectTrialToken: {
 				DisplayName: "Sect Trial Token"
-				Tooltip: "Summons Formless Sword Soul. Requires at least GoldenCore."
+				Tooltip: "Summons Formless Sword Soul. Requires at least Golden Core."
 			}
 			SummonSectTrialTokenGreenwoodMedicineKingEcho: {
 				DisplayName: "Sect Trial Token"
-				Tooltip: "Summons Greenwood Medicine King Echo. Requires at least GoldenCore."
+				Tooltip: "Summons Greenwood Medicine King Echo. Requires at least Golden Core."
 			}
 			SummonStarAbyssMembrane: {
 				DisplayName: "Star Abyss Membrane"
@@ -171,7 +171,7 @@ Mods: {
 			}
 			SummonThunderCallingJade: {
 				DisplayName: "Thunder Calling Jade"
-				Tooltip: "Summons Tribulation Cloud Avatar. Requires at least QiCondensation."
+				Tooltip: "Summons Tribulation Cloud Avatar. Requires at least Qi Condensation."
 			}
 			SummonThunderCallingJadeThunderMarshJiao: {
 				DisplayName: "Thunder Calling Jade"

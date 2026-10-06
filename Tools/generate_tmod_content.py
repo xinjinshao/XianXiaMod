@@ -115,7 +115,7 @@ ZH_NAMES = {
     "abyssal_star_womb": "星渊胎主",
     "formless_sword_soul": "无相剑魂",
     "greenwood_medicine_king_echo": "青木药王残影",
-    "heaven_tablet_guardian": "天碑守尽",
+    "heaven_tablet_guardian": "天碑守御",
     "broken_heaven_inspector": "残天监察使",
     "moonbone_immortal": "月骨仙君",
     "old_heaven_dao_core": "旧天道核心",
@@ -2363,7 +2363,19 @@ def hjson_block(entries: dict[str, dict[str, str]], indent: str = "\t\t\t") -> s
     return "\n".join(lines)
 
 
+def localized_realm_names(culture: str) -> dict[str, str]:
+    path = ROOT / "Localization" / "cultivation-status" / f"{culture}.hjson"
+    names = json.loads(path.read_text(encoding="utf-8"))["Mods"]["XianXia"]["CultivationStatus"]["Realms"]
+    required = set(BOSS_STAGE_REQUIREMENTS.values())
+    if not isinstance(names, dict) or any(not isinstance(names.get(stage), str) or not names[stage].strip() for stage in required):
+        raise ValueError(f"Missing readable summon realm names in {path}")
+    return names
+
+
 def generate_localization() -> None:
+    # Read both authoritative language tables before writing any owned output.
+    realm_zh = localized_realm_names("zh-Hans")
+    realm_en = localized_realm_names("en-US")
     item_zh: dict[str, dict[str, str]] = {}
     item_en: dict[str, dict[str, str]] = {}
     for asset_id in DISPLAY:
@@ -2387,11 +2399,11 @@ def generate_localization() -> None:
         required_stage = BOSS_STAGE_REQUIREMENTS[boss_id]
         item_zh[class_name] = {
             "DisplayName": f"{ZH_NAMES.get(summon, class_name)}",
-            "Tooltip": f"召唤 {ZH_NAMES.get(boss_id, pascal(boss_id))}。需要至少 {required_stage} 境界。",
+            "Tooltip": f"召唤 {ZH_NAMES.get(boss_id, pascal(boss_id))}。需要至少{realm_zh[required_stage]}境界。",
         }
         item_en[class_name] = {
             "DisplayName": f"{EN_NAMES.get(summon, class_name)}",
-            "Tooltip": f"Summons {EN_NAMES.get(boss_id, pascal(boss_id))}. Requires at least {required_stage}.",
+            "Tooltip": f"Summons {EN_NAMES.get(boss_id, pascal(boss_id))}. Requires at least {realm_en[required_stage]}.",
         }
 
     npc_zh = {pascal(asset_id): {"DisplayName": ZH_NAMES.get(asset_id, pascal(asset_id))} for asset_id in ENEMY_DATA | BOSS_DATA}

@@ -23,6 +23,12 @@ class GeneratorOwnershipTests(unittest.TestCase):
         self.temp = tempfile.TemporaryDirectory()
         self.root = Path(self.temp.name) / "workspace"
         self.root.mkdir()
+        # Manual culture input is read-only; ownership remains exactly four outputs.
+        for culture in ("zh-Hans", "en-US"):
+            relative = Path("Localization/cultivation-status") / f"{culture}.hjson"
+            target = self.root / relative
+            target.parent.mkdir(parents=True, exist_ok=True)
+            target.write_bytes((generator.ROOT / relative).read_bytes())
         self.root_patch = patch.object(generator, "ROOT", self.root)
         self.root_patch.start()
         self.manifest_patch = patch.object(generator, "manifest_rows", return_value=[

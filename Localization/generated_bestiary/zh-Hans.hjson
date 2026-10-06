@@ -32,7 +32,8 @@ Mods: {
 				Text: "天碑守卫徘徊在坠天宫阙，会掉落BrokenDecreeItem。"
 			}
 			HeavenTabletGuardian: {
-				Text: "天碑守尽是旧宗门进度中的主要试炼，击败后会提升宗门声望，并掉落天道碎片。"
+				Text: "天碑守御是旧宗门进度中的主要试炼，击败后会提升宗门声望，并掉落天道碎片。"
+
 			}
 			HerbGardenVineSpirit: {
 				Text: "药园藤灵徘徊在青木药园，会掉落青木根。"
