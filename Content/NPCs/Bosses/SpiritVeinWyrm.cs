@@ -52,22 +52,24 @@ public class SpiritVeinWyrm : ModNPC
         Music = MusicID.Boss1;
     }
 
+    public override bool CanHitPlayer(Player target, ref int cooldownSlot) =>
+        global::XianXia.Common.Systems.BossTargeting.HasLivingTarget(NPC) && target.active && !target.dead;
+
     public override void AI()
     {
-        EnsureSegments();
-
-        Player target = Main.player[NPC.target];
-        if (!target.active || target.dead)
+        if (!BossTargeting.TryGetLivingTarget(NPC, out Player target))
         {
-            NPC.TargetClosest(false);
-            target = Main.player[NPC.target];
-            if (!target.active || target.dead)
-            {
-                NPC.velocity.Y -= 0.15f;
+            NPC.velocity = new Vector2(0f, -2f);
+            if (Main.netMode != NetmodeID.MultiplayerClient) {
+                bool changed = NPC.ai[0] != 0f || NPC.ai[1] != 0f || NPC.ai[2] != 0f || NPC.timeLeft > 30;
+                NPC.ai[0] = NPC.ai[1] = NPC.ai[2] = 0f;
+                if (changed) NPC.netUpdate = true;
                 NPC.EncourageDespawn(30);
-                return;
             }
+            return;
         }
+
+        EnsureSegments();
 
         bool phaseTwo = NPC.life < NPC.lifeMax / 2;
         bool finalPhase = NPC.life < NPC.lifeMax / 4;
@@ -105,7 +107,7 @@ public class SpiritVeinWyrm : ModNPC
         NPC.rotation = NPC.velocity.ToRotation();
 
         FireSpiritBolts(target, phaseTwo, finalPhase);
-        Lighting.AddLight(NPC.Center, 0.05f, 0.28f, 0.2f);
+        if (!Main.dedServ) Lighting.AddLight(NPC.Center, 0.05f, 0.28f, 0.2f);
     }
 
     public override void OnKill()
@@ -143,7 +145,7 @@ public class SpiritVeinWyrm : ModNPC
         if (phaseTwo && NPC.localAI[0] < 1f)
         {
             NPC.localAI[0] = 1f;
-            if (Main.netMode != NetmodeID.Server)
+            if (!Main.dedServ)
             {
                 CombatText.NewText(NPC.Hitbox, Color.Cyan, Language.GetTextValue("Mods.XianXia.Progression.BossPhase.SpiritVeinTremor"));
             }
@@ -152,7 +154,7 @@ public class SpiritVeinWyrm : ModNPC
         if (finalPhase && NPC.localAI[0] < 2f)
         {
             NPC.localAI[0] = 2f;
-            if (Main.netMode != NetmodeID.Server)
+            if (!Main.dedServ)
             {
                 CombatText.NewText(NPC.Hitbox, Color.OrangeRed, Language.GetTextValue("Mods.XianXia.Progression.BossPhase.ShatteredJadeRampage"));
             }

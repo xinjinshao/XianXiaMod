@@ -50,21 +50,25 @@ public class ThunderMarshJiao : ModNPC
         Music = MusicID.Boss2;
     }
 
+    public override bool CanHitPlayer(Player target, ref int cooldownSlot) =>
+        global::XianXia.Common.Systems.BossTargeting.HasLivingTarget(NPC) && target.active && !target.dead;
+
     public override void AI()
     {
-        EnsureSegments();
-
-        Player target = Main.player[NPC.target];
-        if (!target.active || target.dead)
+        if (!BossTargeting.TryGetLivingTarget(NPC, out Player target))
         {
-            NPC.TargetClosest(false);
-            target = Main.player[NPC.target];
-            if (!target.active || target.dead)
-            {
+            NPC.velocity = new Vector2(0f, -2f);
+            if (Main.netMode != NetmodeID.MultiplayerClient) {
+                bool changed = NPC.ai[0] != 0f || NPC.ai[1] != 0f || NPC.ai[2] != 0f || NPC.localAI[1] != 0f || NPC.timeLeft > 30;
+                NPC.ai[0] = NPC.ai[1] = NPC.ai[2] = 0f;
+                NPC.localAI[1] = 0f;
+                if (changed) NPC.netUpdate = true;
                 NPC.EncourageDespawn(30);
-                return;
             }
+            return;
         }
+
+        EnsureSegments();
 
         bool phaseTwo = NPC.life < (int)(NPC.lifeMax * 0.7f);
         bool brokenHorn = NPC.life < (int)(NPC.lifeMax * 0.35f);
@@ -101,7 +105,7 @@ public class ThunderMarshJiao : ModNPC
         NPC.rotation = NPC.velocity.ToRotation();
 
         FireLightningPatterns(target, phaseTwo, brokenHorn);
-        Lighting.AddLight(NPC.Center, 0.15f, 0.12f, 0.22f);
+        if (!Main.dedServ) Lighting.AddLight(NPC.Center, 0.15f, 0.12f, 0.22f);
     }
 
     public override void OnKill() => DownedBossSystem.MarkDowned("thunder_marsh_jiao");
@@ -137,7 +141,7 @@ public class ThunderMarshJiao : ModNPC
         if (phaseTwo && NPC.localAI[0] < 1f)
         {
             NPC.localAI[0] = 1f;
-            if (Main.netMode != NetmodeID.Server)
+            if (!Main.dedServ)
             {
                 CombatText.NewText(NPC.Hitbox, Color.Cyan, Language.GetTextValue("Mods.XianXia.Progression.BossPhase.SpiritPressureSurge"));
             }
@@ -146,7 +150,7 @@ public class ThunderMarshJiao : ModNPC
         if (brokenHorn && NPC.localAI[0] < 2f)
         {
             NPC.localAI[0] = 2f;
-            if (Main.netMode != NetmodeID.Server)
+            if (!Main.dedServ)
             {
                 CombatText.NewText(NPC.Hitbox, Color.OrangeRed, Language.GetTextValue("Mods.XianXia.Progression.BossPhase.DaoScarUnstable"));
             }
@@ -268,7 +272,12 @@ public class ThunderMarshJiaoTail : ModNPC
         }
 
         NPC head = Main.npc[headIndex];
-        bool brokenHorn = head.active && head.life < (int)(head.lifeMax * 0.35f);
+        if (!BossTargeting.HasLivingTarget(head)) {
+            NPC.damage = 0;
+            NPC.localAI[0] = 0f;
+            return;
+        }
+        bool brokenHorn = head.life < (int)(head.lifeMax * 0.35f);
         NPC.localAI[0]++;
         if (!brokenHorn || Main.netMode == NetmodeID.MultiplayerClient || NPC.localAI[0] < 120f)
         {

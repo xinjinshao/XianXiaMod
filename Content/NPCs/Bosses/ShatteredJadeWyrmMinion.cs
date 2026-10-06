@@ -38,6 +38,9 @@ public class ShatteredJadeWyrmMinion : ModNPC
 
     public override bool CheckActive() => false;
 
+    public override bool CanHitPlayer(Player target, ref int cooldownSlot) =>
+        global::XianXia.Common.Systems.BossTargeting.HasLivingTarget(NPC) && target.active && !target.dead;
+
     public override void AI()
     {
         int parent = (int)NPC.ai[0];
@@ -48,20 +51,13 @@ public class ShatteredJadeWyrmMinion : ModNPC
             if (Main.netMode != NetmodeID.MultiplayerClient) SegmentedWormAI.Deactivate(NPC);
             return;
         }
-        EnsureSegments();
-
-        Player target = Main.player[NPC.target];
-        if (!target.active || target.dead)
+        if (!global::XianXia.Common.Systems.BossTargeting.TryGetLivingTarget(NPC, out Player target))
         {
-            NPC.TargetClosest(false);
-            target = Main.player[NPC.target];
-        }
-
-        if (!target.active || target.dead)
-        {
+            NPC.damage = 0;
             if (Main.netMode != NetmodeID.MultiplayerClient) SegmentedWormAI.Deactivate(NPC);
             return;
         }
+        EnsureSegments();
 
         NPC.localAI[0]++;
         NPC.ai[3]++;

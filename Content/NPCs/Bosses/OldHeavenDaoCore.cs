@@ -83,30 +83,23 @@ public class OldHeavenDaoCore : ModNPC
         global::XianXia.Common.Animation.NpcFrameAnimator.Animate(NPC, frameHeight, Main.npcFrameCount[Type], 8);
     }
 
+    public override bool CanHitPlayer(Player target, ref int cooldownSlot) =>
+        global::XianXia.Common.Systems.BossTargeting.HasLivingTarget(NPC) && target.active && !target.dead;
+
     public override void AI()
 
     {
 
-        Player target = Main.player[NPC.target];
-
-        if (!target.active || target.dead)
-
+        if (!BossTargeting.TryGetLivingTarget(NPC, out Player target))
         {
-
-            NPC.TargetClosest(false);
-
-            target = Main.player[NPC.target];
-
-            if (!target.active || target.dead)
-
-            {
-
+            NPC.velocity = new Vector2(0f, -2f);
+            if (Main.netMode != NetmodeID.MultiplayerClient) {
+                bool changed = NPC.ai[0] != 0f || NPC.ai[1] != 0f || NPC.ai[2] != 0f || NPC.timeLeft > 30;
+                NPC.ai[0] = NPC.ai[1] = NPC.ai[2] = 0f;
+                if (changed) NPC.netUpdate = true;
                 NPC.EncourageDespawn(30);
-
-                return;
-
             }
-
+            return;
         }
 
         Vector2 desired = target.Center - NPC.Center;
@@ -125,7 +118,7 @@ public class OldHeavenDaoCore : ModNPC
 
             NPC.localAI[0] = 1f;
 
-            if (Main.netMode != NetmodeID.Server)
+            if (!Main.dedServ)
 
                 CombatText.NewText(NPC.Hitbox, Color.Cyan, Language.GetTextValue("Mods.XianXia.Progression.BossPhase.SpiritPressureSurge"));
 
@@ -137,7 +130,7 @@ public class OldHeavenDaoCore : ModNPC
 
             NPC.localAI[0] = 2f;
 
-            if (Main.netMode != NetmodeID.Server)
+            if (!Main.dedServ)
 
                 CombatText.NewText(NPC.Hitbox, Color.OrangeRed, Language.GetTextValue("Mods.XianXia.Progression.BossPhase.DaoScarUnstable"));
 
@@ -149,7 +142,7 @@ public class OldHeavenDaoCore : ModNPC
 
         NPC.rotation = NPC.velocity.ToRotation();
 
-        Lighting.AddLight(NPC.Center, 0.15f, 0.12f, 0.22f);
+        if (!Main.dedServ) Lighting.AddLight(NPC.Center, 0.15f, 0.12f, 0.22f);
 
 
 

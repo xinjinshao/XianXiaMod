@@ -26,7 +26,7 @@ internal static class SegmentedWormAI
         npc.realLife = headIndex;
         npc.life = head.life;
         npc.lifeMax = head.lifeMax;
-        npc.damage = head.damage;
+        npc.damage = global::XianXia.Common.Systems.BossTargeting.HasLivingTarget(head) ? head.damage : 0;
         npc.defense = head.defense;
         npc.timeLeft = 300;
 

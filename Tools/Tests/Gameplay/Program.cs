@@ -572,3 +572,61 @@ foreach(short remaining in new short[]{0,1,15,16,75,76,120}) {
 }
 using(var bytes=new MemoryStream()){using(var writer=new BinaryWriter(bytes,System.Text.Encoding.UTF8,true))writer.Write((short)121);bytes.Position=0;actualFieldType.GetMethod("ReceiveExtraAI").Invoke(actualField,new object[]{new BinaryReader(bytes)});Check((int)projectileType.GetField("timeLeft").GetValue(nativeField)==0,"Native field invalid lifetime expires harmlessly");}
 Console.WriteLine($"Actual engine gameplay assertions including shared field telegraph: {assertions}.");
+
+
+var nativeTargetMain=projectileType.Assembly.GetType("Terraria.Main",true);
+var nativeTargetNpcType=projectileType.Assembly.GetType("Terraria.NPC",true);
+var nativeTargetPlayerType=projectileType.Assembly.GetType("Terraria.Player",true);
+var nativeTargetVectorType=nativeTargetNpcType.GetField("position").FieldType;
+// The engine entry point normally initializes this before Terraria.Main's static constructor.
+// This test process does not launch the game or touch user saves.
+var nativeTargetProgram=projectileType.Assembly.GetType("Terraria.Program",true);
+var nativeTargetSaveField=nativeTargetProgram.GetField("SavePath",BindingFlags.Static|BindingFlags.Public|BindingFlags.NonPublic);
+if(nativeTargetSaveField==null)throw new Exception("Official engine save-path field not found");
+nativeTargetSaveField.SetValue(null,Path.Combine(Path.GetTempPath(),"XianXia-native-hook-tests"));
+var nativeTargetOldPlayers=nativeTargetMain.GetField("player").GetValue(null);
+object nativeTargetOldMode=nativeTargetMain.GetField("netMode").GetValue(null),nativeTargetOldDedicated=nativeTargetMain.GetField("dedServ").GetValue(null);
+int nativeTargetMax=(int)nativeTargetMain.GetField("maxPlayers").GetValue(null);
+var nativeTargetPlayers=Array.CreateInstance(nativeTargetPlayerType,nativeTargetMax+1);
+for(int index=0;index<nativeTargetPlayers.Length;index++)nativeTargetPlayers.SetValue(Activator.CreateInstance(nativeTargetPlayerType),index);
+nativeTargetMain.GetField("player").SetValue(null,nativeTargetPlayers);
+nativeTargetMain.GetField("dedServ").SetValue(null,true);
+try {
+ foreach(string nativeTargetName in new[]{"AbyssalStarWomb","BlackFurnaceIronGolem","BrokenHeavenInspector","FormlessSwordSoul","GreenwoodMedicineKingEcho","HeavenTabletGuardian","MoonboneImmortal","OldHeavenDaoCore","SpiritVeinWyrm","ThunderMarshJiao","TribulationCloudAvatar"}) {
+  var nativeTargetBossType=type.Assembly.GetType("XianXia.Content.NPCs.Bosses."+nativeTargetName,true);
+  foreach(int nativeTargetMode in new[]{0,1,2})foreach(int nativeTargetIndex in new[]{-1,nativeTargetMax,int.MaxValue}) {
+   object nativeTargetBoss=Activator.CreateInstance(nativeTargetBossType),nativeTargetNpc=Activator.CreateInstance(nativeTargetNpcType);
+   nativeTargetBossType.GetProperty("Entity",BindingFlags.Instance|BindingFlags.Public|BindingFlags.NonPublic).SetValue(nativeTargetBoss,nativeTargetNpc);
+   nativeTargetNpcType.GetField("active").SetValue(nativeTargetNpc,true);nativeTargetNpcType.GetField("life").SetValue(nativeTargetNpc,100);
+   nativeTargetNpcType.GetField("target").SetValue(nativeTargetNpc,nativeTargetIndex);nativeTargetNpcType.GetField("timeLeft").SetValue(nativeTargetNpc,300);
+   var nativeTargetAi=(float[])nativeTargetNpcType.GetField("ai").GetValue(nativeTargetNpc);nativeTargetAi[0]=17;nativeTargetAi[1]=18;nativeTargetAi[2]=19;
+   nativeTargetMain.GetField("netMode").SetValue(null,nativeTargetMode);
+   nativeTargetBossType.GetMethod("AI").Invoke(nativeTargetBoss,null);
+   Check(nativeTargetNpcType.GetField("velocity").GetValue(nativeTargetNpc).Equals(Activator.CreateInstance(nativeTargetVectorType,new object[]{0f,-2f})),"Actual "+nativeTargetName+" exits without unsafe target read or spawning");
+   Check(nativeTargetMode==1?nativeTargetAi.Take(3).SequenceEqual(new float[]{17,18,19}):nativeTargetAi.Take(3).All(value=>value==0),"Actual "+nativeTargetName+" resets attacks only on authority");
+   Check((int)nativeTargetNpcType.GetField("timeLeft").GetValue(nativeTargetNpc)==(nativeTargetMode==1?300:30),"Actual "+nativeTargetName+" requests authority-only despawn");
+   object[] nativeTargetContactArgs={nativeTargetPlayers.GetValue(0),0};
+   Check(!(bool)nativeTargetBossType.GetMethod("CanHitPlayer").Invoke(nativeTargetBoss,nativeTargetContactArgs),"Actual "+nativeTargetName+" cannot contact-hit without living target");
+   if(nativeTargetMode!=1) {
+    nativeTargetNpcType.GetField("netUpdate").SetValue(nativeTargetNpc,false);
+    nativeTargetBossType.GetMethod("AI").Invoke(nativeTargetBoss,null);
+    Check(!(bool)nativeTargetNpcType.GetField("netUpdate").GetValue(nativeTargetNpc),"Actual "+nativeTargetName+" does not repeatedly dirty unchanged departure");
+   }
+  }
+  object nativeTargetRecoveredBoss=Activator.CreateInstance(nativeTargetBossType),nativeTargetRecoveredNpc=Activator.CreateInstance(nativeTargetNpcType);
+  nativeTargetBossType.GetProperty("Entity",BindingFlags.Instance|BindingFlags.Public|BindingFlags.NonPublic).SetValue(nativeTargetRecoveredBoss,nativeTargetRecoveredNpc);
+  nativeTargetNpcType.GetField("active").SetValue(nativeTargetRecoveredNpc,true);nativeTargetNpcType.GetField("life").SetValue(nativeTargetRecoveredNpc,100);nativeTargetNpcType.GetField("lifeMax").SetValue(nativeTargetRecoveredNpc,100);
+  nativeTargetNpcType.GetField("target").SetValue(nativeTargetRecoveredNpc,-1);((float[])nativeTargetNpcType.GetField("localAI").GetValue(nativeTargetRecoveredNpc))[3]=1;
+  nativeTargetPlayerType.GetField("active").SetValue(nativeTargetPlayers.GetValue(0),true);nativeTargetMain.GetField("netMode").SetValue(null,2);
+  nativeTargetBossType.GetMethod("AI").Invoke(nativeTargetRecoveredBoss,null);
+  Check((int)nativeTargetNpcType.GetField("target").GetValue(nativeTargetRecoveredNpc)==0,"Actual "+nativeTargetName+" recovers to live player on authority");
+  Check((float[])nativeTargetNpcType.GetField("ai").GetValue(nativeTargetRecoveredNpc) is var recoveredAi&&recoveredAi[0]==1,"Actual "+nativeTargetName+" runs first movement tick with valid target");
+  object[] nativeTargetRecoveredContact={nativeTargetPlayers.GetValue(0),0};Check((bool)nativeTargetBossType.GetMethod("CanHitPlayer").Invoke(nativeTargetRecoveredBoss,nativeTargetRecoveredContact),"Actual "+nativeTargetName+" preserves living-target contact");
+  nativeTargetPlayerType.GetField("active").SetValue(nativeTargetPlayers.GetValue(0),false);
+ }
+} finally {
+ nativeTargetMain.GetField("player").SetValue(null,nativeTargetOldPlayers);
+ nativeTargetMain.GetField("netMode").SetValue(null,nativeTargetOldMode);
+ nativeTargetMain.GetField("dedServ").SetValue(null,nativeTargetOldDedicated);
+}
+Console.WriteLine($"Actual engine gameplay assertions including eleven boss target hooks: {assertions}.");
