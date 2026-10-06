@@ -1,3 +1,4 @@
+using System;
 using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.GameContent.UI.Elements;
@@ -27,10 +28,19 @@ public class ArtifactSkillUIState : UIState
     }
     public override void Update(GameTime gameTime)
     {
+        if (Main.gameMenu || Main.dedServ || !Main.LocalPlayer.active || Main.LocalPlayer.dead) return;
+        var config = Terraria.ModLoader.ModContent.GetInstance<XianXiaClientConfig>();
+        float scale = Math.Max(0.01f, Main.UIScale);
+        float x = MathHelper.Clamp(config.SkillPanelX, 0f, Math.Max(0f, Main.screenWidth / scale - 300f));
+        float y = MathHelper.Clamp(config.SkillPanelY, 0f, Math.Max(0f, Main.screenHeight / scale - 84f));
+        if (panel.Left.Pixels != x || panel.Top.Pixels != y)
+        {
+            panel.Left.Set(x, 0); panel.Top.Set(y, 0); panel.Recalculate();
+        }
         base.Update(gameTime);
         var state = Main.LocalPlayer.GetModPlayer<XianXiaPlayer>();
         status.SetText(state.wardGuardTimer > 0 ? Text("WardStatus",(state.activeSkillCooldown+59)/60,(state.wardGuardTimer+59)/60)
             : state.activeSkillCooldown > 0 ? Text("Cooldown", (state.activeSkillCooldown + 59)/60) : Text("Ready"));
-        if (panel.ContainsPoint(Main.MouseScreen)) Main.LocalPlayer.mouseInterface = true;
+        if (panel.ContainsPoint(Main.MouseScreen / scale)) Main.LocalPlayer.mouseInterface = true;
     }
 }

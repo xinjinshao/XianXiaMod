@@ -41,7 +41,7 @@ public class SpiritualEnergyUISystem : ModSystem
     public override void UpdateUI(GameTime gameTime)
     {
         userInterface?.Update(gameTime);
-        if (!Main.gameMenu && Main.LocalPlayer.GetModPlayer<Common.Players.XianXiaPlayer>().discoveredSpiritualEnergy) skillInterface?.Update(gameTime);
+        if (!Main.gameMenu && Main.LocalPlayer.active && !Main.LocalPlayer.dead && Main.LocalPlayer.GetModPlayer<Common.Players.XianXiaPlayer>().discoveredSpiritualEnergy) skillInterface?.Update(gameTime);
     }
 
     public override void ModifyInterfaceLayers(List<GameInterfaceLayer> layers)
@@ -57,7 +57,7 @@ public class SpiritualEnergyUISystem : ModSystem
             delegate
             {
                 userInterface?.Draw(Main.spriteBatch, new GameTime());
-                if (!Main.gameMenu && Main.LocalPlayer.GetModPlayer<Common.Players.XianXiaPlayer>().discoveredSpiritualEnergy) skillInterface?.Draw(Main.spriteBatch, new GameTime());
+                if (!Main.gameMenu && Main.LocalPlayer.active && !Main.LocalPlayer.dead && Main.LocalPlayer.GetModPlayer<Common.Players.XianXiaPlayer>().discoveredSpiritualEnergy) skillInterface?.Draw(Main.spriteBatch, new GameTime());
                 return true;
             },
             InterfaceScaleType.UI)

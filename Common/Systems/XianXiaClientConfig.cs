@@ -10,4 +10,8 @@ public class XianXiaClientConfig : ModConfig
     public float EnergyBarX { get; set; } = 28f;
     [DefaultValue(84f), Range(0f, 4000f), Increment(1f)]
     public float EnergyBarY { get; set; } = 84f;
+    [DefaultValue(28f), Range(0f, 4000f), Increment(1f)]
+    public float SkillPanelX { get; set; } = 28f;
+    [DefaultValue(140f), Range(0f, 4000f), Increment(1f)]
+    public float SkillPanelY { get; set; } = 140f;
 }

@@ -11,6 +11,14 @@
           "EnergyBarY": {
             "Label": "Energy bar vertical position",
             "Tooltip": "UI pixels, default 84. Shift-drag moves it for this session; leaving the world restores this setting."
+          },
+          "SkillPanelX": {
+            "Label": "Skill panel horizontal position",
+            "Tooltip": "UI pixels, default 28. Clamped to the current scaled screen. Apply client settings to save."
+          },
+          "SkillPanelY": {
+            "Label": "Skill panel vertical position",
+            "Tooltip": "UI pixels, default 140. Clamped to the current scaled screen. Apply client settings to save."
           }
         }
       }
