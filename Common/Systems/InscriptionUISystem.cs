@@ -13,7 +13,11 @@ public class InscriptionUISystem : ModSystem
     private InscriptionUIState state;
     public void Open(int toolSlot)
     {
-        if (Main.dedServ || userInterface == null || Main.gameMenu) return;
+        if (Main.dedServ || userInterface == null || Main.gameMenu || !Main.LocalPlayer.active
+            || Main.LocalPlayer.dead || Main.LocalPlayer.noItems || Main.LocalPlayer.CCed
+            || toolSlot < 0 || toolSlot >= System.Math.Min(58, Main.LocalPlayer.inventory.Length)
+            || toolSlot != Main.LocalPlayer.selectedItem
+            || Main.LocalPlayer.inventory[toolSlot].ModItem is not global::XianXia.Common.Items.InscriptionToolItem) return;
         state.SelectTool(toolSlot);
         userInterface.SetState(state);
         Main.playerInventory = true;

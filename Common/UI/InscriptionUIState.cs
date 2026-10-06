@@ -26,6 +26,7 @@ public class InscriptionUIState : UIState
     private bool previousAwakened;
     private byte previousDaoRoute, previousWorldRoute;
     private int refreshTimer;
+    private bool targetChanged;
     private string targetName;
     private readonly List<int> eligibleSlots = new();
     private string Text(string key, params object[] args) => Language.GetTextValue("Mods.XianXia.Inscriptions." + key, args);
@@ -43,6 +44,7 @@ public class InscriptionUIState : UIState
         pageLabel = new UIText(""); pageLabel.Left.Set(164, 0); pageLabel.Top.Set(374, 0); panel.Append(pageLabel);
         Button(panel, Text("Confirm"), 0, 405, 330, () => {
             if (targetSlot < 0) return;
+            if (!TargetStillMatches(Main.LocalPlayer)) { targetSlot = -1; targetChanged = true; Refresh(); return; }
             if (Main.LocalPlayer.inventory[toolSlot].ModItem is InscriptionToolItem tool && tool.TransformsArtifact)
                 DaoArtifactTransactions.Request(Main.LocalPlayer,toolSlot,toolType,targetSlot,targetType,targetPrefix,previousKind,previousLevel,previousAwakened,previousDaoRoute,previousWorldRoute);
             else InscriptionTransactions.Request(Main.LocalPlayer, toolSlot, toolType, targetSlot, targetType, targetPrefix, previousKind, previousLevel, previousAwakened);
@@ -73,7 +75,7 @@ public class InscriptionUIState : UIState
     public void SelectTool(int slot)
     {
         toolSlot = slot; toolType = Main.LocalPlayer.inventory[slot].type;
-        targetSlot = -1; page = 0; refreshTimer = 0; Refresh();
+        targetSlot = -1; targetChanged = false; page = 0; refreshTimer = 0; Refresh();
     }
     private void Refresh()
     {
@@ -91,6 +93,7 @@ public class InscriptionUIState : UIState
             : Language.GetTextValue("Mods.XianXia.Refinement.AwakeningSelection", targetName)) + "\n" + cost);
         if (tool.TransformsArtifact) summary.SetText(Language.GetTextValue("Mods.XianXia.DaoArtifacts.Selection",targetSlot < 0 ? Text("ChooseTarget") : targetName,
             Language.GetTextValue(EndgameRouteTransactions.NameKey(DownedBossSystem.ChosenRoute))));
+        if (targetChanged) summary.SetText(Text("TargetChanged"));
         eligibleSlots.Clear();
         for (int slot = 0; slot < Math.Min(58, player.inventory.Length); slot++)
             if (slot != toolSlot && (tool.RefinesArtifact || tool.AwakensArtifact || tool.TransformsArtifact ? RefinedArtifact.IsSample(player.inventory[slot]) : InscribedEquipment.IsEligible(player.inventory[slot]))) eligibleSlots.Add(slot);
@@ -115,22 +118,37 @@ public class InscriptionUIState : UIState
                 Item chosen = Main.LocalPlayer.inventory[slot];
                 if (!InscribedEquipment.IsEligible(chosen) || chosen.type != shownType || chosen.prefix != shownPrefix
                     || (byte)InscribedEquipment.GetKind(chosen) != shownKind || RefinedArtifact.GetLevel(chosen) != shownLevel
-                    || RefinedArtifact.IsAwakened(chosen) != shownAwakened || (byte)RefinedArtifact.GetDaoRoute(chosen) != shownDaoRoute) { targetSlot = -1; Refresh(); return; }
+                    || RefinedArtifact.IsAwakened(chosen) != shownAwakened || (byte)RefinedArtifact.GetDaoRoute(chosen) != shownDaoRoute) { targetSlot = -1; targetChanged = true; Refresh(); return; }
                 targetSlot = slot; targetType = shownType; targetPrefix = shownPrefix;
                 previousKind = shownKind; previousLevel = shownLevel; previousAwakened = shownAwakened; previousDaoRoute = shownDaoRoute;
+                targetChanged = false;
                 previousWorldRoute = (byte)DownedBossSystem.ChosenRoute; targetName = shownName; Refresh();
             });
         }
     }
+    private bool TargetStillMatches(Player player)
+    {
+        if (targetSlot < 0 || targetSlot >= Math.Min(58, player.inventory.Length)) return false;
+        Item item = player.inventory[targetSlot];
+        return !item.IsAir && item.type == targetType && item.prefix == targetPrefix
+            && (byte)InscribedEquipment.GetKind(item) == previousKind
+            && RefinedArtifact.GetLevel(item) == previousLevel
+            && RefinedArtifact.IsAwakened(item) == previousAwakened
+            && (byte)RefinedArtifact.GetDaoRoute(item) == previousDaoRoute
+            && (byte)DownedBossSystem.ChosenRoute == previousWorldRoute;
+    }
+
     public override void Update(GameTime gameTime)
     {
         Player player = Main.LocalPlayer;
-        if (Main.gameMenu || player.dead || !Main.playerInventory || !player.active
+        if (Main.gameMenu || player.dead || !Main.playerInventory || !player.active || player.noItems || player.CCed
+            || toolSlot < 0 || toolSlot >= Math.Min(58, player.inventory.Length)
             || !Main.mouseItem.IsAir
             || player.selectedItem != toolSlot || player.inventory[toolSlot].type != toolType
             || Main.keyState.IsKeyDown(Keys.Escape)) { Close(); return; }
+        if (targetSlot >= 0 && !TargetStillMatches(player)) { targetSlot = -1; targetChanged = true; Refresh(); }
         base.Update(gameTime);
-        if (panel.ContainsPoint(Main.MouseScreen)) player.mouseInterface = true;
+        if (panel.ContainsPoint(Main.MouseScreen / Math.Max(0.01f, Main.UIScale))) player.mouseInterface = true;
         if (++refreshTimer >= 20) { refreshTimer = 0; Refresh(); }
     }
 }

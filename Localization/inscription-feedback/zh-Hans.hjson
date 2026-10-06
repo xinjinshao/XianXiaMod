@@ -1,0 +1,9 @@
+{
+  "Mods": {
+    "XianXia": {
+      "Inscriptions": {
+        "TargetChanged": "装备或世界路线已变化，旧预览已清除。请重新选择目标；尚未提交操作或消耗材料。"
+      }
+    }
+  }
+}
