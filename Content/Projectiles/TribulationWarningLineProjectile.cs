@@ -37,7 +37,7 @@ public class TribulationWarningLineProjectile : ModProjectile
     public override void AI()
     {
         Projectile.velocity = Vector2.Zero;
-        sourceBinding.CancelIfInvalid(Projectile, CancellationFade);
+        sourceBinding.CancelIfInvalid(Projectile, CancellationFade, Lifetime);
         Projectile.alpha = sourceBinding.IsCancelled
             ? (int)MathHelper.Lerp(255f, 180f, System.Math.Clamp(Projectile.timeLeft / (float)CancellationFade, 0f, 1f))
             : (int)MathHelper.Lerp(40f, 180f, Projectile.timeLeft / (float)Lifetime);

@@ -34,14 +34,14 @@ foreach(short remaining in new short[]{-1,121,short.MinValue,short.MaxValue}) {
  using var bytes=new MemoryStream();using(var writer=new BinaryWriter(bytes,System.Text.Encoding.UTF8,true)){writer.Write(remaining);writer.Write(false);writer.Write((short)-1);writer.Write(0);writer.Write((short)-1);writer.Write(0L);}
  bytes.Position=0;field.ReceiveExtraAI(new BinaryReader(bytes));Check(field.Projectile.timeLeft==0&&field.CanDamage()==false,"Invalid age becomes harmless expiry");
  field.Projectile.timeLeft=remaining;using var sent=new MemoryStream();using(var writer=new BinaryWriter(sent,System.Text.Encoding.UTF8,true))field.SendExtraAI(writer);
- Check(sent.ToArray().SequenceEqual(new byte[]{0,0,0,255,255,0,0,0,0,255,255,0,0,0,0,0,0,0,0}),"Sender cannot wrap invalid field age");
+ Check(sent.ToArray().SequenceEqual(new byte[]{0,0,1,255,255,0,0,0,0,255,255,0,0,0,0,0,0,0,0}),"Sender cannot wrap invalid field age");
 }
 foreach(byte[] partial in new[]{Array.Empty<byte>(),new byte[]{75}}) {
  field.Projectile.timeLeft=40;using var bytes=new MemoryStream(partial);bool rejected=false;
  try{field.ReceiveExtraAI(new BinaryReader(bytes));}catch(EndOfStreamException){rejected=true;}
  Check(rejected&&field.Projectile.timeLeft==40,"Truncated age does not partially overwrite state");
 }
-field.Projectile.position=new(100,200);Main.screenPosition=new(20,30);var tint=new Microsoft.Xna.Framework.Color();Main.dedServ=false;
+field=new BossArrayFieldProjectile();field.SetDefaults();field.Projectile.position=new(100,200);Main.screenPosition=new(20,30);var tint=new Microsoft.Xna.Framework.Color();Main.dedServ=false;
 foreach(int remaining in new[]{120,76,75,16,15,1,0,121}) {
  field.Projectile.timeLeft=remaining;Main.spriteBatch.Boxes.Clear();Check(!field.PreDraw(ref tint),"Field draws collision outline instead of unrelated texture");
  int expected=remaining<=0||remaining>120?0:remaining>15&&remaining<=75?5:4;
@@ -102,4 +102,11 @@ using(var payload=new MemoryStream()){using(var writer=new BinaryWriter(payload,
 activeBolt.Projectile.Center=new(float.NaN,0);Check(activeBolt.CanDamage()==false,"non-finite lightning geometry cannot damage");
 
 foreach(int mode in new[]{0,1,2}){Main.netMode=mode;var corruptBolt=new TribulationLightningProjectile();corruptBolt.SetDefaults();corruptBolt.Projectile.velocity=new(float.NaN,0);corruptBolt.AI();Check(corruptBolt.CanDamage()==false&&corruptBolt.Projectile.velocity==Microsoft.Xna.Framework.Vector2.Zero,"invalid velocity repair cannot reenable lightning damage");Check(corruptBolt.Projectile.timeLeft==(mode==1?120:6),"invalid geometry authority fade only");}
+
+foreach(int mode in new[]{0,1,2})foreach(int badAge in new[]{-1,121,int.MaxValue}){
+ Main.netMode=mode;var overshot=new TribulationLightningProjectile();overshot.SetDefaults();overshot.Projectile.timeLeft=badAge;overshot.AI();overshot.Projectile.timeLeft=120;Check(overshot.CanDamage()==false,"bad lifetime cannot recover damage after returning to valid range");
+ using var payload=new MemoryStream();using(var writer=new BinaryWriter(payload,System.Text.Encoding.UTF8,true))overshot.SendExtraAI(writer);var remote=new TribulationLightningProjectile();remote.SetDefaults();payload.Position=0;remote.ReceiveExtraAI(new BinaryReader(payload));remote.Projectile.timeLeft=120;Check(remote.CanDamage()==false,"bad lifetime cancellation reaches receiver and stays locked");
+}
+foreach(short badAge in new short[]{-1,121,short.MaxValue}){var overshot=new TribulationLightningProjectile();overshot.SetDefaults();using var payload=new MemoryStream();using(var writer=new BinaryWriter(payload,System.Text.Encoding.UTF8,true)){writer.Write(badAge);writer.Write(false);writer.Write((short)-1);writer.Write(0);writer.Write((short)-1);writer.Write(0L);}payload.Position=0;overshot.ReceiveExtraAI(new BinaryReader(payload));overshot.Projectile.timeLeft=120;Check(overshot.CanDamage()==false,"raw invalid lifetime never reactivates received lightning");}
+var senderOvershot=new TribulationLightningProjectile();senderOvershot.SetDefaults();senderOvershot.Projectile.timeLeft=121;using(var payload=new MemoryStream()){using var writer=new BinaryWriter(payload);senderOvershot.SendExtraAI(writer);}senderOvershot.Projectile.timeLeft=120;Check(senderOvershot.CanDamage()==false,"serialization itself latches an observed invalid lifetime before AI");
 Console.WriteLine($"Actual telegraph hook regression passed: {assertions} assertions; mocked graphics/spawn boundary.");

@@ -63,7 +63,7 @@ CI运行只读新鲜度检查，生成结果变化时须显式更新这四份输
 
 ## 原生包内容与默认配置
 
-Native checks另运行PackageContents，使用官方TmodFile打开实际.tmod，核对内部名称、build.txt版本、归档哈希、当前描述及Common/Content/Localization的所有PNG/HJSON（接受官方转换后的rawimg）；拒绝隐藏/越界条目、Assets/Docs/Wiki/Tools/bin/obj/README和源码/工具扩展。它不是读取源码文件名后假定打包正确。默认配置在Gameplay编译产物回归中验证，当前累计956条。
+Native checks另运行PackageContents，使用官方TmodFile打开实际.tmod，核对内部名称、build.txt版本、归档哈希、当前描述及Common/Content/Localization的所有PNG/HJSON（接受官方转换后的rawimg）；拒绝隐藏/越界条目、Assets/Docs/Wiki/Tools/bin/obj/README和源码/工具扩展。它不是读取源码文件名后假定打包正确。默认配置在Gameplay编译产物回归中验证，当前累计961条。
 
 ```powershell
 dotnet run --project Tools/Tests/PackageContents/PackageContents.csproj -- <XianXia.tmod路径> <官方引擎目录> <仓库根目录>
@@ -149,3 +149,8 @@ Telegraphs671→793项，增加七类来源失效×三模式、权威槽位复�
 非有限位置/速度不造成伤害；AI锁定坏几何并在权威同步取消，即使把NaN速度归零也不能恢复伤害。无效年龄同样不再恢复。Telegraphs994→1,109项，覆盖已释放雷击的NPC/玩家失效×三模式、取消/停移/无Buff、自然Buff与墙体、19字节截断、非有限数据和权威几何取消；原法阵/预警回归继续通过。Gameplay950→956项用实际编译雷击与官方NPC来源验证有效/失效伤害、6tick/netUpdate、停移、19字节及官方NewInstance独立来源组件。
 
 完整34步入口、原生构建/专服加载、打包及官方本地化路径通过。客户端同槽位新实例/新渡劫会话仍依赖取消包，真实运输、晚加入与躲避仍待验收。
+
+
+## 非法弹体寿命取消锁定
+
+第112轮共享HostileSourceBinding在AI、Write和完整Read后锁定小于0或超过Lifetime的寿命；发送时年龄钳0并携带取消位。之后修正年龄或收到旧数据均不能恢复伤害，合法0仍代表自然到期，19字节格式不变。三类调用方传入各自Lifetime。Telegraphs1,109→1,131项，覆盖三模式非法年龄、发送前未运行AI、接收畸形年龄及修正后无伤；Gameplay956→961项实际编译验证同一边界。完整34步/25.NET、原生构建加载、打包与本地化检查通过；真实客户端运输与当前来源编号比较仍待验收。

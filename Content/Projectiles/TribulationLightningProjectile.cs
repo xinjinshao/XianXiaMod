@@ -46,7 +46,7 @@ public class TribulationLightningProjectile : ModProjectile
             invalidGeometry = true;
             sourceBinding.CancelOnAuthority(Projectile, CancellationFade);
         }
-        sourceBinding.CancelIfInvalid(Projectile, CancellationFade);
+        sourceBinding.CancelIfInvalid(Projectile, CancellationFade, Lifetime);
         if (invalidAge || invalidGeometry || !sourceBinding.IsValid()) {
             Projectile.velocity = Vector2.Zero;
             if (sourceBinding.IsCancelled)

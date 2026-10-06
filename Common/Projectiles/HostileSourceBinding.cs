@@ -14,12 +14,12 @@ internal sealed class HostileSourceBinding
     private int sourceType;
     private NPC sourceNpc;
     private ModNPC sourceModNpc;
-    private bool sourceCancelled;
+    private bool sourceCancelled, invalidLifetime;
     private short sourcePlayerSlot = -1;
     private long sourcePlayerSession;
     private Player sourcePlayer;
 
-    public bool IsCancelled => sourceCancelled;
+    public bool IsCancelled => sourceCancelled || invalidLifetime;
 
     public void Capture(IEntitySource source)
     {
@@ -38,7 +38,7 @@ internal sealed class HostileSourceBinding
 
     public bool IsValid()
     {
-        if (sourceCancelled) return false;
+        if (IsCancelled) return false;
         if (sourcePlayerSlot != -1) {
             if (sourcePlayerSlot < 0 || sourcePlayerSlot >= Main.maxPlayers || sourcePlayerSession <= 0) return false;
             Player player = Main.player[sourcePlayerSlot];
@@ -58,9 +58,13 @@ internal sealed class HostileSourceBinding
             || (ReferenceEquals(parent, sourceNpc) && ReferenceEquals(parent.ModNPC, sourceModNpc));
     }
 
-    public void CancelIfInvalid(Projectile projectile, int fadeTicks)
+    public void CancelIfInvalid(Projectile projectile, int fadeTicks, int lifetime)
     {
-        if (sourceCancelled) { projectile.timeLeft = System.Math.Min(projectile.timeLeft, fadeTicks); return; }
+        if (projectile.timeLeft < 0 || projectile.timeLeft > lifetime) {
+            invalidLifetime = true;
+            CancelOnAuthority(projectile, fadeTicks);
+        }
+        if (IsCancelled) { projectile.timeLeft = System.Math.Min(projectile.timeLeft, fadeTicks); return; }
         if (Main.netMode == NetmodeID.MultiplayerClient || (sourceSlot == -1 && sourceType == 0 && sourcePlayerSlot == -1) || IsValid()) return;
         CancelOnAuthority(projectile, fadeTicks);
     }
@@ -80,8 +84,9 @@ internal sealed class HostileSourceBinding
     public void Write(BinaryWriter writer, Projectile projectile, int lifetime)
     {
         int remaining = projectile.timeLeft;
+        invalidLifetime |= remaining < 0 || remaining > lifetime;
         writer.Write((short)(remaining >= 0 && remaining <= lifetime ? remaining : 0));
-        writer.Write(sourceCancelled);
+        writer.Write(IsCancelled || remaining < 0 || remaining > lifetime);
         writer.Write(sourceSlot);
         writer.Write(sourceType);
         writer.Write(sourcePlayerSlot);
@@ -98,6 +103,7 @@ internal sealed class HostileSourceBinding
         long session = reader.ReadInt64();
         projectile.timeLeft = remaining >= 0 && remaining <= lifetime ? remaining : 0;
         sourceCancelled |= cancelled;
+        invalidLifetime |= remaining < 0 || remaining > lifetime;
         sourceSlot = slot;
         sourceType = type;
         sourcePlayerSlot = playerSlot;
