@@ -1,4 +1,8 @@
 using System;
+using System.Collections.Generic;
+using Terraria.GameInput;
+using Terraria.ModLoader;
+using XianXia.Common.Items;
 using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.GameContent.UI.Elements;
@@ -13,6 +17,7 @@ public class ArtifactSkillUIState : UIState
 {
     private UIPanel panel;
     private UIText status;
+    private readonly List<(UIElement Button, ArtifactSkill Skill)> skillButtons = new();
     private string Text(string key, params object[] args) => Language.GetTextValue("Mods.XianXia.Skills." + key, args);
     public override void OnInitialize()
     {
@@ -24,6 +29,7 @@ public class ArtifactSkillUIState : UIState
     {
         var button = new UITextPanel<string>(Text(key),0.75f); button.Left.Set(left,0); button.Top.Set(28,0);
         button.Width.Set(86,0); button.Height.Set(30,0);
+        skillButtons.Add((button, skill));
         button.OnLeftClick += (_,_) => ArtifactSkillTransactions.Request(Main.LocalPlayer,skill); panel.Append(button);
     }
     public override void Update(GameTime gameTime)
@@ -42,5 +48,29 @@ public class ArtifactSkillUIState : UIState
         status.SetText(state.wardGuardTimer > 0 ? Text("WardStatus",(state.activeSkillCooldown+59)/60,(state.wardGuardTimer+59)/60)
             : state.activeSkillCooldown > 0 ? Text("Cooldown", (state.activeSkillCooldown + 59)/60) : Text("Ready"));
         if (panel.ContainsPoint(Main.MouseScreen / scale)) Main.LocalPlayer.mouseInterface = true;
+        foreach (var entry in skillButtons)
+            if (entry.Button.ContainsPoint(Main.MouseScreen / scale))
+                Main.instance.MouseText(SkillTooltip(entry.Skill, state));
+    }
+    private string SkillTooltip(ArtifactSkill skill, XianXiaPlayer state)
+    {
+        ModKeybind binding = skill == ArtifactSkill.WardGuard
+            ? ArtifactKeybindSystem.WardSkillKey : ArtifactKeybindSystem.ArtifactSkillKey;
+        string Keys(InputMode mode)
+        {
+            var assigned = binding?.GetAssignedKeys(mode);
+            return assigned == null || assigned.Count == 0 ? Text("Unbound") : string.Join(", ", assigned);
+        }
+        var route = ArtifactSkillTransactions.HeldSkill(Main.LocalPlayer.HeldItem) == skill
+            ? RefinedArtifact.ActiveDaoRoute(Main.LocalPlayer.HeldItem) : DownedBossSystem.EndgameRoute.None;
+        int cost = state.GetSpiritualEnergyCost(DaoArtifactRules.SkillCost(skill, route));
+        string requirement = skill switch
+        {
+            ArtifactSkill.SwordBurst => Text("SwordRequirement"),
+            ArtifactSkill.ArrayPulse => Text("ArrayRequirement"),
+            _ => Text("WardRequirement")
+        };
+        return requirement + "\n" + Text("SkillNumbers", cost, ArtifactSkillRules.Cooldown(skill) / 60)
+            + "\n" + Text("AssignedControls", Keys(InputMode.Keyboard), Keys(InputMode.XBoxGamepad));
     }
 }
