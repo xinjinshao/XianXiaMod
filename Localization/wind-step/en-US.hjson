@@ -1,0 +1,18 @@
+{
+  "Mods": {
+    "XianXia": {
+      "Items": {
+        "WindStepPill": {
+          "DisplayName": "Wind Step Pill",
+          "Tooltip": "Requires Qi Condensation; +15 percentage points movement speed, -4 defense\nBase duration 45 seconds, scaled by quality; cannot refresh or combine with Furnace Guard\nShares 30-second fatigue with Qi Recovery and Furnace Guard Pills; higher-quality bonuses follow pill rules"
+        }
+      },
+      "Buffs": {
+        "WindStepBuff": {
+          "DisplayName": "Wind Step",
+          "Description": "+15 percentage points movement speed; -4 defense"
+        }
+      }
+    }
+  }
+}

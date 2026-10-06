@@ -12,7 +12,7 @@ public class CultivationItemTransactions : GlobalItem
         && item.ModItem.Name is "QiDrawingTalisman" or "QiCondensingPill" or "FoundationPill"
             or "StarEclipseCrystal" or "OldHeavenDaoScroll" or "HeavenDaoFragment"
             or "Moonbone" or "DaoSeveringDust" or "TribulationTrainingToken"
-            or "FurnaceGuardPill" or "QiRecoveryPill" or "SpringReturnPill" or "TribulationResistingPill" or "StarAbyssForbiddenTalisman";
+            or "WindStepPill" or "FurnaceGuardPill" or "QiRecoveryPill" or "SpringReturnPill" or "TribulationResistingPill" or "StarAbyssForbiddenTalisman";
 
     public override bool ConsumeItem(Item item, Player player) =>
         Main.netMode != NetmodeID.MultiplayerClient || !IsProgressionItem(item);

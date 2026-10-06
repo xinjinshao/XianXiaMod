@@ -1073,6 +1073,25 @@ var guardEffect=new XianXia.Content.Buffs.FurnaceGuardBuff();guardEffect.SetStat
 Check(!Game.buffNoSave[3],"Guard effect participates in native buff saving");
 recoveryPlayer.statDefense=20;recoveryPlayer.moveSpeed=1;guardEffect.Update(recoveryPlayer,ref guardIndex);Check(recoveryPlayer.statDefense==28&&Math.Abs(recoveryPlayer.moveSpeed-.9f)<.001f,"Actual guard buff adds defense and movement tradeoff");
 recoveryPlayer.statDefense=20;recoveryPlayer.moveSpeed=1;guardEffect.Update(recoveryPlayer,ref guardIndex);Check(recoveryPlayer.statDefense==28&&Math.Abs(recoveryPlayer.moveSpeed-.9f)<.001f,"Effect reapplies from reset player stats without permanent accumulation");
+// Actual mobility pill shares fatigue and cannot cancel the defensive tradeoff.
+var windPill=new XianXia.Content.Items.Materials.WindStepPill{Mod=mod,Name="WindStepPill"};windPill.SetDefaults();windPill.Item.type=953;windPill.Item.stack=10;windPill.Item.ModItem=windPill;
+Check(CultivationItemTransactions.IsProgressionItem(windPill.Item)&&PillQualitySystem.IsPill(windPill.Item),"Mobility pill participates in authority and stored quality");
+recoveryPlayer.inventory[0]=windPill.Item;recoveryPlayer.buffTime=new int[22];recoveryPlayer.State.cultivationStage=CultivationStage.QiAwakening;
+Check(!windPill.CanUseItem(recoveryPlayer),"Mobility pill requires Qi Condensation");recoveryPlayer.State.cultivationStage=CultivationStage.QiCondensation;
+foreach(var windQuality in new[]{PillQuality.Coarse,PillQuality.Standard,PillQuality.Fine,PillQuality.Spirit}){
+ recoveryPlayer.buffTime=new int[22];recoveryPlayer.State.ProgressionItemCooldown=0;
+ windPill.Item.GetGlobalItem<PillQualitySystem>().LoadData(windPill.Item,new Terraria.ModLoader.IO.TagCompound{{"quality",(int)windQuality},{"crafted",true}});
+ int stack=windPill.Item.stack;Check(windPill.CanUseItem(recoveryPlayer),"Mobility pill eligible before dosing");CultivationItemTransactions.HandleRequest(recoveryPlayer,0,953);
+ Check(windPill.Item.stack==stack-1&&recoveryPlayer.buffTime[4]==PillQualityRules.Scale(2700,windQuality)&&recoveryPlayer.buffTime[2]==1800,"Mobility graded duration and fixed fatigue consume one");
+ recoveryPlayer.State.ProgressionItemCooldown=0;CultivationItemTransactions.HandleRequest(recoveryPlayer,0,953);Check(windPill.Item.stack==stack-1,"Active mobility cannot refresh or consume another pill");
+ recoveryPlayer.buffTime[2]=0;Check(!guardPill.CanUseItem(recoveryPlayer),"Guard cannot negate active mobility tradeoff after fatigue ends");
+ recoveryPlayer.buffTime[4]=0;recoveryPlayer.buffTime[3]=100;Check(!windPill.CanUseItem(recoveryPlayer),"Mobility cannot negate active guard tradeoff");
+}
+recoveryPlayer.buffTime=new int[22];recoveryPlayer.buffTime[2]=1800;Check(!windPill.CanUseItem(recoveryPlayer),"Other pills' shared fatigue blocks mobility");
+recoveryPlayer.buffTime=new int[22];recoveryPlayer.State.ProgressionItemCooldown=0;CultivationItemTransactions.HandleRequest(recoveryPlayer,0,953);recoveryPlayer.State.spiritualEnergy=0;
+Check(!realPill.CanUseItem(recoveryPlayer)&&!guardPill.CanUseItem(recoveryPlayer),"Mobility fatigue blocks both other pills");
+var windEffect=new XianXia.Content.Buffs.WindStepBuff();recoveryPlayer.statDefense=20;recoveryPlayer.moveSpeed=1;int windIndex=4;windEffect.Update(recoveryPlayer,ref windIndex);
+Check(recoveryPlayer.statDefense==16&&Math.Abs(recoveryPlayer.moveSpeed-1.15f)<.001f,"Actual movement buff applies defense tradeoff");
 Console.WriteLine($"Networking including actual recovery pill hooks: {assertions} assertions; buff/inventory engine boundaries mocked.");
 sealed class TestBossSummon : XianXia.Common.Items.CultivationBossSummonItem
 {

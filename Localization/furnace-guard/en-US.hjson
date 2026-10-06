@@ -4,7 +4,7 @@
       "Items": {
         "FurnaceGuardPill": {
           "DisplayName": "Furnace Guard Pill",
-          "Tooltip": "Requires Qi Condensation; +8 defense and -10 percentage points movement speed\nBase duration 60 seconds, scaled by quality; cannot reuse while active\nShares 30-second fatigue with Qi Recovery Pills; higher-quality bonuses follow pill rules"
+          "Tooltip": "Requires Qi Condensation; +8 defense and -10 percentage points movement speed\nBase duration 60 seconds, scaled by quality; cannot reuse while active\nShares 30-second fatigue with Qi Recovery Pills; higher-quality bonuses follow pill rules\nMutually exclusive with Wind Step; shares its pill fatigue"
         }
       },
       "Buffs": {

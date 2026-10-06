@@ -246,7 +246,7 @@ namespace Terraria.ModLoader
         public static int TileType<T>() => typeof(T).Name switch { "ArtifactForgeTile"=>1,"ThunderPatternForgeTile"=>2,"HeavenFireFurnaceTile"=>3,_=>4 };
         public static int ItemType<T>()=>200;
         public static int ProjectileType<T>()=>typeof(T).Name=="GreenwoodArrayField"?3:typeof(T).Name=="MedicineCauldronField"?4:typeof(T).Name=="MedicineSpiritBolt"?5:typeof(T).Name=="FurnaceHammerProjectile"?6:typeof(T).Name=="FurnaceImpactBurst"?7:typeof(T).Name=="HeavenTabletWardProjectile"?8:typeof(T).Name=="ThunderTalismanArray"?9:typeof(T).Name=="MinorThunderboltProjectile"?10:2;
-        public static int BuffType<T>()=>typeof(T).Name=="FurnaceGuardBuff"?3:2;
+        public static int BuffType<T>()=>typeof(T).Name=="FurnaceGuardBuff"?3:typeof(T).Name=="WindStepBuff"?4:2;
         public static T GetInstance<T>() where T:new()=>new T();
     }
     public class ModSystem
@@ -416,7 +416,7 @@ namespace XianXia.Content.Items.Materials {public class GreenwoodRoot{}}
 
 namespace XianXia.Content.Items.Materials {public class OldFurnaceEmber{} public class FurnaceSlagIron{}}
 
-namespace Terraria.ID {public static class ItemID { public const int BottledWater=6;public const int FlamingArrow=41,WoodenArrow=40;}public static class ProjectileID {public const int WoodenArrowFriendly=1,FireArrow=2;}public static class AmmoID {public const int Arrow=40;}}
+namespace Terraria.ID {public static class ItemID { public const int BottledWater=6,Feather=7;public const int FlamingArrow=41,WoodenArrow=40;}public static class ProjectileID {public const int WoodenArrowFriendly=1,FireArrow=2;}public static class AmmoID {public const int Arrow=40;}}
 namespace XianXia.Content.Items.HandGenerated {public class TornTalismanPaper{} public class CinnabarPowder{}}
 namespace XianXia.Content.Tiles.Stations {public class SimpleTalismanTableTile{}}
 
