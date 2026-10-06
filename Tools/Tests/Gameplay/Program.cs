@@ -551,3 +551,24 @@ Check((bool)nativeConfigType.GetProperty("EnableWorldGeneration").GetValue(nativ
 Check((bool)nativeConfigType.GetProperty("EnableSoftCompatibilityHooks").GetValue(nativeConfig), "Release default allows optional integrations");
 Check(nativeConfigType.GetProperty("Mode").GetValue(nativeConfig).ToString() == "ServerSide", "Gameplay configuration remains server-owned");
 Console.WriteLine($"Actual engine gameplay assertions including release defaults: {assertions}.");
+
+
+var actualFieldType=type.Assembly.GetType("XianXia.Content.Projectiles.BossArrayFieldProjectile",true);
+object actualField=Activator.CreateInstance(actualFieldType),nativeField=Activator.CreateInstance(projectileType);
+actualFieldType.GetProperty("Entity",BindingFlags.Instance|BindingFlags.Public|BindingFlags.NonPublic).SetValue(actualField,nativeField);
+actualFieldType.GetMethod("SetDefaults").Invoke(actualField,null);
+Check((int)projectileType.GetField("width").GetValue(nativeField)==96&&(int)projectileType.GetField("height").GetValue(nativeField)==96,"Native shared hostile field warning matches hitbox");
+Check((bool)projectileType.GetField("hostile").GetValue(nativeField)&&!(bool)projectileType.GetField("friendly").GetValue(nativeField)&&(bool)projectileType.GetField("netImportant").GetValue(nativeField),"Native shared field is hostile and late-join important");
+foreach(int remaining in new[]{0,1,15,16,75,76,120,121}) {
+ projectileType.GetField("timeLeft").SetValue(nativeField,remaining);
+ Check((bool)actualFieldType.GetMethod("CanDamage").Invoke(actualField,null)==(remaining>15&&remaining<=75),"Native compiled warning/active/fade boundary");
+}
+foreach(short remaining in new short[]{0,1,15,16,75,76,120}) {
+ using var bytes=new MemoryStream();using(var writer=new BinaryWriter(bytes,System.Text.Encoding.UTF8,true))writer.Write(remaining);bytes.Position=0;
+ actualFieldType.GetMethod("ReceiveExtraAI").Invoke(actualField,new object[]{new BinaryReader(bytes)});
+ Check((int)projectileType.GetField("timeLeft").GetValue(nativeField)==remaining,"Native field receives exact remaining phase age");
+ using var sent=new MemoryStream();using(var writer=new BinaryWriter(sent,System.Text.Encoding.UTF8,true))actualFieldType.GetMethod("SendExtraAI").Invoke(actualField,new object[]{writer});
+ Check(sent.ToArray().SequenceEqual(BitConverter.GetBytes(remaining)),"Native field writes bounded two-byte age");
+}
+using(var bytes=new MemoryStream()){using(var writer=new BinaryWriter(bytes,System.Text.Encoding.UTF8,true))writer.Write((short)121);bytes.Position=0;actualFieldType.GetMethod("ReceiveExtraAI").Invoke(actualField,new object[]{new BinaryReader(bytes)});Check((int)projectileType.GetField("timeLeft").GetValue(nativeField)==0,"Native field invalid lifetime expires harmlessly");}
+Console.WriteLine($"Actual engine gameplay assertions including shared field telegraph: {assertions}.");
