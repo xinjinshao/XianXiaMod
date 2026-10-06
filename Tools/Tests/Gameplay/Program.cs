@@ -541,3 +541,13 @@ using(var bytes=new MemoryStream()){using(var writer=new BinaryWriter(bytes,Syst
 using(var bytes=new MemoryStream()){using(var writer=new BinaryWriter(bytes,System.Text.Encoding.UTF8,true))gardenType.GetMethod("SendExtraAI").Invoke(nativeGarden,new object[]{writer});Check(bytes.ToArray().SequenceEqual(new byte[]{66,0,0,0,0,0,0,0}),"Actual partial boss source identity serializes eight bytes");}
 Check(Convert.ToSingle(gardenType.GetField("DashLineLength").GetRawConstantValue())==384f,"Compiled dash warning covers movement plus body radius");
 Console.WriteLine($"Actual engine gameplay assertions including Garden Warden metadata: {assertions}.");
+
+
+var nativeConfigType = type.Assembly.GetType("XianXia.Common.Systems.XianXiaConfig", true);
+object nativeConfig = Activator.CreateInstance(nativeConfigType);
+Check(!(bool)nativeConfigType.GetProperty("DebugDrops").GetValue(nativeConfig), "Release default disables debug drops");
+Check((float)nativeConfigType.GetProperty("PermanentGrowthMultiplier").GetValue(nativeConfig) == 1f, "Release default uses baseline permanent growth");
+Check((bool)nativeConfigType.GetProperty("EnableWorldGeneration").GetValue(nativeConfig), "Release default enables new-world generation");
+Check((bool)nativeConfigType.GetProperty("EnableSoftCompatibilityHooks").GetValue(nativeConfig), "Release default allows optional integrations");
+Check(nativeConfigType.GetProperty("Mode").GetValue(nativeConfig).ToString() == "ServerSide", "Gameplay configuration remains server-owned");
+Console.WriteLine($"Actual engine gameplay assertions including release defaults: {assertions}.");

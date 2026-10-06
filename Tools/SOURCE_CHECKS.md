@@ -59,3 +59,14 @@ CI运行只读新鲜度检查，生成结果变化时须显式更新这四份输
 流程调用既有verify_build.ps1完成编译、隔离打包、专服内容与配方加载及经济导出，再执行Gameplay编译产物回归、LocalizationPaths官方加载器路径回归和三价格场景金币转换检查。任何非零退出均失败；经济阶段要求唯一快照，避免读错旧结果。源码28步检查保留在独立Source checks工作流。
 
 无论成功失败，上传专服标准/错误日志、引擎详细日志、经济快照/报告及生成模组包，保留14天，支持定位加载前失败。引擎下载或摘要校验失败也会阻止通过。此流程不启动游戏世界，不验证图形、多人实战、Boss平衡或完整通关；包仅为诊断产物，不自动发布。
+
+
+## 原生包内容与默认配置
+
+Native checks另运行PackageContents，使用官方TmodFile打开实际.tmod，核对内部名称、build.txt版本、归档哈希、当前描述及Common/Content/Localization的所有PNG/HJSON（接受官方转换后的rawimg）；拒绝隐藏/越界条目、Assets/Docs/Wiki/Tools/bin/obj/README和源码/工具扩展。它不是读取源码文件名后假定打包正确。默认配置在Gameplay编译产物回归中验证，当前累计308条。
+
+```powershell
+dotnet run --project Tools/Tests/PackageContents/PackageContents.csproj -- <XianXia.tmod路径> <官方引擎目录> <仓库根目录>
+```
+
+buildIgnore同时保护普通ModSources构建；verify_build的源目录白名单仍保留。该检查不证明所有资源实际显示效果、素材权属或完整存档迁移，详见[安装与升级说明](../Docs/INSTALL_AND_UPGRADE.md)。

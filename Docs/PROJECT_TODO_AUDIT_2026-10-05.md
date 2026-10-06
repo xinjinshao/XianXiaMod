@@ -898,3 +898,12 @@ R32/T54–55/T58新增独立Native checks工作流，push/PR/手动触发，Wind
 第98轮托管解析补修：首推时job级env引用runner.temp被GitHub拒绝、未启动job；改为安装步骤内读取RUNNER_TEMP并通过GITHUB_ENV传给后续步骤，继续检查托管运行。
 
 修正后的托管Native checks运行37462905822所有步骤成功，证明官方引擎在全新GitHub Windows runner可编译、打包、加载及运行回归/经济检查。追加include-hidden-files以确保上传白名单涵盖隐藏.tml-test目录内日志和包；只上传列出的诊断路径。
+
+
+## 第99轮：发布包范围、默认配置和安装升级资料（2026-10-06）
+
+R34/T59–60核对DebugDrops=false、PermanentGrowthMultiplier=1、EnableWorldGeneration=true、软集成开启及ServerSide配置，新增5条编译产物/官方程序集检查，累计308条通过。已有配置沿用保存值，未修改默认值或玩法。build.txt新增Assets/Docs/Wiki/Tools/README排除，保护普通ModSources打包；维持实际版本0.1.0。description撤去错误0.2.0和Full wiki alignment/美术完成暗示，准确列出内容、默认值、可选依赖和未验收范围。
+
+新增PackageContents原生回归通过官方TmodFile反射访问内部构造及归档哈希（仅开发测试，不进玩法），检查实际.tmod内部名/版本/哈希/描述、无隐藏/越界/开发源与目录、所有运行PNG/HJSON存在，支持原生rawimg转换。366条归档项、362资源、1465检查通过。向隔离source加入四个开发目录嵌套哨兵及README后重打包通过；仅在隔离build.txt移除排除行后，官方包确实收录工具哨兵且检查拒绝，再恢复行重打包通过，证明排除和拒绝真实有效。原生构建0警告0错误、打包/专服加载run-8cc2a8ce306b45538a33590203c2f181通过。
+
+包检查接入GitHub原生CI，要求唯一包及错误退出传播。README修正最终美术声明与过时检查入口；新增安装/升级说明覆盖CI诊断包安装、同版多人、正常配置、人工生态替代、备份/回退、品质/淬炼版本和角色库存原版所有权。源码和自动验证不等于历史存档/图形/双客户端验收；素材权属记录、更新日志及完整发布矩阵仍未完成，R34不勾选。本轮提交推送GitHub。

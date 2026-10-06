@@ -5,3 +5,4 @@ homepage = https://github.com/xinjinshao/XianXiaMod
 hideCode = false
 hideResources = false
 softReferences = BossChecklist
+buildIgnore = Assets/*, Docs/*, Wiki/*, Tools/*, README.md

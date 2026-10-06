@@ -44,6 +44,13 @@ jobs:
           if ($LASTEXITCODE -ne 0) { throw 'Native gameplay regression failed' }
           dotnet run --project Tools/Tests/LocalizationPaths/LocalizationPaths.Tests.csproj -- "$pwd" $env:TML_ROOT
           if ($LASTEXITCODE -ne 0) { throw 'Native localization path regression failed' }
+      - name: Verify native package metadata and resource scope
+        shell: pwsh
+        run: |
+          $packages = @(Get-ChildItem -Path '.tml-test/run-*/save/Mods/XianXia.tmod')
+          if ($packages.Count -ne 1) { throw 'Expected exactly one native package' }
+          dotnet run --project Tools/Tests/PackageContents/PackageContents.csproj -- $packages[0].FullName $env:TML_ROOT "$pwd"
+          if ($LASTEXITCODE -ne 0) { throw 'Native package content check failed' }
       - name: Check registered economy in all price profiles
         shell: pwsh
         run: |

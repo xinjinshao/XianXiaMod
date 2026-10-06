@@ -1,7 +1,12 @@
 Xianxia-themed content mod for Terraria/tModLoader.
 
-v0.2.0 - Full wiki alignment. 9 cultivation realms, 4 tribulation types,
-12 bosses (unique AI, 6-tier loot, rare drops), 17 enemies (unique AI,
-dual drops), 9 crafting stations, 8 biomes (objects+effects), 5 NPCs
-(20+ shop items), 50+ weapons/accessories, pill quality, inscription
-items, summon contracts, expert/master scaling, en-US/zh-Hans.
+Development version 0.1.0. Includes 9 cultivation realms, 4 tribulation types,
+12 bosses, 17 ordinary enemies, 8 biomes, 5 friendly NPCs and 9 crafting stations.
+Spirit energy, pills and quality, inscriptions, weapon refinement, summon contracts,
+commissions, fishing crates and an optional Spirit Tide Night event are implemented.
+Supports en-US and zh-Hans. Boss Checklist integration is optional.
+
+Debug drops are disabled by default. Permanent growth multiplier defaults to 1.0.
+Native build and dedicated-server content loading are checked automatically.
+Full playthrough, real multiplayer, combat balance and final artwork remain under validation.
+Calamity is optional; dedicated Calamity balance/progression adaptation is not implemented.

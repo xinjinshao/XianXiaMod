@@ -9,7 +9,7 @@ XianXiaMod 是一个 Terraria/tModLoader 仙侠主题内容 Mod。项目目标�
 - `PermanentGrowthMultiplier` 会影响境界提供的长期伤害、防御、移动、暴击、减伤、回气和灵气消耗加成。
 - 已实现浅层灵脉与 7 个生成生态的 worldgen 骨架。
 - 已为生成生态 Tile 接入基础采集掉落，覆盖雷泽云层和万宗遗址等关键生态材料。
-- 已接入最终美术素材，生成材料、丹药、饰品、法器、投射物、敌怪、Boss、Boss 召唤物、Tile、Biome 和本地化。
+- 材料、丹药、饰品、法器、弹体、敌怪、Boss、地块与生态已有资源；独立美术、动画和实机显示仍在验收。
 - 已实现丹药突破、回春/聚气/抗劫 buff、灵压紊乱 debuff、突破天劫事件和站点附近加成。
 - 已为天劫开始与完成接入中英文反馈提示。
 - 已为天劫落雷增加短暂预警线，落雷更可预期。
@@ -37,6 +37,10 @@ XianXiaMod 是一个 Terraria/tModLoader 仙侠主题内容 Mod。项目目标�
 - 已新增本地化 key 校验脚本，减少图鉴、进度提示与配置项缺失文本的回归。
 - 已新增 PNG 素材校验脚本，检查素材文件签名和尺寸。
 - 已新增生成内容新鲜度校验脚本，确认生成器输出与仓库文件同步。
+
+## 安装与升级
+
+当前开发包版本为0.1.0。包下载、默认配置、可选依赖、存档备份和验收限制见[安装与升级说明](Docs/INSTALL_AND_UPGRADE.md)。
 
 ## 设计入口
 
@@ -78,18 +82,13 @@ dotnet run --project Tools\Tests\Gameplay\Gameplay.csproj -- bin\Debug\net8.0\Xi
 
 Gameplay 检查需先完成项目编译。完整开发待办与实施记录见 [项目审查清单](Docs/PROJECT_TODO_AUDIT_2026-10-05.md)，状态所有权与协议见 [多人网络说明](Docs/NETWORKING.md)。
 
-每个开发批次都必须通过：
+当前统一源码检查入口：
 
 ```powershell
-python Tools\verify_localization_keys.py
-python Tools\verify_png_assets.py
-python Tools\verify_biome_counts.py
-powershell -ExecutionPolicy Bypass -File Tools\verify_generated_content_fresh.ps1
-dotnet build XianXia.csproj
-powershell -ExecutionPolicy Bypass -File Tools\tmodloader_smoke_test.ps1
+python Tools/run_source_checks.py
 ```
 
-`Tools\tmodloader_smoke_test.ps1` 会同步当前仓库到 tModLoader 的 `ModSources\XianXia`，构建并打包 `XianXia.tmod`，再启动 tModLoader dedicated server 确认 XianXiaMod 能完成加载。
+GitHub分别运行源码CI和固定官方引擎的原生CI（编译、打包、专服加载、编译产物/本地化路径/包内容及经济审计）。完整命令与证据边界见[检查说明](Tools/SOURCE_CHECKS.md)。旧smoke脚本会复制内容到本地ModSources；日常优先使用上述隔离verify_build脚本，避免覆盖本地开发目录。
 
 涉及世界生成的批次还必须通过：
 
