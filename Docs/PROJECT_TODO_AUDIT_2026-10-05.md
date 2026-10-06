@@ -748,3 +748,10 @@ CanUseBossSummon原先将requiredDownedBoss内部ID直接插入聊天。改为�
 检查确认已有可重绑法器技能键与护持键，不重复注册快捷键。技能按钮新增持续悬停说明，三种技能分别说明手持觉醒法器/自己的法阵与需要治疗的友方/可用饰品槽避雷玉佩。当前绑定从原生ModKeybind.GetAssignedKeys读取Keyboard和XBoxGamepad，未绑定显示双语Unbound；法器键按当前手持法器选择技能的行为保持。费用复用DaoArtifactRules.SkillCost和GetSpiritualEnergyCost：只有手持对应样例才读其当前有效路线，否则列基础费用；共享冷却读取实际规则常量。只读预览不改变费用/请求/结果判断。输入增加非活跃、noItems与CCed过滤，避免无效控制状态提交请求；服务端原有校验保留。
 
 六个双语提示键及两格式参数集合检查通过；构建0警告0错误、打包与专服加载通过，日志run-1f26bada30ea40b8b2a37cb4b3cfa60c（此后只修正中文玉佩名称，最终静态检查通过）；内容契约、本地化键、PNG与diff检查通过。原生引擎已确认两输入模式API可编译，未证明手柄实际操作/配置重绑/悬停排版。此轮只读提示与输入过滤未新增镜像测试，R26继续未勾选。本轮提交推送GitHub。
+
+
+## 第81轮：路线说明滚动、响应布局与Escape取消（2026-10-06）
+
+路线面板警告/选中说明原固定196高度，追加描述后可溢出到按钮。将 wrapped UIText放入UIList，配原生UIScrollbar，使用原生UIText按换行文本设置MinHeight（核对官方stable UIText补丁）；三个选择按钮按三分之一宽度布局、确认/取消按底部偏移排布。Update按screen/UIScale限制面板最大680×410、最小300×260，变化后Recalculate；悬停改为UI坐标。Escape在Update直接Close，不发送路线请求/消耗材料，与既有取消按钮一致；确认的ValidSelection与服务端事务保持。
+
+构建0警告0错误、打包与专服加载通过，日志run-b35393b08e834727bde31eab1b7c2793；内容契约、本地化键与diff检查通过。布局改动未新增镜像输入测试，未运行图形客户端，不把原生类编译或源码高度计算当作实机排版证明。极小可用UI空间、长确认文本、实际滚动/改选/取消及手柄导航继续待验收，R20/R26保持未勾选。本轮提交推送GitHub。
