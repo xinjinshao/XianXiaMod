@@ -81,3 +81,5 @@
 - [整体进度](../../Progression/Overview.md)
 - [天劫](../../Systems/Tribulation.md)
 - [生态与群系](../Biomes/Overview.md)
+
+可选[Boss Checklist接入](../../Systems/Boss_Checklist.md)已注册十二Boss的推荐顺序、召唤说明、世界击败状态和收藏品，客户端界面仍待验收。

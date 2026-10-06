@@ -19,6 +19,7 @@ PROJECTS = (
     "CultivationStatus/CultivationStatus.Tests.csproj",
     "SpiritTide/SpiritTide.Tests.csproj",
     "Fishing/Fishing.Tests.csproj",
+    "BossChecklist/BossChecklist.Tests.csproj",
 )
 
 
@@ -32,7 +33,7 @@ def main() -> int:
     )]
     for project in PROJECTS:
         command = [args.dotnet, "run", "--project", str(ROOT / "Tools/Tests" / project), "--configuration", "Release"]
-        if project.startswith("CultivationStatus/"):
+        if project.startswith(("CultivationStatus/", "BossChecklist/")):
             command += ["--", str(ROOT)]
         commands.append(command)
     for index, command in enumerate(commands, 1):

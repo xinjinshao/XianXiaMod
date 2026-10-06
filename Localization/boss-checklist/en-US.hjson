@@ -1,0 +1,44 @@
+{
+  "Mods": {
+    "XianXia": {
+      "BossChecklistIntegration": {
+        "SpiritVeinWyrm": {
+          "SpawnInfo": "Use [i:XianXia/SpiritVeinIncense]. No realm, location or time requirement."
+        },
+        "GardenWarden": {
+          "SpawnInfo": "Use [i:XianXia/SummonGardenBrokenKey] in the Greenwood Herb Garden. Requires Qi Awakening and Spirit Vein Wyrm defeated."
+        },
+        "BlackFurnaceIronGolem": {
+          "SpawnInfo": "Use [i:XianXia/SummonOldFurnaceEmber] in the Sunken Furnace Vein. Requires Qi Awakening and Spirit Vein Wyrm defeated."
+        },
+        "TribulationCloudAvatar": {
+          "SpawnInfo": "Use [i:XianXia/SummonThunderCallingJade] in Thunder Marsh Clouds. Requires Qi Condensation and Garden Warden defeated; Hardmode is not required."
+        },
+        "ThunderMarshJiao": {
+          "SpawnInfo": "Use [i:XianXia/SummonThunderCallingJadeThunderMarshJiao] in Thunder Marsh Clouds. Requires Foundation, Hardmode and Tribulation Cloud Avatar defeated."
+        },
+        "AbyssalStarWomb": {
+          "SpawnInfo": "At night, use [i:XianXia/SummonStarAbyssMembrane] in the Star Abyss Rift. Requires Foundation, Hardmode and Black Furnace Iron Golem defeated."
+        },
+        "FormlessSwordSoul": {
+          "SpawnInfo": "Use [i:XianXia/SummonSectTrialToken] in Ten Thousand Sects Ruins. Requires Golden Core, Hardmode, Plantera and Thunder Marsh Jiao defeated."
+        },
+        "GreenwoodMedicineKingEcho": {
+          "SpawnInfo": "Use [i:XianXia/SummonSectTrialTokenGreenwoodMedicineKingEcho] in the Greenwood Herb Garden. Requires Golden Core, Hardmode, Plantera and Garden Warden defeated."
+        },
+        "HeavenTabletGuardian": {
+          "SpawnInfo": "Use [i:XianXia/SummonHeavenTabletRubbing] in the Fallen Heaven Palace. Requires Nascent Soul, Hardmode, Plantera, Golem and Formless Sword Soul defeated."
+        },
+        "BrokenHeavenInspector": {
+          "SpawnInfo": "Use [i:XianXia/SummonHeavenTabletRubbingBrokenHeavenInspector] in the Fallen Heaven Palace. Requires Nascent Soul, Hardmode, Plantera, Golem and Heaven Tablet Guardian defeated."
+        },
+        "MoonboneImmortal": {
+          "SpawnInfo": "At night, use [i:XianXia/SummonMoonboneRitualTalisman] in the Moonbone Abyss. Requires Tribulation, Hardmode, Plantera, Golem, Moon Lord and Broken Heaven Inspector defeated."
+        },
+        "OldHeavenDaoCore": {
+          "SpawnInfo": "At night, use [i:XianXia/SummonMoonboneRitualTalismanOldHeavenDaoCore] in the Moonbone Abyss. Requires Tribulation, Hardmode, Plantera, Golem, Moon Lord and Moonbone Immortal defeated. Advance to Dao Severing after defeating the core."
+        }
+      }
+    }
+  }
+}

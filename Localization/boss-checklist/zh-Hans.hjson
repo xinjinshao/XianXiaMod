@@ -1,0 +1,44 @@
+{
+  "Mods": {
+    "XianXia": {
+      "BossChecklistIntegration": {
+        "SpiritVeinWyrm": {
+          "SpawnInfo": "使用[i:XianXia/SpiritVeinIncense]。无境界、地点或时间限制。"
+        },
+        "GardenWarden": {
+          "SpawnInfo": "使用[i:XianXia/SummonGardenBrokenKey]。在青木药园。需启灵境并击败灵脉蠕虫。"
+        },
+        "BlackFurnaceIronGolem": {
+          "SpawnInfo": "使用[i:XianXia/SummonOldFurnaceEmber]。在沉炉矿脉。需启灵境并击败灵脉蠕虫。"
+        },
+        "TribulationCloudAvatar": {
+          "SpawnInfo": "使用[i:XianXia/SummonThunderCallingJade]。在雷泽云层。需凝气境并击败药宗守园人，无困难模式限制。"
+        },
+        "ThunderMarshJiao": {
+          "SpawnInfo": "使用[i:XianXia/SummonThunderCallingJadeThunderMarshJiao]。在雷泽云层。需筑基境、困难模式并击败劫云化身。"
+        },
+        "AbyssalStarWomb": {
+          "SpawnInfo": "使用[i:XianXia/SummonStarAbyssMembrane]。夜晚在星渊裂隙。需筑基境、困难模式并击败玄炉铁傀。"
+        },
+        "FormlessSwordSoul": {
+          "SpawnInfo": "使用[i:XianXia/SummonSectTrialToken]。在万宗遗址。需金丹境、困难模式、世纪之花并击败雷泽蛟。"
+        },
+        "GreenwoodMedicineKingEcho": {
+          "SpawnInfo": "使用[i:XianXia/SummonSectTrialTokenGreenwoodMedicineKingEcho]。在青木药园。需金丹境、困难模式、世纪之花并击败药宗守园人。"
+        },
+        "HeavenTabletGuardian": {
+          "SpawnInfo": "使用[i:XianXia/SummonHeavenTabletRubbing]。在坠天宫阙。需元婴境、困难模式、世纪之花、石巨人并击败无相剑魂。"
+        },
+        "BrokenHeavenInspector": {
+          "SpawnInfo": "使用[i:XianXia/SummonHeavenTabletRubbingBrokenHeavenInspector]。在坠天宫阙。需元婴境、困难模式、世纪之花、石巨人并击败天碑守御。"
+        },
+        "MoonboneImmortal": {
+          "SpawnInfo": "使用[i:XianXia/SummonMoonboneRitualTalisman]。夜晚在月骸天渊。需渡劫境、困难模式、世纪之花、石巨人、月亮领主并击败残天监察使。"
+        },
+        "OldHeavenDaoCore": {
+          "SpawnInfo": "使用[i:XianXia/SummonMoonboneRitualTalismanOldHeavenDaoCore]。夜晚在月骸天渊。需渡劫境、困难模式、世纪之花、石巨人、月亮领主并击败月骸仙君；击败后再突破斩道。"
+        }
+      }
+    }
+  }
+}
