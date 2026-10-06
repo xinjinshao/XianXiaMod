@@ -138,3 +138,8 @@ TribulationWarningLineProjectile沿HostileSourceBinding共用19字节布局，Li
 ## 共用灵弹来源清理
 
 第113轮共用BossSpiritBoltProjectile绑定原NPC/玩家来源，沿19字节ExtraAI和netImportant；来源失效、非法寿命或坏几何停止移动及伤害/Buff，权威6tick取消淡出。合法灵弹保留18×18、240tick、原速度及60tick灵压紊乱，新增玩家状态和CanHitLine墙体过滤，专服跳过光照/粒子。Telegraphs1,131→1,216项覆盖三模式死亡/无目标/同槽位换实例/坏年龄/NaN、取消包不能复活、原效果与墙体。客户端同槽位实例比较仍依赖权威取消包，真实联机及避让未验收。
+
+
+## 荆棘地带非法状态锁定
+
+第114轮GardenBriarPatch锁定AI/发送/完整接收发现的非法寿命，异常中心/位置同样无伤且不因修正坐标恢复；发送用原两字节年龄的-1哨兵同步失效，不扩展协议。来源槽为空时安全拒绝，CanHitPlayer要求有效伤害窗口、玩家存活/有限位置及墙体可见。保留45tick预警、90tick伤害、15tick淡出和120tick中毒。GardenBattle229→251项覆盖三模式坏寿命及修正、同步后不能复活、坏几何、空槽、预警和死亡目标。真实联机/碰撞及避让仍待验收。
