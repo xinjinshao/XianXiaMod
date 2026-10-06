@@ -18,7 +18,7 @@ public class PillQualitySystem : GlobalItem
 
     public static bool IsPill(Item item) => item.ModItem?.Mod is global::XianXia.XianXia
         && item.ModItem.Name is "QiCondensingPill" or "FoundationPill"
-            or "QiRecoveryPill" or "SpringReturnPill" or "TribulationResistingPill";
+            or "FurnaceGuardPill" or "QiRecoveryPill" or "SpringReturnPill" or "TribulationResistingPill";
 
     public override bool AppliesToEntity(Item entity, bool lateInstantiation) => IsPill(entity);
     public static PillQuality GetQuality(Item item) => IsPill(item)

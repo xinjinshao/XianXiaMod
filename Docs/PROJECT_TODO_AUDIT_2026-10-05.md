@@ -778,3 +778,10 @@ Progression累计552条规则回归通过（本轮73条条件矩阵及固定代�
 第83轮事务药效为模拟委托，本轮Networking直接链接生产QiRecoveryPill与QiRecoveryRules，执行实际SetDefaults/CanUseItem/UseItem，并通过生产CultivationItemTransactions.HandleRequest及PillQualitySystem.ApplyUseBonus结算。测试边界补DrinkLiquid/SoundID/Blue/BottledWater、HasBuff、价格银币、条件描述、丹炉与冷却Buff类型；没有替换回气丹钩子或改生产逻辑。新增25条覆盖四种持久品质恢复与附加奖励一次结算、恢复/灵压上限、所有品质固定1800tick、冷却拒绝保留库存、未启灵/满灵气/死亡/非活跃拒绝、服务器普通复制UseItem不执行、客户端真实5号请求且不恢复/消费，以及单人UseItem实际品质/代价/冷却。
 
 Networking累计23121条通过，内容契约和diff通过。本轮只修改测试基础与证据记录，不重复打包。实际原生buff槽映射/倒计时/保存、全球UseItem引擎调用顺序、库存与双客户端仍为模拟边界或待验收；R19/R01不勾选。源码CI已自动包含Networking，因此后续改动直接跑该实际钩子。本轮提交推送GitHub。
+
+
+## 第85轮：玄炉护体丹与双向共享药滞（2026-10-06）
+
+新增FurnaceGuardPill及FurnaceGuardBuff：凝气境起可用，防御+8、moveSpeed减少0.1，基础3600tick品质时长（45/60/75/90秒），效果仍在时不能再服以免刷新。沿用QiRecoveryCooldownBuff内部ID作为两药共享1800tick冷却，双语显示改“丹药药滞”，护士不可移除；取消护体增益不取消药滞。保留既有回气丹规则并补双向共享提示。护体药质只改持续时间，高品质额外恢复/再生沿用通用规则，不叠加额外防御倍率。炼丹炉炉渣铁4+青木根2+下品灵石6+瓶装水1产2粒、空鼠标品质边界。加入品质与用药事务白名单，复核CanUse后AddBuff，服务器现有事务据Buff变化消费一次。临时复用筑基丹与御劫图标。
+
+Networking直接链接实际丹药与Buff，新增26条验证注册/凝气门槛、四品质时长与固定冷却/单次消费/不可刷新、取消效果仍冷却、双向阻止另一药、Buff保存标志与实际防御/移动钩子（模拟原生重置后重复，不证明原生Buff叠加/寿命）。累计23147条通过。品质契约扩为6配方、内容/本地化/PNG1243及diff通过；构建0警告0错误、打包与专服加载通过，日志run-36252e659ae642d4ac54f259261a5b29。实际移动与战斗平衡、Buff同步/死亡/保存、独立美术仍待验收，R19/R01未勾选。本轮提交推送GitHub。

@@ -1053,6 +1053,26 @@ Check(ModPacket.Sent.Count==beforeRecoveryPackets+1&&ModPacket.Sent.Last().Data[
 recoveryPlayer.dead=true;Check(!realPill.CanUseItem(recoveryPlayer),"Dead owner cannot use recovery pill");recoveryPlayer.dead=false;recoveryPlayer.active=false;Check(!realPill.CanUseItem(recoveryPlayer),"Inactive owner cannot use recovery pill");recoveryPlayer.active=true;
 Game.netMode=NetmodeID.SinglePlayer;recoveryPlayer.State.spiritPressure=0;recoveryPlayer.buffTime=new int[22];realPill.UseItem(recoveryPlayer);
 Check(recoveryPlayer.State.spiritualEnergy==60&&recoveryPlayer.State.spiritPressure==10&&recoveryPlayer.buffTime[2]==1800,"Actual singleplayer ModItem applies stored spirit quality, pressure and cooldown");
+// Actual defensive pill and effect hooks, sharing the recovery fatigue.
+var guardPill=new XianXia.Content.Items.Materials.FurnaceGuardPill{Mod=mod,Name="FurnaceGuardPill"};guardPill.SetDefaults();guardPill.Item.type=952;guardPill.Item.stack=10;guardPill.Item.ModItem=guardPill;recoveryPlayer.inventory[0]=guardPill.Item;
+Game.netMode=NetmodeID.Server;Game.myPlayer=255;recoveryPlayer.buffTime=new int[22];
+Check(CultivationItemTransactions.IsProgressionItem(guardPill.Item)&&PillQualitySystem.IsPill(guardPill.Item),"Guard pill joins transaction and stored-quality paths");
+recoveryPlayer.State.cultivationStage=CultivationStage.QiAwakening;Check(!guardPill.CanUseItem(recoveryPlayer),"Guard pill requires Qi Condensation");recoveryPlayer.State.cultivationStage=CultivationStage.QiCondensation;
+foreach(var guardQuality in new[]{PillQuality.Coarse,PillQuality.Standard,PillQuality.Fine,PillQuality.Spirit}){
+ recoveryPlayer.buffTime=new int[22];recoveryPlayer.State.ProgressionItemCooldown=0;
+ guardPill.Item.GetGlobalItem<PillQualitySystem>().LoadData(guardPill.Item,new Terraria.ModLoader.IO.TagCompound{{"quality",(int)guardQuality},{"crafted",true}});
+ int stack=guardPill.Item.stack;Check(guardPill.CanUseItem(recoveryPlayer),"Guard pill eligible before dosing");CultivationItemTransactions.HandleRequest(recoveryPlayer,0,952);
+ Check(guardPill.Item.stack==stack-1&&recoveryPlayer.buffTime[3]==PillQualityRules.Scale(3600,guardQuality)&&recoveryPlayer.buffTime[2]==1800,"Guard duration is graded, fatigue fixed and one consumed");
+ recoveryPlayer.State.ProgressionItemCooldown=0;CultivationItemTransactions.HandleRequest(recoveryPlayer,0,952);Check(guardPill.Item.stack==stack-1,"Active guard pill cannot be refreshed or double consumed");
+ recoveryPlayer.buffTime[3]=0;Check(!guardPill.CanUseItem(recoveryPlayer),"Removing guard does not clear shared fatigue");
+ recoveryPlayer.State.spiritualEnergy=0;Check(!realPill.CanUseItem(recoveryPlayer),"Guard fatigue blocks recovery pill");
+}
+recoveryPlayer.buffTime=new int[22];realPill.Item.GetGlobalItem<PillQualitySystem>().LoadData(realPill.Item,new Terraria.ModLoader.IO.TagCompound{{"quality",2},{"crafted",true}});recoveryPlayer.inventory[0]=realPill.Item;recoveryPlayer.State.ProgressionItemCooldown=0;CultivationItemTransactions.HandleRequest(recoveryPlayer,0,951);
+Check(!guardPill.CanUseItem(recoveryPlayer),"Recovery fatigue blocks guard pill");
+var guardEffect=new XianXia.Content.Buffs.FurnaceGuardBuff();guardEffect.SetStaticDefaults();int guardIndex=3;
+Check(!Game.buffNoSave[3],"Guard effect participates in native buff saving");
+recoveryPlayer.statDefense=20;recoveryPlayer.moveSpeed=1;guardEffect.Update(recoveryPlayer,ref guardIndex);Check(recoveryPlayer.statDefense==28&&Math.Abs(recoveryPlayer.moveSpeed-.9f)<.001f,"Actual guard buff adds defense and movement tradeoff");
+recoveryPlayer.statDefense=20;recoveryPlayer.moveSpeed=1;guardEffect.Update(recoveryPlayer,ref guardIndex);Check(recoveryPlayer.statDefense==28&&Math.Abs(recoveryPlayer.moveSpeed-.9f)<.001f,"Effect reapplies from reset player stats without permanent accumulation");
 Console.WriteLine($"Networking including actual recovery pill hooks: {assertions} assertions; buff/inventory engine boundaries mocked.");
 sealed class TestBossSummon : XianXia.Common.Items.CultivationBossSummonItem
 {

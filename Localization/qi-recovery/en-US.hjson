@@ -4,13 +4,13 @@
       "Items": {
         "QiRecoveryPill": {
           "DisplayName": "Qi Recovery Pill",
-          "Tooltip": "Use after awakening when energy is below maximum; restores 40 energy, scaled by quality\nAdds 10 pressure; 30-second cooldown for all Qi Recovery Pills\nHigher-quality bonuses follow pill rules; quality does not shorten cooldown"
+          "Tooltip": "Use after awakening when energy is below maximum; restores 40 energy, scaled by quality\nAdds 10 pressure; 30-second cooldown for all Qi Recovery Pills\nHigher-quality bonuses follow pill rules; quality does not shorten cooldown\nShares fatigue with Furnace Guard Pills"
         }
       },
       "Buffs": {
         "QiRecoveryCooldownBuff": {
-          "DisplayName": "Qi Recovery Cooldown",
-          "Description": "Cannot use Qi Recovery Pills; the Nurse cannot remove this debuff"
+          "DisplayName": "Pill Fatigue",
+          "Description": "Cannot use Qi Recovery or Furnace Guard Pills; the Nurse cannot remove this debuff"
         }
       }
     }

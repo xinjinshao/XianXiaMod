@@ -35,7 +35,7 @@ namespace Terraria
         public static int maxTilesX=30,maxTilesY=30;
         public static Tile[,] tile = CreateTiles();
         private static Tile[,] CreateTiles() { var cells=new Tile[maxTilesX,maxTilesY]; for(int x=0;x<maxTilesX;x++) for(int y=0;y<maxTilesY;y++) cells[x,y]=new Tile(); return cells; }
-        public static Item mouseItem=new();
+        public static bool[] buffNoSave=new bool[22]; public static Item mouseItem=new();
         public static Player[] player = Enumerable.Range(0, maxPlayers).Select(i => new Player { whoAmI = i }).ToArray();
         public static NPC[] npc = Enumerable.Range(0, maxNPCs).Select(_ => new NPC()).ToArray();
         public static Player LocalPlayer => player[myPlayer];
@@ -246,7 +246,7 @@ namespace Terraria.ModLoader
         public static int TileType<T>() => typeof(T).Name switch { "ArtifactForgeTile"=>1,"ThunderPatternForgeTile"=>2,"HeavenFireFurnaceTile"=>3,_=>4 };
         public static int ItemType<T>()=>200;
         public static int ProjectileType<T>()=>typeof(T).Name=="GreenwoodArrayField"?3:typeof(T).Name=="MedicineCauldronField"?4:typeof(T).Name=="MedicineSpiritBolt"?5:typeof(T).Name=="FurnaceHammerProjectile"?6:typeof(T).Name=="FurnaceImpactBurst"?7:typeof(T).Name=="HeavenTabletWardProjectile"?8:typeof(T).Name=="ThunderTalismanArray"?9:typeof(T).Name=="MinorThunderboltProjectile"?10:2;
-        public static int BuffType<T>()=>2;
+        public static int BuffType<T>()=>typeof(T).Name=="FurnaceGuardBuff"?3:2;
         public static T GetInstance<T>() where T:new()=>new T();
     }
     public class ModSystem
@@ -426,3 +426,5 @@ namespace Terraria.ModLoader {public class GlobalProjectile {public virtual void
 
 namespace Microsoft.Xna.Framework {public record struct Rectangle(int X,int Y,int Width,int Height) {public bool Intersects(Rectangle r)=>X<r.X+r.Width&&X+Width>r.X&&Y<r.Y+r.Height&&Y+Height>r.Y;}}
 namespace Terraria.DataStructures {public class EntitySource_Parent : IEntitySource {public object Entity;public EntitySource_Parent(object entity){Entity=entity;}}}
+
+namespace Terraria.ModLoader { public class ModBuff { public int Type=3;public virtual string Texture=>"";public virtual void SetStaticDefaults(){}public virtual void Update(Terraria.Player player,ref int buffIndex){} } }

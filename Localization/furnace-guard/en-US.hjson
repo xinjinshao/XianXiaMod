@@ -1,0 +1,18 @@
+{
+  "Mods": {
+    "XianXia": {
+      "Items": {
+        "FurnaceGuardPill": {
+          "DisplayName": "Furnace Guard Pill",
+          "Tooltip": "Requires Qi Condensation; +8 defense and -10 percentage points movement speed\nBase duration 60 seconds, scaled by quality; cannot reuse while active\nShares 30-second fatigue with Qi Recovery Pills; higher-quality bonuses follow pill rules"
+        }
+      },
+      "Buffs": {
+        "FurnaceGuardBuff": {
+          "DisplayName": "Furnace Guard",
+          "Description": "+8 defense; -10 percentage points movement speed"
+        }
+      }
+    }
+  }
+}

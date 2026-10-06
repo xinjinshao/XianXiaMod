@@ -1,0 +1,18 @@
+{
+  "Mods": {
+    "XianXia": {
+      "Items": {
+        "FurnaceGuardPill": {
+          "DisplayName": "玄炉护体丹",
+          "Tooltip": "凝气境起可用；防御+8、移动速度降低10个百分点\n基础持续60秒，品质只影响持续时间；效果仍在时不能再用\n与回气丹共享30秒药滞；高品质附加奖励沿用丹药规则"
+        }
+      },
+      "Buffs": {
+        "FurnaceGuardBuff": {
+          "DisplayName": "玄炉护体",
+          "Description": "防御+8；移动速度降低10个百分点"
+        }
+      }
+    }
+  }
+}
