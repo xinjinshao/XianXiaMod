@@ -63,7 +63,7 @@ CI运行只读新鲜度检查，生成结果变化时须显式更新这四份输
 
 ## 原生包内容与默认配置
 
-Native checks另运行PackageContents，使用官方TmodFile打开实际.tmod，核对内部名称、build.txt版本、归档哈希、当前描述及Common/Content/Localization的所有PNG/HJSON（接受官方转换后的rawimg）；拒绝隐藏/越界条目、Assets/Docs/Wiki/Tools/bin/obj/README和源码/工具扩展。它不是读取源码文件名后假定打包正确。默认配置在Gameplay编译产物回归中验证，当前累计944条。
+Native checks另运行PackageContents，使用官方TmodFile打开实际.tmod，核对内部名称、build.txt版本、归档哈希、当前描述及Common/Content/Localization的所有PNG/HJSON（接受官方转换后的rawimg）；拒绝隐藏/越界条目、Assets/Docs/Wiki/Tools/bin/obj/README和源码/工具扩展。它不是读取源码文件名后假定打包正确。默认配置在Gameplay编译产物回归中验证，当前累计950条。
 
 ```powershell
 dotnet run --project Tools/Tests/PackageContents/PackageContents.csproj -- <XianXia.tmod路径> <官方引擎目录> <仓库根目录>
@@ -131,3 +131,12 @@ Telegraphs671→793项，增加七类来源失效×三模式、权威槽位复�
 法阵OnSpawn捕获Player来源槽位与会话，要求来源玩家active/未死、有限位置/速度、timer>0；权威还比较玩家引用与会话。结束/失败/断线/新会话让旧法阵无伤取消并15tick淡出。9字节NPC来源前缀后增加Int16玩家槽与Int64会话，共19字节，完整读取后赋值。Telegraphs793→891项，新增八类玩家来源失败×三模式、取消不能在新会话恢复，逐字节截断扩展至19字节；Boss来源检查继续通过。Gameplay937→944项实际编译Begin、加载、Initialize、getter及客户端拒绝分配检查通过。
 
 客户端死亡/结束立即无伤；同槽位重新渡劫仍依赖服务器取消包，尚未在玩家snapshot同步会话ID，不声称无延迟的客户端跨会话隔离。其它天劫预警/弹幕来源和真实联机继续待验收。
+
+
+## 天劫预警线取消及来源复用
+
+第110轮抽取HostileSourceBinding供法阵/预警线复用，保留19字节来源与年龄布局、完整读取原子性、取消锁定及NPC/玩家权威身份检查。预警36tick、netImportant，来源失效后6tick透明淡出，收到取消后客户端也限制剩余淡出，旧年龄数据不能延长取消显示。预警CanDamage/CanHitPlayer始终false；OnKill只在自然0到期、权威且来源有效时尝试一次释放，重复/负时间/提前清理或无效年龄不释放。
+
+成功释放用原NPC.GetSource_FromAI或Player.GetSource_FromThis，让雷击携带原始来源，避免只留下即将删除的预警实体；目前雷击自身尚未读取/绑定该来源。Telegraphs891→994项，覆盖NPC/玩家失效×三模式、自然释放一次/原来源转发、19字节逐段截断、非法年龄和取消透明/客户端年龄限制，法阵原回归继续通过。Gameplay944→950项，用官方来源验证实际预警常量/无伤/失效淡出/撤场/19字节及真实ModProjectile.NewInstance的来源组件独立性。
+
+完整34步/25.NET入口、原生构建/专服加载、打包及本地化路径通过。客户端即时实例/会话比较与已释放雷击的生命周期、真实运输/避让仍待验收。

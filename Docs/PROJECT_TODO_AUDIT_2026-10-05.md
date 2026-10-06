@@ -1011,3 +1011,14 @@ Telegraphs实际钩子671→793项，七种失败×三模式、来源有效/取�
 Telegraphs793→891项，增加八类玩家来源失效×三模式、新会话不能复活已取消场、19字节截断原子读取，保留Boss来源、窗口/绘图/Buff回归。Gameplay937→944项，实际编译getter、Begin两次同阶段不同会话、结束读0、实际TagCompound载入重建、客户端不分配及Initialize重置通过。完整34步/25.NET源码入口通过；原生构建0警告0错误、打包/专服加载run-7451f3c4d3734db6961063ff3e7dba5b通过（初次run-6e769b6272eb44b59e13baeff88f57f7亦通过）；PackageContents366条目/362资源/1465与LocalizationPaths110+2通过。
 
 没有运行真实客户端或多人世界；会话的客户端即时比较、真实乱序/晚加入延迟、其它天劫预警/弹幕来源与实际躲避仍待验收，R04保持未勾选。任务清单、网络/源码说明同步，本轮提交推送GitHub。
+
+
+## 第110轮：预警线来源失效取消与天然释放事务（2026-10-06）
+
+上一轮2dfd6b9的GitHub Source/Native checks均success。继续R04确认天劫/5类Boss及劫云灵使用的TribulationWarningLineProjectile仅看OnKill时间，来源结束后仍在0时释放雷击；取消显示也缺原生迟加入状态。将法阵已有来源代码提为HostileSourceBinding，共用NPC对象/ModNPC与玩家权威会话检查、19字节完整读取和取消锁定，法阵协议保持不变。
+
+预警加入36tick Lifetime、netImportant、19字节ExtraAI、无伤CanDamage/CanHitPlayer；来源失效权威6tick撤场，透明度随余寿命下降；已接收取消的客户端限制到6tick，旧年龄不能延长淡出。OnKill只允许权威timeLeft==0且来源有效、尚未释放时尝试一次，重复/负数/提前清理不释放；非法年龄钳0不会被误认为天然释放。释放雷击转发原NPC.GetSource_FromAI/Player.GetSource_FromThis，避免孤儿预警成为唯一来源。未在本轮声称已释放雷击自身生命周期完成。
+
+Telegraphs891→994项，NPC/玩家失效×三模式、有效天然释放一次、原Entity转发、19字节截断原子性、非法年龄、透明淡出和旧年龄限制，法阵原回归仍通过。Gameplay944→950项使用官方NPC来源和实际编译预警，验证迟加入标记/无伤/失效6tick/自然清理不进入原生创建/19字节；另真实调用官方NewInstance证明独立来源组件，不只假设构造器独立。最终完整34步/25.NET入口通过，原生构建0警告0错误、打包与专服加载run-abc399889db64217ad246506fef06ebe通过；PackageContents366条目/362资源/1465与LocalizationPaths110+2通过（初次及中间原生检查亦通过）。
+
+没有真实世界或客户端联机；已释放雷击来源、客户端实例/会话即时比较、运输延迟/晚加入和实际走位仍待验收，R04未勾选。任务清单、网络与源码说明同步，本轮提交推送GitHub。

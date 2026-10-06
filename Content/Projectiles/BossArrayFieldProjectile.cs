@@ -59,32 +59,8 @@ public partial class BossArrayFieldProjectile : ModProjectile
         && target.active && !target.dead
         && Collision.CanHitLine(Projectile.Center, 1, 1, target.Center, 1, 1);
 
-    public override void SendExtraAI(BinaryWriter writer)
-    {
-        int remaining = Projectile.timeLeft;
-        writer.Write((short)(remaining >= 0 && remaining <= Lifetime ? remaining : 0));
-        writer.Write(sourceCancelled);
-        writer.Write(sourceSlot);
-        writer.Write(sourceType);
-        writer.Write(sourcePlayerSlot);
-        writer.Write(sourcePlayerSession);
-    }
-
-    public override void ReceiveExtraAI(BinaryReader reader)
-    {
-        int remaining = reader.ReadInt16();
-        bool cancelled = reader.ReadBoolean();
-        short slot = reader.ReadInt16();
-        int type = reader.ReadInt32();
-        short playerSlot = reader.ReadInt16();
-        long session = reader.ReadInt64();
-        Projectile.timeLeft = remaining >= 0 && remaining <= Lifetime ? remaining : 0;
-        sourceCancelled |= cancelled;
-        sourceSlot = slot;
-        sourceType = type;
-        sourcePlayerSlot = playerSlot;
-        sourcePlayerSession = session > 0 ? session : 0;
-    }
+    public override void SendExtraAI(BinaryWriter writer) => sourceBinding.Write(writer, Projectile, Lifetime);
+    public override void ReceiveExtraAI(BinaryReader reader) => sourceBinding.Read(reader, Projectile, Lifetime);
 
     public override void OnHitPlayer(Player target, Player.HurtInfo info)
     {
