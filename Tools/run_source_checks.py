@@ -23,6 +23,7 @@ PROJECTS = (
     "Commissions/Commissions.Tests.csproj",
     "GardenBattle/GardenBattle.Tests.csproj",
     "BossTargeting/BossTargeting.Tests.csproj",
+    "BossAdds/BossAdds.Tests.csproj",
 )
 
 

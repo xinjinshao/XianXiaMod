@@ -18,7 +18,7 @@ using XianXia.Common.Systems;
 
 namespace XianXia.Content.NPCs.Bosses;
 
-public class BlackFurnaceIronGolem : ModNPC
+public partial class BlackFurnaceIronGolem : ModNPC
 
 {
     public override void SetStaticDefaults()
@@ -202,15 +202,7 @@ public class BlackFurnaceIronGolem : ModNPC
 
             int dmg = Math.Max(18, NPC.damage / 4);
 
-            if (phaseTwo) {
-
-                for (int j = 0; j < 2; j++)
-
-                    NPC.NewNPC(NPC.GetSource_FromAI(), (int)NPC.Center.X + Main.rand.Next(-60, 61), (int)NPC.Center.Y + Main.rand.Next(-40, 41),
-
-                        ModContent.NPCType<global::XianXia.Content.NPCs.Enemies.IronShardSpirit>(), ai0: NPC.whoAmI);
-
-            }
+            if (phaseTwo) SpawnShardAdds();
 
             Vector2 side = (target.Center - NPC.Center).SafeNormalize(Vector2.UnitY).RotatedBy(MathHelper.PiOver2);
 

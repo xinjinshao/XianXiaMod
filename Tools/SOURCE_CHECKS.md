@@ -6,7 +6,7 @@
 python Tools/run_source_checks.py
 ```
 
-也可通过 `--dotnet <SDK可执行文件>` 指定已有SDK。入口按顺序执行两组Python范围回归、10项经济图分析回归、8项生成器归属回归与只读输出新鲜度、内容契约、本地化键、PNG检查与21个Release源码回归项目；任何子命令失败立即返回非零状态，不继续后续检查。不要把输出中的模拟引擎边界当成实机验收。
+也可通过 `--dotnet <SDK可执行文件>` 指定已有SDK。入口按顺序执行两组Python范围回归、10项经济图分析回归、8项生成器归属回归与只读输出新鲜度、内容契约、本地化键、PNG检查与22个Release源码回归项目；任何子命令失败立即返回非零状态，不继续后续检查。不要把输出中的模拟引擎边界当成实机验收。
 
 `.github/workflows/source-checks.yml` 在push、pull_request和手动触发时运行同一入口，Windows runner使用Python 3.12和.NET 8；仅需仓库读取权限，相同分支的新运行取消旧运行。
 
@@ -56,14 +56,14 @@ CI运行只读新鲜度检查，生成结果变化时须显式更新这四份输
 
 `.github/workflows/native-checks.yml`在push、pull_request和手动触发时独立运行Windows原生检查。下载[官方v2026.08.3.0发布包](https://github.com/tModLoader/tModLoader/releases/tag/v2026.08.3.0)，固定SHA256为`61e865f3702b12ce4a26c5a90b9de99a12c65ffc228455eb3390ce54af1eab15`，校验后解压到runner临时目录；不使用latest、不依赖Steam、本地安装或仓库内引擎副本。升级时必须同时审核版本/摘要和原生回归。
 
-流程调用既有verify_build.ps1完成编译、隔离打包、专服内容与配方加载及经济导出，再执行Gameplay编译产物回归、LocalizationPaths官方加载器路径回归和三价格场景金币转换检查。任何非零退出均失败；经济阶段要求唯一快照，避免读错旧结果。源码29步检查保留在独立Source checks工作流。
+流程调用既有verify_build.ps1完成编译、隔离打包、专服内容与配方加载及经济导出，再执行Gameplay编译产物回归、LocalizationPaths官方加载器路径回归和三价格场景金币转换检查。任何非零退出均失败；经济阶段要求唯一快照，避免读错旧结果。源码30步检查保留在独立Source checks工作流。
 
 无论成功失败，上传专服标准/错误日志、引擎详细日志、经济快照/报告及生成模组包，保留14天，支持定位加载前失败。引擎下载或摘要校验失败也会阻止通过。此流程不启动游戏世界，不验证图形、多人实战、Boss平衡或完整通关；包仅为诊断产物，不自动发布。
 
 
 ## 原生包内容与默认配置
 
-Native checks另运行PackageContents，使用官方TmodFile打开实际.tmod，核对内部名称、build.txt版本、归档哈希、当前描述及Common/Content/Localization的所有PNG/HJSON（接受官方转换后的rawimg）；拒绝隐藏/越界条目、Assets/Docs/Wiki/Tools/bin/obj/README和源码/工具扩展。它不是读取源码文件名后假定打包正确。默认配置在Gameplay编译产物回归中验证，当前累计828条。
+Native checks另运行PackageContents，使用官方TmodFile打开实际.tmod，核对内部名称、build.txt版本、归档哈希、当前描述及Common/Content/Localization的所有PNG/HJSON（接受官方转换后的rawimg）；拒绝隐藏/越界条目、Assets/Docs/Wiki/Tools/bin/obj/README和源码/工具扩展。它不是读取源码文件名后假定打包正确。默认配置在Gameplay编译产物回归中验证，当前累计834条。
 
 ```powershell
 dotnet run --project Tools/Tests/PackageContents/PackageContents.csproj -- <XianXia.tmod路径> <官方引擎目录> <仓库根目录>
@@ -77,3 +77,6 @@ buildIgnore同时保护普通ModSources构建；verify_build的源目录白名�
 BossTargeting源码项目覆盖196条目标边界、存活/死亡组合、距离/非有限状态、服务端最近玩家选择和客户端等待规则。Worms增加头部目标失效时节段伤害关闭/恢复，累计22条。Gameplay直接调用11个Boss编译产物AI及CanHitPlayer，在官方Main玩家槽位中验证非法目标、安全退出、30tick权威离场、攻击计时重置、无重复脏状态和有效目标重新寻敌/首帧移动/接触；该过程仅初始化测试进程的Main静态数据和临时Program.SavePath，不打开世界，不访问用户存档。
 
 测试玩家数组和进程状态可控，不等于真实服务器网络运输或全员死亡后实际离场录像；召唤敌怪上限、来源隔离、客户端目标更新与性能继续实机/专项验收。
+
+
+BossAdds链接实际BlackFurnaceIronGolem.Adds partial和BossTargeting，149条覆盖长战斗召唤上限、天然敌怪/距离池、补缺、客户端拒绝与创建失败/同步；原生NPC创建与运输边界模拟。Gameplay另核对真实编译上限/半径及无效战斗/客户端创建拒绝分支，不能作为真实六敌怪战斗或掉落经济验收。

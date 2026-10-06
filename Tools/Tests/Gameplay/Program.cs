@@ -624,6 +624,19 @@ try {
   object[] nativeTargetRecoveredContact={nativeTargetPlayers.GetValue(0),0};Check((bool)nativeTargetBossType.GetMethod("CanHitPlayer").Invoke(nativeTargetRecoveredBoss,nativeTargetRecoveredContact),"Actual "+nativeTargetName+" preserves living-target contact");
   nativeTargetPlayerType.GetField("active").SetValue(nativeTargetPlayers.GetValue(0),false);
  }
+ var nativeShardBossType=type.Assembly.GetType("XianXia.Content.NPCs.Bosses.BlackFurnaceIronGolem",true);
+ Check((int)nativeShardBossType.GetField("MaximumNearbyShards").GetRawConstantValue()==6,"Compiled furnace summon population is six");
+ Check((float)nativeShardBossType.GetField("ShardArenaRadius").GetRawConstantValue()==1600f,"Compiled furnace arena cap radius is 1600 pixels");
+ foreach(int nativeShardScenario in new[]{0,1,2,3}) {
+  object nativeShardBoss=Activator.CreateInstance(nativeShardBossType),nativeShardNpc=Activator.CreateInstance(nativeTargetNpcType);
+  nativeShardBossType.GetProperty("Entity",BindingFlags.Instance|BindingFlags.Public|BindingFlags.NonPublic).SetValue(nativeShardBoss,nativeShardNpc);
+  nativeTargetNpcType.GetField("active").SetValue(nativeShardNpc,nativeShardScenario!=3);nativeTargetNpcType.GetField("life").SetValue(nativeShardNpc,100);
+  nativeTargetNpcType.GetField("target").SetValue(nativeShardNpc,nativeShardScenario==0?-1:0);
+  nativeTargetPlayerType.GetField("active").SetValue(nativeTargetPlayers.GetValue(0),nativeShardScenario==2);
+  nativeTargetMain.GetField("netMode").SetValue(null,nativeShardScenario==2?1:2);
+  nativeShardBossType.GetMethod("SpawnShardAdds",BindingFlags.Instance|BindingFlags.NonPublic).Invoke(nativeShardBoss,null);
+  Check(!(bool)nativeTargetNpcType.GetField("netUpdate").GetValue(nativeShardNpc),"Compiled spawn hook refuses invalid battle/client before touching native creation or RNG");
+ }
 } finally {
  nativeTargetMain.GetField("player").SetValue(null,nativeTargetOldPlayers);
  nativeTargetMain.GetField("netMode").SetValue(null,nativeTargetOldMode);
