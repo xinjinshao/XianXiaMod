@@ -1,0 +1,38 @@
+using System.IO;
+using Terraria;
+using Terraria.ID;
+using Terraria.DataStructures;
+using XianXia.Content.NPCs.Bosses;
+using XianXia.Content.NPCs.Enemies;
+
+int checks=0;
+void Check(bool ok,string name){checks++;if(!ok)throw new Exception(name);}
+BlackFurnaceIronGolem Parent(){var boss=new BlackFurnaceIronGolem();boss.NPC=new(){active=true,life=100,whoAmI=3,target=0,ModNPC=boss};Main.npc[3]=boss.NPC;return boss;}
+IronShardSpirit Child(BlackFurnaceIronGolem boss){var child=new IronShardSpirit();child.NPC=new(){active=true,life=70,whoAmI=4,ModNPC=child};child.OnSpawn(new EntitySource_Parent(boss.NPC));return child;}
+byte[] Save(Terraria.ModLoader.ModNPC npc){using var stream=new MemoryStream();using var writer=new BinaryWriter(stream);npc.SendExtraAI(writer);return stream.ToArray();}
+void Read(Terraria.ModLoader.ModNPC npc,byte[] data){using var stream=new MemoryStream(data);using var reader=new BinaryReader(stream);npc.ReceiveExtraAI(reader);}
+bool Hit(IronShardSpirit child){int cooldown=0;return child.CanHitPlayer(Main.player[0],ref cooldown)&&child.CanHitNPC(new());}
+void Reset(int mode=0){Main.netMode=mode;Main.npc=Enumerable.Range(0,Main.maxNPCs).Select(i=>new NPC{whoAmI=i}).ToArray();Main.player=[new(),new(){active=false}];NetMessage.Calls=0;}
+Reset();var natural=new IronShardSpirit();natural.OnSpawn(new NaturalSource());Check(natural.PreAI()&&Hit(natural),"natural source unaffected");
+var ordinary=new IronShardSpirit();ordinary.OnSpawn(new EntitySource_Parent(new NPC()));Check(ordinary.PreAI(),"ordinary parent unaffected");
+for(int mode=0;mode<=2;mode++){
+ for(int failure=0;failure<9;failure++){
+  Reset();var boss=Parent();var child=Child(boss);Check(Hit(child),"live source hit");Main.netMode=mode;
+  switch(failure){case 0:boss.NPC.active=false;break;case 1:boss.NPC.life=0;break;case 2:Main.player[0].dead=true;break;case 3:boss.NPC.target=255;break;case 4:child.NPC.Center=new(4001,0);break;case 5:child.NPC.velocity=new(float.NaN,0);break;case 6:Main.npc[3]=new(){active=true,life=100};break;case 7:Main.netMode=0;Parent();Main.netMode=mode;break;case 8:boss.NPC.Center=new(float.PositiveInfinity,0);break;}
+  Check(!Hit(child)&&!child.PreAI(),"invalid source blocks AI and damage");
+  Check(child.NPC.active==(mode==1),"only authority removes child");Check(NetMessage.Calls==(mode==2?1:0),"server sync once");
+  child.PreAI();Check(NetMessage.Calls==(mode==2?1:0),"idempotent cleanup");
+ }
+}
+Reset(2);var expiryBoss=Parent();var expiring=Child(expiryBoss);for(int tick=1;tick<900;tick++)Check(expiring.PreAI(),"alive before lifetime boundary");Check(!expiring.PreAI()&&!Hit(expiring)&&!expiring.NPC.active&&NetMessage.Calls==1,"expires at tick900");
+Reset();var first=Parent();var firstSession=first.SummonSession;var second=Parent();Check(firstSession>0&&second.SummonSession!=firstSession,"slot replacement session unique");
+var valid=Child(second);var wire=Save(valid);Check(wire.Length==13,"fixed child wire size");Check(Save(second).Length==8,"fixed boss wire size");
+for(int length=0;length<13;length++){var copy=Child(second);var before=Save(copy);try{Read(copy,wire[..length]);throw new Exception("accepted truncated child");}catch(EndOfStreamException){}Check(Save(copy).SequenceEqual(before),"truncated packet atomic");}
+for(int length=0;length<8;length++){var before=Save(second);try{Read(second,before[..length]);throw new Exception("accepted truncated boss");}catch(EndOfStreamException){}Check(Save(second).SequenceEqual(before),"truncated session atomic");}
+Reset();var authority=Parent();var serverChild=Child(authority);var bossWire=Save(authority);var childWire=Save(serverChild);Main.netMode=1;var remote=new BlackFurnaceIronGolem();remote.NPC=authority.NPC;remote.NPC.ModNPC=remote;var remoteChild=new IronShardSpirit();remoteChild.NPC=new(){active=true,life=70};Read(remoteChild,childWire);
+Check(!remoteChild.PreAI()&&!Hit(remoteChild)&&remoteChild.NPC.active,"child before parent packet waits harmlessly");Read(remote,bossWire);Check(remoteChild.PreAI()&&Hit(remoteChild),"parent packet restores client prediction");var age=Save(remoteChild);for(int i=0;i<1000;i++)remoteChild.PreAI();Check(Save(remoteChild).SequenceEqual(age),"client cannot expire authority child");
+for(int slotIndex=0;slotIndex<3;slotIndex++)for(int sessionIndex=0;sessionIndex<3;sessionIndex++)for(int lifetimeIndex=0;lifetimeIndex<4;lifetimeIndex++){
+ using var stream=new MemoryStream();using(var writer=new BinaryWriter(stream,System.Text.Encoding.UTF8,true)){writer.Write(true);writer.Write(new short[]{-1,3,short.MaxValue}[slotIndex]);writer.Write(new long[]{-1,0,authority.SummonSession}[sessionIndex]);writer.Write(new short[]{-1,0,900,short.MaxValue}[lifetimeIndex]);}
+ Read(remoteChild,stream.ToArray());bool expected=slotIndex==1&&sessionIndex==2&&lifetimeIndex>=2;Check(Hit(remoteChild)==expected,"malformed binding remains harmless or clamped");
+}
+Console.WriteLine($"Furnace summon lifecycle: {checks} checks passed (mock engine boundary).");

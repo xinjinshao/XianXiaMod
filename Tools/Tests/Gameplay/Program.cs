@@ -637,6 +637,31 @@ try {
   nativeShardBossType.GetMethod("SpawnShardAdds",BindingFlags.Instance|BindingFlags.NonPublic).Invoke(nativeShardBoss,null);
   Check(!(bool)nativeTargetNpcType.GetField("netUpdate").GetValue(nativeShardNpc),"Compiled spawn hook refuses invalid battle/client before touching native creation or RNG");
  }
+ // Exercise the compiled NPC extra-AI contract with the official engine types.
+ var nativeSummonType=type.Assembly.GetType("XianXia.Content.NPCs.Enemies.IronShardSpirit",true);
+ object nativeSummon=Activator.CreateInstance(nativeSummonType),nativeSummonNpc=Activator.CreateInstance(nativeTargetNpcType);
+ nativeSummonType.GetProperty("Entity",BindingFlags.Instance|BindingFlags.Public|BindingFlags.NonPublic).SetValue(nativeSummon,nativeSummonNpc);
+ byte[] SummonWire(){using var stream=new MemoryStream();using var writer=new BinaryWriter(stream);nativeSummonType.GetMethod("SendExtraAI").Invoke(nativeSummon,new object[]{writer});return stream.ToArray();}
+ Check((int)nativeSummonType.GetField("MaximumSummonLifetime").GetRawConstantValue()==900,"Compiled summon lifetime 900 ticks");
+ Check(SummonWire().Length==13,"Compiled summon extra-AI fixed thirteen bytes");
+ Check((bool)nativeSummonType.GetMethod("PreAI").Invoke(nativeSummon,null),"Compiled natural shard has no boss binding");
+ using(var payload=new MemoryStream()){
+  using(var writer=new BinaryWriter(payload,System.Text.Encoding.UTF8,true)){writer.Write(true);writer.Write((short)-1);writer.Write(123L);writer.Write((short)900);}
+  var bytes=payload.ToArray();
+  for(int length=0;length<bytes.Length;length++){
+   var before=SummonWire();using var truncated=new MemoryStream(bytes[..length]);
+   try{nativeSummonType.GetMethod("ReceiveExtraAI").Invoke(nativeSummon,new object[]{new BinaryReader(truncated)});throw new Exception("Compiled summon accepted truncated packet");}catch(TargetInvocationException ex)when(ex.InnerException is EndOfStreamException){}
+   Check(SummonWire().SequenceEqual(before),"Compiled truncated summon packet leaves state intact");
+  }
+  payload.Position=0;nativeSummonType.GetMethod("ReceiveExtraAI").Invoke(nativeSummon,new object[]{new BinaryReader(payload)});
+  Check(SummonWire().SequenceEqual(bytes),"Compiled summon wire roundtrip");
+ }
+ nativeTargetMain.GetField("netMode").SetValue(null,1);nativeTargetNpcType.GetField("active").SetValue(nativeSummonNpc,true);nativeTargetNpcType.GetField("life").SetValue(nativeSummonNpc,70);
+ Check(!(bool)nativeSummonType.GetMethod("PreAI").Invoke(nativeSummon,null)&&(bool)nativeTargetNpcType.GetField("active").GetValue(nativeSummonNpc),"Compiled invalid source blocks client AI without authority removal");
+ object[] nativeSummonContact={nativeTargetPlayers.GetValue(0),0};Check(!(bool)nativeSummonType.GetMethod("CanHitPlayer").Invoke(nativeSummon,nativeSummonContact),"Compiled invalid source cannot hit players");
+ nativeTargetMain.GetField("netMode").SetValue(null,0);nativeSummonType.GetMethod("PreAI").Invoke(nativeSummon,null);
+ Check(!(bool)nativeTargetNpcType.GetField("active").GetValue(nativeSummonNpc)&&(int)nativeTargetNpcType.GetField("damage").GetValue(nativeSummonNpc)==0,"Compiled invalid source despawns on authority");
+ nativeSummonType.GetMethod("PostAI").Invoke(nativeSummon,null);Check(!(bool)nativeTargetNpcType.GetField("netUpdate").GetValue(nativeSummonNpc),"Compiled PostAI stops after source cleanup");
 } finally {
  nativeTargetMain.GetField("player").SetValue(null,nativeTargetOldPlayers);
  nativeTargetMain.GetField("netMode").SetValue(null,nativeTargetOldMode);

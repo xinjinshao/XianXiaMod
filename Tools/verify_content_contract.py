@@ -298,7 +298,12 @@ def main() -> None:
     for language in ("zh-Hans", "en-US"):
         require_text(f"Localization/artifact-spirit/{language}.hjson", "SmallArtifactSpiritBuff", "DisplayName", "Description")
     for enemy in (ROOT / "Content/NPCs/Enemies").glob("*.cs"):
-        require_text(str(enemy.relative_to(ROOT)), f"EnemySpawnRules.Allows(nameof({enemy.stem}), Main.hardMode, NPC.downedPlantBoss, NPC.downedGolemBoss, NPC.downedMoonlord)")
+        name = enemy.stem.split(".")[0]
+        primary = enemy.with_name(name + ".cs")
+        if enemy != primary:
+            require_text(str(enemy.relative_to(ROOT)), f"partial class {name}")
+            require_text(str(primary.relative_to(ROOT)), f"partial class {name}")
+        require_text(str(primary.relative_to(ROOT)), f"EnemySpawnRules.Allows(nameof({name}), Main.hardMode, NPC.downedPlantBoss, NPC.downedGolemBoss, NPC.downedMoonlord)")
     require_text("Common/Items/CultivationWeaponItem.cs", "SetStaticDefaults() => Item.ResearchUnlockCount = 1")
     for source in (ROOT / "Content/Items/Weapons").glob("*.cs"):
         text = source.read_text(encoding="utf-8")

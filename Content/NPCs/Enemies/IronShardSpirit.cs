@@ -14,7 +14,7 @@ using Terraria.ModLoader;
 
 namespace XianXia.Content.NPCs.Enemies;
 
-public class IronShardSpirit : ModNPC
+public partial class IronShardSpirit : ModNPC
 
 {
     public override void SetStaticDefaults()
@@ -81,6 +81,7 @@ public class IronShardSpirit : ModNPC
 
     public override void PostAI()
     {
+        if (!NPC.active) return;
         NPC.rotation = NPC.velocity.X * 0.04f;
         if (Main.netMode == NetmodeID.MultiplayerClient) return;
         if (!global::XianXia.Common.Systems.EnemyTargeting.TryGetLivingTarget(NPC, out Player target))
