@@ -6,7 +6,7 @@ using Terraria.ModLoader;
 
 namespace XianXia.Content.NPCs.Bosses;
 
-public class ShatteredJadeWyrmMinion : ModNPC
+public partial class ShatteredJadeWyrmMinion : ModNPC
 {
     internal const float SegmentSpacing = 18f;
     private const int BodySegments = 4;
@@ -39,18 +39,11 @@ public class ShatteredJadeWyrmMinion : ModNPC
     public override bool CheckActive() => false;
 
     public override bool CanHitPlayer(Player target, ref int cooldownSlot) =>
-        global::XianXia.Common.Systems.BossTargeting.HasLivingTarget(NPC) && target.active && !target.dead;
+        HasSummonTarget() && target.active && !target.dead;
 
     public override void AI()
     {
-        int parent = (int)NPC.ai[0];
-        if (parent < 0 || parent >= Main.maxNPCs || !Main.npc[parent].active
-            || Main.npc[parent].type != ModContent.NPCType<SpiritVeinWyrm>())
-        {
-            NPC.damage = 0;
-            if (Main.netMode != NetmodeID.MultiplayerClient) SegmentedWormAI.Deactivate(NPC);
-            return;
-        }
+        if (!HasSummonSource()) return;
         if (!global::XianXia.Common.Systems.BossTargeting.TryGetLivingTarget(NPC, out Player target))
         {
             NPC.damage = 0;
@@ -60,14 +53,6 @@ public class ShatteredJadeWyrmMinion : ModNPC
         EnsureSegments();
 
         NPC.localAI[0]++;
-        NPC.ai[3]++;
-        if (NPC.ai[3] >= 900f)
-        {
-            NPC.damage = 0;
-            if (Main.netMode != NetmodeID.MultiplayerClient) SegmentedWormAI.Deactivate(NPC);
-            return;
-        }
-
         Vector2 toTarget = target.Center - NPC.Center;
         Vector2 wave = toTarget.SafeNormalize(Vector2.UnitY).RotatedBy(MathHelper.PiOver2) * (float)System.Math.Sin(NPC.localAI[0] * 0.09f) * 32f;
         NPC.velocity = Vector2.Lerp(NPC.velocity, (toTarget + wave).SafeNormalize(Vector2.UnitY) * 4.5f, 0.06f);
@@ -109,7 +94,9 @@ public class ShatteredJadeWyrmMinionBody : ModNPC
 
     public override bool CheckActive() => false;
 
-    public override void AI() => SegmentedWormAI.FollowPreviousSegment(NPC, ShatteredJadeWyrmMinion.SegmentSpacing, 0.02f, 0.13f, 0.1f, ModContent.NPCType<ShatteredJadeWyrmMinion>());
+    public override bool CanHitPlayer(Player target, ref int cooldownSlot) => ShatteredJadeWyrmMinion.HasLinkedSummonTarget(NPC) && target.active && !target.dead;
+    public override bool CanHitNPC(NPC target) => ShatteredJadeWyrmMinion.HasLinkedSummonTarget(NPC);
+    public override void AI() => ShatteredJadeWyrmMinion.FollowSummonSegment(NPC, 0.13f, 0.1f);
 }
 
 public class ShatteredJadeWyrmMinionTail : ModNPC
@@ -133,5 +120,7 @@ public class ShatteredJadeWyrmMinionTail : ModNPC
 
     public override bool CheckActive() => false;
 
-    public override void AI() => SegmentedWormAI.FollowPreviousSegment(NPC, ShatteredJadeWyrmMinion.SegmentSpacing, 0.02f, 0.1f, 0.08f, ModContent.NPCType<ShatteredJadeWyrmMinion>());
+    public override bool CanHitPlayer(Player target, ref int cooldownSlot) => ShatteredJadeWyrmMinion.HasLinkedSummonTarget(NPC) && target.active && !target.dead;
+    public override bool CanHitNPC(NPC target) => ShatteredJadeWyrmMinion.HasLinkedSummonTarget(NPC);
+    public override void AI() => ShatteredJadeWyrmMinion.FollowSummonSegment(NPC, 0.1f, 0.08f);
 }

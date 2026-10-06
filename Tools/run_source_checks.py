@@ -25,6 +25,7 @@ PROJECTS = (
     "BossTargeting/BossTargeting.Tests.csproj",
     "BossAdds/BossAdds.Tests.csproj",
     "FurnaceSummons/FurnaceSummons.Tests.csproj",
+    "WyrmSummons/WyrmSummons.Tests.csproj",
 )
 
 

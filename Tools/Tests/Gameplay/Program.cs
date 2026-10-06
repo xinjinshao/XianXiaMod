@@ -662,6 +662,39 @@ try {
  nativeTargetMain.GetField("netMode").SetValue(null,0);nativeSummonType.GetMethod("PreAI").Invoke(nativeSummon,null);
  Check(!(bool)nativeTargetNpcType.GetField("active").GetValue(nativeSummonNpc)&&(int)nativeTargetNpcType.GetField("damage").GetValue(nativeSummonNpc)==0,"Compiled invalid source despawns on authority");
  nativeSummonType.GetMethod("PostAI").Invoke(nativeSummon,null);Check(!(bool)nativeTargetNpcType.GetField("netUpdate").GetValue(nativeSummonNpc),"Compiled PostAI stops after source cleanup");
+ var nativeWyrmType=type.Assembly.GetType("XianXia.Content.NPCs.Bosses.SpiritVeinWyrm",true);
+ var nativeWyrmChildType=type.Assembly.GetType("XianXia.Content.NPCs.Bosses.ShatteredJadeWyrmMinion",true);
+ var nativeOldNpcTable=nativeTargetMain.GetField("npc").GetValue(null);
+ try {
+  int capacity=(int)nativeTargetMain.GetField("maxNPCs").GetValue(null);var npcTable=Array.CreateInstance(nativeTargetNpcType,capacity);
+  for(int i=0;i<capacity;i++)npcTable.SetValue(Activator.CreateInstance(nativeTargetNpcType),i);
+  nativeTargetMain.GetField("npc").SetValue(null,npcTable);nativeTargetMain.GetField("netMode").SetValue(null,0);nativeTargetPlayerType.GetField("active").SetValue(nativeTargetPlayers.GetValue(0),true);
+  object parent=Activator.CreateInstance(nativeWyrmType),parentNpc=npcTable.GetValue(3),child=Activator.CreateInstance(nativeWyrmChildType),childNpc=npcTable.GetValue(4);
+  nativeWyrmType.GetProperty("Entity",BindingFlags.Instance|BindingFlags.Public|BindingFlags.NonPublic).SetValue(parent,parentNpc);
+  nativeWyrmChildType.GetProperty("Entity",BindingFlags.Instance|BindingFlags.Public|BindingFlags.NonPublic).SetValue(child,childNpc);
+  nativeTargetNpcType.GetProperty("ModNPC").SetValue(parentNpc,parent);nativeTargetNpcType.GetProperty("ModNPC").SetValue(childNpc,child);
+  foreach(var pair in new[]{(parentNpc,3),(childNpc,4)}){nativeTargetNpcType.GetField("active").SetValue(pair.Item1,true);nativeTargetNpcType.GetField("life").SetValue(pair.Item1,70);nativeTargetNpcType.GetField("whoAmI").SetValue(pair.Item1,pair.Item2);nativeTargetNpcType.GetField("target").SetValue(pair.Item1,0);}
+  var nativeParentSourceType=projectileType.Assembly.GetType("Terraria.DataStructures.EntitySource_Parent",true);
+  object source=Activator.CreateInstance(nativeParentSourceType,new object[]{parentNpc,null});nativeWyrmChildType.GetMethod("OnSpawn").Invoke(child,new[]{source});
+  byte[] WyrmChildWire(){using var stream=new MemoryStream();using var writer=new BinaryWriter(stream);nativeWyrmChildType.GetMethod("SendExtraAI").Invoke(child,new object[]{writer});return stream.ToArray();}
+  var boundWire=WyrmChildWire();Check(boundWire.Length==10&&BitConverter.ToInt16(boundWire)==3&&BitConverter.ToInt64(boundWire,2)>0,"Official parent source captures slot and positive wyrm instance");
+  for(int length=0;length<10;length++){using var stream=new MemoryStream(boundWire[..length]);try{nativeWyrmChildType.GetMethod("ReceiveExtraAI").Invoke(child,new object[]{new BinaryReader(stream)});throw new Exception("Accepted truncated wyrm source");}catch(TargetInvocationException ex)when(ex.InnerException is EndOfStreamException){}Check(WyrmChildWire().SequenceEqual(boundWire),"Compiled wyrm source read atomic");}
+  var childAge=(float[])nativeTargetNpcType.GetField("ai").GetValue(childNpc);
+  Check((bool)nativeWyrmChildType.GetMethod("PreAI").Invoke(child,null)&&childAge[3]==1,"Compiled valid wyrm source advances authority age");
+  nativeTargetMain.GetField("netMode").SetValue(null,1);Check((bool)nativeWyrmChildType.GetMethod("PreAI").Invoke(child,null)&&childAge[3]==1,"Compiled client source never advances age");
+  foreach(string suffix in new[]{"Body","Tail"}){
+   var segmentType=type.Assembly.GetType("XianXia.Content.NPCs.Bosses.ShatteredJadeWyrmMinion"+suffix,true);object segment=Activator.CreateInstance(segmentType),segmentNpc=npcTable.GetValue(5);
+   segmentType.GetProperty("Entity",BindingFlags.Instance|BindingFlags.Public|BindingFlags.NonPublic).SetValue(segment,segmentNpc);nativeTargetNpcType.GetField("active").SetValue(segmentNpc,true);nativeTargetNpcType.GetField("life").SetValue(segmentNpc,70);nativeTargetNpcType.GetField("realLife").SetValue(segmentNpc,4);((float[])nativeTargetNpcType.GetField("ai").GetValue(segmentNpc))[1]=4;
+   object[] segmentContact={nativeTargetPlayers.GetValue(0),0};Check((bool)segmentType.GetMethod("CanHitPlayer").Invoke(segment,segmentContact),"Compiled live wyrm "+suffix+" contact allowed");
+   nativeTargetNpcType.GetField("active").SetValue(parentNpc,false);Check(!(bool)segmentType.GetMethod("CanHitPlayer").Invoke(segment,segmentContact),"Compiled parent loss blocks "+suffix+" before child head AI");
+   segmentType.GetMethod("AI").Invoke(segment,null);Check((bool)nativeTargetNpcType.GetField("active").GetValue(segmentNpc)&&(int)nativeTargetNpcType.GetField("damage").GetValue(segmentNpc)==0,"Compiled client "+suffix+" remains harmless awaiting authority");nativeTargetNpcType.GetField("active").SetValue(parentNpc,true);
+  }
+  nativeTargetMain.GetField("netMode").SetValue(null,0);childAge[3]=899;Check(!(bool)nativeWyrmChildType.GetMethod("PreAI").Invoke(child,null)&&!(bool)nativeTargetNpcType.GetField("active").GetValue(childNpc),"Compiled wyrm expires at authority tick900");
+  nativeTargetNpcType.GetField("active").SetValue(childNpc,true);childAge[3]=0;
+  object replacement=Activator.CreateInstance(nativeWyrmType);nativeWyrmType.GetProperty("Entity",BindingFlags.Instance|BindingFlags.Public|BindingFlags.NonPublic).SetValue(replacement,parentNpc);nativeTargetNpcType.GetProperty("ModNPC").SetValue(parentNpc,replacement);
+  object[] childContact={nativeTargetPlayers.GetValue(0),0};Check(!(bool)nativeWyrmChildType.GetMethod("CanHitPlayer").Invoke(child,childContact),"Compiled same-slot new wyrm instance denies old child contact");
+  Check(!(bool)nativeWyrmChildType.GetMethod("PreAI").Invoke(child,null)&&!(bool)nativeTargetNpcType.GetField("active").GetValue(childNpc),"Compiled same-slot new wyrm clears old child");
+ } finally {nativeTargetMain.GetField("npc").SetValue(null,nativeOldNpcTable);}
 } finally {
  nativeTargetMain.GetField("player").SetValue(null,nativeTargetOldPlayers);
  nativeTargetMain.GetField("netMode").SetValue(null,nativeTargetOldMode);

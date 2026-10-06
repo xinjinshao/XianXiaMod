@@ -12,7 +12,7 @@ using XianXia.Content.Items.Materials;
 namespace XianXia.Content.NPCs.Bosses;
 
 [AutoloadBossHead]
-public class SpiritVeinWyrm : ModNPC
+public partial class SpiritVeinWyrm : ModNPC
 {
     private const int BodySegments = 7;
     internal const float SegmentSpacing = 34f;
@@ -178,7 +178,9 @@ public class SpiritVeinWyrm : ModNPC
                 (int)NPC.Center.Y + Main.rand.Next(-40, 41),
                 ModContent.NPCType<ShatteredJadeWyrmMinion>(),
                 ai0: NPC.whoAmI);
-            if (id < 0 || id >= Main.maxNPCs || !Main.npc[id].active) continue;
+            if (id < 0 || id >= Main.maxNPCs || !Main.npc[id].active
+                || Main.npc[id].type != ModContent.NPCType<ShatteredJadeWyrmMinion>()) break;
+            Main.npc[id].target = NPC.target;
             Main.npc[id].netUpdate = true;
             Main.npc[id].velocity = new Vector2(Main.rand.NextFloat(-3f, 3f), Main.rand.NextFloat(-3f, 3f));
         }
