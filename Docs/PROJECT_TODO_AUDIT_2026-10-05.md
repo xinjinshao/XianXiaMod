@@ -896,3 +896,5 @@ R32/T54–55/T58新增独立Native checks工作流，push/PR/手动触发，Wind
 从官方地址重新下载归档、实测SHA256与固定值相同；解压全新临时引擎目录，无Steam/旧引擎目录依赖。本地执行与CI相同的原生命令，构建0警告0错误、打包/专服加载成功，run-ebc3f54e900442cd9ce2c296f7adc121，303条回归、110路径及2反例通过，三场景正收益候选为零。尚需确认提交后的GitHub托管runner结果；该流程不开始世界、不能证明图形客户端或真实多人/通关验收，R32/R01保持未勾选。维护说明及清单同步。本轮提交推送GitHub。
 
 第98轮托管解析补修：首推时job级env引用runner.temp被GitHub拒绝、未启动job；改为安装步骤内读取RUNNER_TEMP并通过GITHUB_ENV传给后续步骤，继续检查托管运行。
+
+修正后的托管Native checks运行37462905822所有步骤成功，证明官方引擎在全新GitHub Windows runner可编译、打包、加载及运行回归/经济检查。追加include-hidden-files以确保上传白名单涵盖隐藏.tml-test目录内日志和包；只上传列出的诊断路径。
