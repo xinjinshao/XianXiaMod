@@ -1,0 +1,19 @@
+{
+  "Mods": {
+    "XianXia": {
+      "SpiritTide": {
+        "Started": "灵潮夜开始！地表灵物正汇聚而来。",
+        "WaveAdvanced": "灵潮涌向下一波。",
+        "DawnEnded": "黎明驱散了灵潮；未完成的波次结束。",
+        "Completed": "灵潮夜平息！最后一只灵物留下了灵潮残珠与补给。",
+        "Progress": "灵潮夜 第{0}/3波：{1}/{2}"
+      },
+      "Items": {
+        "SpiritTidePearl": {
+          "DisplayName": "灵潮残珠",
+          "Tooltip": "灵潮夜三波完成奖励\n魔力上限+20，每次灵气恢复额外+1"
+        }
+      }
+    }
+  }
+}

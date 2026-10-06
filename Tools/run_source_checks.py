@@ -17,6 +17,7 @@ PROJECTS = (
     "MasterMonuments/MasterMonuments.Tests.csproj",
     "WorldGeneration/WorldGeneration.Tests.csproj",
     "CultivationStatus/CultivationStatus.Tests.csproj",
+    "SpiritTide/SpiritTide.Tests.csproj",
 )
 
 

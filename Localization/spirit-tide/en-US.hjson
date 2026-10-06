@@ -1,0 +1,19 @@
+{
+  "Mods": {
+    "XianXia": {
+      "SpiritTide": {
+        "Started": "Spirit Tide Night begins! Spirits gather at the surface.",
+        "WaveAdvanced": "The spirit tide advances to its next wave.",
+        "DawnEnded": "Dawn disperses the unfinished spirit tide.",
+        "Completed": "The spirit tide settles! The final spirit leaves a Tide Pearl and supplies.",
+        "Progress": "Spirit Tide wave {0}/3: {1}/{2}"
+      },
+      "Items": {
+        "SpiritTidePearl": {
+          "DisplayName": "Spirit Tide Pearl",
+          "Tooltip": "Reward for completing three Spirit Tide waves\n+20 maximum mana and +1 energy per regeneration pulse"
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,25 @@
+namespace Microsoft.Xna.Framework {public record struct Color(int R,int G,int B); public record struct Vector2(float X,float Y);public record struct Rectangle(int X,int Y,int Width,int Height);}
+namespace Terraria.DataStructures {public interface IEntitySource{}public class EntitySource_SpawnNPC:IEntitySource{}public class OtherSource:IEntitySource{}}
+namespace Terraria {
+public class Player {public bool active=true,dead,ZoneOverworldHeight=true;public int statManaMax2;public XianXia.Common.Players.XianXiaPlayer State=new();public T GetModPlayer<T>()=>(T)(object)State;}
+public class NPC {public bool active=true,boss,SpawnedFromStatue,netUpdate;public int type=1,lifeMax=40,life,damage=10,defense;public Microsoft.Xna.Framework.Vector2 Center=new(0,100);public Microsoft.Xna.Framework.Rectangle Hitbox=new(0,0,20,20);public object GetSource_Loot()=>null;}
+public class Item {public static List<(int Type,int Amount)> Drops=new();public int ResearchUnlockCount,width,height,value,rare;public bool accessory;public static int buyPrice(int gold)=>gold*10000;public static void NewItem(object source,Microsoft.Xna.Framework.Rectangle hitbox,int type,int stack=1)=>Drops.Add((type,stack));}
+public class RandomStub {public bool Trigger=true;public int Calls;public bool NextBool(int chance){Calls++;return Trigger;}}
+public static class Main {public static bool dayTime=true,hardMode=true,bloodMoon,pumpkinMoon,snowMoon;public static int netMode=2,invasionType;public static double worldSurface=100;public static Player[] player={new()};public static NPC[] npc=Array.Empty<NPC>();public static IEnumerable<Player> ActivePlayers=>player.Where(p=>p.active);public static IEnumerable<NPC> ActiveNPCs=>npc.Where(n=>n.active);public static RandomStub rand=new();public static void NewText(string t,byte r,byte g,byte b){}}
+public static class NetMessage {public static int Sent;public static void SendData(int type)=>Sent++;}
+}
+namespace Terraria.ID {public static class NetmodeID {public const int SinglePlayer=0,MultiplayerClient=1,Server=2;}public static class MessageID {public const int WorldData=7;}public static class ItemRarityID {public const int Pink=5;}}
+namespace Terraria.Localization {public class NetworkText {public static NetworkText FromKey(string key)=>new();}public static class Language {public static string GetTextValue(string key)=>key;}}
+namespace Terraria.Chat {public static class ChatHelper {public static int Messages;public static void BroadcastChatMessage(Terraria.Localization.NetworkText text,Microsoft.Xna.Framework.Color color)=>Messages++;}}
+namespace Terraria.ModLoader.IO {public class BitWriter{}public class BitReader{}public class TagCompound:Dictionary<string,object>{public bool GetBool(string key)=>TryGetValue(key,out var v)&&v is true;public int GetInt(string key)=>TryGetValue(key,out var v)?(int)v:0;}}
+namespace Terraria.ModLoader {
+public class ModSystem {public virtual void OnWorldLoad(){}public virtual void OnWorldUnload(){}public virtual void SaveWorldData(IO.TagCompound t){}public virtual void LoadWorldData(IO.TagCompound t){}public virtual void NetSend(BinaryWriter w){}public virtual void NetReceive(BinaryReader r){}public virtual void PostUpdateWorld(){}}
+public class ModItem {public Terraria.Item Item=new();public virtual string Texture=>"";public virtual void SetStaticDefaults(){}public virtual void SetDefaults(){}public virtual void UpdateAccessory(Terraria.Player p,bool hidden){}}
+public class GlobalNPC {public virtual void SendExtraAI(Terraria.NPC n,IO.BitWriter b,BinaryWriter w){}public virtual void ReceiveExtraAI(Terraria.NPC n,IO.BitReader b,BinaryReader r){}public virtual bool InstancePerEntity=>false;public virtual void EditSpawnPool(IDictionary<int,float> pool,NPCSpawnInfo info){}public virtual void OnSpawn(Terraria.NPC npc,Terraria.DataStructures.IEntitySource source){}public virtual void OnKill(Terraria.NPC npc){}}
+public class NPCSpawnInfo {public Terraria.Player Player=Terraria.Main.player[0];public bool PlayerInTown;}
+public static class ModContent {private static Dictionary<Type,object> cache=new();public static T GetInstance<T>() where T:new(){if(!cache.ContainsKey(typeof(T)))cache[typeof(T)]=new T();return (T)cache[typeof(T)];}public static int NPCType<T>()=>typeof(T).Name switch{"WanderingSpiritSlime"=>1,"ShatteredJadeWorm"=>2,_=>3};public static int ItemType<T>()=>typeof(T).Name switch{"SpiritTidePearl"=>4,"LowGradeSpiritStone"=>5,"SpiritHerbSeeds"=>6,_=>7};}
+}
+namespace XianXia.Common.Players {public enum CultivationStage {None,QiAwakening,QiCondensation,Foundation} public class XianXiaPlayer {public CultivationStage cultivationStage=CultivationStage.Foundation;public int spiritualEnergyRegenBonus;}}
+namespace XianXia.Content.NPCs.Enemies {public class WanderingSpiritSlime{}public class ShatteredJadeWorm{}public class TalismanBat{}}
+namespace XianXia.Content.Items.Materials {public class LowGradeSpiritStone{}public class QiRecoveryPill{}}
+namespace XianXia.Content.Items.HandGenerated {public class SpiritHerbSeeds{}}
