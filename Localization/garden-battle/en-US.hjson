@@ -1,0 +1,10 @@
+{
+  "Mods": {
+    "XianXia": {
+      "GardenBattle": {
+        "Briars": "Briar ward: avoid green borders; the central lane stays open",
+        "Dash": "Warden charge: move away from the green aim line"
+      }
+    }
+  }
+}

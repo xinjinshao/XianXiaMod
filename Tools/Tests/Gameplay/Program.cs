@@ -525,3 +525,19 @@ using(var bytes=new MemoryStream()){using(var writer=new BinaryWriter(bytes,Syst
 object nativeWardClone=refinedType.GetMethod("Clone",new[]{refinementItemType,refinementItemType}).Invoke(grownWardMeta,new[]{nativeGrownWard,nativeGrownWard});refinedType.GetMethod("SetLevel").Invoke(nativeWardClone,new object[]{1});
 Check((bool)refinedType.GetProperty("Awakened").GetValue(grownWardMeta)&&!(bool)refinedType.GetProperty("Awakened").GetValue(nativeWardClone),"Native ward cloned growth is independent");
 Console.WriteLine($"Actual engine gameplay assertions including crafted ward: {assertions}.");
+
+var actualBriarType=type.Assembly.GetType("XianXia.Content.Projectiles.GardenBriarPatch",true);object actualBriar=Activator.CreateInstance(actualBriarType),nativeBriar=Activator.CreateInstance(projectileType);
+actualBriarType.GetProperty("Entity",BindingFlags.Instance|BindingFlags.Public|BindingFlags.NonPublic).SetValue(actualBriar,nativeBriar);actualBriarType.GetMethod("SetDefaults").Invoke(actualBriar,null);
+Check((int)projectileType.GetField("width").GetValue(nativeBriar)==80&&(int)projectileType.GetField("height").GetValue(nativeBriar)==48,"Actual briar declares its warning-sized hitbox");
+Check((bool)projectileType.GetField("hostile").GetValue(nativeBriar)&&!(bool)projectileType.GetField("friendly").GetValue(nativeBriar)&&(int)projectileType.GetField("penetrate").GetValue(nativeBriar)==-1,"Actual briar native hostile stationary field");
+Check((bool)projectileType.GetField("netImportant").GetValue(nativeBriar)&&!(bool)projectileType.GetField("tileCollide").GetValue(nativeBriar)&&(int)projectileType.GetField("timeLeft").GetValue(nativeBriar)==150,"Actual briar participates in native late join and finite lifetime");
+foreach(short lifetime in new short[]{0,15,80,105,150}){
+ using var bytes=new MemoryStream();using(var writer=new BinaryWriter(bytes,System.Text.Encoding.UTF8,true))writer.Write(lifetime);bytes.Position=0;actualBriarType.GetMethod("ReceiveExtraAI").Invoke(actualBriar,new object[]{new BinaryReader(bytes)});
+ Check((int)projectileType.GetField("timeLeft").GetValue(nativeBriar)==lifetime,"Actual remaining-age hook retains every phase boundary");
+}
+using(var bytes=new MemoryStream()){using(var writer=new BinaryWriter(bytes,System.Text.Encoding.UTF8,true))writer.Write((short)999);bytes.Position=0;actualBriarType.GetMethod("ReceiveExtraAI").Invoke(actualBriar,new object[]{new BinaryReader(bytes)});Check((int)projectileType.GetField("timeLeft").GetValue(nativeBriar)==0,"Actual native field rejects extended lifetime");}
+var gardenType=type.Assembly.GetType("XianXia.Content.NPCs.Bosses.GardenWarden",true);object nativeGarden=Activator.CreateInstance(gardenType);
+using(var bytes=new MemoryStream()){using(var writer=new BinaryWriter(bytes,System.Text.Encoding.UTF8,true)){writer.Write(66);writer.Write(0);}bytes.Position=0;gardenType.GetMethod("ReceiveExtraAI").Invoke(nativeGarden,new object[]{new BinaryReader(bytes)});Check((int)gardenType.GetProperty("HazardSession").GetValue(nativeGarden)==66&&(int)gardenType.GetProperty("BattleTarget").GetValue(nativeGarden)==0,"Actual partial boss retains source session and target");}
+using(var bytes=new MemoryStream()){using(var writer=new BinaryWriter(bytes,System.Text.Encoding.UTF8,true))gardenType.GetMethod("SendExtraAI").Invoke(nativeGarden,new object[]{writer});Check(bytes.ToArray().SequenceEqual(new byte[]{66,0,0,0,0,0,0,0}),"Actual partial boss source identity serializes eight bytes");}
+Check(Convert.ToSingle(gardenType.GetField("DashLineLength").GetRawConstantValue())==384f,"Compiled dash warning covers movement plus body radius");
+Console.WriteLine($"Actual engine gameplay assertions including Garden Warden metadata: {assertions}.");
