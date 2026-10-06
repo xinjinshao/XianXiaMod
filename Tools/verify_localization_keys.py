@@ -9,7 +9,17 @@ ROOT = Path(__file__).resolve().parents[1]
 
 
 def read_all(pattern: str) -> list[tuple[Path, str]]:
-    return [(path, path.read_text(encoding="utf-8")) for path in ROOT.rglob(pattern)]
+    # Runtime keys must be satisfied by packaged localization, not test fixtures
+    # or copied build/server artifacts. Avoid traversing those trees entirely.
+    if pattern == "*.cs":
+        paths = list(ROOT.glob(pattern))
+        for folder in ("Common", "Content"):
+            paths.extend((ROOT / folder).rglob(pattern))
+    elif pattern == "*.hjson":
+        paths = list((ROOT / "Localization").rglob(pattern))
+    else:
+        raise ValueError(f"Unsupported localization scan pattern: {pattern}")
+    return [(path, path.read_text(encoding="utf-8")) for path in sorted(paths)]
 
 
 def localization_keys_from_code() -> set[str]:
