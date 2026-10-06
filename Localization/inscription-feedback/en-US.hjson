@@ -1,9 +1,0 @@
-{
-  "Mods": {
-    "XianXia": {
-      "Inscriptions": {
-        "TargetChanged": "The equipment or world route changed, so the old preview was cleared. Select the target again; no operation was submitted or materials spent."
-      }
-    }
-  }
-}
