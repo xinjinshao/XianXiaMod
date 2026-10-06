@@ -97,7 +97,8 @@ public class InscriptionUIState : UIState
         eligibleSlots.Clear();
         for (int slot = 0; slot < Math.Min(58, player.inventory.Length); slot++)
             if (slot != toolSlot && (tool.RefinesArtifact ? RefinedArtifact.SupportsRefinement(player.inventory[slot])
-                : tool.AwakensArtifact || tool.TransformsArtifact ? RefinedArtifact.IsSample(player.inventory[slot])
+                : tool.AwakensArtifact ? RefinedArtifact.SupportsAwakening(player.inventory[slot])
+                : tool.TransformsArtifact ? RefinedArtifact.IsSample(player.inventory[slot])
                 : InscribedEquipment.IsEligible(player.inventory[slot]))) eligibleSlots.Add(slot);
         int pages = Math.Max(1, (eligibleSlots.Count + 5) / 6); page = Math.Clamp(page, 0, pages - 1);
         pageLabel.SetText(Text("Page", page + 1, pages));

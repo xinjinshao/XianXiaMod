@@ -16,11 +16,12 @@ public class RefinedArtifact : GlobalItem
     public DownedBossSystem.EndgameRoute DaoRoute { get; private set; }
     public static bool IsSample(Item item) => SupportsRefinement(item)
         && item.ModItem.Name is "CloudpiercerFlyingSword" or "GreenwoodArrayPlate";
+    public static bool SupportsAwakening(Item item) => IsSample(item) || SupportsRefinement(item) && item.ModItem.Name == "HeavenTabletWardSeal";
     public static bool SupportsRefinement(Item item) => item != null && InscribedEquipment.IsEligible(item)
         && !item.accessory && item.damage > 0;
     public override bool AppliesToEntity(Item entity, bool lateInstantiation) => SupportsRefinement(entity);
     public static byte GetLevel(Item item) => SupportsRefinement(item) ? item.GetGlobalItem<RefinedArtifact>().Level : (byte)0;
-    public static bool IsAwakened(Item item) => IsSample(item) && item.GetGlobalItem<RefinedArtifact>().Awakened;
+    public static bool IsAwakened(Item item) => SupportsAwakening(item) && item.GetGlobalItem<RefinedArtifact>().Awakened;
     public void SetLevel(int level) { Level = RefinementRules.Normalize(level); if (Level != 3) { Awakened = false; DaoRoute = DownedBossSystem.EndgameRoute.None; } }
     public static DownedBossSystem.EndgameRoute GetDaoRoute(Item item) => IsSample(item) ? item.GetGlobalItem<RefinedArtifact>().DaoRoute : DownedBossSystem.EndgameRoute.None;
     public static DownedBossSystem.EndgameRoute ActiveDaoRoute(Item item) => GetDaoRoute(item) == DownedBossSystem.ChosenRoute
@@ -35,16 +36,16 @@ public class RefinedArtifact : GlobalItem
     {
         if (Level == 0) return;
         tag["refinementVersion"] = 3; tag["refinement"] = (int)Level;
-        tag["awakened"] = IsSample(item) && Awakened;
+        tag["awakened"] = SupportsAwakening(item) && Awakened;
         tag["daoRoute"] = IsSample(item) ? (int)DaoRoute : 0;
     }
-    public override void LoadData(Item item, TagCompound tag) { SetLevel(tag.GetInt("refinement")); Awakened = IsSample(item) && Level == 3 && tag.GetBool("awakened"); DaoRoute = Awakened ? DaoArtifactRules.Normalize(tag.GetInt("daoRoute")) : DownedBossSystem.EndgameRoute.None; }
-    public override void NetSend(Item item, BinaryWriter writer) { writer.Write(Level); writer.Write(IsSample(item) && Awakened); writer.Write(IsSample(item) ? (byte)DaoRoute : (byte)0); }
+    public override void LoadData(Item item, TagCompound tag) { SetLevel(tag.GetInt("refinement")); Awakened = SupportsAwakening(item) && Level == 3 && tag.GetBool("awakened"); DaoRoute = IsSample(item) && Awakened ? DaoArtifactRules.Normalize(tag.GetInt("daoRoute")) : DownedBossSystem.EndgameRoute.None; }
+    public override void NetSend(Item item, BinaryWriter writer) { writer.Write(Level); writer.Write(SupportsAwakening(item) && Awakened); writer.Write(IsSample(item) ? (byte)DaoRoute : (byte)0); }
     public override void NetReceive(Item item, BinaryReader reader)
     {
         byte level = reader.ReadByte(); bool awakened = reader.ReadBoolean(); byte route = reader.ReadByte();
-        SetLevel(level); Awakened = IsSample(item) && Level == 3 && awakened;
-        DaoRoute = Awakened ? DaoArtifactRules.Normalize(route) : DownedBossSystem.EndgameRoute.None;
+        SetLevel(level); Awakened = SupportsAwakening(item) && Level == 3 && awakened;
+        DaoRoute = IsSample(item) && Awakened ? DaoArtifactRules.Normalize(route) : DownedBossSystem.EndgameRoute.None;
     }
     public override void ModifyWeaponDamage(Item item, Player player, ref StatModifier damage)
     {
@@ -58,11 +59,12 @@ public class RefinedArtifact : GlobalItem
     public override void ModifyTooltips(Item item, List<TooltipLine> tooltips)
     {
         tooltips.Add(new TooltipLine(Mod, "Refinement", Language.GetTextValue("Mods.XianXia.Refinement.Tooltip", Level, RefinementRules.MaximumLevel, Level * 4)));
-        if (!IsSample(item)) {
+        if (!SupportsAwakening(item)) {
             tooltips.Add(new TooltipLine(Mod, "BasicArtifact", Language.GetTextValue("Mods.XianXia.Refinement.BasicArtifact")));
             return;
         }
-        tooltips.Add(new TooltipLine(Mod, "ArtifactAwakening", Language.GetTextValue(Awakened ? "Mods.XianXia.Refinement.Awakened" : "Mods.XianXia.Refinement.Unawakened")));
+        string stateKey = item.ModItem.Name == "HeavenTabletWardSeal" ? (Awakened ? "WardAwakened" : "WardDormant") : (Awakened ? "Awakened" : "Unawakened");
+        tooltips.Add(new TooltipLine(Mod, "ArtifactAwakening", Language.GetTextValue("Mods.XianXia.Refinement." + stateKey)));
         if (DaoRoute != DownedBossSystem.EndgameRoute.None)
             tooltips.Add(new TooltipLine(Mod, "DaoTransformation", Language.GetTextValue("Mods.XianXia.DaoArtifacts.Tooltip", Language.GetTextValue(EndgameRouteTransactions.NameKey(DaoRoute)))));
     }

@@ -5,7 +5,7 @@
         "Unbound": "Unbound",
         "SwordRequirement": "Burst: hold an awakened Cloudpiercer Flying Sword. Aim, then use the artifact skill key or click this button.",
         "ArrayRequirement": "Pulse: hold an awakened Greenwood Array Plate near your own Greenwood array. A friendly player in range must need healing.",
-        "WardRequirement": "Guard: equip Lightning Ward Jade in an unlocked functional accessory slot.",
+        "WardRequirement": "Guard: equip Lightning Ward Jade in an unlocked functional accessory slot, or hold an awakened Heaven Tablet Ward Seal at Spirit Severing with Golem progression.",
         "SkillNumbers": "Current energy cost: {0} | Shared cooldown after casting: {1}s",
         "AssignedControls": "Keyboard: {0} | Gamepad: {1}\nRebind in Mod Controls. The artifact skill key selects a skill from your held artifact."
       }

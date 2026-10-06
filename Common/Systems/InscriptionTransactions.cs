@@ -64,7 +64,7 @@ public static class InscriptionTransactions
             for (int slot = 0; slot < Math.Min(58, player.inventory.Length); slot++)
                 if (player.inventory[slot].type == stoneType && player.inventory[slot].stack > 0) count += Math.Min(required, player.inventory[slot].stack);
             if (!NearForge(player)) result = "Mods.XianXia.Inscriptions.NeedForge";
-            else if (material.AwakensArtifact && (!RefinedArtifact.IsSample(target)
+            else if (material.AwakensArtifact && (!RefinedArtifact.SupportsAwakening(target)
                 || !RefinementRules.CanAwaken(previousLevel, previous != 0, previousAwakened,
                     player.GetModPlayer<XianXiaPlayer>().cultivationStage, DownedBossSystem.DownedBosses.Contains("greenwood_medicine_king_echo"))))
                 result = "Mods.XianXia.Refinement.AwakeningRequirements";

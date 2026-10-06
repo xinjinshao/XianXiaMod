@@ -3,7 +3,7 @@ Mods: {
   Items: {
    ArtifactAwakeningSeal: {
     DisplayName: Artifact Awakening Seal
-    Tooltip: "Craft at a Star Pattern Cauldron using 2 artifact shards, 6 tribulation cloud dew and 4 Greenwood Roots\nUse near an artificing station to awaken an inscribed refinement-3 sword or array sample\nRequires Nascent Soul and Medicine King Echo; costs 24 extra low-grade stones\nAdds 10% weapon damage and lowers base energy cost; artifact active skills available (Q or right-click; configurable)"
+    Tooltip: "Craft at a Star Pattern Cauldron using 2 artifact shards, 6 tribulation cloud dew, 4 Greenwood Roots and 1 Medicine King Wood Heart\nUse near an artificing station to awaken an inscribed refinement-3 Cloudpiercer Flying Sword, Greenwood Array Plate or Heaven Tablet Ward Seal\nRequires Nascent Soul and Medicine King Echo; costs 24 extra low-grade stones\nAdds 10% weapon damage and lowers base energy cost; artifact active skills available (Q or right-click; configurable)"
    }
    ArtifactQuenchingCrystal: {
     DisplayName: Artifact Quenching Crystal
@@ -12,7 +12,7 @@ Mods: {
   }
   Refinement: {
    AwakeningCost: Costs 1 awakening seal and 24 low-grade stones; already awakened equipment and failures cost nothing
-   AwakeningChooseTarget: Select an inscribed level-3 sample; requires Nascent Soul and defeating Greenwood Medicine King Echo
+   AwakeningChooseTarget: Select an inscribed level-3 Cloudpiercer Flying Sword, Greenwood Array Plate or Heaven Tablet Ward Seal; requires Nascent Soul and defeating Greenwood Medicine King Echo
    AwakeningSelection: "Awaken: {0}; keeps inscription, refinement and prefix"
    AwakeningRow: "Slot {0} · {1} · {2}"
    AwakeState: Awakened
@@ -22,6 +22,8 @@ Mods: {
    AwakeningRequirements: Requires refinement 3, an inscription, Nascent Soul and defeating Medicine King Echo; equipment must be dormant. No materials consumed
    AwakeningSuccess: Equipment awakened; refinement, inscription and prefix retained
    Tooltip: "Refinement: {0}/{1} (+{2}% weapon damage)"
+   WardAwakened: Crafted awakening adds 10% weapon damage and lowers base spirit cost to 24; Guard costs 18 base energy, lasts 3 seconds and shares a 20-second skill cooldown; requires Spirit Severing and Golem progression; Dao transformation unavailable
+   WardDormant: Dormant; refine to level 3, retain an inscription and use an awakening seal after Medicine King Echo; awakened Guard also requires Spirit Severing and Golem progression; Dao transformation unavailable
    BasicArtifact: Supports three refinement levels; crafted awakening and Dao transformation are not yet available for this weapon
    ToolCost: Each level costs 1 quenching crystal and 6/12/18 low-grade stones; canceling, failure and maximum level cost nothing
    Cost: "Cost: 1 crystal + {0} low-grade stones; maximum level cannot advance"

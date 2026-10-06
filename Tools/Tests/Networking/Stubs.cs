@@ -185,6 +185,7 @@ namespace Terraria.ModLoader
         public virtual void ModifyTooltips(List<TooltipLine> tips) { }
         public virtual bool ConsumeItem(Terraria.Player player) => true;
         public virtual bool AltFunctionUse(Terraria.Player player)=>false;
+        public virtual void ModifyWeaponDamage(Terraria.Player player, ref StatModifier damage) {}
         public virtual bool Shoot(Terraria.Player player, Terraria.DataStructures.EntitySource_ItemUse_WithAmmo source,
             Microsoft.Xna.Framework.Vector2 position, Microsoft.Xna.Framework.Vector2 velocity, int type, int damage, float knockback) => true;
         public virtual bool CanUseItem(Terraria.Player player) => Allowed;

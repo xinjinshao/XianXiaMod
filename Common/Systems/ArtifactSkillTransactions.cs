@@ -15,8 +15,8 @@ namespace XianXia.Common.Systems;
 
 public static class ArtifactSkillTransactions
 {
-    public static ArtifactSkill? HeldSkill(Item item) => RefinedArtifact.IsSample(item) ? item.ModItem.Name switch
-    { "CloudpiercerFlyingSword" => ArtifactSkill.SwordBurst, "GreenwoodArrayPlate" => ArtifactSkill.ArrayPulse, _ => null } : null;
+    public static ArtifactSkill? HeldSkill(Item item) => RefinedArtifact.SupportsAwakening(item) ? item.ModItem.Name switch
+    { "CloudpiercerFlyingSword" => ArtifactSkill.SwordBurst, "GreenwoodArrayPlate" => ArtifactSkill.ArrayPulse, "HeavenTabletWardSeal" => ArtifactSkill.WardGuard, _ => null } : null;
     public static bool CanUseAlternative(Player player, Item item) => RefinedArtifact.IsAwakened(item)
         && HeldSkill(item) is ArtifactSkill skill && player.GetModPlayer<XianXiaPlayer>().activeSkillCooldown == 0
         && player.GetModPlayer<XianXiaPlayer>().CanConsumeSpiritualEnergy(DaoArtifactRules.SkillCost(skill,RefinedArtifact.ActiveDaoRoute(item)));
@@ -31,6 +31,12 @@ public static class ArtifactSkillTransactions
         packet.Write(Main.MouseWorld.X); packet.Write(Main.MouseWorld.Y); packet.Send();
     }
     private static bool Finite(Vector2 value) => float.IsFinite(value.X) && float.IsFinite(value.Y);
+    public static bool HasAwakenedWardSeal(Player player) => player.HeldItem.stack == 1
+        && player.HeldItem.ModItem?.Name == "HeavenTabletWardSeal" && RefinedArtifact.IsAwakened(player.HeldItem)
+        && player.GetModPlayer<XianXiaPlayer>().cultivationStage >= CultivationStage.SpiritSevering
+        && player.GetModPlayer<XianXiaPlayer>().cultivationStage <= CultivationStage.DaoSevering
+        && CultivationRules.GetWorldFailure(CultivationStage.SpiritSevering, Main.hardMode,
+            NPC.downedPlantBoss, NPC.downedGolemBoss, NPC.downedMoonlord).Length == 0;
     public static bool HasWard(Player player)
     {
         for (int slot = 3; slot < Math.Min(player.armor.Length, 10); slot++)
@@ -47,7 +53,7 @@ public static class ArtifactSkillTransactions
         state.skillRequestCooldown = 10;
         Item item = player.inventory[slot];
         string reason = "Mods.XianXia.Skills.Unavailable";
-        bool eligible = item.type == type && (skill == ArtifactSkill.WardGuard ? HasWard(player)
+        bool eligible = item.type == type && (skill == ArtifactSkill.WardGuard ? HasWard(player) || HasAwakenedWardSeal(player)
             : item.stack == 1 && HeldSkill(item) == skill && RefinedArtifact.IsAwakened(item));
         if (!eligible) { Reply(player, reason); return; }
         if (state.activeSkillCooldown > 0) { Reply(player, "Mods.XianXia.Skills.CoolingDown"); return; }

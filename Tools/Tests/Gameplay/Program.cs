@@ -478,7 +478,7 @@ foreach(string persistentFieldName in new[]{"GreenwoodArrayField","ThunderTalism
 Console.WriteLine($"Actual engine gameplay assertions including persistent field sync: {assertions}.");
 
 // Execute the eligibility and metadata hooks with actual new weapon defaults and native Item instances.
-foreach(string weaponName in new[]{"WoodgrainFlyingSword","SpiritwoodCrossbow","TalismanCrossbow","StarEclipseArbalest","SectMechanismCrossbow","HeavenLawArbalest","StarCalamityMechanismCase","CinnabarTalismanFlameItem","BlackFurnaceWarhammer","ThunderPatternSwordCase","ThunderTalismanArrayPlate","FormlessSwordWheel","GreenwoodMedicineCauldron","HeavenTabletWardSeal","MoonboneDharmaSword","BrokenHeavenDecree","ArchiveStarCodex"}){
+foreach(string weaponName in new[]{"WoodgrainFlyingSword","SpiritwoodCrossbow","TalismanCrossbow","StarEclipseArbalest","SectMechanismCrossbow","HeavenLawArbalest","StarCalamityMechanismCase","CinnabarTalismanFlameItem","BlackFurnaceWarhammer","ThunderPatternSwordCase","ThunderTalismanArrayPlate","FormlessSwordWheel","GreenwoodMedicineCauldron","MoonboneDharmaSword","BrokenHeavenDecree","ArchiveStarCodex"}){
  var growthWeaponType=type.Assembly.GetType("XianXia.Content.Items.Weapons."+weaponName,true);
  object growthWeapon=Activator.CreateInstance(growthWeaponType),growthOwner=Activator.CreateInstance(refinementItemType);
  growthWeaponType.GetProperty("Entity",BindingFlags.Instance|BindingFlags.Public|BindingFlags.NonPublic).SetValue(growthWeapon,growthOwner);
@@ -504,3 +504,24 @@ foreach(string weaponName in new[]{"WoodgrainFlyingSword","SpiritwoodCrossbow","
  Check(Refinement(growthMeta)==3&&!(bool)refinedType.GetProperty("Awakened").GetValue(growthMeta)&&DaoRoute(growthMeta)==0,weaponName+" native receive rejects sample metadata on a basic weapon");
 }
 Console.WriteLine($"Actual engine gameplay assertions including expanded refinement: {assertions}.");
+
+// Actual third artifact metadata preserves awakening while rejecting all sample Dao routes.
+object nativeGrownWard=Activator.CreateInstance(refinementItemType),grownWardWeapon=Activator.CreateInstance(sealType),grownWardMeta=Activator.CreateInstance(refinedType);
+sealType.GetProperty("Entity",BindingFlags.Instance|BindingFlags.Public|BindingFlags.NonPublic).SetValue(grownWardWeapon,nativeGrownWard);
+sealType.GetProperty("Mod",BindingFlags.Instance|BindingFlags.Public|BindingFlags.NonPublic).SetValue(grownWardWeapon,Activator.CreateInstance(type.Assembly.GetType("XianXia.XianXia",true)));
+refinementItemType.GetProperty("ModItem",BindingFlags.Instance|BindingFlags.Public|BindingFlags.NonPublic).SetValue(nativeGrownWard,grownWardWeapon);
+foreach(var pair in new[]{("type",1),("stack",1),("maxStack",1)})refinementItemType.GetField(pair.Item1).SetValue(nativeGrownWard,pair.Item2);
+sealType.GetMethod("SetDefaults").Invoke(grownWardWeapon,null);
+Check((bool)refinedType.GetMethod("SupportsRefinement").Invoke(null,new[]{nativeGrownWard})&&(bool)refinedType.GetMethod("SupportsAwakening").Invoke(null,new[]{nativeGrownWard})&&!(bool)refinedType.GetMethod("IsSample").Invoke(null,new[]{nativeGrownWard}),"Actual ward defaults separate three growth capabilities");
+foreach(int forbiddenRoute in new[]{1,2,3}){
+ refinedType.GetMethod("LoadData").Invoke(grownWardMeta,new[]{nativeGrownWard,Tag(("refinement",3),("awakened",true),("daoRoute",forbiddenRoute))});
+ Check(Refinement(grownWardMeta)==3&&(bool)refinedType.GetProperty("Awakened").GetValue(grownWardMeta)&&DaoRoute(grownWardMeta)==0,"Actual ward save strips each unsupported route but keeps awakening");
+ using(var bytes=new MemoryStream(new byte[]{3,1,(byte)forbiddenRoute}))refinedType.GetMethod("NetReceive").Invoke(grownWardMeta,new object[]{nativeGrownWard,new BinaryReader(bytes)});
+ Check((bool)refinedType.GetProperty("Awakened").GetValue(grownWardMeta)&&DaoRoute(grownWardMeta)==0,"Actual ward wire strips each unsupported route");
+}
+object nativeWardSave=Tag();refinedType.GetMethod("SaveData").Invoke(grownWardMeta,new[]{nativeGrownWard,nativeWardSave});
+Check(Convert.ToBoolean(tagType.GetMethod("GetBool").Invoke(nativeWardSave,new object[]{"awakened"}))&&Convert.ToInt32(tagType.GetMethod("GetInt").Invoke(nativeWardSave,new object[]{"daoRoute"}))==0,"Native ward save retains crafted awakening only");
+using(var bytes=new MemoryStream()){using(var writer=new BinaryWriter(bytes,System.Text.Encoding.UTF8,true))refinedType.GetMethod("NetSend").Invoke(grownWardMeta,new object[]{nativeGrownWard,writer});Check(bytes.ToArray().SequenceEqual(new byte[]{3,1,0}),"Native ward serializes bounded three-byte growth state");}
+object nativeWardClone=refinedType.GetMethod("Clone",new[]{refinementItemType,refinementItemType}).Invoke(grownWardMeta,new[]{nativeGrownWard,nativeGrownWard});refinedType.GetMethod("SetLevel").Invoke(nativeWardClone,new object[]{1});
+Check((bool)refinedType.GetProperty("Awakened").GetValue(grownWardMeta)&&!(bool)refinedType.GetProperty("Awakened").GetValue(nativeWardClone),"Native ward cloned growth is independent");
+Console.WriteLine($"Actual engine gameplay assertions including crafted ward: {assertions}.");

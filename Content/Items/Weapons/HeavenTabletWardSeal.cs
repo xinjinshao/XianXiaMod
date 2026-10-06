@@ -22,9 +22,15 @@ public class HeavenTabletWardSeal : global::XianXia.Common.Items.CultivationWeap
         Item.shoot = ModContent.ProjectileType<global::XianXia.Content.Projectiles.HeavenTabletWardProjectile>();
         Item.shootSpeed = 7f;
     }
-    public override int GetSpiritCost(Player player) => 28;
+    public override int GetSpiritCost(Player player) => global::XianXia.Common.Items.RefinedArtifact.IsAwakened(Item) ? 24 : 28;
+    public override void ModifyWeaponDamage(Player player, ref StatModifier damage)
+    {
+        if (global::XianXia.Common.Items.RefinedArtifact.IsAwakened(Item)) damage += 0.1f;
+    }
     public override bool CanUseItem(Player player)
     {
+        if (player.altFunctionUse == 2) return global::XianXia.Common.Systems.ArtifactSkillTransactions.HasAwakenedWardSeal(player)
+            && global::XianXia.Common.Systems.ArtifactSkillTransactions.CanUseAlternative(player, Item);
         XianXiaPlayer state = player.GetModPlayer<XianXiaPlayer>();
         return state.cultivationStage >= CultivationStage.SpiritSevering
             && CultivationRules.GetWorldFailure(CultivationStage.SpiritSevering, Main.hardMode,

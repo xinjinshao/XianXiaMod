@@ -1114,7 +1114,7 @@ var burstEffect=new XianXia.Content.Buffs.ThunderBurstBuff();recoveryPlayer.stat
 Check(recoveryPlayer.statDefense==14&&Math.Abs(recoveryPlayer.damageModifier.Bonus-.12f)<.001f,"Burst actual generic damage and defense tradeoff");
 Check(Math.Abs(recoveryPlayer.State.spiritualEnergyCostMultiplier-1.344f)<.001f,"Burst energy penalty composes with existing cost modifiers");
 // Expanded refinement uses the actual common transaction and per-item source hooks.
-foreach(string expandedName in new[]{"WoodgrainFlyingSword","SpiritwoodCrossbow","TalismanCrossbow","StarEclipseArbalest","SectMechanismCrossbow","HeavenLawArbalest","StarCalamityMechanismCase","CinnabarTalismanFlameItem","BlackFurnaceWarhammer","ThunderPatternSwordCase","ThunderTalismanArrayPlate","FormlessSwordWheel","GreenwoodMedicineCauldron","HeavenTabletWardSeal","MoonboneDharmaSword","BrokenHeavenDecree","ArchiveStarCodex"}) {
+foreach(string expandedName in new[]{"WoodgrainFlyingSword","SpiritwoodCrossbow","TalismanCrossbow","StarEclipseArbalest","SectMechanismCrossbow","HeavenLawArbalest","StarCalamityMechanismCase","CinnabarTalismanFlameItem","BlackFurnaceWarhammer","ThunderPatternSwordCase","ThunderTalismanArrayPlate","FormlessSwordWheel","GreenwoodMedicineCauldron","MoonboneDharmaSword","BrokenHeavenDecree","ArchiveStarCodex"}) {
  for(byte current=0;current<3;current++){
   SetupRefinement(current,RefinementRules.StoneCost(current),expandedName);var expandedItem=Game.player[0].inventory[1];Refine(current);
   Check(XianXia.Common.Items.RefinedArtifact.GetLevel(expandedItem)==current+1&&Game.player[0].inventory[0].stack==1&&Game.player[0].inventory[2].IsAir,"Expanded weapon tier uses exact shared transaction cost");
@@ -1135,6 +1135,38 @@ foreach(string expandedName in new[]{"WoodgrainFlyingSword","SpiritwoodCrossbow"
 foreach(Action reject in new Action[]{()=>Game.player[0].inventory[1].accessory=true,()=>Game.player[0].inventory[1].consumable=true,()=>Game.player[0].inventory[1].ammo=1,()=>Game.player[0].inventory[1].maxStack=2,()=>Game.player[0].inventory[1].vanity=true,()=>Game.player[0].inventory[1].damage=0,()=>Game.player[0].inventory[1].ModItem.Mod=new Mod()}){
  SetupRefinement(name:"SpiritwoodCrossbow");reject();Refine();Check(Game.player[0].inventory[0].stack==2&&Game.player[0].inventory[2].stack==6&&!XianXia.Common.Items.RefinedArtifact.SupportsRefinement(Game.player[0].inventory[1]),"Ineligible categories/origins cannot spend refinement materials");
 }
+foreach(byte route in new byte[]{1,2,3}){SetupDao(route,"HeavenTabletWardSeal");Dao(route);Check(Game.player[0].inventory[0].stack==2&&Game.player[0].inventory[2].stack==36&&XianXia.Common.Items.RefinedArtifact.GetDaoRoute(Game.player[0].inventory[1])==DownedBossSystem.EndgameRoute.None,"Ward rejects all sample Dao transactions without consumption");}
+// Third crafted artifact: ward awakening is independent of sample-only Dao transformation.
+SetupAwakening("HeavenTabletWardSeal");Awaken();var grownWard=Game.player[0].inventory[1];
+Check(XianXia.Common.Items.RefinedArtifact.IsAwakened(grownWard)&&Game.player[0].inventory[0].stack==1&&Game.player[0].inventory[2].IsAir,"Ward awakening spends one seal and exactly 24 stones");
+Check(grownWard.prefix==300&&CurrentInscription()==InscriptionKind.Greenwood&&XianXia.Common.Items.RefinedArtifact.GetLevel(grownWard)==3,"Ward awakening retains all item state");
+Awaken(true);Check(Game.player[0].inventory[0].stack==1,"Already awakened ward cannot consume again");
+var wardMeta=grownWard.GetGlobalItem<XianXia.Common.Items.RefinedArtifact>();
+wardMeta.LoadData(grownWard,new Terraria.ModLoader.IO.TagCompound{{"refinement",3},{"awakened",true},{"daoRoute",1}});
+Check(wardMeta.Awakened&&wardMeta.DaoRoute==DownedBossSystem.EndgameRoute.None,"Ward saves retain awakening but cannot import Dao");
+using(var bytes=new MemoryStream(new byte[]{3,1,3}))wardMeta.NetReceive(grownWard,new BinaryReader(bytes));
+Check(wardMeta.Awakened&&wardMeta.DaoRoute==DownedBossSystem.EndgameRoute.None,"Ward network rejects unsupported Dao");
+using(var bytes=new MemoryStream()){using(var writer=new BinaryWriter(bytes,Encoding.UTF8,true))wardMeta.NetSend(grownWard,writer);Check(bytes.ToArray().SequenceEqual(new byte[]{3,1,0}),"Ward network preserves existing three-byte layout");}
+var wardTips=new List<TooltipLine>();wardMeta.ModifyTooltips(grownWard,wardTips);Check(wardTips.Count==2&&wardTips[1].Text.Contains("WardAwakened"),"Ward describes its own awakening effects");
+foreach(Action invalid in new Action[]{()=>Game.player[0].State.cultivationStage=CultivationStage.GoldenCore,()=>DownedBossSystem.DownedBosses.Remove("greenwood_medicine_king_echo"),()=>Game.player[0].inventory[2].stack=23,()=>Game.player[0].inventory[1].GetGlobalItem<XianXia.Common.Items.RefinedArtifact>().SetLevel(2),()=>Game.player[0].inventory[1].GetGlobalItem<XianXia.Common.Items.InscribedEquipment>().SetKind(InscriptionKind.None)}){
+ SetupAwakening("HeavenTabletWardSeal");invalid();Awaken();Check(Game.player[0].inventory[0].stack==2,"Ward unmet requirements never consume seal");
+}
+void SetupWardSkill(){SetupSkill("HeavenTabletWardSeal");Game.player[0].State.cultivationStage=CultivationStage.SpiritSevering;Game.hardMode=true;Terraria.NPC.downedPlantBoss=true;Terraria.NPC.downedGolemBoss=true;}
+SetupWardSkill();Check(ArtifactSkillTransactions.HeldSkill(Game.player[0].HeldItem)==ArtifactSkill.WardGuard&&ArtifactSkillTransactions.HasAwakenedWardSeal(Game.player[0]),"Awakened ward resolves to protective skill");
+Skill(ArtifactSkill.WardGuard);Check(Game.player[0].State.wardGuardTimer==180&&Game.player[0].State.spiritualEnergy==82&&Game.player[0].State.activeSkillCooldown==1200,"Awakened ward grants existing three-second shield with shared cost/cooldown without jade");
+Skill();Check(Game.player[0].State.spiritualEnergy==82&&!Game.projectile.Any(p=>p.active),"Ward cannot substitute sword burst or bypass shared cooldown");
+foreach(Action invalid in new Action[]{()=>Game.player[0].State.cultivationStage=CultivationStage.NascentSoul,()=>Game.hardMode=false,()=>Terraria.NPC.downedPlantBoss=false,()=>Terraria.NPC.downedGolemBoss=false,()=>Game.player[0].inventory[1].GetGlobalItem<XianXia.Common.Items.RefinedArtifact>().SetLevel(2),()=>Game.player[0].State.spiritualEnergy=17,()=>Game.player[0].dead=true,()=>Game.player[0].noItems=true,()=>Game.player[0].CCed=true}){
+ SetupWardSkill();invalid();int energy=Game.player[0].State.spiritualEnergy;Skill(ArtifactSkill.WardGuard);Check(Game.player[0].State.wardGuardTimer==0&&Game.player[0].State.spiritualEnergy==energy&&Game.player[0].State.activeSkillCooldown==0,"Ward server rejects progression, resources and invalid player state without cost");
+}
+var actualGrowthWard=new XianXia.Content.Items.Weapons.HeavenTabletWardSeal{Mod=mod,Name="HeavenTabletWardSeal"};actualGrowthWard.SetDefaults();actualGrowthWard.Item.type=940;actualGrowthWard.Item.stack=1;actualGrowthWard.Item.ModItem=actualGrowthWard;
+Check(actualGrowthWard.GetSpiritCost(Game.player[0])==28,"Dormant ward retains original cost");
+actualGrowthWard.Item.GetGlobalItem<XianXia.Common.Items.RefinedArtifact>().SetLevel(3);actualGrowthWard.Item.GetGlobalItem<XianXia.Common.Items.RefinedArtifact>().TryAwaken();
+var wardDamage=new StatModifier();actualGrowthWard.ModifyWeaponDamage(Game.player[0],ref wardDamage);
+Check(actualGrowthWard.GetSpiritCost(Game.player[0])==24&&Math.Abs(wardDamage.Bonus-.1f)<.001f,"Actual ward awakening lowers cost and adds ten percent damage");
+SetupWardSkill();Game.player[0].inventory[1]=actualGrowthWard.Item;Game.player[0].altFunctionUse=2;
+Check(actualGrowthWard.AltFunctionUse(Game.player[0])&&actualGrowthWard.CanUseItem(Game.player[0]),"Actual ward enables alternate protective cast");
+Game.player[0].State.activeSkillCooldown=1;Check(!actualGrowthWard.CanUseItem(Game.player[0]),"Actual alternate respects shared cooldown");
+Game.player[0].State.activeSkillCooldown=0;Terraria.NPC.downedGolemBoss=false;Check(!actualGrowthWard.CanUseItem(Game.player[0]),"Actual alternate cannot bypass world gate");
 Console.WriteLine($"Networking including actual recovery pill hooks: {assertions} assertions; buff/inventory engine boundaries mocked.");
 sealed class TestBossSummon : XianXia.Common.Items.CultivationBossSummonItem
 {
