@@ -10,6 +10,8 @@ public partial class BlackFurnaceIronGolem
 {
     public const int ChargeWarningTicks = 40, ChargeDashTicks = 24, ChargeRecoveryTicks = 40;
     private bool chargeDashing;
+    private int chargeTarget = -1;
+    private Player chargePlayer;
     internal bool UpdateFurnaceCharge(Player target, bool finalPhase)
     {
         chargeDashing = false;
@@ -22,9 +24,20 @@ public partial class BlackFurnaceIronGolem
             }
             return true;
         }
+        if (NPC.ai[1] < 0f && Main.netMode != NetmodeID.MultiplayerClient && chargeTarget >= 0
+            && (NPC.target != chargeTarget || !ReferenceEquals(target, chargePlayer))) {
+            NPC.ai[0] = NPC.ai[1] = NPC.ai[2] = NPC.ai[3] = 0f;
+            NPC.velocity = Vector2.Zero;
+            chargeTarget = -1;
+            chargePlayer = null;
+            NPC.netUpdate = true;
+            return true;
+        }
         if (NPC.ai[1] >= 0f) {
             if (!finalPhase || Main.netMode == NetmodeID.MultiplayerClient) return false;
             if (++NPC.ai[1] < 180f) return false;
+            chargeTarget = NPC.target;
+            chargePlayer = target;
             NPC.ai[1] = -1f;
             NPC.ai[3] = (target.Center - NPC.Center).SafeNormalize(Vector2.UnitY).ToRotation();
             NPC.netUpdate = true;
