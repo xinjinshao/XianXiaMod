@@ -133,3 +133,8 @@ TribulationWarningLineProjectile沿HostileSourceBinding共用19字节布局，Li
 
 
 第112轮补非法寿命锁定：共享来源组件在AI、发送及完整接收后记住非法年龄（小于0或超过各自Lifetime），以后合法年龄不能恢复伤害。发送保留19字节格式，坏年龄写0同时取消位为true；原生合法0不自动取消，预警自然到期仍沿原一次释放规则。截断数据仍不会部分修改状态。
+
+
+## 共用灵弹来源清理
+
+第113轮共用BossSpiritBoltProjectile绑定原NPC/玩家来源，沿19字节ExtraAI和netImportant；来源失效、非法寿命或坏几何停止移动及伤害/Buff，权威6tick取消淡出。合法灵弹保留18×18、240tick、原速度及60tick灵压紊乱，新增玩家状态和CanHitLine墙体过滤，专服跳过光照/粒子。Telegraphs1,131→1,216项覆盖三模式死亡/无目标/同槽位换实例/坏年龄/NaN、取消包不能复活、原效果与墙体。客户端同槽位实例比较仍依赖权威取消包，真实联机及避让未验收。
