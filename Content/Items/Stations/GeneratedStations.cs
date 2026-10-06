@@ -88,7 +88,7 @@ public class SectTrialAltar : ModItem
         Item.width = 32; Item.height = 32;
         Item.maxStack = 99; Item.useTurn = true; Item.autoReuse = true;
         Item.useStyle = ItemUseStyleID.Swing; Item.useTime = 10; Item.useAnimation = 15;
-        Item.consumable = true; Item.value = Item.buyPrice(gold: 3);
+        Item.consumable = true; Item.value = Item.buyPrice(gold: 2);
         Item.rare = ItemRarityID.Lime;
         Item.createTile = ModContent.TileType<global::XianXia.Content.Tiles.Stations.SectTrialAltarTile>();
     }

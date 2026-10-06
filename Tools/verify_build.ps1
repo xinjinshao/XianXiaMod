@@ -5,10 +5,12 @@ param(
     [string[]]$AdditionalModPaths = @(),
     [hashtable]$AdditionalModDisplayNames = @{},
     [switch]$SkipServerLoad,
+    [switch]$ExportEconomyAudit,
     [int]$LoadWaitSeconds = 40
 )
 
 $ErrorActionPreference = "Stop"
+if ($ExportEconomyAudit -and $SkipServerLoad) { throw "Economy export requires server loading; omit -SkipServerLoad." }
 function Read-SharedLog([string]$Path) {
     if (!(Test-Path -LiteralPath $Path)) { return "" }
     $stream = [IO.File]::Open($Path, [IO.FileMode]::Open, [IO.FileAccess]::Read, [IO.FileShare]::ReadWrite)
@@ -67,7 +69,13 @@ ConvertTo-Json -InputObject $enabledMods -Compress | Set-Content -LiteralPath (J
 $stdout = Join-Path $runRoot "server.log"
 $stderr = Join-Path $runRoot "server.err.log"
 $arguments = @("tModLoader.dll", "-server", "-nosteam", "-tmlsavedirectory", ('"' + $saveRoot + '"'), "-modpath", ('"' + $mods + '"'))
-$process = Start-Process -FilePath $dotnetExe -ArgumentList $arguments -WorkingDirectory $tmlRoot -WindowStyle Hidden -PassThru -RedirectStandardOutput $stdout -RedirectStandardError $stderr
+$previousEconomyExport = [Environment]::GetEnvironmentVariable("XIANXIA_EXPORT_ECONOMY", "Process")
+try {
+    [Environment]::SetEnvironmentVariable("XIANXIA_EXPORT_ECONOMY", $(if ($ExportEconomyAudit) { "1" } else { $null }), "Process")
+    $process = Start-Process -FilePath $dotnetExe -ArgumentList $arguments -WorkingDirectory $tmlRoot -WindowStyle Hidden -PassThru -RedirectStandardOutput $stdout -RedirectStandardError $stderr
+} finally {
+    [Environment]::SetEnvironmentVariable("XIANXIA_EXPORT_ECONOMY", $previousEconomyExport, "Process")
+}
 $timer = [Diagnostics.Stopwatch]::StartNew()
 try {
     do {
@@ -92,3 +100,12 @@ if (!$loaded -or $errors.Trim().Length -gt 0) {
     throw "Server load not verified. Logs: $stdout; $stderr`n$log`n$errors"
 }
 Write-Output "Dedicated-server load passed. Logs: $stdout"
+
+if ($ExportEconomyAudit) {
+    $auditPath = Join-Path $saveRoot "XianXia/economy-audit.json"
+    if (!(Test-Path -LiteralPath $auditPath)) { throw "Economy snapshot missing: $auditPath" }
+    $audit = Get-Content -LiteralPath $auditPath -Raw | ConvertFrom-Json
+    if ($audit.schema -ne 1 -or !$audit.items.Count -or !$audit.recipes.Count -or !$audit.shops.Count -or $audit.prices.Count -ne 3) { throw "Incomplete economy snapshot: $auditPath" }
+    Copy-Item -LiteralPath $auditPath -Destination (Join-Path $runRoot "economy-audit.json")
+    Write-Output "Economy registrations exported: $(Join-Path $runRoot 'economy-audit.json')"
+}

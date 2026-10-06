@@ -26,7 +26,7 @@ public class SectLedger : ModItem
         Item.useTime = 20;
         Item.useAnimation = 20;
         Item.UseSound = SoundID.Item4;
-        Item.value = Item.buyPrice(gold: 1);
+        Item.value = Item.buyPrice(silver: 20);
         Item.rare = ItemRarityID.Green;
     }
 
