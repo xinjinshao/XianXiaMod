@@ -10,9 +10,16 @@ Mods: {
             BreakthroughRequiresTrial: "先完成前置试炼：{0}。"
             TribulationRetryUnavailable: "仅能重试当前境界尚未完成的天劫，且不能在天劫进行中重复开启。"
             TrialNames: {
+                spirit_vein_wyrm: "灵脉蠕虫"
+                garden_warden: "药园守园人"
+                black_furnace_iron_golem: "玄炉铁傀"
+                thunder_marsh_jiao: "雷泽蛟"
+                greenwood_medicine_king_echo: "青木药王残响"
+                moonbone_immortal: "月骸仙人"
+
                 tribulation_cloud_avatar: "劫云化身"
                 abyssal_star_womb: "星渊胎主"
-                formless_sword_soul: "无相剑魄"
+                formless_sword_soul: "无相剑魂"
                 heaven_tablet_guardian: "天碑守御"
                 broken_heaven_inspector: "残天监察使"
                 old_heaven_dao_core: "旧天道核心"

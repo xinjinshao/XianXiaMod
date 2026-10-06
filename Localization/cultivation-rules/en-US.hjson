@@ -10,6 +10,13 @@ Mods: {
             BreakthroughRequiresTrial: "Complete the required trial first: {0}."
             TribulationRetryUnavailable: "Retry is available only for an unfinished tribulation in your current realm, while no tribulation is active."
             TrialNames: {
+                spirit_vein_wyrm: "Spirit Vein Wyrm"
+                garden_warden: "Garden Warden"
+                black_furnace_iron_golem: "Black Furnace Iron Golem"
+                thunder_marsh_jiao: "Thunder Marsh Jiao"
+                greenwood_medicine_king_echo: "Greenwood Medicine King Echo"
+                moonbone_immortal: "Moonbone Immortal"
+
                 tribulation_cloud_avatar: "Tribulation Cloud Avatar"
                 abyssal_star_womb: "Abyssal Star Womb"
                 formless_sword_soul: "Formless Sword Soul"

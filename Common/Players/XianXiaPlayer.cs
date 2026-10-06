@@ -318,7 +318,8 @@ public class XianXiaPlayer : ModPlayer
         {
             if (Main.myPlayer == Player.whoAmI)
             {
-                Main.NewText(Language.GetTextValue("Mods.XianXia.Progression.BossPrerequisiteRequired", requiredDownedBoss), 255, 210, 120);
+                Main.NewText(Language.GetTextValue("Mods.XianXia.Progression.BossPrerequisiteRequired",
+                    Language.GetTextValue($"Mods.XianXia.Progression.TrialNames.{requiredDownedBoss}")), 255, 210, 120);
             }
 
             return false;
