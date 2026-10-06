@@ -720,3 +720,10 @@ CanUseBossSummon原先将requiredDownedBoss内部ID直接插入聊天。改为�
 上一轮本地化检查异常耗时，复核发现read_all使用ROOT.rglob扫描整个仓库：既遍历累计专服/世界生成产物，也会将Tools/Tests模拟源码纳入运行时引用，并可能让复制的hjson满足正式资源缺失键。修改为.cs只读根级源文件、Common和Content，.hjson只读Localization；完全不遍历测试、bin/obj和.tml-test目录，未知扫描模式直接报错。保留原静态键解析与动态前缀由专项契约负责的边界，未声称支持完整HJSON语义或逐文化缺失验收。
 
 四项真实临时目录回归通过：根级/深层源码覆盖与测试产物排除、复制键不能掩盖正式缺失、深层正式本地化可以满足引用、不可解码产物不读取及未知模式拒绝。正式本地化键和内容契约检查通过，diff检查通过；此次不改运行时代码/资源，不重复打包或战斗回归。CI自动化、动态键完整覆盖和完整文化验收仍待实现，R32未勾选。本轮提交推送GitHub。
+
+
+## 第77轮：GitHub源码CI与统一验证入口（2026-10-06）
+
+新增Tools/run_source_checks.py统一入口，执行两组Python范围回归、内容契约、本地化键、PNG以及15个.NET8 Release源码项目，子进程失败立即传播非零状态；可指定dotnet路径，CultivationStatus传入实际仓库目录。新增GitHub Actions工作流，在push/PR/手动触发时于Windows/Python3.12/.NET8运行同一命令，contents只读、20分钟上限、同分支新运行取消旧运行。新增说明明确Gameplay/LocalizationPaths依赖官方引擎仍留本地，原生打包/专服/真实世界生成/客户端验收不由源码CI证明。
+
+首次统一检查暴露PNG验证器无法识别朱砂符箭原版ID贴图的误报，已识别明确Terraria ItemID/ProjectileID路径，四项回归确认原版路径可通过且缺失自定义/未知路径仍失败；原版ID有效性仍由原生构建/加载验证。Biomes旧模拟ModProjectile缺CanDamage、Projectile缺netImportant/Kill和Main缺maxPlayers，按当前生产源码接口补齐，未放宽生产行为或断言。最终20个入口步骤全部本地通过（PNG1243、Networking23092、15个源码项目等），diff检查通过；此次只修改工具/工作流/测试边界，未重复运行模组打包。GitHub托管执行结果尚待推送后确认，原生CI及完整文化/实机矩阵继续待做，R32未勾选。本轮提交推送GitHub。

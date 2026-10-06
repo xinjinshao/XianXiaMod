@@ -70,6 +70,12 @@ def main() -> int:
                        if not abstract and derives_from(name, base_class)]
 
             for class_name in matches:
+                # Known native item/projectile textures are supplied by Terraria,
+                # not by this repository. Engine build/load checks their ID names.
+                native_texture = re.search(
+                    r'override\s+string\s+Texture\s*=>\s*\$"Terraria/Images/(?:Item_\{ItemID\.\w+|Projectile_\{ProjectileID\.\w+)\}"', text)
+                if native_texture:
+                    continue
                 texture_override = re.search(r'override\s+string\s+Texture\s*=>\s*"XianXia/([^"]+)"', text)
                 if texture_override:
                     texture = ROOT / f"{texture_override.group(1)}.png"

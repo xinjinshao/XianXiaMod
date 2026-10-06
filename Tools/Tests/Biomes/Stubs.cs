@@ -26,6 +26,7 @@ namespace Terraria
 {
     public static class Main
     {
+        public static int maxPlayers => player.Length;
         public static int netMode, myPlayer = 255, buffScanAreaWidth = 20, buffScanAreaHeight = 20;
         public static int maxTilesX = 200, maxTilesY = 100;
         public static ulong GameUpdateCount;
@@ -63,7 +64,8 @@ namespace Terraria
     public class Projectile
     {
         public int width, height, penetrate, timeLeft, localNPCHitCooldown, owner, damage;
-        public bool friendly, hostile, tileCollide, ignoreWater, usesLocalNPCImmunity;
+        public bool friendly, hostile, tileCollide, ignoreWater, usesLocalNPCImmunity, netImportant;
+        public bool active=true; public void Kill()=>active=false;
         public object DamageType;
         public float rotation;
         public Microsoft.Xna.Framework.Vector2 velocity, position;
@@ -89,7 +91,7 @@ namespace Terraria.ID
 }
 namespace Terraria.ModLoader
 {
-    public class ModProjectile { public Terraria.Projectile Projectile = new(); public virtual void SetDefaults() { } public virtual void AI() { } public virtual void OnSpawn(Terraria.DataStructures.IEntitySource source) { } public virtual void SendExtraAI(System.IO.BinaryWriter writer) { } public virtual void ReceiveExtraAI(System.IO.BinaryReader reader) { } }
+    public class ModProjectile { public Terraria.Projectile Projectile = new(); public virtual bool? CanDamage()=>null; public virtual void SetDefaults() { } public virtual void AI() { } public virtual void OnSpawn(Terraria.DataStructures.IEntitySource source) { } public virtual void SendExtraAI(System.IO.BinaryWriter writer) { } public virtual void ReceiveExtraAI(System.IO.BinaryReader reader) { } }
     public static class DamageClass { public static object Generic = new(), Magic = new(), Melee = new(); }
     public class ModPlayer { public Terraria.Player Player; public virtual void PostUpdateEquips() { } public virtual void ResetEffects() { } public virtual void PostUpdate() { } }
     public class ModSystem { public virtual void ClearWorld() { } }
