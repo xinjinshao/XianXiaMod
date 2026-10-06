@@ -1,0 +1,40 @@
+{
+  "Mods": {
+    "XianXia": {
+      "Items": {
+        "SpiritVeinFishingCrate": {
+          "DisplayName": "Spirit Vein Crate",
+          "Tooltip": "Caught in water in Shallow Spirit Veins; right-click to open\nContains 4–8 Low-grade Spirit Stones and 2–4 Spirit Gel\nCatch and open: No additional progression requirement\nReplaces half of biome-crate rolls; preserves highest-tier crates"
+        },
+        "GreenwoodFishingCrate": {
+          "DisplayName": "Greenwood Crate",
+          "Tooltip": "Caught in water in Greenwood Herb Garden; right-click to open\nContains 4–8 Low-grade Spirit Stones and 2–4 Greenwood Root\nCatch and open: No additional progression requirement\nReplaces half of biome-crate rolls; preserves highest-tier crates"
+        },
+        "FurnaceFishingCrate": {
+          "DisplayName": "Sunken Furnace Crate",
+          "Tooltip": "Caught in water in Sunken Furnace Vein; right-click to open\nContains 4–8 Low-grade Spirit Stones and 2–4 Furnace Slag Iron\nCatch and open: No additional progression requirement\nReplaces half of biome-crate rolls; preserves highest-tier crates"
+        },
+        "StarAbyssFishingCrate": {
+          "DisplayName": "Star Abyss Crate",
+          "Tooltip": "Caught in water in Star Abyss Rift; right-click to open\nContains 4–8 Low-grade Spirit Stones and 2–4 Star Abyss Membrane\nCatch and open: Requires a Hardmode world\nReplaces half of biome-crate rolls; preserves highest-tier crates"
+        },
+        "ThunderFishingCrate": {
+          "DisplayName": "Thunder Marsh Crate",
+          "Tooltip": "Caught in water in Thunder Marsh Clouds; right-click to open\nContains 4–8 Low-grade Spirit Stones and 2–4 Thunder Pattern Feather\nCatch and open: Requires a Hardmode world\nReplaces half of biome-crate rolls; preserves highest-tier crates"
+        },
+        "SectFishingCrate": {
+          "DisplayName": "Sect Ruins Crate",
+          "Tooltip": "Caught in water in Ten Thousand Sects Ruins; right-click to open\nContains 4–8 Low-grade Spirit Stones and 2–4 Sect Trial Token\nCatch and open: Requires Hardmode and Plantera defeated\nReplaces half of biome-crate rolls; preserves highest-tier crates"
+        },
+        "HeavenFishingCrate": {
+          "DisplayName": "Fallen Heaven Crate",
+          "Tooltip": "Caught in water in Fallen Heaven Palace; right-click to open\nContains 4–8 Low-grade Spirit Stones and 2–4 Heaven Tablet Rubbing\nCatch and open: Requires Hardmode, Plantera and Golem defeated\nReplaces half of biome-crate rolls; preserves highest-tier crates"
+        },
+        "MoonboneFishingCrate": {
+          "DisplayName": "Moonbone Crate",
+          "Tooltip": "Caught in water in Moonbone Abyss; right-click to open\nContains 4–8 Low-grade Spirit Stones and 2–4 Cold Moon Dust\nCatch and open: Requires Hardmode, Plantera, Golem and Moon Lord defeated\nReplaces half of biome-crate rolls; preserves highest-tier crates"
+        }
+      }
+    }
+  }
+}

@@ -15,6 +15,8 @@
 | [坠天宫阙](Entries/Fallen_Heaven_Palace.md) | <img src="../../../Assets/Final/fallen_heaven_jade_tile/fallen_heaven_jade_tile__tile__v01.png" width="32"> | Post-Golem | 高空特殊结构 | 天道碎片、天碑 | 仙傀、天碑卫 | 天碑守御 |
 | [月骸天渊](Entries/Moonbone_Abyss.md) | <img src="../../../Assets/Final/moonbone_tile/moonbone_tile__tile__v01.png" width="32"> | Post-Moon Lord | 终局专属区域 | 月骨、归档光柱 | 月骸修士、归档仙魂 | 月骸仙君 |
 
+八生态均已接入[水中钓鱼匣](../../Systems/Fishing.md)，可补充灵石与对应普通材料；高阶匣保留世界进度门槛。
+
 ## 相关数据
 
 - [生态生成与 Tile 规格](Biome_Generation_Stats.md)
