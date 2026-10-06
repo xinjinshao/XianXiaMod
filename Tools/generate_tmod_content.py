@@ -16,18 +16,28 @@ def pascal(asset_id: str) -> str:
     return "".join(part.capitalize() for part in asset_id.split("_"))
 
 
+GENERATED_LOCALIZATION_OUTPUTS = frozenset({
+    "generated/zh-Hans.hjson", "generated/en-US.hjson",
+    "generated_bestiary/zh-Hans.hjson", "generated_bestiary/en-US.hjson",
+})
+
+
 def write(path: Path, text: str) -> None:
-    path.parent.mkdir(parents=True, exist_ok=True)
-    path.write_text(text.replace("\n", "\r\n"), encoding="utf-8")
+    root = ROOT.resolve()
+    target = Path(path).resolve()
+    try:
+        relative = target.relative_to(root).as_posix()
+    except ValueError:
+        relative = ""
+    if relative not in {"Localization/" + name for name in GENERATED_LOCALIZATION_OUTPUTS}:
+        raise RuntimeError(f"Generator may only write its four localization outputs: {path}")
+    target.parent.mkdir(parents=True, exist_ok=True)
+    # Explicit LF avoids Windows text translation creating historical CRCRLF.
+    target.write_text(text.replace("\r\n", "\n").replace("\r", "\n"), encoding="utf-8", newline="\n")
 
 
 def copy_asset(asset_id: str, output_type: str, class_name: str, folder: Path, suffix: str = "") -> None:
-    src = FINAL / asset_id / f"{asset_id}__{output_type}__v01.png"
-    if not src.exists():
-        return
-    dst = folder / f"{class_name}{suffix}.png"
-    dst.parent.mkdir(parents=True, exist_ok=True)
-    shutil.copy2(src, dst)
+    raise RuntimeError("Asset copying is retired in this generator; gameplay sources and assets are hand-maintained.")
 
 
 def manifest_rows() -> list[dict[str, str]]:
@@ -484,6 +494,7 @@ TOWN_NPCS = {
 
 
 def generate_materials(existing: set[str]) -> None:
+    raise RuntimeError("Gameplay generation is retired; edit hand-maintained Content files directly.")
     classes = []
     consumables = {
         "spring_return_pill",
@@ -933,6 +944,7 @@ ITEMS_HEADER = """using System;\nusing Terraria;\nusing Terraria.ID;\nusing Terr
 
 
 def generate_projectiles(existing: set[str]) -> None:
+    raise RuntimeError("Gameplay generation is retired; edit hand-maintained Content files directly.")
     classes = []
     for row in manifest_rows():
         if row["output_type"] != "projectile":
@@ -1204,6 +1216,7 @@ PROJECTILE_HEADER = """using System;\nusing Microsoft.Xna.Framework;\nusing Terr
 
 
 def generate_tiles(existing: set[str]) -> None:
+    raise RuntimeError("Gameplay generation is retired; edit hand-maintained Content files directly.")
     classes = []
     for asset_id, (class_name, zh, en, drop) in TILE_CLASSES.items():
         if class_name in existing:
@@ -1249,6 +1262,7 @@ TILE_HEADER = """using Microsoft.Xna.Framework;\nusing Terraria;\nusing Terraria
 
 
 def generate_biomes() -> None:
+    raise RuntimeError("Gameplay generation is retired; edit hand-maintained Content files directly.")
     classes = []
     tile_count_terms = []
     for class_name, zh, en, tile_classes, threshold in BIOMES:
@@ -1296,6 +1310,7 @@ BIOME_HEADER = """using System;\nusing Microsoft.Xna.Framework;\nusing Terraria;
 
 
 def generate_enemies(existing: set[str]) -> None:
+    raise RuntimeError("Gameplay generation is retired; edit hand-maintained Content files directly.")
     classes = []
     for asset_id, (life, damage, defense, drop, drop2, drop2_chance) in ENEMY_DATA.items():
         class_name = pascal(asset_id)
@@ -1897,6 +1912,7 @@ ENEMY_HEADER = """using System;\nusing Microsoft.Xna.Framework;\nusing Terraria;
 
 
 def generate_bosses(existing: set[str]) -> None:
+    raise RuntimeError("Gameplay generation is retired; edit hand-maintained Content files directly.")
     classes = []
     for asset_id, (zh, en, life, damage, defense, summon, drop, drop2) in BOSS_DATA.items():
         class_name = pascal(asset_id)
@@ -2271,6 +2287,7 @@ def garden_warden_special() -> str:
 
 
 def generate_summons(existing: set[str]) -> None:
+    raise RuntimeError("Gameplay generation is retired; edit hand-maintained Content files directly.")
     classes = []
     used: set[str] = set()
     for asset_id, (_, _, _, _, _, summon, _, _) in BOSS_DATA.items():

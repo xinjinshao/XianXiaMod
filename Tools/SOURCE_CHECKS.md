@@ -6,7 +6,7 @@
 python Tools/run_source_checks.py
 ```
 
-也可通过 `--dotnet <SDK可执行文件>` 指定已有SDK。入口按顺序执行两组Python范围回归、10项经济图分析回归、内容契约、本地化键、PNG检查与20个Release源码回归项目；任何子命令失败立即返回非零状态，不继续后续检查。不要把输出中的模拟引擎边界当成实机验收。
+也可通过 `--dotnet <SDK可执行文件>` 指定已有SDK。入口按顺序执行两组Python范围回归、10项经济图分析回归、8项生成器归属回归与只读输出新鲜度、内容契约、本地化键、PNG检查与20个Release源码回归项目；任何子命令失败立即返回非零状态，不继续后续检查。不要把输出中的模拟引擎边界当成实机验收。
 
 `.github/workflows/source-checks.yml` 在push、pull_request和手动触发时运行同一入口，Windows runner使用Python 3.12和.NET 8；仅需仓库读取权限，相同分支的新运行取消旧运行。
 
@@ -35,3 +35,18 @@ python Tools/audit_economy.py <输出的economy-audit.json路径> --report Docs/
 `--check`对任何本模组正收益金币转换候选返回非零；候选仍需核对真实开店条件和操作。成本传播包含配方组、多步配方和批量输出；特殊货币/自定义价被排除，条件视为开放，随机奖励/前缀、原购物品退款、种植/掉落/钓鱼/微光/旅途和联机经济不在模型内。原生价格使用0.75最高快乐度场景（[官方ShopHelper常量](https://docs.tmodloader.net/docs/preview/class_shop_helper.html)），折扣场景同时设置独立角色的discountEquipped/discountAvailable，再读取GetItemExpectedPrice，避免自行假定买卖价比例。
 
 源码CI包含`test_economy_audit.py`的10个图分析行为测试；实际注册导出和引擎价格检查仍需上述专服流程。本次原生数据报告见[制作经济注册审计](../Docs/ECONOMY_REGISTRATION_AUDIT_2026-10-06.md)，它不代表完整经济平衡或可获得性验收。
+
+
+## 生成器归属与手写代码保护
+
+`generate_tmod_content.py`只维护`Localization/generated/{zh-Hans,en-US}.hjson`及`Localization/generated_bestiary/{zh-Hans,en-US}.hjson`四份输出。其余Common/Content源码、贴图和本地化都是手写维护，包括名字中带Generated/HandGenerated的现有文件；不能按文件名推断可以覆盖。数据表仍服务于生成本地化，历史玩法模板保留作参考。
+
+旧generate_materials/projectiles/tiles/biomes/enemies/bosses/summons入口和copy_asset已禁用，调用会在任何写入前报错；通用write仅允许四份输出，解析真实目标路径后检查归属，拒绝目录穿越或重定向到手写位置。需要修改玩法时直接编辑当前实现和行为回归。生成输出统一UTF-8/LF。
+
+```powershell
+python Tools/generate_tmod_content.py
+python Tools/verify_generated_localization.py
+python Tools/Tests/test_generator_ownership.py
+```
+
+CI运行只读新鲜度检查，生成结果变化时须显式更新这四份输出并评审内容；空格式行差异不作为过期，但实际值差异会失败。8项隔离回归执行真实主入口并保护手写哨兵、检查旧入口/资产复制拒绝、路径边界、换行/重复运行、只读校验状态恢复及失败传播。校验不写工作区，不重新生成玩法文件。

@@ -12,13 +12,17 @@ def normalized_lines(text: str) -> list[str]:
 
 def main() -> int:
     outputs = {}
-    generator.write = lambda path, text: outputs.update({path: text})
-    generator.generate_localization()
-    expected = {
-        "generated/zh-Hans.hjson", "generated/en-US.hjson",
-        "generated_bestiary/zh-Hans.hjson", "generated_bestiary/en-US.hjson",
-    }
-    if {path.relative_to(generator.ROOT / "Localization").as_posix() for path in outputs} != expected:
+    original_write = generator.write
+    try:
+        generator.write = lambda path, text: outputs.update({path: text})
+        generator.generate_localization()
+    finally:
+        generator.write = original_write
+    try:
+        actual = {path.resolve().relative_to((generator.ROOT / "Localization").resolve()).as_posix() for path in outputs}
+    except ValueError:
+        actual = set()
+    if actual != generator.GENERATED_LOCALIZATION_OUTPUTS:
         print("Unexpected localization output set; update the verifier's contract.")
         return 1
     stale = [path for path, text in outputs.items()

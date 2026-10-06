@@ -30,7 +30,8 @@ def main() -> int:
     parser.add_argument("--dotnet", default="dotnet", help=".NET 8 SDK executable")
     args = parser.parse_args()
     commands = [[sys.executable, str(ROOT / "Tools" / script)] for script in (
-        "Tests/test_localization_scope.py", "Tests/test_png_native_scope.py", "Tests/test_economy_audit.py", "verify_content_contract.py",
+        "Tests/test_localization_scope.py", "Tests/test_png_native_scope.py", "Tests/test_economy_audit.py", "Tests/test_generator_ownership.py",
+        "verify_generated_localization.py", "verify_content_contract.py",
         "verify_localization_keys.py", "verify_png_assets.py",
     )]
     for project in PROJECTS:
