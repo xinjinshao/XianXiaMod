@@ -68,7 +68,10 @@ public class MoonboneDharmaSword : global::XianXia.Common.Items.CultivationWeapo
 
 
 
-    public override int GetSpiritCost(Player player) => global::XianXia.Common.Items.RefinedArtifact.IsAwakened(Item) ? 14 : HasArtifactAwakening(player) ? 17 : 22;
+    public override int GetSpiritCost(Player player) => global::XianXia.Common.Items.RefinedArtifact.ActiveDaoRoute(Item) is var route
+        && route != global::XianXia.Common.Systems.DownedBossSystem.EndgameRoute.None
+        ? global::XianXia.Common.Systems.DaoArtifactRules.WeaponCost(Name, route)
+        : global::XianXia.Common.Items.RefinedArtifact.IsAwakened(Item) ? 14 : HasArtifactAwakening(player) ? 17 : 22;
 
 
     private static bool HasArtifactAwakening(Player player)

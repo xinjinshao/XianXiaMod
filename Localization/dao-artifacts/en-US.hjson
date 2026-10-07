@@ -3,17 +3,18 @@ Mods: {
   Items: {
    DaoTransformationSeal: {
     DisplayName: Artifact Dao Transformation Seal
-    Tooltip: Use near a Dao Severing Altar to transform an inscribed, level-three, awakened sample artifact along the world route; requires the Dao Severing realm and defeating the Old Heaven Dao Core
+    Tooltip: Use near a Dao Severing Altar to transform an inscribed, level-three, awakened eligible artifact (Cloudpiercer sword, Greenwood array or Moonbone sword) along the world route; requires the Dao Severing realm and defeating the Old Heaven Dao Core
    }
   }
   DaoArtifacts: {
    Cost: Costs 1 seal and 36 Low Grade Spirit Stones near a Dao Severing Altar. One transformation; preserves the item, prefix, inscription and awakening.
-   Selection: "Target: {0}\nWorld route: {1}\nRequires Dao Severing, an inscribed / level-three / awakened sample, and defeating the Old Heaven Dao Core. Confirm costs 1 seal + 36 stones. Existing transformation cannot change route."
+   Selection: "Target: {0}\nWorld route: {1}\nRequires Dao Severing, an inscribed / level-three / awakened eligible artifact, and defeating the Old Heaven Dao Core. Confirm costs 1 seal + 36 stones. Existing transformation cannot change route."
    Row: "{0}. {1} · Dao: {2}"
    Tooltip: "Dao transformation: {0}\nOnly works in matching-route worlds that defeated the Old Heaven Dao Core\nBase damage grows to sword 150 / array 80; prefixes and existing bonuses remain\nNormal costs: sword 20 / array 28, or 16 / 22 for Star Abyss; player multipliers still apply\nRebuild pulse heals 40 and sword burst heals the owner for 20; Sever adds 15% damage and bursts for triple weapon damage; Star Abyss active skills cost less and add 8 spiritual pressure"
+   MoonTooltip: "Dao transformation: {0}\nOnly active in matching-route worlds after defeating the Old Heaven Dao Core\nBase damage grows from 220 to 280; prefixes, refinement, awakening and heritage bonuses remain\nNormal base cost 18, or 14 for Star Abyss; skills keep the shared 20-second cooldown\nRebuild: three shards at 200% weapon damage, 36 base energy, heal owner up to 20\nSever: +15% weapon damage; three shards at 250%, 48 base energy\nStar Abyss: three shards at 200%, 30 base energy, +8 spiritual pressure per successful cast; player energy multipliers apply"
    ChangedInventory: The equipment, material or world route changed. Nothing consumed.
    NeedAltar: Transformation requires a Dao Severing Altar. Nothing consumed.
-   Requirements: Requires a world route, Dao Severing, a defeated core, and an inscribed / level-three / awakened / untransformed sample artifact. Nothing consumed.
+   Requirements: Requires a world route, Dao Severing, a defeated core, and an inscribed / level-three / awakened / untransformed eligible artifact. Nothing consumed.
    NeedStones: Requires 36 Low Grade Spirit Stones. Nothing consumed.
    Success: Dao transformation completed. The original equipment state is preserved and bound to the world route.
   }

@@ -30,7 +30,7 @@ public static class DaoArtifactTransactions
         Item tool = player.inventory[toolSlot], target = player.inventory[targetSlot];
         string result = "ChangedInventory";
         if (tool.type == toolType && tool.stack > 0 && tool.ModItem is InscriptionToolItem material
-            && material.Mod is global::XianXia.XianXia && material.TransformsArtifact && RefinedArtifact.IsSample(target)
+            && material.Mod is global::XianXia.XianXia && material.TransformsArtifact && RefinedArtifact.SupportsDaoTransformation(target)
             && target.stack == 1 && target.type == targetType && target.prefix == prefix
             && (byte)InscribedEquipment.GetKind(target) == kind && RefinedArtifact.GetLevel(target) == level
             && RefinedArtifact.IsAwakened(target) == awakened && (byte)RefinedArtifact.GetDaoRoute(target) == daoRoute

@@ -3,7 +3,7 @@ Mods: {
   Items: {
    ArtifactAwakeningSeal: {
     DisplayName: Artifact Awakening Seal
-    Tooltip: "Craft at a Star Pattern Cauldron using 2 artifact shards, 6 tribulation cloud dew, 4 Greenwood Roots and 1 Medicine King Wood Heart\nUse near an artificing station to awaken an inscribed refinement-3 Cloudpiercer Flying Sword, Greenwood Array Plate or Heaven Tablet Ward Seal\nRequires Nascent Soul and Medicine King Echo; costs 24 extra low-grade stones\nAdds 10% weapon damage and lowers base energy cost; artifact active skills available (Q or right-click; configurable)"
+    Tooltip: "Craft at a Star Pattern Cauldron using 2 artifact shards, 6 tribulation cloud dew, 4 Greenwood Roots and 1 Medicine King Wood Heart\nUse near an artificing station to awaken an inscribed refinement-3 Cloudpiercer Flying Sword, Greenwood Array Plate, Heaven Tablet Ward Seal or Moonbone Dharma Sword (Moonbone also requires Tribulation and defeating Moonbone Immortal)\nRequires Nascent Soul and Medicine King Echo; costs 24 extra low-grade stones\nAdds 10% weapon damage and lowers base energy cost; artifact active skills available (Q or right-click; configurable)"
    }
    ArtifactQuenchingCrystal: {
     DisplayName: Artifact Quenching Crystal
@@ -12,7 +12,7 @@ Mods: {
   }
   Refinement: {
    AwakeningCost: Costs 1 awakening seal and 24 low-grade stones; already awakened equipment and failures cost nothing
-   AwakeningChooseTarget: Select an inscribed level-3 Cloudpiercer Flying Sword, Greenwood Array Plate or Heaven Tablet Ward Seal; requires Nascent Soul and defeating Greenwood Medicine King Echo
+   AwakeningChooseTarget: Select an inscribed level-3 Cloudpiercer Flying Sword, Greenwood Array Plate, Heaven Tablet Ward Seal or Moonbone Dharma Sword (Moonbone also requires Tribulation and defeating Moonbone Immortal); requires Nascent Soul and defeating Greenwood Medicine King Echo
    AwakeningSelection: "Awaken: {0}; keeps inscription, refinement and prefix"
    AwakeningRow: "Slot {0} · {1} · {2}"
    AwakeState: Awakened
@@ -24,7 +24,7 @@ Mods: {
    Tooltip: "Refinement: {0}/{1} (+{2}% weapon damage)"
    WardAwakened: Crafted awakening adds 10% weapon damage and lowers base spirit cost to 24; Guard costs 18 base energy, lasts 3 seconds and shares a 20-second skill cooldown; requires Spirit Severing and Golem progression; Dao transformation unavailable
    WardDormant: Dormant; refine to level 3, retain an inscription and use an awakening seal after Medicine King Echo; awakened Guard also requires Spirit Severing and Golem progression; Dao transformation unavailable
-   MoonAwakened: Crafted awakening adds 10% weapon damage and sets base spirit cost to 14; cultivation/reputation heritage remains; Moon Crescents costs 30 base energy and shares a 20-second cooldown; use alternate attack, the artifact skill key or skill panel; Dao transformation unavailable
+   MoonAwakened: Crafted awakening adds 10% weapon damage and sets base spirit cost to 14 before Dao transformation; cultivation/reputation heritage remains; awakened Moon Crescents costs 30 base energy and shares a 20-second cooldown; use alternate attack, the artifact skill key or skill panel; Dao transformation available with the Dao seal after Dao Severing, a world route and defeating the core
    MoonDormant: Dormant; retain an inscription at refinement level 3, defeat Medicine King Echo after Nascent Soul, reach Tribulation and defeat Moonbone Immortal; use an awakening seal and 24 low-grade spirit stones at a supported forge
    MoonHeritageReady: "Sect heritage active at {0} and reputation {1}: +{3}% damage; current base spirit cost {2}. Crafted awakening is shown separately"
    MoonHeritageLocked: "Sect heritage requires {0} and reputation {1}: grants +{3}% damage and base spirit cost 17; checked independently of crafted awakening"

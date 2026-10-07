@@ -488,8 +488,17 @@ foreach(string weaponName in new[]{"WoodgrainFlyingSword","SpiritwoodCrossbow","
  growthWeaponType.GetMethod("SetDefaults").Invoke(growthWeapon,null);
  object growthMeta=Activator.CreateInstance(refinedType);
  Check((bool)refinedType.GetMethod("SupportsRefinement").Invoke(null,new[]{growthOwner})&&(bool)refinedType.GetMethod("AppliesToEntity").Invoke(growthMeta,new object[]{growthOwner,false}),weaponName+" actual defaults attach per-item refinement");
- Check(!(bool)refinedType.GetMethod("IsSample").Invoke(null,new[]{growthOwner}),weaponName+" remains outside undefined advanced crafting");
+ Check(!(bool)refinedType.GetMethod("IsSample").Invoke(null,new[]{growthOwner}),weaponName+" remains outside the original sample category");
  if(weaponName=="MoonboneDharmaSword"){
+  Check((bool)refinedType.GetMethod("SupportsDaoTransformation").Invoke(null,new[]{growthOwner}),"Compiled Moonbone explicitly supports route crafting");
+  var nativeDaoRules=type.Assembly.GetType("XianXia.Common.Systems.DaoArtifactRules",true);
+  Check(Math.Abs((float)nativeDaoRules.GetMethod("DamageScale").Invoke(null,new object[]{weaponName})-280f/220f)<.001f,"Compiled Moonbone route grows base damage to 280");
+  foreach(int routeIndex in new[]{1,2,3}) {
+   object nativeRoute=Enum.ToObject(nativeDaoRules.GetMethod("MoonBurstMultiplier").GetParameters()[0].ParameterType,routeIndex);
+   Check((int)nativeDaoRules.GetMethod("WeaponCost").Invoke(null,new object[]{weaponName,nativeRoute})==(routeIndex==3?14:18),"Compiled Moonbone route normal cost");
+   Check(Math.Abs((float)nativeDaoRules.GetMethod("MoonBurstMultiplier").Invoke(null,new[]{nativeRoute})-(routeIndex==2?2.5f:2f))<.001f,"Compiled Moonbone route burst multiplier");
+   Check((int)nativeDaoRules.GetMethod("SkillCost").Invoke(null,new[]{Enum.ToObject(type.Assembly.GetType("XianXia.Common.Systems.ArtifactSkill",true),4),nativeRoute})==(routeIndex==1?36:routeIndex==2?48:30),"Compiled Moonbone route skill cost");
+  }
   var nativeSkillType=type.Assembly.GetType("XianXia.Common.Systems.ArtifactSkill",true);object moonSkill=Enum.ToObject(nativeSkillType,4);var nativeSkillRules=type.Assembly.GetType("XianXia.Common.Systems.ArtifactSkillRules",true);
   Check((bool)nativeSkillRules.GetMethod("IsValid").Invoke(null,new[]{moonSkill}),"Compiled moon skill identifier appended and valid");
   Check((int)nativeSkillRules.GetMethod("Cost").Invoke(null,new[]{moonSkill})==30,"Compiled moon skill costs thirty base energy");
@@ -498,18 +507,18 @@ foreach(string weaponName in new[]{"WoodgrainFlyingSword","SpiritwoodCrossbow","
  }
 
  refinedType.GetMethod("LoadData").Invoke(growthMeta,new[]{growthOwner,Tag(("refinement",3),("awakened",true),("daoRoute",1))});
- Check(Refinement(growthMeta)==3&&(bool)refinedType.GetProperty("Awakened").GetValue(growthMeta)==(weaponName=="MoonboneDharmaSword")&&DaoRoute(growthMeta)==0,weaponName+" actual save loader keeps refinement and strips unsupported advanced flags");
+ Check(Refinement(growthMeta)==3&&(bool)refinedType.GetProperty("Awakened").GetValue(growthMeta)==(weaponName=="MoonboneDharmaSword")&&DaoRoute(growthMeta)==(weaponName=="MoonboneDharmaSword"?1:0),weaponName+" actual save loader keeps refinement and strips unsupported advanced flags");
  object growthSave=Tag();refinedType.GetMethod("SaveData").Invoke(growthMeta,new[]{growthOwner,growthSave});
- Check(Convert.ToBoolean(tagType.GetMethod("GetBool").Invoke(growthSave,new object[]{"awakened"}))==(weaponName=="MoonboneDharmaSword")&&Convert.ToInt32(tagType.GetMethod("GetInt").Invoke(growthSave,new object[]{"daoRoute"}))==0,weaponName+" native TagCompound stores no sample flags");
+ Check(Convert.ToBoolean(tagType.GetMethod("GetBool").Invoke(growthSave,new object[]{"awakened"}))==(weaponName=="MoonboneDharmaSword")&&Convert.ToInt32(tagType.GetMethod("GetInt").Invoke(growthSave,new object[]{"daoRoute"}))==(weaponName=="MoonboneDharmaSword"?1:0),weaponName+" native TagCompound stores supported growth only");
  using(var growthBytes=new MemoryStream()){
   using(var writer=new BinaryWriter(growthBytes,System.Text.Encoding.UTF8,true))refinedType.GetMethod("NetSend").Invoke(growthMeta,new object[]{growthOwner,writer});
-  Check(growthBytes.ToArray().SequenceEqual(new byte[]{3,(byte)(weaponName=="MoonboneDharmaSword"?1:0),0}),weaponName+" actual wire payload is bounded refinement only");
+  Check(growthBytes.ToArray().SequenceEqual(new byte[]{3,(byte)(weaponName=="MoonboneDharmaSword"?1:0),(byte)(weaponName=="MoonboneDharmaSword"?1:0)}),weaponName+" actual wire payload keeps supported three-byte growth");
   object growthClone=refinedType.GetMethod("Clone",new[]{refinementItemType,refinementItemType}).Invoke(growthMeta,new[]{growthOwner,growthOwner});
   refinedType.GetMethod("SetLevel").Invoke(growthClone,new object[]{1});
   Check(Refinement(growthMeta)==3&&Refinement(growthClone)==1,weaponName+" native metadata clone is independent");
  }
  using(var growthBytes=new MemoryStream(new byte[]{3,1,1}))refinedType.GetMethod("NetReceive").Invoke(growthMeta,new object[]{growthOwner,new BinaryReader(growthBytes)});
- Check(Refinement(growthMeta)==3&&(bool)refinedType.GetProperty("Awakened").GetValue(growthMeta)==(weaponName=="MoonboneDharmaSword")&&DaoRoute(growthMeta)==0,weaponName+" native receive rejects sample metadata on a basic weapon");
+ Check(Refinement(growthMeta)==3&&(bool)refinedType.GetProperty("Awakened").GetValue(growthMeta)==(weaponName=="MoonboneDharmaSword")&&DaoRoute(growthMeta)==(weaponName=="MoonboneDharmaSword"?1:0),weaponName+" native receive accepts only supported growth metadata");
 }
 Console.WriteLine($"Actual engine gameplay assertions including expanded refinement: {assertions}.");
 

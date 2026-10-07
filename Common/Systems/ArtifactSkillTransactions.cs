@@ -76,7 +76,7 @@ public static class ArtifactSkillTransactions
         if (skill == ArtifactSkill.ArrayPulse) foreach (Player target in healTargets) {
             Heal(target,DaoArtifactRules.PulseHeal(daoRoute));
         }
-        if (skill == ArtifactSkill.SwordBurst && daoRoute == DownedBossSystem.EndgameRoute.RebuildHeaven) Heal(player,20);
+        if ((skill is ArtifactSkill.SwordBurst or ArtifactSkill.MoonCrescent) && daoRoute == DownedBossSystem.EndgameRoute.RebuildHeaven) Heal(player,20);
         if (skill == ArtifactSkill.WardGuard) {
             state.wardGuardTimer = 180;
             player.AddBuff(ModContent.BuffType<global::XianXia.Content.Buffs.ArtifactWardBuff>(), 2);
@@ -111,7 +111,7 @@ public static class ArtifactSkillTransactions
         if (!Finite(position) || !Finite(delta) || !float.IsFinite(delta.LengthSquared())) return false;
         Vector2 velocity = delta.SafeNormalize(Vector2.UnitX * player.direction) * 14f;
         bool moon = HeldSkill(item) == ArtifactSkill.MoonCrescent;
-        int damage = moon ? (int)(player.GetWeaponDamage(item) * 1.5f) : player.GetWeaponDamage(item) * DaoArtifactRules.BurstMultiplier(RefinedArtifact.ActiveDaoRoute(item));
+        int damage = moon ? (int)(player.GetWeaponDamage(item) * DaoArtifactRules.MoonBurstMultiplier(RefinedArtifact.ActiveDaoRoute(item))) : player.GetWeaponDamage(item) * DaoArtifactRules.BurstMultiplier(RefinedArtifact.ActiveDaoRoute(item));
         int type = moon ? ModContent.ProjectileType<MoonboneShardProjectile>() : ModContent.ProjectileType<CloudpiercerSwordProjectile>();
         var created = new List<int>();
         var source = new EntitySource_ItemUse_WithAmmo(player, item, 0);

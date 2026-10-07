@@ -1125,12 +1125,12 @@ foreach(string expandedName in new[]{"WoodgrainFlyingSword","SpiritwoodCrossbow"
  SetupAwakening(expandedName);Awaken();Check(Game.player[0].inventory[0].stack==2&&!XianXia.Common.Items.RefinedArtifact.IsAwakened(Game.player[0].inventory[1]),"Expanded weapons cannot spend awakening seals without a defined advanced path");
  var plain=Game.player[0].inventory[1];var meta=plain.GetGlobalItem<XianXia.Common.Items.RefinedArtifact>();
  var forged=new Terraria.ModLoader.IO.TagCompound{{"refinement",3},{"awakened",true},{"daoRoute",1}};meta.LoadData(plain,forged);
- Check(meta.Level==3&&meta.Awakened==(expandedName=="MoonboneDharmaSword")&&meta.DaoRoute==DownedBossSystem.EndgameRoute.None,"Expanded save cannot import sample awakening/Dao flags");
+ Check(meta.Level==3&&meta.Awakened==(expandedName=="MoonboneDharmaSword")&&meta.DaoRoute==(expandedName=="MoonboneDharmaSword"?DownedBossSystem.EndgameRoute.RebuildHeaven:DownedBossSystem.EndgameRoute.None),"Expanded save retains only supported awakening/Dao flags");
  using(var bytes=new MemoryStream(new byte[]{3,1,1}))meta.NetReceive(plain,new BinaryReader(bytes));
- Check(meta.Level==3&&meta.Awakened==(expandedName=="MoonboneDharmaSword")&&meta.DaoRoute==DownedBossSystem.EndgameRoute.None,"Expanded network metadata cannot grant sample advanced state");
+ Check(meta.Level==3&&meta.Awakened==(expandedName=="MoonboneDharmaSword")&&meta.DaoRoute==(expandedName=="MoonboneDharmaSword"?DownedBossSystem.EndgameRoute.RebuildHeaven:DownedBossSystem.EndgameRoute.None),"Expanded network metadata retains only supported advanced state");
  var persisted=new Terraria.ModLoader.IO.TagCompound();meta.SaveData(plain,persisted);var expandedLoaded=new XianXia.Common.Items.RefinedArtifact();expandedLoaded.LoadData(plain,persisted);
  Check(expandedLoaded.Level==3&&expandedLoaded.Awakened==(expandedName=="MoonboneDharmaSword"),"Expanded refinement persists independently of advanced flags");
- var expandedTips=new List<TooltipLine>();meta.ModifyTooltips(plain,expandedTips);Check(expandedTips.Count==2&&expandedTips[1].Text.Contains(expandedName=="MoonboneDharmaSword"?"Refinement.MoonAwakened":"Refinement.BasicArtifact"),"Expanded tooltip explains its defined growth scope");
+ var expandedTips=new List<TooltipLine>();meta.ModifyTooltips(plain,expandedTips);Check(expandedTips.Count==(expandedName=="MoonboneDharmaSword"?3:2)&&expandedTips[1].Text.Contains(expandedName=="MoonboneDharmaSword"?"Refinement.MoonAwakened":"Refinement.BasicArtifact"),"Expanded tooltip explains its defined growth scope");
 }
 foreach(Action reject in new Action[]{()=>Game.player[0].inventory[1].accessory=true,()=>Game.player[0].inventory[1].consumable=true,()=>Game.player[0].inventory[1].ammo=1,()=>Game.player[0].inventory[1].maxStack=2,()=>Game.player[0].inventory[1].vanity=true,()=>Game.player[0].inventory[1].damage=0,()=>Game.player[0].inventory[1].ModItem.Mod=new Mod()}){
  SetupRefinement(name:"SpiritwoodCrossbow");reject();Refine();Check(Game.player[0].inventory[0].stack==2&&Game.player[0].inventory[2].stack==6&&!XianXia.Common.Items.RefinedArtifact.SupportsRefinement(Game.player[0].inventory[1]),"Ineligible categories/origins cannot spend refinement materials");
@@ -1194,6 +1194,64 @@ Check(!actualMoonSword.Shoot(Game.player[0],null,default,default,8,25,0),"Server
 Skill(ArtifactSkill.MoonCrescent,type:941);
 Check(Game.player[0].State.spiritualEnergy==70&&Game.player[0].State.activeSkillCooldown==1200&&Game.projectile.Count(p=>p.active)==3,"Dedicated moon skill request remains valid with alternative input");
 Game.player[0].altFunctionUse=0;
+// Moonbone now has its own full route growth, outside the original sample category.
+void MoonDao(int mode,byte route,byte previous=0) {
+ if(mode==NetmodeID.SinglePlayer) DaoArtifactTransactions.Handle(Game.player[0],0,600,1,601,300,1,3,true,previous,route);
+ else Dao(route,previous:previous);
+}
+void MoonCast(int mode,int type=601) {
+ if(mode==NetmodeID.SinglePlayer) {Game.player[0].State.skillRequestCooldown=0;ArtifactSkillTransactions.HandleRequest(Game.player[0],ArtifactSkill.MoonCrescent,1,type,new Microsoft.Xna.Framework.Vector2(100,100));}
+ else Skill(ArtifactSkill.MoonCrescent,type:type);
+}
+foreach (int mode in new[]{NetmodeID.SinglePlayer,NetmodeID.Server}) foreach(byte route in new byte[]{1,2,3}) {
+ SetupDao(route,"MoonboneDharmaSword");Game.netMode=mode;MoonDao(mode,route);
+ var actor=Game.player[0];var item=actor.inventory[1];var metadata=item.GetGlobalItem<XianXia.Common.Items.RefinedArtifact>();
+ Check(XianXia.Common.Items.RefinedArtifact.SupportsDaoTransformation(item)&&!XianXia.Common.Items.RefinedArtifact.IsSample(item)&&(byte)metadata.DaoRoute==route,"Moon route is explicitly supported without becoming an old sample");
+ Check(actor.inventory[0].stack==1&&actor.inventory[2].IsAir&&item.prefix==300&&CurrentInscription()==InscriptionKind.Greenwood,"Moon route transaction consumes exact materials and preserves item state");
+ actor.GetModPlayer<XianXia.Common.Players.InscriptionPlayer>().Initialize();MoonDao(mode,route,route);
+ Check(actor.inventory[0].stack==1,"Moon route cannot be changed or purchased twice");
+ var saved=new Terraria.ModLoader.IO.TagCompound();metadata.SaveData(item,saved);var restored=new XianXia.Common.Items.RefinedArtifact();restored.LoadData(item,saved);
+ Check((byte)restored.DaoRoute==route&&restored.Awakened,"Moon route survives save roundtrip");
+ using(var bytes=new MemoryStream()){using(var writer=new BinaryWriter(bytes,Encoding.UTF8,true))metadata.NetSend(item,writer);bytes.Position=0;restored.NetReceive(item,new BinaryReader(bytes));Check(bytes.Length==3&&(byte)restored.DaoRoute==route,"Moon route uses existing complete three-byte wire metadata");}
+ actor.selectedItem=1;actor.statLife=50;actor.statLifeMax2=100;actor.State.spiritualEnergy=100;actor.State.spiritPressure=0;
+ MoonCast(mode);
+ Check(Game.projectile.Count(p=>p.active)==3&&Game.projectile.Where(p=>p.active).All(p=>p.damage==(route==2?62:50)),"Moon route releases three canonical route-specific damage shards");
+ Check(actor.State.spiritualEnergy==100-(route==1?36:route==2?48:30)&&actor.State.activeSkillCooldown==1200,"Moon route pays specified energy and shared cooldown");
+ Check(actor.statLife==(route==1?70:50)&&actor.State.spiritPressure==(route==3?8:0),"Moon healing and pressure are applied only to their successful route");
+ var moonDaoTips=new List<TooltipLine>();metadata.ModifyTooltips(item,moonDaoTips);Check(moonDaoTips.Count==3&&moonDaoTips[2].Text.Contains("MoonTooltip"),"Moon route describes its own effects instead of sword and array sample numbers");
+ actor.inventory[1]=actualMoonSword.Item;actualMoonMeta.LoadData(actualMoonSword.Item,saved);
+ Check(actualMoonSword.GetSpiritCost(actor)==(route==3?14:18),"Actual Dao moon normal use chooses route energy");
+ actor.State.activeSkillCooldown=0;actor.altFunctionUse=2;actor.State.spiritualEnergy=(route==1?36:route==2?48:30)-1;
+ Check(!actualMoonSword.CanUseItem(actor),"Actual Dao moon alternative gate enforces route skill cost");actor.State.spiritualEnergy++;
+ Check(actualMoonSword.CanUseItem(actor),"Actual Dao moon alternative accepts exact route skill cost");actor.altFunctionUse=0;
+ actor.State.spiritPressure=0;actor.statLife=50;foreach(var projectile in Game.projectile)projectile.active=false;MoonCast(mode,941);
+ Check(actor.State.spiritualEnergy==0&&Game.projectile.Count(p=>p.active)==3&&Game.projectile.Where(p=>p.active).All(p=>p.damage==(route==2?562:450)),"Actual Moon item skill uses authoritative weapon damage and exact Dao energy");
+ Check(actor.statLife==(route==1?70:50)&&actor.State.spiritPressure==(route==3?8:0),"Actual Moon item retains route healing and pressure semantics");
+ var moonDaoModifier=new StatModifier();actualMoonMeta.ModifyWeaponDamage(actualMoonSword.Item,actor,ref moonDaoModifier);
+ Check(Math.Abs(moonDaoModifier.Base-60)<.001f&&Math.Abs(moonDaoModifier.Bonus-(route==2?.27f:.12f))<.001f,"Actual Dao moon adds sixty base damage and keeps refinement and Sever modifiers");
+ world.ClearWorld();DownedBossSystem.DownedBosses.Add("old_heaven_dao_core");DownedBossSystem.TryChooseRoute((DownedBossSystem.EndgameRoute)(route==1?2:1));
+ Check(actualMoonSword.GetSpiritCost(actor)==14&&XianXia.Common.Items.RefinedArtifact.ActiveDaoRoute(actualMoonSword.Item)==DownedBossSystem.EndgameRoute.None&&(byte)actualMoonMeta.DaoRoute==route,"Moon foreign world disables route costs and bonuses while retaining metadata");
+ var foreignMoonDamage=new StatModifier();actualMoonMeta.ModifyWeaponDamage(actualMoonSword.Item,actor,ref foreignMoonDamage);
+ Check(foreignMoonDamage.Base==0&&Math.Abs(foreignMoonDamage.Bonus-.12f)<.001f,"Wrong world route disables moon base and Sever damage even with core defeated");
+ actor.State.spiritualEnergy=100;actor.State.spiritPressure=0;actor.State.activeSkillCooldown=0;actor.statLife=50;foreach(var projectile in Game.projectile)projectile.active=false;
+ MoonCast(mode,941);
+ Check(actor.State.spiritualEnergy==70&&actor.statLife==50&&actor.State.spiritPressure==0&&Game.projectile.Where(p=>p.active).All(p=>p.damage==337),"Moon foreign world restores awakened burst without Dao healing or pressure");
+ world.ClearWorld();DownedBossSystem.TryChooseRoute((DownedBossSystem.EndgameRoute)route);
+ Check(actualMoonSword.GetSpiritCost(actor)==14&&XianXia.Common.Items.RefinedArtifact.ActiveDaoRoute(actualMoonSword.Item)==DownedBossSystem.EndgameRoute.None,"Matching moon route without defeated core also remains dormant");
+}
+foreach(byte route in new byte[]{1,2,3})foreach(int budget in new[]{0,1,2}) {
+ SetupDao(route,"MoonboneDharmaSword");Dao(route);var actor=Game.player[0];actor.selectedItem=1;actor.statLife=50;actor.statLifeMax2=100;actor.State.spiritualEnergy=100;actor.State.spiritPressure=0;
+ Terraria.Projectile.SpawnBudget=budget;Skill(ArtifactSkill.MoonCrescent);
+ Check(actor.State.spiritualEnergy==100&&actor.State.activeSkillCooldown==0&&actor.statLife==50&&actor.State.spiritPressure==0&&!Game.projectile.Any(p=>p.active),"Failed Dao moon burst cleans partial creation and grants no heal or pressure");
+}
+Terraria.Projectile.SpawnBudget=-1;
+foreach(byte route in new byte[]{1,2,3}) {
+ SetupDao(route,"MoonboneDharmaSword");Dao(route);var actor=Game.player[0];actor.selectedItem=1;actor.statLife=50;actor.State.spiritPressure=0;actor.State.spiritualEnergy=(route==1?36:route==2?48:30)-1;
+ Skill(ArtifactSkill.MoonCrescent);Check(!Game.projectile.Any(p=>p.active)&&actor.State.activeSkillCooldown==0&&actor.statLife==50&&actor.State.spiritPressure==0&&actor.State.spiritualEnergy==(route==1?35:route==2?47:29),"Dao moon skill rejects insufficient route energy without side effects");
+}
+foreach(Action invalid in new Action[]{()=>Dao(route:2),()=>Dao(prefix:0),()=>Dao(kind:2),()=>Dao(level:2),()=>Dao(awakened:false),()=>{Game.player[0].State.cultivationStage=CultivationStage.Tribulation;Dao();},()=>{Game.tile[0,0].TileType=1;Dao();},()=>{DownedBossSystem.DownedBosses.Clear();Dao();},()=>{Game.player[0].inventory[2].stack=35;Dao();}}) {
+ SetupDao(name:"MoonboneDharmaSword");invalid();Check(Game.player[0].inventory[0].stack==2&&Game.player[0].inventory[2].stack>0&&XianXia.Common.Items.RefinedArtifact.GetDaoRoute(Game.player[0].inventory[1])==DownedBossSystem.EndgameRoute.None,"Unmet or stale Moon Dao requests preserve seal stones and item state");
+}
 Console.WriteLine($"Networking including actual recovery pill hooks: {assertions} assertions; buff/inventory engine boundaries mocked.");
 
 sealed class TestBossSummon : XianXia.Common.Items.CultivationBossSummonItem
