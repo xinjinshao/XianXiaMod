@@ -63,7 +63,7 @@ public static class ArtifactSkillTransactions
             Projectile field = FindArray(player);
             if (field == null) { Reply(player, "Mods.XianXia.Skills.NeedArray"); return; }
             foreach (Player target in Main.ActivePlayers)
-                if (!target.dead && target.statLife < target.statLifeMax2 && Friendly(player, target)
+                if (!target.dead && target.statLife > 0 && target.statLife < target.statLifeMax2 && Finite(target.Center) && Friendly(player, target)
                     && Vector2.DistanceSquared(target.Center, field.Center) <= 160 * 160) healTargets.Add(target);
             if (healTargets.Count == 0) { Reply(player, "Mods.XianXia.Skills.NoHealing"); return; }
         }
@@ -93,7 +93,8 @@ public static class ArtifactSkillTransactions
         int type = ModContent.ProjectileType<GreenwoodArrayField>();
         for (int i = 0; i < Main.maxProjectiles; i++) {
             Projectile p = Main.projectile[i];
-            if (p.active && p.owner == player.whoAmI && p.type == type && Vector2.DistanceSquared(player.Center, p.Center) <= 160 * 160) return p;
+            if (p != null && p.active && p.owner == player.whoAmI && p.type == type
+                && p.ModProjectile is GreenwoodArrayField field && field.CanPulse(player)) return p;
         }
         return null;
     }

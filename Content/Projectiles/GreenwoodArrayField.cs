@@ -19,6 +19,9 @@ public class GreenwoodArrayField : ModProjectile
     }
     private bool invalidState;
     private Player LivingOwner => global::XianXia.Common.Projectiles.FriendlyFieldOwner.Find(Projectile, 300);
+    internal bool CanPulse(Player player) => Projectile.active && !invalidState
+        && ReferenceEquals(LivingOwner, player) && player != null
+        && Vector2.DistanceSquared(player.Center, Projectile.Center) <= 160f * 160f;
     public override bool? CanDamage() => invalidState || LivingOwner == null ? false : null;
     public override void AI()
     {

@@ -63,7 +63,7 @@ CI运行只读新鲜度检查，生成结果变化时须显式更新这四份输
 
 ## 原生包内容与默认配置
 
-Native checks另运行PackageContents，使用官方TmodFile打开实际.tmod，核对内部名称、build.txt版本、归档哈希、当前描述及Common/Content/Localization的所有PNG/HJSON（接受官方转换后的rawimg）；拒绝隐藏/越界条目、Assets/Docs/Wiki/Tools/bin/obj/README和源码/工具扩展。它不是读取源码文件名后假定打包正确。默认配置在Gameplay编译产物回归中验证，当前累计1083条。
+Native checks另运行PackageContents，使用官方TmodFile打开实际.tmod，核对内部名称、build.txt版本、归档哈希、当前描述及Common/Content/Localization的所有PNG/HJSON（接受官方转换后的rawimg）；拒绝隐藏/越界条目、Assets/Docs/Wiki/Tools/bin/obj/README和源码/工具扩展。它不是读取源码文件名后假定打包正确。默认配置在Gameplay编译产物回归中验证，当前累计1098条。
 
 ```powershell
 dotnet run --project Tools/Tests/PackageContents/PackageContents.csproj -- <XianXia.tmod路径> <官方引擎目录> <仓库根目录>
@@ -242,3 +242,6 @@ Telegraphs671→793项，增加七类来源失效×三模式、权威槽位复�
 
 
 第132轮三类友方法阵统一FriendlyFieldOwner：青木阵盘、雷符阵盘和药王鼎法阵检查主人槽位/空引用/活跃死亡、有限中心坐标、有限弹体速度、0<剩余寿命<=300/240及1600像素距离，平方距离溢出拒绝。异常弹体坐标/速度/寿命由AI锁定invalidState，权威清理、客户端等待且无伤；修正字段不恢复该实例。主人信息无效独立等待，不把迟到的主人状态永久锁为弹体损坏。药王鼎波次计时限定整数0–59，坏计时同样锁定取消；目标扫描跳过空NPC和非有限中心，不把NaN距离当近敌。保留正常1点治疗/灵气恢复和落雷/60tick双药灵节奏。Networking26,646→26,894新增248项三模式×三法阵×八坏状态、修正不恢复、非法计时和坏/空目标邻居回归；Biomes直接链接共用守卫，原32项保留。Gameplay1018→1083新增65项实际编译弹体拒绝、客户端AI等待、修正无伤及1599/1600/1601原生坐标边界；权威Kill/波次创建仍由源码引擎边界模拟覆盖，未宣称原生世界创建。无新网络字段。
+
+
+第133轮青木治疗脉冲改由实际GreenwoodArrayField.CanPulse授权：要求活跃原生弹体、未锁定坏状态、共用主人/几何/寿命合法且本人在160像素范围内；FindArray检查实际ModProjectile实例，空槽/只伪装type编号不作施放依据。过期/异常/已取消且修正的法阵不再能触发治疗、消费灵气或启动共享冷却。候选治疗者另排除零生命和非有限坐标，避免没有真正可治疗者仍付费。Networking26,894→26,906新增12项拒绝和160像素边界；旧脉冲/路线治疗/上限回归改为实际法阵工厂SetDefaults，保留原全部断言及计数。Gameplay1083→1098新增15项实际编译坏法阵授权拒绝、取消修正仍拒绝及159/160/161原生距离检查。正常治疗、成本和共享冷却规则保持，无新网络字段。

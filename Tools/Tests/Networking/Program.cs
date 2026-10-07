@@ -682,6 +682,9 @@ awakeCopy.LoadData(Game.player[0].inventory[1],new Terraria.ModLoader.IO.TagComp
 Check(!awakeCopy.Awakened,"Malformed low-level save cannot grant awakening.");
 awakeCopy.LoadData(Game.player[0].inventory[1],new Terraria.ModLoader.IO.TagCompound { ["refinement"]=3 });
 Check(!awakeCopy.Awakened,"Legacy level-three equipment still needs the explicit awakening process.");
+Terraria.Projectile CreatePulseField(Terraria.Player owner) {
+ var field=new XianXia.Content.Projectiles.GreenwoodArrayField{Mod=mod};field.SetDefaults();field.Projectile.active=true;field.Projectile.owner=owner.whoAmI;field.Projectile.type=3;field.Projectile.Center=owner.Center;return field.Projectile;
+}
 void SetupSkill(string name="CloudpiercerFlyingSword") {
  SetupAwakening(name);Game.player[0].inventory[1].GetGlobalItem<XianXia.Common.Items.RefinedArtifact>().TryAwaken();
  Game.player[0].selectedItem=1;Game.player[0].State.spiritualEnergy=100;
@@ -714,7 +717,7 @@ Game.player[0].armor[3].TurnToAir();Skill();
 Check(Game.player[0].State.spiritualEnergy==82,"Switching gear cannot bypass the shared skill cooldown.");
 SetupSkill("GreenwoodArrayPlate");Skill(ArtifactSkill.ArrayPulse);
 Check(Game.player[0].State.spiritualEnergy==100,"Pulse without a real owned array does not spend energy.");
-Game.projectile[0]=new Terraria.Projectile {active=true,owner=0,type=3,Center=Game.player[0].Center};
+Game.projectile[0]=CreatePulseField(Game.player[0]);
 Skill(ArtifactSkill.ArrayPulse);Check(Game.player[0].State.activeSkillCooldown==0,"Pulse with no missing health has no cost or cooldown.");
 Game.player[0].statLife=60;Skill(ArtifactSkill.ArrayPulse);
 Check(Game.player[0].statLife==80 && Game.player[0].State.spiritualEnergy==82 && Game.player[0].State.activeSkillCooldown==1200,"Owned array pulse actually heals and starts the shared cooldown.");
@@ -797,7 +800,7 @@ foreach(byte route in new byte[]{1,2,3}) foreach(string name in new[]{"Cloudpier
  if(name=="CloudpiercerFlyingSword") {
   Skill();Check(Game.player[0].State.spiritualEnergy==100-DaoArtifactRules.SkillCost(ArtifactSkill.SwordBurst,(DownedBossSystem.EndgameRoute)route) && Game.projectile.Where(p=>p.active).All(p=>p.damage==25*DaoArtifactRules.BurstMultiplier((DownedBossSystem.EndgameRoute)route)),"Dao sword burst uses authoritative route-specific cost and damage.");
  } else {
-  Game.projectile[0]=new Terraria.Projectile {active=true,owner=0,type=3,Center=Game.player[0].Center};Game.player[0].statLife=50;
+  Game.projectile[0]=CreatePulseField(Game.player[0]);Game.player[0].statLife=50;
   Skill(ArtifactSkill.ArrayPulse);Check(Game.player[0].statLife==50+DaoArtifactRules.PulseHeal((DownedBossSystem.EndgameRoute)route),"Rebuild Dao pulse has its actual healing upgrade.");
  }
  if(route==3) Check(Game.player[0].State.spiritPressure==8,"Star Abyss active skills apply the real pressure cost.");
@@ -1270,7 +1273,7 @@ foreach(int invalidAmount in new[]{0,-1,int.MinValue}) {int oldLife=largePatient
 Check(AuthoritativeHealing.Apply(null,20)==0,"Null healing target rejected");
 foreach(string name in new[]{"CloudpiercerFlyingSword","MoonboneDharmaSword","GreenwoodArrayPlate"}) {
  SetupDao(name:name);Dao();var actor=Game.player[0];actor.selectedItem=1;actor.statLife=95;actor.statLifeMax2=100;
- if(name=="GreenwoodArrayPlate")Game.projectile[0]=new Terraria.Projectile{active=true,owner=0,type=3,Center=actor.Center};
+ if(name=="GreenwoodArrayPlate")Game.projectile[0]=CreatePulseField(actor);
  int beforeMessages=Terraria.NetMessage.Routed.Count;
  Skill(name=="CloudpiercerFlyingSword"?ArtifactSkill.SwordBurst:name=="MoonboneDharmaSword"?ArtifactSkill.MoonCrescent:ArtifactSkill.ArrayPulse);
  var healingPackets=Terraria.NetMessage.Routed.Skip(beforeMessages).Where(p=>p.Message==Terraria.ID.MessageID.SpiritHeal&&p.Number==actor.whoAmI).ToArray();
@@ -1302,6 +1305,20 @@ Game.npc[0].active=true;Game.npc[0].Center=new(float.NaN,0);Game.npc[1].active=t
 var finiteTargetField=new XianXia.Content.Projectiles.MedicineCauldronField{Mod=mod};finiteTargetField.SetDefaults();finiteTargetField.Projectile.ai[0]=59;finiteTargetField.AI();
 Check(Game.projectile.Count(p=>p.active)==2&&Game.projectile.Where(p=>p.active).All(p=>float.IsFinite(p.velocity.X)&&float.IsFinite(p.velocity.Y)),"Medicine wave skips invalid target and uses valid finite neighbor");
 foreach(var shot in Game.projectile)shot.active=false;Game.npc[0]=null;finiteTargetField.Projectile.ai[0]=59;finiteTargetField.AI();Check(Game.projectile.Count(p=>p.active)==2,"Medicine wave skips null NPC slot and retains eligible neighbor");
+foreach(int invalidPulse in Enumerable.Range(0,8)) {
+ SetupSkill("GreenwoodArrayPlate");var casterPulse=Game.player[0];casterPulse.statLife=50;var pulseField=CreatePulseField(casterPulse);Game.projectile[0]=pulseField;
+ switch(invalidPulse){case 0:pulseField.timeLeft=0;break;case 1:pulseField.timeLeft=301;break;case 2:pulseField.velocity=new(float.NaN,0);break;case 3:pulseField.Center=new(float.NaN,0);break;case 4:pulseField.ModProjectile=null;break;case 5:pulseField.active=false;break;case 6:pulseField.Center=casterPulse.Center+new Microsoft.Xna.Framework.Vector2(161,0);break;case 7:Game.netMode=1;pulseField.velocity=new(float.NaN,0);pulseField.ModProjectile.AI();pulseField.velocity=default;Game.netMode=2;break;}
+ Skill(ArtifactSkill.ArrayPulse);
+ Check(casterPulse.State.spiritualEnergy==100&&casterPulse.State.activeSkillCooldown==0&&casterPulse.statLife==50,"Pulse refuses expired damaged distant or cancelled field before cost and healing");
+}
+foreach(int invalidPatient in new[]{0,1,2}) {
+ SetupSkill("GreenwoodArrayPlate");var casterPulse=Game.player[0];casterPulse.statLife=100;Game.projectile[0]=CreatePulseField(casterPulse);
+ foreach(var person in Game.player)if(person!=null)person.statLife=person.statLifeMax2;
+ var patientPulse=new Terraria.Player{whoAmI=1,active=true,statLife=50,statLifeMax2=100};Game.player[1]=patientPulse;
+ if(invalidPatient==0)patientPulse.statLife=0;else patientPulse.Center=new(invalidPatient==1?float.NaN:float.PositiveInfinity,0);
+ Skill(ArtifactSkill.ArrayPulse);Check(casterPulse.State.spiritualEnergy==100&&casterPulse.State.activeSkillCooldown==0,"Only invalid healing candidates cannot cause a paid pulse");
+}
+SetupSkill("GreenwoodArrayPlate");Game.player[0].statLife=50;Game.projectile[0]=CreatePulseField(Game.player[0]);Game.projectile[0].Center=Game.player[0].Center+new Microsoft.Xna.Framework.Vector2(160,0);Skill(ArtifactSkill.ArrayPulse);Check(Game.player[0].statLife==70&&Game.player[0].State.spiritualEnergy==82,"Actual healthy field allows pulse at exact 160 pixel boundary");
 Console.WriteLine($"Networking including actual recovery pill hooks: {assertions} assertions; buff/inventory engine boundaries mocked.");
 
 sealed class TestBossSummon : XianXia.Common.Items.CultivationBossSummonItem
