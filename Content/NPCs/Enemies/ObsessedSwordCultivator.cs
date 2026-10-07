@@ -14,7 +14,7 @@ using Terraria.ModLoader;
 
 namespace XianXia.Content.NPCs.Enemies;
 
-public class ObsessedSwordCultivator : ModNPC
+public partial class ObsessedSwordCultivator : ModNPC
 
 {
     public override void SetStaticDefaults()
@@ -81,6 +81,7 @@ public class ObsessedSwordCultivator : ModNPC
 
     public override void PostAI()
     {
+        if (!NPC.active || !SynchronizeSummonTarget()) return;
         if (Main.netMode == NetmodeID.MultiplayerClient)
         {
             if (NPC.localAI[2] > 0f && --NPC.localAI[2] == 0f) NPC.damage = NPC.defDamage;
@@ -131,12 +132,16 @@ public class ObsessedSwordCultivator : ModNPC
     {
         writer.Write((byte)Math.Clamp((int)NPC.localAI[2], 0, 30));
         writer.Write(NPC.damage);
+        WriteSummonBinding(writer);
     }
 
     public override void ReceiveExtraAI(System.IO.BinaryReader reader)
     {
-        NPC.localAI[2] = Math.Min(30, (int)reader.ReadByte());
-        NPC.damage = reader.ReadInt32();
+        byte duration = reader.ReadByte();
+        int damage = reader.ReadInt32();
+        ReadSummonBinding(reader);
+        NPC.localAI[2] = Math.Min(30, (int)duration);
+        NPC.damage = damage;
     }
 
     public override void ModifyNPCLoot(NPCLoot npcLoot)

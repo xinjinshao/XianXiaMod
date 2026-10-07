@@ -937,6 +937,30 @@ try {
   for(int starFrame=1;starFrame<60;starFrame++){Check((bool)compiledStarRing.Invoke(starBoss,new[]{starOwner,(object)false,false}),"Compiled star warning consumes frame without overlapping attacks");object[] hitArgs={starOwner,0};Check(!(bool)compiledStarType.GetMethod("CanHitPlayer").Invoke(starBoss,hitArgs),"Compiled star warning denies native contact");}
   object changedStarOwner=Activator.CreateInstance(nativeTargetPlayerType);nativeTargetPlayerType.GetField("active").SetValue(changedStarOwner,true);nativeTargetPlayers.SetValue(changedStarOwner,0);compiledStarRing.Invoke(starBoss,new[]{changedStarOwner,(object)false,false});Check(starAi.All(v=>v==0)&&(bool)nativeTargetNpcType.GetField("netUpdate").GetValue(starNpc),"Compiled star same-slot owner replacement cancels old warning before release");object[] cancellationHit={changedStarOwner,0};Check(!(bool)compiledStarType.GetMethod("CanHitPlayer").Invoke(starBoss,cancellationHit),"Compiled star cancellation frame remains harmless");
  }
+ var nativeSwordBindingType=type.Assembly.GetType("XianXia.Content.NPCs.Enemies.ObsessedSwordCultivator",true);
+ object nativeSwordBinding=Activator.CreateInstance(nativeSwordBindingType),nativeSwordBindingNpc=Activator.CreateInstance(nativeTargetNpcType);
+ nativeSwordBindingType.GetProperty("Entity",BindingFlags.Instance|BindingFlags.Public|BindingFlags.NonPublic).SetValue(nativeSwordBinding,nativeSwordBindingNpc);
+ byte[] SwordBindingWire(){using var stream=new MemoryStream();using var writer=new BinaryWriter(stream);nativeSwordBindingType.GetMethod("SendExtraAI").Invoke(nativeSwordBinding,new object[]{writer});return stream.ToArray();}
+ Check((int)nativeSwordBindingType.GetField("MaximumSummonLifetime").GetRawConstantValue()==900,"Compiled summon lifetime 900 ticks");
+ Check(SwordBindingWire().Length==18,"Compiled summon extra-AI fixed eighteen bytes");
+ Check((bool)nativeSwordBindingType.GetMethod("PreAI").Invoke(nativeSwordBinding,null),"Compiled natural sword cultivator has no boss binding");
+ using(var payload=new MemoryStream()){
+  using(var writer=new BinaryWriter(payload,System.Text.Encoding.UTF8,true)){writer.Write((byte)30);writer.Write(93);writer.Write(true);writer.Write((short)-1);writer.Write(123L);writer.Write((short)900);}
+  var bytes=payload.ToArray();
+  for(int length=0;length<bytes.Length;length++){
+   var before=SwordBindingWire();using var truncated=new MemoryStream(bytes[..length]);
+   try{nativeSwordBindingType.GetMethod("ReceiveExtraAI").Invoke(nativeSwordBinding,new object[]{new BinaryReader(truncated)});throw new Exception("Compiled summon accepted truncated packet");}catch(TargetInvocationException ex)when(ex.InnerException is EndOfStreamException){}
+   Check(SwordBindingWire().SequenceEqual(before),"Compiled truncated summon packet leaves state intact");
+  }
+  payload.Position=0;nativeSwordBindingType.GetMethod("ReceiveExtraAI").Invoke(nativeSwordBinding,new object[]{new BinaryReader(payload)});
+  Check(SwordBindingWire().SequenceEqual(bytes),"Compiled summon wire roundtrip");
+ }
+ nativeTargetMain.GetField("netMode").SetValue(null,1);nativeTargetNpcType.GetField("active").SetValue(nativeSwordBindingNpc,true);nativeTargetNpcType.GetField("life").SetValue(nativeSwordBindingNpc,70);
+ Check(!(bool)nativeSwordBindingType.GetMethod("PreAI").Invoke(nativeSwordBinding,null)&&(bool)nativeTargetNpcType.GetField("active").GetValue(nativeSwordBindingNpc),"Compiled invalid source blocks client AI without authority removal");
+ object[] nativeSwordBindingContact={nativeTargetPlayers.GetValue(0),0};Check(!(bool)nativeSwordBindingType.GetMethod("CanHitPlayer").Invoke(nativeSwordBinding,nativeSwordBindingContact),"Compiled invalid source cannot hit players");
+ nativeTargetMain.GetField("netMode").SetValue(null,0);nativeSwordBindingType.GetMethod("PreAI").Invoke(nativeSwordBinding,null);
+ Check(!(bool)nativeTargetNpcType.GetField("active").GetValue(nativeSwordBindingNpc)&&(int)nativeTargetNpcType.GetField("damage").GetValue(nativeSwordBindingNpc)==0,"Compiled invalid source despawns on authority");
+ nativeSwordBindingType.GetMethod("PostAI").Invoke(nativeSwordBinding,null);Check(!(bool)nativeTargetNpcType.GetField("netUpdate").GetValue(nativeSwordBindingNpc),"Compiled PostAI stops after source cleanup");
 } finally {
  nativeTargetMain.GetField("player").SetValue(null,nativeTargetOldPlayers);
  nativeTargetMain.GetField("netMode").SetValue(null,nativeTargetOldMode);

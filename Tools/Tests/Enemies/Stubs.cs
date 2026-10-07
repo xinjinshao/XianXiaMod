@@ -68,3 +68,5 @@ namespace XianXia.Content.Items.HandGenerated {public class FurnaceCharcoal {}}
 namespace XianXia.Content.NPCs.Enemies {public partial class ArchivedImmortalSoul{private bool SynchronizeSummonTarget()=>true;}public partial class IronShardSpirit{private bool SynchronizeSummonTarget()=>true;}}
 
 namespace XianXia.Content.NPCs.Enemies {public partial class TribulationCloudling{private bool SynchronizeSummonTarget()=>true;}}
+
+namespace XianXia.Content.NPCs.Enemies{public partial class ObsessedSwordCultivator{private bool SynchronizeSummonTarget()=>true;private void WriteSummonBinding(System.IO.BinaryWriter writer){}private void ReadSummonBinding(System.IO.BinaryReader reader){}}}

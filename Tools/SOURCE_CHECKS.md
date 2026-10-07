@@ -63,7 +63,7 @@ CI运行只读新鲜度检查，生成结果变化时须显式更新这四份输
 
 ## 原生包内容与默认配置
 
-Native checks另运行PackageContents，使用官方TmodFile打开实际.tmod，核对内部名称、build.txt版本、归档哈希、当前描述及Common/Content/Localization的所有PNG/HJSON（接受官方转换后的rawimg）；拒绝隐藏/越界条目、Assets/Docs/Wiki/Tools/bin/obj/README和源码/工具扩展。它不是读取源码文件名后假定打包正确。默认配置在Gameplay编译产物回归中验证，当前累计1552条。
+Native checks另运行PackageContents，使用官方TmodFile打开实际.tmod，核对内部名称、build.txt版本、归档哈希、当前描述及Common/Content/Localization的所有PNG/HJSON（接受官方转换后的rawimg）；拒绝隐藏/越界条目、Assets/Docs/Wiki/Tools/bin/obj/README和源码/工具扩展。它不是读取源码文件名后假定打包正确。默认配置在Gameplay编译产物回归中验证，当前累计1578条。
 
 ```powershell
 dotnet run --project Tools/Tests/PackageContents/PackageContents.csproj -- <XianXia.tmod路径> <官方引擎目录> <仓库根目录>
@@ -266,3 +266,6 @@ Telegraphs671→793项，增加七类来源失效×三模式、权威槽位复�
 
 
 第140轮无相剑魄援军改为固定三只成功配额：第二阶段起每轮环弹补试缺额，NPC容量只容纳一/两只时保留成功计数，下轮仅补不足；失败/返回父槽位/越界/空或失活或零生命或错误类型实体停止批次且不计成功。创建保留父槽位ai0、同步当前战斗目标/netUpdate；被击败援军不补刷，客户端及无效战斗不尝试创建。旧NPC.ai[3]失败也消耗机会的计数移除，成功数量仅服务器本地，无新网络字段。BossAdds4687→4751新增64项两权威模式满额/20轮重复/击败不补、0/1/2容量后补齐、四坏索引/四坏实体及无效战斗回归。
+
+
+第141轮剑魄召唤执剑修士绑定FormlessSwordSoul64位实例，父槽位复用不能继承旧来源；存活目标/有限几何、4000像素距离和900tick权威寿命保护，来源无效或到期由权威active=false无奖励撤场/SyncNPC，客户端乱序等待且无伤。PreAI及PostAI对齐父目标，清理后PostAI不重写攻击伤害或追加反击；天然修士不绑定。Boss增加8字节会话ExtraAI，修士保留原5字节反击时长/伤害并追加13字节来源，共18字节；先读取完整反击数据及绑定后才应用，任意截断包不部分修改。FurnaceSummons3118→4128新增1010项来源失效/槽位替换、900tick边界、目标同步、先子后父和截断绑定检查；此项目用13字节绑定片段边界包装，完整18字节由实际编译Gameplay1552→1578新增26项验证。一般Enemies项目继续只模拟天然修士的绑定空操作，保留原反击回归；没有把其5字节夹具当完整协议证据。
