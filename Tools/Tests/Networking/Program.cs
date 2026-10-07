@@ -1284,6 +1284,24 @@ int fieldMessages=Terraria.NetMessage.Routed.Count;broadcastField.AI();
 Check(fieldPatient.statLife==100&&Terraria.NetMessage.Routed.Skip(fieldMessages).Count(p=>p.Message==Terraria.ID.MessageID.SpiritHeal)==1&&Terraria.NetMessage.Routed.Last(p=>p.Message==Terraria.ID.MessageID.SpiritHeal)==(Terraria.ID.MessageID.SpiritHeal,-1,-1,0,1f),"Greenwood field broadcasts its single periodic heal");
 broadcastField.AI();Check(Terraria.NetMessage.Routed.Skip(fieldMessages).Count(p=>p.Message==Terraria.ID.MessageID.SpiritHeal)==1,"Repeated same-tick field AI does not repeat healing");
 Game.GameUpdateCount=180;broadcastField.AI();Check(Terraria.NetMessage.Routed.Skip(fieldMessages).Count(p=>p.Message==Terraria.ID.MessageID.SpiritHeal)==1&&fieldPatient.State.spiritualEnergy==12,"Full-life field still restores energy without a heal packet");
+foreach(int mode in new[]{0,1,2})foreach(int family in new[]{0,1,2})foreach(int failure in Enumerable.Range(0,8)) {
+ Game.netMode=mode;Game.dedServ=true;var fieldOwner=new Terraria.Player{whoAmI=0,active=true};Game.player[0]=fieldOwner;
+ Terraria.ModLoader.ModProjectile testedField=family==0?new XianXia.Content.Projectiles.GreenwoodArrayField():family==1?new XianXia.Content.Projectiles.ThunderTalismanArray():new XianXia.Content.Projectiles.MedicineCauldronField();testedField.Mod=mod;testedField.SetDefaults();testedField.Projectile.active=true;testedField.Projectile.owner=0;
+ switch(failure){case 0:Game.player[0]=null;break;case 1:fieldOwner.Center=new(float.NaN,0);break;case 2:fieldOwner.Center=new(float.PositiveInfinity,0);break;case 3:testedField.Projectile.Center=new(float.NaN,0);break;case 4:testedField.Projectile.velocity=new(float.NaN,0);break;case 5:testedField.Projectile.timeLeft=0;break;case 6:testedField.Projectile.timeLeft++;break;case 7:fieldOwner.Center=new(float.MaxValue,0);break;}
+ int spawned=Game.projectile.Count(p=>p.active);Check(testedField.CanDamage()==false,"Invalid friendly field state cannot damage before AI");testedField.AI();
+ Check(testedField.Projectile.active==(mode==1)&&Game.projectile.Count(p=>p.active)==spawned,"Invalid friendly field is authority-cleaned or client-waits without firing");
+ if(failure>=3&&failure<=6){testedField.Projectile.Center=default;testedField.Projectile.velocity=default;testedField.Projectile.timeLeft=family==1?240:300;testedField.Projectile.ai[0]=59;Check(testedField.CanDamage()==false,"Repaired field geometry cannot restore latched damage");testedField.AI();Check(testedField.Projectile.active==(mode==1)&&Game.projectile.Count(p=>p.active)==spawned,"Repaired invalid field remains cancelled without recovery or wave");}
+}
+foreach(int mode in new[]{0,1,2})foreach(float invalidClock in new[]{float.NaN,float.PositiveInfinity,-1f,0.5f,60f}) {
+ Game.netMode=mode;Game.player[0]=new Terraria.Player{whoAmI=0,active=true};var badClockField=new XianXia.Content.Projectiles.MedicineCauldronField{Mod=mod};badClockField.SetDefaults();badClockField.Projectile.active=true;badClockField.Projectile.ai[0]=invalidClock;int spawned=Game.projectile.Count(p=>p.active);badClockField.AI();
+ Check(badClockField.Projectile.active==(mode==1)&&Game.projectile.Count(p=>p.active)==spawned,"Invalid medicine clock cannot release a premature wave");
+ badClockField.Projectile.ai[0]=59;badClockField.AI();Check(badClockField.Projectile.active==(mode==1)&&Game.projectile.Count(p=>p.active)==spawned,"Corrected medicine clock cannot undo invalid-state cancellation");
+}
+Game.netMode=2;Game.player[0]=new Terraria.Player{whoAmI=0,active=true};foreach(var shot in Game.projectile)shot.active=false;foreach(var enemy in Game.npc)enemy.active=false;
+Game.npc[0].active=true;Game.npc[0].Center=new(float.NaN,0);Game.npc[1].active=true;Game.npc[1].Center=new(100,0);
+var finiteTargetField=new XianXia.Content.Projectiles.MedicineCauldronField{Mod=mod};finiteTargetField.SetDefaults();finiteTargetField.Projectile.ai[0]=59;finiteTargetField.AI();
+Check(Game.projectile.Count(p=>p.active)==2&&Game.projectile.Where(p=>p.active).All(p=>float.IsFinite(p.velocity.X)&&float.IsFinite(p.velocity.Y)),"Medicine wave skips invalid target and uses valid finite neighbor");
+foreach(var shot in Game.projectile)shot.active=false;Game.npc[0]=null;finiteTargetField.Projectile.ai[0]=59;finiteTargetField.AI();Check(Game.projectile.Count(p=>p.active)==2,"Medicine wave skips null NPC slot and retains eligible neighbor");
 Console.WriteLine($"Networking including actual recovery pill hooks: {assertions} assertions; buff/inventory engine boundaries mocked.");
 
 sealed class TestBossSummon : XianXia.Common.Items.CultivationBossSummonItem

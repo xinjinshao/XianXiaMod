@@ -17,20 +17,14 @@ public class GreenwoodArrayField : ModProjectile
         Projectile.tileCollide = false; Projectile.ignoreWater = true; Projectile.netImportant = true;
         Projectile.usesLocalNPCImmunity = true; Projectile.localNPCHitCooldown = 30;
     }
-    private Player LivingOwner
-    {
-        get
-        {
-            if (Projectile.owner < 0 || Projectile.owner >= Main.maxPlayers) return null;
-            Player owner = Main.player[Projectile.owner];
-            return owner.active && !owner.dead && Vector2.DistanceSquared(owner.Center, Projectile.Center) <= 1600f * 1600f ? owner : null;
-        }
-    }
-    public override bool? CanDamage() => LivingOwner == null ? false : null;
+    private bool invalidState;
+    private Player LivingOwner => global::XianXia.Common.Projectiles.FriendlyFieldOwner.Find(Projectile, 300);
+    public override bool? CanDamage() => invalidState || LivingOwner == null ? false : null;
     public override void AI()
     {
+        invalidState |= !global::XianXia.Common.Projectiles.FriendlyFieldOwner.HasValidState(Projectile, 300);
+        Player owner = invalidState ? null : LivingOwner;
         Projectile.velocity = Vector2.Zero;
-        Player owner = LivingOwner;
         if (owner == null)
         {
             if (Main.netMode != NetmodeID.MultiplayerClient) Projectile.Kill();

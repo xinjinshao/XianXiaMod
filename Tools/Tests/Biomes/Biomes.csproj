@@ -4,7 +4,7 @@
     <TargetFramework>net8.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
-  <ItemGroup>
+  <ItemGroup><Compile Include="../../../Common/Projectiles/FriendlyFieldOwner.cs" Link="FriendlyFieldOwner.cs"/>
     <Compile Include="../../../Common/Systems/AuthoritativeHealing.cs" Link="AuthoritativeHealing.cs" />
     <Compile Include="../../../Common/Players/BiomeObjectEffectsPlayer.cs" Link="BiomeObjectEffectsPlayer.cs" />
     <Compile Include="../../../Common/Players/ServerBiomePlayer.cs" Link="ServerBiomePlayer.cs" />
