@@ -84,6 +84,7 @@ public partial class IronShardSpirit : ModNPC
         if (!NPC.active) return;
         NPC.rotation = NPC.velocity.X * 0.04f;
         if (Main.netMode == NetmodeID.MultiplayerClient) return;
+        if (!SynchronizeSummonTarget()) return;
         if (!global::XianXia.Common.Systems.EnemyTargeting.TryGetLivingTarget(NPC, out Player target))
         {
             NPC.localAI[0] = 0f;
