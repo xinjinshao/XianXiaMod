@@ -63,7 +63,7 @@ CI运行只读新鲜度检查，生成结果变化时须显式更新这四份输
 
 ## 原生包内容与默认配置
 
-Native checks另运行PackageContents，使用官方TmodFile打开实际.tmod，核对内部名称、build.txt版本、归档哈希、当前描述及Common/Content/Localization的所有PNG/HJSON（接受官方转换后的rawimg）；拒绝隐藏/越界条目、Assets/Docs/Wiki/Tools/bin/obj/README和源码/工具扩展。它不是读取源码文件名后假定打包正确。默认配置在Gameplay编译产物回归中验证，当前累计984条。
+Native checks另运行PackageContents，使用官方TmodFile打开实际.tmod，核对内部名称、build.txt版本、归档哈希、当前描述及Common/Content/Localization的所有PNG/HJSON（接受官方转换后的rawimg）；拒绝隐藏/越界条目、Assets/Docs/Wiki/Tools/bin/obj/README和源码/工具扩展。它不是读取源码文件名后假定打包正确。默认配置在Gameplay编译产物回归中验证，当前累计1008条。
 
 ```powershell
 dotnet run --project Tools/Tests/PackageContents/PackageContents.csproj -- <XianXia.tmod路径> <官方引擎目录> <仓库根目录>
@@ -233,3 +233,6 @@ Telegraphs671→793项，增加七类来源失效×三模式、权威槽位复�
 
 
 第129轮共用服务器治疗入口AuthoritativeHealing接管青木阵盘周期恢复、青木主动脉冲及重铸破云/月骸爆发回血。服务器只加一次实际缺血量，再用原生SpiritHeal(66)广播到所有客户端（remoteClient=-1/ignoreClient=-1），修复此前只发被治疗玩家、旁观者没有即时回血包的问题；不额外发送生命快照，避免重复应用增量。客户端拒绝主动治疗；单人沿原生Player.Heal；空目标、失活/死亡/0生命、非法/复用槽位、非正治疗及满血/异常上限拒绝，不发空包。包治疗量是有符号16位，统一限制32767以保证服务器和接收端一致。Networking26,603→26,646新增43项三模式/生命上限、广播对象/一次发送、无效目标/数值、三类重铸技能及周期法阵恢复/重复请求回归；Biomes仍32项，直接链接同一治疗源码保留原恢复行为。Gameplay976→984新增8项实际编译治疗条件和官方引擎MessageBuffer.GetData(66)接收测试：主人/旁观端均恰好增加5生命，禁用渲染通过占满100个CombatText槽，独立RemoteServer只作读取初始化且恢复原状态，不建立网络连接或启动世界。
+
+
+第130轮月骸环弹预警开始捕获权威目标槽位与Player引用；预警/恢复期间换目标或同槽位替换Player对象，停止移动、清空旧锁向/全部招式计时、netUpdate，取消帧无接触/不追加环弹。新目标重新等待当前阶段完整间隔再获得45tick锁向预警；恢复自然结束和坏状态复位清除捕获。客户端不按本地对象变化重写计时，等待服务器同步。绿色缺口提示原使用60%/30%阈值，与实际AI70%/35%不一致，已将AI与绘制统一读取同一阶段判定；原攻击阶段阈值保持。BossAdds536→602新增66项两权威模式×预警/恢复×槽位/对象切换、完整重启/新锁向、客户端等待及八生命阶段边界绘制回归；Gameplay984→1008新增24项实际编译警告/恢复目标替换、原生脏状态/停止移动/取消帧无接触验证。捕获字段仅服务器本地，NPC原ai及ExtraAI布局保持。

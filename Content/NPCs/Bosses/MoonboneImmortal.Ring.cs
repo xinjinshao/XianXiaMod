@@ -11,6 +11,10 @@ namespace XianXia.Content.NPCs.Bosses;
 public partial class MoonboneImmortal
 {
     private bool ringFrame;
+    private int ringTarget = -1;
+    private Player ringPlayer;
+    private bool MoonPhaseTwo => NPC.life < (int)(NPC.lifeMax * 0.7f);
+    private bool MoonFinalPhase => NPC.life < (int)(NPC.lifeMax * 0.35f);
     public const int RingWarningTicks = 45, RingRecoveryTicks = 30;
     private bool ValidRingState() => float.IsFinite(NPC.ai[1]) && NPC.ai[1] >= 0f && NPC.ai[1] <= RingWarningTicks
         && NPC.ai[1] == MathF.Truncate(NPC.ai[1])
@@ -24,8 +28,18 @@ public partial class MoonboneImmortal
             NPC.velocity = Vector2.Zero;
             if (Main.netMode != NetmodeID.MultiplayerClient) {
                 NPC.ai[0] = NPC.ai[1] = NPC.ai[2] = NPC.ai[3] = 0f;
+                ringTarget = -1; ringPlayer = null;
                 NPC.netUpdate = true;
             }
+            return true;
+        }
+        if ((NPC.ai[1] > 0f || NPC.ai[2] < 0f) && Main.netMode != NetmodeID.MultiplayerClient
+            && ringTarget >= 0 && (NPC.target != ringTarget || !ReferenceEquals(target, ringPlayer))) {
+            NPC.ai[0] = NPC.ai[1] = NPC.ai[2] = NPC.ai[3] = 0f;
+            ringTarget = -1; ringPlayer = null;
+            NPC.velocity = Vector2.Zero;
+            NPC.netUpdate = true;
+            ringFrame = true;
             return true;
         }
         int interval = finalPhase ? 150 : phaseTwo ? 210 : 270;
@@ -34,7 +48,7 @@ public partial class MoonboneImmortal
             NPC.velocity *= 0.9f;
             if (Main.netMode != NetmodeID.MultiplayerClient) {
                 NPC.ai[2]++;
-                if (NPC.ai[2] == 0f) { NPC.ai[0] = 0f; NPC.netUpdate = true; }
+                if (NPC.ai[2] == 0f) { NPC.ai[0] = 0f; ringTarget = -1; ringPlayer = null; NPC.netUpdate = true; }
             }
             return true;
         }
@@ -43,6 +57,7 @@ public partial class MoonboneImmortal
             return false;
         }
         if (NPC.ai[1] == 0f && Main.netMode != NetmodeID.MultiplayerClient) {
+            ringTarget = NPC.target; ringPlayer = target;
             NPC.ai[1] = RingWarningTicks;
             NPC.ai[3] = (target.Center - NPC.Center).SafeNormalize(Vector2.UnitY).ToRotation();
             NPC.netUpdate = true;
@@ -81,7 +96,7 @@ public partial class MoonboneImmortal
     {
         if (Main.dedServ || !ValidRingState() || NPC.ai[1] <= 0f
             || !float.IsFinite(NPC.Center.X) || !float.IsFinite(NPC.Center.Y)) return true;
-        int spokes = NPC.life < NPC.lifeMax * 0.3f ? 12 : NPC.life < NPC.lifeMax * 0.6f ? 8 : 6;
+        int spokes = MoonFinalPhase ? 12 : MoonPhaseTwo ? 8 : 6;
         foreach (float sign in new[] { -1f, 1f }) {
             float angle = NPC.ai[3] + sign * MathHelper.TwoPi / (2 * spokes);
             spriteBatch.Draw(TextureAssets.MagicPixel.Value, NPC.Center - screenPos, null, Color.LightGreen * 0.7f,

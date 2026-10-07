@@ -21,4 +21,32 @@ foreach(int mode in new[]{0,1,2})foreach(int channel in new[]{1,2})foreach(float
 Setup();var contactMoon=new MoonboneImmortal();contactMoon.NPC=Main.npc[0];contactMoon.NPC.ai[2]=225;int moonSlot=0;for(int frame=1;frame<=75;frame++){contactMoon.UpdateMoonRing(Main.player[0],false,false);Check(!contactMoon.CanHitPlayer(Main.player[0],ref moonSlot),"moon warning and complete recovery harmless "+frame);}contactMoon.UpdateMoonRing(Main.player[0],false,false);Check(contactMoon.CanHitPlayer(Main.player[0],ref moonSlot),"moon normal contact resumes after recovery");Collision.Blocked=true;Check(!contactMoon.CanHitPlayer(Main.player[0],ref moonSlot),"moon wall prevents contact");Collision.Blocked=false;
 foreach(int failure in new[]{-1,Main.maxNPCs,int.MaxValue,0}){Setup();var quotaMoon=new MoonboneImmortal();quotaMoon.NPC=Main.npc[0];NPC.FailureResult=failure;quotaMoon.SpawnMoonAdds();Check(NPC.Calls==1,"moon failed creation stops batch");NPC.FailureResult=int.MinValue;quotaMoon.SpawnMoonAdds();Check(Main.ActiveNPCs.Count(n=>n.type==7)==2,"moon retries complete quota after failure");int createdCalls=NPC.Calls;foreach(var add in Main.ActiveNPCs.Where(n=>n.type==7)){Check(add.target==quotaMoon.NPC.target&&add.netUpdate,"moon add inherits synchronized target");add.active=false;}quotaMoon.SpawnMoonAdds();Check(NPC.Calls==createdCalls,"moon killed adds never replenish quota");}
 Setup();var partialMoon=new MoonboneImmortal();partialMoon.NPC=Main.npc[0];foreach(var occupied in Main.npc.Skip(2)){occupied.active=true;occupied.type=8;}partialMoon.SpawnMoonAdds();Check(Main.ActiveNPCs.Count(n=>n.type==7)==1,"moon partial creation counts one successful add");Main.npc[2].active=false;partialMoon.SpawnMoonAdds();Check(Main.ActiveNPCs.Count(n=>n.type==7)==2,"moon retry fills only missing add");foreach(Action<MoonboneImmortal> invalidate in new Action<MoonboneImmortal>[] {m=>Main.netMode=1,m=>m.NPC.active=false,m=>Main.player[0].dead=true,m=>m.NPC.target=255}){Setup();var deniedMoon=new MoonboneImmortal();deniedMoon.NPC=Main.npc[0];invalidate(deniedMoon);deniedMoon.SpawnMoonAdds();Check(NPC.Calls==0&&Main.rand.Calls==0,"invalid moon battle or client cannot summon");}
+foreach(int mode in new[]{0,2})foreach(bool recovery in new[]{false,true})foreach(bool replaceObject in new[]{false,true}) {
+ Setup();Projectile.Shots.Clear();var switchingMoon=new MoonboneImmortal{NPC=Main.npc[0]};Main.netMode=mode;switchingMoon.NPC.ai[2]=225;
+ switchingMoon.UpdateMoonRing(Main.player[0],false,false);
+ if(recovery)for(int frame=1;frame<45;frame++)switchingMoon.UpdateMoonRing(Main.player[0],false,false);
+ int shots=Projectile.Shots.Count;if(replaceObject)Main.player[0]=new(){Center=new(0,200)};else {switchingMoon.NPC.target=1;Main.player[1].Center=new(0,200);}
+ switchingMoon.NPC.netUpdate=false;switchingMoon.NPC.velocity=new(5,5);
+ Check(switchingMoon.UpdateMoonRing(Main.player[switchingMoon.NPC.target],false,false),"Moon target change consumes cancellation frame");
+ Check(switchingMoon.NPC.ai.All(v=>v==0)&&switchingMoon.NPC.netUpdate&&switchingMoon.NPC.velocity.X==0&&switchingMoon.NPC.velocity.Y==0,"Moon changed target resets locks stops movement and synchronizes");
+ int cancelSlot=0;Check(!switchingMoon.CanHitPlayer(Main.player[switchingMoon.NPC.target],ref cancelSlot)&&Projectile.Shots.Count==shots,"Moon cancellation frame has no contact or additional ring");
+ for(int frame=0;frame<225;frame++)switchingMoon.UpdateMoonRing(Main.player[switchingMoon.NPC.target],false,false);
+ Check(switchingMoon.NPC.ai[1]==0&&Projectile.Shots.Count==shots,"Moon replacement target gets full normal interval before new warning");
+ for(int frame=0;frame<44;frame++)switchingMoon.UpdateMoonRing(Main.player[switchingMoon.NPC.target],false,false);
+ Check(switchingMoon.NPC.ai[1]==1&&Projectile.Shots.Count==shots,"Moon replacement target gets complete forty-five tick warning");
+ Check(Math.Abs(switchingMoon.NPC.ai[3]-MathF.PI/2)<.0001f,"Moon restarted warning locks replacement position instead of stale direction");
+ switchingMoon.UpdateMoonRing(Main.player[switchingMoon.NPC.target],false,false);Check(Projectile.Shots.Count==shots+5,"Moon new target ring only releases after full restart and warning");
+}
+foreach(bool recovery in new[]{false,true}) {
+ Setup();Projectile.Shots.Clear();var waitingMoon=new MoonboneImmortal{NPC=Main.npc[0]};waitingMoon.NPC.ai[2]=225;waitingMoon.UpdateMoonRing(Main.player[0],false,false);
+ if(recovery)for(int frame=1;frame<45;frame++)waitingMoon.UpdateMoonRing(Main.player[0],false,false);
+ float[] before=waitingMoon.NPC.ai.ToArray();int shots=Projectile.Shots.Count;Main.netMode=1;waitingMoon.NPC.target=1;waitingMoon.NPC.netUpdate=false;
+ waitingMoon.UpdateMoonRing(Main.player[1],false,false);
+ Check(waitingMoon.NPC.ai.SequenceEqual(before)&&!waitingMoon.NPC.netUpdate&&Projectile.Shots.Count==shots,"Moon client waits for authority cancellation instead of restarting timers");
+}
+foreach((int life,int spokes) in new[]{(100,6),(70,6),(69,8),(60,8),(35,8),(34,12),(30,12),(1,12)}) {
+ Setup();Main.dedServ=false;var visualMoon=new MoonboneImmortal{NPC=Main.npc[0]};visualMoon.NPC.life=life;visualMoon.NPC.lifeMax=100;visualMoon.NPC.ai[1]=20;
+ var visualBatch=new Microsoft.Xna.Framework.Graphics.SpriteBatch();visualMoon.PreDraw(visualBatch,new(0,0),default);
+ Check(visualBatch.Calls==2&&Math.Abs(visualBatch.LastAngle-MathF.PI/spokes)<.0001f,"Moon safe-gap drawing follows actual seventy/thirty-five percent phase boundary");
+}
 Console.WriteLine($"Actual furnace shard spawn hook passed: {checks} checks; native creation/target/network boundaries mocked.");

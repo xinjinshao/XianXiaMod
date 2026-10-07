@@ -101,13 +101,9 @@ public partial class MoonboneImmortal : ModNPC
 
         Vector2 desired = target.Center - NPC.Center;
 
-        float p2 = 0.7f;
+        bool phaseTwo = MoonPhaseTwo;
 
-        float p3 = 0.35f;
-
-        bool phaseTwo = NPC.life < (int)(NPC.lifeMax * p2);
-
-        bool finalPhase = NPC.life < (int)(NPC.lifeMax * p3);
+        bool finalPhase = MoonFinalPhase;
 
         if (phaseTwo && NPC.localAI[0] < 1f)
 

@@ -787,6 +787,25 @@ try {
  type.GetField("tribulationTimer").SetValue(sessionCultivation,0);Check((long)sessionProperty.GetValue(sessionCultivation)==0,"Compiled ended/failed tribulation has no active session");
  int foundationValue=Convert.ToInt32(foundationStage);type.GetMethod("LoadData").Invoke(sessionCultivation,new[]{Tag(("cultivationStage",foundationValue),("tribulationStage",foundationValue),("tribulationTimer",120))});Check((long)sessionProperty.GetValue(sessionCultivation)>0&&(long)sessionProperty.GetValue(sessionCultivation)!=secondAttempt,"Compiled load starts fresh active identity without persisting old session");
  nativeTargetMain.GetField("netMode").SetValue(null,1);object clientSession=Activator.CreateInstance(type);type.GetMethod("Initialize").Invoke(clientSession,null);type.GetField("tribulationTimer").SetValue(clientSession,120);Check((long)sessionProperty.GetValue(clientSession)==0,"Compiled client does not allocate authority session");type.GetMethod("Initialize").Invoke(sessionCultivation,null);Check((long)sessionProperty.GetValue(sessionCultivation)==0,"Compiled initialization resets active session");
+ // Actual compiled Moonbone warning captures authority target identity; replacement
+ // cancels before any unregistered projectile can be created in this isolated process.
+ var nativeMoonRingType=type.Assembly.GetType("XianXia.Content.NPCs.Bosses.MoonboneImmortal",true);
+ var nativeMoonUpdate=nativeMoonRingType.GetMethod("UpdateMoonRing",BindingFlags.Instance|BindingFlags.NonPublic);
+ foreach(int moonMode in new[]{0,2})foreach(bool moonRecovery in new[]{false,true})foreach(bool moonReplace in new[]{false,true}) {
+  object nativeMoon=Activator.CreateInstance(nativeMoonRingType),nativeMoonNpc=Activator.CreateInstance(nativeTargetNpcType);
+  nativeMoonRingType.GetProperty("Entity",BindingFlags.Instance|BindingFlags.Public|BindingFlags.NonPublic).SetValue(nativeMoon,nativeMoonNpc);
+  nativeTargetNpcType.GetField("active").SetValue(nativeMoonNpc,true);nativeTargetNpcType.GetField("life").SetValue(nativeMoonNpc,100);nativeTargetNpcType.GetField("lifeMax").SetValue(nativeMoonNpc,100);nativeTargetNpcType.GetField("target").SetValue(nativeMoonNpc,0);
+  var nativeMoonAi=(float[])nativeTargetNpcType.GetField("ai").GetValue(nativeMoonNpc);nativeMoonAi[2]=225;
+  object nativeMoonTarget=Activator.CreateInstance(nativeTargetPlayerType);nativeTargetPlayerType.GetField("active").SetValue(nativeMoonTarget,true);nativeTargetPlayers.SetValue(nativeMoonTarget,0);
+  nativeTargetMain.GetField("netMode").SetValue(null,moonMode);nativeMoonUpdate.Invoke(nativeMoon,new[]{nativeMoonTarget,(object)false,false});
+  if(moonRecovery){nativeMoonAi[1]=0;nativeMoonAi[2]=-30;}
+  object replacement=Activator.CreateInstance(nativeTargetPlayerType);nativeTargetPlayerType.GetField("active").SetValue(replacement,true);
+  if(moonReplace)nativeTargetPlayers.SetValue(replacement,0);else{nativeTargetPlayers.SetValue(replacement,1);nativeTargetNpcType.GetField("target").SetValue(nativeMoonNpc,1);}
+  nativeTargetNpcType.GetField("netUpdate").SetValue(nativeMoonNpc,false);nativeTargetNpcType.GetField("velocity").SetValue(nativeMoonNpc,Activator.CreateInstance(nativeTargetVectorType,new object[]{5f,5f}));
+  Check((bool)nativeMoonUpdate.Invoke(nativeMoon,new[]{replacement,(object)false,false}),"Compiled Moonbone target replacement consumes cancellation frame");
+  Check(nativeMoonAi.All(v=>v==0)&&(bool)nativeTargetNpcType.GetField("netUpdate").GetValue(nativeMoonNpc)&&nativeTargetNpcType.GetField("velocity").GetValue(nativeMoonNpc).Equals(Activator.CreateInstance(nativeTargetVectorType)),"Compiled Moonbone clears old warning and velocity with native dirty flag");
+  object[] moonHitArguments={replacement,0};Check(!(bool)nativeMoonRingType.GetMethod("CanHitPlayer").Invoke(nativeMoon,moonHitArguments),"Compiled Moonbone cancellation frame denies native contact");
+ }
  // Exercise compiled healing without a graphical world. For native packet receives,
  // occupied combat-text slots suppress rendering while leaving health parsing real.
  var nativeHealingType=type.Assembly.GetType("XianXia.Common.Systems.AuthoritativeHealing",true);
