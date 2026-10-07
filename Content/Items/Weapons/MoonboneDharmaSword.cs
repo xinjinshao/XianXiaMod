@@ -61,13 +61,13 @@ public class MoonboneDharmaSword : global::XianXia.Common.Items.CultivationWeapo
 
         return player.GetModPlayer<global::XianXia.Common.Players.XianXiaPlayer>()
 
-            .CanConsumeSpiritualEnergy(HasArtifactAwakening(player) ? 17 : 22);
+            .CanConsumeSpiritualEnergy(GetSpiritCost(player));
 
     }
 
 
 
-    public override int GetSpiritCost(Player player) => HasArtifactAwakening(player) ? 17 : 22;
+    public override int GetSpiritCost(Player player) => global::XianXia.Common.Items.RefinedArtifact.IsAwakened(Item) ? 14 : HasArtifactAwakening(player) ? 17 : 22;
 
 
     private static bool HasArtifactAwakening(Player player)
@@ -88,6 +88,7 @@ public class MoonboneDharmaSword : global::XianXia.Common.Items.CultivationWeapo
 
     {
 
+        if (global::XianXia.Common.Items.RefinedArtifact.IsAwakened(Item)) damage += 0.1f;
         if (HasArtifactAwakening(player))
 
             damage += 0.18f;
@@ -104,17 +105,17 @@ public class MoonboneDharmaSword : global::XianXia.Common.Items.CultivationWeapo
 
         string key = HasArtifactAwakening(player)
 
-            ? "Mods.XianXia.Progression.ArtifactAwakeningReady"
+            ? "Mods.XianXia.Refinement.MoonHeritageReady"
 
-            : "Mods.XianXia.Progression.ArtifactAwakeningLocked";
+            : "Mods.XianXia.Refinement.MoonHeritageLocked";
 
         tooltips.Add(new TooltipLine(
 
             Mod,
 
-            "XianXiaArtifactAwakening",
+            "XianXiaMoonHeritage",
 
-            Terraria.Localization.Language.GetTextValue(key, global::XianXia.Common.Players.CultivationStatusText.StageName(global::XianXia.Common.Players.CultivationStage.Tribulation), 96, 17, 18)));
+            Terraria.Localization.Language.GetTextValue(key, global::XianXia.Common.Players.CultivationStatusText.StageName(global::XianXia.Common.Players.CultivationStage.Tribulation), 96, GetSpiritCost(player), 18)));
 
     }
 

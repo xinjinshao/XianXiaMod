@@ -490,18 +490,18 @@ foreach(string weaponName in new[]{"WoodgrainFlyingSword","SpiritwoodCrossbow","
  Check((bool)refinedType.GetMethod("SupportsRefinement").Invoke(null,new[]{growthOwner})&&(bool)refinedType.GetMethod("AppliesToEntity").Invoke(growthMeta,new object[]{growthOwner,false}),weaponName+" actual defaults attach per-item refinement");
  Check(!(bool)refinedType.GetMethod("IsSample").Invoke(null,new[]{growthOwner}),weaponName+" remains outside undefined advanced crafting");
  refinedType.GetMethod("LoadData").Invoke(growthMeta,new[]{growthOwner,Tag(("refinement",3),("awakened",true),("daoRoute",1))});
- Check(Refinement(growthMeta)==3&&!(bool)refinedType.GetProperty("Awakened").GetValue(growthMeta)&&DaoRoute(growthMeta)==0,weaponName+" actual save loader keeps refinement and strips unsupported advanced flags");
+ Check(Refinement(growthMeta)==3&&(bool)refinedType.GetProperty("Awakened").GetValue(growthMeta)==(weaponName=="MoonboneDharmaSword")&&DaoRoute(growthMeta)==0,weaponName+" actual save loader keeps refinement and strips unsupported advanced flags");
  object growthSave=Tag();refinedType.GetMethod("SaveData").Invoke(growthMeta,new[]{growthOwner,growthSave});
- Check(!Convert.ToBoolean(tagType.GetMethod("GetBool").Invoke(growthSave,new object[]{"awakened"}))&&Convert.ToInt32(tagType.GetMethod("GetInt").Invoke(growthSave,new object[]{"daoRoute"}))==0,weaponName+" native TagCompound stores no sample flags");
+ Check(Convert.ToBoolean(tagType.GetMethod("GetBool").Invoke(growthSave,new object[]{"awakened"}))==(weaponName=="MoonboneDharmaSword")&&Convert.ToInt32(tagType.GetMethod("GetInt").Invoke(growthSave,new object[]{"daoRoute"}))==0,weaponName+" native TagCompound stores no sample flags");
  using(var growthBytes=new MemoryStream()){
   using(var writer=new BinaryWriter(growthBytes,System.Text.Encoding.UTF8,true))refinedType.GetMethod("NetSend").Invoke(growthMeta,new object[]{growthOwner,writer});
-  Check(growthBytes.ToArray().SequenceEqual(new byte[]{3,0,0}),weaponName+" actual wire payload is bounded refinement only");
+  Check(growthBytes.ToArray().SequenceEqual(new byte[]{3,(byte)(weaponName=="MoonboneDharmaSword"?1:0),0}),weaponName+" actual wire payload is bounded refinement only");
   object growthClone=refinedType.GetMethod("Clone",new[]{refinementItemType,refinementItemType}).Invoke(growthMeta,new[]{growthOwner,growthOwner});
   refinedType.GetMethod("SetLevel").Invoke(growthClone,new object[]{1});
   Check(Refinement(growthMeta)==3&&Refinement(growthClone)==1,weaponName+" native metadata clone is independent");
  }
  using(var growthBytes=new MemoryStream(new byte[]{3,1,1}))refinedType.GetMethod("NetReceive").Invoke(growthMeta,new object[]{growthOwner,new BinaryReader(growthBytes)});
- Check(Refinement(growthMeta)==3&&!(bool)refinedType.GetProperty("Awakened").GetValue(growthMeta)&&DaoRoute(growthMeta)==0,weaponName+" native receive rejects sample metadata on a basic weapon");
+ Check(Refinement(growthMeta)==3&&(bool)refinedType.GetProperty("Awakened").GetValue(growthMeta)==(weaponName=="MoonboneDharmaSword")&&DaoRoute(growthMeta)==0,weaponName+" native receive rejects sample metadata on a basic weapon");
 }
 Console.WriteLine($"Actual engine gameplay assertions including expanded refinement: {assertions}.");
 

@@ -68,6 +68,10 @@ public static class InscriptionTransactions
                 || !RefinementRules.CanAwaken(previousLevel, previous != 0, previousAwakened,
                     player.GetModPlayer<XianXiaPlayer>().cultivationStage, DownedBossSystem.DownedBosses.Contains("greenwood_medicine_king_echo"))))
                 result = "Mods.XianXia.Refinement.AwakeningRequirements";
+            else if (material.AwakensArtifact && target.ModItem.Name == "MoonboneDharmaSword"
+                && (player.GetModPlayer<XianXiaPlayer>().cultivationStage < CultivationStage.Tribulation
+                    || !DownedBossSystem.DownedBosses.Contains("moonbone_immortal")))
+                result = "Mods.XianXia.Refinement.MoonRequirements";
             else if (material.RefinesArtifact && (!RefinedArtifact.SupportsRefinement(target)
                 || !RefinementRules.CanAdvance(previousLevel, previous != 0, player.GetModPlayer<XianXiaPlayer>().cultivationStage,
                     DownedBossSystem.DownedBosses.Contains(RefinementRules.RequiredBoss(previousLevel)))))

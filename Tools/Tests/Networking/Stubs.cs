@@ -431,3 +431,7 @@ namespace Terraria.DataStructures {public class EntitySource_Parent : IEntitySou
 namespace Terraria.ModLoader { public class ModBuff { public int Type=3;public virtual string Texture=>"";public virtual void SetStaticDefaults(){}public virtual void Update(Terraria.Player player,ref int buffIndex){} } }
 
 namespace XianXia.Content.Items.Materials { public class TribulationCloudDew {} }
+
+namespace XianXia.Content.Projectiles{public class MoonboneShardProjectile{}}
+
+namespace XianXia.Common.Players{public static class CultivationStatusText{public static string StageName(CultivationStage stage)=>stage.ToString();}}
