@@ -26,3 +26,6 @@ namespace XianXia.Content.NPCs.Bosses{public partial class TribulationCloudAvata
 namespace XianXia.Content.NPCs.Enemies{public class TribulationCloudling{}}
 
 namespace XianXia.Content.NPCs.Bosses{public partial class AbyssalStarWomb:Terraria.ModLoader.ModNPC{}}
+
+namespace XianXia.Content.NPCs.Bosses{public partial class FormlessSwordSoul:Terraria.ModLoader.ModNPC{}}
+namespace XianXia.Content.NPCs.Enemies{public class ObsessedSwordCultivator{}}

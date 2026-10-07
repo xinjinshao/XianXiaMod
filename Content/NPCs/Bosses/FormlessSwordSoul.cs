@@ -18,7 +18,7 @@ using XianXia.Common.Systems;
 
 namespace XianXia.Content.NPCs.Bosses;
 
-public class FormlessSwordSoul : ModNPC
+public partial class FormlessSwordSoul : ModNPC
 
 {
     public override void SetStaticDefaults()
@@ -202,15 +202,7 @@ public class FormlessSwordSoul : ModNPC
 
             int ringDmg = Math.Max(18, NPC.damage / 4);
 
-            if (phaseTwo && NPC.ai[3]++ == 0) {
-
-                for (int s = 0; s < 3; s++)
-
-                    NPC.NewNPC(NPC.GetSource_FromAI(), (int)NPC.Center.X + Main.rand.Next(-80, 81), (int)NPC.Center.Y + Main.rand.Next(-40, 41),
-
-                        ModContent.NPCType<global::XianXia.Content.NPCs.Enemies.ObsessedSwordCultivator>(), ai0: NPC.whoAmI);
-
-            }
+            if (phaseTwo) SpawnSwordAdds();
 
             int spokes = finalPhase ? 10 : phaseTwo ? 8 : 6;
 
