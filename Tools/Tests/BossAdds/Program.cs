@@ -69,4 +69,26 @@ foreach(int cloudMode in new[]{0,2}) {
 foreach(Action<TribulationCloudAvatar> invalidate in new Action<TribulationCloudAvatar>[] {c=>Main.netMode=1,c=>c.NPC.active=false,c=>c.NPC.life=0,c=>c.NPC.target=-1,c=>c.NPC.target=Main.maxPlayers,c=>Main.player[0].dead=true,c=>Main.player[0].active=false,c=>Main.player[0].Center=new(5000,0),c=>c.NPC.Center=new(float.NaN,0)}) {
  Setup();var deniedCloud=new TribulationCloudAvatar{NPC=Main.npc[0]};invalidate(deniedCloud);deniedCloud.SpawnCloudAdd();Check(NPC.Calls==0,"Invalid cloud battle/client does not attempt a summon");
 }
+foreach(int mode in new[]{0,2}) {
+ Setup();Main.netMode=mode;var cloudCharge=new TribulationCloudAvatar{NPC=Main.npc[0]};int cooldown=0;
+ for(int tick=1;tick<210;tick++)Check(!cloudCharge.UpdateCloudCharge(Main.player[0],true),"Cloud waits full 210 tick cooldown");
+ Check(cloudCharge.UpdateCloudCharge(Main.player[0],true)&&cloudCharge.NPC.netUpdate,"Cloud starts synchronized warning at cooldown boundary");float cloudLocked=cloudCharge.NPC.ai[3];Main.player[0].Center=new(0,100);
+ for(int frame=1;frame<=108;frame++) {
+  if(frame>1)cloudCharge.UpdateCloudCharge(Main.player[0],true);
+  Check(cloudCharge.CanHitPlayer(Main.player[0],ref cooldown)==(frame>45&&frame<=63),"Cloud contact only during eighteen dash frames");
+  Check(cloudCharge.NPC.ai[3]==cloudLocked,"Cloud keeps warning aim through recovery");
+  if(frame>45&&frame<=63)Check(cloudCharge.NPC.velocity==new Vector2(15,0),"Cloud dash follows locked direction despite movement");
+ }
+ Check(cloudCharge.NPC.ai[0]==0&&cloudCharge.NPC.ai[1]==0&&cloudCharge.NPC.ai[2]==0,"Cloud finishes full recovery and clears other attack timers");cloudCharge.UpdateCloudCharge(Main.player[0],true);Check(cloudCharge.CanHitPlayer(Main.player[0],ref cooldown),"Cloud normal contact resumes after recovery");
+ foreach(int phase in new[]{-10,-50,-80})foreach(bool replace in new[]{false,true}) {
+  Setup();Main.netMode=mode;var changedCloud=new TribulationCloudAvatar{NPC=Main.npc[0]};changedCloud.NPC.ai[1]=209;changedCloud.UpdateCloudCharge(Main.player[0],true);changedCloud.NPC.ai[1]=phase;
+  if(replace)Main.player[0]=new(){Center=new(0,100)};else changedCloud.NPC.target=1;
+  Check(changedCloud.UpdateCloudCharge(Main.player[changedCloud.NPC.target],true)&&changedCloud.NPC.ai.All(v=>v==0)&&changedCloud.NPC.velocity==Vector2.Zero&&changedCloud.NPC.netUpdate,"Cloud target replacement cancels warning dash or recovery");Check(!changedCloud.CanHitPlayer(Main.player[changedCloud.NPC.target],ref cooldown),"Cloud cancellation frame remains harmless");changedCloud.UpdateCloudCharge(Main.player[changedCloud.NPC.target],true);Check(changedCloud.NPC.ai[1]==1,"Cloud retarget starts full cooldown");
+ }
+}
+foreach(int mode in new[]{0,1,2})foreach(float bad in new[]{float.NaN,float.PositiveInfinity,-109f,211f,0.5f,-1.5f}) {
+ Setup();Main.netMode=mode;var badCloud=new TribulationCloudAvatar{NPC=Main.npc[0]};badCloud.NPC.ai[1]=bad;int cooldown=0;Check(badCloud.UpdateCloudCharge(Main.player[0],true)&&!badCloud.CanHitPlayer(Main.player[0],ref cooldown),"Cloud malformed timer cannot dash or contact");Check(mode==1||badCloud.NPC.ai.All(v=>v==0)&&badCloud.NPC.netUpdate,"Authority repairs cloud malformed timer");
+}
+Setup();var visualCloud=new TribulationCloudAvatar{NPC=Main.npc[0]};visualCloud.NPC.ai[1]=209;visualCloud.UpdateCloudCharge(Main.player[0],true);var cloudBatch=new Microsoft.Xna.Framework.Graphics.SpriteBatch();Main.dedServ=true;visualCloud.PreDraw(cloudBatch,default,default);Check(cloudBatch.Calls==0,"Cloud dedicated server avoids warning graphics");Main.dedServ=false;visualCloud.PreDraw(cloudBatch,default,default);Check(cloudBatch.Calls==3,"Cloud warning paints corridor and both edges");int cloudSlot=0;Collision.Blocked=true;for(int frame=1;frame<=45;frame++)visualCloud.UpdateCloudCharge(Main.player[0],true);Check(!visualCloud.CanHitPlayer(Main.player[0],ref cloudSlot),"Cloud dash cannot contact through wall");Collision.Blocked=false;
+Setup();var waitingCloud=new TribulationCloudAvatar{NPC=Main.npc[0]};waitingCloud.NPC.ai[1]=-10;Main.netMode=1;waitingCloud.UpdateCloudCharge(Main.player[0],true);Check(waitingCloud.NPC.ai[1]==-10,"Cloud client does not advance authoritative charge clock");
 Console.WriteLine($"Actual furnace shard spawn hook passed: {checks} checks; native creation/target/network boundaries mocked.");

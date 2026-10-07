@@ -63,7 +63,7 @@ CI运行只读新鲜度检查，生成结果变化时须显式更新这四份输
 
 ## 原生包内容与默认配置
 
-Native checks另运行PackageContents，使用官方TmodFile打开实际.tmod，核对内部名称、build.txt版本、归档哈希、当前描述及Common/Content/Localization的所有PNG/HJSON（接受官方转换后的rawimg）；拒绝隐藏/越界条目、Assets/Docs/Wiki/Tools/bin/obj/README和源码/工具扩展。它不是读取源码文件名后假定打包正确。默认配置在Gameplay编译产物回归中验证，当前累计1128条。
+Native checks另运行PackageContents，使用官方TmodFile打开实际.tmod，核对内部名称、build.txt版本、归档哈希、当前描述及Common/Content/Localization的所有PNG/HJSON（接受官方转换后的rawimg）；拒绝隐藏/越界条目、Assets/Docs/Wiki/Tools/bin/obj/README和源码/工具扩展。它不是读取源码文件名后假定打包正确。默认配置在Gameplay编译产物回归中验证，当前累计1312条。
 
 ```powershell
 dotnet run --project Tools/Tests/PackageContents/PackageContents.csproj -- <XianXia.tmod路径> <官方引擎目录> <仓库根目录>
@@ -254,3 +254,6 @@ Telegraphs671→793项，增加七类来源失效×三模式、权威槽位复�
 
 
 第136轮召唤云灵绑定劫云化身64位实例编号，Boss槽位复用不能继承旧援军；检查存活来源/合法目标、有限坐标速度和4000像素离场，900tick寿命只由权威推进。来源无效或到期停止AI/接触伤害，由权威active=false撤场并广播SyncNPC，不触发死亡奖励；客户端乱序等待、停止移动且无伤。PreAI及PostAI对齐父目标，客户端等待匹配目标包；天然云灵不绑定且保持原生命周期。Boss新增8字节ExtraAI会话，召唤云灵新增13字节绑定/槽位/会话/寿命数据，完整读取后原子应用。FurnaceSummons2108→3118新增1010项来源失效/槽位替换、900tick边界、截断包、客户端不老化、目标同步和先子后父包检查；Gameplay1107→1128新增21项实际编译寿命/13字节、截断原子性及无效来源客户端等待/单人清理/PostAI停止回归。实际NPC创建与网络运输仍由源码夹具模拟，未启动图形世界。
+
+
+第137轮劫云化身终阶段加速改为210tick间隔、45tick锁向预警、18tick固定方向15像素/tick冲刺、45tick恢复；招式期间暂停灵弹/落雷/召唤并在恢复结束清攻击计时，预警/恢复无接触伤害，取消末帧仍无伤。青色预警通道包含冲刺距离与投影后的NPC矩形碰撞体；专服不绘制。预警/冲刺/恢复中目标槽位或Player引用替换取消旧攻击并重新给完整间隔；非有限、越界或非整数计时拒绝伤害并由权威复位。接触增加墙体和有限目标坐标过滤；客户端仅按收到的阶段预测移动，不推进计时。沿用NPC.ai[1]阶段、ai[3]锁向和现有8字节实例ExtraAI，无新增网络字段。BossAdds661→1629新增968项两权威模式完整间隔/逐帧命中窗口、锁向移动、目标替换取消、坏计时、客户端等待及绘制边界回归；Gameplay1128→1312新增184项实际编译两权威模式45帧预警接触拒绝及同槽位Player替换取消验证。

@@ -11,7 +11,7 @@ namespace Terraria.ModLoader{public class ModNPC{public Terraria.NPC NPC=new();p
 namespace XianXia.Content.NPCs.Bosses{public partial class BlackFurnaceIronGolem:Terraria.ModLoader.ModNPC{}}
 namespace XianXia.Content.NPCs.Enemies{public class IronShardSpirit{}}
 
-namespace Microsoft.Xna.Framework{public struct Color{public static Color LightGreen=>new();public static Color OrangeRed=>new();public static Color operator *(Color c,float value)=>c;}public static class MathHelper{public const float TwoPi=MathF.PI*2;public const float PiOver2=MathF.PI/2;}}
+namespace Microsoft.Xna.Framework{public struct Color{public static Color Cyan=>new();public static Color LightGreen=>new();public static Color OrangeRed=>new();public static Color operator *(Color c,float value)=>c;}public static class MathHelper{public const float TwoPi=MathF.PI*2;public const float PiOver2=MathF.PI/2;}}
 namespace Microsoft.Xna.Framework.Graphics{public enum SpriteEffects{None}public class SpriteBatch{public int Calls;public float LastAngle;public Microsoft.Xna.Framework.Vector2 LastScale;public void Draw(object texture,Microsoft.Xna.Framework.Vector2 pos,object rect,Microsoft.Xna.Framework.Color c,float angle,Microsoft.Xna.Framework.Vector2 origin,Microsoft.Xna.Framework.Vector2 scale,SpriteEffects effects,float depth){Calls++;LastScale=scale;LastAngle=angle;}}}
 namespace Terraria.GameContent{public static class TextureAssets{public static Asset MagicPixel=new();}public class Asset{public object Value=new();}}
 

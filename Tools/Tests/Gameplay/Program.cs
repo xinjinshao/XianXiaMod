@@ -917,6 +917,17 @@ try {
   switch(rejectedCloud){case 0:nativeTargetMain.GetField("netMode").SetValue(null,1);break;case 1:nativeTargetNpcType.GetField("active").SetValue(cloudNpc,false);break;case 2:nativeTargetNpcType.GetField("life").SetValue(cloudNpc,0);break;case 3:nativeTargetNpcType.GetField("target").SetValue(cloudNpc,-1);break;case 4:nativeTargetNpcType.GetField("target").SetValue(cloudNpc,255);break;case 5:nativeTargetPlayerType.GetField("dead").SetValue(cloudOwner,true);break;case 6:nativeTargetPlayerType.GetField("active").SetValue(cloudOwner,false);break;case 7:nativeTargetPlayerType.GetProperty("Center").SetValue(cloudOwner,Activator.CreateInstance(nativeTargetVectorType,new object[]{5000f,0f}));break;case 8:nativeTargetNpcType.GetProperty("Center").SetValue(cloudNpc,Activator.CreateInstance(nativeTargetVectorType,new object[]{float.NaN,0f}));break;}
   nativeCloudSpawn.Invoke(cloud,null);Check(!(bool)nativeCloudCreated.GetValue(cloud),"Compiled cloud rejected summon path retains missing quota without native creation");
  }
+ var compiledCloudCharge=nativeCloudType.GetMethod("UpdateCloudCharge",BindingFlags.Instance|BindingFlags.NonPublic);
+ foreach(int cloudChargeMode in new[]{0,2}) {
+  object chargeOwner=Activator.CreateInstance(nativeTargetPlayerType);nativeTargetPlayerType.GetField("active").SetValue(chargeOwner,true);nativeTargetPlayers.SetValue(chargeOwner,0);
+  object chargeBoss=Activator.CreateInstance(nativeCloudType),chargeNpc=Activator.CreateInstance(nativeTargetNpcType);nativeCloudType.GetProperty("Entity",BindingFlags.Instance|BindingFlags.Public|BindingFlags.NonPublic).SetValue(chargeBoss,chargeNpc);
+  nativeTargetNpcType.GetField("active").SetValue(chargeNpc,true);nativeTargetNpcType.GetField("life").SetValue(chargeNpc,100);nativeTargetNpcType.GetField("target").SetValue(chargeNpc,0);var chargeAi=(float[])nativeTargetNpcType.GetField("ai").GetValue(chargeNpc);chargeAi[1]=209;nativeTargetMain.GetField("netMode").SetValue(null,cloudChargeMode);
+  for(int chargeFrame=1;chargeFrame<=45;chargeFrame++) {
+   Check((bool)compiledCloudCharge.Invoke(chargeBoss,new[]{chargeOwner,(object)true}),"Compiled cloud consumes entire warning frame without overlapping attacks");object[] hitArgs={chargeOwner,0};Check(!(bool)nativeCloudType.GetMethod("CanHitPlayer").Invoke(chargeBoss,hitArgs),"Compiled cloud warning refuses native contact");
+  }
+  object changedOwner=Activator.CreateInstance(nativeTargetPlayerType);nativeTargetPlayerType.GetField("active").SetValue(changedOwner,true);nativeTargetPlayers.SetValue(changedOwner,0);compiledCloudCharge.Invoke(chargeBoss,new[]{changedOwner,(object)true});
+  Check(chargeAi.All(v=>v==0)&&(bool)nativeTargetNpcType.GetField("netUpdate").GetValue(chargeNpc),"Compiled cloud owner replacement cancels locked warning and marks dirty");object[] cancellationHit={changedOwner,0};Check(!(bool)nativeCloudType.GetMethod("CanHitPlayer").Invoke(chargeBoss,cancellationHit),"Compiled cloud cancellation frame remains harmless");
+ }
 } finally {
  nativeTargetMain.GetField("player").SetValue(null,nativeTargetOldPlayers);
  nativeTargetMain.GetField("netMode").SetValue(null,nativeTargetOldMode);
