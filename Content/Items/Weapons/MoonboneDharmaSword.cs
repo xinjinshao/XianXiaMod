@@ -59,6 +59,7 @@ public class MoonboneDharmaSword : global::XianXia.Common.Items.CultivationWeapo
 
     {
 
+        if (player.altFunctionUse == 2) return global::XianXia.Common.Systems.ArtifactSkillTransactions.CanUseAlternative(player, Item);
         return player.GetModPlayer<global::XianXia.Common.Players.XianXiaPlayer>()
 
             .CanConsumeSpiritualEnergy(GetSpiritCost(player));

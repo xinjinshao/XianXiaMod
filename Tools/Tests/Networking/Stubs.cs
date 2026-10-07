@@ -121,10 +121,12 @@ namespace Terraria
         public Microsoft.Xna.Framework.Vector2 velocity;
         public Microsoft.Xna.Framework.Vector2 Center;
         public static bool AllowSpawn = true;
+        public static int SpawnBudget = -1;
         public static int NewProjectile(object source, Microsoft.Xna.Framework.Vector2 position,
             Microsoft.Xna.Framework.Vector2 velocity, int type, int damage, float knockback, int owner)
         {
-            if (!AllowSpawn) return Main.maxProjectiles;
+            if (!AllowSpawn || SpawnBudget == 0) return Main.maxProjectiles;
+            if (SpawnBudget > 0) SpawnBudget--;
             int index = Array.FindIndex(Main.projectile, p => !p.active);
             if (index < 0) return Main.maxProjectiles;
             Main.projectile[index] = new() { active = true, owner = owner, type = type, damage = damage, velocity = velocity, identity = nextIdentity++ };

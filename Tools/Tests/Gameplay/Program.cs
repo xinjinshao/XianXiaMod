@@ -489,6 +489,14 @@ foreach(string weaponName in new[]{"WoodgrainFlyingSword","SpiritwoodCrossbow","
  object growthMeta=Activator.CreateInstance(refinedType);
  Check((bool)refinedType.GetMethod("SupportsRefinement").Invoke(null,new[]{growthOwner})&&(bool)refinedType.GetMethod("AppliesToEntity").Invoke(growthMeta,new object[]{growthOwner,false}),weaponName+" actual defaults attach per-item refinement");
  Check(!(bool)refinedType.GetMethod("IsSample").Invoke(null,new[]{growthOwner}),weaponName+" remains outside undefined advanced crafting");
+ if(weaponName=="MoonboneDharmaSword"){
+  var nativeSkillType=type.Assembly.GetType("XianXia.Common.Systems.ArtifactSkill",true);object moonSkill=Enum.ToObject(nativeSkillType,4);var nativeSkillRules=type.Assembly.GetType("XianXia.Common.Systems.ArtifactSkillRules",true);
+  Check((bool)nativeSkillRules.GetMethod("IsValid").Invoke(null,new[]{moonSkill}),"Compiled moon skill identifier appended and valid");
+  Check((int)nativeSkillRules.GetMethod("Cost").Invoke(null,new[]{moonSkill})==30,"Compiled moon skill costs thirty base energy");
+  Check((int)nativeSkillRules.GetMethod("Cooldown").Invoke(null,new[]{moonSkill})==1200,"Compiled moon skill shares twenty second cooldown");
+  Check(Convert.ToInt32(type.Assembly.GetType("XianXia.Common.Systems.ArtifactSkillTransactions",true).GetMethod("HeldSkill").Invoke(null,new[]{growthOwner}))==4,"Compiled moon sword binds dedicated skill");
+ }
+
  refinedType.GetMethod("LoadData").Invoke(growthMeta,new[]{growthOwner,Tag(("refinement",3),("awakened",true),("daoRoute",1))});
  Check(Refinement(growthMeta)==3&&(bool)refinedType.GetProperty("Awakened").GetValue(growthMeta)==(weaponName=="MoonboneDharmaSword")&&DaoRoute(growthMeta)==0,weaponName+" actual save loader keeps refinement and strips unsupported advanced flags");
  object growthSave=Tag();refinedType.GetMethod("SaveData").Invoke(growthMeta,new[]{growthOwner,growthSave});

@@ -16,7 +16,7 @@ namespace XianXia.Common.Systems;
 public static class ArtifactSkillTransactions
 {
     public static ArtifactSkill? HeldSkill(Item item) => RefinedArtifact.SupportsAwakening(item) ? item.ModItem.Name switch
-    { "CloudpiercerFlyingSword" => ArtifactSkill.SwordBurst, "GreenwoodArrayPlate" => ArtifactSkill.ArrayPulse, "HeavenTabletWardSeal" => ArtifactSkill.WardGuard, _ => null } : null;
+    { "CloudpiercerFlyingSword" => ArtifactSkill.SwordBurst, "GreenwoodArrayPlate" => ArtifactSkill.ArrayPulse, "HeavenTabletWardSeal" => ArtifactSkill.WardGuard, "MoonboneDharmaSword" => ArtifactSkill.MoonCrescent, _ => null } : null;
     public static bool CanUseAlternative(Player player, Item item) => RefinedArtifact.IsAwakened(item)
         && HeldSkill(item) is ArtifactSkill skill && player.GetModPlayer<XianXiaPlayer>().activeSkillCooldown == 0
         && player.GetModPlayer<XianXiaPlayer>().CanConsumeSpiritualEnergy(DaoArtifactRules.SkillCost(skill,RefinedArtifact.ActiveDaoRoute(item)));
@@ -58,7 +58,7 @@ public static class ArtifactSkillTransactions
         if (!eligible) { Reply(player, reason); return; }
         if (state.activeSkillCooldown > 0) { Reply(player, "Mods.XianXia.Skills.CoolingDown"); return; }
         List<Player> healTargets = new();
-        if (skill == ArtifactSkill.SwordBurst && Main.maxProjectiles - CountActive() < 3) { Reply(player,"Mods.XianXia.Skills.Capacity"); return; }
+        if ((skill is ArtifactSkill.SwordBurst or ArtifactSkill.MoonCrescent) && Main.maxProjectiles - CountActive() < 3) { Reply(player,"Mods.XianXia.Skills.Capacity"); return; }
         if (skill == ArtifactSkill.ArrayPulse) {
             Projectile field = FindArray(player);
             if (field == null) { Reply(player, "Mods.XianXia.Skills.NeedArray"); return; }
@@ -70,7 +70,7 @@ public static class ArtifactSkillTransactions
         CultivationSnapshot before = state.CaptureSnapshot();
         var daoRoute = RefinedArtifact.ActiveDaoRoute(item);
         if (!state.TryConsumeSpiritualEnergy(DaoArtifactRules.SkillCost(skill,daoRoute))) { Reply(player, "Mods.XianXia.Skills.NeedEnergy"); return; }
-        if (skill == ArtifactSkill.SwordBurst && !Burst(player, item, aim)) {
+        if ((skill is ArtifactSkill.SwordBurst or ArtifactSkill.MoonCrescent) && !Burst(player, item, aim)) {
             state.ApplySnapshot(before); state.SyncPlayer(player.whoAmI, -1, false); return;
         }
         if (skill == ArtifactSkill.ArrayPulse) foreach (Player target in healTargets) {
@@ -110,7 +110,9 @@ public static class ArtifactSkillTransactions
         Vector2 position = player.RotatedRelativePoint(player.MountedCenter), delta = aim - position;
         if (!Finite(position) || !Finite(delta) || !float.IsFinite(delta.LengthSquared())) return false;
         Vector2 velocity = delta.SafeNormalize(Vector2.UnitX * player.direction) * 14f;
-        int damage = player.GetWeaponDamage(item) * DaoArtifactRules.BurstMultiplier(RefinedArtifact.ActiveDaoRoute(item)), type = ModContent.ProjectileType<CloudpiercerSwordProjectile>();
+        bool moon = HeldSkill(item) == ArtifactSkill.MoonCrescent;
+        int damage = moon ? (int)(player.GetWeaponDamage(item) * 1.5f) : player.GetWeaponDamage(item) * DaoArtifactRules.BurstMultiplier(RefinedArtifact.ActiveDaoRoute(item));
+        int type = moon ? ModContent.ProjectileType<MoonboneShardProjectile>() : ModContent.ProjectileType<CloudpiercerSwordProjectile>();
         var created = new List<int>();
         var source = new EntitySource_ItemUse_WithAmmo(player, item, 0);
         for (int i = -1; i <= 1; i++) {
@@ -123,6 +125,10 @@ public static class ArtifactSkillTransactions
                 return false;
             }
             created.Add(index);
+        }
+        foreach (int index in created) {
+            Main.projectile[index].netUpdate = true;
+            if (Main.netMode == NetmodeID.Server) NetMessage.SendData(MessageID.SyncProjectile, -1, -1, null, index);
         }
         return true;
     }

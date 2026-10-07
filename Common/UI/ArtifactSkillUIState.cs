@@ -21,13 +21,14 @@ public class ArtifactSkillUIState : UIState
     private string Text(string key, params object[] args) => Language.GetTextValue("Mods.XianXia.Skills." + key, args);
     public override void OnInitialize()
     {
-        panel = new UIPanel(); panel.Left.Set(28,0); panel.Top.Set(140,0); panel.Width.Set(300,0); panel.Height.Set(84,0); Append(panel);
+        panel = new UIPanel(); panel.Left.Set(28,0); panel.Top.Set(140,0); panel.Width.Set(300,0); panel.Height.Set(120,0); Append(panel);
         status = new UIText("",0.75f); panel.Append(status);
         AddButton("Sword",0,ArtifactSkill.SwordBurst); AddButton("Array",92,ArtifactSkill.ArrayPulse); AddButton("Ward",184,ArtifactSkill.WardGuard);
+        AddButton("Moon",0,ArtifactSkill.MoonCrescent,64);
     }
-    private void AddButton(string key,float left,ArtifactSkill skill)
+    private void AddButton(string key,float left,ArtifactSkill skill,float top=28)
     {
-        var button = new UITextPanel<string>(Text(key),0.75f); button.Left.Set(left,0); button.Top.Set(28,0);
+        var button = new UITextPanel<string>(Text(key),0.75f); button.Left.Set(left,0); button.Top.Set(top,0);
         button.Width.Set(86,0); button.Height.Set(30,0);
         skillButtons.Add((button, skill));
         button.OnLeftClick += (_,_) => ArtifactSkillTransactions.Request(Main.LocalPlayer,skill); panel.Append(button);
@@ -38,7 +39,7 @@ public class ArtifactSkillUIState : UIState
         var config = Terraria.ModLoader.ModContent.GetInstance<XianXiaClientConfig>();
         float scale = Math.Max(0.01f, Main.UIScale);
         float x = MathHelper.Clamp(config.SkillPanelX, 0f, Math.Max(0f, Main.screenWidth / scale - 300f));
-        float y = MathHelper.Clamp(config.SkillPanelY, 0f, Math.Max(0f, Main.screenHeight / scale - 84f));
+        float y = MathHelper.Clamp(config.SkillPanelY, 0f, Math.Max(0f, Main.screenHeight / scale - 120f));
         if (panel.Left.Pixels != x || panel.Top.Pixels != y)
         {
             panel.Left.Set(x, 0); panel.Top.Set(y, 0); panel.Recalculate();
@@ -68,6 +69,7 @@ public class ArtifactSkillUIState : UIState
         {
             ArtifactSkill.SwordBurst => Text("SwordRequirement"),
             ArtifactSkill.ArrayPulse => Text("ArrayRequirement"),
+            ArtifactSkill.MoonCrescent => Text("MoonRequirement"),
             _ => Text("WardRequirement")
         };
         return requirement + "\n" + Text("SkillNumbers", cost, ArtifactSkillRules.Cooldown(skill) / 60)

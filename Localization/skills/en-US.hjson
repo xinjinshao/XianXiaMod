@@ -19,6 +19,8 @@ Mods: {
    Capacity: Not enough projectile capacity; nothing spent
    Sword: Burst
    Array: Pulse
+   Moon: Moon Burst
+   MoonRequirement: Hold a crafted-awakened Moonbone Dharma Sword: fire three aimed shards, each dealing 150% of current weapon damage, using the normal shard collision and penetration
    Ward: Guard
    Ready: Skills ready; configure keys in Mod Controls
    Cooldown: "Shared skill cooldown: {0}s"

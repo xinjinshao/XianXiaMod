@@ -19,6 +19,8 @@ Mods: {
    Capacity: 弹幕空间不足，未消费
    Sword: 剑爆发
    Array: 阵脉冲
+   Moon: 月骸三叠
+   MoonRequirement: 手持显式觉醒的月骸法剑：朝瞄准方向释放三片月骸碎刃，每片为当前武器伤害的150%；继承碎刃碰撞与穿透
    Ward: 护体
    Ready: 技能就绪（键位可在模组控制中设置）
    Cooldown: "共享技能冷却：{0}秒"
