@@ -18,7 +18,7 @@ using XianXia.Common.Systems;
 
 namespace XianXia.Content.NPCs.Bosses;
 
-public class AbyssalStarWomb : ModNPC
+public partial class AbyssalStarWomb : ModNPC
 
 {
     public override void SetStaticDefaults()
@@ -95,7 +95,7 @@ public class AbyssalStarWomb : ModNPC
             NPC.velocity = new Vector2(0f, -2f);
             if (Main.netMode != NetmodeID.MultiplayerClient) {
                 bool changed = NPC.ai[0] != 0f || NPC.ai[1] != 0f || NPC.ai[2] != 0f || NPC.timeLeft > 30;
-                NPC.ai[0] = NPC.ai[1] = NPC.ai[2] = 0f;
+                NPC.ai[0] = NPC.ai[1] = NPC.ai[2] = NPC.ai[3] = 0f;
                 if (changed) NPC.netUpdate = true;
                 NPC.EncourageDespawn(30);
             }
@@ -218,11 +218,7 @@ public class AbyssalStarWomb : ModNPC
 
             }
 
-            if (phaseTwo && Main.GameUpdateCount % 540 < 30)
-
-                Projectile.NewProjectile(NPC.GetSource_FromAI(), target.Center + target.velocity * 18f, Vector2.Zero,
-
-                    ModContent.ProjectileType<global::XianXia.Content.Projectiles.BossArrayFieldProjectile>(), ringDmg, 1.2f, Main.myPlayer);
+            if (phaseTwo) ReleaseCompressionField(target, ringDmg);
 
 
 

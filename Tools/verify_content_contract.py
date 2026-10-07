@@ -55,7 +55,8 @@ def main() -> None:
         "GreenwoodHerbGardenBiome",
         "MoonboneAbyssBiome",
     )
-    require_text("Content/NPCs/Bosses/AbyssalStarWomb.cs", "BossArrayFieldProjectile", "patternInterval")
+    require_text("Content/NPCs/Bosses/AbyssalStarWomb.cs", "ReleaseCompressionField", "patternInterval")
+    require_text("Content/NPCs/Bosses/AbyssalStarWomb.Compression.cs", "BossArrayFieldProjectile", "ReleaseCompressionField")
     require_text("Content/NPCs/Bosses/TribulationCloudAvatar.cs", "TribulationWarningLineProjectile", "patternInterval")
     require_text(
         "Tools/generate_tmod_content.py",
