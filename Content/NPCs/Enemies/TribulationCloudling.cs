@@ -14,7 +14,7 @@ using Terraria.ModLoader;
 
 namespace XianXia.Content.NPCs.Enemies;
 
-public class TribulationCloudling : ModNPC
+public partial class TribulationCloudling : ModNPC
 
 {
     public override void SetStaticDefaults()
@@ -81,7 +81,8 @@ public class TribulationCloudling : ModNPC
 
     public override void PostAI()
     {
-        if (Main.netMode == NetmodeID.MultiplayerClient) return;
+        if (!NPC.active || Main.netMode == NetmodeID.MultiplayerClient) return;
+        if (!SynchronizeSummonTarget()) return;
         if (!global::XianXia.Common.Systems.EnemyTargeting.TryGetLivingTarget(NPC, out Player target))
         {
             NPC.localAI[0] = 0f;

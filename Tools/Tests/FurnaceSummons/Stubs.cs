@@ -17,3 +17,6 @@ namespace Terraria{public static class NetMessage{public static int Calls;public
 
 namespace XianXia.Content.NPCs.Bosses{public partial class MoonboneImmortal:Terraria.ModLoader.ModNPC{}}
 namespace XianXia.Content.NPCs.Enemies{public partial class ArchivedImmortalSoul:Terraria.ModLoader.ModNPC{}}
+
+namespace XianXia.Content.NPCs.Bosses{public partial class TribulationCloudAvatar:Terraria.ModLoader.ModNPC{}}
+namespace XianXia.Content.NPCs.Enemies{public partial class TribulationCloudling:Terraria.ModLoader.ModNPC{}}

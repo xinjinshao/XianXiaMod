@@ -681,6 +681,30 @@ try {
  nativeTargetMain.GetField("netMode").SetValue(null,0);nativeSummonType.GetMethod("PreAI").Invoke(nativeSummon,null);
  Check(!(bool)nativeTargetNpcType.GetField("active").GetValue(nativeSummonNpc)&&(int)nativeTargetNpcType.GetField("damage").GetValue(nativeSummonNpc)==0,"Compiled invalid source despawns on authority");
  nativeSummonType.GetMethod("PostAI").Invoke(nativeSummon,null);Check(!(bool)nativeTargetNpcType.GetField("netUpdate").GetValue(nativeSummonNpc),"Compiled PostAI stops after source cleanup");
+ var nativeCloudBindingType=type.Assembly.GetType("XianXia.Content.NPCs.Enemies.TribulationCloudling",true);
+ object nativeCloudBinding=Activator.CreateInstance(nativeCloudBindingType),nativeCloudBindingNpc=Activator.CreateInstance(nativeTargetNpcType);
+ nativeCloudBindingType.GetProperty("Entity",BindingFlags.Instance|BindingFlags.Public|BindingFlags.NonPublic).SetValue(nativeCloudBinding,nativeCloudBindingNpc);
+ byte[] CloudBindingWire(){using var stream=new MemoryStream();using var writer=new BinaryWriter(stream);nativeCloudBindingType.GetMethod("SendExtraAI").Invoke(nativeCloudBinding,new object[]{writer});return stream.ToArray();}
+ Check((int)nativeCloudBindingType.GetField("MaximumSummonLifetime").GetRawConstantValue()==900,"Compiled summon lifetime 900 ticks");
+ Check(CloudBindingWire().Length==13,"Compiled summon extra-AI fixed thirteen bytes");
+ Check((bool)nativeCloudBindingType.GetMethod("PreAI").Invoke(nativeCloudBinding,null),"Compiled natural cloudling has no boss binding");
+ using(var payload=new MemoryStream()){
+  using(var writer=new BinaryWriter(payload,System.Text.Encoding.UTF8,true)){writer.Write(true);writer.Write((short)-1);writer.Write(123L);writer.Write((short)900);}
+  var bytes=payload.ToArray();
+  for(int length=0;length<bytes.Length;length++){
+   var before=CloudBindingWire();using var truncated=new MemoryStream(bytes[..length]);
+   try{nativeCloudBindingType.GetMethod("ReceiveExtraAI").Invoke(nativeCloudBinding,new object[]{new BinaryReader(truncated)});throw new Exception("Compiled summon accepted truncated packet");}catch(TargetInvocationException ex)when(ex.InnerException is EndOfStreamException){}
+   Check(CloudBindingWire().SequenceEqual(before),"Compiled truncated summon packet leaves state intact");
+  }
+  payload.Position=0;nativeCloudBindingType.GetMethod("ReceiveExtraAI").Invoke(nativeCloudBinding,new object[]{new BinaryReader(payload)});
+  Check(CloudBindingWire().SequenceEqual(bytes),"Compiled summon wire roundtrip");
+ }
+ nativeTargetMain.GetField("netMode").SetValue(null,1);nativeTargetNpcType.GetField("active").SetValue(nativeCloudBindingNpc,true);nativeTargetNpcType.GetField("life").SetValue(nativeCloudBindingNpc,70);
+ Check(!(bool)nativeCloudBindingType.GetMethod("PreAI").Invoke(nativeCloudBinding,null)&&(bool)nativeTargetNpcType.GetField("active").GetValue(nativeCloudBindingNpc),"Compiled invalid source blocks client AI without authority removal");
+ object[] nativeCloudBindingContact={nativeTargetPlayers.GetValue(0),0};Check(!(bool)nativeCloudBindingType.GetMethod("CanHitPlayer").Invoke(nativeCloudBinding,nativeCloudBindingContact),"Compiled invalid source cannot hit players");
+ nativeTargetMain.GetField("netMode").SetValue(null,0);nativeCloudBindingType.GetMethod("PreAI").Invoke(nativeCloudBinding,null);
+ Check(!(bool)nativeTargetNpcType.GetField("active").GetValue(nativeCloudBindingNpc)&&(int)nativeTargetNpcType.GetField("damage").GetValue(nativeCloudBindingNpc)==0,"Compiled invalid source despawns on authority");
+ nativeCloudBindingType.GetMethod("PostAI").Invoke(nativeCloudBinding,null);Check(!(bool)nativeTargetNpcType.GetField("netUpdate").GetValue(nativeCloudBindingNpc),"Compiled PostAI stops after source cleanup");
  var nativeWyrmType=type.Assembly.GetType("XianXia.Content.NPCs.Bosses.SpiritVeinWyrm",true);
  var nativeWyrmChildType=type.Assembly.GetType("XianXia.Content.NPCs.Bosses.ShatteredJadeWyrmMinion",true);
  var nativeOldNpcTable=nativeTargetMain.GetField("npc").GetValue(null);
