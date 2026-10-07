@@ -63,7 +63,7 @@ CI运行只读新鲜度检查，生成结果变化时须显式更新这四份输
 
 ## 原生包内容与默认配置
 
-Native checks另运行PackageContents，使用官方TmodFile打开实际.tmod，核对内部名称、build.txt版本、归档哈希、当前描述及Common/Content/Localization的所有PNG/HJSON（接受官方转换后的rawimg）；拒绝隐藏/越界条目、Assets/Docs/Wiki/Tools/bin/obj/README和源码/工具扩展。它不是读取源码文件名后假定打包正确。默认配置在Gameplay编译产物回归中验证，当前累计976条。
+Native checks另运行PackageContents，使用官方TmodFile打开实际.tmod，核对内部名称、build.txt版本、归档哈希、当前描述及Common/Content/Localization的所有PNG/HJSON（接受官方转换后的rawimg）；拒绝隐藏/越界条目、Assets/Docs/Wiki/Tools/bin/obj/README和源码/工具扩展。它不是读取源码文件名后假定打包正确。默认配置在Gameplay编译产物回归中验证，当前累计984条。
 
 ```powershell
 dotnet run --project Tools/Tests/PackageContents/PackageContents.csproj -- <XianXia.tmod路径> <官方引擎目录> <仓库根目录>
@@ -230,3 +230,6 @@ Telegraphs671→793项，增加七类来源失效×三模式、权威槽位复�
 
 
 第128轮月骸法剑接完整三路线道化：新增SupportsDaoTransformation统一炼器筛选/事务/存档/三字节同步，与原IsSample分类分离；天碑御印及其余未支持武器仍拒绝路线元数据。沿原斩道境、三级淬炼/觉醒/铭刻、核心击败/世界路线/斩道台事务，一次消耗1道化印+36灵石，前缀/铭刻/觉醒保留。生效时基础伤害220→280；普通基础灵耗重铸/斩断18、星渊14。月骸三叠重铸200%/36灵气/自疗至多20、斩断250%/48灵气并保留路线+15%伤害、星渊200%/30灵气/成功增加8灵压；共享20秒冷却，玩家费用倍率沿原规则。部分创建失败恢复资源、不施回血/灵压；不同路线或核心未击败停用道化收益，保留路线元数据并恢复觉醒150%/30技能。双语工具、物品与动态技能提示同步。Networking26,468→26,603新增135项两模式×三路线事务、精确成本/实际物品、持久化、失败/不足资源、跨路线及核心门槛回归；Gameplay965→976新增11项官方程序集能力/规则检查，原16件物品元数据与独立克隆检查按实际支持更新。
+
+
+第129轮共用服务器治疗入口AuthoritativeHealing接管青木阵盘周期恢复、青木主动脉冲及重铸破云/月骸爆发回血。服务器只加一次实际缺血量，再用原生SpiritHeal(66)广播到所有客户端（remoteClient=-1/ignoreClient=-1），修复此前只发被治疗玩家、旁观者没有即时回血包的问题；不额外发送生命快照，避免重复应用增量。客户端拒绝主动治疗；单人沿原生Player.Heal；空目标、失活/死亡/0生命、非法/复用槽位、非正治疗及满血/异常上限拒绝，不发空包。包治疗量是有符号16位，统一限制32767以保证服务器和接收端一致。Networking26,603→26,646新增43项三模式/生命上限、广播对象/一次发送、无效目标/数值、三类重铸技能及周期法阵恢复/重复请求回归；Biomes仍32项，直接链接同一治疗源码保留原恢复行为。Gameplay976→984新增8项实际编译治疗条件和官方引擎MessageBuffer.GetData(66)接收测试：主人/旁观端均恰好增加5生命，禁用渲染通过占满100个CombatText槽，独立RemoteServer只作读取初始化且恢复原状态，不建立网络连接或启动世界。

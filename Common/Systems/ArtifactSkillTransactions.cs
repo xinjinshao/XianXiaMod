@@ -74,9 +74,9 @@ public static class ArtifactSkillTransactions
             state.ApplySnapshot(before); state.SyncPlayer(player.whoAmI, -1, false); return;
         }
         if (skill == ArtifactSkill.ArrayPulse) foreach (Player target in healTargets) {
-            Heal(target,DaoArtifactRules.PulseHeal(daoRoute));
+            AuthoritativeHealing.Apply(target,DaoArtifactRules.PulseHeal(daoRoute));
         }
-        if ((skill is ArtifactSkill.SwordBurst or ArtifactSkill.MoonCrescent) && daoRoute == DownedBossSystem.EndgameRoute.RebuildHeaven) Heal(player,20);
+        if ((skill is ArtifactSkill.SwordBurst or ArtifactSkill.MoonCrescent) && daoRoute == DownedBossSystem.EndgameRoute.RebuildHeaven) AuthoritativeHealing.Apply(player,20);
         if (skill == ArtifactSkill.WardGuard) {
             state.wardGuardTimer = 180;
             player.AddBuff(ModContent.BuffType<global::XianXia.Content.Buffs.ArtifactWardBuff>(), 2);
@@ -88,13 +88,6 @@ public static class ArtifactSkillTransactions
         Reply(player, "Mods.XianXia.Skills.Success");
     }
     private static bool Friendly(Player owner, Player target) => owner == target || !owner.hostile || !target.hostile || (owner.team > 0 && owner.team == target.team);
-    private static void Heal(Player target,int amount)
-    {
-        int heal = Math.Min(amount,Math.Max(0,target.statLifeMax2 - target.statLife));
-        if (heal == 0) return;
-        if (Main.netMode == NetmodeID.SinglePlayer) target.Heal(heal);
-        else { target.statLife += heal; NetMessage.SendData(MessageID.SpiritHeal,target.whoAmI,-1,null,target.whoAmI,heal); }
-    }
     private static Projectile FindArray(Player player)
     {
         int type = ModContent.ProjectileType<GreenwoodArrayField>();

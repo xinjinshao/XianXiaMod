@@ -156,9 +156,10 @@ namespace Terraria
     public static class NetMessage
     {
         public static readonly List<(int Message,int Number,float Number2)> Sent=new();
+        public static readonly List<(int Message,int To,int Ignore,int Number,float Amount)> Routed=new();
         public static int Broadcasts;
         public static int WorldSends;
-        public static void SendData(int message, int toWho = -1, int fromWho = -1, object text = null, int number = 0, float number2 = 0) { Sent.Add((message,number,number2));Broadcasts++; if(message==Terraria.ID.MessageID.WorldData) WorldSends++; }
+        public static void SendData(int message, int toWho = -1, int fromWho = -1, object text = null, int number = 0, float number2 = 0) { Sent.Add((message,number,number2));Routed.Add((message,toWho,fromWho,number,number2));Broadcasts++; if(message==Terraria.ID.MessageID.WorldData) WorldSends++; }
     }
 }
 

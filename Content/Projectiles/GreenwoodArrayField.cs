@@ -41,16 +41,7 @@ public class GreenwoodArrayField : ModProjectile
         if (Main.netMode == NetmodeID.MultiplayerClient || !owner.Hitbox.Intersects(Projectile.Hitbox)
             || Main.GameUpdateCount % 60 != 0
             || !owner.GetModPlayer<global::XianXia.Common.Players.XianXiaPlayer>().TryArrayRecovery(Main.GameUpdateCount)) return;
-        int healed = Math.Min(1, Math.Max(0, owner.statLifeMax2 - owner.statLife));
-        if (healed > 0)
-        {
-            if (Main.netMode == NetmodeID.Server)
-            {
-                owner.statLife += healed;
-                NetMessage.SendData(MessageID.SpiritHeal, owner.whoAmI, -1, null, owner.whoAmI, healed);
-            }
-            else owner.Heal(healed);
-        }
+        global::XianXia.Common.Systems.AuthoritativeHealing.Apply(owner, 1);
         owner.GetModPlayer<global::XianXia.Common.Players.XianXiaPlayer>().RestoreSpiritualEnergy(1);
     }
 }

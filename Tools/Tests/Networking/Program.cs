@@ -1252,6 +1252,38 @@ foreach(byte route in new byte[]{1,2,3}) {
 foreach(Action invalid in new Action[]{()=>Dao(route:2),()=>Dao(prefix:0),()=>Dao(kind:2),()=>Dao(level:2),()=>Dao(awakened:false),()=>{Game.player[0].State.cultivationStage=CultivationStage.Tribulation;Dao();},()=>{Game.tile[0,0].TileType=1;Dao();},()=>{DownedBossSystem.DownedBosses.Clear();Dao();},()=>{Game.player[0].inventory[2].stack=35;Dao();}}) {
  SetupDao(name:"MoonboneDharmaSword");invalid();Check(Game.player[0].inventory[0].stack==2&&Game.player[0].inventory[2].stack>0&&XianXia.Common.Items.RefinedArtifact.GetDaoRoute(Game.player[0].inventory[1])==DownedBossSystem.EndgameRoute.None,"Unmet or stale Moon Dao requests preserve seal stones and item state");
 }
+// Positive healing goes through the same authority and broadcast boundary for skills and fields.
+foreach(int mode in new[]{NetmodeID.SinglePlayer,NetmodeID.MultiplayerClient,NetmodeID.Server}) foreach(int missing in new[]{0,5,20}) {
+ Game.netMode=mode;var patient=new Terraria.Player{whoAmI=0,active=true,statLife=100-missing,statLifeMax2=100};Game.player[0]=patient;
+ int beforeMessages=Terraria.NetMessage.Routed.Count;int healed=AuthoritativeHealing.Apply(patient,20);int expected=mode==NetmodeID.MultiplayerClient?0:missing;
+ Check(healed==expected&&patient.statLife==100-missing+expected,"Authoritative healing respects client refusal and exact life cap");
+ Check(Terraria.NetMessage.Routed.Count==beforeMessages+(mode==NetmodeID.Server&&expected>0?1:0),"A successful server heal sends one packet and other cases send none");
+ if(mode==NetmodeID.Server&&expected>0) Check(Terraria.NetMessage.Routed.Last()==(Terraria.ID.MessageID.SpiritHeal,-1,-1,0,(float)expected),"Healing broadcasts exact increment to owner and observers without excluded clients");
+}
+foreach(Action<Terraria.Player> invalid in new Action<Terraria.Player>[] {p=>p.active=false,p=>p.dead=true,p=>p.statLife=0,p=>p.statLifeMax2=-1,p=>p.statLifeMax2=int.MinValue,p=>p.statLife=105,p=>p.whoAmI=-1,p=>p.whoAmI=Game.maxPlayers,p=>Game.player[0]=new Terraria.Player()}) {
+ Game.netMode=NetmodeID.Server;var patient=new Terraria.Player{whoAmI=0,active=true,statLife=50,statLifeMax2=100};Game.player[0]=patient;invalid(patient);int oldLife=patient.statLife;int messages=Terraria.NetMessage.Routed.Count;
+ Check(AuthoritativeHealing.Apply(patient,20)==0&&patient.statLife==oldLife&&Terraria.NetMessage.Routed.Count==messages,"Dead inactive invalid-slot or replaced-player healing is refused without packet");
+}
+Game.netMode=NetmodeID.Server;var largePatient=new Terraria.Player{whoAmI=0,active=true,statLife=1,statLifeMax2=int.MaxValue};Game.player[0]=largePatient;
+Check(AuthoritativeHealing.Apply(largePatient,int.MaxValue)==short.MaxValue&&largePatient.statLife==32768&&Terraria.NetMessage.Routed.Last()==(Terraria.ID.MessageID.SpiritHeal,-1,-1,0,32767f),"Heal amount cannot overflow the native signed-short packet");
+foreach(int invalidAmount in new[]{0,-1,int.MinValue}) {int oldLife=largePatient.statLife;int messages=Terraria.NetMessage.Routed.Count;Check(AuthoritativeHealing.Apply(largePatient,invalidAmount)==0&&largePatient.statLife==oldLife&&Terraria.NetMessage.Routed.Count==messages,"Nonpositive heal leaves player and transport unchanged");}
+Check(AuthoritativeHealing.Apply(null,20)==0,"Null healing target rejected");
+foreach(string name in new[]{"CloudpiercerFlyingSword","MoonboneDharmaSword","GreenwoodArrayPlate"}) {
+ SetupDao(name:name);Dao();var actor=Game.player[0];actor.selectedItem=1;actor.statLife=95;actor.statLifeMax2=100;
+ if(name=="GreenwoodArrayPlate")Game.projectile[0]=new Terraria.Projectile{active=true,owner=0,type=3,Center=actor.Center};
+ int beforeMessages=Terraria.NetMessage.Routed.Count;
+ Skill(name=="CloudpiercerFlyingSword"?ArtifactSkill.SwordBurst:name=="MoonboneDharmaSword"?ArtifactSkill.MoonCrescent:ArtifactSkill.ArrayPulse);
+ var healingPackets=Terraria.NetMessage.Routed.Skip(beforeMessages).Where(p=>p.Message==Terraria.ID.MessageID.SpiritHeal&&p.Number==actor.whoAmI).ToArray();
+ Check(actor.statLife==100&&healingPackets.Length==1&&healingPackets[0]==(Terraria.ID.MessageID.SpiritHeal,-1,-1,0,5f),"Every Rebuild skill broadcasts only the actual capped heal once");
+ Skill(name=="CloudpiercerFlyingSword"?ArtifactSkill.SwordBurst:name=="MoonboneDharmaSword"?ArtifactSkill.MoonCrescent:ArtifactSkill.ArrayPulse);
+ Check(Terraria.NetMessage.Routed.Skip(beforeMessages).Count(p=>p.Message==Terraria.ID.MessageID.SpiritHeal&&p.Number==actor.whoAmI)==1,"Rejected duplicate skill cannot send another heal");
+}
+Game.netMode=NetmodeID.Server;Game.dedServ=true;var fieldPatient=new Terraria.Player{whoAmI=0,active=true,statLife=99,statLifeMax2=100};Game.player[0]=fieldPatient;fieldPatient.State.spiritualEnergy=10;fieldPatient.State.maxSpiritualEnergy=100;
+var broadcastField=new XianXia.Content.Projectiles.GreenwoodArrayField{Mod=mod};broadcastField.SetDefaults();broadcastField.Projectile.owner=0;broadcastField.Projectile.active=true;broadcastField.Projectile.Center=default;Game.GameUpdateCount=120;
+int fieldMessages=Terraria.NetMessage.Routed.Count;broadcastField.AI();
+Check(fieldPatient.statLife==100&&Terraria.NetMessage.Routed.Skip(fieldMessages).Count(p=>p.Message==Terraria.ID.MessageID.SpiritHeal)==1&&Terraria.NetMessage.Routed.Last(p=>p.Message==Terraria.ID.MessageID.SpiritHeal)==(Terraria.ID.MessageID.SpiritHeal,-1,-1,0,1f),"Greenwood field broadcasts its single periodic heal");
+broadcastField.AI();Check(Terraria.NetMessage.Routed.Skip(fieldMessages).Count(p=>p.Message==Terraria.ID.MessageID.SpiritHeal)==1,"Repeated same-tick field AI does not repeat healing");
+Game.GameUpdateCount=180;broadcastField.AI();Check(Terraria.NetMessage.Routed.Skip(fieldMessages).Count(p=>p.Message==Terraria.ID.MessageID.SpiritHeal)==1&&fieldPatient.State.spiritualEnergy==12,"Full-life field still restores energy without a heal packet");
 Console.WriteLine($"Networking including actual recovery pill hooks: {assertions} assertions; buff/inventory engine boundaries mocked.");
 
 sealed class TestBossSummon : XianXia.Common.Items.CultivationBossSummonItem

@@ -787,6 +787,39 @@ try {
  type.GetField("tribulationTimer").SetValue(sessionCultivation,0);Check((long)sessionProperty.GetValue(sessionCultivation)==0,"Compiled ended/failed tribulation has no active session");
  int foundationValue=Convert.ToInt32(foundationStage);type.GetMethod("LoadData").Invoke(sessionCultivation,new[]{Tag(("cultivationStage",foundationValue),("tribulationStage",foundationValue),("tribulationTimer",120))});Check((long)sessionProperty.GetValue(sessionCultivation)>0&&(long)sessionProperty.GetValue(sessionCultivation)!=secondAttempt,"Compiled load starts fresh active identity without persisting old session");
  nativeTargetMain.GetField("netMode").SetValue(null,1);object clientSession=Activator.CreateInstance(type);type.GetMethod("Initialize").Invoke(clientSession,null);type.GetField("tribulationTimer").SetValue(clientSession,120);Check((long)sessionProperty.GetValue(clientSession)==0,"Compiled client does not allocate authority session");type.GetMethod("Initialize").Invoke(sessionCultivation,null);Check((long)sessionProperty.GetValue(sessionCultivation)==0,"Compiled initialization resets active session");
+ // Exercise compiled healing without a graphical world. For native packet receives,
+ // occupied combat-text slots suppress rendering while leaving health parsing real.
+ var nativeHealingType=type.Assembly.GetType("XianXia.Common.Systems.AuthoritativeHealing",true);
+ var nativeHealingApply=nativeHealingType.GetMethod("Apply");
+ object nativeHealingPatient=nativeTargetPlayers.GetValue(0);
+ nativeTargetPlayerType.GetField("whoAmI").SetValue(nativeHealingPatient,0);nativeTargetPlayerType.GetField("active").SetValue(nativeHealingPatient,true);nativeTargetPlayerType.GetField("dead").SetValue(nativeHealingPatient,false);
+ nativeTargetPlayerType.GetField("statLife").SetValue(nativeHealingPatient,95);nativeTargetPlayerType.GetField("statLifeMax2").SetValue(nativeHealingPatient,100);
+ var nativeHealingMyPlayer=nativeTargetMain.GetField("myPlayer");object nativeHealingOldMyPlayer=nativeHealingMyPlayer.GetValue(null);
+ var nativeHealingTextField=nativeTargetMain.GetField("combatText");object nativeHealingOldText=nativeHealingTextField.GetValue(null);
+ var nativeHealingNetplay=tagType.Assembly.GetType("Terraria.Netplay",true);var nativeHealingConnection=nativeHealingNetplay.GetField("Connection");object nativeHealingOldConnection=nativeHealingConnection.GetValue(null);
+ try {
+  nativeHealingMyPlayer.SetValue(null,255);nativeTargetMain.GetField("netMode").SetValue(null,0);
+  Check((int)nativeHealingApply.Invoke(null,new[]{nativeHealingPatient,(object)20})==5&&(int)nativeTargetPlayerType.GetField("statLife").GetValue(nativeHealingPatient)==100,"Compiled authority healing caps actual single-player engine heal");
+  Check((int)nativeHealingApply.Invoke(null,new[]{nativeHealingPatient,(object)20})==0,"Compiled full-life healing is a no-op");
+  nativeTargetPlayerType.GetField("statLife").SetValue(nativeHealingPatient,50);nativeTargetMain.GetField("netMode").SetValue(null,1);
+  Check((int)nativeHealingApply.Invoke(null,new[]{nativeHealingPatient,(object)20})==0&&(int)nativeTargetPlayerType.GetField("statLife").GetValue(nativeHealingPatient)==50,"Compiled multiplayer client cannot apply authority heal");
+  nativeTargetMain.GetField("netMode").SetValue(null,2);nativeTargetPlayerType.GetField("dead").SetValue(nativeHealingPatient,true);
+  Check((int)nativeHealingApply.Invoke(null,new[]{nativeHealingPatient,(object)20})==0,"Compiled dead player receives no authority heal");nativeTargetPlayerType.GetField("dead").SetValue(nativeHealingPatient,false);
+  Check((int)nativeHealingApply.Invoke(null,new[]{nativeHealingPatient,(object)-1})==0,"Compiled negative heal is rejected");
+  Check((int)nativeHealingApply.Invoke(null,new object[]{null,20})==0,"Compiled null target is rejected");
+  var nativeHealingTextType=tagType.Assembly.GetType("Terraria.CombatText",true);var nativeHealingText=Array.CreateInstance(nativeHealingTextType,100);
+  for(int index=0;index<100;index++){object occupied=Activator.CreateInstance(nativeHealingTextType);nativeHealingTextType.GetField("active").SetValue(occupied,true);nativeHealingText.SetValue(occupied,index);}nativeHealingTextField.SetValue(null,nativeHealingText);
+  nativeHealingConnection.SetValue(null,Activator.CreateInstance(tagType.Assembly.GetType("Terraria.RemoteServer",true)));
+  var nativeHealingBufferType=tagType.Assembly.GetType("Terraria.MessageBuffer",true);
+  foreach(int receivingPlayer in new[]{0,1}) {
+   nativeTargetMain.GetField("netMode").SetValue(null,1);nativeHealingMyPlayer.SetValue(null,receivingPlayer);nativeTargetPlayerType.GetField("statLife").SetValue(nativeHealingPatient,95);
+   object nativeHealingBuffer=Activator.CreateInstance(nativeHealingBufferType);nativeHealingBufferType.GetField("whoAmI").SetValue(nativeHealingBuffer,256);byte[] nativeHealingBytes={66,0,5,0};
+   nativeHealingBufferType.GetField("readBuffer").SetValue(nativeHealingBuffer,nativeHealingBytes);
+   using var nativeHealingReader=new BinaryReader(new MemoryStream(nativeHealingBytes));nativeHealingBufferType.GetField("reader").SetValue(nativeHealingBuffer,nativeHealingReader);
+   object[] receiveArguments={0,4,0};nativeHealingBufferType.GetMethod("GetData").Invoke(nativeHealingBuffer,receiveArguments);
+   Check((int)receiveArguments[2]==66&&(int)nativeTargetPlayerType.GetField("statLife").GetValue(nativeHealingPatient)==100,"Official SpiritHeal packet increments owner and observer player copies exactly once");
+  }
+ } finally {nativeHealingMyPlayer.SetValue(null,nativeHealingOldMyPlayer);nativeHealingTextField.SetValue(null,nativeHealingOldText);nativeHealingConnection.SetValue(null,nativeHealingOldConnection);}
 } finally {
  nativeTargetMain.GetField("player").SetValue(null,nativeTargetOldPlayers);
  nativeTargetMain.GetField("netMode").SetValue(null,nativeTargetOldMode);

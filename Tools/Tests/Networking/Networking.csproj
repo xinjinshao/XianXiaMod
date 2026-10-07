@@ -4,7 +4,7 @@
     <TargetFramework>net8.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
-  <ItemGroup><Compile Include="../../../Content/Items/Weapons/MoonboneDharmaSword.cs" Link="MoonSword.cs"/>
+  <ItemGroup><Compile Include="../../../Common/Systems/AuthoritativeHealing.cs" Link="AuthoritativeHealing.cs"/><Compile Include="../../../Content/Items/Weapons/MoonboneDharmaSword.cs" Link="MoonSword.cs"/>
     <Compile Include="../../../Common/Systems/DownedBossSystem.cs" Link="DownedBossSystem.cs" />
     <Compile Include="../../../Common/Players/CultivationStage.cs" Link="CultivationStage.cs" />
     <Compile Include="../../../Common/Players/CultivationSnapshot.cs" Link="CultivationSnapshot.cs" />
