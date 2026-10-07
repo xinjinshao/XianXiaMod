@@ -12,8 +12,22 @@ public partial class MoonboneImmortal
 {
     private bool ringFrame;
     public const int RingWarningTicks = 45, RingRecoveryTicks = 30;
+    private bool ValidRingState() => float.IsFinite(NPC.ai[1]) && NPC.ai[1] >= 0f && NPC.ai[1] <= RingWarningTicks
+        && NPC.ai[1] == MathF.Truncate(NPC.ai[1])
+        && float.IsFinite(NPC.ai[2]) && NPC.ai[2] >= -RingRecoveryTicks && NPC.ai[2] <= 270f
+        && NPC.ai[2] == MathF.Truncate(NPC.ai[2])
+        && (NPC.ai[1] == 0f || float.IsFinite(NPC.ai[3]));
     internal bool UpdateMoonRing(Player target, bool phaseTwo, bool finalPhase)
     {
+        if (!ValidRingState()) {
+            ringFrame = true;
+            NPC.velocity = Vector2.Zero;
+            if (Main.netMode != NetmodeID.MultiplayerClient) {
+                NPC.ai[0] = NPC.ai[1] = NPC.ai[2] = NPC.ai[3] = 0f;
+                NPC.netUpdate = true;
+            }
+            return true;
+        }
         int interval = finalPhase ? 150 : phaseTwo ? 210 : 270;
         ringFrame = NPC.ai[2] < 0f || NPC.ai[1] > 0f || NPC.ai[2] >= interval - RingWarningTicks;
         if (NPC.ai[2] < 0f) {
@@ -70,9 +84,15 @@ public partial class MoonboneImmortal
             Projectile.NewProjectile(NPC.GetSource_FromAI(), target.Center + target.velocity * 18f, Vector2.Zero,
                 ModContent.ProjectileType<global::XianXia.Content.Projectiles.BossArrayFieldProjectile>(), ringDmg, 1.2f, Main.myPlayer);
     }
+    public override bool CanHitPlayer(Player target, ref int cooldownSlot) =>
+        global::XianXia.Common.Systems.BossTargeting.HasLivingTarget(NPC) && ValidRingState()
+        && !ringFrame && NPC.ai[1] == 0f && NPC.ai[2] >= 0f
+        && target.active && !target.dead && float.IsFinite(target.Center.X) && float.IsFinite(target.Center.Y)
+        && Collision.CanHitLine(NPC.Center, 1, 1, target.Center, 1, 1);
     public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
     {
-        if (Main.dedServ || NPC.ai[1] <= 0f || !float.IsFinite(NPC.ai[3])) return true;
+        if (Main.dedServ || !ValidRingState() || NPC.ai[1] <= 0f
+            || !float.IsFinite(NPC.Center.X) || !float.IsFinite(NPC.Center.Y)) return true;
         int spokes = NPC.life < NPC.lifeMax * 0.3f ? 12 : NPC.life < NPC.lifeMax * 0.6f ? 8 : 6;
         foreach (float sign in new[] { -1f, 1f }) {
             float angle = NPC.ai[3] + sign * MathHelper.TwoPi / (2 * spokes);

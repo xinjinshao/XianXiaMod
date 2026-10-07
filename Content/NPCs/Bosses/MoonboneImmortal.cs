@@ -83,9 +83,6 @@ public partial class MoonboneImmortal : ModNPC
         global::XianXia.Common.Animation.NpcFrameAnimator.Animate(NPC, frameHeight, Main.npcFrameCount[Type], 8);
     }
 
-    public override bool CanHitPlayer(Player target, ref int cooldownSlot) =>
-        global::XianXia.Common.Systems.BossTargeting.HasLivingTarget(NPC) && target.active && !target.dead && !ringFrame && NPC.ai[1] == 0f && NPC.ai[2] >= 0f;
-
     public override void AI()
 
     {
