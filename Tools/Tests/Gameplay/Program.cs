@@ -961,6 +961,15 @@ try {
  nativeTargetMain.GetField("netMode").SetValue(null,0);nativeSwordBindingType.GetMethod("PreAI").Invoke(nativeSwordBinding,null);
  Check(!(bool)nativeTargetNpcType.GetField("active").GetValue(nativeSwordBindingNpc)&&(int)nativeTargetNpcType.GetField("damage").GetValue(nativeSwordBindingNpc)==0,"Compiled invalid source despawns on authority");
  nativeSwordBindingType.GetMethod("PostAI").Invoke(nativeSwordBinding,null);Check(!(bool)nativeTargetNpcType.GetField("netUpdate").GetValue(nativeSwordBindingNpc),"Compiled PostAI stops after source cleanup");
+ var compiledLaneType=type.Assembly.GetType("XianXia.Content.NPCs.Bosses.FormlessSwordSoul",true);
+ var compiledLanes=compiledLaneType.GetMethod("UpdateSwordLanes",BindingFlags.Instance|BindingFlags.NonPublic);
+ foreach(int laneMode in new[]{0,2}) {
+  object laneOwner=Activator.CreateInstance(nativeTargetPlayerType);nativeTargetPlayerType.GetField("active").SetValue(laneOwner,true);nativeTargetPlayers.SetValue(laneOwner,0);
+  object laneBoss=Activator.CreateInstance(compiledLaneType),laneNpc=Activator.CreateInstance(nativeTargetNpcType);compiledLaneType.GetProperty("Entity",BindingFlags.Instance|BindingFlags.Public|BindingFlags.NonPublic).SetValue(laneBoss,laneNpc);
+  nativeTargetNpcType.GetField("active").SetValue(laneNpc,true);nativeTargetNpcType.GetField("life").SetValue(laneNpc,100);nativeTargetNpcType.GetField("target").SetValue(laneNpc,0);var laneAi=(float[])nativeTargetNpcType.GetField("ai").GetValue(laneNpc);laneAi[2]=255;nativeTargetMain.GetField("netMode").SetValue(null,laneMode);
+  for(int laneTick=1;laneTick<45;laneTick++){Check((bool)compiledLanes.Invoke(laneBoss,new[]{laneOwner,(object)false,false}),"Compiled sword lanes consume warning frame without overlapping attack");object[] hitArgs={laneOwner,0};Check(!(bool)compiledLaneType.GetMethod("CanHitPlayer").Invoke(laneBoss,hitArgs),"Compiled sword lanes warning denies native contact");}
+  object changedLaneOwner=Activator.CreateInstance(nativeTargetPlayerType);nativeTargetPlayerType.GetField("active").SetValue(changedLaneOwner,true);nativeTargetPlayers.SetValue(changedLaneOwner,0);compiledLanes.Invoke(laneBoss,new[]{changedLaneOwner,(object)false,false});Check(laneAi.All(v=>v==0)&&(bool)nativeTargetNpcType.GetField("netUpdate").GetValue(laneNpc),"Compiled sword same-slot target replacement cancels before release");object[] cancelHit={changedLaneOwner,0};Check(!(bool)compiledLaneType.GetMethod("CanHitPlayer").Invoke(laneBoss,cancelHit),"Compiled sword cancelled frame stays harmless");
+ }
 } finally {
  nativeTargetMain.GetField("player").SetValue(null,nativeTargetOldPlayers);
  nativeTargetMain.GetField("netMode").SetValue(null,nativeTargetOldMode);
