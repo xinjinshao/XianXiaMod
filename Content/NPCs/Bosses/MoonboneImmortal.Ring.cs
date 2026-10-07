@@ -58,20 +58,8 @@ public partial class MoonboneImmortal
     }
     private void SpawnMoonRing(Player target, bool phaseTwo, bool finalPhase)
     {
-            int ringDmg = Math.Max(18, NPC.damage / 4);
-
-            if (phaseTwo && NPC.localAI[1] == 0) {
-
-                NPC.localAI[1] = 1f;
-
-                for (int a = 0; a < 2; a++)
-
-                    NPC.NewNPC(NPC.GetSource_FromAI(), (int)NPC.Center.X + Main.rand.Next(-80, 81), (int)NPC.Center.Y + Main.rand.Next(-40, 41),
-
-                        ModContent.NPCType<global::XianXia.Content.NPCs.Enemies.ArchivedImmortalSoul>(), ai0: NPC.whoAmI);
-
-            }
-
+        int ringDmg = Math.Max(18, NPC.damage / 4);
+        if (phaseTwo) SpawnMoonAdds();
 
         int spokes = finalPhase ? 12 : phaseTwo ? 8 : 6;
         // Leave the locked direction empty; adjacent spokes bound the escape opening.
