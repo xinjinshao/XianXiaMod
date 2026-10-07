@@ -18,7 +18,7 @@ using XianXia.Common.Systems;
 
 namespace XianXia.Content.NPCs.Bosses;
 
-public class MoonboneImmortal : ModNPC
+public partial class MoonboneImmortal : ModNPC
 
 {
     public override void SetStaticDefaults()
@@ -84,7 +84,7 @@ public class MoonboneImmortal : ModNPC
     }
 
     public override bool CanHitPlayer(Player target, ref int cooldownSlot) =>
-        global::XianXia.Common.Systems.BossTargeting.HasLivingTarget(NPC) && target.active && !target.dead;
+        global::XianXia.Common.Systems.BossTargeting.HasLivingTarget(NPC) && target.active && !target.dead && !ringFrame && NPC.ai[1] == 0f && NPC.ai[2] >= 0f;
 
     public override void AI()
 
@@ -95,7 +95,7 @@ public class MoonboneImmortal : ModNPC
             NPC.velocity = new Vector2(0f, -2f);
             if (Main.netMode != NetmodeID.MultiplayerClient) {
                 bool changed = NPC.ai[0] != 0f || NPC.ai[1] != 0f || NPC.ai[2] != 0f || NPC.timeLeft > 30;
-                NPC.ai[0] = NPC.ai[1] = NPC.ai[2] = 0f;
+                NPC.ai[0] = NPC.ai[1] = NPC.ai[2] = NPC.ai[3] = 0f;
                 if (changed) NPC.netUpdate = true;
                 NPC.EncourageDespawn(30);
             }
@@ -135,6 +135,8 @@ public class MoonboneImmortal : ModNPC
                 CombatText.NewText(NPC.Hitbox, Color.OrangeRed, Language.GetTextValue("Mods.XianXia.Progression.BossPhase.DaoScarUnstable"));
 
         }
+
+        if (UpdateMoonRing(target, phaseTwo, finalPhase)) return;
 
         float speed = finalPhase ? 10.5f : phaseTwo ? 8f : 5.5f;
 
@@ -188,69 +190,6 @@ public class MoonboneImmortal : ModNPC
 
 
 
-        NPC.ai[2]++;
-
-        int patternInterval = finalPhase ? 150 : phaseTwo ? 210 : 270;
-
-        if (Main.netMode != NetmodeID.MultiplayerClient && NPC.ai[2] >= patternInterval)
-
-        {
-
-            NPC.ai[2] = 0f;
-
-
-
-            int ringDmg = Math.Max(18, NPC.damage / 4);
-
-            if (phaseTwo && NPC.localAI[1] == 0) {
-
-                NPC.localAI[1] = 1f;
-
-                for (int a = 0; a < 2; a++)
-
-                    NPC.NewNPC(NPC.GetSource_FromAI(), (int)NPC.Center.X + Main.rand.Next(-80, 81), (int)NPC.Center.Y + Main.rand.Next(-40, 41),
-
-                        ModContent.NPCType<global::XianXia.Content.NPCs.Enemies.ArchivedImmortalSoul>(), ai0: NPC.whoAmI);
-
-            }
-
-            int spokes = finalPhase ? 12 : phaseTwo ? 8 : 6;
-
-            float rot = Main.GameUpdateCount * 0.025f;
-
-            for (int i = 0; i < spokes; i++)
-
-            {
-
-                Vector2 v = (MathHelper.TwoPi * i / spokes + rot).ToRotationVector2() * (finalPhase ? 8f : 6f);
-
-                Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center, v,
-
-                    ModContent.ProjectileType<global::XianXia.Content.Projectiles.BossSpiritBoltProjectile>(), ringDmg, 1.4f, Main.myPlayer);
-
-            }
-
-            if (phaseTwo)
-
-                Projectile.NewProjectile(NPC.GetSource_FromAI(), target.Center + target.velocity * 18f, Vector2.Zero,
-
-                    ModContent.ProjectileType<global::XianXia.Content.Projectiles.BossArrayFieldProjectile>(), ringDmg, 1.2f, Main.myPlayer);
-
-
-
-        }
-
-
-
-        if (finalPhase && NPC.ai[1]++ > 180f)
-
-        {
-
-            NPC.ai[1] = 0f;
-
-            NPC.velocity = desired.SafeNormalize(Vector2.UnitY) * 14f;
-
-        }
 
     }
 
