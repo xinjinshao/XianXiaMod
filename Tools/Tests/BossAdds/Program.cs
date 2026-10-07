@@ -49,4 +49,24 @@ foreach((int life,int spokes) in new[]{(100,6),(70,6),(69,8),(60,8),(35,8),(34,1
  var visualBatch=new Microsoft.Xna.Framework.Graphics.SpriteBatch();visualMoon.PreDraw(visualBatch,new(0,0),default);
  Check(visualBatch.Calls==2&&Math.Abs(visualBatch.LastAngle-MathF.PI/spokes)<.0001f,"Moon safe-gap drawing follows actual seventy/thirty-five percent phase boundary");
 }
+foreach(int cloudMode in new[]{0,2}) {
+ Setup();Main.netMode=cloudMode;var cloud=new TribulationCloudAvatar{NPC=Main.npc[0]};cloud.NPC.target=1;
+ cloud.SpawnCloudAdd();var add=Main.npc[1];
+ Check(NPC.Calls==1&&add.active&&add.type==7&&add.ai[0]==0&&add.target==1&&add.netUpdate,"Cloud add inherits parent and synchronized battle target");
+ for(int wave=0;wave<20;wave++)cloud.SpawnCloudAdd();
+ Check(NPC.Calls==1,"Cloud repeated patterns cannot exceed one successful creation");add.active=false;cloud.SpawnCloudAdd();Check(NPC.Calls==1,"Killed cloud add does not replenish quota");
+ foreach(int failure in new[]{-1,Main.maxNPCs,int.MaxValue,0}) {
+  Setup();Main.netMode=cloudMode;var retryCloud=new TribulationCloudAvatar{NPC=Main.npc[0]};NPC.FailureResult=failure;retryCloud.SpawnCloudAdd();
+  Check(NPC.Calls==1&&Main.ActiveNPCs.Count()==1,"Cloud invalid creation result consumes no successful quota");NPC.FailureResult=int.MinValue;retryCloud.SpawnCloudAdd();
+  Check(NPC.Calls==2&&Main.ActiveNPCs.Count(n=>n.type==7)==1,"Cloud next pattern retries missing add once");retryCloud.SpawnCloudAdd();Check(NPC.Calls==2,"Cloud successful retry closes quota");
+ }
+ foreach(int badReturned in new[]{0,1,2,3}) {
+  Setup();Main.netMode=cloudMode;var wrongCloud=new TribulationCloudAvatar{NPC=Main.npc[0]};Main.npc[1]=badReturned==0?null:new NPC{active=badReturned!=1,life=badReturned==2?0:100,type=badReturned==3?8:7};NPC.FailureResult=1;wrongCloud.SpawnCloudAdd();
+  Check(Main.npc[1]==null||!Main.npc[1].netUpdate,"Cloud rejects null/inactive/dead/wrong-type returned NPC without marking it");Main.npc[1]=new NPC{whoAmI=1};NPC.FailureResult=int.MinValue;wrongCloud.SpawnCloudAdd();Check(NPC.Calls==2&&Main.npc[1].netUpdate,"Malformed returned NPC does not consume cloud quota");
+ }
+ Setup();Main.netMode=cloudMode;var fullCloud=new TribulationCloudAvatar{NPC=Main.npc[0]};foreach(var occupied in Main.npc.Skip(1)){occupied.active=true;occupied.type=8;}fullCloud.SpawnCloudAdd();Check(NPC.Calls==1,"Full NPC table safely discards cloud attempt");Main.npc[1].active=false;fullCloud.SpawnCloudAdd();Check(NPC.Calls==2&&Main.npc[1].type==7,"Freed NPC capacity allows next cloud pattern to complete quota");
+}
+foreach(Action<TribulationCloudAvatar> invalidate in new Action<TribulationCloudAvatar>[] {c=>Main.netMode=1,c=>c.NPC.active=false,c=>c.NPC.life=0,c=>c.NPC.target=-1,c=>c.NPC.target=Main.maxPlayers,c=>Main.player[0].dead=true,c=>Main.player[0].active=false,c=>Main.player[0].Center=new(5000,0),c=>c.NPC.Center=new(float.NaN,0)}) {
+ Setup();var deniedCloud=new TribulationCloudAvatar{NPC=Main.npc[0]};invalidate(deniedCloud);deniedCloud.SpawnCloudAdd();Check(NPC.Calls==0,"Invalid cloud battle/client does not attempt a summon");
+}
 Console.WriteLine($"Actual furnace shard spawn hook passed: {checks} checks; native creation/target/network boundaries mocked.");

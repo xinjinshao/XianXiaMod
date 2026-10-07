@@ -18,7 +18,7 @@ using XianXia.Common.Systems;
 
 namespace XianXia.Content.NPCs.Bosses;
 
-public class TribulationCloudAvatar : ModNPC
+public partial class TribulationCloudAvatar : ModNPC
 
 {
     public override void SetStaticDefaults()
@@ -216,13 +216,7 @@ public class TribulationCloudAvatar : ModNPC
 
             }
 
-            if (phaseTwo && NPC.ai[3]++ == 0) {
-
-                NPC.NewNPC(NPC.GetSource_FromAI(), (int)NPC.Center.X, (int)NPC.Center.Y,
-
-                    ModContent.NPCType<global::XianXia.Content.NPCs.Enemies.TribulationCloudling>(), ai0: NPC.whoAmI);
-
-            }
+            if (phaseTwo) SpawnCloudAdd();
 
             if (finalPhase)
 

@@ -21,3 +21,6 @@ namespace XianXia.Content.NPCs.Bosses{public partial class MoonboneImmortal:Terr
 namespace XianXia.Content.NPCs.Enemies{public class ArchivedImmortalSoul{}}
 namespace XianXia.Content.Projectiles{public class BossSpiritBoltProjectile{}public class BossArrayFieldProjectile{}}
 namespace Terraria{public static class Projectile{public static List<(int Type,Microsoft.Xna.Framework.Vector2 Velocity)> Shots=new();public static int NewProjectile(object source,Microsoft.Xna.Framework.Vector2 p,Microsoft.Xna.Framework.Vector2 v,int type,int damage,float kb,int owner){Shots.Add((type,v));return 0;}}}
+
+namespace XianXia.Content.NPCs.Bosses{public partial class TribulationCloudAvatar:Terraria.ModLoader.ModNPC{}}
+namespace XianXia.Content.NPCs.Enemies{public class TribulationCloudling{}}

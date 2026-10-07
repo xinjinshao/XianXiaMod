@@ -882,6 +882,17 @@ try {
   var pulseType=type.Assembly.GetType("XianXia.Content.Projectiles.GreenwoodArrayField",true);object actualPulse=Activator.CreateInstance(pulseType),pulseEntity=Activator.CreateInstance(projectileType);pulseType.GetProperty("Entity",BindingFlags.Instance|BindingFlags.Public|BindingFlags.NonPublic).SetValue(actualPulse,pulseEntity);pulseType.GetMethod("SetDefaults").Invoke(actualPulse,null);projectileType.GetField("owner").SetValue(pulseEntity,0);projectileType.GetField("active").SetValue(pulseEntity,true);projectileType.GetProperty("Center").SetValue(pulseEntity,Activator.CreateInstance(nativeTargetVectorType,new object[]{pulseDistance,0f}));
   Check((bool)pulseType.GetMethod("CanPulse",BindingFlags.Instance|BindingFlags.NonPublic).Invoke(actualPulse,new[]{pulseOwner})==(pulseDistance<=160),"Actual healthy array pulse includes exact 160 pixel boundary");
  }
+ // Compiled cloud summon guard: only rejected paths, with no native NPC registration/world.
+ var nativeCloudType=type.Assembly.GetType("XianXia.Content.NPCs.Bosses.TribulationCloudAvatar",true);
+ var nativeCloudSpawn=nativeCloudType.GetMethod("SpawnCloudAdd",BindingFlags.Instance|BindingFlags.NonPublic);
+ var nativeCloudCreated=nativeCloudType.GetField("cloudAddCreated",BindingFlags.Instance|BindingFlags.NonPublic);
+ foreach(int rejectedCloud in Enumerable.Range(0,9)) {
+  object cloudOwner=Activator.CreateInstance(nativeTargetPlayerType);nativeTargetPlayerType.GetField("active").SetValue(cloudOwner,true);nativeTargetPlayers.SetValue(cloudOwner,0);
+  object cloud=Activator.CreateInstance(nativeCloudType),cloudNpc=Activator.CreateInstance(nativeTargetNpcType);nativeCloudType.GetProperty("Entity",BindingFlags.Instance|BindingFlags.Public|BindingFlags.NonPublic).SetValue(cloud,cloudNpc);
+  nativeTargetNpcType.GetField("active").SetValue(cloudNpc,true);nativeTargetNpcType.GetField("life").SetValue(cloudNpc,100);nativeTargetNpcType.GetField("target").SetValue(cloudNpc,0);nativeTargetMain.GetField("netMode").SetValue(null,2);
+  switch(rejectedCloud){case 0:nativeTargetMain.GetField("netMode").SetValue(null,1);break;case 1:nativeTargetNpcType.GetField("active").SetValue(cloudNpc,false);break;case 2:nativeTargetNpcType.GetField("life").SetValue(cloudNpc,0);break;case 3:nativeTargetNpcType.GetField("target").SetValue(cloudNpc,-1);break;case 4:nativeTargetNpcType.GetField("target").SetValue(cloudNpc,255);break;case 5:nativeTargetPlayerType.GetField("dead").SetValue(cloudOwner,true);break;case 6:nativeTargetPlayerType.GetField("active").SetValue(cloudOwner,false);break;case 7:nativeTargetPlayerType.GetProperty("Center").SetValue(cloudOwner,Activator.CreateInstance(nativeTargetVectorType,new object[]{5000f,0f}));break;case 8:nativeTargetNpcType.GetProperty("Center").SetValue(cloudNpc,Activator.CreateInstance(nativeTargetVectorType,new object[]{float.NaN,0f}));break;}
+  nativeCloudSpawn.Invoke(cloud,null);Check(!(bool)nativeCloudCreated.GetValue(cloud),"Compiled cloud rejected summon path retains missing quota without native creation");
+ }
 } finally {
  nativeTargetMain.GetField("player").SetValue(null,nativeTargetOldPlayers);
  nativeTargetMain.GetField("netMode").SetValue(null,nativeTargetOldMode);

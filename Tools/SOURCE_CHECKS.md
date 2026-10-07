@@ -63,7 +63,7 @@ CI运行只读新鲜度检查，生成结果变化时须显式更新这四份输
 
 ## 原生包内容与默认配置
 
-Native checks另运行PackageContents，使用官方TmodFile打开实际.tmod，核对内部名称、build.txt版本、归档哈希、当前描述及Common/Content/Localization的所有PNG/HJSON（接受官方转换后的rawimg）；拒绝隐藏/越界条目、Assets/Docs/Wiki/Tools/bin/obj/README和源码/工具扩展。它不是读取源码文件名后假定打包正确。默认配置在Gameplay编译产物回归中验证，当前累计1098条。
+Native checks另运行PackageContents，使用官方TmodFile打开实际.tmod，核对内部名称、build.txt版本、归档哈希、当前描述及Common/Content/Localization的所有PNG/HJSON（接受官方转换后的rawimg）；拒绝隐藏/越界条目、Assets/Docs/Wiki/Tools/bin/obj/README和源码/工具扩展。它不是读取源码文件名后假定打包正确。默认配置在Gameplay编译产物回归中验证，当前累计1107条。
 
 ```powershell
 dotnet run --project Tools/Tests/PackageContents/PackageContents.csproj -- <XianXia.tmod路径> <官方引擎目录> <仓库根目录>
@@ -248,3 +248,6 @@ Telegraphs671→793项，增加七类来源失效×三模式、权威槽位复�
 
 
 第134轮雷符法阵增加服务器本地落雷尝试位图：240tick寿命内225/180/135/90/45五个节点各尝试一次；同节点重复AI或寿命回退不重复释放，创建失败不补发，下一节点和独立新实例仍正常。客户端不记录或创建波次，现有网络字段、伤害和正常节奏保持。Networking26,906→26,933新增27项三模式完整五波、跨帧重复调用、回退、失败后不重试及独立实例回归；创建由源码引擎边界模拟覆盖，未声称真实世界生成落雷。
+
+
+第135轮劫云化身援军改为服务器本地成功配额：第二/第三阶段每个攻击轮调用SpawnCloudAdd，每场只成功创建一只云灵；容量不足、非法返回索引、空/失活/零生命/错误类型实体均不计成功，下一轮再试，击败已创建援军不补刷。创建保留父槽位ai0，继承当前战斗目标并netUpdate；客户端和无效战斗不调用创建。原NPC.ai[3]不再作为失败也消耗的机会计数，无新增网络字段。BossAdds602→661新增59项两权威模式配额、失败重试、返回实体验证、容量释放、目标同步和无效战斗检查；Gameplay1098→1107新增9项实际编译守卫拒绝路径，未启动原生世界创建NPC。
