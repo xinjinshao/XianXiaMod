@@ -85,6 +85,7 @@ public partial class ArchivedImmortalSoul : ModNPC
     public override void PostAI()
     {
         if (!NPC.active || Main.netMode == NetmodeID.MultiplayerClient) return;
+        if (!SynchronizeSummonTarget()) return;
         if (!global::XianXia.Common.Systems.EnemyTargeting.TryGetLivingTarget(NPC, out Player target))
         {
             ResetHistory();

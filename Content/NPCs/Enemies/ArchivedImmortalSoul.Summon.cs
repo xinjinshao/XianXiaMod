@@ -39,10 +39,24 @@ public partial class ArchivedImmortalSoul
                 <= BossTargeting.MaximumDistance * BossTargeting.MaximumDistance;
     }
 
+    private bool HasSynchronizedSummonTarget() => HasSummonSource() && NPC.target == Main.npc[parentSlot].target;
+
+    private bool SynchronizeSummonTarget()
+    {
+        if (!moonSummon) return true;
+        if (!HasSummonSource()) return false;
+        int target = Main.npc[parentSlot].target;
+        if (NPC.target == target) return true;
+        if (Main.netMode == NetmodeID.MultiplayerClient) return false;
+        NPC.target = target;
+        NPC.netUpdate = true;
+        return true;
+    }
+
     public override bool PreAI()
     {
         if (!moonSummon) return true;
-        if (HasSummonSource()) {
+        if (SynchronizeSummonTarget()) {
             // Clients wait harmlessly for an out-of-order parent packet; only the authority ages summons.
             if (Main.netMode == NetmodeID.MultiplayerClient) return true;
             remaining--;
@@ -62,9 +76,9 @@ public partial class ArchivedImmortalSoul
     }
 
     public override bool CanHitPlayer(Player target, ref int cooldownSlot)
-        => !moonSummon || (target.active && !target.dead && HasSummonSource());
+        => !moonSummon || (target.active && !target.dead && HasSynchronizedSummonTarget());
 
-    public override bool CanHitNPC(NPC target) => !moonSummon || HasSummonSource();
+    public override bool CanHitNPC(NPC target) => !moonSummon || HasSynchronizedSummonTarget();
 
     public override void SendExtraAI(BinaryWriter writer)
     {

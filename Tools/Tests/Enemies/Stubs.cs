@@ -64,3 +64,5 @@ namespace XianXia.Content.Projectiles {public class TribulationWarningLineProjec
 namespace XianXia.Content.Items.HandGenerated {public class SingingThunderStoneItem {}}
 
 namespace XianXia.Content.Items.HandGenerated {public class FurnaceCharcoal {}}
+
+namespace XianXia.Content.NPCs.Enemies {public partial class ArchivedImmortalSoul{private bool SynchronizeSummonTarget()=>true;}public partial class IronShardSpirit{private bool SynchronizeSummonTarget()=>true;}}
