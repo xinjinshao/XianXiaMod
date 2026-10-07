@@ -1319,6 +1319,25 @@ foreach(int invalidPatient in new[]{0,1,2}) {
  Skill(ArtifactSkill.ArrayPulse);Check(casterPulse.State.spiritualEnergy==100&&casterPulse.State.activeSkillCooldown==0,"Only invalid healing candidates cannot cause a paid pulse");
 }
 SetupSkill("GreenwoodArrayPlate");Game.player[0].statLife=50;Game.projectile[0]=CreatePulseField(Game.player[0]);Game.projectile[0].Center=Game.player[0].Center+new Microsoft.Xna.Framework.Vector2(160,0);Skill(ArtifactSkill.ArrayPulse);Check(Game.player[0].statLife==70&&Game.player[0].State.spiritualEnergy==82,"Actual healthy field allows pulse at exact 160 pixel boundary");
+foreach(int thunderMode in new[]{0,1,2}) {
+ Game.netMode=thunderMode;Game.dedServ=true;Game.player[0]=new Terraria.Player{whoAmI=0,active=true};foreach(var shot in Game.projectile)shot.active=false;
+ var quotaThunder=new XianXia.Content.Projectiles.ThunderTalismanArray{Mod=mod};quotaThunder.SetDefaults();quotaThunder.Projectile.active=true;quotaThunder.Projectile.owner=0;quotaThunder.Projectile.damage=51;
+ foreach(int boundary in new[]{225,180,135,90,45}) {
+  quotaThunder.Projectile.timeLeft=boundary;int beforeShots=Game.projectile.Count(p=>p.active);
+  for(int repeat=0;repeat<4;repeat++){Game.GameUpdateCount++;quotaThunder.AI();}
+  Check(Game.projectile.Count(p=>p.active)==beforeShots+(thunderMode==1?0:1),"Each thunder lifetime boundary permits exactly one authority attempt across repeated ticks");
+ }
+ Check(Game.projectile.Count(p=>p.active)==(thunderMode==1?0:5)&&Game.projectile.Where(p=>p.active).All(p=>p.owner==0&&p.damage==25),"Full thunder field lifetime preserves five canonical half-damage bolts");
+ foreach(int rewind in new[]{45,90,135,180,225,224,240}){quotaThunder.Projectile.timeLeft=rewind;quotaThunder.AI();}
+ Check(Game.projectile.Count(p=>p.active)==(thunderMode==1?0:5),"Rewinding a valid lifetime cannot repeat thunder waves or create off-boundary attacks");
+}
+foreach(int thunderMode in new[]{0,2}) {
+ Game.netMode=thunderMode;Game.player[0]=new Terraria.Player{whoAmI=0,active=true};foreach(var shot in Game.projectile)shot.active=false;
+ var failedThunder=new XianXia.Content.Projectiles.ThunderTalismanArray{Mod=mod};failedThunder.SetDefaults();failedThunder.Projectile.active=true;failedThunder.Projectile.owner=0;failedThunder.Projectile.timeLeft=225;
+ Terraria.Projectile.AllowSpawn=false;failedThunder.AI();Terraria.Projectile.AllowSpawn=true;failedThunder.AI();Check(!Game.projectile.Any(p=>p.active),"Failed thunder creation cannot retry an already attempted wave");
+ failedThunder.Projectile.timeLeft=180;failedThunder.AI();Check(Game.projectile.Count(p=>p.active)==1,"Failed wave does not prevent later ordinary thunder boundary");
+ var freshThunder=new XianXia.Content.Projectiles.ThunderTalismanArray{Mod=mod};freshThunder.SetDefaults();freshThunder.Projectile.active=true;freshThunder.Projectile.owner=0;freshThunder.Projectile.timeLeft=225;freshThunder.AI();Check(Game.projectile.Count(p=>p.active)==2,"A fresh thunder field has its own independent wave budget");
+}
 Console.WriteLine($"Networking including actual recovery pill hooks: {assertions} assertions; buff/inventory engine boundaries mocked.");
 
 sealed class TestBossSummon : XianXia.Common.Items.CultivationBossSummonItem
