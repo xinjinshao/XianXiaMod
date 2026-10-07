@@ -36,7 +36,7 @@ public abstract class CultivationWeaponItem : ModItem
             return false;
         }
         if (Main.netMode == NetmodeID.Server)
-            return player.GetModPlayer<Common.Players.XianXiaPlayer>().ApplyingWeaponShot;
+            return player.altFunctionUse != 2 && player.GetModPlayer<Common.Players.XianXiaPlayer>().ApplyingWeaponShot;
         WeaponShotTransactions.FirePrepared(player, this, source, position, velocity, type, damage, knockback, false);
         return false;
     }

@@ -1174,6 +1174,26 @@ SetupSkill("MoonboneDharmaSword");Skill(ArtifactSkill.MoonCrescent);Check(Game.p
 foreach(int partialCount in new[]{1,2}){SetupSkill("MoonboneDharmaSword");Terraria.Projectile.SpawnBudget=partialCount;Skill(ArtifactSkill.MoonCrescent);Check(Game.player[0].State.spiritualEnergy==100&&Game.player[0].State.activeSkillCooldown==0&&!Game.projectile.Any(p=>p.active),"moon partial burst cleans created shards and restores resource");}Terraria.Projectile.SpawnBudget=-1;
 SetupSkill("MoonboneDharmaSword");for(int index=0;index<Game.maxProjectiles-2;index++)Game.projectile[index].active=true;Skill(ArtifactSkill.MoonCrescent);Check(Game.player[0].State.spiritualEnergy==100&&Game.projectile.Count(p=>p.active)==Game.maxProjectiles-2,"moon capacity shortage rejects before cost or partial creation");SetupSkill("MoonboneDharmaSword");Game.player[0].inventory[1].GetGlobalItem<XianXia.Common.Items.RefinedArtifact>().SetLevel(2);Skill(ArtifactSkill.MoonCrescent);Check(Game.player[0].State.spiritualEnergy==100&&!Game.projectile.Any(p=>p.active),"moon dormant skill rejected");
 Game.player[0].inventory[1]=actualMoonSword.Item;Game.player[0].selectedItem=1;Game.player[0].altFunctionUse=2;Game.player[0].State.activeSkillCooldown=0;Game.player[0].State.spiritualEnergy=29;Check(!actualMoonSword.CanUseItem(Game.player[0]),"actual moon alternative requires skill cost rather than normal cost");Game.player[0].State.spiritualEnergy=30;Check(actualMoonSword.CanUseItem(Game.player[0]),"actual moon alternative accepts exact thirty energy");Game.player[0].altFunctionUse=0;
+// Ordinary shot transactions must never execute the alternative skill branch.
+foreach (int mode in new[] { NetmodeID.SinglePlayer, NetmodeID.Server }) {
+ SetupSkill("MoonboneDharmaSword");Game.netMode=mode;
+ var actor=Game.player[0];actor.inventory[1]=actualMoonSword.Item;actor.altFunctionUse=2;
+ actor.State.WeaponShotCooldown=0;actor.State.activeSkillCooldown=0;
+ WeaponShotTransactions.HandleRequest(actor,1,941,new Microsoft.Xna.Framework.Vector2(100,100));
+ Check(actor.State.spiritualEnergy==100&&actor.State.WeaponShotCooldown==0&&!Game.projectile.Any(p=>p.active),"Alternative input cannot enter ordinary shot request or consume its cooldown");
+ foreach(bool hooks in new[]{false,true}) {
+  bool fired=WeaponShotTransactions.FirePrepared(actor,actualMoonSword,null,default,new Microsoft.Xna.Framework.Vector2(1,0),8,25,0,hooks);
+  Check(!fired&&actor.State.spiritualEnergy==100&&actor.State.activeSkillCooldown==0&&!actor.State.ApplyingWeaponShot&&!Game.projectile.Any(p=>p.active),"Prepared ordinary shot rejects alternative input before resources and hooks");
+ }
+ actor.altFunctionUse=0;
+ Check(WeaponShotTransactions.FirePrepared(actor,actualMoonSword,null,default,new Microsoft.Xna.Framework.Vector2(1,0),8,25,0,mode==NetmodeID.Server)&&actor.State.spiritualEnergy==86&&Game.projectile.Count(p=>p.active)==1,"Ordinary awakened moon attack retains fourteen energy cost");
+}
+SetupSkill("MoonboneDharmaSword");Game.netMode=NetmodeID.Server;Game.player[0].inventory[1]=actualMoonSword.Item;Game.player[0].altFunctionUse=2;
+Game.player[0].State.ApplyingWeaponShot=true;
+Check(!actualMoonSword.Shoot(Game.player[0],null,default,default,8,25,0),"Server shoot hook cannot authorize an alternative default shot");Game.player[0].State.ApplyingWeaponShot=false;
+Skill(ArtifactSkill.MoonCrescent,type:941);
+Check(Game.player[0].State.spiritualEnergy==70&&Game.player[0].State.activeSkillCooldown==1200&&Game.projectile.Count(p=>p.active)==3,"Dedicated moon skill request remains valid with alternative input");
+Game.player[0].altFunctionUse=0;
 Console.WriteLine($"Networking including actual recovery pill hooks: {assertions} assertions; buff/inventory engine boundaries mocked.");
 
 sealed class TestBossSummon : XianXia.Common.Items.CultivationBossSummonItem

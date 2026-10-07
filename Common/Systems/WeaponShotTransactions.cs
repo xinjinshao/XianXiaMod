@@ -17,7 +17,7 @@ public static class WeaponShotTransactions
     {
         var state = player.GetModPlayer<XianXiaPlayer>();
         if (Main.netMode != NetmodeID.Server || !player.active || player.dead || player.noItems || player.CCed
-            || !state.NetworkInitialized || state.WeaponShotCooldown > 0
+            || player.altFunctionUse == 2 || !state.NetworkInitialized || state.WeaponShotCooldown > 0
             || slot < 0 || slot >= player.inventory.Length || slot != player.selectedItem || !Finite(aim)) return;
         Item item = player.inventory[slot];
         if (item.type != itemType || item.stack <= 0 || item.ModItem is not CultivationWeaponItem weapon) return;
@@ -42,7 +42,7 @@ public static class WeaponShotTransactions
         Vector2 position, Vector2 velocity, int type, int damage, float knockback, bool invokeShootHooks)
     {
         if (Main.netMode == NetmodeID.MultiplayerClient || !player.active || player.dead || player.noItems || player.CCed
-            || !Finite(position) || !Finite(velocity) || type <= 0 || type >= ProjectileLoader.ProjectileCount
+            || player.altFunctionUse == 2 || !Finite(position) || !Finite(velocity) || type <= 0 || type >= ProjectileLoader.ProjectileCount
             || CountActive() >= Main.maxProjectiles) return false;
         XianXiaPlayer state = player.GetModPlayer<XianXiaPlayer>();
         CultivationSnapshot before = state.CaptureSnapshot();
