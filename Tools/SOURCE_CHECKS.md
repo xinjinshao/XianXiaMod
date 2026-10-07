@@ -63,7 +63,7 @@ CI运行只读新鲜度检查，生成结果变化时须显式更新这四份输
 
 ## 原生包内容与默认配置
 
-Native checks另运行PackageContents，使用官方TmodFile打开实际.tmod，核对内部名称、build.txt版本、归档哈希、当前描述及Common/Content/Localization的所有PNG/HJSON（接受官方转换后的rawimg）；拒绝隐藏/越界条目、Assets/Docs/Wiki/Tools/bin/obj/README和源码/工具扩展。它不是读取源码文件名后假定打包正确。默认配置在Gameplay编译产物回归中验证，当前累计1312条。
+Native checks另运行PackageContents，使用官方TmodFile打开实际.tmod，核对内部名称、build.txt版本、归档哈希、当前描述及Common/Content/Localization的所有PNG/HJSON（接受官方转换后的rawimg）；拒绝隐藏/越界条目、Assets/Docs/Wiki/Tools/bin/obj/README和源码/工具扩展。它不是读取源码文件名后假定打包正确。默认配置在Gameplay编译产物回归中验证，当前累计1552条。
 
 ```powershell
 dotnet run --project Tools/Tests/PackageContents/PackageContents.csproj -- <XianXia.tmod路径> <官方引擎目录> <仓库根目录>
@@ -260,3 +260,6 @@ Telegraphs671→793项，增加七类来源失效×三模式、权威槽位复�
 
 
 第138轮星渊胎主压缩场移除世界总帧数%540<30门槛，第二阶段起每两轮环弹释放一次，首次符合阶段的轮次即释放；NPC.ai[3]保存0/1交替状态并netUpdate，创建失败不蓄积重试，退场重置。压缩场沿用共用45tick预警/60tick有效/15tick淡出与来源撤场机制。落点预测18tick，非有限目标速度由BossTargeting拒绝，有限速度乘法溢出时使用合法目标中心；客户端/非本人目标/无效战斗不推进轮次或创建。BossAdds1629→1730新增101项两权威模式20轮独立节奏、预测落点、非法计时恢复、坏速度拒绝/溢出回退及无效请求检查。内容契约跟随真实拆分的Compression文件检查释放调用和弹体引用；没有用注释补回旧文件字符串。
+
+
+第139轮星渊环弹重做为60tick锁向预警与45tick恢复，三阶段间隔300/240/180，6/8/12方向中留出锁向及反向两个空缺，实际释放4/6/10灵弹；青色四条边界显示两个安全方向，阶段判定共享实际65%/30%生命阈值。预警/释放/恢复无接触伤害并暂停其它攻击，目标槽位或Player对象替换取消旧环弹并重启完整间隔，坏计时由权威复位/客户端等待；接触补墙体过滤。取消原无前摇终阶段加速。压缩场每两轮一次的交替计数移到服务器私有bool，不再占用ai[3]锁向角；退场重置，正常攻击/失败不蓄积原则保留。NPC.ai[1]/ai[2]/ai[3]同步预警/恢复/锁向，无新增ExtraAI字段。BossAdds1730→4687新增2957项两权威模式三阶段完整60/45帧、双缺口、压缩场首次释放、目标替换完整间隔、阶段变化及客户端/绘制回归；原压缩场测试改为验证不覆盖环弹角度并保留旧总断言数量。Gameplay1312→1552新增240项实际编译预警59帧接触拒绝与释放前同槽位玩家替换取消，避免隔离环境未注册弹体创建。

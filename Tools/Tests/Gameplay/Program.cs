@@ -928,6 +928,15 @@ try {
   object changedOwner=Activator.CreateInstance(nativeTargetPlayerType);nativeTargetPlayerType.GetField("active").SetValue(changedOwner,true);nativeTargetPlayers.SetValue(changedOwner,0);compiledCloudCharge.Invoke(chargeBoss,new[]{changedOwner,(object)true});
   Check(chargeAi.All(v=>v==0)&&(bool)nativeTargetNpcType.GetField("netUpdate").GetValue(chargeNpc),"Compiled cloud owner replacement cancels locked warning and marks dirty");object[] cancellationHit={changedOwner,0};Check(!(bool)nativeCloudType.GetMethod("CanHitPlayer").Invoke(chargeBoss,cancellationHit),"Compiled cloud cancellation frame remains harmless");
  }
+ var compiledStarType=type.Assembly.GetType("XianXia.Content.NPCs.Bosses.AbyssalStarWomb",true);
+ var compiledStarRing=compiledStarType.GetMethod("UpdateStarRing",BindingFlags.Instance|BindingFlags.NonPublic);
+ foreach(int starMode in new[]{0,2}) {
+  object starOwner=Activator.CreateInstance(nativeTargetPlayerType);nativeTargetPlayerType.GetField("active").SetValue(starOwner,true);nativeTargetPlayers.SetValue(starOwner,0);
+  object starBoss=Activator.CreateInstance(compiledStarType),starNpc=Activator.CreateInstance(nativeTargetNpcType);compiledStarType.GetProperty("Entity",BindingFlags.Instance|BindingFlags.Public|BindingFlags.NonPublic).SetValue(starBoss,starNpc);
+  nativeTargetNpcType.GetField("active").SetValue(starNpc,true);nativeTargetNpcType.GetField("life").SetValue(starNpc,100);nativeTargetNpcType.GetField("target").SetValue(starNpc,0);var starAi=(float[])nativeTargetNpcType.GetField("ai").GetValue(starNpc);starAi[2]=240;nativeTargetMain.GetField("netMode").SetValue(null,starMode);
+  for(int starFrame=1;starFrame<60;starFrame++){Check((bool)compiledStarRing.Invoke(starBoss,new[]{starOwner,(object)false,false}),"Compiled star warning consumes frame without overlapping attacks");object[] hitArgs={starOwner,0};Check(!(bool)compiledStarType.GetMethod("CanHitPlayer").Invoke(starBoss,hitArgs),"Compiled star warning denies native contact");}
+  object changedStarOwner=Activator.CreateInstance(nativeTargetPlayerType);nativeTargetPlayerType.GetField("active").SetValue(changedStarOwner,true);nativeTargetPlayers.SetValue(changedStarOwner,0);compiledStarRing.Invoke(starBoss,new[]{changedStarOwner,(object)false,false});Check(starAi.All(v=>v==0)&&(bool)nativeTargetNpcType.GetField("netUpdate").GetValue(starNpc),"Compiled star same-slot owner replacement cancels old warning before release");object[] cancellationHit={changedStarOwner,0};Check(!(bool)compiledStarType.GetMethod("CanHitPlayer").Invoke(starBoss,cancellationHit),"Compiled star cancellation frame remains harmless");
+ }
 } finally {
  nativeTargetMain.GetField("player").SetValue(null,nativeTargetOldPlayers);
  nativeTargetMain.GetField("netMode").SetValue(null,nativeTargetOldMode);

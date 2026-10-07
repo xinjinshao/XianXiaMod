@@ -8,14 +8,17 @@ namespace XianXia.Content.NPCs.Bosses;
 
 public partial class AbyssalStarWomb
 {
+    private bool compressionNext = true;
+
     internal void ReleaseCompressionField(Player target, int damage)
     {
         if (Main.netMode == NetmodeID.MultiplayerClient || !BossTargeting.HasLivingTarget(NPC)
             || !ReferenceEquals(Main.player[NPC.target], target)) return;
         // Alternate eligible patterns, independently of world uptime or failed creation.
-        NPC.ai[3] = NPC.ai[3] == 1f ? 0f : 1f;
+        bool release = compressionNext;
+        compressionNext = !compressionNext;
         NPC.netUpdate = true;
-        if (NPC.ai[3] == 0f) return;
+        if (!release) return;
         Vector2 position = target.Center + target.velocity * 18f;
         if (!float.IsFinite(position.X) || !float.IsFinite(position.Y)) position = target.Center;
         Projectile.NewProjectile(NPC.GetSource_FromAI(), position, Vector2.Zero,
