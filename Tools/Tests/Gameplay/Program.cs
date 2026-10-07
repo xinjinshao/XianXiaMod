@@ -787,6 +787,26 @@ try {
  type.GetField("tribulationTimer").SetValue(sessionCultivation,0);Check((long)sessionProperty.GetValue(sessionCultivation)==0,"Compiled ended/failed tribulation has no active session");
  int foundationValue=Convert.ToInt32(foundationStage);type.GetMethod("LoadData").Invoke(sessionCultivation,new[]{Tag(("cultivationStage",foundationValue),("tribulationStage",foundationValue),("tribulationTimer",120))});Check((long)sessionProperty.GetValue(sessionCultivation)>0&&(long)sessionProperty.GetValue(sessionCultivation)!=secondAttempt,"Compiled load starts fresh active identity without persisting old session");
  nativeTargetMain.GetField("netMode").SetValue(null,1);object clientSession=Activator.CreateInstance(type);type.GetMethod("Initialize").Invoke(clientSession,null);type.GetField("tribulationTimer").SetValue(clientSession,120);Check((long)sessionProperty.GetValue(clientSession)==0,"Compiled client does not allocate authority session");type.GetMethod("Initialize").Invoke(sessionCultivation,null);Check((long)sessionProperty.GetValue(sessionCultivation)==0,"Compiled initialization resets active session");
+ // Joining a new character on a reused ModPlayer must invalidate old trial sources.
+ nativeTargetMain.GetField("netMode").SetValue(null,2);
+ object rejoinCultivation=Activator.CreateInstance(type),rejoinOwner=Activator.CreateInstance(nativeTargetPlayerType);
+ type.GetMethod("Initialize").Invoke(rejoinCultivation,null);type.GetProperty("Entity",BindingFlags.Instance|BindingFlags.Public|BindingFlags.NonPublic).SetValue(rejoinCultivation,rejoinOwner);
+ nativeTargetPlayerType.GetField("active").SetValue(rejoinOwner,true);
+ type.GetMethod("LoadData").Invoke(rejoinCultivation,new[]{Tag(("cultivationStage",foundationValue),("tribulationStage",foundationValue),("tribulationTimer",120))});
+ object rejoinSnapshot=type.GetMethod("CaptureSnapshot").Invoke(rejoinCultivation,null);long beforeJoin=(long)sessionProperty.GetValue(rejoinCultivation);
+ Check((bool)type.GetMethod("TryInitializeNetwork").Invoke(rejoinCultivation,new[]{rejoinSnapshot})&&(long)sessionProperty.GetValue(rejoinCultivation)!=beforeJoin&&(int)type.GetField("tribulationTimer").GetValue(rejoinCultivation)==120,"Actual initial character import expires previously allocated trial identity while preserving saved time");
+ long acceptedJoin=(long)sessionProperty.GetValue(rejoinCultivation);
+ Check(!(bool)type.GetMethod("TryInitializeNetwork").Invoke(rejoinCultivation,new[]{rejoinSnapshot})&&(long)sessionProperty.GetValue(rejoinCultivation)==acceptedJoin,"Rejected duplicate import cannot replace current live trial identity");
+ var rejoinSessionField=type.GetField("tribulationSession",BindingFlags.Instance|BindingFlags.NonPublic);
+ for(int reconnect=0;reconnect<3;reconnect++) {
+  long oldIdentity=(long)sessionProperty.GetValue(rejoinCultivation);type.GetMethod("ResetNetworkSession").Invoke(rejoinCultivation,null);
+  Check((long)rejoinSessionField.GetValue(rejoinCultivation)==0&&!(bool)type.GetProperty("NetworkInitialized").GetValue(rejoinCultivation),"Actual slot reset discards cached trial source identity before new import");
+  Check((bool)type.GetMethod("TryInitializeNetwork").Invoke(rejoinCultivation,new[]{rejoinSnapshot})&&(long)sessionProperty.GetValue(rejoinCultivation)>0&&(long)sessionProperty.GetValue(rejoinCultivation)!=oldIdentity&&(int)type.GetField("tribulationTimer").GetValue(rejoinCultivation)==120,"Actual same-owner reconnect cannot inherit prior trial session identity");
+ }
+ type.GetMethod("ResetNetworkSession").Invoke(rejoinCultivation,null);long pendingIdentity=(long)sessionProperty.GetValue(rejoinCultivation);
+ object invalidJoin=Activator.CreateInstance(snapshotType);snapshotType.GetProperty("Energy").SetValue(invalidJoin,-1);
+ Check(!(bool)type.GetMethod("TryInitializeNetwork").Invoke(rejoinCultivation,new[]{invalidJoin})&&(long)sessionProperty.GetValue(rejoinCultivation)==pendingIdentity,"Malformed joining snapshot leaves existing trial identity unchanged");
+ Check((bool)type.GetMethod("TryInitializeNetwork").Invoke(rejoinCultivation,new[]{rejoinSnapshot})&&(long)sessionProperty.GetValue(rejoinCultivation)!=pendingIdentity,"Valid import after rejection receives its own fresh authority trial session");
  // Actual compiled Moonbone warning captures authority target identity; replacement
  // cancels before any unregistered projectile can be created in this isolated process.
  var nativeMoonRingType=type.Assembly.GetType("XianXia.Content.NPCs.Bosses.MoonboneImmortal",true);

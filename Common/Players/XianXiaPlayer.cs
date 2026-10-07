@@ -775,6 +775,7 @@ public class XianXiaPlayer : ModPlayer
     public bool TryInitializeNetwork(CultivationSnapshot state)
     {
         if (NetworkInitialized || !state.IsValid()) return false;
+        tribulationSession = 0;
         ApplySnapshot(state with { WardTimer = 0 });
         ResourceRevision = 0;
         NetworkInitialized = true;
@@ -784,6 +785,7 @@ public class XianXiaPlayer : ModPlayer
 
     public void ResetNetworkSession()
     {
+        tribulationSession = 0;
         NetworkInitialized = NetworkWasActive = false;
         ProgressionItemCooldown = networkSyncTimer = 0;
         BossSummonCooldown = WeaponShotCooldown = 0;

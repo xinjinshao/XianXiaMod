@@ -63,7 +63,7 @@ CI运行只读新鲜度检查，生成结果变化时须显式更新这四份输
 
 ## 原生包内容与默认配置
 
-Native checks另运行PackageContents，使用官方TmodFile打开实际.tmod，核对内部名称、build.txt版本、归档哈希、当前描述及Common/Content/Localization的所有PNG/HJSON（接受官方转换后的rawimg）；拒绝隐藏/越界条目、Assets/Docs/Wiki/Tools/bin/obj/README和源码/工具扩展。它不是读取源码文件名后假定打包正确。默认配置在Gameplay编译产物回归中验证，当前累计1008条。
+Native checks另运行PackageContents，使用官方TmodFile打开实际.tmod，核对内部名称、build.txt版本、归档哈希、当前描述及Common/Content/Localization的所有PNG/HJSON（接受官方转换后的rawimg）；拒绝隐藏/越界条目、Assets/Docs/Wiki/Tools/bin/obj/README和源码/工具扩展。它不是读取源码文件名后假定打包正确。默认配置在Gameplay编译产物回归中验证，当前累计1018条。
 
 ```powershell
 dotnet run --project Tools/Tests/PackageContents/PackageContents.csproj -- <XianXia.tmod路径> <官方引擎目录> <仓库根目录>
@@ -236,3 +236,6 @@ Telegraphs671→793项，增加七类来源失效×三模式、权威槽位复�
 
 
 第130轮月骸环弹预警开始捕获权威目标槽位与Player引用；预警/恢复期间换目标或同槽位替换Player对象，停止移动、清空旧锁向/全部招式计时、netUpdate，取消帧无接触/不追加环弹。新目标重新等待当前阶段完整间隔再获得45tick锁向预警；恢复自然结束和坏状态复位清除捕获。客户端不按本地对象变化重写计时，等待服务器同步。绿色缺口提示原使用60%/30%阈值，与实际AI70%/35%不一致，已将AI与绘制统一读取同一阶段判定；原攻击阶段阈值保持。BossAdds536→602新增66项两权威模式×预警/恢复×槽位/对象切换、完整重启/新锁向、客户端等待及八生命阶段边界绘制回归；Gameplay984→1008新增24项实际编译警告/恢复目标替换、原生脏状态/停止移动/取消帧无接触验证。捕获字段仅服务器本地，NPC原ai及ExtraAI布局保持。
+
+
+第131轮修复服务器槽位重用继承旧天劫来源会话：ResetNetworkSession清除tribulationSession缓存；TryInitializeNetwork仅在首次合法导入通过守卫后清缓存，再应用角色保存快照。旧Player/ModPlayer对象复用也在下一次权威查询分配新64位编号，使原天劫弹幕的既有会话比较不能把旧来源认成新角色；重复/非法导入不清编号、不改当前状态，合法活跃天劫剩余时间保留。编号仍不保存/不在CultivationSnapshot字段中，现有请求和来源ExtraAI布局保持。Gameplay1008→1018新增10项实际编译角色首次导入、连续三次同对象重连、缓存清理/新编号、拒绝导入及拒绝后合法导入检查；这是实际角色状态与编号证据，不是完整弹幕-客户端运输验证。
