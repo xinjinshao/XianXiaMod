@@ -14,7 +14,7 @@ using Terraria.ModLoader;
 
 namespace XianXia.Content.NPCs.Enemies;
 
-public class ArchivedImmortalSoul : ModNPC
+public partial class ArchivedImmortalSoul : ModNPC
 
 {
     public override void SetStaticDefaults()
@@ -84,7 +84,7 @@ public class ArchivedImmortalSoul : ModNPC
 
     public override void PostAI()
     {
-        if (Main.netMode == NetmodeID.MultiplayerClient) return;
+        if (!NPC.active || Main.netMode == NetmodeID.MultiplayerClient) return;
         if (!global::XianXia.Common.Systems.EnemyTargeting.TryGetLivingTarget(NPC, out Player target))
         {
             ResetHistory();

@@ -14,3 +14,6 @@ namespace XianXia.Content.NPCs.Enemies{public partial class IronShardSpirit:Terr
 namespace Terraria.DataStructures{public interface IEntitySource{}public class EntitySource_Parent(object entity):IEntitySource{public object Entity=entity;}public class NaturalSource:IEntitySource{}}
 namespace Terraria.ID{public static class MessageID{public const int SyncNPC=23;}}
 namespace Terraria{public static class NetMessage{public static int Calls;public static void SendData(int message,int number){Calls++;}}}
+
+namespace XianXia.Content.NPCs.Bosses{public partial class MoonboneImmortal:Terraria.ModLoader.ModNPC{}}
+namespace XianXia.Content.NPCs.Enemies{public partial class ArchivedImmortalSoul:Terraria.ModLoader.ModNPC{}}
