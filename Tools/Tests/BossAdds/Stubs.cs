@@ -46,3 +46,5 @@ namespace XianXia.Content.NPCs.Enemies{public class CelestialPuppet{}}
 namespace XianXia.Content.Projectiles{public class InspectorDecreeBeamProjectile{}}
 namespace Terraria{public static class CombatText{public static int Calls;public static string LastText;public static void NewText(object box,Microsoft.Xna.Framework.Color color,string text){Calls++;LastText=text;}}}
 namespace Terraria.Localization{public static class Language{public static string GetTextValue(string key)=>key;}}
+
+namespace XianXia.Content.Projectiles{public class InspectorVerdictBladeProjectile{}}

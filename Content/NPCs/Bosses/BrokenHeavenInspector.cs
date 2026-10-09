@@ -93,7 +93,7 @@ public partial class BrokenHeavenInspector : ModNPC
             if (Main.netMode != NetmodeID.MultiplayerClient) {
                 bool changed = NPC.ai[0] != 0f || NPC.ai[1] != 0f || NPC.ai[2] != 0f || NPC.ai[3] != 0f || NPC.timeLeft > 30;
                 NPC.ai[0] = NPC.ai[1] = NPC.ai[2] = NPC.ai[3] = 0f;
-                decreeTarget = -1; decreePlayer = null; announcedDecree = 0; decreePuppets = false;
+                decreeTarget = -1; decreePlayer = null; announcedDecree = 0; decreePuppets = decreeBlade = false;
                 if (changed) NPC.netUpdate = true;
                 NPC.EncourageDespawn(30);
             }

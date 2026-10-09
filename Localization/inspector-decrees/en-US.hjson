@@ -1,6 +1,7 @@
 Mods: {
     XianXia: {
         Decrees: {
+            VerdictBlade: Verdict blade: leave the close slash zone!
             LeaveCenter: Leave decree: leave the orange zone!
             ReturnToCenter: Return decree: enter the central gap!
         }

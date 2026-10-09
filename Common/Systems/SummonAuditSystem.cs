@@ -266,10 +266,14 @@ public class SummonAuditSystem : ModSystem
                         Check(!inspector.CanHitPlayer(Main.player[0], ref cooldownSlot) && inspectorNpc.velocity == Vector2.Zero,
                             $"native decree {phase}/{law} warning stationary/harmless {frame}");
                         var emitted = Main.projectile.Where(projectile => projectile.active && !priorDecreeBeams.Contains(projectile)).ToArray();
-                        Check(emitted.Length == (frame < 60 ? 0 : law + 1) && emitted.All(projectile => projectile.type == decreeType),
+                        Check(emitted.Length == (frame < 60 ? 0 : law + 1 + (phase == 2 ? 1 : 0)) && emitted.All(projectile => projectile.type == decreeType || (phase == 2 && projectile.type == ModContent.ProjectileType<global::XianXia.Content.Projectiles.InspectorVerdictBladeProjectile>())),
                             $"native decree {phase}/{law} exact release/no overlap {frame}");
                     }
                     var decreeBeams = Main.projectile.Where(projectile => projectile.active && !priorDecreeBeams.Contains(projectile)).ToArray();
+                    var bladeProjectiles = decreeBeams.Where(beam => beam.type != decreeType).ToArray();
+                    Check(bladeProjectiles.Length == (phase == 2 ? 1 : 0) && bladeProjectiles.All(blade => blade.width == 160 && blade.height == 48 && blade.Center == inspectorNpc.Center && blade.ModProjectile.CanDamage() == true), "registered final-phase close blade body and location");
+                    foreach (Projectile blade in bladeProjectiles) blade.active = false;
+                    decreeBeams = decreeBeams.Where(beam => beam.type == decreeType).ToArray();
                     foreach (Projectile beam in decreeBeams)
                         Check(beam.width == 64 && beam.height == 480 && beam.timeLeft == 30 && beam.ModProjectile.CanDamage() == true,
                             "registered inspector wider beam and living source");

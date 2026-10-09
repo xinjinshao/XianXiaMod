@@ -15,7 +15,7 @@ public partial class BrokenHeavenInspector
 {
     public const int DecreeWarningTicks = 60, DecreeRecoveryTicks = 45, PuppetSummonQuota = 2;
     private bool decreeFrame, nextReturnDecree;
-    private bool decreePuppets;
+    private bool decreePuppets, decreeBlade;
     private int decreeTarget = -1, announcedDecree, puppetSummonsCreated;
     private Player decreePlayer;
     private bool ValidDecreeState() => float.IsFinite(NPC.ai[1]) && MathF.Abs(NPC.ai[1]) <= DecreeWarningTicks
@@ -27,13 +27,15 @@ public partial class BrokenHeavenInspector
         decreeFrame = true; NPC.velocity = Vector2.Zero;
         if (Main.netMode == NetmodeID.MultiplayerClient) return;
         NPC.ai[0] = NPC.ai[1] = NPC.ai[2] = NPC.ai[3] = 0;
-        decreeTarget = -1; decreePlayer = null; announcedDecree = 0; decreePuppets = false; NPC.netUpdate = true;
+        decreeTarget = -1; decreePlayer = null; announcedDecree = 0; decreePuppets = decreeBlade = false; NPC.netUpdate = true;
     }
     private void AnnounceDecree(bool returnToCenter)
     {
         int code = returnToCenter ? -1 : 1;
         if (announcedDecree == code) return;
         announcedDecree = code;
+        if (!Main.dedServ && decreeBlade) CombatText.NewText(NPC.Hitbox, Color.OrangeRed,
+            Language.GetTextValue("Mods.XianXia.Decrees.VerdictBlade"));
         if (!Main.dedServ) CombatText.NewText(NPC.Hitbox, Color.OrangeRed,
             Language.GetTextValue(returnToCenter ? "Mods.XianXia.Decrees.ReturnToCenter" : "Mods.XianXia.Decrees.LeaveCenter"));
     }
@@ -48,7 +50,7 @@ public partial class BrokenHeavenInspector
         if (NPC.ai[2] < 0) {
             decreeFrame = true; NPC.velocity = Vector2.Zero; announcedDecree = 0;
             if (Main.netMode != NetmodeID.MultiplayerClient && ++NPC.ai[2] == 0) {
-                NPC.ai[0] = NPC.ai[3] = 0; decreeTarget = -1; decreePlayer = null; decreePuppets = false; NPC.netUpdate = true;
+                NPC.ai[0] = NPC.ai[3] = 0; decreeTarget = -1; decreePlayer = null; decreePuppets = decreeBlade = false; NPC.netUpdate = true;
             }
             return true;
         }
@@ -64,6 +66,7 @@ public partial class BrokenHeavenInspector
             NPC.ai[0] = target.Center.X; NPC.ai[3] = target.Center.Y;
             NPC.ai[1] = nextReturnDecree ? -DecreeWarningTicks : DecreeWarningTicks;
             decreePuppets = phaseTwo && puppetSummonsCreated < PuppetSummonQuota;
+            decreeBlade = finalPhase;
             NPC.netUpdate = true;
         }
         if (NPC.ai[1] == 0) return true; // Client waits for the authoritative signed countdown.
@@ -78,6 +81,10 @@ public partial class BrokenHeavenInspector
         foreach (float offset in returnToCenter ? new[] { -112f, 112f } : new[] { 0f })
             Projectile.NewProjectile(NPC.GetSource_FromAI(), new Vector2(NPC.ai[0] + offset, NPC.ai[3]), Vector2.Zero,
                 ModContent.ProjectileType<global::XianXia.Content.Projectiles.InspectorDecreeBeamProjectile>(),
+                Math.Max(18, NPC.damage / 3), 1.2f, Main.myPlayer);
+        if (decreeBlade)
+            Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center, Vector2.Zero,
+                ModContent.ProjectileType<global::XianXia.Content.Projectiles.InspectorVerdictBladeProjectile>(),
                 Math.Max(18, NPC.damage / 3), 1.2f, Main.myPlayer);
         if (decreePuppets) SpawnInspectorPuppets();
         nextReturnDecree = !nextReturnDecree; NPC.ai[2] = -DecreeRecoveryTicks; NPC.netUpdate = true;
@@ -111,10 +118,11 @@ public partial class BrokenHeavenInspector
         }
         return false;
     }
-    public override void SendExtraAI(BinaryWriter writer) { writer.Write((byte)puppetSummonsCreated); writer.Write(decreePuppets); writer.Write(SummonSession); }
+    public override void SendExtraAI(BinaryWriter writer) { writer.Write((byte)puppetSummonsCreated); writer.Write(decreePuppets); writer.Write(SummonSession); writer.Write(decreeBlade); }
     public override void ReceiveExtraAI(BinaryReader reader)
     {
-        byte created = reader.ReadByte(); bool warned = reader.ReadBoolean(); long session = reader.ReadInt64();
+        byte created = reader.ReadByte(); bool warned = reader.ReadBoolean(); long session = reader.ReadInt64(); bool blade = reader.ReadBoolean();
+        decreeBlade = blade;
         summonSession = session > 0 ? session : 0;
         puppetSummonsCreated = Math.Min((int)created, PuppetSummonQuota);
         decreePuppets = warned && puppetSummonsCreated < PuppetSummonQuota;
@@ -127,6 +135,9 @@ public partial class BrokenHeavenInspector
     {
         if (Main.dedServ || !ValidDecreeState() || NPC.ai[1] == 0) return true;
         var pixel = TextureAssets.MagicPixel.Value;
+        if (decreeBlade)
+            spriteBatch.Draw(pixel, NPC.Center - screenPos + new Vector2(-80, -24), null, Color.OrangeRed * 0.4f,
+                0, Vector2.Zero, new Vector2(160, 48), SpriteEffects.None, 0);
         if (decreePuppets)
             spriteBatch.Draw(pixel, NPC.Center - screenPos + new Vector2(-104, -108), null, Color.Cyan * 0.3f,
                 0, Vector2.Zero, new Vector2(208, 48), SpriteEffects.None, 0);

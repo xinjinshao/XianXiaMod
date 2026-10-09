@@ -11,15 +11,16 @@ namespace XianXia.Common.Projectiles;
 public abstract class HostileJudgmentBeamProjectile : ModProjectile
 {
     protected virtual int BeamWidth => 32;
+    protected virtual int BeamHeight => 480;
     protected virtual Color BeamColor => Color.Cyan;
     public const int Lifetime = 30, CancellationFade = 6;
     private readonly HostileSourceBinding sourceBinding = new();
     private bool invalidState;
     private bool ValidGeometry() => float.IsFinite(Projectile.Center.X) && float.IsFinite(Projectile.Center.Y)
-        && Projectile.velocity == Vector2.Zero && Projectile.width == BeamWidth && Projectile.height == 480;
+        && Projectile.velocity == Vector2.Zero && Projectile.width == BeamWidth && Projectile.height == BeamHeight;
     public override void SetDefaults()
     {
-        Projectile.width = BeamWidth; Projectile.height = 480;
+        Projectile.width = BeamWidth; Projectile.height = BeamHeight;
         Projectile.hostile = true; Projectile.friendly = false; Projectile.penetrate = -1;
         Projectile.timeLeft = Lifetime; Projectile.tileCollide = false; Projectile.ignoreWater = true;
         Projectile.netImportant = true;
@@ -43,7 +44,7 @@ public abstract class HostileJudgmentBeamProjectile : ModProjectile
         if (Main.dedServ || !ValidGeometry() || Projectile.timeLeft <= 0) return false;
         float opacity = CanDamage() == true ? 0.85f : 0.15f;
         var rectangle = new Rectangle((int)(Projectile.Center.X - Main.screenPosition.X) - BeamWidth / 2,
-            (int)(Projectile.Center.Y - Main.screenPosition.Y) - 240, BeamWidth, 480);
+            (int)(Projectile.Center.Y - Main.screenPosition.Y) - BeamHeight / 2, BeamWidth, BeamHeight);
         Main.spriteBatch.Draw(TextureAssets.MagicPixel.Value, rectangle, BeamColor * opacity);
         return false;
     }
