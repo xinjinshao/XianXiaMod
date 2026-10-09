@@ -289,9 +289,14 @@ public class SummonAuditSystem : ModSystem
                 foreach (NPC puppet in puppets) {
                     Check(puppet.ModNPC is CelestialPuppet && puppet.target == inspectorNpc.target && puppet.netUpdate,
                         "registered puppet type and synchronized target");
-                    puppet.active = false;
+                    Check(puppet.ModNPC.PreAI(), "registered puppet captured live inspector session");
+                    using var puppetPacket = new MemoryStream();
+                    puppet.ModNPC.SendExtraAI(new BinaryWriter(puppetPacket));
+                    Check(puppetPacket.Length == 13 && BitConverter.ToInt64(puppetPacket.ToArray(), 3) == inspector.SummonSession, "registered puppet source session packet");
                 }
                 inspectorNpc.active = false;
+                foreach (NPC puppet in puppets)
+                    Check(!puppet.ModNPC.PreAI() && !puppet.active && puppet.damage == 0, "registered puppet source loss despawns without death rewards");
             }
         }
         catch (Exception exception) { error = exception.ToString(); }

@@ -72,3 +72,5 @@ namespace XianXia.Content.NPCs.Enemies {public partial class TribulationCloudlin
 namespace XianXia.Content.NPCs.Enemies{public partial class ObsessedSwordCultivator{private bool SynchronizeSummonTarget()=>true;private void WriteSummonBinding(System.IO.BinaryWriter writer){}private void ReadSummonBinding(System.IO.BinaryReader reader){}}}
 
 namespace XianXia.Content.NPCs.Enemies{public partial class HerbGardenVineSpirit{private bool SynchronizeSummonTarget()=>true;}}
+
+namespace XianXia.Content.NPCs.Enemies{public partial class CelestialPuppet{private bool SynchronizeSummonTarget()=>true;}}

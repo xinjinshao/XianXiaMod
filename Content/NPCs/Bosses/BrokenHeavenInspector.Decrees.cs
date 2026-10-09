@@ -111,10 +111,11 @@ public partial class BrokenHeavenInspector
         }
         return false;
     }
-    public override void SendExtraAI(BinaryWriter writer) { writer.Write((byte)puppetSummonsCreated); writer.Write(decreePuppets); }
+    public override void SendExtraAI(BinaryWriter writer) { writer.Write((byte)puppetSummonsCreated); writer.Write(decreePuppets); writer.Write(SummonSession); }
     public override void ReceiveExtraAI(BinaryReader reader)
     {
-        byte created = reader.ReadByte(); bool warned = reader.ReadBoolean();
+        byte created = reader.ReadByte(); bool warned = reader.ReadBoolean(); long session = reader.ReadInt64();
+        summonSession = session > 0 ? session : 0;
         puppetSummonsCreated = Math.Min((int)created, PuppetSummonQuota);
         decreePuppets = warned && puppetSummonsCreated < PuppetSummonQuota;
     }

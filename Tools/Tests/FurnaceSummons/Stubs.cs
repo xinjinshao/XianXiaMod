@@ -26,3 +26,6 @@ namespace XianXia.Content.NPCs.Enemies{public partial class ObsessedSwordCultiva
 
 namespace XianXia.Content.NPCs.Bosses{public partial class GreenwoodMedicineKingEcho:Terraria.ModLoader.ModNPC{}}
 namespace XianXia.Content.NPCs.Enemies{public partial class HerbGardenVineSpirit:Terraria.ModLoader.ModNPC{}}
+
+namespace XianXia.Content.NPCs.Bosses{public partial class BrokenHeavenInspector:Terraria.ModLoader.ModNPC{public override void SendExtraAI(System.IO.BinaryWriter writer)=>writer.Write(SummonSession);public override void ReceiveExtraAI(System.IO.BinaryReader reader){long received=reader.ReadInt64();summonSession=received>0?received:0;}}}
+namespace XianXia.Content.NPCs.Enemies{public partial class CelestialPuppet:Terraria.ModLoader.ModNPC{}}

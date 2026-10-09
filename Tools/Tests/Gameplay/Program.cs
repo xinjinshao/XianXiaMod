@@ -1005,6 +1005,30 @@ try {
  nativeTargetMain.GetField("netMode").SetValue(null,0);nativeVineBindingType.GetMethod("PreAI").Invoke(nativeVineBinding,null);
  Check(!(bool)nativeTargetNpcType.GetField("active").GetValue(nativeVineBindingNpc)&&(int)nativeTargetNpcType.GetField("damage").GetValue(nativeVineBindingNpc)==0,"Compiled invalid source despawns on authority");
  nativeVineBindingType.GetMethod("PostAI").Invoke(nativeVineBinding,null);Check(!(bool)nativeTargetNpcType.GetField("netUpdate").GetValue(nativeVineBindingNpc),"Compiled PostAI stops after source cleanup");
+ var nativePuppetBindingType=type.Assembly.GetType("XianXia.Content.NPCs.Enemies.CelestialPuppet",true);
+ object nativePuppetBinding=Activator.CreateInstance(nativePuppetBindingType),nativePuppetBindingNpc=Activator.CreateInstance(nativeTargetNpcType);
+ nativePuppetBindingType.GetProperty("Entity",BindingFlags.Instance|BindingFlags.Public|BindingFlags.NonPublic).SetValue(nativePuppetBinding,nativePuppetBindingNpc);
+ byte[] PuppetBindingWire(){using var stream=new MemoryStream();using var writer=new BinaryWriter(stream);nativePuppetBindingType.GetMethod("SendExtraAI").Invoke(nativePuppetBinding,new object[]{writer});return stream.ToArray();}
+ Check((int)nativePuppetBindingType.GetField("MaximumSummonLifetime").GetRawConstantValue()==900,"Compiled summon lifetime 900 ticks");
+ Check(PuppetBindingWire().Length==13,"Compiled summon extra-AI fixed thirteen bytes");
+ Check((bool)nativePuppetBindingType.GetMethod("PreAI").Invoke(nativePuppetBinding,null),"Compiled natural celestial puppet has no boss binding");
+ using(var payload=new MemoryStream()){
+  using(var writer=new BinaryWriter(payload,System.Text.Encoding.UTF8,true)){writer.Write(true);writer.Write((short)-1);writer.Write(123L);writer.Write((short)900);}
+  var bytes=payload.ToArray();
+  for(int length=0;length<bytes.Length;length++){
+   var before=PuppetBindingWire();using var truncated=new MemoryStream(bytes[..length]);
+   try{nativePuppetBindingType.GetMethod("ReceiveExtraAI").Invoke(nativePuppetBinding,new object[]{new BinaryReader(truncated)});throw new Exception("Compiled summon accepted truncated packet");}catch(TargetInvocationException ex)when(ex.InnerException is EndOfStreamException){}
+   Check(PuppetBindingWire().SequenceEqual(before),"Compiled truncated summon packet leaves state intact");
+  }
+  payload.Position=0;nativePuppetBindingType.GetMethod("ReceiveExtraAI").Invoke(nativePuppetBinding,new object[]{new BinaryReader(payload)});
+  Check(PuppetBindingWire().SequenceEqual(bytes),"Compiled summon wire roundtrip");
+ }
+ nativeTargetMain.GetField("netMode").SetValue(null,1);nativeTargetNpcType.GetField("active").SetValue(nativePuppetBindingNpc,true);nativeTargetNpcType.GetField("life").SetValue(nativePuppetBindingNpc,70);
+ Check(!(bool)nativePuppetBindingType.GetMethod("PreAI").Invoke(nativePuppetBinding,null)&&(bool)nativeTargetNpcType.GetField("active").GetValue(nativePuppetBindingNpc),"Compiled invalid source blocks client AI without authority removal");
+ object[] nativePuppetBindingContact={nativeTargetPlayers.GetValue(0),0};Check(!(bool)nativePuppetBindingType.GetMethod("CanHitPlayer").Invoke(nativePuppetBinding,nativePuppetBindingContact),"Compiled invalid source cannot hit players");
+ nativeTargetMain.GetField("netMode").SetValue(null,0);nativePuppetBindingType.GetMethod("PreAI").Invoke(nativePuppetBinding,null);
+ Check(!(bool)nativeTargetNpcType.GetField("active").GetValue(nativePuppetBindingNpc)&&(int)nativeTargetNpcType.GetField("damage").GetValue(nativePuppetBindingNpc)==0,"Compiled invalid source despawns on authority");
+ nativePuppetBindingType.GetMethod("PostAI").Invoke(nativePuppetBinding,null);Check(!(bool)nativeTargetNpcType.GetField("netUpdate").GetValue(nativePuppetBindingNpc),"Compiled PostAI stops after source cleanup");
  var nativeVineBegin=nativeMedicineType.GetMethod("BeginVineSummon",BindingFlags.Instance|BindingFlags.NonPublic);
  var nativeVineUpdate=nativeMedicineType.GetMethod("UpdateVineSummon",BindingFlags.Instance|BindingFlags.NonPublic);
  foreach(int previewMode in new[]{0,2}) {
@@ -1086,9 +1110,13 @@ try {
   object owner=Activator.CreateInstance(nativeTargetPlayerType);nativeTargetPlayerType.GetField("active").SetValue(owner,true);nativeTargetPlayers.SetValue(owner,0);
   object actor=Activator.CreateInstance(nativeInspectorType),body=Activator.CreateInstance(nativeTargetNpcType);nativeInspectorType.GetProperty("Entity",BindingFlags.Instance|BindingFlags.Public|BindingFlags.NonPublic).SetValue(actor,body);nativeTargetNpcType.GetField("active").SetValue(body,true);nativeTargetNpcType.GetField("lifeMax").SetValue(body,1000);nativeTargetNpcType.GetField("life").SetValue(body,decreePhase==0?1000:decreePhase==1?500:250);nativeTargetNpcType.GetField("target").SetValue(body,0);var decreeAi=(float[])nativeTargetNpcType.GetField("ai").GetValue(body);decreeAi[2]=(decreePhase==0?300:decreePhase==1?240:180)-60;nativeTargetMain.GetField("netMode").SetValue(null,decreeMode);
   for(int frame=1;frame<60;frame++){nativeInspectorType.GetMethod("AI").Invoke(actor,null);object[] contact={owner,0};Check(decreeAi[1]==60-frame&&!(bool)nativeInspectorType.GetMethod("CanHitPlayer").Invoke(actor,contact),"Compiled inspector AI warning countdown and no-contact window");}
-  using(var preview=new MemoryStream()){nativeInspectorType.GetMethod("SendExtraAI").Invoke(actor,new object[]{new BinaryWriter(preview)});Check(preview.ToArray().SequenceEqual(new byte[]{0,(byte)(decreePhase>0?1:0)}),"Compiled inspector locks puppet eligibility and two-byte preview packet");}
+  using(var preview=new MemoryStream()){nativeInspectorType.GetMethod("SendExtraAI").Invoke(actor,new object[]{new BinaryWriter(preview)});Check(preview.Length==10&&preview.ToArray()[0]==0&&preview.ToArray()[1]==(byte)(decreePhase>0?1:0)&&BitConverter.ToInt64(preview.ToArray(),2)>0,"Compiled inspector locks puppet eligibility and ten-byte preview/session packet");}
   object changedOwner=Activator.CreateInstance(nativeTargetPlayerType);nativeTargetPlayerType.GetField("active").SetValue(changedOwner,true);nativeTargetPlayers.SetValue(changedOwner,0);nativeInspectorType.GetMethod("AI").Invoke(actor,null);Check(decreeAi.All(v=>v==0)&&(bool)nativeTargetNpcType.GetField("netUpdate").GetValue(body),"Compiled inspector changed target cancels before release");
  }
+ object packetInspector=Activator.CreateInstance(nativeInspectorType);
+ byte[] InspectorPacket(){using var stream=new MemoryStream();nativeInspectorType.GetMethod("SendExtraAI").Invoke(packetInspector,new object[]{new BinaryWriter(stream)});return stream.ToArray();}
+ var inspectorFullPacket=InspectorPacket();Check(inspectorFullPacket.Length==10,"Compiled inspector full source packet ten bytes");
+ for(int length=0;length<10;length++){try{nativeInspectorType.GetMethod("ReceiveExtraAI").Invoke(packetInspector,new object[]{new BinaryReader(new MemoryStream(inspectorFullPacket[..length]))});throw new Exception("Compiled inspector accepted truncated packet");}catch(TargetInvocationException ex)when(ex.InnerException is EndOfStreamException){}Check(InspectorPacket().SequenceEqual(inspectorFullPacket),"Compiled inspector full packet read atomic");}
  var nativeDecreeBeamType=type.Assembly.GetType("XianXia.Content.Projectiles.InspectorDecreeBeamProjectile",true);object nativeDecreeBeam=Activator.CreateInstance(nativeDecreeBeamType),nativeDecreeProjectile=Activator.CreateInstance(projectileType);nativeDecreeBeamType.GetProperty("Entity",BindingFlags.Instance|BindingFlags.Public|BindingFlags.NonPublic).SetValue(nativeDecreeBeam,nativeDecreeProjectile);nativeDecreeBeamType.GetMethod("SetDefaults").Invoke(nativeDecreeBeam,null);
  Check((int)projectileType.GetField("width").GetValue(nativeDecreeProjectile)==64&&(int)projectileType.GetField("height").GetValue(nativeDecreeProjectile)==480,"Compiled inspector wider beam body");for(int age=0;age<=31;age++){projectileType.GetField("timeLeft").SetValue(nativeDecreeProjectile,age);Check((bool)nativeDecreeBeamType.GetMethod("CanDamage").Invoke(nativeDecreeBeam,null)==(age>0&&age<=30),"Compiled shared beam preserves inspector lifetime boundaries");}
  // An isolated 100x100 Tilemap exercises the official solid/liquid collision code.

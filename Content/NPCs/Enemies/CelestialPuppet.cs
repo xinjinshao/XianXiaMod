@@ -14,7 +14,7 @@ using Terraria.ModLoader;
 
 namespace XianXia.Content.NPCs.Enemies;
 
-public class CelestialPuppet : ModNPC
+public partial class CelestialPuppet : ModNPC
 
 {
     public override void SetStaticDefaults()
@@ -81,6 +81,7 @@ public class CelestialPuppet : ModNPC
 
     public override void PostAI()
     {
+        if (!NPC.active || !SynchronizeSummonTarget()) return;
         if (Main.netMode == NetmodeID.MultiplayerClient) return;
         if (NPC.target < 0 || NPC.target >= Main.maxPlayers
             || !Main.player[NPC.target].active || Main.player[NPC.target].dead)
