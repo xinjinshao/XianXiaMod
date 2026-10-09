@@ -1,0 +1,8 @@
+Mods: {
+    XianXia: {
+        Decrees: {
+            LeaveCenter: 避中令：离开橙色区域！
+            ReturnToCenter: 归位令：进入中央通道！
+        }
+    }
+}

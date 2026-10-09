@@ -58,6 +58,10 @@ def main() -> None:
     require_text("Content/NPCs/Bosses/HeavenTabletGuardian.cs", "UpdateTabletJudgment", "UpdateTabletSeals")
     require_text("Content/NPCs/Bosses/HeavenTabletGuardian.Seals.cs", "SealShieldTicks", "CreateSeals", "ReadTabletState")
     require_text("Content/NPCs/Bosses/HeavenTabletGuardian.Judgment.cs", "JudgmentWarningTicks", "TabletJudgmentBeamProjectile", "SendExtraAI")
+    require_text("Content/NPCs/Bosses/BrokenHeavenInspector.cs", "UpdateInspectorDecree")
+    require_text("Content/NPCs/Bosses/BrokenHeavenInspector.Decrees.cs", "DecreeWarningTicks", "InspectorDecreeBeamProjectile", "SpawnInspectorPuppets", "decreePuppets")
+    for locale in ("en-US", "zh-Hans"):
+        require_text(f"Localization/inspector-decrees/{locale}.hjson", "LeaveCenter", "ReturnToCenter")
     require_text("Content/NPCs/Bosses/AbyssalStarWomb.cs", "UpdateStarRing")
     require_text("Content/NPCs/Bosses/AbyssalStarWomb.Ring.cs", "ReleaseCompressionField", "RingWarningTicks")
     require_text("Content/NPCs/Bosses/AbyssalStarWomb.Compression.cs", "BossArrayFieldProjectile", "ReleaseCompressionField")

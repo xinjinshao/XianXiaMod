@@ -1,0 +1,8 @@
+Mods: {
+    XianXia: {
+        Decrees: {
+            LeaveCenter: Leave decree: leave the orange zone!
+            ReturnToCenter: Return decree: enter the central gap!
+        }
+    }
+}

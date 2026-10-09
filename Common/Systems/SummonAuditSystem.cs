@@ -238,6 +238,61 @@ public class SummonAuditSystem : ModSystem
                     beam.active = false;
                 }
             }
+            for (int phase = 0; phase < 3; phase++) {
+                int inspectorSlot = NPC.NewNPC(new EntitySource_Misc("XianXiaDecreeAudit"), x, y + 48,
+                    ModContent.NPCType<BrokenHeavenInspector>());
+                Check(inspectorSlot >= 0 && inspectorSlot < Main.maxNPCs, "registered inspector created");
+                NPC inspectorNpc = Main.npc[inspectorSlot]; owned.Add(inspectorNpc); inspectorNpc.target = 0;
+                var inspector = (BrokenHeavenInspector)inspectorNpc.ModNPC;
+                inspectorNpc.life = phase == 0 ? inspectorNpc.lifeMax : inspectorNpc.lifeMax / (phase == 1 ? 2 : 4);
+                var beforeInspectorNpcs = Main.npc.Where(npc => npc.active).ToHashSet();
+                void TickInspector() {
+                    try { inspector.AI(); }
+                    finally {
+                        owned.AddRange(Main.npc.Where(npc => npc.active && !beforeInspectorNpcs.Contains(npc) && !owned.Contains(npc)));
+                        ownedProjectiles.AddRange(Main.projectile.Where(projectile => projectile.active
+                            && !previousProjectiles.Contains(projectile) && !ownedProjectiles.Contains(projectile)));
+                    }
+                }
+                int decreeType = ModContent.ProjectileType<global::XianXia.Content.Projectiles.InspectorDecreeBeamProjectile>();
+                int interval = phase == 0 ? 300 : phase == 1 ? 240 : 180;
+                for (int law = 0; law < 2; law++) {
+                    inspectorNpc.ai[2] = interval - BrokenHeavenInspector.DecreeWarningTicks;
+                    inspectorNpc.ai[0] = phase == 0 ? 150 : phase == 1 ? 110 : 72;
+                    var priorDecreeBeams = Main.projectile.Where(projectile => projectile.active).ToHashSet();
+                    for (int frame = 1; frame <= 60; frame++) {
+                        TickInspector();
+                        Check(inspectorNpc.ai[1] == (law == 0 ? 60 - frame : frame - 60), $"native decree {phase}/{law} clock {frame}");
+                        Check(!inspector.CanHitPlayer(Main.player[0], ref cooldownSlot) && inspectorNpc.velocity == Vector2.Zero,
+                            $"native decree {phase}/{law} warning stationary/harmless {frame}");
+                        var emitted = Main.projectile.Where(projectile => projectile.active && !priorDecreeBeams.Contains(projectile)).ToArray();
+                        Check(emitted.Length == (frame < 60 ? 0 : law + 1) && emitted.All(projectile => projectile.type == decreeType),
+                            $"native decree {phase}/{law} exact release/no overlap {frame}");
+                    }
+                    var decreeBeams = Main.projectile.Where(projectile => projectile.active && !priorDecreeBeams.Contains(projectile)).ToArray();
+                    foreach (Projectile beam in decreeBeams)
+                        Check(beam.width == 64 && beam.height == 480 && beam.timeLeft == 30 && beam.ModProjectile.CanDamage() == true,
+                            "registered inspector wider beam and living source");
+                    Check(decreeBeams.All(beam => beam.Center.Y == Main.player[0].Center.Y)
+                        && (law == 0 ? decreeBeams.Single().Center.X == Main.player[0].Center.X
+                            : decreeBeams.Select(beam => beam.Center.X).Order().SequenceEqual(new[] {
+                                Main.player[0].Center.X - 112, Main.player[0].Center.X + 112 })), "native leave/return layout matches warning");
+                    for (int frame = 1; frame <= 45; frame++) {
+                        TickInspector();
+                        Check(inspectorNpc.ai[2] == -45 + frame && !inspector.CanHitPlayer(Main.player[0], ref cooldownSlot),
+                            $"native decree recovery {phase}/{law}/{frame}");
+                    }
+                    foreach (Projectile beam in decreeBeams) beam.active = false;
+                }
+                var puppets = Main.npc.Where(npc => npc.active && !beforeInspectorNpcs.Contains(npc)).ToArray();
+                Check(puppets.Length == (phase == 0 ? 0 : 2), "registered puppet quota remains two across both decrees");
+                foreach (NPC puppet in puppets) {
+                    Check(puppet.ModNPC is CelestialPuppet && puppet.target == inspectorNpc.target && puppet.netUpdate,
+                        "registered puppet type and synchronized target");
+                    puppet.active = false;
+                }
+                inspectorNpc.active = false;
+            }
         }
         catch (Exception exception) { error = exception.ToString(); }
         finally {
@@ -254,7 +309,7 @@ public class SummonAuditSystem : ModSystem
         Directory.CreateDirectory(directory);
         File.WriteAllText(Path.Combine(directory, "summon-audit.json"), JsonSerializer.Serialize(new {
             schema = 1, passed = error == null, checks, error,
-            limitations = "Registered headless AI advanced manually; native player damage and NPC.StrikeNPC verify ordered seals and loot/kill-count suppression. No full engine ticks, graphics, clients, combat balance or complete playthrough."
+            limitations = "Registered headless AI advanced manually for medicine, tablet and alternating inspector decrees; native player damage and NPC.StrikeNPC verify ordered seals and loot/kill-count suppression. No full engine ticks, graphics, clients, combat balance or complete playthrough."
         }, new JsonSerializerOptions { WriteIndented = true }));
         Mod.Logger.Info($"Summon audit finished: {checks.Count} checks; passed={error == null}");
     }
