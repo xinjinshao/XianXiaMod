@@ -32,6 +32,7 @@ public partial class OldHeavenDaoCore
             return archiveSession;
         }
     }
+    internal bool ArchiveShieldActive => archiveState == 2 && archiveTimer > 0 && brokenArchiveMask < 15 && BossTargeting.HasLivingTarget(NPC);
     internal bool IsActiveArchive(CoreArchiveLockNPC archive) => archiveState == 2 && archive.Index < 4
         && (brokenArchiveMask & (1 << archive.Index)) == 0 && BossTargeting.HasLivingTarget(NPC)
         && archive.MatchesParent(this, archive.Index) && archiveSlots[archive.Index] == archive.NPC.whoAmI
@@ -89,7 +90,11 @@ public partial class OldHeavenDaoCore
             if (NPC.target != archiveTarget || !ReferenceEquals(target, archivePlayer)) { FinishArchives(); return true; }
             if (--archiveTimer > 0) { if (archiveTimer % 15 == 0) NPC.netUpdate = true; return true; }
             if (!CreateArchives()) { FinishArchives(); return true; }
-            archiveState = 2; archiveTimer = ArchiveShieldTicks; NPC.dontTakeDamage = NPC.immortal = true; NPC.netUpdate = true;
+            archiveState = 2; archiveTimer = ArchiveShieldTicks;
+            int compressionSlot = Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center, Vector2.Zero,
+                ModContent.ProjectileType<global::XianXia.Content.Projectiles.CoreArchiveCompressionProjectile>(), Math.Max(18, NPC.damage / 3), 0, Main.myPlayer);
+            if (compressionSlot < 0 || compressionSlot >= Main.maxProjectiles) { FinishArchives(); return true; }
+            NPC.dontTakeDamage = NPC.immortal = true; NPC.netUpdate = true;
             return true;
         }
         if (archiveState == 2) {

@@ -161,4 +161,41 @@ foreach(int coreBladeMode in new[]{0,1,2}) {
  Collision.Blocked=true;Check(!coreBlade.CanHitPlayer(new Player()),"Core sever blade wall prevents hit");Collision.Blocked=false;Check(coreBlade.CanDamage()==true,"Core sever blade valid source damages");coreBladeParent.active=false;coreBlade.AI();Check(coreBlade.CanDamage()==false,"Core sever blade source loss harmless");using var coreBladeWire=new MemoryStream();coreBlade.SendExtraAI(new BinaryWriter(coreBladeWire));Check(coreBladeWire.Length==19,"Core sever blade source protocol fixed");
 }
 Main.netMode=0;Main.dedServ=false;Main.spriteBatch.Boxes.Clear();Main.screenPosition=new(20,30);var drawnCoreBlade=new CoreSeveranceBladeProjectile();drawnCoreBlade.SetDefaults();drawnCoreBlade.Projectile.Center=new(300,100);var coreBladeTint=default(Microsoft.Xna.Framework.Color);drawnCoreBlade.PreDraw(ref coreBladeTint);Check(Main.spriteBatch.Boxes.Single()==new Microsoft.Xna.Framework.Rectangle(40,54,480,32),"Core sever blade draw equals damage body with camera offset");Main.dedServ=true;
+
+(CoreArchiveCompressionProjectile Field, XianXia.Content.NPCs.Bosses.OldHeavenDaoCore Core) CompressionFixture() {
+ Main.netMode=0;Main.dedServ=true;Main.player=[new(){whoAmI=0},new(){whoAmI=1}];Main.npc=Enumerable.Range(0,Main.maxNPCs).Select(i=>new NPC{whoAmI=i,active=false}).ToArray();var body=Main.npc[3];body.active=true;var core=new XianXia.Content.NPCs.Bosses.OldHeavenDaoCore{NPC=body};body.ModNPC=core;
+ var compressionField=new CoreArchiveCompressionProjectile();compressionField.SetDefaults();compressionField.OnSpawn(new Terraria.DataStructures.EntitySource_Parent(body));return(compressionField,core);
+}
+foreach(int compressionMode in new[]{0,1,2}) {
+ var fixture=CompressionFixture();var compressionField=fixture.Field;Main.netMode=compressionMode;
+ foreach((int Age,float Half) sample in new[]{(0,480f),(59,480f),(60,480f),(360,400f),(660,320f),(1800,320f)}) {
+  compressionField.Projectile.timeLeft=CoreArchiveCompressionProjectile.Lifetime-sample.Age;
+  Check(compressionField.CanDamage()==(sample.Age>=60),"Compression has full sixty frame warning before outside hazard");Check(MathF.Abs(compressionField.SafeHalfSize-sample.Half)<0.001f,"Compression fixed start/mid/minimum safe space");
+  Check(compressionField.Colliding(default,new Microsoft.Xna.Framework.Rectangle(-10,-20,20,40))==false,"Compression center always safe");Check(compressionField.Colliding(default,new Microsoft.Xna.Framework.Rectangle(500,0,20,40))==(sample.Age>=60),"Compression outside body dangerous only after warning");
+  Check(compressionField.Colliding(default,new Microsoft.Xna.Framework.Rectangle((int)sample.Half-20,0,20,20))==false,"Compression fully inside exact edge safe");Check(compressionField.Colliding(default,new Microsoft.Xna.Framework.Rectangle((int)sample.Half-19,0,20,20))==(sample.Age>=60),"Compression one pixel beyond safe edge detected");
+ }
+ Main.player[0].Center=new(600,0);Check(compressionField.CanHitPlayer(Main.player[0]),"Compression existing participant outside receives hazard");Collision.Blocked=true;Check(!compressionField.CanHitPlayer(Main.player[0]),"Compression outside through wall cannot hit");Collision.Blocked=false;
+}
+foreach(int compressionMode in new[]{0,1,2})foreach(int compressionReason in new[]{0,1,2,3,4,5,6,7}) {
+ var fixture=CompressionFixture();var compressionField=fixture.Field;compressionField.Projectile.timeLeft=1800;Main.netMode=compressionMode;
+ if(compressionReason==0)fixture.Core.NPC.active=false;else if(compressionReason==1)fixture.Core.ArchiveSession=2;else if(compressionReason==2)fixture.Core.ArchiveShieldActive=false;else if(compressionReason==3)Main.npc[3].ModNPC=new XianXia.Content.NPCs.Bosses.OldHeavenDaoCore{NPC=Main.npc[3],ArchiveSession=2};else if(compressionReason==4)fixture.Core.NPC.target=255;else if(compressionReason==5)Main.player[0].dead=true;else if(compressionReason==6)compressionField.Projectile.velocity=new(float.NaN,0);else compressionField.Projectile.timeLeft=1861;
+ Check(compressionField.CanDamage()==false,"Compression invalid archive source or geometry no damage");compressionField.AI();Check(compressionField.Projectile.velocity==Microsoft.Xna.Framework.Vector2.Zero&&compressionField.CanDamage()==false,"Compression invalid source remains harmless after AI");Check(compressionField.Projectile.timeLeft==(compressionMode==1?(compressionReason==7?1861:1800):6),"Compression authority invalid source short fade, client waits");
+}
+{
+ var fixture=CompressionFixture();var compressionField=fixture.Field;compressionField.Projectile.timeLeft=1500;
+ byte[] CompressionWire(){using var stream=new MemoryStream();compressionField.SendExtraAI(new BinaryWriter(stream));return stream.ToArray();}var compressionWire=CompressionWire();Check(compressionWire.Length==17,"Compression full source/extent/age/cancellation wire seventeen bytes");
+ for(int compressionLength=0;compressionLength<17;compressionLength++){try{compressionField.ReceiveExtraAI(new BinaryReader(new MemoryStream(compressionWire[..compressionLength])));throw new Exception("truncated compression accepted");}catch(EndOfStreamException){}Check(CompressionWire().SequenceEqual(compressionWire),"Compression all compressionField reads atomic");}
+ var remoteField=new CoreArchiveCompressionProjectile();remoteField.SetDefaults();remoteField.ReceiveExtraAI(new BinaryReader(new MemoryStream(compressionWire)));Check(remoteField.Projectile.timeLeft==1500&&remoteField.SafeHalfSize==400,"Compression late snapshot preserves shrinking age");
+ var staleCompression=(byte[])compressionWire.Clone();BitConverter.GetBytes((short)1600).CopyTo(staleCompression,14);remoteField.ReceiveExtraAI(new BinaryReader(new MemoryStream(staleCompression)));Check(remoteField.Projectile.timeLeft==1500&&remoteField.SafeHalfSize==400,"Compression old age cannot enlarge safe space");
+ staleCompression[16]=1;remoteField.ReceiveExtraAI(new BinaryReader(new MemoryStream(staleCompression)));remoteField.ReceiveExtraAI(new BinaryReader(new MemoryStream(compressionWire)));Check(remoteField.CanDamage()==false,"Compression old live packet cannot revive cancelled compressionField");
+}
+{
+ var fixture=CompressionFixture();var compressionField=fixture.Field;Main.player[1].Center=new(1600,0);compressionField.OnSpawn(new Terraria.DataStructures.EntitySource_Parent(fixture.Core.NPC));Check(compressionField.SafeHalfSize==1760,"Compression initial area includes other living participants");compressionField.Projectile.timeLeft=1200;compressionField.AI();Main.player[1]=new(){whoAmI=1,Center=new(700,0)};
+ for(int newcomerFrame=1;newcomerFrame<=134;newcomerFrame++){compressionField.AI();Check(compressionField.CanHitPlayer(Main.player[1])==(newcomerFrame==134),"Compression distant newcomer gets approach time plus sixty frame warning");}
+ Main.player[1].dead=true;compressionField.AI();Main.player[1].dead=false;compressionField.AI();Check(!compressionField.CanHitPlayer(Main.player[1]),"Compression revive restarts entry grace even on same Player object");
+}
+{
+ var fixture=CompressionFixture();var compressionField=fixture.Field;Main.netMode=1;Main.dedServ=false;CombatText.Calls=0;compressionField.Projectile.timeLeft=1800;compressionField.AI();compressionField.AI();Check(CombatText.Calls==1&&CombatText.LastText.EndsWith("Compression"),"Compression client instruction once at local player");Main.spriteBatch.Boxes.Clear();Main.screenPosition=new(20,30);var compressionTint=default(Microsoft.Xna.Framework.Color);compressionField.PreDraw(ref compressionTint);Check(Main.spriteBatch.Boxes.Count==4&&Main.spriteBatch.Boxes[0]==new Microsoft.Xna.Framework.Rectangle(-500,-510,960,4),"Compression draws four boundaries at actual safe extent and camera offset");Main.dedServ=true;compressionField.PreDraw(ref compressionTint);Check(Main.spriteBatch.Boxes.Count==4,"Compression dedicated server avoids graphics");
+}
+Check(new CoreArchiveCompressionProjectile().CanHitNPC(new NPC())==false,"Compression never harms town NPCs or puzzle entities");
 Console.WriteLine($"Actual telegraph hook regression passed: {assertions} assertions; mocked graphics/spawn boundary.");

@@ -6,6 +6,7 @@ Mods: {
             }
         }
         Archives: {
+            Compression: 空间压缩：回到边框内并击破归档锁！
             BreakLocks: 归档护盾：任意顺序击破四枚归档锁！
         }
     }

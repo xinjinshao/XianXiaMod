@@ -3,7 +3,7 @@ namespace Terraria {
  public class Player{public struct HurtInfo{}public bool active=true,dead;public Microsoft.Xna.Framework.Vector2 Center,velocity;}
  public class NPC{public Terraria.ModLoader.ModNPC ModNPC;public bool dontTakeDamage,immortal;public bool active,netUpdate;public int lifeMax=100;public int damage=34;public float[] localAI=new float[4];public int width=96,height=96;public int life=100,type,target,whoAmI;public float rotation;public float[] ai=new float[4];public Microsoft.Xna.Framework.Vector2 Center,velocity;public object Hitbox=>this;public object GetSource_FromAI()=>this;
  public static int Calls,FailureResult=int.MinValue;public static int NewNPC(object source,int x,int y,int type,float ai0,float ai1=0){Calls++;if(FailureResult!=int.MinValue)return FailureResult;for(int index=0;index<Main.maxNPCs;index++){if(Main.npc[index].active)continue;Main.npc[index]=new(){active=true,whoAmI=index,type=type,Center=new(x,y)};Main.npc[index].ai[0]=ai0;Main.npc[index].ai[1]=ai1;if(((NPC)source).ModNPC is XianXia.Content.NPCs.Bosses.OldHeavenDaoCore archiveParent){Main.npc[index].ModNPC=new XianXia.Content.NPCs.Enemies.CoreArchiveLockNPC{NPC=Main.npc[index],BoundSlot=(short)archiveParent.NPC.whoAmI,BoundSession=archiveParent.ArchiveSession,Index=(byte)ai1};}else Main.npc[index].ModNPC=new XianXia.Content.NPCs.Enemies.HeavenTabletSealNPC{NPC=Main.npc[index],BoundSlot=((NPC)source).whoAmI,Order=(int)ai1};return index;}return Main.maxNPCs;}}
- public static class Main{public static bool dedServ;public static int myPlayer;public static int netMode,maxNPCs=20,maxPlayers=2,maxTilesX=8400,maxTilesY=2400;public static NPC[] npc=Array.Empty<NPC>();public static Player[] player=[new(),new()];public static IEnumerable<NPC> ActiveNPCs=>npc.Where(n=>n.active);public static RandomStub rand=new();}
+ public static class Main{public static bool dedServ;public static int myPlayer;public static int netMode,maxProjectiles=1000,maxNPCs=20,maxPlayers=2,maxTilesX=8400,maxTilesY=2400;public static NPC[] npc=Array.Empty<NPC>();public static Player[] player=[new(),new()];public static IEnumerable<NPC> ActiveNPCs=>npc.Where(n=>n.active);public static RandomStub rand=new();}
  public class RandomStub{public int Calls;public Queue<int> Values=new();public int Next(int min,int max){Calls++;return Values.Count>0?Values.Dequeue():(min+max-1)/2;}}
 }
 namespace Terraria.ID{public static class NetmodeID{public const int MultiplayerClient=1,Server=2;}}
@@ -20,7 +20,7 @@ namespace Terraria {public static class Collision{public static bool SpawnBlocke
 namespace XianXia.Content.NPCs.Bosses{public partial class MoonboneImmortal:Terraria.ModLoader.ModNPC{}}
 namespace XianXia.Content.NPCs.Enemies{public class ArchivedImmortalSoul{}}
 namespace XianXia.Content.Projectiles{public class BossSpiritBoltProjectile{}public class BossArrayFieldProjectile{}}
-namespace Terraria{public static class Projectile{public static List<Microsoft.Xna.Framework.Vector2> Positions=new();public static List<(int Type,Microsoft.Xna.Framework.Vector2 Velocity)> Shots=new();public static int NewProjectile(object source,Microsoft.Xna.Framework.Vector2 p,Microsoft.Xna.Framework.Vector2 v,int type,int damage,float kb,int owner){Positions.Add(p);Shots.Add((type,v));return 0;}}}
+namespace Terraria{public static class Projectile{public static int FailureResult=int.MinValue;public static List<Microsoft.Xna.Framework.Vector2> Positions=new();public static List<(int Type,Microsoft.Xna.Framework.Vector2 Velocity)> Shots=new();public static int NewProjectile(object source,Microsoft.Xna.Framework.Vector2 p,Microsoft.Xna.Framework.Vector2 v,int type,int damage,float kb,int owner){Positions.Add(p);Shots.Add((type,v));return FailureResult==int.MinValue?0:FailureResult;}}}
 
 namespace XianXia.Content.NPCs.Bosses{public partial class TribulationCloudAvatar:Terraria.ModLoader.ModNPC{}}
 namespace XianXia.Content.NPCs.Enemies{public class TribulationCloudling{}}
@@ -55,3 +55,5 @@ namespace XianXia.Common.Systems{public static class DownedBossSystem{public enu
 namespace XianXia.Content.Projectiles{public class CoreSeveranceBladeProjectile{}}
 
 namespace XianXia.Content.NPCs.Enemies{public class CoreArchiveLockNPC:Terraria.ModLoader.ModNPC{public short BoundSlot;public long BoundSession;public byte Index;public bool MatchesParent(XianXia.Content.NPCs.Bosses.OldHeavenDaoCore parent,int expected)=>Index==expected&&BoundSlot==parent.NPC.whoAmI&&BoundSession==parent.ArchiveSession;}}
+
+namespace XianXia.Content.Projectiles{public class CoreArchiveCompressionProjectile{}}

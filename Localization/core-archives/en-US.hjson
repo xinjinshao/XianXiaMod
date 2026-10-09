@@ -6,6 +6,7 @@ Mods: {
             }
         }
         Archives: {
+            Compression: Space compression: move inside the frame and break the archive locks!
             BreakLocks: Archive shield: break all four locks in any order!
         }
     }

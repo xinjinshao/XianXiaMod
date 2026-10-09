@@ -380,8 +380,33 @@ public class SummonAuditSystem : ModSystem
                 TickArchiveCore();Check(!archiveCore.CanHitPlayer(Main.player[0],ref cooldownSlot)&&archiveCoreNpc.velocity==Vector2.Zero,"registered archive warning stationary/harmless");
                 Check(archiveCoreNpc.dontTakeDamage==(archiveFrame==60)&&archiveCoreNpc.immortal==(archiveFrame==60),"registered archive shield only after four valid births");
                 Check(Main.npc.Count(npc=>npc.active&&!beforeArchiveNpcs.Contains(npc))==(archiveFrame==60?4:0),"registered archives after full sixty frame tell");
-                Check(!Main.projectile.Any(projectile=>projectile.active&&!beforeArchiveProjectiles.Contains(projectile)),"registered archive warning no stacked spell");
+                Check(Main.projectile.Count(projectile=>projectile.active&&!beforeArchiveProjectiles.Contains(projectile))==(archiveFrame==60?1:0),"registered archive warning compression only after locks, no stacked spell");
             }
+            var archiveCompression=Main.projectile.Single(projectile=>projectile.active&&!beforeArchiveProjectiles.Contains(projectile));
+            Check(archiveCompression.ModProjectile is global::XianXia.Content.Projectiles.CoreArchiveCompressionProjectile&&archiveCompression.ModProjectile.CanDamage()==false,"registered compression begins with its own harmless warning");
+            archiveCompression.Update(archiveCompression.whoAmI);Check(archiveCompression.active,"registered compression survives a native projectile tick near upper world boundary");
+            var typedCompression=(global::XianXia.Content.Projectiles.CoreArchiveCompressionProjectile)archiveCompression.ModProjectile;
+            foreach((int Age,float Half) compressionSample in new[]{(59,480f),(60,480f),(360,400f),(660,320f)}) {
+                archiveCompression.timeLeft=global::XianXia.Content.Projectiles.CoreArchiveCompressionProjectile.Lifetime-compressionSample.Age;typedCompression.AI();
+                Check(MathF.Abs(typedCompression.SafeHalfSize-compressionSample.Half)<0.001f,"registered compression warning/mid/final radius");
+                Check(!archiveCompression.Colliding(archiveCompression.Hitbox,new Rectangle((int)archiveCompression.Center.X-10,(int)archiveCompression.Center.Y-20,20,40)),"native projectile collision respects compression safe center");
+                Check(archiveCompression.Colliding(archiveCompression.Hitbox,new Rectangle((int)archiveCompression.Center.X+600,(int)archiveCompression.Center.Y,20,40))==(compressionSample.Age>=60),"native projectile collision outside only after full compression warning");
+            }
+            Player compressionVictim=Main.player[0];Vector2 previousCompressionCenter=compressionVictim.Center,previousCompressionVelocity=compressionVictim.velocity;int previousCompressionLife=compressionVictim.statLife,previousCompressionMax=compressionVictim.statLifeMax2,previousCompressionMode=Main.netMode,previousCompressionOwner=archiveCompression.owner,previousLocalPlayer=Main.myPlayer,previousCompressionImmuneTime=compressionVictim.immuneTime;bool previousCompressionImmune=compressionVictim.immune;var previousCompressionCooldowns=(int[])compressionVictim.hurtCooldowns.Clone();
+            var previousCompressionCombatText=Main.combatText;
+            try {
+                // Saturate the text pool: damage runs through the real engine without requiring server-side fonts.
+                Main.combatText=Enumerable.Range(0,100).Select(_=>new CombatText{active=true}).ToArray();
+                Main.netMode=NetmodeID.SinglePlayer;Main.myPlayer=0;archiveCompression.owner=0;compressionVictim.statLife=compressionVictim.statLifeMax2=10000;compressionVictim.velocity=Vector2.Zero;compressionVictim.immune=false;compressionVictim.immuneTime=0;Array.Clear(compressionVictim.hurtCooldowns);
+                compressionVictim.Center=archiveCompression.Center;archiveCompression.Damage();Check(compressionVictim.statLife==10000,"native projectile damage leaves compression center unharmed");
+                compressionVictim.Center=archiveCompression.Center+new Vector2(600,0);archiveCompression.Damage();Check(compressionVictim.statLife<10000,"native projectile damage hits outside compression despite small anchor hitbox");
+            } finally {Main.combatText=previousCompressionCombatText;Main.netMode=previousCompressionMode;Main.myPlayer=previousLocalPlayer;archiveCompression.owner=previousCompressionOwner;compressionVictim.Center=previousCompressionCenter;compressionVictim.velocity=previousCompressionVelocity;compressionVictim.statLife=previousCompressionLife;compressionVictim.statLifeMax2=previousCompressionMax;compressionVictim.immune=previousCompressionImmune;compressionVictim.immuneTime=previousCompressionImmuneTime;previousCompressionCooldowns.CopyTo(compressionVictim.hurtCooldowns,0);}
+            Player previousCompressionGuest=Main.player[1];
+            try {
+                Main.player[1]=new Player{whoAmI=1,active=true,dead=false,statLife=100,statLifeMax2=100};Main.player[1].Center=archiveCompression.Center+new Vector2(600,0);
+                for(int compressionGuestFrame=1;compressionGuestFrame<=118;compressionGuestFrame++){typedCompression.AI();Check(typedCompression.CanHitPlayer(Main.player[1])==(compressionGuestFrame==118),"registered compression distant late entrant has approach time plus sixty frame grace");}
+            } finally {Main.player[1]=previousCompressionGuest;}
+            using(var nativeCompressionWire=new MemoryStream()){typedCompression.SendExtraAI(new BinaryWriter(nativeCompressionWire));Check(nativeCompressionWire.Length==17,"registered compression actual source packet");}
             var archiveLocks=Main.npc.Where(npc=>npc.active&&!beforeArchiveNpcs.Contains(npc)).OrderBy(npc=>npc.ai[1]).ToArray();Check(archiveLocks.Length==4,"registered four archive locks");
             TickArchiveCore();Check(archiveCoreNpc.velocity==Vector2.Zero&&archiveCoreNpc.immortal,"registered core remains stationary while archive shield active");
             int archiveProtectedLife=archiveCoreNpc.life;Main.player[0].ApplyDamageToNPC(archiveCoreNpc,100,0,1,false,DamageClass.Generic);Check(archiveCoreNpc.life==archiveProtectedLife,"registered archive shield rejects actual native player damage");
@@ -394,14 +419,17 @@ public class SummonAuditSystem : ModSystem
                 Check(archiveCoreNpc.immortal==(archiveIndex!=2)&&archiveCoreNpc.dontTakeDamage==(archiveIndex!=2),"registered archive shield breaks only after final lock");
             }
             Check(!archiveCore.CanHitPlayer(Main.player[0],ref cooldownSlot),"registered last archive break immediately safe before next AI");
+            archiveCompression.ModProjectile.AI();Check(archiveCompression.ModProjectile.CanDamage()==false&&archiveCompression.timeLeft<=6,"registered archive completion cancels compression immediately");archiveCompression.active=false;
             int archiveUnlockedLife=archiveCoreNpc.life;Main.player[0].ApplyDamageToNPC(archiveCoreNpc,100,0,1,false,DamageClass.Generic);Check(archiveCoreNpc.life<archiveUnlockedLife,"registered core takes damage after archive shield broken");
             for(int archiveFrame=1;archiveFrame<=45;archiveFrame++){TickArchiveCore();Check(!archiveCore.CanHitPlayer(Main.player[0],ref cooldownSlot),"registered archive recovery exact harmless duration");}
             archiveCoreNpc.active=false;
             int reusedArchiveSlot=NPC.NewNPC(new EntitySource_Misc("XianXiaArchiveReuseAudit"),x,y+48,ModContent.NPCType<OldHeavenDaoCore>());Check(reusedArchiveSlot>=0&&reusedArchiveSlot<Main.maxNPCs,"registered second archive core created");
             NPC reusedArchiveCoreNpc=Main.npc[reusedArchiveSlot];owned.Add(reusedArchiveCoreNpc);reusedArchiveCoreNpc.target=0;reusedArchiveCoreNpc.life=reusedArchiveCoreNpc.lifeMax/4;var reusedArchiveCore=(OldHeavenDaoCore)reusedArchiveCoreNpc.ModNPC;
-            var beforeReusedArchiveNpcs=Main.npc.Where(npc=>npc.active).ToHashSet();try{for(int frame=0;frame<60;frame++)reusedArchiveCore.AI();}finally{owned.AddRange(Main.npc.Where(npc=>npc.active&&!beforeReusedArchiveNpcs.Contains(npc)&&!owned.Contains(npc)));}
+            var beforeReusedArchiveNpcs=Main.npc.Where(npc=>npc.active).ToHashSet();var beforeReusedCompression=Main.projectile.Where(projectile=>projectile.active).ToHashSet();try{for(int frame=0;frame<60;frame++)reusedArchiveCore.AI();}finally{owned.AddRange(Main.npc.Where(npc=>npc.active&&!beforeReusedArchiveNpcs.Contains(npc)&&!owned.Contains(npc)));ownedProjectiles.AddRange(Main.projectile.Where(projectile=>projectile.active&&!previousProjectiles.Contains(projectile)&&!ownedProjectiles.Contains(projectile)));}
+            var abandonedCompression=Main.projectile.Single(projectile=>projectile.active&&!beforeReusedCompression.Contains(projectile));
             var abandonedArchiveLocks=Main.npc.Where(npc=>npc.active&&!beforeReusedArchiveNpcs.Contains(npc)).ToArray();Check(abandonedArchiveLocks.Length==4,"registered source reuse scenario has four locks");long previousArchiveSession=reusedArchiveCore.ArchiveSession;reusedArchiveCoreNpc.active=false;
             int replacementArchiveSlot=NPC.NewNPC(new EntitySource_Misc("XianXiaArchiveReplacementAudit"),x,y+48,ModContent.NPCType<OldHeavenDaoCore>());Check(replacementArchiveSlot==reusedArchiveSlot,"registered archive parent slot actually reused");NPC replacementArchiveNpc=Main.npc[replacementArchiveSlot];owned.Add(replacementArchiveNpc);replacementArchiveNpc.target=0;Check(((OldHeavenDaoCore)replacementArchiveNpc.ModNPC).ArchiveSession!=previousArchiveSession,"registered replacement archive parent has new session");
+            abandonedCompression.ModProjectile.AI();Check(abandonedCompression.ModProjectile.CanDamage()==false&&abandonedCompression.timeLeft<=6,"registered old compression does not follow same-type parent slot reuse");abandonedCompression.active=false;
             foreach(NPC abandonedArchive in abandonedArchiveLocks){abandonedArchive.ModNPC.AI();Check(!abandonedArchive.active&&abandonedArchive.damage==0,"registered old archive source cannot follow reused same-type parent slot");}
             Check(NPC.killCount[ModContent.NPCType<CoreArchiveLockNPC>()]==archiveKillCount&&!Main.item.Any(item=>item?.active==true&&!previousItems.Contains(item)),"registered reused-source cleanup has no rewards");replacementArchiveNpc.active=false;
         }
@@ -420,7 +448,7 @@ public class SummonAuditSystem : ModSystem
         Directory.CreateDirectory(directory);
         File.WriteAllText(Path.Combine(directory, "summon-audit.json"), JsonSerializer.Serialize(new {
             schema = 1, passed = error == null, checks, error,
-            limitations = "Registered headless AI advanced manually for medicine, tablet, alternating inspector decrees and core modules and archive locks; native player damage and NPC.StrikeNPC verify ordered seals and loot/kill-count suppression. No full engine ticks, graphics, clients, combat balance or complete playthrough."
+            limitations = "Registered AI advanced manually for medicine, tablet, inspector, core modules and archive locks; one native compression Projectile.Update and local Projectile.Damage verify safe/unsafe regions with hit-text slots occupied. Native player damage/NPC.StrikeNPC verify shield breaks and reward suppression. No full world/player ticks, rendered graphics, real clients, combat balance or complete playthrough."
         }, new JsonSerializerOptions { WriteIndented = true }));
         Mod.Logger.Info($"Summon audit finished: {checks.Count} checks; passed={error == null}");
     }
