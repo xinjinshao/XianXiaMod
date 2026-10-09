@@ -63,7 +63,7 @@ CI运行只读新鲜度检查，生成结果变化时须显式更新这四份输
 
 ## 原生包内容与默认配置
 
-Native checks另运行PackageContents，使用官方TmodFile打开实际.tmod，核对内部名称、build.txt版本、归档哈希、当前描述及Common/Content/Localization的所有PNG/HJSON（接受官方转换后的rawimg）；拒绝隐藏/越界条目、Assets/Docs/Wiki/Tools/bin/obj/README和源码/工具扩展。它不是读取源码文件名后假定打包正确。默认配置在Gameplay编译产物回归中验证，当前累计1877条。
+Native checks另运行PackageContents，使用官方TmodFile打开实际.tmod，核对内部名称、build.txt版本、归档哈希、当前描述及Common/Content/Localization的所有PNG/HJSON（接受官方转换后的rawimg）；拒绝隐藏/越界条目、Assets/Docs/Wiki/Tools/bin/obj/README和源码/工具扩展。它不是读取源码文件名后假定打包正确。默认配置在Gameplay编译产物回归中验证，当前累计1882条。
 
 ```powershell
 dotnet run --project Tools/Tests/PackageContents/PackageContents.csproj -- <XianXia.tmod路径> <官方引擎目录> <仓库根目录>
@@ -284,3 +284,6 @@ Telegraphs671→793项，增加七类来源失效×三模式、权威槽位复�
 
 
 第146轮药王藤灵召唤接45tick青色出生区预警/30tick无接触恢复，冻结药王移动并暂停其它施法；先于普通攻击/法阵边界启动，不在玩家位置突然创建。出生位置改为Boss中心±120像素、下沿Y-60，预览按藤灵48×48轮廓画288×48区域；源码夹具记录的是NewNPC调用参数，真实地形仍待验证。目标槽位或Player引用替换取消预警，不消耗三只成功配额；容量失败下轮重新完整预警后补缺额。NPC.ai[3]编码预警/恢复并每15tick同步，客户端等待不推进/创建；坏计时权威进入恢复/客户端无伤，现有8字节会话ExtraAI保持。BossAdds11203→11492新增289项完整45/30帧、Boss侧位置/冻结/无接触、配额耗尽、目标替换、坏状态及客户端绘制；Gameplay1787→1877新增90项实际编译释放前警告接触拒绝/目标替换取消。
+
+
+第147轮藤灵出生点检查完整48×48身体，按NewNPC水平中心/底部参数计算topLeft，并保留16像素世界边距；每只至多12个预告区域内随机候选，拒绝SolidCollision和LavaCollision，全部失败不创建/不计成功，下轮完整预警后补缺额。越界/非有限位置拒绝并保留零输出，不访问非法地形，也不移出青色预告区。BossAdds11492→11514新增22项实心/熔岩、12次上限、阻塞恢复后配额、完整身体调用参数、精确世界边界与后续安全候选；原藤灵配额夹具由世界原点移到正常场地，原64项断言保留。Gameplay1877→1882新增5项实际编译越界/非有限位置在无世界状态拒绝，临时尺寸字段验证后恢复。

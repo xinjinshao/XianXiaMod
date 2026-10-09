@@ -1014,6 +1014,15 @@ try {
   for(int previewTick=1;previewTick<44;previewTick++){nativeVineUpdate.Invoke(previewBoss,new[]{previewOwner});object[] hitArgs={previewOwner,0};Check(!(bool)nativeMedicineType.GetMethod("CanHitPlayer").Invoke(previewBoss,hitArgs),"Compiled medicine summon warning denies contact");}
   object changedPreviewOwner=Activator.CreateInstance(nativeTargetPlayerType);nativeTargetPlayerType.GetField("active").SetValue(changedPreviewOwner,true);nativeTargetPlayers.SetValue(changedPreviewOwner,0);nativeVineUpdate.Invoke(previewBoss,new[]{changedPreviewOwner});Check(((float[])nativeTargetNpcType.GetField("ai").GetValue(previewNpc))[3]==-30&&(bool)nativeTargetNpcType.GetField("netUpdate").GetValue(previewNpc),"Compiled medicine target replacement cancels spawn and synchronizes recovery");
  }
+ var compiledVineSite=nativeMedicineType.GetMethod("TryVineSpawnPosition",BindingFlags.Instance|BindingFlags.NonPublic);
+ var nativeSiteWorldWidth=nativeTargetMain.GetField("maxTilesX");var nativeSiteWorldHeight=nativeTargetMain.GetField("maxTilesY");object previousSiteWidth=nativeSiteWorldWidth.GetValue(null),previousSiteHeight=nativeSiteWorldHeight.GetValue(null);
+ try {
+  nativeSiteWorldWidth.SetValue(null,200);nativeSiteWorldHeight.SetValue(null,200);
+  foreach((float siteX,float siteY) in new[]{(1000f,50f),(1000f,4000f),(float.NaN,1000f),(1000f,float.NaN),(float.PositiveInfinity,1000f)}) {
+   object siteBoss=Activator.CreateInstance(nativeMedicineType),siteNpc=Activator.CreateInstance(nativeTargetNpcType);nativeMedicineType.GetProperty("Entity",BindingFlags.Instance|BindingFlags.Public|BindingFlags.NonPublic).SetValue(siteBoss,siteNpc);nativeTargetNpcType.GetProperty("Center").SetValue(siteNpc,Activator.CreateInstance(nativeTargetVectorType,new object[]{siteX,siteY}));object[] siteArgs={0,0};
+   Check(!(bool)compiledVineSite.Invoke(siteBoss,siteArgs)&&(int)siteArgs[0]==0&&(int)siteArgs[1]==0,"Compiled vine out-of-world/nonfinite body rejects before headless terrain access");
+  }
+ } finally {nativeSiteWorldWidth.SetValue(null,previousSiteWidth);nativeSiteWorldHeight.SetValue(null,previousSiteHeight);}
 } finally {
  nativeTargetMain.GetField("player").SetValue(null,nativeTargetOldPlayers);
  nativeTargetMain.GetField("netMode").SetValue(null,nativeTargetOldMode);
