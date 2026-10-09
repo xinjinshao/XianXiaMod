@@ -18,7 +18,7 @@ using XianXia.Common.Systems;
 
 namespace XianXia.Content.NPCs.Bosses;
 
-public class GreenwoodMedicineKingEcho : ModNPC
+public partial class GreenwoodMedicineKingEcho : ModNPC
 
 {
     public override void SetStaticDefaults()
@@ -83,9 +83,6 @@ public class GreenwoodMedicineKingEcho : ModNPC
         global::XianXia.Common.Animation.NpcFrameAnimator.Animate(NPC, frameHeight, Main.npcFrameCount[Type], 8);
     }
 
-    public override bool CanHitPlayer(Player target, ref int cooldownSlot) =>
-        global::XianXia.Common.Systems.BossTargeting.HasLivingTarget(NPC) && target.active && !target.dead;
-
     public override void AI()
 
     {
@@ -135,6 +132,8 @@ public class GreenwoodMedicineKingEcho : ModNPC
                 CombatText.NewText(NPC.Hitbox, Color.OrangeRed, Language.GetTextValue("Mods.XianXia.Progression.BossPhase.DaoScarUnstable"));
 
         }
+
+        if (UpdateMedicineRitual(target, phaseTwo)) return;
 
         float speed = finalPhase ? 10.5f : phaseTwo ? 8f : 5.5f;
 
@@ -232,19 +231,7 @@ public class GreenwoodMedicineKingEcho : ModNPC
 
 
 
-        if (finalPhase && NPC.ai[1]++ > 180f)
-
-        {
-
-            NPC.ai[1] = 0f;
-
-            NPC.velocity = desired.SafeNormalize(Vector2.UnitY) * 14f;
-
-        }
-
     }
-
-
 
     public override void OnKill() => DownedBossSystem.MarkDowned("greenwood_medicine_king_echo");
 

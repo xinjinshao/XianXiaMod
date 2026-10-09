@@ -29,3 +29,5 @@ namespace XianXia.Content.NPCs.Bosses{public partial class AbyssalStarWomb:Terra
 
 namespace XianXia.Content.NPCs.Bosses{public partial class FormlessSwordSoul:Terraria.ModLoader.ModNPC{}}
 namespace XianXia.Content.NPCs.Enemies{public class ObsessedSwordCultivator{}}
+
+namespace XianXia.Content.NPCs.Bosses{public partial class GreenwoodMedicineKingEcho:Terraria.ModLoader.ModNPC{}}

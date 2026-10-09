@@ -970,6 +970,17 @@ try {
   for(int laneTick=1;laneTick<45;laneTick++){Check((bool)compiledLanes.Invoke(laneBoss,new[]{laneOwner,(object)false,false}),"Compiled sword lanes consume warning frame without overlapping attack");object[] hitArgs={laneOwner,0};Check(!(bool)compiledLaneType.GetMethod("CanHitPlayer").Invoke(laneBoss,hitArgs),"Compiled sword lanes warning denies native contact");}
   object changedLaneOwner=Activator.CreateInstance(nativeTargetPlayerType);nativeTargetPlayerType.GetField("active").SetValue(changedLaneOwner,true);nativeTargetPlayers.SetValue(changedLaneOwner,0);compiledLanes.Invoke(laneBoss,new[]{changedLaneOwner,(object)false,false});Check(laneAi.All(v=>v==0)&&(bool)nativeTargetNpcType.GetField("netUpdate").GetValue(laneNpc),"Compiled sword same-slot target replacement cancels before release");object[] cancelHit={changedLaneOwner,0};Check(!(bool)compiledLaneType.GetMethod("CanHitPlayer").Invoke(laneBoss,cancelHit),"Compiled sword cancelled frame stays harmless");
  }
+ var nativeMedicineType=type.Assembly.GetType("XianXia.Content.NPCs.Bosses.GreenwoodMedicineKingEcho",true);
+ var nativeRitual=nativeMedicineType.GetMethod("UpdateMedicineRitual",BindingFlags.Instance|BindingFlags.NonPublic);
+ foreach(int medicineMode in new[]{0,2})foreach(bool interruptMedicine in new[]{false,true}) {
+  object medicineOwner=Activator.CreateInstance(nativeTargetPlayerType);nativeTargetPlayerType.GetField("active").SetValue(medicineOwner,true);nativeTargetPlayers.SetValue(medicineOwner,0);
+  object medicineBoss=Activator.CreateInstance(nativeMedicineType),medicineNpc=Activator.CreateInstance(nativeTargetNpcType);nativeMedicineType.GetProperty("Entity",BindingFlags.Instance|BindingFlags.Public|BindingFlags.NonPublic).SetValue(medicineBoss,medicineNpc);
+  nativeTargetNpcType.GetField("active").SetValue(medicineNpc,true);nativeTargetNpcType.GetField("lifeMax").SetValue(medicineNpc,10000);nativeTargetNpcType.GetField("life").SetValue(medicineNpc,5000);nativeTargetNpcType.GetField("target").SetValue(medicineNpc,0);var medicineAi=(float[])nativeTargetNpcType.GetField("ai").GetValue(medicineNpc);medicineAi[1]=239;nativeTargetMain.GetField("netMode").SetValue(null,medicineMode);
+  nativeRitual.Invoke(medicineBoss,new[]{medicineOwner,(object)true});if(interruptMedicine)nativeTargetNpcType.GetField("life").SetValue(medicineNpc,4900);
+  for(int ritualFrame=1;ritualFrame<90;ritualFrame++)nativeRitual.Invoke(medicineBoss,new[]{medicineOwner,(object)true});
+  Check((int)nativeTargetNpcType.GetField("life").GetValue(medicineNpc)==(interruptMedicine?4900:5100),"Compiled medicine ritual exact damage interruption and capped healing boundary");
+  Check((bool)nativeTargetNpcType.GetField("netUpdate").GetValue(medicineNpc),"Compiled medicine ritual marks authoritative health/state dirty");
+ }
 } finally {
  nativeTargetMain.GetField("player").SetValue(null,nativeTargetOldPlayers);
  nativeTargetMain.GetField("netMode").SetValue(null,nativeTargetOldMode);
