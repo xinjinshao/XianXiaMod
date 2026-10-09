@@ -31,3 +31,5 @@ namespace XianXia.Content.NPCs.Bosses{public partial class FormlessSwordSoul:Ter
 namespace XianXia.Content.NPCs.Enemies{public class ObsessedSwordCultivator{}}
 
 namespace XianXia.Content.NPCs.Bosses{public partial class GreenwoodMedicineKingEcho:Terraria.ModLoader.ModNPC{}}
+
+namespace XianXia.Content.NPCs.Enemies{public class HerbGardenVineSpirit{}}

@@ -201,15 +201,7 @@ public partial class GreenwoodMedicineKingEcho : ModNPC
 
             int fDmg = Math.Max(18, NPC.damage / 4);
 
-            if (phaseTwo && NPC.ai[3]++ == 0) {
-
-                for (int f = 0; f < 3; f++)
-
-                    NPC.NewNPC(NPC.GetSource_FromAI(), (int)target.Center.X + Main.rand.Next(-120, 121), (int)target.Center.Y - 60,
-
-                        ModContent.NPCType<global::XianXia.Content.NPCs.Enemies.HerbGardenVineSpirit>(), ai0: NPC.whoAmI);
-
-            }
+            if (phaseTwo) SpawnVineAdds();
 
             Projectile.NewProjectile(NPC.GetSource_FromAI(), target.Center + target.velocity * 16f, Vector2.Zero,
 
