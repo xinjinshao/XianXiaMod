@@ -324,7 +324,7 @@ public class SummonAuditSystem : ModSystem
                         if (coreFrame < 60) Check(!Main.projectile.Any(projectile => projectile.active && !beforeCoreProjectiles.Contains(projectile)), "registered core no early or ordinary volley");
                     }
                     var coreProjectiles = Main.projectile.Where(projectile => projectile.active && !beforeCoreProjectiles.Contains(projectile)).ToArray();
-                    int expectedCore = coreModule == 0 ? 2 * (corePhase + 1) : coreModule == 1 ? new[] { 9, 13, 17 }[corePhase] : 1;
+                    int expectedCore = coreModule == 0 ? 2 * (corePhase + 1) : coreModule == 1 ? new[] { 9, 11, 15 }[corePhase] : 1;
                     int expectedCoreType = coreModule == 0 ? ModContent.ProjectileType<global::XianXia.Content.Projectiles.TabletJudgmentBeamProjectile>() : coreModule == 1 ? ModContent.ProjectileType<global::XianXia.Content.Projectiles.BossSpiritBoltProjectile>() : ModContent.ProjectileType<global::XianXia.Content.Projectiles.BossArrayFieldProjectile>();
                     Check(coreProjectiles.Length == expectedCore && coreProjectiles.All(projectile => projectile.type == expectedCoreType), "registered core module sequence and phase density");
                     if (coreModule == 0) Check(coreProjectiles.All(projectile => projectile.width == 32 && projectile.height == 480 && projectile.Center.Y == coreLock.Y && MathF.Abs(projectile.Center.X - coreLock.X) >= 112), "registered core safe central column corridor");
@@ -343,6 +343,32 @@ public class SummonAuditSystem : ModSystem
                     coreNpc.active = true;
                 }
                 coreNpc.active = false;
+            }
+            for (byte testedCoreRoute = 1; testedCoreRoute <= 3; testedCoreRoute++) for (byte testedCoreDensity = 2; testedCoreDensity <= 3; testedCoreDensity++) {
+                int routeCoreSlot = NPC.NewNPC(new EntitySource_Misc("XianXiaCoreRouteAudit"), x, y + 48, ModContent.NPCType<OldHeavenDaoCore>());
+                Check(routeCoreSlot >= 0 && routeCoreSlot < Main.maxNPCs, "registered route core created");
+                NPC routeCoreNpc = Main.npc[routeCoreSlot];owned.Add(routeCoreNpc);routeCoreNpc.target=0;routeCoreNpc.life=routeCoreNpc.lifeMax/(testedCoreDensity==2?2:4);
+                var routeCore=(OldHeavenDaoCore)routeCoreNpc.ModNPC;
+                // Exercise a complete synchronized warning snapshot without changing the world's permanent ending.
+                routeCore.ReceiveExtraAI(new BinaryReader(new MemoryStream(new byte[]{1,1,testedCoreDensity,testedCoreRoute,0})));
+                Vector2 routeCorePoint=Main.player[0].Center;routeCoreNpc.ai[0]=routeCorePoint.X;routeCoreNpc.ai[3]=routeCorePoint.Y;routeCoreNpc.ai[1]=60;routeCoreNpc.ai[2]=150;
+                var previousRouteCoreProjectiles=Main.projectile.Where(projectile=>projectile.active).ToHashSet();
+                try {
+                    for(int routeCoreFrame=1;routeCoreFrame<=60;routeCoreFrame++) {
+                        routeCore.AI();Check(routeCoreNpc.ai[1]==60-routeCoreFrame&&!routeCore.CanHitPlayer(Main.player[0],ref cooldownSlot), "registered route core complete warning/contact");
+                        if(routeCoreFrame<60)Check(!Main.projectile.Any(projectile=>projectile.active&&!previousRouteCoreProjectiles.Contains(projectile)),"registered route core no early casts");
+                    }
+                } finally {ownedProjectiles.AddRange(Main.projectile.Where(projectile=>projectile.active&&!previousProjectiles.Contains(projectile)&&!ownedProjectiles.Contains(projectile)));}
+                var routeCoreProjectiles=Main.projectile.Where(projectile=>projectile.active&&!previousRouteCoreProjectiles.Contains(projectile)).ToArray();
+                int expectedRouteCoreCount=testedCoreRoute==2?2:testedCoreRoute==1?(testedCoreDensity==2?11:15):(testedCoreDensity==2?10:14);
+                Check(routeCoreProjectiles.Length==expectedRouteCoreCount,"registered route exact projectile count");
+                if(testedCoreRoute==2)Check(routeCoreProjectiles.All(projectile=>projectile.type==ModContent.ProjectileType<global::XianXia.Content.Projectiles.CoreSeveranceBladeProjectile>()&&projectile.width==480&&projectile.height==32&&projectile.Center.X==routeCorePoint.X&&MathF.Abs(projectile.Center.Y-routeCorePoint.Y)==96),"registered sever route two horizontal blades safe center");
+                else {
+                    float routeCoreDirection=(routeCorePoint-routeCoreNpc.Center).SafeNormalize(Vector2.UnitY).ToRotation();float routeCoreGap=MathHelper.TwoPi/(testedCoreRoute==1?8:12);
+                    Check(routeCoreProjectiles.All(projectile=>MathF.Cos(projectile.velocity.ToRotation()-routeCoreDirection)<MathF.Cos(routeCoreGap)),"registered route primary gap");
+                    if(testedCoreRoute==3)Check(routeCoreProjectiles.All(projectile=>MathF.Cos(projectile.velocity.ToRotation()-routeCoreDirection-MathHelper.TwoPi/2)<MathF.Cos(routeCoreGap)),"registered abyss route opposing gap");
+                }
+                routeCoreNpc.active=false;foreach(Projectile routeCoreProjectile in routeCoreProjectiles){routeCoreProjectile.ModProjectile.AI();Check(routeCoreProjectile.ModProjectile.CanDamage()==false,"registered route source loss no damage");routeCoreProjectile.active=false;}
             }
         }
         catch (Exception exception) { error = exception.ToString(); }

@@ -1,0 +1,9 @@
+Mods: {
+    XianXia: {
+        CoreRoutes: {
+            RebuildHeaven: 重铸模块：沿绿色宽缺口撤离！
+            SeverHeaven: 斩断模块：进入两道横刃之间的通道！
+            AcceptStarAbyss: 星渊模块：沿任一绿色缺口撤离！
+        }
+    }
+}

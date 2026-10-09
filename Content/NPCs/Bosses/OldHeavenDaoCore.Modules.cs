@@ -6,6 +6,7 @@ using Terraria;
 using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.ModLoader;
+using Terraria.Localization;
 using XianXia.Common.Systems;
 
 namespace XianXia.Content.NPCs.Bosses;
@@ -13,12 +14,12 @@ namespace XianXia.Content.NPCs.Bosses;
 public partial class OldHeavenDaoCore
 {
     public const int ModuleWarningTicks = 60, ModuleRecoveryTicks = 45;
-    private byte currentModule, nextModule, moduleDensity = 1;
-    private int moduleTarget = -1;
+    private byte currentModule, nextModule, moduleDensity = 1, moduleRoute, routeCycle;
+    private int moduleTarget = -1, announcedRoute;
     private Player modulePlayer;
     private bool moduleFrame, invalidModulePacket;
     private bool ValidModuleState() => !invalidModulePacket && currentModule <= 2 && nextModule <= 2
-        && moduleDensity >= 1 && moduleDensity <= 3 && float.IsFinite(NPC.ai[1])
+        && moduleDensity >= 1 && moduleDensity <= 3 && moduleRoute <= 3 && routeCycle <= 2 && float.IsFinite(NPC.ai[1])
         && NPC.ai[1] >= 0 && NPC.ai[1] <= ModuleWarningTicks && NPC.ai[1] == MathF.Truncate(NPC.ai[1])
         && float.IsFinite(NPC.ai[2]) && NPC.ai[2] >= -ModuleRecoveryTicks && NPC.ai[2] <= 270
         && NPC.ai[2] == MathF.Truncate(NPC.ai[2])
@@ -36,6 +37,7 @@ public partial class OldHeavenDaoCore
     internal bool UpdateCoreModule(Player target, bool phaseTwo, bool finalPhase)
     {
         moduleFrame = false;
+        if (NPC.ai[1] == 0) announcedRoute = 0;
         if (!ValidModuleState()) { CancelModule(); return true; }
         if ((NPC.ai[1] != 0 || NPC.ai[2] < 0) && Main.netMode != NetmodeID.MultiplayerClient
             && moduleTarget >= 0 && (NPC.target != moduleTarget || !ReferenceEquals(target, modulePlayer))) {
@@ -54,9 +56,15 @@ public partial class OldHeavenDaoCore
         moduleFrame = true; NPC.velocity = Vector2.Zero;
         if (NPC.ai[1] == 0 && Main.netMode != NetmodeID.MultiplayerClient) {
             currentModule = nextModule; moduleDensity = (byte)(finalPhase ? 3 : phaseTwo ? 2 : 1);
+            moduleRoute = phaseTwo && currentModule == 1 ? CaptureModuleRoute() : (byte)0;
             moduleTarget = NPC.target; modulePlayer = target;
             NPC.ai[0] = target.Center.X; NPC.ai[3] = target.Center.Y;
             NPC.ai[1] = ModuleWarningTicks; NPC.netUpdate = true;
+        }
+        if (NPC.ai[1] != 0 && currentModule == 1 && moduleRoute != 0 && announcedRoute != moduleRoute) {
+            announcedRoute = moduleRoute;
+            if (!Main.dedServ) CombatText.NewText(NPC.Hitbox, Color.Cyan,
+                Language.GetTextValue("Mods.XianXia.CoreRoutes." + ((DownedBossSystem.EndgameRoute)moduleRoute)));
         }
         if (Main.netMode == NetmodeID.MultiplayerClient || NPC.ai[1] == 0) return true;
         if (--NPC.ai[1] != 0) {
@@ -64,10 +72,20 @@ public partial class OldHeavenDaoCore
             return true;
         }
         ReleaseCoreModule();
+        if (currentModule == 1 && moduleRoute != 0) routeCycle = (byte)((routeCycle + 1) % 3);
         nextModule = (byte)((currentModule + 1) % 3);
         NPC.ai[2] = -ModuleRecoveryTicks; NPC.netUpdate = true;
         return true;
     }
+    private byte CaptureModuleRoute()
+    {
+        int chosen = (int)DownedBossSystem.ChosenRoute;
+        // The ending is selected after the first victory. Before that, demonstrate every route.
+        return chosen >= 1 && chosen <= 3 ? (byte)chosen : (byte)(routeCycle + 1);
+    }
+    private float RingGapHalfAngle => MathHelper.TwoPi / (moduleRoute == 1 ? 8 : 12);
+    private bool InRingGap(float angle) => Math.Min(angle, MathHelper.TwoPi - angle) <= RingGapHalfAngle + 0.0001f
+        || (moduleRoute == 3 && MathF.Abs(angle - MathHelper.TwoPi / 2) <= RingGapHalfAngle + 0.0001f);
     private Vector2 LockedModulePoint => new(NPC.ai[0], NPC.ai[3]);
     private float RingDirection => (LockedModulePoint - NPC.Center).SafeNormalize(Vector2.UnitY).ToRotation();
     private void ReleaseCoreModule()
@@ -77,12 +95,16 @@ public partial class OldHeavenDaoCore
             for (int row = 0; row < moduleDensity; row++) foreach (float side in new[] { -1f, 1f })
                 Projectile.NewProjectile(NPC.GetSource_FromAI(), LockedModulePoint + new Vector2(side * (112 + row * 64), 0), Vector2.Zero,
                     ModContent.ProjectileType<global::XianXia.Content.Projectiles.TabletJudgmentBeamProjectile>(), damage, 1.2f, Main.myPlayer);
+        } else if (currentModule == 1 && moduleRoute == 2) {
+            foreach (float side in new[] { -1f, 1f })
+                Projectile.NewProjectile(NPC.GetSource_FromAI(), LockedModulePoint + new Vector2(0, side * 96), Vector2.Zero,
+                    ModContent.ProjectileType<global::XianXia.Content.Projectiles.CoreSeveranceBladeProjectile>(), damage, 1.4f, Main.myPlayer);
         } else if (currentModule == 1) {
             int spokes = 8 + moduleDensity * 4;
-            // Leave a sixty-degree corridor toward the position captured at warning start.
+            // The captured route chooses wider refuge or two opposing gaps.
             for (int spoke = 0; spoke < spokes; spoke++) {
                 float angle = MathHelper.TwoPi * spoke / spokes;
-                if (Math.Min(angle, MathHelper.TwoPi - angle) <= MathHelper.TwoPi / 12 + 0.0001f) continue;
+                if (InRingGap(angle)) continue;
                 Vector2 velocity = Vector2.UnitY.RotatedBy(RingDirection - MathHelper.PiOver2 + angle) * (moduleDensity == 3 ? 8 : 6);
                 Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center, velocity,
                     ModContent.ProjectileType<global::XianXia.Content.Projectiles.BossSpiritBoltProjectile>(), damage, 1.4f, Main.myPlayer);
@@ -92,11 +114,12 @@ public partial class OldHeavenDaoCore
                 ModContent.ProjectileType<global::XianXia.Content.Projectiles.BossArrayFieldProjectile>(), damage, 1.2f, Main.myPlayer);
         }
     }
-    public override void SendExtraAI(BinaryWriter writer) { writer.Write(currentModule); writer.Write(nextModule); writer.Write(moduleDensity); }
+    public override void SendExtraAI(BinaryWriter writer) { writer.Write(currentModule); writer.Write(nextModule); writer.Write(moduleDensity); writer.Write(moduleRoute); writer.Write(routeCycle); }
     public override void ReceiveExtraAI(BinaryReader reader)
     {
-        byte current = reader.ReadByte(), next = reader.ReadByte(), density = reader.ReadByte();
-        invalidModulePacket = current > 2 || next > 2 || density < 1 || density > 3;
+        byte current = reader.ReadByte(), next = reader.ReadByte(), density = reader.ReadByte(), route = reader.ReadByte(), cycle = reader.ReadByte();
+        invalidModulePacket = current > 2 || next > 2 || density < 1 || density > 3 || route > 3 || cycle > 2;
+        moduleRoute = route <= 3 ? route : (byte)0; routeCycle = cycle <= 2 ? cycle : (byte)0;
         currentModule = current <= 2 ? current : (byte)0; nextModule = next <= 2 ? next : (byte)0;
         moduleDensity = density >= 1 && density <= 3 ? density : (byte)1;
     }
@@ -115,10 +138,20 @@ public partial class OldHeavenDaoCore
             foreach (float side in new[] { -1f, 1f })
                 spriteBatch.Draw(pixel, LockedModulePoint - screenPos + new Vector2(side * 80, -240), null,
                     Color.LightGreen * 0.8f, 0, Vector2.Zero, new Vector2(2, 480), SpriteEffects.None, 0);
+        } else if (currentModule == 1 && moduleRoute == 2) {
+            foreach (float side in new[] { -1f, 1f })
+                spriteBatch.Draw(pixel, LockedModulePoint - screenPos + new Vector2(-240, side * 96 - 16), null,
+                    Color.OrangeRed * 0.3f, 0, Vector2.Zero, new Vector2(480, 32), SpriteEffects.None, 0);
+            foreach (float side in new[] { -1f, 1f })
+                spriteBatch.Draw(pixel, LockedModulePoint - screenPos + new Vector2(-240, side * 64), null,
+                    Color.LightGreen * 0.8f, 0, Vector2.Zero, new Vector2(480, 2), SpriteEffects.None, 0);
         } else if (currentModule == 1) {
             foreach (float side in new[] { -1f, 1f })
                 spriteBatch.Draw(pixel, NPC.Center - screenPos, null, Color.LightGreen * 0.8f,
-                    RingDirection + side * MathHelper.TwoPi / 12, Vector2.Zero, new Vector2(240, 3), SpriteEffects.None, 0);
+                    RingDirection + side * RingGapHalfAngle, Vector2.Zero, new Vector2(240, 3), SpriteEffects.None, 0);
+            if (moduleRoute == 3) foreach (float side in new[] { -1f, 1f })
+                spriteBatch.Draw(pixel, NPC.Center - screenPos, null, Color.LightGreen * 0.8f,
+                    RingDirection + MathHelper.TwoPi / 2 + side * RingGapHalfAngle, Vector2.Zero, new Vector2(240, 3), SpriteEffects.None, 0);
         } else {
             spriteBatch.Draw(pixel, LockedModulePoint - screenPos + new Vector2(-48, -48), null,
                 Color.OrangeRed * 0.3f, 0, Vector2.Zero, new Vector2(96, 96), SpriteEffects.None, 0);

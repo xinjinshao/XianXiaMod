@@ -1,0 +1,9 @@
+Mods: {
+    XianXia: {
+        CoreRoutes: {
+            RebuildHeaven: Rebuild module: escape through the wide green gap!
+            SeverHeaven: Sever module: stay between the horizontal blades!
+            AcceptStarAbyss: Star abyss module: escape through either green gap!
+        }
+    }
+}

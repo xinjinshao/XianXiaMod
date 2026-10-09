@@ -50,3 +50,6 @@ namespace Terraria.Localization{public static class Language{public static strin
 namespace XianXia.Content.Projectiles{public class InspectorVerdictBladeProjectile{}}
 
 namespace XianXia.Content.NPCs.Bosses{public partial class OldHeavenDaoCore:Terraria.ModLoader.ModNPC{}}
+
+namespace XianXia.Common.Systems{public static class DownedBossSystem{public enum EndgameRoute{None,RebuildHeaven,SeverHeaven,AcceptStarAbyss}public static EndgameRoute ChosenRoute;}}
+namespace XianXia.Content.Projectiles{public class CoreSeveranceBladeProjectile{}}
