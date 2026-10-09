@@ -23,3 +23,6 @@ namespace XianXia.Content.NPCs.Enemies{public partial class TribulationCloudling
 
 namespace XianXia.Content.NPCs.Bosses{public partial class FormlessSwordSoul:Terraria.ModLoader.ModNPC{}}
 namespace XianXia.Content.NPCs.Enemies{public partial class ObsessedSwordCultivator:Terraria.ModLoader.ModNPC{public override void SendExtraAI(System.IO.BinaryWriter writer)=>WriteSummonBinding(writer);public override void ReceiveExtraAI(System.IO.BinaryReader reader)=>ReadSummonBinding(reader);}}
+
+namespace XianXia.Content.NPCs.Bosses{public partial class GreenwoodMedicineKingEcho:Terraria.ModLoader.ModNPC{}}
+namespace XianXia.Content.NPCs.Enemies{public partial class HerbGardenVineSpirit:Terraria.ModLoader.ModNPC{}}

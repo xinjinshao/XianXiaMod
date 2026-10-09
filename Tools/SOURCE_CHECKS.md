@@ -63,7 +63,7 @@ CI运行只读新鲜度检查，生成结果变化时须显式更新这四份输
 
 ## 原生包内容与默认配置
 
-Native checks另运行PackageContents，使用官方TmodFile打开实际.tmod，核对内部名称、build.txt版本、归档哈希、当前描述及Common/Content/Localization的所有PNG/HJSON（接受官方转换后的rawimg）；拒绝隐藏/越界条目、Assets/Docs/Wiki/Tools/bin/obj/README和源码/工具扩展。它不是读取源码文件名后假定打包正确。默认配置在Gameplay编译产物回归中验证，当前累计1766条。
+Native checks另运行PackageContents，使用官方TmodFile打开实际.tmod，核对内部名称、build.txt版本、归档哈希、当前描述及Common/Content/Localization的所有PNG/HJSON（接受官方转换后的rawimg）；拒绝隐藏/越界条目、Assets/Docs/Wiki/Tools/bin/obj/README和源码/工具扩展。它不是读取源码文件名后假定打包正确。默认配置在Gameplay编译产物回归中验证，当前累计1787条。
 
 ```powershell
 dotnet run --project Tools/Tests/PackageContents/PackageContents.csproj -- <XianXia.tmod路径> <官方引擎目录> <仓库根目录>
@@ -278,3 +278,6 @@ Telegraphs671→793项，增加七类来源失效×三模式、权威槽位复�
 
 
 第144轮药王藤灵召唤从NPC.ai[3]一次尝试改为服务器私有三只成功配额；第二阶段每轮法阵补试缺额，0/1/2容量部分成功保留，失败/非法返回索引/空或失活或零生命或错误类型实体停止批次且不消耗成功数，击败后不补刷。保持原目标附近位置，创建绑定父槽位ai0并同步当前战斗目标/netUpdate。客户端或无效战斗不调用创建，无新网络字段。BossAdds11139→11203新增64项两权威模式配额、长战斗重复、击败不补、容量补齐、坏索引/返回实体及无效战斗。
+
+
+第145轮召唤藤灵绑定药王64位实例，父槽位复用不能继承旧来源；检查存活目标/有限几何、4000像素距离和900tick权威寿命，来源失效/到期无奖励active=false撤场并SyncNPC。客户端来源包乱序或目标不同步时停止移动/无伤等待，不推进寿命；权威PreAI/PostAI对齐父目标，清理后的PostAI不继续自疗/攻击，天然藤灵保持原行为。药王新增8字节会话ExtraAI，藤灵新增13字节绑定/槽位/会话/寿命，完整读取后应用，截断包不部分覆盖。FurnaceSummons4128→5138新增1010项来源失效/槽位替换、900tick边界、目标同步、先子后父、截断包及天然行为；Gameplay1766→1787新增21项实际编译寿命/协议/截断原子性和无效来源客户端等待/权威撤场/PostAI停止。

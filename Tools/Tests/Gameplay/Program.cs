@@ -981,6 +981,30 @@ try {
   Check((int)nativeTargetNpcType.GetField("life").GetValue(medicineNpc)==(interruptMedicine?4900:5100),"Compiled medicine ritual exact damage interruption and capped healing boundary");
   Check((bool)nativeTargetNpcType.GetField("netUpdate").GetValue(medicineNpc),"Compiled medicine ritual marks authoritative health/state dirty");
  }
+ var nativeVineBindingType=type.Assembly.GetType("XianXia.Content.NPCs.Enemies.HerbGardenVineSpirit",true);
+ object nativeVineBinding=Activator.CreateInstance(nativeVineBindingType),nativeVineBindingNpc=Activator.CreateInstance(nativeTargetNpcType);
+ nativeVineBindingType.GetProperty("Entity",BindingFlags.Instance|BindingFlags.Public|BindingFlags.NonPublic).SetValue(nativeVineBinding,nativeVineBindingNpc);
+ byte[] VineBindingWire(){using var stream=new MemoryStream();using var writer=new BinaryWriter(stream);nativeVineBindingType.GetMethod("SendExtraAI").Invoke(nativeVineBinding,new object[]{writer});return stream.ToArray();}
+ Check((int)nativeVineBindingType.GetField("MaximumSummonLifetime").GetRawConstantValue()==900,"Compiled summon lifetime 900 ticks");
+ Check(VineBindingWire().Length==13,"Compiled summon extra-AI fixed thirteen bytes");
+ Check((bool)nativeVineBindingType.GetMethod("PreAI").Invoke(nativeVineBinding,null),"Compiled natural vine spirit has no boss binding");
+ using(var payload=new MemoryStream()){
+  using(var writer=new BinaryWriter(payload,System.Text.Encoding.UTF8,true)){writer.Write(true);writer.Write((short)-1);writer.Write(123L);writer.Write((short)900);}
+  var bytes=payload.ToArray();
+  for(int length=0;length<bytes.Length;length++){
+   var before=VineBindingWire();using var truncated=new MemoryStream(bytes[..length]);
+   try{nativeVineBindingType.GetMethod("ReceiveExtraAI").Invoke(nativeVineBinding,new object[]{new BinaryReader(truncated)});throw new Exception("Compiled summon accepted truncated packet");}catch(TargetInvocationException ex)when(ex.InnerException is EndOfStreamException){}
+   Check(VineBindingWire().SequenceEqual(before),"Compiled truncated summon packet leaves state intact");
+  }
+  payload.Position=0;nativeVineBindingType.GetMethod("ReceiveExtraAI").Invoke(nativeVineBinding,new object[]{new BinaryReader(payload)});
+  Check(VineBindingWire().SequenceEqual(bytes),"Compiled summon wire roundtrip");
+ }
+ nativeTargetMain.GetField("netMode").SetValue(null,1);nativeTargetNpcType.GetField("active").SetValue(nativeVineBindingNpc,true);nativeTargetNpcType.GetField("life").SetValue(nativeVineBindingNpc,70);
+ Check(!(bool)nativeVineBindingType.GetMethod("PreAI").Invoke(nativeVineBinding,null)&&(bool)nativeTargetNpcType.GetField("active").GetValue(nativeVineBindingNpc),"Compiled invalid source blocks client AI without authority removal");
+ object[] nativeVineBindingContact={nativeTargetPlayers.GetValue(0),0};Check(!(bool)nativeVineBindingType.GetMethod("CanHitPlayer").Invoke(nativeVineBinding,nativeVineBindingContact),"Compiled invalid source cannot hit players");
+ nativeTargetMain.GetField("netMode").SetValue(null,0);nativeVineBindingType.GetMethod("PreAI").Invoke(nativeVineBinding,null);
+ Check(!(bool)nativeTargetNpcType.GetField("active").GetValue(nativeVineBindingNpc)&&(int)nativeTargetNpcType.GetField("damage").GetValue(nativeVineBindingNpc)==0,"Compiled invalid source despawns on authority");
+ nativeVineBindingType.GetMethod("PostAI").Invoke(nativeVineBinding,null);Check(!(bool)nativeTargetNpcType.GetField("netUpdate").GetValue(nativeVineBindingNpc),"Compiled PostAI stops after source cleanup");
 } finally {
  nativeTargetMain.GetField("player").SetValue(null,nativeTargetOldPlayers);
  nativeTargetMain.GetField("netMode").SetValue(null,nativeTargetOldMode);

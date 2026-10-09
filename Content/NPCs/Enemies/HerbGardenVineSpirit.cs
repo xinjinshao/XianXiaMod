@@ -14,7 +14,7 @@ using Terraria.ModLoader;
 
 namespace XianXia.Content.NPCs.Enemies;
 
-public class HerbGardenVineSpirit : ModNPC
+public partial class HerbGardenVineSpirit : ModNPC
 
 {
     public override void SetStaticDefaults()
@@ -81,6 +81,7 @@ public class HerbGardenVineSpirit : ModNPC
 
     public override void PostAI()
     {
+        if (!NPC.active || !SynchronizeSummonTarget()) return;
         if (!global::XianXia.Common.Systems.EnemyTargeting.TryGetLivingTarget(NPC, out Player target)) return;
         float distance = Vector2.Distance(NPC.Center, target.Center);
         if (distance < 160f) NPC.velocity *= 0.92f;
