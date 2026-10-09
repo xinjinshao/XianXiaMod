@@ -7,7 +7,7 @@ namespace Terraria {
  public class RandomStub{public int Calls;public Queue<int> Values=new();public int Next(int min,int max){Calls++;return Values.Count>0?Values.Dequeue():(min+max-1)/2;}}
 }
 namespace Terraria.ID{public static class NetmodeID{public const int MultiplayerClient=1,Server=2;}}
-namespace Terraria.ModLoader{public class ModNPC{public Terraria.NPC NPC=new();public virtual bool CanHitPlayer(Terraria.Player p,ref int slot)=>true;public virtual bool PreDraw(Microsoft.Xna.Framework.Graphics.SpriteBatch s,Microsoft.Xna.Framework.Vector2 p,Microsoft.Xna.Framework.Color c)=>true;}public static class ModContent{public static int NPCType<T>()=>7;public static int ProjectileType<T>()=>typeof(T).Name=="BossSpiritBoltProjectile"?1:2;}}
+namespace Terraria.ModLoader{public class ModNPC{public Terraria.NPC NPC=new();public virtual void SendExtraAI(System.IO.BinaryWriter writer){}public virtual void ReceiveExtraAI(System.IO.BinaryReader reader){}public virtual bool CanHitPlayer(Terraria.Player p,ref int slot)=>true;public virtual bool PreDraw(Microsoft.Xna.Framework.Graphics.SpriteBatch s,Microsoft.Xna.Framework.Vector2 p,Microsoft.Xna.Framework.Color c)=>true;}public static class ModContent{public static int NPCType<T>()=>7;public static int ProjectileType<T>()=>typeof(T).Name=="BossSpiritBoltProjectile"?1:2;}}
 namespace XianXia.Content.NPCs.Bosses{public partial class BlackFurnaceIronGolem:Terraria.ModLoader.ModNPC{}}
 namespace XianXia.Content.NPCs.Enemies{public class IronShardSpirit{}}
 
@@ -33,3 +33,6 @@ namespace XianXia.Content.NPCs.Enemies{public class ObsessedSwordCultivator{}}
 namespace XianXia.Content.NPCs.Bosses{public partial class GreenwoodMedicineKingEcho:Terraria.ModLoader.ModNPC{}}
 
 namespace XianXia.Content.NPCs.Enemies{public class HerbGardenVineSpirit{}}
+
+namespace XianXia.Content.NPCs.Bosses{public partial class HeavenTabletGuardian:Terraria.ModLoader.ModNPC{}}
+namespace XianXia.Content.Projectiles{public class TabletJudgmentBeamProjectile{}}

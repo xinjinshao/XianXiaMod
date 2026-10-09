@@ -183,4 +183,50 @@ foreach((float x,float y,bool accepted) in new[]{(40f,124f,true),(39f,124f,false
 }
 VineArena();var sampledEdge=new GreenwoodMedicineKingEcho{NPC=Main.npc[0]};sampledEdge.NPC.Center=new(30,1000);Main.rand.Values.Enqueue(-120);Main.rand.Values.Enqueue(20);Check(sampledEdge.TryVineSpawnPosition(out int sampledX,out int sampledY)&&sampledX==50&&Main.rand.Calls==2,"Vine edge search finds safe sample inside advertised range");
 VineArena();var platformVines=new GreenwoodMedicineKingEcho{NPC=Main.npc[0]};platformVines.TryVineSpawnPosition(out _,out _);Check(Collision.LastAcceptTop,"Vine body rejects overlapping top surfaces as well as solid blocks");
+
+foreach(int mode in new[]{0,2}) foreach(int phase in new[]{0,1,2}) {
+ Setup();Main.netMode=mode;Projectile.Positions.Clear();Projectile.Shots.Clear();Collision.Blocked=false;
+ var tablet=new HeavenTabletGuardian{NPC=Main.npc[0]};var target=Main.player[0];target.Center=new(1000,1200);
+ int interval=phase==2?180:phase==1?240:300;tablet.NPC.ai[2]=interval-60;tablet.NPC.velocity=new(4,5);int tabletCooldown=0;
+ for(int frame=1;frame<=60;frame++) {
+  Check(tablet.UpdateTabletJudgment(target,phase>=1,phase==2),"Tablet warning pauses ordinary AI");
+  Check(tablet.NPC.ai[1]==(frame==60?0:60-frame),"Tablet exact 60-frame countdown");
+  Check(!tablet.CanHitPlayer(target,ref tabletCooldown)&&tablet.NPC.velocity==Vector2.Zero,"Tablet warning stationary and harmless");
+  Check(tablet.NPC.ai[0]==1000&&tablet.NPC.ai[3]==1200,"Tablet locks original target coordinates");
+  Check(Projectile.Shots.Count==(frame<60?0:2*(phase+1)),"Tablet columns appear only after full warning");
+  target.Center+=new Vector2(1,1);
+ }
+ Check(Projectile.Positions.All(p=>p.Y==1200&&MathF.Abs(p.X-1000)>=112),"Tablet beam layout leaves center safe despite moving target");
+ Check(Projectile.Shots.All(p=>p.Velocity==Vector2.Zero),"Tablet beams remain stationary");
+ using(var packet=new MemoryStream()){using(var writer=new BinaryWriter(packet,System.Text.Encoding.UTF8,true))tablet.SendExtraAI(writer);Check(packet.ToArray().SequenceEqual(new[]{(byte)(phase+1)}),"Tablet locked row count uses one byte");}
+ for(int frame=1;frame<=45;frame++){Check(tablet.UpdateTabletJudgment(target,phase>=1,phase==2),"Tablet recovery pauses attacks");Check(tablet.NPC.ai[2]==-45+frame,"Tablet exact recovery count");Check(!tablet.CanHitPlayer(target,ref tabletCooldown),"Tablet includes final recovery frame in safe window");Check(Projectile.Shots.Count==2*(phase+1),"Tablet recovery does not duplicate beams");}
+ Check(!tablet.UpdateTabletJudgment(target,phase>=1,phase==2)&&tablet.CanHitPlayer(target,ref tabletCooldown),"Tablet ordinary behavior resumes next frame");
+}
+foreach(bool changedSlot in new[]{false,true}) {
+ Setup();Projectile.Shots.Clear();var tablet=new HeavenTabletGuardian{NPC=Main.npc[0]};tablet.NPC.ai[2]=240;tablet.UpdateTabletJudgment(Main.player[0],false,false);
+ if(changedSlot)tablet.NPC.target=1;else Main.player[0]=new();tablet.UpdateTabletJudgment(Main.player[tablet.NPC.target],false,false);
+ Check(tablet.NPC.ai.All(v=>v==0)&&tablet.NPC.netUpdate&&Projectile.Shots.Count==0,"Tablet target replacement cancels warning and restarts full interval");
+}
+Setup();Projectile.Shots.Clear();var phaseLockedTablet=new HeavenTabletGuardian{NPC=Main.npc[0]};phaseLockedTablet.NPC.ai[2]=240;phaseLockedTablet.UpdateTabletJudgment(Main.player[0],false,false);
+for(int frame=1;frame<60;frame++)phaseLockedTablet.UpdateTabletJudgment(Main.player[0],true,true);
+Check(Projectile.Shots.Count==2,"Tablet phase transition never adds unpreviewed columns");
+foreach(float badClock in new[]{float.NaN,float.PositiveInfinity,-1f,61f,0.5f})foreach(int mode in new[]{0,1,2}) {
+ Setup();Main.netMode=mode;Projectile.Shots.Clear();var tablet=new HeavenTabletGuardian{NPC=Main.npc[0]};tablet.NPC.ai[1]=badClock;tablet.NPC.velocity=new(3,4);int tabletCooldown=0;
+ Check(tablet.UpdateTabletJudgment(Main.player[0],false,false)&&tablet.NPC.velocity==Vector2.Zero&&!tablet.CanHitPlayer(Main.player[0],ref tabletCooldown),"Tablet malformed warning is harmless");
+ Check(Projectile.Shots.Count==0&&tablet.NPC.netUpdate==(mode!=1),"Tablet malformed state resets only on authority");
+}
+foreach(byte badRows in new byte[]{0,4,255}) {
+ Setup();var tablet=new HeavenTabletGuardian{NPC=Main.npc[0]};tablet.ReceiveExtraAI(new BinaryReader(new MemoryStream(new[]{badRows})));int tabletCooldown=0;
+ Check(!tablet.CanHitPlayer(Main.player[0],ref tabletCooldown),"Tablet malformed density packet cannot allow contact");
+}
+Setup();Main.netMode=1;Projectile.Shots.Clear();var waitingTablet=new HeavenTabletGuardian{NPC=Main.npc[0]};waitingTablet.NPC.ai[1]=30;waitingTablet.NPC.ai[2]=240;
+for(int frame=0;frame<120;frame++)waitingTablet.UpdateTabletJudgment(Main.player[0],false,false);
+Check(waitingTablet.NPC.ai[1]==30&&Projectile.Shots.Count==0,"Tablet client never advances countdown or creates beams");
+Main.dedServ=false;var tabletBatch=new Microsoft.Xna.Framework.Graphics.SpriteBatch();waitingTablet.PreDraw(tabletBatch,Vector2.Zero,default);Check(tabletBatch.Calls==5,"Tablet draws two safe edges, two columns and read bar");Main.dedServ=true;waitingTablet.PreDraw(tabletBatch,Vector2.Zero,default);Check(tabletBatch.Calls==5,"Tablet dedicated server skips rendering");
+
+foreach(byte density in new byte[]{1,2,3}) {
+ Setup();Main.netMode=1;Main.dedServ=false;var replicaTablet=new HeavenTabletGuardian{NPC=Main.npc[0]};replicaTablet.NPC.ai[1]=30;replicaTablet.NPC.ai[0]=1000;replicaTablet.NPC.ai[3]=1200;replicaTablet.ReceiveExtraAI(new BinaryReader(new MemoryStream(new[]{density})));
+ var preview=new Microsoft.Xna.Framework.Graphics.SpriteBatch();replicaTablet.PreDraw(preview,Vector2.Zero,default);Check(preview.Calls==3+2*density,"Tablet client preview uses replicated locked density");
+ using var saved=new MemoryStream();replicaTablet.SendExtraAI(new BinaryWriter(saved));bool rejected=false;try{replicaTablet.ReceiveExtraAI(new BinaryReader(new MemoryStream()));}catch(EndOfStreamException){rejected=true;}using var after=new MemoryStream();replicaTablet.SendExtraAI(new BinaryWriter(after));Check(rejected&&saved.ToArray().SequenceEqual(after.ToArray()),"Tablet truncated density packet preserves prior state");
+}
 Console.WriteLine($"Actual furnace shard spawn hook passed: {checks} checks; native creation/target/network boundaries mocked.");

@@ -127,4 +127,19 @@ foreach(int mode in new[]{0,1,2})foreach(int reason in new[]{0,1,2,3}){
  using var packet=new MemoryStream();using(var writer=new BinaryWriter(packet,System.Text.Encoding.UTF8,true))enemyBolt.SendExtraAI(writer);Check(packet.Length==19,"enemy bolt source packet nineteen bytes");
 }
 Main.netMode=0;var cleanEnemyBolt=new EnemySpiritBoltProjectile();cleanEnemyBolt.SetDefaults();Collision.Blocked=true;Check(!cleanEnemyBolt.CanHitPlayer(new Player()),"enemy bolt wall filter");Collision.Blocked=false;Check(cleanEnemyBolt.CanHitPlayer(new Player()),"enemy bolt valid player hit");
+
+foreach(int mode in new[]{0,1,2}) {
+ Main.netMode=mode;Main.dedServ=true;Main.player=[new(),new()];Main.npc=Enumerable.Range(0,Main.maxNPCs).Select(i=>new NPC{whoAmI=i,active=false}).ToArray();var parent=Main.npc[3];parent.active=true;
+ var beam=new TabletJudgmentBeamProjectile();beam.SetDefaults();beam.OnSpawn(new Terraria.DataStructures.EntitySource_Parent(parent));
+ Check(beam.Projectile.width==32&&beam.Projectile.height==480&&beam.Projectile.netImportant&&beam.Projectile.hostile&&!beam.Projectile.friendly,"Tablet beam actual defaults and late join metadata");
+ for(int age=0;age<=31;age++){beam.Projectile.timeLeft=age;Check(beam.CanDamage()==(age>0&&age<=30),"Tablet beam bounded active lifetime");}
+ beam.Projectile.timeLeft=30;Collision.Blocked=true;Check(!beam.CanHitPlayer(new Player()),"Tablet beam does not hit through wall");Collision.Blocked=false;
+ Check(beam.CanHitPlayer(new Player()),"Tablet beam accepts valid player");parent.active=false;beam.AI();Check(beam.CanDamage()==false,"Tablet beam source loss immediately harmless");Check(beam.Projectile.timeLeft==(mode==1?30:6),"Tablet beam authority fades invalid source; client waits");
+ using var packet=new MemoryStream();using(var writer=new BinaryWriter(packet,System.Text.Encoding.UTF8,true))beam.SendExtraAI(writer);Check(packet.Length==19,"Tablet beam retains shared source and age wire format");
+}
+foreach(int reason in new[]{0,1,2,3}) {
+ Main.netMode=0;var beam=new TabletJudgmentBeamProjectile();beam.SetDefaults();if(reason==0)beam.Projectile.Center=new(float.NaN,0);else if(reason==1)beam.Projectile.velocity=new(1,0);else if(reason==2)beam.Projectile.width=33;else beam.Projectile.timeLeft=31;
+ Check(!beam.CanHitPlayer(new Player()),"Tablet beam malformed state blocks contact before AI");beam.AI();beam.Projectile.Center=new(100,100);beam.Projectile.velocity=Microsoft.Xna.Framework.Vector2.Zero;beam.Projectile.width=32;beam.Projectile.timeLeft=30;Check(beam.CanDamage()==false,"Tablet beam malformed state cannot revive after correction");
+}
+Main.netMode=0;Main.dedServ=false;Main.screenPosition=new(20,30);Main.spriteBatch.Boxes.Clear();var visibleBeam=new TabletJudgmentBeamProjectile();visibleBeam.SetDefaults();visibleBeam.Projectile.Center=new(100,300);var beamTint=default(Microsoft.Xna.Framework.Color);Check(!visibleBeam.PreDraw(ref beamTint)&&Main.spriteBatch.Boxes.Single()==new Microsoft.Xna.Framework.Rectangle(64,30,32,480),"Tablet beam draws its actual damage body with camera offset");Main.dedServ=true;visibleBeam.PreDraw(ref beamTint);Check(Main.spriteBatch.Boxes.Count==1,"Tablet beam dedicated server skips graphics");
 Console.WriteLine($"Actual telegraph hook regression passed: {assertions} assertions; mocked graphics/spawn boundary.");

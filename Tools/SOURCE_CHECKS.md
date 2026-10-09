@@ -63,7 +63,7 @@ CI运行只读新鲜度检查，生成结果变化时须显式更新这四份输
 
 ## 原生包内容与默认配置
 
-Native checks另运行PackageContents，使用官方TmodFile打开实际.tmod，核对内部名称、build.txt版本、归档哈希、当前描述及Common/Content/Localization的所有PNG/HJSON（接受官方转换后的rawimg）；拒绝隐藏/越界条目、Assets/Docs/Wiki/Tools/bin/obj/README和源码/工具扩展。它不是读取源码文件名后假定打包正确。默认配置在Gameplay编译产物回归中验证，当前累计1913条。
+Native checks另运行PackageContents，使用官方TmodFile打开实际.tmod，核对内部名称、build.txt版本、归档哈希、当前描述及Common/Content/Localization的所有PNG/HJSON（接受官方转换后的rawimg）；拒绝隐藏/越界条目、Assets/Docs/Wiki/Tools/bin/obj/README和源码/工具扩展。它不是读取源码文件名后假定打包正确。默认配置在Gameplay编译产物回归中验证，当前累计2313条。
 
 ```powershell
 dotnet run --project Tools/Tests/PackageContents/PackageContents.csproj -- <XianXia.tmod路径> <官方引擎目录> <仓库根目录>
@@ -305,7 +305,7 @@ Telegraphs671→793项，增加七类来源失效×三模式、权威槽位复�
 python Tools/verify_registered_summons.py --dotnet <SDK路径> --tml <官方引擎目录> --package <XianXia.tmod路径> --world <已有测试世界.wld路径>
 ```
 
-必须存在配套TWLD。脚本复制世界、仅启用本模组、绑定127.0.0.1并设置随机密码，临时设置子进程环境开关；不修改用户Mods或原存档。空场地/空NPC槽不足或存在在线玩家时审计失败，不为了通过而改地形。报告写入隔离目录save/XianXia/summon-audit.json；完整JSON在测试实体清理后生成，脚本随后终止隔离服务器而不保存副本。当前467项集成检查与源码模拟边界/Gameplay统计分开报告，覆盖药王第二阶段AI召唤预警/恢复及藤灵，不覆盖其它Boss或图形/真实客户端。
+必须存在配套TWLD。脚本复制世界、仅启用本模组、绑定127.0.0.1并设置随机密码，临时设置子进程环境开关；不修改用户Mods或原存档。空场地/空NPC槽不足或存在在线玩家时审计失败，不为了通过而改地形。报告写入隔离目录save/XianXia/summon-audit.json；完整JSON在测试实体清理后生成，脚本随后终止隔离服务器而不保存副本。当前1511项集成检查与源码模拟边界/Gameplay统计分开报告，覆盖药王第二阶段召唤和天碑三阶段审判的AI预警/恢复及真实实体创建，不覆盖其它Boss或图形/真实客户端。
 
 
 ## 第150轮：药王完整召唤钩子与取消同步（2026-10-09）
@@ -315,3 +315,12 @@ python Tools/verify_registered_summons.py --dotnet <SDK路径> --tml <官方引�
 修复药王无目标分支的脏状态判定遗漏NPC.ai[3]：普通计时均为零且timeLeft已≤30时，取消召唤预警/恢复仍须netUpdate，避免客户端残留旧召唤状态。Gameplay1889→1913新增24项实际编译回归，覆盖1/44/-1/-30召唤时钟、单机/服务器清零与同步、客户端保持权威状态等待；8字节父会话与13字节藤灵绑定协议未变。
 
 完整34步/25.NET源码检查、0警告0错误构建、打包/默认专服加载run-9f2a227ca19941c18331a5b67cd1ad7a、Gameplay1913、LocalizationPaths110+2及PackageContents366条目/362资源/1465通过。独立注册召唤集成summons-5222d5bc55f243d1b58f98fc9849bdba完成467项，原WLD/TWLD哈希不变，默认加载未启用审计。完整引擎tick、第一/终阶段矩阵、图形、复杂地形、平衡与真实多人运输仍待验收；R01/R04/R11保持未勾选。
+
+
+## 第151轮：天碑审判读条、安全通道与恢复（2026-10-09）
+
+第151轮天碑守御审判从即时共享落雷/终阶段无预警加速改为60帧锁定审判读条与45帧无接触恢复。三阶段间隔300/240/180，静止预警时锁定目标中心与1/2/3对光柱：32×480身体位于中心左右112/176/240像素，绿色边线保留160像素中央通道；预览与释放共享锁定密度，转阶段不增加未预告光柱，玩家移动不追踪重瞄。期间暂停普通灵弹/法阵/移动，恢复末帧仍无接触伤害；目标槽位/Player引用替换取消读条并重新完整间隔，坏状态权威复位/客户端无伤等待，接触加入墙体过滤。四枚封印与护盾仍待后续实现。
+
+新增TabletJudgmentBeamProjectile，30帧固定光柱、源失效无伤6帧淡出、墙体/目标与几何/寿命过滤，复用19字节来源/年龄协议并netImportant；以MagicPixel绘制真实伤害矩形，复用既有贴图引用，无新增图片。天碑新增1字节ExtraAI锁定光柱密度1..3，截断包不修改旧值，非法密度无伤。源码BossAdds11515→14464新增2949项三阶段60/45窗口、目标替换、阶段锁定、异常状态、客户端/读条/密度协议；Telegraphs1290→1414新增124项光柱寿命、来源、几何、墙体与绘制。Gameplay1913→2313新增400项实际AI警告/目标取消、阶段密度与光柱默认/寿命/协议。
+
+完整34步/25.NET源码检查通过，随后补充的6项密度/截断回归已定向通过；0警告0错误构建、打包/默认专服加载run-f8d2fd7ab9b64e58b175737478a96350、Gameplay2313、LocalizationPaths110+2及PackageContents366条目/362资源/1465通过。独立注册审计summons-4fdb974b12c7402cba0d07315c2bd4d3从三个阶段真实AI释放2/4/6个实际光柱，逐帧60预警/45恢复、身体/来源与撤场验证，集成467→1511项，原WLD/TWLD哈希不变。该审计手动推进AI，不推进完整NPC.Update/弹体物理年龄，也不等于真实多人或图形验收。R01/R04/R11保持未勾选。

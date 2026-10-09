@@ -125,6 +125,60 @@ public class SummonAuditSystem : ModSystem
             foreach (NPC child in children)
                 Check(!child.ModNPC.PreAI() && !child.active && child.damage == 0,
                     "source loss despawns without death hooks");
+
+            int beamType = ModContent.ProjectileType<global::XianXia.Content.Projectiles.TabletJudgmentBeamProjectile>();
+            for (int phase = 0; phase < 3; phase++) {
+                int tabletIndex = NPC.NewNPC(new EntitySource_Misc("XianXiaJudgmentAudit"), x, y + 48,
+                    ModContent.NPCType<HeavenTabletGuardian>());
+                Check(tabletIndex >= 0 && tabletIndex < Main.maxNPCs, $"registered tablet phase {phase}");
+                NPC tabletNpc = Main.npc[tabletIndex]; owned.Add(tabletNpc); tabletNpc.target = 0;
+                var tablet = (HeavenTabletGuardian)tabletNpc.ModNPC;
+                tabletNpc.life = phase == 0 ? tabletNpc.lifeMax : tabletNpc.lifeMax / (phase == 1 ? 2 : 4);
+                int interval = phase == 0 ? 300 : phase == 1 ? 240 : 180;
+                tabletNpc.ai[2] = interval - HeavenTabletGuardian.JudgmentWarningTicks;
+                tabletNpc.ai[0] = phase == 0 ? 150 : phase == 1 ? 110 : 72;
+                var priorBeams = Main.projectile.Where(projectile => projectile.active).ToHashSet();
+                void TickTablet() {
+                    try { tablet.AI(); }
+                    finally {
+                        ownedProjectiles.AddRange(Main.projectile.Where(projectile => projectile.active
+                            && !previousProjectiles.Contains(projectile) && !ownedProjectiles.Contains(projectile)));
+                    }
+                }
+                for (int frame = 1; frame <= HeavenTabletGuardian.JudgmentWarningTicks; frame++) {
+                    TickTablet();
+                    Check(tabletNpc.ai[1] == (frame == 60 ? 0 : 60 - frame), $"tablet {phase} warning clock {frame}");
+                    Check(!tablet.CanHitPlayer(Main.player[0], ref cooldownSlot) && tabletNpc.velocity == Vector2.Zero,
+                        $"tablet {phase} warning harmless and stationary {frame}");
+                    var emitted = Main.projectile.Where(projectile => projectile.active && !priorBeams.Contains(projectile)).ToArray();
+                    Check(emitted.Length == (frame < 60 ? 0 : 2 * (phase + 1)), $"tablet {phase} full warning before beams {frame}");
+                    Check(emitted.All(projectile => projectile.type == beamType), $"tablet {phase} no overlapping spells {frame}");
+                }
+                var beams = Main.projectile.Where(projectile => projectile.active && !priorBeams.Contains(projectile)).ToArray();
+                foreach (Projectile beam in beams) {
+                    Check(beam.width == 32 && beam.height == 480 && beam.timeLeft == 30 && beam.netImportant,
+                        "registered judgment beam body/lifetime/late join");
+                    Check(beam.Center.Y == Main.player[0].Center.Y && MathF.Abs(beam.Center.X - Main.player[0].Center.X) >= 112
+                        && beam.velocity == Vector2.Zero, "registered judgment beam locked outside safe lane");
+                    Check(beam.ModProjectile.CanDamage() == true, "registered judgment beam living source accepts damage");
+                }
+                for (int frame = 1; frame <= HeavenTabletGuardian.JudgmentRecoveryTicks; frame++) {
+                    TickTablet();
+                    Check(tabletNpc.ai[2] == -45 + frame && !tablet.CanHitPlayer(Main.player[0], ref cooldownSlot),
+                        $"tablet {phase} recovery including final frame {frame}");
+                    Check(Main.projectile.Count(projectile => projectile.active && !priorBeams.Contains(projectile)) == beams.Length,
+                        $"tablet {phase} recovery adds no spells {frame}");
+                }
+                TickTablet();
+                Check(tablet.CanHitPlayer(Main.player[0], ref cooldownSlot), $"tablet {phase} contact resumes next frame");
+                tabletNpc.active = false;
+                foreach (Projectile beam in beams) {
+                    beam.ModProjectile.AI();
+                    Check(beam.ModProjectile.CanDamage() == false && beam.timeLeft <= 6,
+                        "registered judgment beam source loss fades harmlessly");
+                    beam.active = false;
+                }
+            }
         }
         catch (Exception exception) { error = exception.ToString(); }
         finally {
@@ -140,7 +194,7 @@ public class SummonAuditSystem : ModSystem
         Directory.CreateDirectory(directory);
         File.WriteAllText(Path.Combine(directory, "summon-audit.json"), JsonSerializer.Serialize(new {
             schema = 1, passed = error == null, checks, error,
-            limitations = "Registered headless AI hooks advanced manually for 45 warning and 30 recovery frames; no full engine ticks, graphics, clients, combat balance or complete playthrough."
+            limitations = "Registered headless AI hooks advanced manually: medicine summons and three-phase tablet judgment. No full engine ticks, graphics, clients, combat balance or complete playthrough."
         }, new JsonSerializerOptions { WriteIndented = true }));
         Mod.Logger.Info($"Summon audit finished: {checks.Count} checks; passed={error == null}");
     }

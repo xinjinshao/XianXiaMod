@@ -55,6 +55,8 @@ def main() -> None:
         "GreenwoodHerbGardenBiome",
         "MoonboneAbyssBiome",
     )
+    require_text("Content/NPCs/Bosses/HeavenTabletGuardian.cs", "UpdateTabletJudgment")
+    require_text("Content/NPCs/Bosses/HeavenTabletGuardian.Judgment.cs", "JudgmentWarningTicks", "TabletJudgmentBeamProjectile", "SendExtraAI")
     require_text("Content/NPCs/Bosses/AbyssalStarWomb.cs", "UpdateStarRing")
     require_text("Content/NPCs/Bosses/AbyssalStarWomb.Ring.cs", "ReleaseCompressionField", "RingWarningTicks")
     require_text("Content/NPCs/Bosses/AbyssalStarWomb.Compression.cs", "BossArrayFieldProjectile", "ReleaseCompressionField")

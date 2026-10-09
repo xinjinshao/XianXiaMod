@@ -1037,6 +1037,25 @@ try {
    Check((bool)nativeTargetNpcType.GetField("netUpdate").GetValue(lostNpc)==(lostMode!=1),"Compiled target loss synchronizes summon cancellation even at short despawn time");
   } finally {for(int index=0;index<savedActive.Length;index++)nativeTargetPlayerType.GetField("active").SetValue(nativeTargetPlayers.GetValue(index),savedActive[index]);}
  }
+ var nativeTabletType=type.Assembly.GetType("XianXia.Content.NPCs.Bosses.HeavenTabletGuardian",true);
+ nativeTargetMain.GetField("dedServ").SetValue(null,true);
+ foreach(int tabletMode in new[]{0,2}) foreach(int tabletPhase in new[]{0,1,2}) {
+  object tabletOwner=Activator.CreateInstance(nativeTargetPlayerType);nativeTargetPlayerType.GetField("active").SetValue(tabletOwner,true);nativeTargetPlayers.SetValue(tabletOwner,0);
+  object tabletBoss=Activator.CreateInstance(nativeTabletType),tabletNpc=Activator.CreateInstance(nativeTargetNpcType);
+  nativeTabletType.GetProperty("Entity",BindingFlags.Instance|BindingFlags.Public|BindingFlags.NonPublic).SetValue(tabletBoss,tabletNpc);
+  nativeTargetNpcType.GetField("active").SetValue(tabletNpc,true);nativeTargetNpcType.GetField("lifeMax").SetValue(tabletNpc,1000);nativeTargetNpcType.GetField("life").SetValue(tabletNpc,tabletPhase==0?1000:tabletPhase==1?500:250);nativeTargetNpcType.GetField("target").SetValue(tabletNpc,0);
+  var tabletAi=(float[])nativeTargetNpcType.GetField("ai").GetValue(tabletNpc);tabletAi[2]=(tabletPhase==0?300:tabletPhase==1?240:180)-60;nativeTargetMain.GetField("netMode").SetValue(null,tabletMode);
+  for(int frame=1;frame<60;frame++){nativeTabletType.GetMethod("AI").Invoke(tabletBoss,null);object[] contact={tabletOwner,0};Check(tabletAi[1]==60-frame&&!(bool)nativeTabletType.GetMethod("CanHitPlayer").Invoke(tabletBoss,contact),"Compiled tablet AI exact warning clock and contact rejection before unregistered creation");}
+  using(var rows=new MemoryStream()){nativeTabletType.GetMethod("SendExtraAI").Invoke(tabletBoss,new object[]{new BinaryWriter(rows)});Check(rows.ToArray().SequenceEqual(new[]{(byte)(tabletPhase+1)}),"Compiled tablet AI locks and serializes phase density");}
+  object replacementTabletOwner=Activator.CreateInstance(nativeTargetPlayerType);nativeTargetPlayerType.GetField("active").SetValue(replacementTabletOwner,true);nativeTargetPlayers.SetValue(replacementTabletOwner,0);nativeTabletType.GetMethod("AI").Invoke(tabletBoss,null);
+  Check(tabletAi.All(clock=>clock==0)&&(bool)nativeTargetNpcType.GetField("netUpdate").GetValue(tabletNpc),"Compiled tablet replacement cancels before release and restarts interval");
+ }
+ var nativeTabletBeamType=type.Assembly.GetType("XianXia.Content.Projectiles.TabletJudgmentBeamProjectile",true);
+ object nativeTabletBeam=Activator.CreateInstance(nativeTabletBeamType),nativeTabletProjectile=Activator.CreateInstance(projectileType);
+ nativeTabletBeamType.GetProperty("Entity",BindingFlags.Instance|BindingFlags.Public|BindingFlags.NonPublic).SetValue(nativeTabletBeam,nativeTabletProjectile);nativeTabletBeamType.GetMethod("SetDefaults").Invoke(nativeTabletBeam,null);
+ Check((int)projectileType.GetField("width").GetValue(nativeTabletProjectile)==32&&(int)projectileType.GetField("height").GetValue(nativeTabletProjectile)==480&&(bool)projectileType.GetField("netImportant").GetValue(nativeTabletProjectile),"Compiled tablet beam body and late join metadata");
+ for(int age=0;age<=31;age++){projectileType.GetField("timeLeft").SetValue(nativeTabletProjectile,age);Check((bool)nativeTabletBeamType.GetMethod("CanDamage").Invoke(nativeTabletBeam,null)==(age>0&&age<=30),"Compiled tablet beam lifetime boundaries");}
+ using(var beamWire=new MemoryStream()){projectileType.GetField("timeLeft").SetValue(nativeTabletProjectile,30);nativeTabletBeamType.GetMethod("SendExtraAI").Invoke(nativeTabletBeam,new object[]{new BinaryWriter(beamWire)});Check(beamWire.Length==19,"Compiled tablet beam shared binding packet length");}
  // An isolated 100x100 Tilemap exercises the official solid/liquid collision code.
  // No NPC registration, world generation, sockets or graphical client is started.
  var terrainMapType=tagType.Assembly.GetType("Terraria.Tilemap",true);
