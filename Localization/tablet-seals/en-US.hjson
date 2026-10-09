@@ -1,0 +1,9 @@
+Mods: {
+    XianXia: {
+        NPCs: {
+            HeavenTabletSealNPC: {
+                DisplayName: Heaven Tablet Seal
+            }
+        }
+    }
+}

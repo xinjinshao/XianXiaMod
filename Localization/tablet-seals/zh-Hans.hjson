@@ -1,0 +1,9 @@
+Mods: {
+    XianXia: {
+        NPCs: {
+            HeavenTabletSealNPC: {
+                DisplayName: 天碑封印
+            }
+        }
+    }
+}

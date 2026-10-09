@@ -184,6 +184,7 @@ foreach((float x,float y,bool accepted) in new[]{(40f,124f,true),(39f,124f,false
 VineArena();var sampledEdge=new GreenwoodMedicineKingEcho{NPC=Main.npc[0]};sampledEdge.NPC.Center=new(30,1000);Main.rand.Values.Enqueue(-120);Main.rand.Values.Enqueue(20);Check(sampledEdge.TryVineSpawnPosition(out int sampledX,out int sampledY)&&sampledX==50&&Main.rand.Calls==2,"Vine edge search finds safe sample inside advertised range");
 VineArena();var platformVines=new GreenwoodMedicineKingEcho{NPC=Main.npc[0]};platformVines.TryVineSpawnPosition(out _,out _);Check(Collision.LastAcceptTop,"Vine body rejects overlapping top surfaces as well as solid blocks");
 
+byte[] TabletWire(byte rows,byte state=0,short timer=0,byte next=0,short[] slots=null){using var stream=new MemoryStream();using var writer=new BinaryWriter(stream);writer.Write(rows);writer.Write(1L);writer.Write(state);writer.Write(timer);writer.Write(next);foreach(short value in slots??new short[]{-1,-1,-1,-1})writer.Write(value);return stream.ToArray();}
 foreach(int mode in new[]{0,2}) foreach(int phase in new[]{0,1,2}) {
  Setup();Main.netMode=mode;Projectile.Positions.Clear();Projectile.Shots.Clear();Collision.Blocked=false;
  var tablet=new HeavenTabletGuardian{NPC=Main.npc[0]};var target=Main.player[0];target.Center=new(1000,1200);
@@ -198,7 +199,7 @@ foreach(int mode in new[]{0,2}) foreach(int phase in new[]{0,1,2}) {
  }
  Check(Projectile.Positions.All(p=>p.Y==1200&&MathF.Abs(p.X-1000)>=112),"Tablet beam layout leaves center safe despite moving target");
  Check(Projectile.Shots.All(p=>p.Velocity==Vector2.Zero),"Tablet beams remain stationary");
- using(var packet=new MemoryStream()){using(var writer=new BinaryWriter(packet,System.Text.Encoding.UTF8,true))tablet.SendExtraAI(writer);Check(packet.ToArray().SequenceEqual(new[]{(byte)(phase+1)}),"Tablet locked row count uses one byte");}
+ using(var packet=new MemoryStream()){using(var writer=new BinaryWriter(packet,System.Text.Encoding.UTF8,true))tablet.SendExtraAI(writer);Check(packet.Length==21&&packet.ToArray()[0]==phase+1,"Tablet packet retains one-byte row prefix and adds seal state");}
  for(int frame=1;frame<=45;frame++){Check(tablet.UpdateTabletJudgment(target,phase>=1,phase==2),"Tablet recovery pauses attacks");Check(tablet.NPC.ai[2]==-45+frame,"Tablet exact recovery count");Check(!tablet.CanHitPlayer(target,ref tabletCooldown),"Tablet includes final recovery frame in safe window");Check(Projectile.Shots.Count==2*(phase+1),"Tablet recovery does not duplicate beams");}
  Check(!tablet.UpdateTabletJudgment(target,phase>=1,phase==2)&&tablet.CanHitPlayer(target,ref tabletCooldown),"Tablet ordinary behavior resumes next frame");
 }
@@ -216,7 +217,7 @@ foreach(float badClock in new[]{float.NaN,float.PositiveInfinity,-1f,61f,0.5f})f
  Check(Projectile.Shots.Count==0&&tablet.NPC.netUpdate==(mode!=1),"Tablet malformed state resets only on authority");
 }
 foreach(byte badRows in new byte[]{0,4,255}) {
- Setup();var tablet=new HeavenTabletGuardian{NPC=Main.npc[0]};tablet.ReceiveExtraAI(new BinaryReader(new MemoryStream(new[]{badRows})));int tabletCooldown=0;
+ Setup();var tablet=new HeavenTabletGuardian{NPC=Main.npc[0]};tablet.ReceiveExtraAI(new BinaryReader(new MemoryStream(TabletWire(badRows))));int tabletCooldown=0;
  Check(!tablet.CanHitPlayer(Main.player[0],ref tabletCooldown),"Tablet malformed density packet cannot allow contact");
 }
 Setup();Main.netMode=1;Projectile.Shots.Clear();var waitingTablet=new HeavenTabletGuardian{NPC=Main.npc[0]};waitingTablet.NPC.ai[1]=30;waitingTablet.NPC.ai[2]=240;
@@ -225,8 +226,43 @@ Check(waitingTablet.NPC.ai[1]==30&&Projectile.Shots.Count==0,"Tablet client neve
 Main.dedServ=false;var tabletBatch=new Microsoft.Xna.Framework.Graphics.SpriteBatch();waitingTablet.PreDraw(tabletBatch,Vector2.Zero,default);Check(tabletBatch.Calls==5,"Tablet draws two safe edges, two columns and read bar");Main.dedServ=true;waitingTablet.PreDraw(tabletBatch,Vector2.Zero,default);Check(tabletBatch.Calls==5,"Tablet dedicated server skips rendering");
 
 foreach(byte density in new byte[]{1,2,3}) {
- Setup();Main.netMode=1;Main.dedServ=false;var replicaTablet=new HeavenTabletGuardian{NPC=Main.npc[0]};replicaTablet.NPC.ai[1]=30;replicaTablet.NPC.ai[0]=1000;replicaTablet.NPC.ai[3]=1200;replicaTablet.ReceiveExtraAI(new BinaryReader(new MemoryStream(new[]{density})));
+ Setup();Main.netMode=1;Main.dedServ=false;var replicaTablet=new HeavenTabletGuardian{NPC=Main.npc[0]};replicaTablet.NPC.ai[1]=30;replicaTablet.NPC.ai[0]=1000;replicaTablet.NPC.ai[3]=1200;replicaTablet.ReceiveExtraAI(new BinaryReader(new MemoryStream(TabletWire(density))));
  var preview=new Microsoft.Xna.Framework.Graphics.SpriteBatch();replicaTablet.PreDraw(preview,Vector2.Zero,default);Check(preview.Calls==3+2*density,"Tablet client preview uses replicated locked density");
  using var saved=new MemoryStream();replicaTablet.SendExtraAI(new BinaryWriter(saved));bool rejected=false;try{replicaTablet.ReceiveExtraAI(new BinaryReader(new MemoryStream()));}catch(EndOfStreamException){rejected=true;}using var after=new MemoryStream();replicaTablet.SendExtraAI(new BinaryWriter(after));Check(rejected&&saved.ToArray().SequenceEqual(after.ToArray()),"Tablet truncated density packet preserves prior state");
 }
+
+HeavenTabletGuardian SealArena(){Setup();Collision.SpawnBlocked=Collision.SpawnLava=false;Collision.BlockedSamples=0;var boss=new HeavenTabletGuardian{NPC=Main.npc[0]};boss.NPC.Center=new(1000,1000);Main.player[0].Center=new(1200,1000);return boss;}
+byte[] SealPacket(HeavenTabletGuardian boss){using var stream=new MemoryStream();boss.SendExtraAI(new BinaryWriter(stream));return stream.ToArray();}
+foreach(int mode in new[]{0,2}) {
+ var tablet=SealArena();Main.netMode=mode;int sealCooldown=0;
+ for(int frame=1;frame<=45;frame++){Check(tablet.UpdateTabletSeals(Main.player[0],true,false),"Seal ritual pauses ordinary AI");Check(!tablet.CanHitPlayer(Main.player[0],ref sealCooldown),"Seal ritual is harmless");Check(tablet.NPC.dontTakeDamage==(frame==45),"Seal shield only enabled after full creation");Check(NPC.Calls==(frame<45?0:4),"Seals create only after 45 warning frames");}
+ var marks=Main.npc.Where(n=>n.ModNPC is XianXia.Content.NPCs.Enemies.HeavenTabletSealNPC).OrderBy(n=>n.ai[1]).Select(n=>(XianXia.Content.NPCs.Enemies.HeavenTabletSealNPC)n.ModNPC).ToArray();
+ Check(marks.Length==4&&marks.All(m=>m.NPC.netUpdate),"Seals all synchronize successful creation");
+ tablet.BreakSeal(marks[3]);Check(SealPacket(tablet)[12]==0&&tablet.NPC.dontTakeDamage,"Wrong seal order cannot break shield");
+ for(int order=0;order<4;order++){Check(tablet.IsCurrentSeal(marks[order]),"Only current seal is selected");tablet.BreakSeal(marks[order]);marks[order].NPC.active=false;Check(SealPacket(tablet)[12]==order+1,"Ordered seal advances once");tablet.BreakSeal(marks[order]);Check(SealPacket(tablet)[12]==order+1,"Duplicate seal event does not advance twice");Check(tablet.NPC.dontTakeDamage==(order<3),"Last seal removes boss immunity");}
+ for(int frame=0;frame<45;frame++){Check(tablet.UpdateTabletSeals(Main.player[0],true,false),"Seal break recovery lasts 45 frames");Check(!tablet.CanHitPlayer(Main.player[0],ref sealCooldown),"Seal break final recovery frame harmless");}
+ Check(!tablet.UpdateTabletSeals(Main.player[0],true,false)&&NPC.Calls==4,"Seal phase occurs only once per encounter");
+}
+foreach(int capacity in new[]{0,1,2,3}) {
+ var tablet=SealArena();foreach(var occupied in Main.npc.Skip(capacity+1)){occupied.active=true;occupied.type=8;}
+ for(int frame=0;frame<45;frame++)tablet.UpdateTabletSeals(Main.player[0],true,false);
+ Check(!tablet.NPC.dontTakeDamage&&Main.npc.All(n=>n.type!=7||!n.active),"Partial capacity failure removes all partial seals and releases boss");
+ int attempts=NPC.Calls;for(int frame=0;frame<100;frame++)tablet.UpdateTabletSeals(Main.player[0],true,false);Check(NPC.Calls==attempts,"Failed shield never repeatedly fills NPC capacity");
+}
+foreach(bool lava in new[]{false,true}) {
+ var tablet=SealArena();Collision.SpawnBlocked=!lava;Collision.SpawnLava=lava;for(int frame=0;frame<45;frame++)tablet.UpdateTabletSeals(Main.player[0],true,false);Check(!tablet.NPC.dontTakeDamage&&NPC.Calls==0,"Unsafe seal body cancels shield before creation");
+}
+foreach(int failure in new[]{-1,0,Main.maxNPCs,int.MaxValue}) {
+ var tablet=SealArena();NPC.FailureResult=failure;for(int frame=0;frame<45;frame++)tablet.UpdateTabletSeals(Main.player[0],true,false);Check(!tablet.NPC.dontTakeDamage&&NPC.Calls==1,"Seal invalid slot return fails open without array access");
+}
+foreach(int loss in new[]{0,1,2}) {
+ var tablet=SealArena();for(int frame=0;frame<45;frame++)tablet.UpdateTabletSeals(Main.player[0],true,false);var missing=Main.npc[2];if(loss==0)missing.active=false;else if(loss==1)missing.life=0;else missing.ModNPC=new Terraria.ModLoader.ModNPC();tablet.UpdateTabletSeals(Main.player[0],true,false);
+ Check(!tablet.NPC.dontTakeDamage,"Lost or replaced seal cannot leave permanent shield");Check(loss!=2||missing.active,"Cleanup never deactivates reused foreign NPC slot");
+}
+var timedTablet=SealArena();for(int frame=0;frame<45;frame++)timedTablet.UpdateTabletSeals(Main.player[0],true,false);for(int elapsed=1;elapsed<=1800;elapsed++){timedTablet.UpdateTabletSeals(Main.player[0],true,false);Check(timedTablet.NPC.dontTakeDamage==(elapsed<1800),"Seal shield hard timeout at 1800 authority frames");}
+var cancelledTablet=SealArena();cancelledTablet.UpdateTabletSeals(Main.player[0],true,false);Main.player[0]=new(){Center=new(1200,1000)};cancelledTablet.UpdateTabletSeals(Main.player[0],true,false);Check(NPC.Calls==0&&!cancelledTablet.NPC.dontTakeDamage,"Seal warning target replacement cancels before immunity");
+var deferredTablet=SealArena();deferredTablet.NPC.ai[1]=30;Check(!deferredTablet.UpdateTabletSeals(Main.player[0],true,false)&&NPC.Calls==0,"Seal ritual never interrupts existing judgment");var skippedTablet=SealArena();Check(!skippedTablet.UpdateTabletSeals(Main.player[0],true,true),"Direct jump to final phase does not force second-phase shield");
+var packetTablet=SealArena();var completePacket=SealPacket(packetTablet);for(int length=0;length<21;length++){bool rejected=false;try{packetTablet.ReceiveExtraAI(new BinaryReader(new MemoryStream(completePacket[..length])));}catch(EndOfStreamException){rejected=true;}Check(rejected&&SealPacket(packetTablet).SequenceEqual(completePacket),"Every truncated parent packet preserves judgment and seal state atomically");}
+foreach(short[] slots in new[]{new short[]{1,1,3,4},new short[]{0,2,3,4},new short[]{1,2,3,20},new short[]{-1,2,3,4}}){packetTablet.ReceiveExtraAI(new BinaryReader(new MemoryStream(TabletWire(1,2,1800,0,slots))));Check(!packetTablet.NPC.dontTakeDamage,"Malformed shield slots cannot enable invulnerability");}
+Main.netMode=1;packetTablet.ReceiveExtraAI(new BinaryReader(new MemoryStream(TabletWire(1,1,44))));var waitingPacket=SealPacket(packetTablet);for(int frame=0;frame<120;frame++)packetTablet.UpdateTabletSeals(Main.player[0],true,false);Check(SealPacket(packetTablet).SequenceEqual(waitingPacket)&&!packetTablet.NPC.dontTakeDamage,"Client seal warning never advances or creates immunity");Main.dedServ=false;var sealPreview=new Microsoft.Xna.Framework.Graphics.SpriteBatch();packetTablet.PreDraw(sealPreview,Vector2.Zero,default);Check(sealPreview.Calls==5,"Seal ritual previews four bodies and progress bar");Main.dedServ=true;
 Console.WriteLine($"Actual furnace shard spawn hook passed: {checks} checks; native creation/target/network boundaries mocked.");

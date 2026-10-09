@@ -55,7 +55,8 @@ def main() -> None:
         "GreenwoodHerbGardenBiome",
         "MoonboneAbyssBiome",
     )
-    require_text("Content/NPCs/Bosses/HeavenTabletGuardian.cs", "UpdateTabletJudgment")
+    require_text("Content/NPCs/Bosses/HeavenTabletGuardian.cs", "UpdateTabletJudgment", "UpdateTabletSeals")
+    require_text("Content/NPCs/Bosses/HeavenTabletGuardian.Seals.cs", "SealShieldTicks", "CreateSeals", "ReadTabletState")
     require_text("Content/NPCs/Bosses/HeavenTabletGuardian.Judgment.cs", "JudgmentWarningTicks", "TabletJudgmentBeamProjectile", "SendExtraAI")
     require_text("Content/NPCs/Bosses/AbyssalStarWomb.cs", "UpdateStarRing")
     require_text("Content/NPCs/Bosses/AbyssalStarWomb.Ring.cs", "ReleaseCompressionField", "RingWarningTicks")
@@ -304,6 +305,12 @@ def main() -> None:
     for enemy in (ROOT / "Content/NPCs/Enemies").glob("*.cs"):
         name = enemy.stem.split(".")[0]
         primary = enemy.with_name(name + ".cs")
+        if name == "HeavenTabletSealNPC":
+            # Puzzle targets have no natural spawn or reward path; ordinary enemies
+            # must still pass the existing progression-gated spawn contract below.
+            require_text(str(primary.relative_to(ROOT)), "SpawnChance(NPCSpawnInfo spawnInfo) => 0f",
+                         "MatchesParent", "CheckDead()", "NPC.active = false", "NPC.damage = 0")
+            continue
         if enemy != primary:
             require_text(str(enemy.relative_to(ROOT)), f"partial class {name}")
             require_text(str(primary.relative_to(ROOT)), f"partial class {name}")

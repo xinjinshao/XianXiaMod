@@ -72,16 +72,17 @@ public partial class HeavenTabletGuardian
         return true;
     }
 
-    public override void SendExtraAI(BinaryWriter writer) => writer.Write(judgmentRows);
-    public override void ReceiveExtraAI(BinaryReader reader) => judgmentRows = reader.ReadByte();
+    public override void SendExtraAI(BinaryWriter writer) { writer.Write(judgmentRows); WriteSealState(writer); }
+    public override void ReceiveExtraAI(BinaryReader reader) => ReadTabletState(reader);
 
     public override bool CanHitPlayer(Player target, ref int cooldownSlot) => BossTargeting.HasLivingTarget(NPC)
-        && ValidJudgmentState() && !judgmentFrame && NPC.ai[1] == 0 && NPC.ai[2] >= 0
+        && ValidJudgmentState() && !sealFrame && !judgmentFrame && NPC.ai[1] == 0 && NPC.ai[2] >= 0
         && target.active && !target.dead && float.IsFinite(target.Center.X) && float.IsFinite(target.Center.Y)
         && Collision.CanHitLine(NPC.Center, 1, 1, target.Center, 1, 1);
 
     public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
     {
+        DrawSealWarning(spriteBatch, screenPos);
         if (Main.dedServ || !ValidJudgmentState() || NPC.ai[1] <= 0) return true;
         var pixel = TextureAssets.MagicPixel.Value;
         foreach (float side in new[] { -1f, 1f }) {

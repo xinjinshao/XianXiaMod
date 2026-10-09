@@ -91,9 +91,10 @@ public partial class HeavenTabletGuardian : ModNPC
         {
             NPC.velocity = new Vector2(0f, -2f);
             if (Main.netMode != NetmodeID.MultiplayerClient) {
-                bool changed = NPC.ai[0] != 0f || NPC.ai[1] != 0f || NPC.ai[2] != 0f || NPC.ai[3] != 0f || NPC.timeLeft > 30;
+                bool changed = NPC.ai[0] != 0f || NPC.ai[1] != 0f || NPC.ai[2] != 0f || NPC.ai[3] != 0f || sealState == 1 || sealState == 2 || sealTimer > 0 || NPC.timeLeft > 30;
                 NPC.ai[0] = NPC.ai[1] = NPC.ai[2] = NPC.ai[3] = 0f;
                 judgmentTarget = -1; judgmentPlayer = null; judgmentRows = 1;
+                AbandonSeals();
                 if (changed) NPC.netUpdate = true;
                 NPC.EncourageDespawn(30);
             }
@@ -134,6 +135,7 @@ public partial class HeavenTabletGuardian : ModNPC
 
         }
 
+        if (UpdateTabletSeals(target, phaseTwo, finalPhase)) return;
         if (UpdateTabletJudgment(target, phaseTwo, finalPhase)) return;
 
         float speed = finalPhase ? 10.5f : phaseTwo ? 8f : 5.5f;

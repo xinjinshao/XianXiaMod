@@ -138,12 +138,46 @@ public class SummonAuditSystem : ModSystem
                 tabletNpc.ai[2] = interval - HeavenTabletGuardian.JudgmentWarningTicks;
                 tabletNpc.ai[0] = phase == 0 ? 150 : phase == 1 ? 110 : 72;
                 var priorBeams = Main.projectile.Where(projectile => projectile.active).ToHashSet();
+                var priorTabletNpcs = Main.npc.Where(npc => npc.active).ToHashSet();
                 void TickTablet() {
                     try { tablet.AI(); }
                     finally {
+                        owned.AddRange(Main.npc.Where(npc => npc.active && !priorTabletNpcs.Contains(npc) && !owned.Contains(npc)));
                         ownedProjectiles.AddRange(Main.projectile.Where(projectile => projectile.active
                             && !previousProjectiles.Contains(projectile) && !ownedProjectiles.Contains(projectile)));
                     }
+                }
+                if (phase == 1) {
+                    for (int frame = 1; frame <= HeavenTabletGuardian.SealWarningTicks; frame++) {
+                        TickTablet();
+                        Check(!tablet.CanHitPlayer(Main.player[0], ref cooldownSlot) && tabletNpc.velocity == Vector2.Zero,
+                            $"seal ritual harmless warning {frame}");
+                        Check(tabletNpc.dontTakeDamage == (frame == 45), $"shield activates only after creation {frame}");
+                        Check(Main.npc.Count(npc => npc.active && !priorTabletNpcs.Contains(npc)) == (frame < 45 ? 0 : 4),
+                            $"four seal creation boundary {frame}");
+                    }
+                    NPC[] marks = Main.npc.Where(npc => npc.active && npc.ModNPC is HeavenTabletSealNPC)
+                        .OrderBy(npc => npc.ai[1]).ToArray();
+                    Check(marks.Length == 4, "four registered ordered seals");
+                    foreach (NPC mark in marks) {
+                        Check(mark.width == 40 && mark.height == 40 && mark.damage == 0 && mark.value == 0,
+                            "registered seal body and no contact/coin rewards");
+                        using var wire = new MemoryStream(); mark.ModNPC.SendExtraAI(new BinaryWriter(wire));
+                        Check(wire.Length == 13, "registered seal binding and lifetime packet");
+                    }
+                    for (int order = 0; order < 4; order++) {
+                        foreach (NPC mark in marks.Where(npc => npc.active))
+                            Check(mark.ModNPC.CanBeHitByItem(Main.player[0], new Item()) == (mark == marks[order]),
+                                $"only seal {order} accepts hits");
+                        NPC current = marks[order]; current.life = 0;
+                        Check(!current.ModNPC.CheckDead() && !current.active, $"seal {order} consumed without death hooks");
+                        Check(tabletNpc.dontTakeDamage == (order < 3), $"shield breaks after last ordered seal {order}");
+                    }
+                    for (int frame = 1; frame <= HeavenTabletGuardian.SealRecoveryTicks; frame++) {
+                        TickTablet(); Check(!tablet.CanHitPlayer(Main.player[0], ref cooldownSlot), $"seal recovery safe {frame}");
+                    }
+                    tabletNpc.ai[2] = interval - HeavenTabletGuardian.JudgmentWarningTicks;
+                    tabletNpc.ai[0] = 110;
                 }
                 for (int frame = 1; frame <= HeavenTabletGuardian.JudgmentWarningTicks; frame++) {
                     TickTablet();
@@ -194,7 +228,7 @@ public class SummonAuditSystem : ModSystem
         Directory.CreateDirectory(directory);
         File.WriteAllText(Path.Combine(directory, "summon-audit.json"), JsonSerializer.Serialize(new {
             schema = 1, passed = error == null, checks, error,
-            limitations = "Registered headless AI hooks advanced manually: medicine summons and three-phase tablet judgment. No full engine ticks, graphics, clients, combat balance or complete playthrough."
+            limitations = "Registered headless AI/hit/death hooks advanced manually: medicine summons, ordered tablet seals and three-phase judgment. No full engine ticks, graphics, clients, combat balance or complete playthrough."
         }, new JsonSerializerOptions { WriteIndented = true }));
         Mod.Logger.Info($"Summon audit finished: {checks.Count} checks; passed={error == null}");
     }
