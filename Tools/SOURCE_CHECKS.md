@@ -63,7 +63,7 @@ CI运行只读新鲜度检查，生成结果变化时须显式更新这四份输
 
 ## 原生包内容与默认配置
 
-Native checks另运行PackageContents，使用官方TmodFile打开实际.tmod，核对内部名称、build.txt版本、归档哈希、当前描述及Common/Content/Localization的所有PNG/HJSON（接受官方转换后的rawimg）；拒绝隐藏/越界条目、Assets/Docs/Wiki/Tools/bin/obj/README和源码/工具扩展。它不是读取源码文件名后假定打包正确。默认配置在Gameplay编译产物回归中验证，当前累计1889条。
+Native checks另运行PackageContents，使用官方TmodFile打开实际.tmod，核对内部名称、build.txt版本、归档哈希、当前描述及Common/Content/Localization的所有PNG/HJSON（接受官方转换后的rawimg）；拒绝隐藏/越界条目、Assets/Docs/Wiki/Tools/bin/obj/README和源码/工具扩展。它不是读取源码文件名后假定打包正确。默认配置在Gameplay编译产物回归中验证，当前累计1913条。
 
 ```powershell
 dotnet run --project Tools/Tests/PackageContents/PackageContents.csproj -- <XianXia.tmod路径> <官方引擎目录> <仓库根目录>
@@ -305,4 +305,13 @@ Telegraphs671→793项，增加七类来源失效×三模式、权威槽位复�
 python Tools/verify_registered_summons.py --dotnet <SDK路径> --tml <官方引擎目录> --package <XianXia.tmod路径> --world <已有测试世界.wld路径>
 ```
 
-必须存在配套TWLD。脚本复制世界、仅启用本模组、绑定127.0.0.1并设置随机密码，临时设置子进程环境开关；不修改用户Mods或原存档。空场地/空NPC槽不足或存在在线玩家时审计失败，不为了通过而改地形。报告写入隔离目录save/XianXia/summon-audit.json；完整JSON在测试实体清理后生成，脚本随后终止隔离服务器而不保存副本。30项集成检查与源码模拟边界/Gameplay统计分开报告，目前只覆盖药王藤灵，不覆盖其它Boss或图形/真实客户端。
+必须存在配套TWLD。脚本复制世界、仅启用本模组、绑定127.0.0.1并设置随机密码，临时设置子进程环境开关；不修改用户Mods或原存档。空场地/空NPC槽不足或存在在线玩家时审计失败，不为了通过而改地形。报告写入隔离目录save/XianXia/summon-audit.json；完整JSON在测试实体清理后生成，脚本随后终止隔离服务器而不保存副本。当前467项集成检查与源码模拟边界/Gameplay统计分开报告，覆盖药王第二阶段AI召唤预警/恢复及藤灵，不覆盖其它Boss或图形/真实客户端。
+
+
+## 第150轮：药王完整召唤钩子与取消同步（2026-10-09）
+
+第150轮专服召唤审计改为从药王第二阶段法阵边界调用实际AI入口，普通灵弹也设为待释放以验证召唤优先级。逐帧检查45帧预警、30帧恢复及恢复后首帧：前44帧不生成藤灵，第45帧真实创建三只；预警/恢复冻结移动和其它攻击/治疗计时，无接触伤害、无叠加弹体，恢复末帧仍无伤，随后正常计时/接触恢复。保留实际身体、OnSpawn来源包、成功配额与来源清理检查，集成30→467项；异常路径也捕获并清理新弹体。手动推进真实ModNPC.AI钩子，不冒充完整NPC.Update或正常世界tick。
+
+修复药王无目标分支的脏状态判定遗漏NPC.ai[3]：普通计时均为零且timeLeft已≤30时，取消召唤预警/恢复仍须netUpdate，避免客户端残留旧召唤状态。Gameplay1889→1913新增24项实际编译回归，覆盖1/44/-1/-30召唤时钟、单机/服务器清零与同步、客户端保持权威状态等待；8字节父会话与13字节藤灵绑定协议未变。
+
+完整34步/25.NET源码检查、0警告0错误构建、打包/默认专服加载run-9f2a227ca19941c18331a5b67cd1ad7a、Gameplay1913、LocalizationPaths110+2及PackageContents366条目/362资源/1465通过。独立注册召唤集成summons-5222d5bc55f243d1b58f98fc9849bdba完成467项，原WLD/TWLD哈希不变，默认加载未启用审计。完整引擎tick、第一/终阶段矩阵、图形、复杂地形、平衡与真实多人运输仍待验收；R01/R04/R11保持未勾选。

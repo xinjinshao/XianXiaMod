@@ -91,7 +91,7 @@ public partial class GreenwoodMedicineKingEcho : ModNPC
         {
             NPC.velocity = new Vector2(0f, -2f);
             if (Main.netMode != NetmodeID.MultiplayerClient) {
-                bool changed = NPC.ai[0] != 0f || NPC.ai[1] != 0f || NPC.ai[2] != 0f || NPC.timeLeft > 30;
+                bool changed = NPC.ai[0] != 0f || NPC.ai[1] != 0f || NPC.ai[2] != 0f || NPC.ai[3] != 0f || NPC.timeLeft > 30;
                 NPC.ai[0] = NPC.ai[1] = NPC.ai[2] = NPC.ai[3] = 0f;
                 summonTarget = -1; summonPlayer = null;
                 if (changed) NPC.netUpdate = true;

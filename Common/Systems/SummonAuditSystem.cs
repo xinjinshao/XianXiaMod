@@ -30,6 +30,8 @@ public class SummonAuditSystem : ModSystem
         attempted = true;
         var checks = new List<string>();
         var owned = new List<NPC>();
+        var ownedProjectiles = new List<Projectile>();
+        var previousProjectiles = Main.projectile.Where(projectile => projectile.active).ToHashSet();
         Player original = Main.player[0];
         string error = null;
         void Check(bool value, string name) {
@@ -57,9 +59,31 @@ public class SummonAuditSystem : ModSystem
             Check(session > 0, "authority encounter session");
             int type = ModContent.NPCType<HerbGardenVineSpirit>();
             var before = Main.npc.Where(npc => npc.active).ToHashSet();
-            // Capture every newly created entity even if a later assertion fails.
-            try { medicine.SpawnVineAdds(); }
-            finally { owned.AddRange(Main.npc.Where(npc => npc.active && !before.Contains(npc))); }
+            void TickMedicine() {
+                // Capture every new entity even if the AI hook or an assertion fails.
+                try { medicine.AI(); }
+                finally {
+                    owned.AddRange(Main.npc.Where(npc => npc.active && !before.Contains(npc) && !owned.Contains(npc)));
+                    ownedProjectiles.AddRange(Main.projectile.Where(projectile => projectile.active
+                        && !previousProjectiles.Contains(projectile) && !ownedProjectiles.Contains(projectile)));
+                }
+            }
+            parent.life = parent.lifeMax / 2;
+            parent.ai[0] = 110; // Ordinary shot is ready: summon must take priority.
+            parent.ai[2] = 209; // Second-phase pattern boundary starts the warning.
+            parent.velocity = new Vector2(4, 5);
+            int cooldownSlot = 0;
+            for (int frame = 1; frame <= GreenwoodMedicineKingEcho.SummonWarningTicks; frame++) {
+                TickMedicine();
+                Check(parent.ai[3] == (frame == 45 ? -30 : 45 - frame), $"warning clock frame {frame}");
+                Check(!medicine.CanHitPlayer(Main.player[0], ref cooldownSlot), $"warning contact blocked frame {frame}");
+                Check(parent.velocity == Vector2.Zero, $"warning movement stopped frame {frame}");
+                Check(parent.ai[0] == 0 && parent.ai[2] == 0, $"other attack clocks paused frame {frame}");
+                Check(parent.ai[1] == 1, $"healing ritual paused frame {frame}");
+                Check(owned.Count(npc => npc != parent && npc.active) == (frame < 45 ? 0 : 3),
+                    $"children appear only on release frame {frame}");
+                Check(ownedProjectiles.Count == 0, $"no overlapping spell frame {frame}");
+            }
             NPC[] children = owned.Where(npc => npc != parent).ToArray();
             Check(children.Length == 3 && children.All(npc => npc.type == type
                 && npc.ModNPC is HerbGardenVineSpirit), "three registered vine children");
@@ -79,6 +103,20 @@ public class SummonAuditSystem : ModSystem
                     "NewNPC OnSpawn captured parent session");
                 Check(child.ModNPC.PreAI(), "bound child accepts living source");
             }
+            for (int frame = 1; frame <= GreenwoodMedicineKingEcho.SummonRecoveryTicks; frame++) {
+                TickMedicine();
+                Check(parent.ai[3] == -30 + frame, $"recovery clock frame {frame}");
+                Check(!medicine.CanHitPlayer(Main.player[0], ref cooldownSlot), $"recovery contact blocked frame {frame}");
+                Check(parent.velocity == Vector2.Zero && parent.ai[0] == 0 && parent.ai[2] == 0
+                    && parent.ai[1] == 1, $"recovery pauses other actions frame {frame}");
+                Check(owned.Count(npc => npc != parent && npc.active) == 3 && ownedProjectiles.Count == 0,
+                    $"recovery creates no extra entities frame {frame}");
+            }
+            TickMedicine();
+            Check(parent.ai[3] == 0 && medicine.CanHitPlayer(Main.player[0], ref cooldownSlot),
+                "contact resumes only after final recovery frame");
+            Check(parent.ai[0] == 1 && parent.ai[2] == 1 && parent.ai[1] == 2,
+                "normal clocks resume after recovery");
             try { medicine.SpawnVineAdds(); }
             finally { owned.AddRange(Main.npc.Where(npc => npc.active && !before.Contains(npc)
                 && !owned.Contains(npc))); }
@@ -91,16 +129,18 @@ public class SummonAuditSystem : ModSystem
         catch (Exception exception) { error = exception.ToString(); }
         finally {
             foreach (NPC npc in owned) { npc.damage = 0; npc.active = false; }
+            foreach (Projectile projectile in ownedProjectiles) { projectile.damage = 0; projectile.active = false; }
             Main.player[0] = original;
         }
-        if (!ReferenceEquals(Main.player[0], original) || owned.Any(npc => npc.active))
+        if (!ReferenceEquals(Main.player[0], original) || owned.Any(npc => npc.active)
+            || ownedProjectiles.Any(projectile => projectile.active))
             error ??= "Audit cleanup did not restore the player slot and deactivate test NPCs.";
         else checks.Add("player slot restored and all test entities removed");
         string directory = Path.Combine(Main.SavePath, "XianXia");
         Directory.CreateDirectory(directory);
         File.WriteAllText(Path.Combine(directory, "summon-audit.json"), JsonSerializer.Serialize(new {
             schema = 1, passed = error == null, checks, error,
-            limitations = "Isolated headless server creation only; no graphics, clients, combat balance or complete playthrough."
+            limitations = "Registered headless AI hooks advanced manually for 45 warning and 30 recovery frames; no full engine ticks, graphics, clients, combat balance or complete playthrough."
         }, new JsonSerializerOptions { WriteIndented = true }));
         Mod.Logger.Info($"Summon audit finished: {checks.Count} checks; passed={error == null}");
     }

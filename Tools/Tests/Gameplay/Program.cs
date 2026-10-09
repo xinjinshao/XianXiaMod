@@ -1023,6 +1023,20 @@ try {
    Check(!(bool)compiledVineSite.Invoke(siteBoss,siteArgs)&&(int)siteArgs[0]==0&&(int)siteArgs[1]==0,"Compiled vine out-of-world/nonfinite body rejects before headless terrain access");
   }
  } finally {nativeSiteWorldWidth.SetValue(null,previousSiteWidth);nativeSiteWorldHeight.SetValue(null,previousSiteHeight);}
+ // Target loss must synchronize a pending summon even when despawn time is already short.
+ foreach(int lostMode in new[]{0,2,1}) foreach(float pendingSummon in new[]{1f,44f,-1f,-30f}) {
+  var savedActive=new bool[nativeTargetPlayers.Length];
+  for(int index=0;index<savedActive.Length;index++){object lostPlayer=nativeTargetPlayers.GetValue(index);savedActive[index]=(bool)nativeTargetPlayerType.GetField("active").GetValue(lostPlayer);nativeTargetPlayerType.GetField("active").SetValue(lostPlayer,false);}
+  try {
+   object lostBoss=Activator.CreateInstance(nativeMedicineType),lostNpc=Activator.CreateInstance(nativeTargetNpcType);
+   nativeMedicineType.GetProperty("Entity",BindingFlags.Instance|BindingFlags.Public|BindingFlags.NonPublic).SetValue(lostBoss,lostNpc);
+   nativeTargetNpcType.GetField("active").SetValue(lostNpc,true);nativeTargetNpcType.GetField("life").SetValue(lostNpc,100);nativeTargetNpcType.GetField("timeLeft").SetValue(lostNpc,30);nativeTargetNpcType.GetField("netUpdate").SetValue(lostNpc,false);
+   var lostAi=(float[])nativeTargetNpcType.GetField("ai").GetValue(lostNpc);lostAi[3]=pendingSummon;nativeTargetMain.GetField("netMode").SetValue(null,lostMode);
+   nativeMedicineType.GetMethod("AI").Invoke(lostBoss,null);
+   Check(lostAi[3]==(lostMode==1?pendingSummon:0f),"Compiled target loss clears pending summon only on authority");
+   Check((bool)nativeTargetNpcType.GetField("netUpdate").GetValue(lostNpc)==(lostMode!=1),"Compiled target loss synchronizes summon cancellation even at short despawn time");
+  } finally {for(int index=0;index<savedActive.Length;index++)nativeTargetPlayerType.GetField("active").SetValue(nativeTargetPlayers.GetValue(index),savedActive[index]);}
+ }
  // An isolated 100x100 Tilemap exercises the official solid/liquid collision code.
  // No NPC registration, world generation, sockets or graphical client is started.
  var terrainMapType=tagType.Assembly.GetType("Terraria.Tilemap",true);
