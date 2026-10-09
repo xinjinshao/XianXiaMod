@@ -1,0 +1,12 @@
+Mods: {
+    XianXia: {
+        NPCs: {
+            CoreArchiveLockNPC: {
+                DisplayName: Core Archive Lock
+            }
+        }
+        Archives: {
+            BreakLocks: Archive shield: break all four locks in any order!
+        }
+    }
+}

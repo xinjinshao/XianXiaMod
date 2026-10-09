@@ -302,11 +302,13 @@ public class SummonAuditSystem : ModSystem
                 foreach (NPC puppet in puppets)
                     Check(!puppet.ModNPC.PreAI() && !puppet.active && puppet.damage == 0, "registered puppet source loss despawns without death rewards");
             }
+            byte[] CorePayload(byte[] prefix){using var stream=new MemoryStream();using var writer=new BinaryWriter(stream);writer.Write(prefix);writer.Write(1L);writer.Write((byte)3);writer.Write((short)0);writer.Write((byte)15);for(int index=0;index<4;index++)writer.Write((short)-1);return stream.ToArray();}
             for (int corePhase = 0; corePhase < 3; corePhase++) {
                 int coreSlot = NPC.NewNPC(new EntitySource_Misc("XianXiaCoreModuleAudit"), x, y + 48, ModContent.NPCType<OldHeavenDaoCore>());
                 Check(coreSlot >= 0 && coreSlot < Main.maxNPCs, "registered old core created");
                 NPC coreNpc = Main.npc[coreSlot]; owned.Add(coreNpc); coreNpc.target = 0;
                 var core = (OldHeavenDaoCore)coreNpc.ModNPC;
+                core.ReceiveExtraAI(new BinaryReader(new MemoryStream(CorePayload(new byte[]{0,0,1,0,0}))));
                 coreNpc.life = corePhase == 0 ? coreNpc.lifeMax : coreNpc.lifeMax / (corePhase == 1 ? 2 : 4);
                 void TickCore() {
                     try { core.AI(); }
@@ -350,7 +352,7 @@ public class SummonAuditSystem : ModSystem
                 NPC routeCoreNpc = Main.npc[routeCoreSlot];owned.Add(routeCoreNpc);routeCoreNpc.target=0;routeCoreNpc.life=routeCoreNpc.lifeMax/(testedCoreDensity==2?2:4);
                 var routeCore=(OldHeavenDaoCore)routeCoreNpc.ModNPC;
                 // Exercise a complete synchronized warning snapshot without changing the world's permanent ending.
-                routeCore.ReceiveExtraAI(new BinaryReader(new MemoryStream(new byte[]{1,1,testedCoreDensity,testedCoreRoute,0})));
+                routeCore.ReceiveExtraAI(new BinaryReader(new MemoryStream(CorePayload(new byte[]{1,1,testedCoreDensity,testedCoreRoute,0}))));
                 Vector2 routeCorePoint=Main.player[0].Center;routeCoreNpc.ai[0]=routeCorePoint.X;routeCoreNpc.ai[3]=routeCorePoint.Y;routeCoreNpc.ai[1]=60;routeCoreNpc.ai[2]=150;
                 var previousRouteCoreProjectiles=Main.projectile.Where(projectile=>projectile.active).ToHashSet();
                 try {
@@ -370,6 +372,38 @@ public class SummonAuditSystem : ModSystem
                 }
                 routeCoreNpc.active=false;foreach(Projectile routeCoreProjectile in routeCoreProjectiles){routeCoreProjectile.ModProjectile.AI();Check(routeCoreProjectile.ModProjectile.CanDamage()==false,"registered route source loss no damage");routeCoreProjectile.active=false;}
             }
+            int archiveCoreSlot=NPC.NewNPC(new EntitySource_Misc("XianXiaArchiveAudit"),x,y+48,ModContent.NPCType<OldHeavenDaoCore>());
+            Check(archiveCoreSlot>=0&&archiveCoreSlot<Main.maxNPCs,"registered archive core created");NPC archiveCoreNpc=Main.npc[archiveCoreSlot];owned.Add(archiveCoreNpc);archiveCoreNpc.target=0;archiveCoreNpc.life=archiveCoreNpc.lifeMax/4;
+            var archiveCore=(OldHeavenDaoCore)archiveCoreNpc.ModNPC;var beforeArchiveNpcs=Main.npc.Where(npc=>npc.active).ToHashSet();var beforeArchiveProjectiles=Main.projectile.Where(projectile=>projectile.active).ToHashSet();
+            void TickArchiveCore(){try{archiveCore.AI();}finally{owned.AddRange(Main.npc.Where(npc=>npc.active&&!beforeArchiveNpcs.Contains(npc)&&!owned.Contains(npc)));ownedProjectiles.AddRange(Main.projectile.Where(projectile=>projectile.active&&!previousProjectiles.Contains(projectile)&&!ownedProjectiles.Contains(projectile)));}}
+            for(int archiveFrame=1;archiveFrame<=60;archiveFrame++) {
+                TickArchiveCore();Check(!archiveCore.CanHitPlayer(Main.player[0],ref cooldownSlot)&&archiveCoreNpc.velocity==Vector2.Zero,"registered archive warning stationary/harmless");
+                Check(archiveCoreNpc.dontTakeDamage==(archiveFrame==60)&&archiveCoreNpc.immortal==(archiveFrame==60),"registered archive shield only after four valid births");
+                Check(Main.npc.Count(npc=>npc.active&&!beforeArchiveNpcs.Contains(npc))==(archiveFrame==60?4:0),"registered archives after full sixty frame tell");
+                Check(!Main.projectile.Any(projectile=>projectile.active&&!beforeArchiveProjectiles.Contains(projectile)),"registered archive warning no stacked spell");
+            }
+            var archiveLocks=Main.npc.Where(npc=>npc.active&&!beforeArchiveNpcs.Contains(npc)).OrderBy(npc=>npc.ai[1]).ToArray();Check(archiveLocks.Length==4,"registered four archive locks");
+            TickArchiveCore();Check(archiveCoreNpc.velocity==Vector2.Zero&&archiveCoreNpc.immortal,"registered core remains stationary while archive shield active");
+            int archiveProtectedLife=archiveCoreNpc.life;Main.player[0].ApplyDamageToNPC(archiveCoreNpc,100,0,1,false,DamageClass.Generic);Check(archiveCoreNpc.life==archiveProtectedLife,"registered archive shield rejects actual native player damage");
+            int archiveKillCount=NPC.killCount[ModContent.NPCType<CoreArchiveLockNPC>()];
+            foreach(int archiveIndex in new[]{3,1,0,2}) {
+                NPC archiveLock=archiveLocks[archiveIndex];archiveLock.ModNPC.AI();Check(archiveLock.ModNPC is CoreArchiveLockNPC&&archiveLock.ModNPC.CanBeHitByItem(Main.player[0],new Item())==true&&!archiveLock.immortal,"registered remaining archive is immediately vulnerable out of order");
+                using(var archivePacket=new MemoryStream()){archiveLock.ModNPC.SendExtraAI(new BinaryWriter(archivePacket));Check(archivePacket.Length==13&&BitConverter.ToInt64(archivePacket.ToArray(),2)==archiveCore.ArchiveSession,"registered archive real OnSpawn source session");}
+                int archiveApplied=archiveLock.StrikeNPC(new NPC.HitInfo{Damage=archiveLock.life+100,HitDirection=1},noPlayerInteraction:true);
+                Check(archiveApplied>0&&!archiveLock.active,"registered native strike breaks unordered archive");Check(NPC.killCount[archiveLock.type]==archiveKillCount&&!Main.item.Any(item=>item?.active==true&&!previousItems.Contains(item)),"registered archive no kill progression or item rewards");
+                Check(archiveCoreNpc.immortal==(archiveIndex!=2)&&archiveCoreNpc.dontTakeDamage==(archiveIndex!=2),"registered archive shield breaks only after final lock");
+            }
+            Check(!archiveCore.CanHitPlayer(Main.player[0],ref cooldownSlot),"registered last archive break immediately safe before next AI");
+            int archiveUnlockedLife=archiveCoreNpc.life;Main.player[0].ApplyDamageToNPC(archiveCoreNpc,100,0,1,false,DamageClass.Generic);Check(archiveCoreNpc.life<archiveUnlockedLife,"registered core takes damage after archive shield broken");
+            for(int archiveFrame=1;archiveFrame<=45;archiveFrame++){TickArchiveCore();Check(!archiveCore.CanHitPlayer(Main.player[0],ref cooldownSlot),"registered archive recovery exact harmless duration");}
+            archiveCoreNpc.active=false;
+            int reusedArchiveSlot=NPC.NewNPC(new EntitySource_Misc("XianXiaArchiveReuseAudit"),x,y+48,ModContent.NPCType<OldHeavenDaoCore>());Check(reusedArchiveSlot>=0&&reusedArchiveSlot<Main.maxNPCs,"registered second archive core created");
+            NPC reusedArchiveCoreNpc=Main.npc[reusedArchiveSlot];owned.Add(reusedArchiveCoreNpc);reusedArchiveCoreNpc.target=0;reusedArchiveCoreNpc.life=reusedArchiveCoreNpc.lifeMax/4;var reusedArchiveCore=(OldHeavenDaoCore)reusedArchiveCoreNpc.ModNPC;
+            var beforeReusedArchiveNpcs=Main.npc.Where(npc=>npc.active).ToHashSet();try{for(int frame=0;frame<60;frame++)reusedArchiveCore.AI();}finally{owned.AddRange(Main.npc.Where(npc=>npc.active&&!beforeReusedArchiveNpcs.Contains(npc)&&!owned.Contains(npc)));}
+            var abandonedArchiveLocks=Main.npc.Where(npc=>npc.active&&!beforeReusedArchiveNpcs.Contains(npc)).ToArray();Check(abandonedArchiveLocks.Length==4,"registered source reuse scenario has four locks");long previousArchiveSession=reusedArchiveCore.ArchiveSession;reusedArchiveCoreNpc.active=false;
+            int replacementArchiveSlot=NPC.NewNPC(new EntitySource_Misc("XianXiaArchiveReplacementAudit"),x,y+48,ModContent.NPCType<OldHeavenDaoCore>());Check(replacementArchiveSlot==reusedArchiveSlot,"registered archive parent slot actually reused");NPC replacementArchiveNpc=Main.npc[replacementArchiveSlot];owned.Add(replacementArchiveNpc);replacementArchiveNpc.target=0;Check(((OldHeavenDaoCore)replacementArchiveNpc.ModNPC).ArchiveSession!=previousArchiveSession,"registered replacement archive parent has new session");
+            foreach(NPC abandonedArchive in abandonedArchiveLocks){abandonedArchive.ModNPC.AI();Check(!abandonedArchive.active&&abandonedArchive.damage==0,"registered old archive source cannot follow reused same-type parent slot");}
+            Check(NPC.killCount[ModContent.NPCType<CoreArchiveLockNPC>()]==archiveKillCount&&!Main.item.Any(item=>item?.active==true&&!previousItems.Contains(item)),"registered reused-source cleanup has no rewards");replacementArchiveNpc.active=false;
         }
         catch (Exception exception) { error = exception.ToString(); }
         finally {
@@ -386,7 +420,7 @@ public class SummonAuditSystem : ModSystem
         Directory.CreateDirectory(directory);
         File.WriteAllText(Path.Combine(directory, "summon-audit.json"), JsonSerializer.Serialize(new {
             schema = 1, passed = error == null, checks, error,
-            limitations = "Registered headless AI advanced manually for medicine, tablet, alternating inspector decrees and core modules; native player damage and NPC.StrikeNPC verify ordered seals and loot/kill-count suppression. No full engine ticks, graphics, clients, combat balance or complete playthrough."
+            limitations = "Registered headless AI advanced manually for medicine, tablet, alternating inspector decrees and core modules and archive locks; native player damage and NPC.StrikeNPC verify ordered seals and loot/kill-count suppression. No full engine ticks, graphics, clients, combat balance or complete playthrough."
         }, new JsonSerializerOptions { WriteIndented = true }));
         Mod.Logger.Info($"Summon audit finished: {checks.Count} checks; passed={error == null}");
     }

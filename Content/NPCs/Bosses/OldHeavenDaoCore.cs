@@ -91,7 +91,8 @@ public partial class OldHeavenDaoCore : ModNPC
         {
             NPC.velocity = new Vector2(0f, -2f);
             if (Main.netMode != NetmodeID.MultiplayerClient) {
-                bool changed = NPC.ai[0] != 0f || NPC.ai[1] != 0f || NPC.ai[2] != 0f || NPC.ai[3] != 0f || NPC.timeLeft > 30;
+                bool changed = NPC.ai[0] != 0f || NPC.ai[1] != 0f || NPC.ai[2] != 0f || NPC.ai[3] != 0f || NPC.timeLeft > 30 || archiveState == 1 || archiveState == 2 || archiveTimer > 0;
+                AbandonArchives();
                 ResetModuleClocks(false);
                 if (changed) NPC.netUpdate = true;
                 NPC.EncourageDespawn(30);
@@ -133,11 +134,12 @@ public partial class OldHeavenDaoCore : ModNPC
 
         }
 
+        if (UpdateCoreArchives(target, phaseTwo, finalPhase)) return;
         if (UpdateCoreModule(target, phaseTwo, finalPhase)) return;
 
         float speed = finalPhase ? 10.5f : phaseTwo ? 8f : 5.5f;
 
-        NPC.velocity = Vector2.Lerp(NPC.velocity, desired.SafeNormalize(Vector2.UnitY) * speed, phaseTwo ? 0.055f : 0.035f);
+        NPC.velocity = archiveState == 2 ? Vector2.Zero : Vector2.Lerp(NPC.velocity, desired.SafeNormalize(Vector2.UnitY) * speed, phaseTwo ? 0.055f : 0.035f);
 
         NPC.rotation = NPC.velocity.ToRotation();
 

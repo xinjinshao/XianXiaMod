@@ -309,7 +309,7 @@ def main() -> None:
     for enemy in (ROOT / "Content/NPCs/Enemies").glob("*.cs"):
         name = enemy.stem.split(".")[0]
         primary = enemy.with_name(name + ".cs")
-        if name == "HeavenTabletSealNPC":
+        if name in ("HeavenTabletSealNPC", "CoreArchiveLockNPC"):
             # Puzzle targets have no natural spawn or reward path; ordinary enemies
             # must still pass the existing progression-gated spawn contract below.
             require_text(str(primary.relative_to(ROOT)), "SpawnChance(NPCSpawnInfo spawnInfo) => 0f",

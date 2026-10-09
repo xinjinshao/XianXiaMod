@@ -1,0 +1,12 @@
+Mods: {
+    XianXia: {
+        NPCs: {
+            CoreArchiveLockNPC: {
+                DisplayName: 核心归档锁
+            }
+        }
+        Archives: {
+            BreakLocks: 归档护盾：任意顺序击破四枚归档锁！
+        }
+    }
+}

@@ -114,21 +114,15 @@ public partial class OldHeavenDaoCore
                 ModContent.ProjectileType<global::XianXia.Content.Projectiles.BossArrayFieldProjectile>(), damage, 1.2f, Main.myPlayer);
         }
     }
-    public override void SendExtraAI(BinaryWriter writer) { writer.Write(currentModule); writer.Write(nextModule); writer.Write(moduleDensity); writer.Write(moduleRoute); writer.Write(routeCycle); }
-    public override void ReceiveExtraAI(BinaryReader reader)
-    {
-        byte current = reader.ReadByte(), next = reader.ReadByte(), density = reader.ReadByte(), route = reader.ReadByte(), cycle = reader.ReadByte();
-        invalidModulePacket = current > 2 || next > 2 || density < 1 || density > 3 || route > 3 || cycle > 2;
-        moduleRoute = route <= 3 ? route : (byte)0; routeCycle = cycle <= 2 ? cycle : (byte)0;
-        currentModule = current <= 2 ? current : (byte)0; nextModule = next <= 2 ? next : (byte)0;
-        moduleDensity = density >= 1 && density <= 3 ? density : (byte)1;
-    }
+    public override void SendExtraAI(BinaryWriter writer) { writer.Write(currentModule); writer.Write(nextModule); writer.Write(moduleDensity); writer.Write(moduleRoute); writer.Write(routeCycle); WriteArchiveState(writer); }
+    public override void ReceiveExtraAI(BinaryReader reader) => ReadCoreState(reader);
     public override bool CanHitPlayer(Player target, ref int cooldownSlot) => BossTargeting.HasLivingTarget(NPC)
-        && ValidModuleState() && !moduleFrame && NPC.ai[1] == 0 && NPC.ai[2] >= 0
+        && ValidModuleState() && archiveState != 1 && !(archiveState == 3 && archiveTimer > 0) && !archiveFrame && !moduleFrame && NPC.ai[1] == 0 && NPC.ai[2] >= 0
         && target.active && !target.dead && float.IsFinite(target.Center.X) && float.IsFinite(target.Center.Y)
         && Collision.CanHitLine(NPC.Center, 1, 1, target.Center, 1, 1);
     public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
     {
+        DrawArchiveWarning(spriteBatch, screenPos);
         if (Main.dedServ || !ValidModuleState() || NPC.ai[1] == 0) return true;
         var pixel = TextureAssets.MagicPixel.Value;
         if (currentModule == 0) {
