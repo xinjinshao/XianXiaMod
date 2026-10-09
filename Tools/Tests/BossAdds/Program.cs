@@ -296,4 +296,42 @@ foreach(bool finalAtStart in new[]{false,true}) {
  if(finalAtStart)Check(Projectile.Positions.Last()==bladeInspector.NPC.Center,"Inspector blade releases at frozen boss position");
  var bladeState=bladePacket.ToArray();for(int bladeLength=0;bladeLength<11;bladeLength++) {using var beforeBlade=new MemoryStream();bladeInspector.SendExtraAI(new BinaryWriter(beforeBlade));try{bladeInspector.ReceiveExtraAI(new BinaryReader(new MemoryStream(bladeState[..bladeLength])));throw new Exception("truncated blade packet accepted");}catch(EndOfStreamException){}using var afterBlade=new MemoryStream();bladeInspector.SendExtraAI(new BinaryWriter(afterBlade));Check(beforeBlade.ToArray().SequenceEqual(afterBlade.ToArray()),"Inspector full blade read atomic");}
 }
+
+foreach(int corePhase in new[]{0,1,2})foreach(int coreMode in new[]{0,2}) {
+ Setup();Main.netMode=coreMode;var core=new OldHeavenDaoCore{NPC=Main.npc[0]};core.NPC.Center=new(1000,1000);Main.player[0].Center=new(1200,1000);int coreCooldown=0;
+ for(int coreModule=0;coreModule<3;coreModule++) {
+  core.NPC.ai[2]=(corePhase==0?270:corePhase==1?210:150)-60;Projectile.Shots.Clear();Projectile.Positions.Clear();
+  Vector2 coreLocked=Main.player[0].Center;
+  for(int coreFrame=1;coreFrame<=60;coreFrame++) {
+   Check(core.UpdateCoreModule(Main.player[0],corePhase>=1,corePhase==2),"Core module consumes warning/release frame");
+   Check(core.NPC.ai[1]==60-coreFrame&&!core.CanHitPlayer(Main.player[0],ref coreCooldown)&&core.NPC.velocity==Vector2.Zero,"Core exact warning clock stationary/no contact");
+   Check(core.NPC.ai[0]==coreLocked.X&&core.NPC.ai[3]==coreLocked.Y,"Core module target position remains locked");
+   Check(coreFrame==60||Projectile.Shots.Count==0,"Core no release before full sixty-frame warning");Main.player[0].Center+=new Vector2(1,1);
+  }
+  int expectedCoreCount=coreModule==0?2*(corePhase+1):coreModule==1?(corePhase==0?9:corePhase==1?13:17):1;
+  Check(Projectile.Shots.Count==expectedCoreCount,"Core phase/module exact release counts");
+  if(coreModule==0)Check(Projectile.Positions.All(pos=>pos.Y==coreLocked.Y&&MathF.Abs(pos.X-coreLocked.X)>=112),"Core columns leave central safe corridor");
+  if(coreModule==1){float gapAngle=(coreLocked-core.NPC.Center).ToRotation();Check(Projectile.Shots.All(shot=>MathF.Cos(shot.Velocity.ToRotation()-gapAngle)<MathF.Cos(MathHelper.TwoPi/12)),"Core ring leaves locked sixty-degree direction gap");}
+  if(coreModule==2)Check(Projectile.Positions.Single()==coreLocked,"Core field uses warned point without velocity prediction");
+  using var corePacket=new MemoryStream();core.SendExtraAI(new BinaryWriter(corePacket));Check(corePacket.ToArray().SequenceEqual(new byte[]{(byte)coreModule,(byte)((coreModule+1)%3),(byte)(corePhase+1)}),"Core synchronizes module next module and captured density");
+  int coreShots=Projectile.Shots.Count;
+  for(int coreFrame=1;coreFrame<=45;coreFrame++){Check(core.UpdateCoreModule(Main.player[0],corePhase>=1,corePhase==2)&&core.NPC.ai[2]==-45+coreFrame,"Core exact recovery duration");Check(!core.CanHitPlayer(Main.player[0],ref coreCooldown)&&Projectile.Shots.Count==coreShots,"Core recovery last frame harmless and no stacked casts");}
+  Check(!core.UpdateCoreModule(Main.player[0],corePhase>=1,corePhase==2),"Core resumes ordinary AI after recovery");
+ }
+}
+foreach(bool replaceCorePlayer in new[]{false,true}) {
+ Setup();var core=new OldHeavenDaoCore{NPC=Main.npc[0]};core.NPC.ai[2]=210;core.UpdateCoreModule(Main.player[0],false,false);Projectile.Shots.Clear();
+ if(replaceCorePlayer)Main.player[0]=new();else core.NPC.target=1;
+ Check(core.UpdateCoreModule(Main.player[core.NPC.target],false,false)&&core.NPC.ai.All(value=>value==0)&&core.NPC.netUpdate&&Projectile.Shots.Count==0,"Core target slot/object change cancels before release and restarts interval");
+}
+Setup();var coreWire=new OldHeavenDaoCore{NPC=Main.npc[0]};coreWire.NPC.ai[2]=210;coreWire.UpdateCoreModule(Main.player[0],false,false);
+using(var fullCore=new MemoryStream()) {coreWire.SendExtraAI(new BinaryWriter(fullCore));for(int coreLength=0;coreLength<3;coreLength++){try{coreWire.ReceiveExtraAI(new BinaryReader(new MemoryStream(fullCore.ToArray()[..coreLength])));throw new Exception("truncated core packet accepted");}catch(EndOfStreamException){}using var afterCore=new MemoryStream();coreWire.SendExtraAI(new BinaryWriter(afterCore));Check(fullCore.ToArray().SequenceEqual(afterCore.ToArray()),"Core complete metadata read atomic");}}
+Main.netMode=1;Projectile.Shots.Clear();float coreClientClock=coreWire.NPC.ai[1];for(int coreFrame=0;coreFrame<100;coreFrame++)coreWire.UpdateCoreModule(Main.player[0],false,false);Check(coreWire.NPC.ai[1]==coreClientClock&&Projectile.Shots.Count==0,"Core client waits without advancing or casting");
+Main.dedServ=false;var coreDraw=new Microsoft.Xna.Framework.Graphics.SpriteBatch();coreWire.PreDraw(coreDraw,Vector2.Zero,default);Check(coreDraw.Calls==5,"Core columns preview hazards safe corridor and bar");Main.dedServ=true;
+foreach(float badCoreClock in new[]{float.NaN,float.PositiveInfinity,-1f,61f,0.5f})foreach(int badCoreMode in new[]{0,1,2}) {Setup();Main.netMode=badCoreMode;var core=new OldHeavenDaoCore{NPC=Main.npc[0]};core.NPC.ai[1]=badCoreClock;int coreCooldown=0;Check(core.UpdateCoreModule(Main.player[0],false,false)&&!core.CanHitPlayer(Main.player[0],ref coreCooldown),"Core corrupt module clock harmless");Check(core.NPC.netUpdate==(badCoreMode!=1),"Core corrupt clock repairs only authority");}
+
+Setup();var phaseLockedCore=new OldHeavenDaoCore{NPC=Main.npc[0]};phaseLockedCore.NPC.ai[2]=210;Projectile.Shots.Clear();phaseLockedCore.UpdateCoreModule(Main.player[0],false,false);for(int coreFrame=1;coreFrame<60;coreFrame++)phaseLockedCore.UpdateCoreModule(Main.player[0],true,true);Check(Projectile.Shots.Count==2,"Core phase transition retains warned column density");
+Setup();Main.netMode=1;var invalidRemoteCore=new OldHeavenDaoCore{NPC=Main.npc[0]};invalidRemoteCore.ReceiveExtraAI(new BinaryReader(new MemoryStream(new byte[]{255,255,0})));int invalidCoreCooldown=0;Check(invalidRemoteCore.UpdateCoreModule(Main.player[0],false,false)&&!invalidRemoteCore.CanHitPlayer(Main.player[0],ref invalidCoreCooldown),"Core malformed metadata stays harmless on client");
+invalidRemoteCore.ReceiveExtraAI(new BinaryReader(new MemoryStream(new byte[]{0,0,1})));Check(!invalidRemoteCore.UpdateCoreModule(Main.player[0],false,false),"Core valid later packet restores idle client");
+Main.netMode=0;Collision.Blocked=true;Check(!invalidRemoteCore.CanHitPlayer(Main.player[0],ref invalidCoreCooldown),"Core idle contact respects walls");Collision.Blocked=false;
 Console.WriteLine($"Actual furnace shard spawn hook passed: {checks} checks; native creation/target/network boundaries mocked.");

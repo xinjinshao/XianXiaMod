@@ -302,6 +302,48 @@ public class SummonAuditSystem : ModSystem
                 foreach (NPC puppet in puppets)
                     Check(!puppet.ModNPC.PreAI() && !puppet.active && puppet.damage == 0, "registered puppet source loss despawns without death rewards");
             }
+            for (int corePhase = 0; corePhase < 3; corePhase++) {
+                int coreSlot = NPC.NewNPC(new EntitySource_Misc("XianXiaCoreModuleAudit"), x, y + 48, ModContent.NPCType<OldHeavenDaoCore>());
+                Check(coreSlot >= 0 && coreSlot < Main.maxNPCs, "registered old core created");
+                NPC coreNpc = Main.npc[coreSlot]; owned.Add(coreNpc); coreNpc.target = 0;
+                var core = (OldHeavenDaoCore)coreNpc.ModNPC;
+                coreNpc.life = corePhase == 0 ? coreNpc.lifeMax : coreNpc.lifeMax / (corePhase == 1 ? 2 : 4);
+                void TickCore() {
+                    try { core.AI(); }
+                    finally { ownedProjectiles.AddRange(Main.projectile.Where(projectile => projectile.active && !previousProjectiles.Contains(projectile) && !ownedProjectiles.Contains(projectile))); }
+                }
+                for (int coreModule = 0; coreModule < 3; coreModule++) {
+                    coreNpc.ai[2] = (corePhase == 0 ? 270 : corePhase == 1 ? 210 : 150) - OldHeavenDaoCore.ModuleWarningTicks;
+                    coreNpc.ai[0] = 150; // An ordinary volley is due, but must remain paused during this attack.
+                    Vector2 coreLock = Main.player[0].Center;
+                    var beforeCoreProjectiles = Main.projectile.Where(projectile => projectile.active).ToHashSet();
+                    for (int coreFrame = 1; coreFrame <= 60; coreFrame++) {
+                        TickCore();
+                        Check(coreNpc.ai[1] == 60 - coreFrame && coreNpc.ai[0] == coreLock.X && coreNpc.ai[3] == coreLock.Y, "registered core locked countdown/point");
+                        Check(!core.CanHitPlayer(Main.player[0], ref cooldownSlot) && coreNpc.velocity == Vector2.Zero, "registered core warning freezes/contact blocked");
+                        if (coreFrame < 60) Check(!Main.projectile.Any(projectile => projectile.active && !beforeCoreProjectiles.Contains(projectile)), "registered core no early or ordinary volley");
+                    }
+                    var coreProjectiles = Main.projectile.Where(projectile => projectile.active && !beforeCoreProjectiles.Contains(projectile)).ToArray();
+                    int expectedCore = coreModule == 0 ? 2 * (corePhase + 1) : coreModule == 1 ? new[] { 9, 13, 17 }[corePhase] : 1;
+                    int expectedCoreType = coreModule == 0 ? ModContent.ProjectileType<global::XianXia.Content.Projectiles.TabletJudgmentBeamProjectile>() : coreModule == 1 ? ModContent.ProjectileType<global::XianXia.Content.Projectiles.BossSpiritBoltProjectile>() : ModContent.ProjectileType<global::XianXia.Content.Projectiles.BossArrayFieldProjectile>();
+                    Check(coreProjectiles.Length == expectedCore && coreProjectiles.All(projectile => projectile.type == expectedCoreType), "registered core module sequence and phase density");
+                    if (coreModule == 0) Check(coreProjectiles.All(projectile => projectile.width == 32 && projectile.height == 480 && projectile.Center.Y == coreLock.Y && MathF.Abs(projectile.Center.X - coreLock.X) >= 112), "registered core safe central column corridor");
+                    if (coreModule == 1) {
+                        float gapDirection = (coreLock - coreNpc.Center).SafeNormalize(Vector2.UnitY).ToRotation();
+                        Check(coreProjectiles.All(projectile => MathF.Cos(projectile.velocity.ToRotation() - gapDirection) < MathF.Cos(MathHelper.TwoPi / 12)), "registered core ring sixty degree safe direction");
+                    }
+                    if (coreModule == 2) Check(coreProjectiles.Single().Center == coreLock && coreProjectiles.Single().ModProjectile.CanDamage() == false, "registered core field at warned point starts with its own harmless tell");
+                    for (int coreFrame = 1; coreFrame <= 45; coreFrame++) {
+                        TickCore();
+                        Check(coreNpc.ai[2] == -45 + coreFrame && !core.CanHitPlayer(Main.player[0], ref cooldownSlot), "registered core exact harmless recovery");
+                        Check(Main.projectile.Count(projectile => projectile.active && !beforeCoreProjectiles.Contains(projectile)) == expectedCore, "registered core recovery has no stacked attacks");
+                    }
+                    coreNpc.active = false;
+                    foreach (Projectile coreProjectile in coreProjectiles) { coreProjectile.ModProjectile.AI(); Check(coreProjectile.ModProjectile.CanDamage() == false, "registered core source loss cancels module projectiles"); coreProjectile.active = false; }
+                    coreNpc.active = true;
+                }
+                coreNpc.active = false;
+            }
         }
         catch (Exception exception) { error = exception.ToString(); }
         finally {
@@ -318,7 +360,7 @@ public class SummonAuditSystem : ModSystem
         Directory.CreateDirectory(directory);
         File.WriteAllText(Path.Combine(directory, "summon-audit.json"), JsonSerializer.Serialize(new {
             schema = 1, passed = error == null, checks, error,
-            limitations = "Registered headless AI advanced manually for medicine, tablet and alternating inspector decrees; native player damage and NPC.StrikeNPC verify ordered seals and loot/kill-count suppression. No full engine ticks, graphics, clients, combat balance or complete playthrough."
+            limitations = "Registered headless AI advanced manually for medicine, tablet, alternating inspector decrees and core modules; native player damage and NPC.StrikeNPC verify ordered seals and loot/kill-count suppression. No full engine ticks, graphics, clients, combat balance or complete playthrough."
         }, new JsonSerializerOptions { WriteIndented = true }));
         Mod.Logger.Info($"Summon audit finished: {checks.Count} checks; passed={error == null}");
     }

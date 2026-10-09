@@ -18,7 +18,7 @@ using XianXia.Common.Systems;
 
 namespace XianXia.Content.NPCs.Bosses;
 
-public class OldHeavenDaoCore : ModNPC
+public partial class OldHeavenDaoCore : ModNPC
 
 {
     public override void SetStaticDefaults()
@@ -83,9 +83,6 @@ public class OldHeavenDaoCore : ModNPC
         global::XianXia.Common.Animation.NpcFrameAnimator.Animate(NPC, frameHeight, Main.npcFrameCount[Type], 8);
     }
 
-    public override bool CanHitPlayer(Player target, ref int cooldownSlot) =>
-        global::XianXia.Common.Systems.BossTargeting.HasLivingTarget(NPC) && target.active && !target.dead;
-
     public override void AI()
 
     {
@@ -94,8 +91,8 @@ public class OldHeavenDaoCore : ModNPC
         {
             NPC.velocity = new Vector2(0f, -2f);
             if (Main.netMode != NetmodeID.MultiplayerClient) {
-                bool changed = NPC.ai[0] != 0f || NPC.ai[1] != 0f || NPC.ai[2] != 0f || NPC.timeLeft > 30;
-                NPC.ai[0] = NPC.ai[1] = NPC.ai[2] = 0f;
+                bool changed = NPC.ai[0] != 0f || NPC.ai[1] != 0f || NPC.ai[2] != 0f || NPC.ai[3] != 0f || NPC.timeLeft > 30;
+                ResetModuleClocks(false);
                 if (changed) NPC.netUpdate = true;
                 NPC.EncourageDespawn(30);
             }
@@ -135,6 +132,8 @@ public class OldHeavenDaoCore : ModNPC
                 CombatText.NewText(NPC.Hitbox, Color.OrangeRed, Language.GetTextValue("Mods.XianXia.Progression.BossPhase.DaoScarUnstable"));
 
         }
+
+        if (UpdateCoreModule(target, phaseTwo, finalPhase)) return;
 
         float speed = finalPhase ? 10.5f : phaseTwo ? 8f : 5.5f;
 
@@ -188,85 +187,7 @@ public class OldHeavenDaoCore : ModNPC
 
 
 
-        NPC.ai[2]++;
-
-        int patternInterval = finalPhase ? 150 : phaseTwo ? 210 : 270;
-
-        if (Main.netMode != NetmodeID.MultiplayerClient && NPC.ai[2] >= patternInterval)
-
-        {
-
-            NPC.ai[2] = 0f;
-
-
-
-            int module = (int)NPC.ai[3];
-            NPC.ai[3] = (module + 1) % 3;
-            NPC.netUpdate = true;
-
-            int sDmg = Math.Max(18, NPC.damage / 3);
-
-            if (module == 0) {
-
-                int lanes = finalPhase ? 5 : phaseTwo ? 3 : 1;
-
-                for (int i = 0; i < lanes; i++)
-
-                {
-
-                    float offset = (i - (lanes - 1) / 2f) * 112f;
-
-                    Projectile.NewProjectile(NPC.GetSource_FromAI(), target.Center + new Vector2(offset, 0f), Vector2.Zero,
-
-                        ModContent.ProjectileType<global::XianXia.Content.Projectiles.TribulationWarningLineProjectile>(), sDmg, 1.2f, Main.myPlayer);
-
-                }
-
-            } else if (module == 1) {
-
-                int spokes = finalPhase ? 10 : phaseTwo ? 8 : 6;
-
-                float rot = Main.GameUpdateCount * 0.025f;
-
-                for (int i = 0; i < spokes; i++)
-
-                {
-
-                    Vector2 v = (MathHelper.TwoPi * i / spokes + rot).ToRotationVector2() * (finalPhase ? 8f : 6f);
-
-                    Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center, v,
-
-                        ModContent.ProjectileType<global::XianXia.Content.Projectiles.BossSpiritBoltProjectile>(), sDmg, 1.4f, Main.myPlayer);
-
-                }
-
-            } else {
-
-                Projectile.NewProjectile(NPC.GetSource_FromAI(), target.Center + target.velocity * 16f, Vector2.Zero,
-
-                    ModContent.ProjectileType<global::XianXia.Content.Projectiles.BossArrayFieldProjectile>(), sDmg, 1.2f, Main.myPlayer);
-
-            }
-
-
-
-        }
-
-
-
-        if (finalPhase && NPC.ai[1]++ > 180f)
-
-        {
-
-            NPC.ai[1] = 0f;
-
-            NPC.velocity = desired.SafeNormalize(Vector2.UnitY) * 14f;
-
-        }
-
     }
-
-
 
     public override void OnKill() => DownedBossSystem.MarkDowned("old_heaven_dao_core");
 

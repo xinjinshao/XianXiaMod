@@ -1127,6 +1127,16 @@ try {
  // No NPC registration, world generation, sockets or graphical client is started.
  var terrainMapType=tagType.Assembly.GetType("Terraria.Tilemap",true);
  var terrainTileType=tagType.Assembly.GetType("Terraria.Tile",true);
+
+ var nativeCoreType=type.Assembly.GetType("XianXia.Content.NPCs.Bosses.OldHeavenDaoCore",true);
+ foreach(int coreMode in new[]{0,2})foreach(int corePhase in new[]{0,1,2})foreach(byte coreModule in new byte[]{0,1,2}) {
+  object coreOwner=Activator.CreateInstance(nativeTargetPlayerType);nativeTargetPlayerType.GetField("active").SetValue(coreOwner,true);nativeTargetPlayers.SetValue(coreOwner,0);
+  object coreActor=Activator.CreateInstance(nativeCoreType),coreBody=Activator.CreateInstance(nativeTargetNpcType);nativeCoreType.GetProperty("Entity",BindingFlags.Instance|BindingFlags.Public|BindingFlags.NonPublic).SetValue(coreActor,coreBody);nativeTargetNpcType.GetField("active").SetValue(coreBody,true);nativeTargetNpcType.GetField("lifeMax").SetValue(coreBody,1000);nativeTargetNpcType.GetField("life").SetValue(coreBody,corePhase==0?1000:corePhase==1?500:250);nativeTargetNpcType.GetField("target").SetValue(coreBody,0);var coreAi=(float[])nativeTargetNpcType.GetField("ai").GetValue(coreBody);coreAi[2]=(corePhase==0?270:corePhase==1?210:150)-60;nativeTargetMain.GetField("netMode").SetValue(null,coreMode);
+  nativeCoreType.GetMethod("ReceiveExtraAI").Invoke(coreActor,new object[]{new BinaryReader(new MemoryStream(new byte[]{coreModule,coreModule,1}))});
+  for(int coreFrame=1;coreFrame<60;coreFrame++){nativeCoreType.GetMethod("AI").Invoke(coreActor,null);object[] coreContact={coreOwner,0};Check(coreAi[1]==60-coreFrame&&!(bool)nativeCoreType.GetMethod("CanHitPlayer").Invoke(coreActor,coreContact),"Compiled core three module AI warnings exact/no-contact");}
+  using(var corePreview=new MemoryStream()){nativeCoreType.GetMethod("SendExtraAI").Invoke(coreActor,new object[]{new BinaryWriter(corePreview)});Check(corePreview.ToArray().SequenceEqual(new byte[]{coreModule,coreModule,(byte)(corePhase+1)}),"Compiled core captures module and phase density");}
+  object replacementCoreOwner=Activator.CreateInstance(nativeTargetPlayerType);nativeTargetPlayerType.GetField("active").SetValue(replacementCoreOwner,true);nativeTargetPlayers.SetValue(replacementCoreOwner,0);nativeCoreType.GetMethod("AI").Invoke(coreActor,null);Check(coreAi.All(value=>value==0)&&(bool)nativeTargetNpcType.GetField("netUpdate").GetValue(coreBody),"Compiled core replaced target cancels before release");
+ }
  var terrainMapField=nativeTargetMain.GetField("tile");object oldTerrainMap=terrainMapField.GetValue(null);
  object oldTerrainWidth=nativeSiteWorldWidth.GetValue(null),oldTerrainHeight=nativeSiteWorldHeight.GetValue(null);
  var terrainSolidField=nativeTargetMain.GetField("tileSolid");var terrainTopField=nativeTargetMain.GetField("tileSolidTop");var terrainSolids=(bool[])terrainSolidField.GetValue(null);var terrainTops=(bool[])terrainTopField.GetValue(null);

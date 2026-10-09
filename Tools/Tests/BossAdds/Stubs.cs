@@ -48,3 +48,5 @@ namespace Terraria{public static class CombatText{public static int Calls;public
 namespace Terraria.Localization{public static class Language{public static string GetTextValue(string key)=>key;}}
 
 namespace XianXia.Content.Projectiles{public class InspectorVerdictBladeProjectile{}}
+
+namespace XianXia.Content.NPCs.Bosses{public partial class OldHeavenDaoCore:Terraria.ModLoader.ModNPC{}}
