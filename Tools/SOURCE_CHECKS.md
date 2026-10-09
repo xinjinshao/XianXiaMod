@@ -63,7 +63,7 @@ CI运行只读新鲜度检查，生成结果变化时须显式更新这四份输
 
 ## 原生包内容与默认配置
 
-Native checks另运行PackageContents，使用官方TmodFile打开实际.tmod，核对内部名称、build.txt版本、归档哈希、当前描述及Common/Content/Localization的所有PNG/HJSON（接受官方转换后的rawimg）；拒绝隐藏/越界条目、Assets/Docs/Wiki/Tools/bin/obj/README和源码/工具扩展。它不是读取源码文件名后假定打包正确。默认配置在Gameplay编译产物回归中验证，当前累计1882条。
+Native checks另运行PackageContents，使用官方TmodFile打开实际.tmod，核对内部名称、build.txt版本、归档哈希、当前描述及Common/Content/Localization的所有PNG/HJSON（接受官方转换后的rawimg）；拒绝隐藏/越界条目、Assets/Docs/Wiki/Tools/bin/obj/README和源码/工具扩展。它不是读取源码文件名后假定打包正确。默认配置在Gameplay编译产物回归中验证，当前累计1889条。
 
 ```powershell
 dotnet run --project Tools/Tests/PackageContents/PackageContents.csproj -- <XianXia.tmod路径> <官方引擎目录> <仓库根目录>
@@ -287,3 +287,6 @@ Telegraphs671→793项，增加七类来源失效×三模式、权威槽位复�
 
 
 第147轮藤灵出生点检查完整48×48身体，按NewNPC水平中心/底部参数计算topLeft，并保留16像素世界边距；每只至多12个预告区域内随机候选，拒绝SolidCollision和LavaCollision，全部失败不创建/不计成功，下轮完整预警后补缺额。越界/非有限位置拒绝并保留零输出，不访问非法地形，也不移出青色预告区。BossAdds11492→11514新增22项实心/熔岩、12次上限、阻塞恢复后配额、完整身体调用参数、精确世界边界与后续安全候选；原藤灵配额夹具由世界原点移到正常场地，原64项断言保留。Gameplay1877→1882新增5项实际编译越界/非有限位置在无世界状态拒绝，临时尺寸字段验证后恢复。
+
+
+第148轮官方引擎100×100隔离Tilemap验证发现SolidCollision默认重载跳过平台表面，藤灵完整身体检查改用acceptTopSurfaces:true，防止出生体嵌入平台。Gameplay1882→1889新增7项调用实际模组选点函数/官方碰撞API：空地接受、实心块/熔岩/平台拒绝、水域允许、清空后恢复，以及默认重载确实漏平台的直接证据。Tilemap/世界尺寸/碰撞类型标记在隔离进程内暂设，场景检查后恢复字段；未生成完整世界或注册创建NPC。BossAdds11514→11515补平台参数传递检查。

@@ -1023,6 +1023,45 @@ try {
    Check(!(bool)compiledVineSite.Invoke(siteBoss,siteArgs)&&(int)siteArgs[0]==0&&(int)siteArgs[1]==0,"Compiled vine out-of-world/nonfinite body rejects before headless terrain access");
   }
  } finally {nativeSiteWorldWidth.SetValue(null,previousSiteWidth);nativeSiteWorldHeight.SetValue(null,previousSiteHeight);}
+ // An isolated 100x100 Tilemap exercises the official solid/liquid collision code.
+ // No NPC registration, world generation, sockets or graphical client is started.
+ var terrainMapType=tagType.Assembly.GetType("Terraria.Tilemap",true);
+ var terrainTileType=tagType.Assembly.GetType("Terraria.Tile",true);
+ var terrainMapField=nativeTargetMain.GetField("tile");object oldTerrainMap=terrainMapField.GetValue(null);
+ object oldTerrainWidth=nativeSiteWorldWidth.GetValue(null),oldTerrainHeight=nativeSiteWorldHeight.GetValue(null);
+ var terrainSolidField=nativeTargetMain.GetField("tileSolid");var terrainTopField=nativeTargetMain.GetField("tileSolidTop");var terrainSolids=(bool[])terrainSolidField.GetValue(null);var terrainTops=(bool[])terrainTopField.GetValue(null);
+ bool oldDirtSolid=terrainSolids[0],oldPlatformSolid=terrainSolids[19],oldPlatformTop=terrainTops[19];
+ var terrainCtor=terrainMapType.GetConstructors(BindingFlags.Instance|BindingFlags.Public|BindingFlags.NonPublic).Single(c=>c.GetParameters().Length==2);
+ object terrainMap=terrainCtor.Invoke(new object[]{(ushort)100,(ushort)100});var terrainClear=terrainMapType.GetMethod("ClearEverything");
+ var terrainIndexer=terrainMapType.GetProperties().Single(p=>p.GetIndexParameters().Length==2&&p.GetIndexParameters()[0].ParameterType==typeof(int));
+ var terrainAmountSetter=new System.Reflection.Emit.DynamicMethod("SetTerrainLiquid",null,new[]{typeof(object),typeof(byte)},typeof(Program).Module,true);
+ var terrainIL=terrainAmountSetter.GetILGenerator();terrainIL.Emit(System.Reflection.Emit.OpCodes.Ldarg_0);terrainIL.Emit(System.Reflection.Emit.OpCodes.Unbox,terrainTileType);terrainIL.Emit(System.Reflection.Emit.OpCodes.Call,terrainTileType.GetProperty("LiquidAmount").GetMethod);terrainIL.Emit(System.Reflection.Emit.OpCodes.Ldarg_1);terrainIL.Emit(System.Reflection.Emit.OpCodes.Stind_I1);terrainIL.Emit(System.Reflection.Emit.OpCodes.Ret);
+ var terrainSetAmount=(Action<object,byte>)terrainAmountSetter.CreateDelegate(typeof(Action<object,byte>));
+ object terrainBoss=Activator.CreateInstance(nativeMedicineType),terrainNpc=Activator.CreateInstance(nativeTargetNpcType);nativeMedicineType.GetProperty("Entity",BindingFlags.Instance|BindingFlags.Public|BindingFlags.NonPublic).SetValue(terrainBoss,terrainNpc);nativeTargetNpcType.GetProperty("Center").SetValue(terrainNpc,Activator.CreateInstance(nativeTargetVectorType,new object[]{800f,800f}));
+ bool TerrainSite(){object[] spawnArgs={0,0};return (bool)compiledVineSite.Invoke(terrainBoss,spawnArgs);}
+ try {
+  terrainMapField.SetValue(null,terrainMap);nativeSiteWorldWidth.SetValue(null,100);nativeSiteWorldHeight.SetValue(null,100);terrainSolids[0]=terrainSolids[19]=terrainTops[19]=true;
+  terrainClear.Invoke(terrainMap,null);Check(TerrainSite(),"Official engine accepts empty vine spawn body in a real isolated Tilemap");
+  foreach(int terrainKind in new[]{0,1,2,3}) {
+   terrainClear.Invoke(terrainMap,null);
+   for(int tileX=35;tileX<=65;tileX++)for(int tileY=35;tileY<=55;tileY++) {
+    object tile=terrainIndexer.GetValue(terrainMap,new object[]{tileX,tileY});
+    if(terrainKind==0||terrainKind==3)terrainTileType.GetMethod("ResetToType").Invoke(tile,new object[]{(ushort)(terrainKind==0?0:19)});
+    else {terrainSetAmount(tile,255);terrainTileType.GetProperty("LiquidType").SetValue(tile,terrainKind==1?1:0);}
+   }
+   if(terrainKind==3) {
+    var engineCollision=tagType.Assembly.GetType("Terraria.Collision",true);
+    var looseCollision=engineCollision.GetMethod("SolidCollision",new[]{nativeTargetVectorType,typeof(int),typeof(int)});
+    object platformBody=Activator.CreateInstance(nativeTargetVectorType,new object[]{776f,692f});
+    Check(!(bool)looseCollision.Invoke(null,new[]{platformBody,(object)48,48}),"Official default collision overload skips platform surfaces, proving strict vine check is necessary");
+   }
+   Check(TerrainSite()==(terrainKind==2),"Official engine vine collision rejects dirt/lava/platforms while allowing water: "+terrainKind);
+  }
+  terrainClear.Invoke(terrainMap,null);Check(TerrainSite(),"Official engine accepts cleared terrain after all obstructed candidates");
+ } finally {
+  terrainSolids[0]=oldDirtSolid;terrainSolids[19]=oldPlatformSolid;terrainTops[19]=oldPlatformTop;
+  terrainMapField.SetValue(null,oldTerrainMap);nativeSiteWorldWidth.SetValue(null,oldTerrainWidth);nativeSiteWorldHeight.SetValue(null,oldTerrainHeight);
+ }
 } finally {
  nativeTargetMain.GetField("player").SetValue(null,nativeTargetOldPlayers);
  nativeTargetMain.GetField("netMode").SetValue(null,nativeTargetOldMode);

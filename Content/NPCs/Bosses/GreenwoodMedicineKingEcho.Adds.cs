@@ -39,7 +39,7 @@ public partial class GreenwoodMedicineKingEcho
             int candidateX = (int)candidate;
             // NewNPC takes horizontal center and bottom: validate the full 48x48 body.
             Vector2 topLeft = new(candidateX - 24f, candidateY - 48f);
-            if (Collision.SolidCollision(topLeft, 48, 48) || Collision.LavaCollision(topLeft, 48, 48)) continue;
+            if (Collision.SolidCollision(topLeft, 48, 48, acceptTopSurfaces: true) || Collision.LavaCollision(topLeft, 48, 48)) continue;
             x = candidateX; y = candidateY; return true;
         }
         return false; // Stay inside the telegraphed area; a later pattern can retry elsewhere.
