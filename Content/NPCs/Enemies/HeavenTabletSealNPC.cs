@@ -30,7 +30,7 @@ public class HeavenTabletSealNPC : ModNPC
     {
         NPC.width = NPC.height = 40; NPC.lifeMax = 1200; NPC.defense = 12; NPC.damage = 0; NPC.value = 0;
         NPC.noGravity = true; NPC.noTileCollide = true; NPC.knockBackResist = 0; NPC.aiStyle = -1;
-        NPC.dontTakeDamage = true; NPC.npcSlots = 0;
+        NPC.dontTakeDamage = NPC.immortal = true; NPC.npcSlots = 0;
     }
     public override void ApplyDifficultyAndPlayerScaling(int numPlayers, float balance, float bossAdjustment)
         => NPC.lifeMax = BossStatRules.ScaleLife(NPC.lifeMax, balance, bossAdjustment);
@@ -70,7 +70,7 @@ public class HeavenTabletSealNPC : ModNPC
         NPC.damage = 0; NPC.velocity = Vector2.Zero;
         HeavenTabletGuardian parent = Parent;
         if (parent == null || order > 3 || remaining <= 0) {
-            NPC.dontTakeDamage = true;
+            NPC.dontTakeDamage = NPC.immortal = true;
             if (Main.netMode != NetmodeID.MultiplayerClient && NPC.active) {
                 NPC.active = false;
                 if (Main.netMode == NetmodeID.Server) NetMessage.SendData(MessageID.SyncNPC, number: NPC.whoAmI);
@@ -79,7 +79,7 @@ public class HeavenTabletSealNPC : ModNPC
         }
         Vector2 offset = order switch { 0 => new(0, -160), 1 => new(160, 0), 2 => new(0, 160), _ => new(-160, 0) };
         NPC.Center = parent.NPC.Center + offset;
-        NPC.dontTakeDamage = !Vulnerable;
+        NPC.dontTakeDamage = NPC.immortal = !Vulnerable;
         if (Main.netMode == NetmodeID.MultiplayerClient) return;
         NPC.target = parent.NPC.target;
         remaining--;

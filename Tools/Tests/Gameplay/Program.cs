@@ -1072,6 +1072,14 @@ try {
  byte[] nativeFullSeal=NativeSealPacket();Check(nativeFullSeal.Length==13,"Compiled seal binding/order/lifetime protocol thirteen bytes");
  for(int length=0;length<13;length++){try{nativeSealType.GetMethod("ReceiveExtraAI").Invoke(nativeTabletSealMark,new object[]{new BinaryReader(new MemoryStream(nativeFullSeal[..length]))});throw new Exception("Compiled mark accepted truncated packet");}catch(TargetInvocationException ex)when(ex.InnerException is EndOfStreamException){}Check(NativeSealPacket().SequenceEqual(nativeFullSeal),"Compiled seal truncation preserves binding atomically");}
  foreach(int orphanMode in new[]{0,1}){nativeTargetMain.GetField("netMode").SetValue(null,orphanMode);nativeTargetNpcType.GetField("active").SetValue(nativeSealNpc,true);nativeTargetNpcType.GetField("life").SetValue(nativeSealNpc,100);nativeSealType.GetMethod("AI").Invoke(nativeTabletSealMark,null);Check((bool)nativeTargetNpcType.GetField("active").GetValue(nativeSealNpc)==(orphanMode==1),"Compiled orphan seal authority cleanup/client harmless wait");object[] sealContact={nativeSealOwner,0};Check(!(bool)nativeSealType.GetMethod("CanHitPlayer").Invoke(nativeTabletSealMark,sealContact),"Compiled seal never deals contact damage");}
+
+ // Received shield state must protect low-level damage, then restore vulnerability.
+ foreach(bool shieldOn in new[]{true,false}) {
+  using var wire=new MemoryStream();using(var writer=new BinaryWriter(wire,System.Text.Encoding.UTF8,true)){writer.Write((byte)1);writer.Write(1L);writer.Write((byte)(shieldOn?2:3));writer.Write((short)(shieldOn?1800:45));writer.Write((byte)(shieldOn?0:4));for(short index=1;index<=4;index++)writer.Write(index);}
+  wire.Position=0;nativeTabletType.GetMethod("ReceiveExtraAI").Invoke(nativeSealBoss,new object[]{new BinaryReader(wire)});
+  Check((bool)nativeTargetNpcType.GetField("dontTakeDamage").GetValue(nativeSealParent)==shieldOn&&(bool)nativeTargetNpcType.GetField("immortal").GetValue(nativeSealParent)==shieldOn,"Compiled shield packet synchronizes both native protection flags");
+ }
+ nativeSealType.GetMethod("SetDefaults").Invoke(nativeTabletSealMark,null);Check((bool)nativeTargetNpcType.GetField("immortal").GetValue(nativeSealNpc),"Compiled seal starts protected against low-level native strikes");
  // An isolated 100x100 Tilemap exercises the official solid/liquid collision code.
  // No NPC registration, world generation, sockets or graphical client is started.
  var terrainMapType=tagType.Assembly.GetType("Terraria.Tilemap",true);

@@ -53,20 +53,20 @@ public partial class HeavenTabletGuardian
     private void FinishSeals()
     {
         RemoveSealEntities(); sealState = 3; sealTimer = SealRecoveryTicks; sealPlayer = null;
-        NPC.dontTakeDamage = false; NPC.velocity = Vector2.Zero;
+        NPC.dontTakeDamage = NPC.immortal = false; NPC.velocity = Vector2.Zero;
         NPC.ai[0] = NPC.ai[1] = NPC.ai[2] = NPC.ai[3] = 0; NPC.netUpdate = true;
         judgmentTarget = -1; judgmentPlayer = null;
     }
     private void AbandonSeals()
     {
         RemoveSealEntities(); sealState = 3; sealTimer = 0; sealPlayer = null;
-        NPC.dontTakeDamage = false;
+        NPC.dontTakeDamage = NPC.immortal = false;
     }
     internal bool UpdateTabletSeals(Player target, bool phaseTwo, bool finalPhase)
     {
         sealFrame = false;
         if (Main.netMode == NetmodeID.MultiplayerClient) {
-            NPC.dontTakeDamage = sealState == 2;
+            NPC.dontTakeDamage = NPC.immortal = sealState == 2;
             sealFrame = sealState == 1 || (sealState == 3 && sealTimer > 0);
             if (sealFrame) NPC.velocity = Vector2.Zero;
             return sealFrame;
@@ -76,11 +76,11 @@ public partial class HeavenTabletGuardian
             NPC.ai[0] = NPC.ai[1] = NPC.ai[2] = NPC.ai[3] = 0; NPC.netUpdate = true;
         }
         if (sealState == 1) {
-            sealFrame = true; NPC.velocity = Vector2.Zero; NPC.dontTakeDamage = false;
+            sealFrame = true; NPC.velocity = Vector2.Zero; NPC.dontTakeDamage = NPC.immortal = false;
             if (!ReferenceEquals(target, sealPlayer)) { FinishSeals(); return true; }
             if (--sealTimer > 0) { if (sealTimer % 15 == 0) NPC.netUpdate = true; return true; }
             if (!CreateSeals()) { FinishSeals(); return true; }
-            sealState = 2; sealTimer = SealShieldTicks; NPC.dontTakeDamage = true; NPC.netUpdate = true;
+            sealState = 2; sealTimer = SealShieldTicks; NPC.dontTakeDamage = NPC.immortal = true; NPC.netUpdate = true;
             return true;
         }
         if (sealState == 2) {
@@ -91,12 +91,12 @@ public partial class HeavenTabletGuardian
                     && ReferenceEquals(seal.NPC.ModNPC, seal) && seal.MatchesParent(this, order);
             }
             if (!intact || --sealTimer <= 0) { sealFrame = true; FinishSeals(); return true; }
-            NPC.dontTakeDamage = true;
+            NPC.dontTakeDamage = NPC.immortal = true;
             if (sealTimer % 60 == 0) NPC.netUpdate = true;
             return false; // Judgment continues while the player breaks the ordered seals.
         }
         if (sealState == 3 && sealTimer > 0) {
-            sealFrame = true; NPC.velocity = Vector2.Zero; NPC.dontTakeDamage = false;
+            sealFrame = true; NPC.velocity = Vector2.Zero; NPC.dontTakeDamage = NPC.immortal = false;
             if (--sealTimer == 0) NPC.netUpdate = true;
             return true;
         }
@@ -150,7 +150,7 @@ public partial class HeavenTabletGuardian
         judgmentRows = rows; sealSession = session > 0 ? session : 0;
         sealState = valid ? state : (byte)3; sealTimer = valid ? timer : (short)0; nextSeal = valid ? next : (byte)4;
         for (int i = 0; i < 4; i++) sealSlots[i] = slots[i] >= 0 && slots[i] < Main.maxNPCs ? slots[i] : (short)-1;
-        NPC.dontTakeDamage = valid && state == 2;
+        NPC.dontTakeDamage = NPC.immortal = valid && state == 2;
     }
     private void DrawSealWarning(SpriteBatch spriteBatch, Vector2 screenPos)
     {

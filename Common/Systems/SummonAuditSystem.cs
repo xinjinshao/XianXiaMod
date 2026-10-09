@@ -32,6 +32,7 @@ public class SummonAuditSystem : ModSystem
         var owned = new List<NPC>();
         var ownedProjectiles = new List<Projectile>();
         var previousProjectiles = Main.projectile.Where(projectile => projectile.active).ToHashSet();
+        var previousItems = Main.item.Where(item => item?.active == true).ToHashSet();
         Player original = Main.player[0];
         string error = null;
         void Check(bool value, string name) {
@@ -159,6 +160,10 @@ public class SummonAuditSystem : ModSystem
                     NPC[] marks = Main.npc.Where(npc => npc.active && npc.ModNPC is HeavenTabletSealNPC)
                         .OrderBy(npc => npc.ai[1]).ToArray();
                     Check(marks.Length == 4, "four registered ordered seals");
+                    int protectedLife = tabletNpc.life;
+                    Main.player[0].ApplyDamageToNPC(tabletNpc, 100, 0, 1, false, DamageClass.Generic);
+                    Check(tabletNpc.life == protectedLife, "native player damage respects boss shield");
+                    int previousKillCount = NPC.killCount[marks[0].type];
                     foreach (NPC mark in marks) {
                         Check(mark.width == 40 && mark.height == 40 && mark.damage == 0 && mark.value == 0,
                             "registered seal body and no contact/coin rewards");
@@ -166,13 +171,33 @@ public class SummonAuditSystem : ModSystem
                         Check(wire.Length == 13, "registered seal binding and lifetime packet");
                     }
                     for (int order = 0; order < 4; order++) {
-                        foreach (NPC mark in marks.Where(npc => npc.active))
+                        foreach (NPC mark in marks.Where(npc => npc.active)) {
+                            mark.ModNPC.AI();
                             Check(mark.ModNPC.CanBeHitByItem(Main.player[0], new Item()) == (mark == marks[order]),
                                 $"only seal {order} accepts hits");
-                        NPC current = marks[order]; current.life = 0;
-                        Check(!current.ModNPC.CheckDead() && !current.active, $"seal {order} consumed without death hooks");
+                            Check(mark.dontTakeDamage == (mark != marks[order]), $"seal {order} native immunity flag");
+                            Check(mark.immortal == (mark != marks[order]), $"seal {order} native low-level damage protection");
+                            if (mark != marks[order]) {
+                                int protectedMarkLife = mark.life;
+                                Main.player[0].ApplyDamageToNPC(mark, 100, 0, 1, false, DamageClass.Generic);
+                                Check(mark.life == protectedMarkLife, $"wrong seal protected from native player damage {order}");
+                            }
+                        }
+                        NPC current = marks[order];
+                        int readyLife = current.life;
+                        Main.player[0].ApplyDamageToNPC(current, 100, 0, 1, false, DamageClass.Generic);
+                        Check(current.life < readyLife && current.active, $"current seal {order} accepts native player damage");
+                        int previousLife = current.life;
+                        int applied = current.StrikeNPC(new NPC.HitInfo { Damage = previousLife + 100, HitDirection = 1 }, noPlayerInteraction: true);
+                        Check(applied > 0 && !current.active, $"seal {order} native strike consumes ordered mark");
+                        Check(NPC.killCount[current.type] == previousKillCount, "native seal strike does not increment kill count");
+                        Check(!Main.item.Any(item => item?.active == true && !previousItems.Contains(item)),
+                            "native seal strike creates no loot items");
                         Check(tabletNpc.dontTakeDamage == (order < 3), $"shield breaks after last ordered seal {order}");
                     }
+                    int unlockedLife = tabletNpc.life;
+                    Main.player[0].ApplyDamageToNPC(tabletNpc, 100, 0, 1, false, DamageClass.Generic);
+                    Check(tabletNpc.life < unlockedLife && !tabletNpc.immortal, "native player damage resumes after shield breaks");
                     for (int frame = 1; frame <= HeavenTabletGuardian.SealRecoveryTicks; frame++) {
                         TickTablet(); Check(!tablet.CanHitPlayer(Main.player[0], ref cooldownSlot), $"seal recovery safe {frame}");
                     }
@@ -218,6 +243,7 @@ public class SummonAuditSystem : ModSystem
         finally {
             foreach (NPC npc in owned) { npc.damage = 0; npc.active = false; }
             foreach (Projectile projectile in ownedProjectiles) { projectile.damage = 0; projectile.active = false; }
+            foreach (Item item in Main.item.Where(item => item?.active == true && !previousItems.Contains(item))) item.active = false;
             Main.player[0] = original;
         }
         if (!ReferenceEquals(Main.player[0], original) || owned.Any(npc => npc.active)
@@ -228,7 +254,7 @@ public class SummonAuditSystem : ModSystem
         Directory.CreateDirectory(directory);
         File.WriteAllText(Path.Combine(directory, "summon-audit.json"), JsonSerializer.Serialize(new {
             schema = 1, passed = error == null, checks, error,
-            limitations = "Registered headless AI/hit/death hooks advanced manually: medicine summons, ordered tablet seals and three-phase judgment. No full engine ticks, graphics, clients, combat balance or complete playthrough."
+            limitations = "Registered headless AI advanced manually; native player damage and NPC.StrikeNPC verify ordered seals and loot/kill-count suppression. No full engine ticks, graphics, clients, combat balance or complete playthrough."
         }, new JsonSerializerOptions { WriteIndented = true }));
         Mod.Logger.Info($"Summon audit finished: {checks.Count} checks; passed={error == null}");
     }
