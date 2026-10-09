@@ -65,11 +65,12 @@ public partial class GreenwoodMedicineKingEcho
         return true;
     }
     public override bool CanHitPlayer(Player target, ref int cooldownSlot) => BossTargeting.HasLivingTarget(NPC)
-        && ValidRitualState() && !ritualFrame && NPC.ai[1] >= 0f
+        && ValidRitualState() && ValidVineSummonState() && !summonFrame && NPC.ai[3] == 0f && !ritualFrame && NPC.ai[1] >= 0f
         && target.active && !target.dead && float.IsFinite(target.Center.X) && float.IsFinite(target.Center.Y)
         && Collision.CanHitLine(NPC.Center, 1, 1, target.Center, 1, 1);
     public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
     {
+        DrawVineSummon(spriteBatch, screenPos);
         if (Main.dedServ || !ValidRitualState() || NPC.ai[1] >= 0f || NPC.ai[1] < -RitualWarningTicks
             || !float.IsFinite(NPC.Center.X) || !float.IsFinite(NPC.Center.Y)) return true;
         Vector2 start = NPC.Center - screenPos + new Vector2(-50f, -NPC.height / 2f - 12f);

@@ -13,11 +13,10 @@ public partial class GreenwoodMedicineKingEcho
     {
         if (Main.netMode == NetmodeID.MultiplayerClient || !BossTargeting.HasLivingTarget(NPC)) return;
         int type = ModContent.NPCType<global::XianXia.Content.NPCs.Enemies.HerbGardenVineSpirit>();
-        Player target = Main.player[NPC.target];
         while (vineSummonsCreated < VineSummonQuota) {
             int index = Terraria.NPC.NewNPC(NPC.GetSource_FromAI(),
-                (int)target.Center.X + Main.rand.Next(-120, 121),
-                (int)target.Center.Y - 60, type, ai0: NPC.whoAmI);
+                (int)NPC.Center.X + Main.rand.Next(-120, 121),
+                (int)NPC.Center.Y - 60, type, ai0: NPC.whoAmI);
             if (index < 0 || index >= Main.maxNPCs || index == NPC.whoAmI) break;
             NPC created = Main.npc[index];
             if (created == null || !created.active || created.life <= 0 || created.type != type) break;

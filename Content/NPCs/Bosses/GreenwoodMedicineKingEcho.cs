@@ -92,7 +92,8 @@ public partial class GreenwoodMedicineKingEcho : ModNPC
             NPC.velocity = new Vector2(0f, -2f);
             if (Main.netMode != NetmodeID.MultiplayerClient) {
                 bool changed = NPC.ai[0] != 0f || NPC.ai[1] != 0f || NPC.ai[2] != 0f || NPC.timeLeft > 30;
-                NPC.ai[0] = NPC.ai[1] = NPC.ai[2] = 0f;
+                NPC.ai[0] = NPC.ai[1] = NPC.ai[2] = NPC.ai[3] = 0f;
+                summonTarget = -1; summonPlayer = null;
                 if (changed) NPC.netUpdate = true;
                 NPC.EncourageDespawn(30);
             }
@@ -133,7 +134,10 @@ public partial class GreenwoodMedicineKingEcho : ModNPC
 
         }
 
+        if (UpdateVineSummon(target)) return;
         if (UpdateMedicineRitual(target, phaseTwo)) return;
+        int patternInterval = finalPhase ? 150 : phaseTwo ? 210 : 270;
+        if (phaseTwo && NPC.ai[2] >= patternInterval - 1 && BeginVineSummon(target)) return;
 
         float speed = finalPhase ? 10.5f : phaseTwo ? 8f : 5.5f;
 
@@ -189,8 +193,6 @@ public partial class GreenwoodMedicineKingEcho : ModNPC
 
         NPC.ai[2]++;
 
-        int patternInterval = finalPhase ? 150 : phaseTwo ? 210 : 270;
-
         if (Main.netMode != NetmodeID.MultiplayerClient && NPC.ai[2] >= patternInterval)
 
         {
@@ -200,8 +202,6 @@ public partial class GreenwoodMedicineKingEcho : ModNPC
 
 
             int fDmg = Math.Max(18, NPC.damage / 4);
-
-            if (phaseTwo) SpawnVineAdds();
 
             Projectile.NewProjectile(NPC.GetSource_FromAI(), target.Center + target.velocity * 16f, Vector2.Zero,
 

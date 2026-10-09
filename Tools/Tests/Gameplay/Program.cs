@@ -1005,6 +1005,15 @@ try {
  nativeTargetMain.GetField("netMode").SetValue(null,0);nativeVineBindingType.GetMethod("PreAI").Invoke(nativeVineBinding,null);
  Check(!(bool)nativeTargetNpcType.GetField("active").GetValue(nativeVineBindingNpc)&&(int)nativeTargetNpcType.GetField("damage").GetValue(nativeVineBindingNpc)==0,"Compiled invalid source despawns on authority");
  nativeVineBindingType.GetMethod("PostAI").Invoke(nativeVineBinding,null);Check(!(bool)nativeTargetNpcType.GetField("netUpdate").GetValue(nativeVineBindingNpc),"Compiled PostAI stops after source cleanup");
+ var nativeVineBegin=nativeMedicineType.GetMethod("BeginVineSummon",BindingFlags.Instance|BindingFlags.NonPublic);
+ var nativeVineUpdate=nativeMedicineType.GetMethod("UpdateVineSummon",BindingFlags.Instance|BindingFlags.NonPublic);
+ foreach(int previewMode in new[]{0,2}) {
+  object previewOwner=Activator.CreateInstance(nativeTargetPlayerType);nativeTargetPlayerType.GetField("active").SetValue(previewOwner,true);nativeTargetPlayers.SetValue(previewOwner,0);
+  object previewBoss=Activator.CreateInstance(nativeMedicineType),previewNpc=Activator.CreateInstance(nativeTargetNpcType);nativeMedicineType.GetProperty("Entity",BindingFlags.Instance|BindingFlags.Public|BindingFlags.NonPublic).SetValue(previewBoss,previewNpc);nativeTargetNpcType.GetField("active").SetValue(previewNpc,true);nativeTargetNpcType.GetField("life").SetValue(previewNpc,100);nativeTargetNpcType.GetField("target").SetValue(previewNpc,0);nativeTargetMain.GetField("netMode").SetValue(null,previewMode);
+  Check((bool)nativeVineBegin.Invoke(previewBoss,new[]{previewOwner}),"Compiled medicine summon begins warning before native creation");
+  for(int previewTick=1;previewTick<44;previewTick++){nativeVineUpdate.Invoke(previewBoss,new[]{previewOwner});object[] hitArgs={previewOwner,0};Check(!(bool)nativeMedicineType.GetMethod("CanHitPlayer").Invoke(previewBoss,hitArgs),"Compiled medicine summon warning denies contact");}
+  object changedPreviewOwner=Activator.CreateInstance(nativeTargetPlayerType);nativeTargetPlayerType.GetField("active").SetValue(changedPreviewOwner,true);nativeTargetPlayers.SetValue(changedPreviewOwner,0);nativeVineUpdate.Invoke(previewBoss,new[]{changedPreviewOwner});Check(((float[])nativeTargetNpcType.GetField("ai").GetValue(previewNpc))[3]==-30&&(bool)nativeTargetNpcType.GetField("netUpdate").GetValue(previewNpc),"Compiled medicine target replacement cancels spawn and synchronizes recovery");
+ }
 } finally {
  nativeTargetMain.GetField("player").SetValue(null,nativeTargetOldPlayers);
  nativeTargetMain.GetField("netMode").SetValue(null,nativeTargetOldMode);
