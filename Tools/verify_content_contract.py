@@ -327,6 +327,14 @@ def main() -> None:
     for source in (ROOT / "Content/Items/Accessories").glob("*.cs"):
         require_text(str(source.relative_to(ROOT)), "Item.ResearchUnlockCount = 1")
     require_text("Content/Items/Weapons/OldHeavenDaoScroll.cs", "Item.ResearchUnlockCount = 25")
+    # Main and secondary materials must be distinct in both difficulty paths.
+    for loot_path in ("Content/NPCs/Bosses/ThunderMarshJiao.cs",
+                      "Content/Items/TreasureBags/ThunderMarshJiaoBag.cs"):
+        require_text(loot_path,
+                     "Items.Materials.TribulationCloudDew>(), 1, 16, 28)",
+                     "Items.HandGenerated.ThunderPatternFeather>(), 1, 8, 16)")
+        loot_source = (ROOT / loot_path).read_text(encoding="utf-8")
+        assert loot_source.count("ItemType<global::XianXia.Content.Items.Materials.TribulationCloudDew>") == 1, loot_path
     print("Content contract verified.")
 
 
