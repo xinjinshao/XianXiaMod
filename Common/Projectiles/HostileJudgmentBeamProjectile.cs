@@ -12,15 +12,17 @@ public abstract class HostileJudgmentBeamProjectile : ModProjectile
 {
     protected virtual int BeamWidth => 32;
     protected virtual int BeamHeight => 480;
+    protected virtual int PhysicalWidth => BeamWidth;
+    protected virtual int PhysicalHeight => BeamHeight;
     protected virtual Color BeamColor => Color.Cyan;
     public const int Lifetime = 30, CancellationFade = 6;
     private readonly HostileSourceBinding sourceBinding = new();
     private bool invalidState;
     private bool ValidGeometry() => float.IsFinite(Projectile.Center.X) && float.IsFinite(Projectile.Center.Y)
-        && Projectile.velocity == Vector2.Zero && Projectile.width == BeamWidth && Projectile.height == BeamHeight;
+        && Projectile.velocity == Vector2.Zero && Projectile.width == PhysicalWidth && Projectile.height == PhysicalHeight;
     public override void SetDefaults()
     {
-        Projectile.width = BeamWidth; Projectile.height = BeamHeight;
+        Projectile.width = PhysicalWidth; Projectile.height = PhysicalHeight;
         Projectile.hostile = true; Projectile.friendly = false; Projectile.penetrate = -1;
         Projectile.timeLeft = Lifetime; Projectile.tileCollide = false; Projectile.ignoreWater = true;
         Projectile.netImportant = true;
