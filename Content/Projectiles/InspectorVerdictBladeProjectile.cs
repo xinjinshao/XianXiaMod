@@ -8,5 +8,7 @@ public class InspectorVerdictBladeProjectile : HostileJudgmentBeamProjectile
     public override string Texture => "XianXia/Content/Projectiles/SpiritBolt";
     protected override int BeamWidth => 160;
     protected override int BeamHeight => 48;
+    protected override int PhysicalWidth => 32;
+    protected override int PhysicalHeight => 32;
     protected override Color BeamColor => Color.OrangeRed;
 }

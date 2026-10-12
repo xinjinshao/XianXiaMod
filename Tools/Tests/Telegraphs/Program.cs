@@ -149,7 +149,7 @@ Main.netMode=0;Main.dedServ=false;Main.spriteBatch.Boxes.Clear();Main.screenPosi
 foreach(int bladeMode in new[]{0,1,2}) {
  Main.netMode=bladeMode;Main.player=[new(),new()];Main.npc=Enumerable.Range(0,Main.maxNPCs).Select(i=>new NPC{whoAmI=i,active=false}).ToArray();var bladeParent=Main.npc[3];bladeParent.active=true;
  var blade=new InspectorVerdictBladeProjectile();blade.SetDefaults();blade.OnSpawn(new Terraria.DataStructures.EntitySource_Parent(bladeParent));
- Check(blade.Projectile.width==160&&blade.Projectile.height==48&&blade.Projectile.timeLeft==30,"Verdict blade exact close range body/lifetime");Check(blade.CanDamage()==true,"Verdict blade valid source");
+ Check(blade.Projectile.width==32&&blade.Projectile.height==32&&blade.Projectile.timeLeft==30,"Verdict blade physical anchor/lifetime");Check(blade.CanDamage()==true,"Verdict blade valid source");
  Collision.Blocked=true;Check(!blade.CanHitPlayer(new Player()),"Verdict blade walls block harm");Collision.Blocked=false;
  bladeParent.active=false;blade.AI();Check(blade.CanDamage()==false,"Verdict blade source loss harmless");using var bladeWire=new MemoryStream();blade.SendExtraAI(new BinaryWriter(bladeWire));Check(bladeWire.Length==19,"Verdict blade shared source packet");
 }
@@ -157,7 +157,7 @@ Main.netMode=0;Main.dedServ=false;Main.spriteBatch.Boxes.Clear();Main.screenPosi
 
 foreach(int coreBladeMode in new[]{0,1,2}) {
  Main.netMode=coreBladeMode;Main.player=[new(),new()];Main.npc=Enumerable.Range(0,Main.maxNPCs).Select(i=>new NPC{whoAmI=i,active=false}).ToArray();var coreBladeParent=Main.npc[3];coreBladeParent.active=true;
- var coreBlade=new CoreSeveranceBladeProjectile();coreBlade.SetDefaults();coreBlade.OnSpawn(new Terraria.DataStructures.EntitySource_Parent(coreBladeParent));Check(coreBlade.Projectile.width==480&&coreBlade.Projectile.height==32&&coreBlade.Projectile.timeLeft==30,"Core sever blade exact body and age");
+ var coreBlade=new CoreSeveranceBladeProjectile();coreBlade.SetDefaults();coreBlade.OnSpawn(new Terraria.DataStructures.EntitySource_Parent(coreBladeParent));Check(coreBlade.Projectile.width==32&&coreBlade.Projectile.height==32&&coreBlade.Projectile.timeLeft==30,"Core sever blade exact body and age");
  Collision.Blocked=true;Check(!coreBlade.CanHitPlayer(new Player()),"Core sever blade wall prevents hit");Collision.Blocked=false;Check(coreBlade.CanDamage()==true,"Core sever blade valid source damages");coreBladeParent.active=false;coreBlade.AI();Check(coreBlade.CanDamage()==false,"Core sever blade source loss harmless");using var coreBladeWire=new MemoryStream();coreBlade.SendExtraAI(new BinaryWriter(coreBladeWire));Check(coreBladeWire.Length==19,"Core sever blade source protocol fixed");
 }
 Main.netMode=0;Main.dedServ=false;Main.spriteBatch.Boxes.Clear();Main.screenPosition=new(20,30);var drawnCoreBlade=new CoreSeveranceBladeProjectile();drawnCoreBlade.SetDefaults();drawnCoreBlade.Projectile.Center=new(300,100);var coreBladeTint=default(Microsoft.Xna.Framework.Color);drawnCoreBlade.PreDraw(ref coreBladeTint);Check(Main.spriteBatch.Boxes.Single()==new Microsoft.Xna.Framework.Rectangle(40,54,480,32),"Core sever blade draw equals damage body with camera offset");Main.dedServ=true;
@@ -215,5 +215,9 @@ foreach(int columnMode in new[]{0,1,2}){
 foreach(int decreeMode in new[]{0,1,2}){
  Main.netMode=0;Main.player=[new(),new()];Main.npc=Enumerable.Range(0,Main.maxNPCs).Select(i=>new NPC{whoAmI=i,active=false}).ToArray();Main.npc[3].active=true;var decree=new InspectorDecreeBeamProjectile();decree.SetDefaults();decree.OnSpawn(new Terraria.DataStructures.EntitySource_Parent(Main.npc[3]));decree.Projectile.Center=new(200,200);Main.netMode=decreeMode;
  foreach(var box in new[]{new Microsoft.Xna.Framework.Rectangle(231,400,1,1),new(232,400,1,1),new(200,439,1,1),new(200,440,1,1)})Check(decree.Colliding(default,box)==(box.X<232&&box.Y<440),"inspector full-width/full-height collision extends beyond anchor with strict edge");Main.npc[3].active=false;Check(decree.Colliding(default,new(231,400,1,1))==false,"inspector lost source disables far collision");
+}
+foreach(int bladeMode in new[]{0,1,2})foreach(var blade in new XianXia.Common.Projectiles.HostileJudgmentBeamProjectile[]{new CoreSeveranceBladeProjectile(),new InspectorVerdictBladeProjectile()}){
+ Main.netMode=0;Main.player=[new(),new()];Main.npc=Enumerable.Range(0,Main.maxNPCs).Select(i=>new NPC{whoAmI=i,active=false}).ToArray();Main.npc[3].active=true;blade.SetDefaults();blade.OnSpawn(new Terraria.DataStructures.EntitySource_Parent(Main.npc[3]));blade.Projectile.Center=new(200,200);Main.netMode=bladeMode;bool coreWide=blade is CoreSeveranceBladeProjectile;int right=coreWide?440:280;
+ Check(blade.Projectile.width==32&&blade.Projectile.height==32,"wide blade physical anchor small");Check(blade.Colliding(default,new(right-1,200,1,1))==true&&blade.Colliding(default,new(right,200,1,1))==false,"wide blade retains full horizontal collision with exact boundary");if(!coreWide)Check(blade.Colliding(default,new(260,223,1,1))==true&&blade.Colliding(default,new(260,224,1,1))==false,"verdict retains full forty-eight pixel height");Main.npc[3].active=false;Check(blade.Colliding(default,new(200,200,10,10))==false,"wide blade lost source cannot collide");
 }
 Console.WriteLine($"Actual telegraph hook regression passed: {assertions} assertions; mocked graphics/spawn boundary.");
