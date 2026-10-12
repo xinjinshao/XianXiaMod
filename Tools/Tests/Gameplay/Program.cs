@@ -1211,10 +1211,13 @@ try {
  var terrainIL=terrainAmountSetter.GetILGenerator();terrainIL.Emit(System.Reflection.Emit.OpCodes.Ldarg_0);terrainIL.Emit(System.Reflection.Emit.OpCodes.Unbox,terrainTileType);terrainIL.Emit(System.Reflection.Emit.OpCodes.Call,terrainTileType.GetProperty("LiquidAmount").GetMethod);terrainIL.Emit(System.Reflection.Emit.OpCodes.Ldarg_1);terrainIL.Emit(System.Reflection.Emit.OpCodes.Stind_I1);terrainIL.Emit(System.Reflection.Emit.OpCodes.Ret);
  var terrainSetAmount=(Action<object,byte>)terrainAmountSetter.CreateDelegate(typeof(Action<object,byte>));
  object terrainBoss=Activator.CreateInstance(nativeMedicineType),terrainNpc=Activator.CreateInstance(nativeTargetNpcType);nativeMedicineType.GetProperty("Entity",BindingFlags.Instance|BindingFlags.Public|BindingFlags.NonPublic).SetValue(terrainBoss,terrainNpc);nativeTargetNpcType.GetProperty("Center").SetValue(terrainNpc,Activator.CreateInstance(nativeTargetVectorType,new object[]{800f,800f}));
+ object shardTerrainBoss=Activator.CreateInstance(type.Assembly.GetType("XianXia.Content.NPCs.Bosses.BlackFurnaceIronGolem",true)),shardTerrainNpc=Activator.CreateInstance(nativeTargetNpcType);
+ shardTerrainBoss.GetType().GetProperty("Entity",BindingFlags.Instance|BindingFlags.Public|BindingFlags.NonPublic).SetValue(shardTerrainBoss,shardTerrainNpc);nativeTargetNpcType.GetProperty("Center").SetValue(shardTerrainNpc,Activator.CreateInstance(nativeTargetVectorType,new object[]{800f,800f}));
+ bool ShardTerrainSite(){object[] siteArgs={0,0};return (bool)shardTerrainBoss.GetType().GetMethod("TryShardSpawnPosition",BindingFlags.Instance|BindingFlags.NonPublic).Invoke(shardTerrainBoss,siteArgs);}
  bool TerrainSite(){object[] spawnArgs={0,0};return (bool)compiledVineSite.Invoke(terrainBoss,spawnArgs);}
  try {
   terrainMapField.SetValue(null,terrainMap);nativeSiteWorldWidth.SetValue(null,100);nativeSiteWorldHeight.SetValue(null,100);terrainSolids[0]=terrainSolids[19]=terrainTops[19]=true;
-  terrainClear.Invoke(terrainMap,null);Check(TerrainSite(),"Official engine accepts empty vine spawn body in a real isolated Tilemap");
+  terrainClear.Invoke(terrainMap,null);Check(TerrainSite(),"Official engine accepts empty vine spawn body in a real isolated Tilemap");Check(ShardTerrainSite(),"Official engine accepts empty shard body in real isolated Tilemap");
   foreach(int terrainKind in new[]{0,1,2,3}) {
    terrainClear.Invoke(terrainMap,null);
    for(int tileX=35;tileX<=65;tileX++)for(int tileY=35;tileY<=55;tileY++) {
@@ -1228,9 +1231,10 @@ try {
     object platformBody=Activator.CreateInstance(nativeTargetVectorType,new object[]{776f,692f});
     Check(!(bool)looseCollision.Invoke(null,new[]{platformBody,(object)48,48}),"Official default collision overload skips platform surfaces, proving strict vine check is necessary");
    }
+   Check(ShardTerrainSite()==(terrainKind==2),"Official shard body rejects dirt/lava/platforms and allows water");
    Check(TerrainSite()==(terrainKind==2),"Official engine vine collision rejects dirt/lava/platforms while allowing water: "+terrainKind);
   }
-  terrainClear.Invoke(terrainMap,null);Check(TerrainSite(),"Official engine accepts cleared terrain after all obstructed candidates");
+  terrainClear.Invoke(terrainMap,null);Check(TerrainSite(),"Official engine accepts cleared terrain after all obstructed candidates");Check(ShardTerrainSite(),"Official engine accepts cleared shard body after terrain failure");
  } finally {
   terrainSolids[0]=oldDirtSolid;terrainSolids[19]=oldPlatformSolid;terrainTops[19]=oldPlatformTop;
   terrainMapField.SetValue(null,oldTerrainMap);nativeSiteWorldWidth.SetValue(null,oldTerrainWidth);nativeSiteWorldHeight.SetValue(null,oldTerrainHeight);

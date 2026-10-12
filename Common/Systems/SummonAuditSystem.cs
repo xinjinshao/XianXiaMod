@@ -432,6 +432,19 @@ public class SummonAuditSystem : ModSystem
             abandonedCompression.ModProjectile.AI();Check(abandonedCompression.ModProjectile.CanDamage()==false&&abandonedCompression.timeLeft<=6,"registered old compression does not follow same-type parent slot reuse");abandonedCompression.active=false;
             foreach(NPC abandonedArchive in abandonedArchiveLocks){abandonedArchive.ModNPC.AI();Check(!abandonedArchive.active&&abandonedArchive.damage==0,"registered old archive source cannot follow reused same-type parent slot");}
             Check(NPC.killCount[ModContent.NPCType<CoreArchiveLockNPC>()]==archiveKillCount&&!Main.item.Any(item=>item?.active==true&&!previousItems.Contains(item)),"registered reused-source cleanup has no rewards");replacementArchiveNpc.active=false;
+            int furnaceSiteIndex=NPC.NewNPC(new EntitySource_Misc("XianXiaFurnaceSiteAudit"),x,y+48,ModContent.NPCType<BlackFurnaceIronGolem>());
+            Check(furnaceSiteIndex>=0&&furnaceSiteIndex<Main.maxNPCs,"registered furnace spawn-site parent created");NPC furnaceSiteNpc=Main.npc[furnaceSiteIndex];owned.Add(furnaceSiteNpc);furnaceSiteNpc.target=0;var furnaceSiteBoss=(BlackFurnaceIronGolem)furnaceSiteNpc.ModNPC;var beforeFurnaceSite=Main.npc.Where(npc=>npc.active).ToHashSet();
+            try{for(int furnaceBatch=0;furnaceBatch<5;furnaceBatch++)furnaceSiteBoss.SpawnShardAdds();}finally{owned.AddRange(Main.npc.Where(npc=>npc.active&&!beforeFurnaceSite.Contains(npc)&&!owned.Contains(npc)));}
+            NPC[] registeredShards=Main.npc.Where(npc=>npc.active&&!beforeFurnaceSite.Contains(npc)).ToArray();Check(registeredShards.Length==6,"registered safe furnace batches respect six-shard cap");
+            foreach(NPC registeredShard in registeredShards){
+                Check(registeredShard.ModNPC is IronShardSpirit&&registeredShard.width==48&&registeredShard.height==48,"registered actual shard body size");
+                Check(Math.Abs(registeredShard.Center.X-furnaceSiteNpc.Center.X)<=60&&Math.Abs(registeredShard.Bottom.Y-furnaceSiteNpc.Center.Y)<=40,"registered NewNPC center/bottom fits sampled area");
+                Check(!Collision.SolidCollision(registeredShard.position,48,48,true)&&!Collision.LavaCollision(registeredShard.position,48,48),"registered entire shard body is terrain-safe");
+                Check(registeredShard.target==0&&registeredShard.netUpdate,"registered safe shard target synchronized");
+                using(var shardPacket=new MemoryStream()){registeredShard.ModNPC.SendExtraAI(new BinaryWriter(shardPacket));Check(shardPacket.Length==13&&BitConverter.ToInt64(shardPacket.ToArray(),3)==furnaceSiteBoss.SummonSession,"registered terrain-safe shard captures furnace encounter source");}
+                registeredShard.active=false;
+            }
+            furnaceSiteNpc.active=false;
             foreach(int jiaoStage in new[]{1,2}) {
                 int jiaoIndex=NPC.NewNPC(new EntitySource_Misc("XianXiaThunderDiveAudit"),x,y+48,ModContent.NPCType<ThunderMarshJiao>());
                 Check(jiaoIndex>=0&&jiaoIndex<Main.maxNPCs,"registered jiao head created");NPC jiaoNpc=Main.npc[jiaoIndex];owned.Add(jiaoNpc);jiaoNpc.target=0;jiaoNpc.life=jiaoNpc.lifeMax/(jiaoStage==1?2:4);jiaoNpc.ai[1]=(jiaoStage==1?190:150)-1;
