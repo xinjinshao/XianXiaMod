@@ -131,7 +131,7 @@ Main.netMode=0;var cleanEnemyBolt=new EnemySpiritBoltProjectile();cleanEnemyBolt
 foreach(int mode in new[]{0,1,2}) {
  Main.netMode=mode;Main.dedServ=true;Main.player=[new(),new()];Main.npc=Enumerable.Range(0,Main.maxNPCs).Select(i=>new NPC{whoAmI=i,active=false}).ToArray();var parent=Main.npc[3];parent.active=true;
  var beam=new TabletJudgmentBeamProjectile();beam.SetDefaults();beam.OnSpawn(new Terraria.DataStructures.EntitySource_Parent(parent));
- Check(beam.Projectile.width==32&&beam.Projectile.height==480&&beam.Projectile.netImportant&&beam.Projectile.hostile&&!beam.Projectile.friendly,"Tablet beam actual defaults and late join metadata");
+ Check(beam.Projectile.width==32&&beam.Projectile.height==32&&beam.Projectile.netImportant&&beam.Projectile.hostile&&!beam.Projectile.friendly,"Tablet beam actual defaults and late join metadata");
  for(int age=0;age<=31;age++){beam.Projectile.timeLeft=age;Check(beam.CanDamage()==(age>0&&age<=30),"Tablet beam bounded active lifetime");}
  beam.Projectile.timeLeft=30;Collision.Blocked=true;Check(!beam.CanHitPlayer(new Player()),"Tablet beam does not hit through wall");Collision.Blocked=false;
  Check(beam.CanHitPlayer(new Player()),"Tablet beam accepts valid player");parent.active=false;beam.AI();Check(beam.CanDamage()==false,"Tablet beam source loss immediately harmless");Check(beam.Projectile.timeLeft==(mode==1?30:6),"Tablet beam authority fades invalid source; client waits");
@@ -207,5 +207,9 @@ foreach(int anchorMode in new[]{0,1,2}){
 foreach(int hitMode in new[]{0,1,2})foreach(var beam in new XianXia.Common.Projectiles.HostileJudgmentBeamProjectile[]{new TabletJudgmentBeamProjectile(),new InspectorDecreeBeamProjectile(),new InspectorVerdictBladeProjectile(),new CoreSeveranceBladeProjectile(),new FurnaceSlamWaveProjectile()}){
  Main.netMode=0;Main.player=[new(),new()];Main.npc=Enumerable.Range(0,Main.maxNPCs).Select(i=>new NPC{whoAmI=i,active=false}).ToArray();Main.npc[3].active=true;beam.SetDefaults();beam.OnSpawn(new Terraria.DataStructures.EntitySource_Parent(Main.npc[3]));Main.netMode=hitMode;Collision.Blocked=false;
  Check(beam.CanHitPlayer(new Player()),"all shared beams retain valid player contact");foreach(var badVictim in new Player[]{null,new(){Center=new(float.NaN,0)},new(){velocity=new(float.NaN,0)},new(){velocity=new(0,float.PositiveInfinity)},new(){dead=true},new(){active=false}})Check(!beam.CanHitPlayer(badVictim),"all shared beams reject malformed actual contact player");Collision.Blocked=true;Check(!beam.CanHitPlayer(new Player()),"all shared beams preserve wall rejection");Collision.Blocked=false;
+}
+foreach(int columnMode in new[]{0,1,2}){
+ Main.netMode=0;Main.player=[new(),new()];Main.npc=Enumerable.Range(0,Main.maxNPCs).Select(i=>new NPC{whoAmI=i,active=false}).ToArray();Main.npc[3].active=true;var column=new TabletJudgmentBeamProjectile();column.SetDefaults();column.OnSpawn(new Terraria.DataStructures.EntitySource_Parent(Main.npc[3]));column.Projectile.Center=new(200,200);Main.netMode=columnMode;
+ Check(column.Projectile.width==32&&column.Projectile.height==32,"tablet column small world-safe anchor");foreach(int targetY in new[]{-41,-40,-39,0,220,439,440})Check(column.Colliding(default,new(200,targetY,1,1))==(targetY>=-40&&targetY<440),"tablet full-height custom collision exact boundaries");Main.npc[3].active=false;Check(column.Colliding(default,new(200,400,10,10))==false,"tablet lost source cannot collide outside anchor");
 }
 Console.WriteLine($"Actual telegraph hook regression passed: {assertions} assertions; mocked graphics/spawn boundary.");

@@ -1098,7 +1098,7 @@ try {
  var nativeTabletBeamType=type.Assembly.GetType("XianXia.Content.Projectiles.TabletJudgmentBeamProjectile",true);
  object nativeTabletBeam=Activator.CreateInstance(nativeTabletBeamType),nativeTabletProjectile=Activator.CreateInstance(projectileType);
  nativeTabletBeamType.GetProperty("Entity",BindingFlags.Instance|BindingFlags.Public|BindingFlags.NonPublic).SetValue(nativeTabletBeam,nativeTabletProjectile);nativeTabletBeamType.GetMethod("SetDefaults").Invoke(nativeTabletBeam,null);
- Check((int)projectileType.GetField("width").GetValue(nativeTabletProjectile)==32&&(int)projectileType.GetField("height").GetValue(nativeTabletProjectile)==480&&(bool)projectileType.GetField("netImportant").GetValue(nativeTabletProjectile),"Compiled tablet beam body and late join metadata");
+ Check((int)projectileType.GetField("width").GetValue(nativeTabletProjectile)==32&&(int)projectileType.GetField("height").GetValue(nativeTabletProjectile)==32&&(bool)projectileType.GetField("netImportant").GetValue(nativeTabletProjectile),"Compiled tablet beam body and late join metadata");
  for(int age=0;age<=31;age++){projectileType.GetField("timeLeft").SetValue(nativeTabletProjectile,age);Check((bool)nativeTabletBeamType.GetMethod("CanDamage").Invoke(nativeTabletBeam,null)==(age>0&&age<=30),"Compiled tablet beam lifetime boundaries");}
  using(var beamWire=new MemoryStream()){projectileType.GetField("timeLeft").SetValue(nativeTabletProjectile,30);nativeTabletBeamType.GetMethod("SendExtraAI").Invoke(nativeTabletBeam,new object[]{new BinaryWriter(beamWire)});Check(beamWire.Length==19,"Compiled tablet beam shared binding packet length");}
  // An unsafe seal area must release the boss rather than leave permanent immunity.
