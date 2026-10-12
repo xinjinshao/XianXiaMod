@@ -1125,15 +1125,15 @@ foreach(string expandedName in new[]{"WoodgrainFlyingSword","SpiritwoodCrossbow"
   var expandedDamage=new StatModifier();expandedItem.GetGlobalItem<XianXia.Common.Items.RefinedArtifact>().ModifyWeaponDamage(expandedItem,Game.player[0],ref expandedDamage);
   Check(Math.Abs(expandedDamage.Bonus-(current+1)*.04f)<.001f&&expandedDamage.Base==0,"Expanded hook applies bounded damage without sample Dao scaling");
  }
- SetupAwakening(expandedName);Awaken();Check(Game.player[0].inventory[0].stack==2&&!XianXia.Common.Items.RefinedArtifact.IsAwakened(Game.player[0].inventory[1]),"Expanded weapons cannot spend awakening seals without a defined advanced path");
+ SetupAwakening(expandedName);Awaken();Check(expandedName=="FormlessSwordWheel" ? Game.player[0].inventory[0].stack==1&&Game.player[0].inventory[2].IsAir&&XianXia.Common.Items.RefinedArtifact.IsAwakened(Game.player[0].inventory[1]) : Game.player[0].inventory[0].stack==2&&!XianXia.Common.Items.RefinedArtifact.IsAwakened(Game.player[0].inventory[1]),"Expanded weapons cannot spend awakening seals without a defined advanced path");
  var plain=Game.player[0].inventory[1];var meta=plain.GetGlobalItem<XianXia.Common.Items.RefinedArtifact>();
  var forged=new Terraria.ModLoader.IO.TagCompound{{"refinement",3},{"awakened",true},{"daoRoute",1}};meta.LoadData(plain,forged);
- Check(meta.Level==3&&meta.Awakened==(expandedName=="MoonboneDharmaSword")&&meta.DaoRoute==(expandedName=="MoonboneDharmaSword"?DownedBossSystem.EndgameRoute.RebuildHeaven:DownedBossSystem.EndgameRoute.None),"Expanded save retains only supported awakening/Dao flags");
+ Check(meta.Level==3&&meta.Awakened==(expandedName is "MoonboneDharmaSword" or "FormlessSwordWheel")&&meta.DaoRoute==(expandedName=="MoonboneDharmaSword"?DownedBossSystem.EndgameRoute.RebuildHeaven:DownedBossSystem.EndgameRoute.None),"Expanded save retains only supported awakening/Dao flags");
  using(var bytes=new MemoryStream(new byte[]{3,1,1}))meta.NetReceive(plain,new BinaryReader(bytes));
- Check(meta.Level==3&&meta.Awakened==(expandedName=="MoonboneDharmaSword")&&meta.DaoRoute==(expandedName=="MoonboneDharmaSword"?DownedBossSystem.EndgameRoute.RebuildHeaven:DownedBossSystem.EndgameRoute.None),"Expanded network metadata retains only supported advanced state");
+ Check(meta.Level==3&&meta.Awakened==(expandedName is "MoonboneDharmaSword" or "FormlessSwordWheel")&&meta.DaoRoute==(expandedName=="MoonboneDharmaSword"?DownedBossSystem.EndgameRoute.RebuildHeaven:DownedBossSystem.EndgameRoute.None),"Expanded network metadata retains only supported advanced state");
  var persisted=new Terraria.ModLoader.IO.TagCompound();meta.SaveData(plain,persisted);var expandedLoaded=new XianXia.Common.Items.RefinedArtifact();expandedLoaded.LoadData(plain,persisted);
- Check(expandedLoaded.Level==3&&expandedLoaded.Awakened==(expandedName=="MoonboneDharmaSword"),"Expanded refinement persists independently of advanced flags");
- var expandedTips=new List<TooltipLine>();meta.ModifyTooltips(plain,expandedTips);Check(expandedTips.Count==(expandedName=="MoonboneDharmaSword"?3:2)&&expandedTips[1].Text.Contains(expandedName=="MoonboneDharmaSword"?"Refinement.MoonAwakened":"Refinement.BasicArtifact"),"Expanded tooltip explains its defined growth scope");
+ Check(expandedLoaded.Level==3&&expandedLoaded.Awakened==(expandedName is "MoonboneDharmaSword" or "FormlessSwordWheel"),"Expanded refinement persists independently of advanced flags");
+ var expandedTips=new List<TooltipLine>();meta.ModifyTooltips(plain,expandedTips);Check(expandedTips.Count==(expandedName=="MoonboneDharmaSword"?3:2)&&expandedTips[1].Text.Contains(expandedName=="MoonboneDharmaSword"?"Refinement.MoonAwakened":expandedName=="FormlessSwordWheel"?"Refinement.WheelAwakened":"Refinement.BasicArtifact"),"Expanded tooltip explains its defined growth scope");
 }
 foreach(Action reject in new Action[]{()=>Game.player[0].inventory[1].accessory=true,()=>Game.player[0].inventory[1].consumable=true,()=>Game.player[0].inventory[1].ammo=1,()=>Game.player[0].inventory[1].maxStack=2,()=>Game.player[0].inventory[1].vanity=true,()=>Game.player[0].inventory[1].damage=0,()=>Game.player[0].inventory[1].ModItem.Mod=new Mod()}){
  SetupRefinement(name:"SpiritwoodCrossbow");reject();Refine();Check(Game.player[0].inventory[0].stack==2&&Game.player[0].inventory[2].stack==6&&!XianXia.Common.Items.RefinedArtifact.SupportsRefinement(Game.player[0].inventory[1]),"Ineligible categories/origins cannot spend refinement materials");
@@ -1337,6 +1337,26 @@ foreach(int thunderMode in new[]{0,2}) {
  Terraria.Projectile.AllowSpawn=false;failedThunder.AI();Terraria.Projectile.AllowSpawn=true;failedThunder.AI();Check(!Game.projectile.Any(p=>p.active),"Failed thunder creation cannot retry an already attempted wave");
  failedThunder.Projectile.timeLeft=180;failedThunder.AI();Check(Game.projectile.Count(p=>p.active)==1,"Failed wave does not prevent later ordinary thunder boundary");
  var freshThunder=new XianXia.Content.Projectiles.ThunderTalismanArray{Mod=mod};freshThunder.SetDefaults();freshThunder.Projectile.active=true;freshThunder.Projectile.owner=0;freshThunder.Projectile.timeLeft=225;freshThunder.AI();Check(Game.projectile.Count(p=>p.active)==2,"A fresh thunder field has its own independent wave budget");
+}
+// Wheel awakening is per-item; the old realm/reputation heritage remains independent.
+foreach(int wheelMode in new[]{NetmodeID.SinglePlayer,NetmodeID.Server})foreach(bool wheelAwake in new[]{false,true})foreach(bool wheelStage in new[]{false,true})foreach(int wheelReputation in new[]{55,56}){
+ SetupAwakening("FormlessSwordWheel");Game.netMode=wheelMode;
+ var wheel=new XianXia.Content.Items.Weapons.FormlessSwordWheel{Mod=mod,Name="FormlessSwordWheel"};wheel.SetDefaults();wheel.Item.type=942;wheel.Item.stack=1;wheel.Item.ModItem=wheel;
+ Game.player[0].inventory[1]=wheel.Item;Game.player[0].selectedItem=1;Game.player[0].State.cultivationStage=wheelStage?CultivationStage.NascentSoul:CultivationStage.GoldenCore;
+ typeof(DownedBossSystem).GetProperty("SectReputation").SetValue(null,wheelReputation);
+ var wheelMeta=wheel.Item.GetGlobalItem<XianXia.Common.Items.RefinedArtifact>();wheelMeta.SetLevel(3);if(wheelAwake)wheelMeta.TryAwaken();bool heritage=wheelStage&&wheelReputation>=56;
+ int cost=wheelAwake?9:heritage?11:14;Check(wheel.GetSpiritCost(Game.player[0])==cost,"Wheel crafted cost is independent of heritage and network mode");
+ var wheelDamage=new StatModifier();wheel.ModifyWeaponDamage(Game.player[0],ref wheelDamage);Check(Math.Abs(wheelDamage.Bonus-((wheelAwake?.1f:0)+(heritage?.14f:0)))<.001f,"Wheel awakening composes with independent heritage");
+ Game.player[0].State.spiritualEnergy=cost-1;Check(!wheel.CanUseItem(Game.player[0]),"Wheel rejects one below current spirit cost");Game.player[0].State.spiritualEnergy=cost;Check(wheel.CanUseItem(Game.player[0]),"Wheel permits exact current spirit cost");
+ Check(!wheel.AltFunctionUse(Game.player[0])&&ArtifactSkillTransactions.HeldSkill(wheel.Item)==null&&!XianXia.Common.Items.RefinedArtifact.SupportsDaoTransformation(wheel.Item),"Wheel does not receive an unrelated active skill or Dao route");
+}
+foreach(Action wheelReject in new Action[]{()=>Game.player[0].State.cultivationStage=CultivationStage.GoldenCore,()=>DownedBossSystem.DownedBosses.Remove("greenwood_medicine_king_echo"),()=>Game.player[0].inventory[1].GetGlobalItem<XianXia.Common.Items.RefinedArtifact>().SetLevel(2),()=>Game.player[0].inventory[1].GetGlobalItem<XianXia.Common.Items.InscribedEquipment>().SetKind(InscriptionKind.None),()=>Game.player[0].inventory[2].stack=23}){
+ SetupAwakening("FormlessSwordWheel");wheelReject();int wheelStones=Game.player[0].inventory[2].stack;Awaken();Check(Game.player[0].inventory[0].stack==2&&Game.player[0].inventory[2].stack==wheelStones&&!XianXia.Common.Items.RefinedArtifact.IsAwakened(Game.player[0].inventory[1]),"Wheel unmet requirements preserve all materials and state");
+}
+foreach(int wheelMode in new[]{NetmodeID.SinglePlayer,NetmodeID.Server}){
+ SetupAwakening("FormlessSwordWheel");Game.netMode=wheelMode;var originalWheel=Game.player[0].inventory[1];Awaken();
+ Check(ReferenceEquals(originalWheel,Game.player[0].inventory[1])&&originalWheel.prefix==300&&CurrentInscription()==InscriptionKind.Greenwood&&XianXia.Common.Items.RefinedArtifact.IsAwakened(originalWheel),"Wheel awakening preserves item identity prefix and inscription");
+ Check(Game.player[0].inventory[0].stack==1&&Game.player[0].inventory[2].IsAir,"Wheel awakening consumes exactly one seal and twenty-four stones");Game.player[0].GetModPlayer<XianXia.Common.Players.InscriptionPlayer>().Initialize();Awaken(true);Check(Game.player[0].inventory[0].stack==1,"Wheel duplicate awakening does not consume another seal");
 }
 Console.WriteLine($"Networking including actual recovery pill hooks: {assertions} assertions; buff/inventory engine boundaries mocked.");
 

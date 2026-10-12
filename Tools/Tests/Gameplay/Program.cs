@@ -507,18 +507,24 @@ foreach(string weaponName in new[]{"WoodgrainFlyingSword","SpiritwoodCrossbow","
  }
 
  refinedType.GetMethod("LoadData").Invoke(growthMeta,new[]{growthOwner,Tag(("refinement",3),("awakened",true),("daoRoute",1))});
- Check(Refinement(growthMeta)==3&&(bool)refinedType.GetProperty("Awakened").GetValue(growthMeta)==(weaponName=="MoonboneDharmaSword")&&DaoRoute(growthMeta)==(weaponName=="MoonboneDharmaSword"?1:0),weaponName+" actual save loader keeps refinement and strips unsupported advanced flags");
+ Check(Refinement(growthMeta)==3&&(bool)refinedType.GetProperty("Awakened").GetValue(growthMeta)==(weaponName is "MoonboneDharmaSword" or "FormlessSwordWheel")&&DaoRoute(growthMeta)==(weaponName=="MoonboneDharmaSword"?1:0),weaponName+" actual save loader keeps refinement and strips unsupported advanced flags");
  object growthSave=Tag();refinedType.GetMethod("SaveData").Invoke(growthMeta,new[]{growthOwner,growthSave});
- Check(Convert.ToBoolean(tagType.GetMethod("GetBool").Invoke(growthSave,new object[]{"awakened"}))==(weaponName=="MoonboneDharmaSword")&&Convert.ToInt32(tagType.GetMethod("GetInt").Invoke(growthSave,new object[]{"daoRoute"}))==(weaponName=="MoonboneDharmaSword"?1:0),weaponName+" native TagCompound stores supported growth only");
+ Check(Convert.ToBoolean(tagType.GetMethod("GetBool").Invoke(growthSave,new object[]{"awakened"}))==(weaponName is "MoonboneDharmaSword" or "FormlessSwordWheel")&&Convert.ToInt32(tagType.GetMethod("GetInt").Invoke(growthSave,new object[]{"daoRoute"}))==(weaponName=="MoonboneDharmaSword"?1:0),weaponName+" native TagCompound stores supported growth only");
  using(var growthBytes=new MemoryStream()){
   using(var writer=new BinaryWriter(growthBytes,System.Text.Encoding.UTF8,true))refinedType.GetMethod("NetSend").Invoke(growthMeta,new object[]{growthOwner,writer});
-  Check(growthBytes.ToArray().SequenceEqual(new byte[]{3,(byte)(weaponName=="MoonboneDharmaSword"?1:0),(byte)(weaponName=="MoonboneDharmaSword"?1:0)}),weaponName+" actual wire payload keeps supported three-byte growth");
+  Check(growthBytes.ToArray().SequenceEqual(new byte[]{3,(byte)(weaponName is "MoonboneDharmaSword" or "FormlessSwordWheel"?1:0),(byte)(weaponName=="MoonboneDharmaSword"?1:0)}),weaponName+" actual wire payload keeps supported three-byte growth");
   object growthClone=refinedType.GetMethod("Clone",new[]{refinementItemType,refinementItemType}).Invoke(growthMeta,new[]{growthOwner,growthOwner});
   refinedType.GetMethod("SetLevel").Invoke(growthClone,new object[]{1});
   Check(Refinement(growthMeta)==3&&Refinement(growthClone)==1,weaponName+" native metadata clone is independent");
  }
  using(var growthBytes=new MemoryStream(new byte[]{3,1,1}))refinedType.GetMethod("NetReceive").Invoke(growthMeta,new object[]{growthOwner,new BinaryReader(growthBytes)});
- Check(Refinement(growthMeta)==3&&(bool)refinedType.GetProperty("Awakened").GetValue(growthMeta)==(weaponName=="MoonboneDharmaSword")&&DaoRoute(growthMeta)==(weaponName=="MoonboneDharmaSword"?1:0),weaponName+" native receive accepts only supported growth metadata");
+ Check(Refinement(growthMeta)==3&&(bool)refinedType.GetProperty("Awakened").GetValue(growthMeta)==(weaponName is "MoonboneDharmaSword" or "FormlessSwordWheel")&&DaoRoute(growthMeta)==(weaponName=="MoonboneDharmaSword"?1:0),weaponName+" native receive accepts only supported growth metadata");
+ if(weaponName=="FormlessSwordWheel"){
+  Check((bool)refinedType.GetMethod("SupportsAwakening").Invoke(null,new[]{growthOwner})&&!(bool)refinedType.GetMethod("SupportsDaoTransformation").Invoke(null,new[]{growthOwner}),"Compiled wheel supports awakening only");
+  foreach(byte forgedRoute in new byte[]{1,2,3}){using var wheelBytes=new MemoryStream(new byte[]{3,1,forgedRoute});refinedType.GetMethod("NetReceive").Invoke(growthMeta,new object[]{growthOwner,new BinaryReader(wheelBytes)});Check((bool)refinedType.GetProperty("Awakened").GetValue(growthMeta)&&DaoRoute(growthMeta)==0,"Native wheel strips each unsupported Dao route");}
+  foreach(int partialLength in new[]{0,1,2}){using var wheelBytes=new MemoryStream(new byte[]{0,0,0}.Take(partialLength).ToArray());try{refinedType.GetMethod("NetReceive").Invoke(growthMeta,new object[]{growthOwner,new BinaryReader(wheelBytes)});Check(false,"Truncated wheel growth must throw");}catch(TargetInvocationException ex)when(ex.InnerException is EndOfStreamException){Check(Refinement(growthMeta)==3&&(bool)refinedType.GetProperty("Awakened").GetValue(growthMeta)&&DaoRoute(growthMeta)==0,"Native truncated wheel growth leaves state unchanged");}}
+  object wheelClone=refinedType.GetMethod("Clone",new[]{refinementItemType,refinementItemType}).Invoke(growthMeta,new[]{growthOwner,growthOwner});refinedType.GetMethod("SetLevel").Invoke(wheelClone,new object[]{2});Check((bool)refinedType.GetProperty("Awakened").GetValue(growthMeta)&&!(bool)refinedType.GetProperty("Awakened").GetValue(wheelClone),"Native wheel clone reset does not alter original awakening");
+ }
 }
 Console.WriteLine($"Actual engine gameplay assertions including expanded refinement: {assertions}.");
 

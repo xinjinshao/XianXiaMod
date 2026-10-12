@@ -61,13 +61,15 @@ public class FormlessSwordWheel : global::XianXia.Common.Items.CultivationWeapon
 
         return player.GetModPlayer<global::XianXia.Common.Players.XianXiaPlayer>()
 
-            .CanConsumeSpiritualEnergy(HasArtifactAwakening(player) ? 11 : 14);
+            .CanConsumeSpiritualEnergy(GetSpiritCost(player));
 
     }
 
 
 
-    public override int GetSpiritCost(Player player) => HasArtifactAwakening(player) ? 11 : 14;
+    public override int GetSpiritCost(Player player) => global::XianXia.Common.Items.RefinedArtifact.IsAwakened(Item) ? 9 : HasArtifactAwakening(player) ? 11 : 14;
+
+    public override bool AltFunctionUse(Player player) => false;
 
 
     private static bool HasArtifactAwakening(Player player)
@@ -88,6 +90,7 @@ public class FormlessSwordWheel : global::XianXia.Common.Items.CultivationWeapon
 
     {
 
+        if (global::XianXia.Common.Items.RefinedArtifact.IsAwakened(Item)) damage += 0.1f;
         if (HasArtifactAwakening(player))
 
             damage += 0.14f;
@@ -104,17 +107,17 @@ public class FormlessSwordWheel : global::XianXia.Common.Items.CultivationWeapon
 
         string key = HasArtifactAwakening(player)
 
-            ? "Mods.XianXia.Progression.ArtifactAwakeningReady"
+            ? "Mods.XianXia.Refinement.WheelHeritageReady"
 
-            : "Mods.XianXia.Progression.ArtifactAwakeningLocked";
+            : "Mods.XianXia.Refinement.WheelHeritageLocked";
 
         tooltips.Add(new TooltipLine(
 
             Mod,
 
-            "XianXiaArtifactAwakening",
+            "XianXiaWheelHeritage",
 
-            Terraria.Localization.Language.GetTextValue(key, global::XianXia.Common.Players.CultivationStatusText.StageName(global::XianXia.Common.Players.CultivationStage.NascentSoul), 56, 11, 14)));
+            Terraria.Localization.Language.GetTextValue(key, global::XianXia.Common.Players.CultivationStatusText.StageName(global::XianXia.Common.Players.CultivationStage.NascentSoul), 56, GetSpiritCost(player), 14)));
 
     }
 
