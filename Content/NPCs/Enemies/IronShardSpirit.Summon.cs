@@ -24,7 +24,7 @@ public partial class IronShardSpirit
     }
     private bool HasFinishedSummonWarning() => !furnaceSummon
         || (!summonWarningFrame && CurrentWarningClock() == 0f);
-    private bool furnaceSummon;
+    private bool furnaceSummon, rejectedBinding;
     private short parentSlot = -1;
     private long parentSession;
     private short remaining;
@@ -44,7 +44,7 @@ public partial class IronShardSpirit
     {
         if (!float.IsFinite(NPC.ai[3]) || NPC.ai[3] != System.MathF.Truncate(NPC.ai[3])
             || NPC.ai[3] < -SummonWarningTicks || NPC.ai[3] > 0f
-            || !NPC.active || NPC.life <= 0 || remaining <= 0 || parentSession <= 0
+            || rejectedBinding || !NPC.active || NPC.life <= 0 || remaining <= 0 || parentSession <= 0
             || parentSlot < 0 || parentSlot >= Main.maxNPCs
             || !float.IsFinite(NPC.Center.X) || !float.IsFinite(NPC.Center.Y)
             || !float.IsFinite(NPC.velocity.X) || !float.IsFinite(NPC.velocity.Y)) return false;
@@ -121,9 +121,18 @@ public partial class IronShardSpirit
         short slot = reader.ReadInt16();
         long session = reader.ReadInt64();
         short lifetime = reader.ReadInt16();
+        // Once bound, an entity cannot become natural or adopt another encounter.
+        // A client with an unknown (zero) parent session may still receive its first real session.
+        if (furnaceSummon && (!bound || (parentSlot >= 0 && slot != parentSlot)
+            || (parentSession > 0 && session != parentSession))) {
+            rejectedBinding = true;
+            remaining = 0;
+            return;
+        }
         short receivedLifetime = (short)System.Math.Clamp((int)lifetime, 0, MaximumSummonLifetime);
         bool sameBinding = furnaceSummon && bound && slot == parentSlot && session == parentSession;
-        remaining = sameBinding ? System.Math.Min(remaining, receivedLifetime) : receivedLifetime;
+        remaining = rejectedBinding ? (short)0
+            : sameBinding ? System.Math.Min(remaining, receivedLifetime) : receivedLifetime;
         furnaceSummon = bound;
         parentSlot = slot >= 0 && slot < Main.maxNPCs ? slot : (short)-1;
         parentSession = session > 0 ? session : 0;

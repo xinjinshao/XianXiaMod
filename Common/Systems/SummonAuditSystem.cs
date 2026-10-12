@@ -452,6 +452,11 @@ public class SummonAuditSystem : ModSystem
                 registeredShard.ai[3]=-45;Check(registeredShard.ModNPC.CanHitPlayer(Main.player[0],ref cooldownSlot),"registered old AI packet cannot refreeze active shard contact");
                 Check(registeredShard.ModNPC.PreAI()&&registeredShard.ai[3]==0,"registered old warning restored to observed completion");
                 using(var agedShardPacket=new MemoryStream()){registeredShard.ModNPC.SendExtraAI(new BinaryWriter(agedShardPacket));byte[] agedWire=agedShardPacket.ToArray();registeredShard.ModNPC.ReceiveExtraAI(new BinaryReader(new MemoryStream(shardBirthPacket)));using var restoredWire=new MemoryStream();registeredShard.ModNPC.SendExtraAI(new BinaryWriter(restoredWire));Check(restoredWire.ToArray().SequenceEqual(agedWire),"registered old source packet cannot extend shard life");}
+                var replacedShardSource=(byte[])shardBirthPacket.Clone();int replacementKind=registeredShard.whoAmI%3;
+                if(replacementKind==0)replacedShardSource[0]=0;else if(replacementKind==1)BitConverter.GetBytes((short)((furnaceSiteIndex+1)%Main.maxNPCs)).CopyTo(replacedShardSource,1);else BitConverter.GetBytes(furnaceSiteBoss.SummonSession+1).CopyTo(replacedShardSource,3);
+                registeredShard.ModNPC.ReceiveExtraAI(new BinaryReader(new MemoryStream(replacedShardSource)));Check(!registeredShard.ModNPC.CanHitPlayer(Main.player[0],ref cooldownSlot),"registered forged natural/parent/session switch immediately harmless");
+                registeredShard.ModNPC.ReceiveExtraAI(new BinaryReader(new MemoryStream(shardBirthPacket)));Check(!registeredShard.ModNPC.CanHitPlayer(Main.player[0],ref cooldownSlot),"registered later good source cannot revive rejected binding");
+                Check(!registeredShard.ModNPC.PreAI()&&!registeredShard.active,"registered rejected summon cleared without death path");
                 registeredShard.active=false;
             }
             furnaceSiteNpc.active=false;

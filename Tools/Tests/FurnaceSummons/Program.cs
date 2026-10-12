@@ -125,4 +125,11 @@ foreach(int staleMode in new[]{0,1,2}) {
  staleChild.NPC.ai[3]=0;staleChild.PreAI();staleChild.NPC.ai[3]=-45;Check(Hit(staleChild),"stale warning cannot refreeze activated shard before AI");staleChild.PreAI();Check(staleChild.NPC.ai[3]==0&&Hit(staleChild),"active shard restores observed warning completion");
  var agedPacket=Save(staleChild);Read(staleChild,birthPacket);Check(Save(staleChild).SequenceEqual(agedPacket),"old same-instance source packet cannot extend remaining lifetime");
 }
+foreach(int bindMode in new[]{0,1,2})foreach(int mutation in new[]{0,1,2}) {
+ Reset();var boundBoss=Parent();var boundChild=Child(boundBoss);var originalBinding=Save(boundChild);var replacedBinding=(byte[])originalBinding.Clone();
+ if(mutation==0)replacedBinding[0]=0;else if(mutation==1)BitConverter.GetBytes((short)2).CopyTo(replacedBinding,1);else BitConverter.GetBytes(boundBoss.SummonSession+1).CopyTo(replacedBinding,3);
+ Main.netMode=bindMode;Read(boundChild,replacedBinding);Check(!Hit(boundChild)&&Save(boundChild)[0]==1&&BitConverter.ToInt16(Save(boundChild),11)==0,"bound shard rejects declassification/parent replacement and retains bound identity");
+ Read(boundChild,originalBinding);Check(!Hit(boundChild)&&!boundChild.PreAI()&&boundChild.NPC.active==(bindMode==1),"rejected source cannot reactivate with later valid packet; only authority removes");
+}
+Reset();var pendingBoss=Parent();var pendingChild=Child(pendingBoss);var pendingWire=Save(pendingChild);var emptySession=(byte[])pendingWire.Clone();BitConverter.GetBytes(0L).CopyTo(emptySession,3);Main.netMode=1;var pendingRemote=new IronShardSpirit{NPC=new(){active=true,life=70}};Read(pendingRemote,emptySession);Read(pendingRemote,pendingWire);Check(Hit(pendingRemote),"unknown initial client parent session accepts first positive encounter identity");
 Console.WriteLine($"Furnace summon lifecycle: {checks} checks passed (mock engine boundary).");
