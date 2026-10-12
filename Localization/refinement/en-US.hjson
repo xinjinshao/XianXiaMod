@@ -3,7 +3,7 @@ Mods: {
   Items: {
    ArtifactAwakeningSeal: {
     DisplayName: Artifact Awakening Seal
-    Tooltip: "Craft at a Star Pattern Cauldron using 2 artifact shards, 6 tribulation cloud dew, 4 Greenwood Roots and 1 Medicine King Wood Heart\nUse near an artificing station to awaken an inscribed refinement-3 Cloudpiercer Flying Sword, Greenwood Array Plate, Heaven Tablet Ward Seal, Formless Sword Wheel or Moonbone Dharma Sword (Moonbone also requires Tribulation and defeating Moonbone Immortal)\nRequires Nascent Soul and Medicine King Echo; costs 24 extra low-grade stones\nAdds 10% weapon damage and lowers base energy cost; active skills available for the sword, array, ward and Moonbone (Q or right-click; configurable); Wheel active skill not yet available"
+    Tooltip: "Craft at a Star Pattern Cauldron using 2 artifact shards, 6 tribulation cloud dew, 4 Greenwood Roots and 1 Medicine King Wood Heart\nUse near an artificing station to awaken an inscribed refinement-3 Cloudpiercer Flying Sword, Greenwood Array Plate, Heaven Tablet Ward Seal, Formless Sword Wheel or Moonbone Dharma Sword (Moonbone also requires Tribulation and defeating Moonbone Immortal)\nRequires Nascent Soul and Medicine King Echo; costs 24 extra low-grade stones\nAdds 10% weapon damage and lowers base energy cost; active skills available for the sword, array, ward, Moonbone and Wheel (Q or right-click; configurable)"
    }
    ArtifactQuenchingCrystal: {
     DisplayName: Artifact Quenching Crystal
@@ -29,7 +29,7 @@ Mods: {
    MoonHeritageReady: "Sect heritage active at {0} and reputation {1}: +{3}% damage; current base spirit cost {2}. Crafted awakening is shown separately"
    MoonHeritageLocked: "Sect heritage requires {0} and reputation {1}: grants +{3}% damage and base spirit cost 17; checked independently of crafted awakening"
    MoonRequirements: Moonbone Dharma Sword also requires Tribulation and defeating Moonbone Immortal for crafted awakening; no materials consumed
-   WheelAwakened: Crafted awakening adds 10% weapon damage and lowers base spirit cost to 9; independent sect heritage remains; active skill and Dao transformation not yet available
+   WheelAwakened: Crafted awakening adds 10% weapon damage and lowers base spirit cost to 9; independent sect heritage remains; Five Wheels launches five 150% wheels for 36 base energy with a shared 20-second cooldown; use alternate attack, the artifact key or skill panel; Dao transformation not yet available
    WheelDormant: Dormant; retain an inscription at refinement level 3, reach Nascent Soul and defeat Medicine King Echo; use 1 awakening seal and 24 low-grade spirit stones at a supported forge
    WheelHeritageReady: "Sect heritage active at {0} and reputation {1}: +{3}% damage; current base spirit cost {2}. Crafted awakening is shown separately"
    WheelHeritageLocked: "Sect heritage requires {0} and reputation {1}: grants +{3}% damage and base spirit cost 11; checked independently of crafted awakening"

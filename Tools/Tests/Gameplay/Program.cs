@@ -1270,4 +1270,14 @@ try {
  nativeTargetMain.GetField("netMode").SetValue(null,nativeTargetOldMode);
  nativeTargetMain.GetField("dedServ").SetValue(null,nativeTargetOldDedicated);
 }
+var compiledWheelSkillType=type.Assembly.GetType("XianXia.Common.Systems.ArtifactSkill",true);object compiledWheelSkill=Enum.ToObject(compiledWheelSkillType,5);var compiledWheelRules=type.Assembly.GetType("XianXia.Common.Systems.ArtifactSkillRules",true);
+Check(Enum.GetName(compiledWheelSkillType,compiledWheelSkill)=="WheelFormation","Compiled wheel skill preserves old IDs and appends identifier five");
+Check((bool)compiledWheelRules.GetMethod("IsValid").Invoke(null,new[]{compiledWheelSkill}),"Compiled wheel skill is valid");
+Check((int)compiledWheelRules.GetMethod("Cost").Invoke(null,new[]{compiledWheelSkill})==36,"Compiled wheel skill costs thirty-six");
+Check((int)compiledWheelRules.GetMethod("Cooldown").Invoke(null,new[]{compiledWheelSkill})==1200,"Compiled wheel skill shares twenty-second cooldown");
+var compiledWheelProjectileType=type.Assembly.GetType("XianXia.Content.Projectiles.FormlessSwordWheelProjectile",true);object compiledWheelProjectile=Activator.CreateInstance(compiledWheelProjectileType),compiledWheelBody=Activator.CreateInstance(projectileType);compiledWheelProjectileType.GetProperty("Entity",BindingFlags.Instance|BindingFlags.Public|BindingFlags.NonPublic).SetValue(compiledWheelProjectile,compiledWheelBody);compiledWheelProjectileType.GetMethod("SetDefaults").Invoke(compiledWheelProjectile,null);
+Check((int)projectileType.GetField("penetrate").GetValue(compiledWheelBody)==5&&(int)projectileType.GetField("timeLeft").GetValue(compiledWheelBody)==150,"Native skill wheel retains five penetration and 150-tick lifetime");
+Check((bool)projectileType.GetField("friendly").GetValue(compiledWheelBody)&&!(bool)projectileType.GetField("hostile").GetValue(compiledWheelBody),"Native skill wheel remains friendly only");
+Check((bool)projectileType.GetField("usesLocalNPCImmunity").GetValue(compiledWheelBody)&&(int)projectileType.GetField("localNPCHitCooldown").GetValue(compiledWheelBody)==12,"Native skill wheel retains local hit immunity");
+Check((int)projectileType.GetField("width").GetValue(compiledWheelBody)==80&&(int)projectileType.GetField("height").GetValue(compiledWheelBody)==80&&!(bool)projectileType.GetField("tileCollide").GetValue(compiledWheelBody),"Native skill wheel retains normal body and terrain behavior");
 Console.WriteLine($"Actual engine gameplay assertions including boss targets and worm instance links: {assertions}.");

@@ -59,6 +59,8 @@ public class FormlessSwordWheel : global::XianXia.Common.Items.CultivationWeapon
 
     {
 
+        if (player.altFunctionUse == 2) return global::XianXia.Common.Systems.ArtifactSkillTransactions.CanUseAlternative(player, Item);
+
         return player.GetModPlayer<global::XianXia.Common.Players.XianXiaPlayer>()
 
             .CanConsumeSpiritualEnergy(GetSpiritCost(player));
@@ -69,7 +71,7 @@ public class FormlessSwordWheel : global::XianXia.Common.Items.CultivationWeapon
 
     public override int GetSpiritCost(Player player) => global::XianXia.Common.Items.RefinedArtifact.IsAwakened(Item) ? 9 : HasArtifactAwakening(player) ? 11 : 14;
 
-    public override bool AltFunctionUse(Player player) => false;
+    public override bool AltFunctionUse(Player player) => global::XianXia.Common.Items.RefinedArtifact.IsAwakened(Item);
 
 
     private static bool HasArtifactAwakening(Player player)
