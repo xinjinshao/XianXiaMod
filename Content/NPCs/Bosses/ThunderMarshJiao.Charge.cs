@@ -77,11 +77,11 @@ public partial class ThunderMarshJiao
         return true;
     }
     public override bool CanHitPlayer(Player target, ref int cooldownSlot) =>
-        global::XianXia.Common.Systems.BossTargeting.HasLivingTarget(NPC) && target.active && !target.dead
+        global::XianXia.Common.Systems.BossTargeting.HasLivingTarget(NPC) && target != null && target.active && !target.dead
         && float.IsFinite(target.Center.X) && float.IsFinite(target.Center.Y)
         && float.IsFinite(NPC.ai[1]) && NPC.ai[1] == System.MathF.Truncate(NPC.ai[1]) && NPC.ai[1] <= 240f
         && NPC.ai[1] >= -(ChargeWarningTicks + ChargeDashTicks + ChargeRecoveryTicks)
-        && DiveContactEnabled
+        && DiveContactEnabled && base.CanHitPlayer(target, ref cooldownSlot)
         && Collision.CanHitLine(NPC.Center, 1, 1, target.Center, 1, 1);
 
     public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)

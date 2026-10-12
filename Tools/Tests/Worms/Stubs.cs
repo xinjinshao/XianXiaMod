@@ -6,3 +6,5 @@ namespace Terraria {public class Player{public bool active=true,dead;public Micr
 
 namespace Terraria.ModLoader{public class ModNPC{public Terraria.NPC NPC=new();public virtual bool CanHitPlayer(Terraria.Player target,ref int cooldownSlot)=>true;public virtual bool CanHitNPC(Terraria.NPC target)=>true;public virtual void SendExtraAI(System.IO.BinaryWriter writer){}public virtual void ReceiveExtraAI(System.IO.BinaryReader reader){}}}
 namespace XianXia.Content.NPCs.Bosses{public class TestHead:XianXia.Common.NPCs.LinkedWormNPC{internal override bool IsWormHead=>true;public bool ContactAllowed=true;internal override bool ContactEnabled=>ContactAllowed;}public class TestSegment:XianXia.Common.NPCs.LinkedWormNPC{}}
+
+namespace Terraria{public static class Collision{public static bool Blocked;public static bool CanHitLine(Microsoft.Xna.Framework.Vector2 a,int w,int h,Microsoft.Xna.Framework.Vector2 b,int w2,int h2)=>!Blocked;}}

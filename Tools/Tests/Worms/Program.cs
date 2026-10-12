@@ -38,4 +38,10 @@ foreach(Action<NPC,NPC> invalidate in new Action<NPC,NPC>[] {(h,b)=>Main.npc[1].
 head=Setup();SegmentedWormAI.TrySpawnChain(head,11,12,2);body=Main.npc[2];int safeSlot=0;((TestHead)head.ModNPC).ContactAllowed=false;
 Check(!body.ModNPC.CanHitPlayer(Main.player[0],ref safeSlot)&&!body.ModNPC.CanHitNPC(new()),"all linked segments obey head contact safety before AI");
 ((TestHead)head.ModNPC).ContactAllowed=true;Check(body.ModNPC.CanHitPlayer(Main.player[0],ref safeSlot),"segments regain contact on enabled head");
+foreach(int mode in new[]{0,1,2}){
+ head=Setup();SegmentedWormAI.TrySpawnChain(head,11,12,2);Main.netMode=mode;body=Main.npc[2];int contactSlot=0;Collision.Blocked=true;Check(!body.ModNPC.CanHitPlayer(Main.player[0],ref contactSlot)&&!head.ModNPC.CanHitPlayer(Main.player[0],ref contactSlot),"whole worm contact blocked by wall");Collision.Blocked=false;
+ foreach(var invalidPlayer in new Player[]{null,new(){Center=new(float.NaN,0)},new(){velocity=new(float.PositiveInfinity,0)},new(){Center=new(4001,0)},new(){dead=true},new(){active=false}})Check(!body.ModNPC.CanHitPlayer(invalidPlayer,ref contactSlot),"worm rejects malformed or nonparticipating contact player");
+ var contactNpc=new NPC{active=true,life=100};Check(body.ModNPC.CanHitNPC(contactNpc),"worm preserves valid NPC contact");Collision.Blocked=true;Check(!body.ModNPC.CanHitNPC(contactNpc),"worm NPC contact blocked by wall");Collision.Blocked=false;contactNpc.velocity=new(float.NaN,0);Check(!body.ModNPC.CanHitNPC(contactNpc),"worm NPC contact rejects bad velocity");
+ Main.player[1].Center=new(4000,0);Check(body.ModNPC.CanHitPlayer(Main.player[1],ref contactSlot),"worm includes exact head participation radius");
+}
 Console.WriteLine($"Actual segmented-worm source regression passed: {assertions} assertions; mocked spawn/network boundary.");

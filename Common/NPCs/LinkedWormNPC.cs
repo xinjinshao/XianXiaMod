@@ -29,11 +29,24 @@ public abstract class LinkedWormNPC : ModNPC
         HeadInstance = head.Instance;
         PreviousInstance = previous.Instance;
     }
-    private bool CanContact() => IsWormHead ? ContactEnabled && BossTargeting.HasLivingTarget(NPC)
-        : SegmentedWormAI.HasValidLinks(NPC, out NPC head) && BossTargeting.HasLivingTarget(head)
+    private bool CanContact(out NPC head)
+    {
+        head = NPC;
+        if (IsWormHead) return ContactEnabled && BossTargeting.HasLivingTarget(NPC);
+        return SegmentedWormAI.HasValidLinks(NPC, out head) && BossTargeting.HasLivingTarget(head)
             && head.ModNPC is LinkedWormNPC linked && linked.ContactEnabled;
-    public override bool CanHitPlayer(Player target, ref int cooldownSlot) => target.active && !target.dead && CanContact();
-    public override bool CanHitNPC(NPC target) => CanContact();
+    }
+    private static bool Finite(Microsoft.Xna.Framework.Vector2 value) => float.IsFinite(value.X) && float.IsFinite(value.Y);
+    public override bool CanHitPlayer(Player target, ref int cooldownSlot) => target != null && target.active && !target.dead
+        && Finite(target.Center) && Finite(target.velocity) && Finite(NPC.Center) && Finite(NPC.velocity)
+        && CanContact(out NPC head)
+        && Microsoft.Xna.Framework.Vector2.DistanceSquared(head.Center, target.Center) <= BossTargeting.MaximumDistance * BossTargeting.MaximumDistance
+        && Collision.CanHitLine(NPC.Center, 1, 1, target.Center, 1, 1);
+    public override bool CanHitNPC(NPC target) => target != null && target.active && target.life > 0
+        && Finite(target.Center) && Finite(target.velocity) && Finite(NPC.Center) && Finite(NPC.velocity)
+        && CanContact(out NPC head)
+        && Microsoft.Xna.Framework.Vector2.DistanceSquared(head.Center, target.Center) <= BossTargeting.MaximumDistance * BossTargeting.MaximumDistance
+        && Collision.CanHitLine(NPC.Center, 1, 1, target.Center, 1, 1);
     public override void SendExtraAI(BinaryWriter writer)
     {
         writer.Write(Instance);

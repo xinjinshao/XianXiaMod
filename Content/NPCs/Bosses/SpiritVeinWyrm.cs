@@ -53,7 +53,7 @@ public partial class SpiritVeinWyrm : global::XianXia.Common.NPCs.LinkedWormNPC
     }
 
     public override bool CanHitPlayer(Player target, ref int cooldownSlot) =>
-        global::XianXia.Common.Systems.BossTargeting.HasLivingTarget(NPC) && target.active && !target.dead;
+        base.CanHitPlayer(target, ref cooldownSlot);
 
     public override void AI()
     {

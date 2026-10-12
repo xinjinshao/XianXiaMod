@@ -89,7 +89,7 @@ public partial class ShatteredJadeWyrmMinion
             Terraria.ModLoader.ModContent.NPCType<ShatteredJadeWyrmMinion>());
     }
 
-    public override bool CanHitNPC(NPC target) => HasSummonTarget();
+    public override bool CanHitNPC(NPC target) => HasSummonTarget() && base.CanHitNPC(target);
 
     public override void SendExtraAI(BinaryWriter writer)
     {

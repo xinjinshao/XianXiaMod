@@ -40,7 +40,7 @@ public partial class ShatteredJadeWyrmMinion : global::XianXia.Common.NPCs.Linke
     public override bool CheckActive() => false;
 
     public override bool CanHitPlayer(Player target, ref int cooldownSlot) =>
-        HasSummonTarget() && target.active && !target.dead;
+        HasSummonTarget() && base.CanHitPlayer(target, ref cooldownSlot);
 
     public override void AI()
     {
@@ -95,8 +95,8 @@ public class ShatteredJadeWyrmMinionBody : global::XianXia.Common.NPCs.LinkedWor
 
     public override bool CheckActive() => false;
 
-    public override bool CanHitPlayer(Player target, ref int cooldownSlot) => ShatteredJadeWyrmMinion.HasLinkedSummonTarget(NPC) && target.active && !target.dead;
-    public override bool CanHitNPC(NPC target) => ShatteredJadeWyrmMinion.HasLinkedSummonTarget(NPC);
+    public override bool CanHitPlayer(Player target, ref int cooldownSlot) => ShatteredJadeWyrmMinion.HasLinkedSummonTarget(NPC) && base.CanHitPlayer(target, ref cooldownSlot);
+    public override bool CanHitNPC(NPC target) => ShatteredJadeWyrmMinion.HasLinkedSummonTarget(NPC) && base.CanHitNPC(target);
     public override void AI() => ShatteredJadeWyrmMinion.FollowSummonSegment(NPC, 0.13f, 0.1f);
 }
 
@@ -121,7 +121,7 @@ public class ShatteredJadeWyrmMinionTail : global::XianXia.Common.NPCs.LinkedWor
 
     public override bool CheckActive() => false;
 
-    public override bool CanHitPlayer(Player target, ref int cooldownSlot) => ShatteredJadeWyrmMinion.HasLinkedSummonTarget(NPC) && target.active && !target.dead;
-    public override bool CanHitNPC(NPC target) => ShatteredJadeWyrmMinion.HasLinkedSummonTarget(NPC);
+    public override bool CanHitPlayer(Player target, ref int cooldownSlot) => ShatteredJadeWyrmMinion.HasLinkedSummonTarget(NPC) && base.CanHitPlayer(target, ref cooldownSlot);
+    public override bool CanHitNPC(NPC target) => ShatteredJadeWyrmMinion.HasLinkedSummonTarget(NPC) && base.CanHitNPC(target);
     public override void AI() => ShatteredJadeWyrmMinion.FollowSummonSegment(NPC, 0.1f, 0.08f);
 }

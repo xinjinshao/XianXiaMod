@@ -11,7 +11,7 @@ SpiritVeinWyrm Parent(){var boss=new SpiritVeinWyrm();boss.NPC=new(){active=true
 ShatteredJadeWyrmMinion Child(SpiritVeinWyrm boss){var child=new ShatteredJadeWyrmMinion();child.SetDefaults();child.NPC.active=true;child.NPC.life=70;child.NPC.whoAmI=4;child.NPC.type=8;child.NPC.ModNPC=child;Main.npc[4]=child.NPC;child.OnSpawn(new EntitySource_Parent(boss.NPC));return child;}
 byte[] Save(Terraria.ModLoader.ModNPC npc){using var stream=new MemoryStream();using var writer=new BinaryWriter(stream);npc.SendExtraAI(writer);return stream.ToArray();}
 void Read(Terraria.ModLoader.ModNPC npc,byte[] data){using var stream=new MemoryStream(data);using var reader=new BinaryReader(stream);npc.ReceiveExtraAI(reader);}
-bool Hit(ShatteredJadeWyrmMinion child){int cooldown=0;return child.CanHitPlayer(Main.player[0],ref cooldown)&&child.CanHitNPC(new());}
+bool Hit(ShatteredJadeWyrmMinion child){int cooldown=0;return child.CanHitPlayer(Main.player[0],ref cooldown)&&child.CanHitNPC(new(){active=true,life=100});}
 Reset();var stray=new ShatteredJadeWyrmMinion();stray.NPC.active=true;stray.NPC.life=70;stray.OnSpawn(new NaturalSource());Check(!Hit(stray)&&!stray.PreAI()&&!stray.NPC.active,"unbound boss minion removed");
 for(int mode=0;mode<=2;mode++)for(int failure=0;failure<14;failure++){
  Reset();var boss=Parent();var child=Child(boss);Check(Hit(child),"valid source contact");Main.netMode=mode;
@@ -31,8 +31,8 @@ Main.netMode=1;remoteChild.NPC.target=0;Check(!remoteChild.PreAI()&&!Hit(remoteC
 foreach(int mode in new[]{0,1,2})foreach(bool tail in new[]{false,true}){
  Reset();var segmentBoss=Parent();var segmentHead=Child(segmentBoss);segmentHead.PreAI();segmentHead.AI();var segmentNpc=Main.npc.First(n=>n.active&&n.type==(tail?10:9));
  Terraria.ModLoader.ModNPC segment=tail?new ShatteredJadeWyrmMinionTail():new ShatteredJadeWyrmMinionBody();segment.NPC=segmentNpc;segmentNpc.life=70;int cooldown=0;
- Check(segment.CanHitPlayer(Main.player[0],ref cooldown)&&segment.CanHitNPC(new()),"live segment contact");Main.netMode=mode;segmentBoss.NPC.active=false;
- Check(!segment.CanHitPlayer(Main.player[0],ref cooldown)&&!segment.CanHitNPC(new()),"parent loss immediately blocks body and tail damage before head AI");segment.AI();Check(segmentNpc.damage==0&&segmentNpc.active==(mode==1),"segment authority cleanup/client harmless wait");
+ Check(segment.CanHitPlayer(Main.player[0],ref cooldown)&&segment.CanHitNPC(new(){active=true,life=100}),"live segment contact");Main.netMode=mode;segmentBoss.NPC.active=false;
+ Check(!segment.CanHitPlayer(Main.player[0],ref cooldown)&&!segment.CanHitNPC(new(){active=true,life=100}),"parent loss immediately blocks body and tail damage before head AI");segment.AI();Check(segmentNpc.damage==0&&segmentNpc.active==(mode==1),"segment authority cleanup/client harmless wait");
  if(mode==1){segmentBoss.NPC.active=true;segment.AI();Check(segmentNpc.damage==14&&segmentNpc.active,"client segment damage restored with valid source");}
 }
 Console.WriteLine($"Wyrm summon source/age/actual AI: {checks} checks passed; engine spawn/transport boundary mocked.");
