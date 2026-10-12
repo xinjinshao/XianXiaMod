@@ -398,4 +398,20 @@ foreach(int mode in new[]{0,1,2})foreach(float bad in new[]{float.NaN,float.Posi
 }
 Setup();Main.netMode=1;var clientJiao=new ThunderMarshJiao{NPC=Main.npc[0]};clientJiao.NPC.ai[1]=239;Check(!clientJiao.UpdateJiaoCharge(Main.player[0],240)&&clientJiao.NPC.ai[1]==239,"client cannot start jiao charge");clientJiao.NPC.ai[1]=-61;Check(clientJiao.UpdateJiaoCharge(Main.player[0],240)&&clientJiao.NPC.ai[1]==-61&&clientJiao.NPC.velocity==new Vector2(13,0),"client uses synchronized jiao phase without advancing");
 Setup();var drawingJiao=new ThunderMarshJiao{NPC=Main.npc[0]};drawingJiao.NPC.width=78;drawingJiao.NPC.height=66;drawingJiao.NPC.ai[1]=-20;var jiaoBatch=new Microsoft.Xna.Framework.Graphics.SpriteBatch();Main.dedServ=true;drawingJiao.PreDraw(jiaoBatch,new(10,20),default);Check(jiaoBatch.Calls==0,"jiao dedicated server skips graphics");Main.dedServ=false;drawingJiao.PreDraw(jiaoBatch,new(10,20),default);Check(jiaoBatch.Calls==3&&jiaoBatch.LastScale.X==546,"jiao warning includes 468 pixel dash and head body");
+foreach(int mode in new[]{0,1,2})foreach(int stage in new[]{0,1,2}) {
+ Setup();Main.netMode=mode;Projectile.Positions.Clear();Projectile.Shots.Clear();var thunderJiao=new ThunderMarshJiao{NPC=Main.npc[0]};thunderJiao.NPC.ai[1]=239;thunderJiao.UpdateJiaoCharge(Main.player[0],240);
+ thunderJiao.SpawnDiveThunderZones(Main.player[0],stage>0,stage>1);int births=mode==1||stage==0?0:stage==1?2:4;
+ Check(Projectile.Positions.Count==births,"jiao phase and authority bound thunder births");
+ foreach(var thunderPosition in Projectile.Positions)Check(MathF.Abs(thunderPosition.X-100)==160||MathF.Abs(thunderPosition.X-100)==256,"jiao fixed flank positions leave central lane");
+ var savedThunder=Projectile.Positions.ToArray();Main.player[0].Center=new(500,200);thunderJiao.SpawnDiveThunderZones(Main.player[0],stage>0,stage>1);
+ Check(Projectile.Positions.Count==births&&Projectile.Positions.SequenceEqual(savedThunder),"jiao opening consumed once and positions never retarget");
+}
+foreach(int failure in new[]{-1,Main.maxProjectiles,int.MaxValue}) {
+ Setup();Projectile.Positions.Clear();Projectile.FailureResult=failure;var failJiao=new ThunderMarshJiao{NPC=Main.npc[0]};failJiao.NPC.ai[1]=149;failJiao.UpdateJiaoCharge(Main.player[0],150);failJiao.SpawnDiveThunderZones(Main.player[0],true,true);failJiao.SpawnDiveThunderZones(Main.player[0],true,true);Check(Projectile.Positions.Count==4,"jiao failed capacity never retries event");
+}
+foreach(bool replacement in new[]{false,true}) {
+ Setup();Projectile.Positions.Clear();var invalidJiao=new ThunderMarshJiao{NPC=Main.npc[0]};invalidJiao.NPC.ai[1]=149;invalidJiao.UpdateJiaoCharge(Main.player[0],150);
+ if(replacement)Main.player[0]=new(){Center=new(100,0)};else Main.player[0].dead=true;
+ invalidJiao.SpawnDiveThunderZones(Main.player[0],true,true);Check(Projectile.Positions.Count==0,"jiao invalid/replaced target cannot spawn thunder zones");
+}
 Console.WriteLine($"Actual furnace shard spawn hook passed: {checks} checks; native creation/target/network boundaries mocked.");

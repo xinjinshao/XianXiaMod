@@ -9,7 +9,7 @@ namespace XianXia.Content.NPCs.Bosses;
 public partial class ThunderMarshJiao
 {
     public const int ChargeWarningTicks = 60, ChargeDashTicks = 36, ChargeRecoveryTicks = 45;
-    private bool chargeDashing, chargeFrame;
+    private bool chargeDashing, chargeFrame, chargeStarted;
     private int chargeTarget = -1;
     private Player chargePlayer;
     internal bool DiveContactEnabled => float.IsFinite(NPC.ai[1]) && NPC.ai[1] == System.MathF.Truncate(NPC.ai[1])
@@ -18,6 +18,7 @@ public partial class ThunderMarshJiao
                 && NPC.ai[1] >= -(ChargeWarningTicks + ChargeDashTicks + 1f) && float.IsFinite(NPC.ai[3])));
     internal bool UpdateJiaoCharge(Player target, int interval)
     {
+        chargeStarted = false;
         chargeDashing = false;
         chargeFrame = false;
         if (!float.IsFinite(NPC.ai[1]) || NPC.ai[1] != System.MathF.Truncate(NPC.ai[1]) || NPC.ai[1] < -(ChargeWarningTicks + ChargeDashTicks + ChargeRecoveryTicks)
@@ -45,6 +46,7 @@ public partial class ThunderMarshJiao
         if (NPC.ai[1] >= 0f) {
             if (Main.netMode == NetmodeID.MultiplayerClient) return false;
             if (++NPC.ai[1] < interval) return false;
+            chargeStarted = true;
             chargeTarget = NPC.target;
             chargePlayer = target;
             NPC.ai[1] = -1f;

@@ -59,3 +59,5 @@ namespace XianXia.Content.NPCs.Enemies{public class CoreArchiveLockNPC:Terraria.
 namespace XianXia.Content.Projectiles{public class CoreArchiveCompressionProjectile{}}
 
 namespace XianXia.Content.NPCs.Bosses{public partial class ThunderMarshJiao:Terraria.ModLoader.ModNPC{}}
+
+namespace XianXia.Content.Projectiles{public class TribulationWarningLineProjectile{}}

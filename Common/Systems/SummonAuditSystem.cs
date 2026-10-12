@@ -432,6 +432,26 @@ public class SummonAuditSystem : ModSystem
             abandonedCompression.ModProjectile.AI();Check(abandonedCompression.ModProjectile.CanDamage()==false&&abandonedCompression.timeLeft<=6,"registered old compression does not follow same-type parent slot reuse");abandonedCompression.active=false;
             foreach(NPC abandonedArchive in abandonedArchiveLocks){abandonedArchive.ModNPC.AI();Check(!abandonedArchive.active&&abandonedArchive.damage==0,"registered old archive source cannot follow reused same-type parent slot");}
             Check(NPC.killCount[ModContent.NPCType<CoreArchiveLockNPC>()]==archiveKillCount&&!Main.item.Any(item=>item?.active==true&&!previousItems.Contains(item)),"registered reused-source cleanup has no rewards");replacementArchiveNpc.active=false;
+            foreach(int jiaoStage in new[]{1,2}) {
+                int jiaoIndex=NPC.NewNPC(new EntitySource_Misc("XianXiaThunderDiveAudit"),x,y+48,ModContent.NPCType<ThunderMarshJiao>());
+                Check(jiaoIndex>=0&&jiaoIndex<Main.maxNPCs,"registered jiao head created");NPC jiaoNpc=Main.npc[jiaoIndex];owned.Add(jiaoNpc);jiaoNpc.target=0;jiaoNpc.life=jiaoNpc.lifeMax/(jiaoStage==1?2:4);jiaoNpc.ai[1]=(jiaoStage==1?190:150)-1;
+                var jiao=(ThunderMarshJiao)jiaoNpc.ModNPC;var beforeJiaoNpcs=Main.npc.Where(npc=>npc.active).ToHashSet();var beforeJiaoProjectiles=Main.projectile.Where(projectile=>projectile.active).ToHashSet();
+                void TickJiao(){try{jiao.AI();}finally{owned.AddRange(Main.npc.Where(npc=>npc.active&&!beforeJiaoNpcs.Contains(npc)&&!owned.Contains(npc)));ownedProjectiles.AddRange(Main.projectile.Where(projectile=>projectile.active&&!previousProjectiles.Contains(projectile)&&!ownedProjectiles.Contains(projectile)));}}
+                TickJiao();NPC[] jiaoSegments=Main.npc.Where(npc=>npc.active&&!beforeJiaoNpcs.Contains(npc)).ToArray();Projectile[] jiaoZones=Main.projectile.Where(projectile=>projectile.active&&!beforeJiaoProjectiles.Contains(projectile)).ToArray();
+                Check(jiaoSegments.Length==14,"registered jiao creates thirteen body segments and tail");Check(jiaoZones.Length==(jiaoStage==1?2:4),"registered jiao flank zone count by phase");Vector2 lockedJiaoPoint=Main.player[0].Center;
+                foreach(Projectile zone in jiaoZones){float expectedOffset=zone.ModProjectile is global::XianXia.Content.Projectiles.TribulationWarningLineProjectile?160:256;
+                    Check(Math.Abs(zone.Center.X-lockedJiaoPoint.X)==expectedOffset&&zone.Center.Y==lockedJiaoPoint.Y,"registered jiao fixed flank placement");Check(zone.ModProjectile.CanDamage()==false,"registered jiao zones start harmless");
+                    using var packet=new MemoryStream();zone.ModProjectile.SendExtraAI(new BinaryWriter(packet));Check(packet.Length==19,"registered jiao zones carry existing source packet");}
+                Main.player[0].position.X+=64;
+                for(int jiaoFrame=1;jiaoFrame<=141;jiaoFrame++){
+                    if(jiaoFrame>1)TickJiao();bool jiaoDanger=jiaoFrame>60&&jiaoFrame<=96;
+                    Check(jiao.CanHitPlayer(Main.player[0],ref cooldownSlot)==jiaoDanger,"registered jiao exact head contact window");
+                    foreach(NPC segment in jiaoSegments)Check(segment.ModNPC.CanHitPlayer(Main.player[0],ref cooldownSlot)==jiaoDanger,"registered jiao entire chain contact window before segment AI");
+                    Check(Main.projectile.Count(projectile=>projectile.active&&!beforeJiaoProjectiles.Contains(projectile))==jiaoZones.Length,"registered jiao no overlapping ordinary births");
+                }
+                Check(jiaoNpc.ai.All(value=>value==0),"registered jiao full recovery clears attack clocks");
+                foreach(Projectile zone in jiaoZones)zone.active=false;foreach(NPC segment in jiaoSegments)segment.active=false;jiaoNpc.active=false;Main.player[0].position.X-=64;
+            }
         }
         catch (Exception exception) { error = exception.ToString(); }
         finally {
@@ -448,7 +468,7 @@ public class SummonAuditSystem : ModSystem
         Directory.CreateDirectory(directory);
         File.WriteAllText(Path.Combine(directory, "summon-audit.json"), JsonSerializer.Serialize(new {
             schema = 1, passed = error == null, checks, error,
-            limitations = "Registered AI advanced manually for medicine, tablet, inspector, core modules and archive locks; one native compression Projectile.Update and local Projectile.Damage verify safe/unsafe regions with hit-text slots occupied. Native player damage/NPC.StrikeNPC verify shield breaks and reward suppression. No full world/player ticks, rendered graphics, real clients, combat balance or complete playthrough."
+            limitations = "Registered AI advanced manually for medicine, tablet, inspector, core modules, archive locks and thunder jiao chains/zones; one native compression Projectile.Update and local Projectile.Damage verify safe/unsafe regions with hit-text slots occupied. Native player damage/NPC.StrikeNPC verify shield breaks and reward suppression. No full world/player ticks, rendered graphics, real clients, combat balance or complete playthrough."
         }, new JsonSerializerOptions { WriteIndented = true }));
         Mod.Logger.Info($"Summon audit finished: {checks.Count} checks; passed={error == null}");
     }

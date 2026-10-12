@@ -75,7 +75,10 @@ public partial class ThunderMarshJiao : global::XianXia.Common.NPCs.LinkedWormNP
         bool brokenHorn = NPC.life < (int)(NPC.lifeMax * 0.35f);
         AnnouncePhases(phaseTwo, brokenHorn);
 
-        if (UpdateJiaoCharge(target, brokenHorn ? 150 : phaseTwo ? 190 : 240)) return;
+        if (UpdateJiaoCharge(target, brokenHorn ? 150 : phaseTwo ? 190 : 240)) {
+            if (chargeStarted) SpawnDiveThunderZones(target, phaseTwo, brokenHorn);
+            return;
+        }
         NPC.ai[0]++;
         float speed = brokenHorn ? 10.4f : phaseTwo ? 8f : 6.2f;
         float t = NPC.ai[0] * 0.035f;
@@ -160,8 +163,10 @@ public partial class ThunderMarshJiao : global::XianXia.Common.NPCs.LinkedWormNP
             }
         }
 
+        // Later phases schedule thunder zones with the full dive warning instead.
+        if (phaseTwo) { NPC.localAI[1] = 0f; return; }
         NPC.localAI[1]++;
-        int patternInterval = brokenHorn ? 150 : phaseTwo ? 210 : 270;
+        const int patternInterval = 270;
         if (Main.netMode == NetmodeID.MultiplayerClient || NPC.localAI[1] < patternInterval)
         {
             return;
@@ -169,7 +174,7 @@ public partial class ThunderMarshJiao : global::XianXia.Common.NPCs.LinkedWormNP
 
         NPC.localAI[1] = 0f;
         int warningDamage = Math.Max(18, NPC.damage / 3);
-        int lanes = brokenHorn ? 5 : phaseTwo ? 3 : 1;
+        const int lanes = 1;
         for (int i = 0; i < lanes; i++)
         {
             float offset = (i - (lanes - 1) / 2f) * 112f;
@@ -183,17 +188,7 @@ public partial class ThunderMarshJiao : global::XianXia.Common.NPCs.LinkedWormNP
                 Main.myPlayer);
         }
 
-        if (brokenHorn)
-        {
-            Projectile.NewProjectile(
-                NPC.GetSource_FromAI(),
-                target.Center,
-                Vector2.Zero,
-                ModContent.ProjectileType<global::XianXia.Content.Projectiles.BossArrayFieldProjectile>(),
-                Math.Max(18, NPC.damage / 4),
-                1.2f,
-                Main.myPlayer);
-        }
+
     }
 }
 
