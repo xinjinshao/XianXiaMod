@@ -102,6 +102,7 @@ public partial class BlackFurnaceIronGolem
     }
     public override bool CanHitPlayer(Player target, ref int cooldownSlot) =>
         global::XianXia.Common.Systems.BossTargeting.HasLivingTarget(NPC) && target.active && !target.dead
+        && !slamFrame && float.IsFinite(NPC.ai[2]) && NPC.ai[2] >= 0f
         && float.IsFinite(target.Center.X) && float.IsFinite(target.Center.Y)
         && float.IsFinite(NPC.ai[1]) && NPC.ai[1] == System.MathF.Truncate(NPC.ai[1]) && NPC.ai[1] <= 180f
         && NPC.ai[1] >= -(ChargeWarningTicks + ChargeDashTicks + ChargeRecoveryTicks)
@@ -110,6 +111,7 @@ public partial class BlackFurnaceIronGolem
 
     public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
     {
+        if (DrawFurnaceSlam(spriteBatch, screenPos)) return true;
         if (!Main.dedServ && ArmorExposed && float.IsFinite(NPC.Center.X) && float.IsFinite(NPC.Center.Y)) {
             Vector2 topLeft = NPC.Center - new Vector2(NPC.width / 2f, NPC.height / 2f) - screenPos;
             var armorPixel = TextureAssets.MagicPixel.Value;

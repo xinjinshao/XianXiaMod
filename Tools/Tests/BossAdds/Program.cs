@@ -440,4 +440,22 @@ foreach(Vector2 edgeCenter in new[]{new Vector2(-1000,1000),new Vector2(1000,-10
  var edgeShard=ShardSetup();edgeShard.NPC.Center=edgeCenter;Collision.SolidCalls=0;Check(!edgeShard.TryShardSpawnPosition(out int edgeShardX,out int edgeShardY)&&edgeShardX==0&&edgeShardY==0&&Collision.SolidCalls==0,"shard rejects world edges and malformed geometry before collision");
 }
 var selfShard=ShardSetup();NPC.FailureResult=0;selfShard.SpawnShardAdds();Check(NPC.Calls==1&&!selfShard.NPC.netUpdate,"shard creation cannot mistake parent slot for child");
+foreach(int slamMode in new[]{0,1,2})foreach(bool finalSlam in new[]{false,true}) {
+ var slamBoss=ShardSetup();Main.netMode=slamMode;Main.dedServ=true;Projectile.Positions.Clear();Projectile.Shots.Clear();int slamCooldown=0;slamBoss.NPC.ai[2]=(finalSlam?150:210)-1;
+ for(int frame=1;frame<=105;frame++){
+  if(slamMode==1)slamBoss.NPC.ai[2]=-frame;
+  Check(slamBoss.UpdateFurnaceSlam(Main.player[0],true,finalSlam),"slam consumes entire warning/recovery frame");Check(slamBoss.NPC.velocity==Vector2.Zero&&!slamBoss.CanHitPlayer(Main.player[0],ref slamCooldown),"slam boss stays harmless and stationary");Check(Projectile.Positions.Count==(slamMode==1||frame<=60?0:1)&&NPC.Calls==(slamMode==1||frame<=60?0:2),"slam releases one wave and bounded adds only after sixty frames");
+ }
+ if(slamMode!=1)Check(slamBoss.NPC.ai[0]==0&&slamBoss.NPC.ai[2]==0,"slam resets ordinary spell clocks after full recovery");
+}
+foreach(int retargetFrame in new[]{-10,-70})foreach(bool replaceSlamPlayer in new[]{false,true}){
+ var slamBoss=ShardSetup();slamBoss.NPC.ai[2]=209;slamBoss.UpdateFurnaceSlam(Main.player[0],true,false);slamBoss.NPC.ai[2]=retargetFrame;
+ if(replaceSlamPlayer)Main.player[0]=new(){Center=new(1100,1000)};else slamBoss.NPC.target=1;
+ Check(slamBoss.UpdateFurnaceSlam(Main.player[slamBoss.NPC.target],true,false)&&slamBoss.NPC.ai[2]==0&&slamBoss.NPC.velocity==Vector2.Zero,"slam target switch cancels pending action");
+}
+var slamDraw=ShardSetup();slamDraw.NPC.ai[2]=-10;Main.dedServ=false;var slamBatch=new Microsoft.Xna.Framework.Graphics.SpriteBatch();slamDraw.PreDraw(slamBatch,new(10,20),default);Check(slamBatch.Calls==4,"slam warning outlines exact wave rectangle");Main.dedServ=true;slamDraw.PreDraw(slamBatch,new(10,20),default);Check(slamBatch.Calls==4,"dedicated skips slam graphics");
+foreach(int malformedSlamMode in new[]{0,1,2})foreach(float badSlamClock in new[]{float.NaN,float.PositiveInfinity,-106f,271f,.5f}){
+ var malformedSlam=ShardSetup();Main.netMode=malformedSlamMode;malformedSlam.NPC.ai[2]=badSlamClock;int malformedCooldown=0;Check(malformedSlam.UpdateFurnaceSlam(Main.player[0],true,false)&&malformedSlam.NPC.velocity==Vector2.Zero&&!malformedSlam.CanHitPlayer(Main.player[0],ref malformedCooldown),"malformed slam state harmless and stationary");
+}
+var repeatedSlam=ShardSetup();Projectile.Positions.Clear();repeatedSlam.NPC.ai[2]=209;for(int frame=1;frame<=61;frame++)repeatedSlam.UpdateFurnaceSlam(Main.player[0],true,false);repeatedSlam.NPC.ai[2]=-61;repeatedSlam.UpdateFurnaceSlam(Main.player[0],true,false);Check(Projectile.Positions.Count==1&&NPC.Calls==2,"replayed slam release cannot spawn more wave or adds");
 Console.WriteLine($"Actual furnace shard spawn hook passed: {checks} checks; native creation/target/network boundaries mocked.");

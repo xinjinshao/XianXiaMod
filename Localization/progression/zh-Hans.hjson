@@ -1,5 +1,8 @@
 Mods: {
 	XianXia: {
+		Projectiles: {
+			FurnaceSlamWaveProjectile.DisplayName: "炉震冲击"
+		}
 		Progression: {
 			Advanced: "境界突破：{0}"
 			InvalidBreakthroughItem: 此物只适合下一重境界突破。先稳住当前境界，再按顺序进阶。
@@ -25,6 +28,7 @@ Mods: {
 				SpiritPressureSurge: 灵压暴涨
 				DaoScarUnstable: 道痕失控
 				FurnaceArmorExposed: "炉甲破绽——趁机反击"
+				FurnaceSlam: "炉震将落——离开橙色区域"
 				SpiritVeinTremor: 灵脉震荡
 				ShatteredJadeRampage: 碎玉暴走
 			}

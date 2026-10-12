@@ -90,6 +90,7 @@ public partial class BlackFurnaceIronGolem : ModNPC
         if (!BossTargeting.TryGetLivingTarget(NPC, out Player target))
         {
             ClearFurnaceExposure();
+            ClearFurnaceSlam();
             NPC.velocity = new Vector2(0f, -2f);
             if (Main.netMode != NetmodeID.MultiplayerClient) {
                 bool changed = NPC.ai[0] != 0f || NPC.ai[1] != 0f || NPC.ai[2] != 0f || NPC.timeLeft > 30;
@@ -134,6 +135,7 @@ public partial class BlackFurnaceIronGolem : ModNPC
 
         }
 
+        if (UpdateFurnaceSlam(target, phaseTwo, finalPhase)) return;
         if (UpdateFurnaceCharge(target, finalPhase)) return;
 
         float speed = finalPhase ? 10.5f : phaseTwo ? 8f : 5.5f;
@@ -188,11 +190,11 @@ public partial class BlackFurnaceIronGolem : ModNPC
 
 
 
-        NPC.ai[2]++;
+        if (!phaseTwo) NPC.ai[2]++;
 
-        int patternInterval = finalPhase ? 150 : phaseTwo ? 210 : 270;
+        const int patternInterval = 270;
 
-        if (Main.netMode != NetmodeID.MultiplayerClient && NPC.ai[2] >= patternInterval)
+        if (!phaseTwo && Main.netMode != NetmodeID.MultiplayerClient && NPC.ai[2] >= patternInterval)
 
         {
 
@@ -202,7 +204,7 @@ public partial class BlackFurnaceIronGolem : ModNPC
 
             int dmg = Math.Max(18, NPC.damage / 4);
 
-            if (phaseTwo) SpawnShardAdds();
+
 
             Vector2 side = (target.Center - NPC.Center).SafeNormalize(Vector2.UnitY).RotatedBy(MathHelper.PiOver2);
 
@@ -229,7 +231,7 @@ public partial class BlackFurnaceIronGolem : ModNPC
 
 
 
-    public override Color? GetAlpha(Color drawColor) => NPC.ai[1] < 0f && NPC.ai[1] >= -40f ? Color.OrangeRed : null;
+    public override Color? GetAlpha(Color drawColor) => (NPC.ai[2] < 0f && NPC.ai[2] >= -SlamWarningTicks) || (NPC.ai[1] < 0f && NPC.ai[1] >= -40f) ? Color.OrangeRed : null;
 
     public override void OnKill() => DownedBossSystem.MarkDowned("black_furnace_iron_golem");
 

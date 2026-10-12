@@ -1,5 +1,8 @@
 Mods: {
 	XianXia: {
+		Projectiles: {
+			FurnaceSlamWaveProjectile.DisplayName: "Furnace Slam Wave"
+		}
 		Progression: {
 			Advanced: "Cultivation advanced: {0}"
 			InvalidBreakthroughItem: This item is only suitable for the next cultivation breakthrough. Stabilize your current realm and advance in order.
@@ -25,6 +28,7 @@ Mods: {
 				SpiritPressureSurge: Spirit Pressure Surge
 				DaoScarUnstable: Dao Scar Unstable
 				FurnaceArmorExposed: "Furnace armor exposed — strike now"
+				FurnaceSlam: "Furnace slam — leave the orange area"
 				SpiritVeinTremor: Spirit Vein Tremor
 				ShatteredJadeRampage: Shattered Jade Rampage
 			}

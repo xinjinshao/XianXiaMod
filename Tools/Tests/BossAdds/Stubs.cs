@@ -61,3 +61,5 @@ namespace XianXia.Content.Projectiles{public class CoreArchiveCompressionProject
 namespace XianXia.Content.NPCs.Bosses{public partial class ThunderMarshJiao:Terraria.ModLoader.ModNPC{}}
 
 namespace XianXia.Content.Projectiles{public class TribulationWarningLineProjectile{}}
+
+namespace XianXia.Content.Projectiles{public class FurnaceSlamWaveProjectile{}}
