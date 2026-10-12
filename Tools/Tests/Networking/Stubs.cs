@@ -18,6 +18,7 @@ namespace Microsoft.Xna.Framework
         public static Vector2 Zero => new(0,0);
         public static Vector2 UnitX => new(1,0);
         public static Vector2 operator -(Vector2 a, Vector2 b) => new(a.X-b.X,a.Y-b.Y);
+        public static Vector2 Lerp(Vector2 a, Vector2 b, float t) => a + (b-a)*t;
         public static Vector2 operator *(Vector2 a, float b) => new(a.X*b,a.Y*b);
         public float LengthSquared() => X*X+Y*Y;
         public Vector2 SafeNormalize(Vector2 fallback) => LengthSquared() > 0 ? this * (1f/MathF.Sqrt(LengthSquared())) : fallback;
@@ -78,7 +79,7 @@ namespace Terraria
 
         public Item[] inventory = Enumerable.Range(0, 59).Select(_ => new Item()).ToArray();
         public Item HeldItem => inventory[selectedItem];
-        public Microsoft.Xna.Framework.Vector2 Center;
+        public Microsoft.Xna.Framework.Vector2 Center,velocity;
         public XianXia.Common.Players.XianXiaPlayer State = new();
         private XianXia.Common.Players.InscriptionPlayer inscription;
         public T GetModPlayer<T>() {
@@ -111,7 +112,7 @@ namespace Terraria
     public class Tile { public bool HasTile; public ushort TileType; }
     public class Projectile
     {
-        public bool active,friendly,hostile,tileCollide,ignoreWater,usesLocalNPCImmunity,netUpdate,arrow,netImportant;
+        public bool active,friendly,hostile,tileCollide,ignoreWater,usesLocalNPCImmunity,netUpdate,arrow,netImportant,hide;
         public int width,height,penetrate,timeLeft,localNPCHitCooldown; public float rotation; public float[] ai=new float[2]; public object DamageType;
         public Terraria.ModLoader.ModProjectile ModProjectile;public int whoAmI;
         public int owner, type, damage, identity; public float knockBack;
@@ -439,5 +440,4 @@ namespace XianXia.Content.Projectiles{public class MoonboneShardProjectile{}}
 
 namespace XianXia.Common.Players{public static class CultivationStatusText{public static string StageName(CultivationStage stage)=>stage.ToString();}}
 
-namespace XianXia.Content.Projectiles {public class FormlessSwordWheelProjectile{}}
 namespace XianXia.Content.Items.HandGenerated {public class BrokenSwordIntent{}}
