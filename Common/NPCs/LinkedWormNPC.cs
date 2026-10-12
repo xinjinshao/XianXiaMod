@@ -47,6 +47,13 @@ public abstract class LinkedWormNPC : ModNPC
         && CanContact(out NPC head)
         && Microsoft.Xna.Framework.Vector2.DistanceSquared(head.Center, target.Center) <= BossTargeting.MaximumDistance * BossTargeting.MaximumDistance
         && Collision.CanHitLine(NPC.Center, 1, 1, target.Center, 1, 1);
+    private bool CanReceiveHit() => IsWormHead
+        || (SegmentedWormAI.HasValidLinks(NPC, out NPC head) && BossTargeting.HasLivingTarget(head));
+    public override bool? CanBeHitByItem(Player player, Item item) => CanReceiveHit() ? null : false;
+    public override bool? CanBeHitByProjectile(Projectile projectile) => CanReceiveHit() ? null : false;
+    // Segments share head health; only the head can own death rewards/events.
+    public override bool PreKill() => IsWormHead;
+
     public override void SendExtraAI(BinaryWriter writer)
     {
         writer.Write(Instance);

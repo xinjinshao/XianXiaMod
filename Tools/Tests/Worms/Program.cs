@@ -44,4 +44,9 @@ foreach(int mode in new[]{0,1,2}){
  var contactNpc=new NPC{active=true,life=100};Check(body.ModNPC.CanHitNPC(contactNpc),"worm preserves valid NPC contact");Collision.Blocked=true;Check(!body.ModNPC.CanHitNPC(contactNpc),"worm NPC contact blocked by wall");Collision.Blocked=false;contactNpc.velocity=new(float.NaN,0);Check(!body.ModNPC.CanHitNPC(contactNpc),"worm NPC contact rejects bad velocity");
  Main.player[1].Center=new(4000,0);Check(body.ModNPC.CanHitPlayer(Main.player[1],ref contactSlot),"worm includes exact head participation radius");
 }
+foreach(int mode in new[]{0,1,2})foreach(bool replaceSource in new[]{false,true}) {
+ head=Setup();SegmentedWormAI.TrySpawnChain(head,11,12,2);body=Main.npc[2];Main.netMode=mode;Check(body.ModNPC.CanBeHitByItem(Main.player[0],new Item())==null&&body.ModNPC.CanBeHitByProjectile(new Projectile())==null,"valid segment retains native shared-health hit behavior");Check(!body.ModNPC.PreKill()&&head.ModNPC.PreKill(),"only worm head owns normal death reward path");((TestHead)head.ModNPC).ContactAllowed=false;Check(body.ModNPC.CanBeHitByItem(Main.player[0],new Item())==null,"harmless warning does not block counterattacks on valid segment");
+ if(replaceSource){var reusedHead=new NPC{active=true,life=100,whoAmI=0,type=head.type};reusedHead.ModNPC=new TestHead{NPC=reusedHead};Main.npc[0]=reusedHead;}else head.active=false;
+ Check(body.ModNPC.CanBeHitByItem(Main.player[0],new Item())==false&&body.ModNPC.CanBeHitByProjectile(new Projectile())==false,"invalid/reused parent segment rejects incoming hits before AI");
+}
 Console.WriteLine($"Actual segmented-worm source regression passed: {assertions} assertions; mocked spawn/network boundary.");
