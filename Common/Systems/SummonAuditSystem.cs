@@ -8,6 +8,7 @@ using Terraria;
 using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
+using Terraria.ModLoader.IO;
 using XianXia.Content.NPCs.Bosses;
 using XianXia.Content.NPCs.Enemies;
 
@@ -34,6 +35,13 @@ public class SummonAuditSystem : ModSystem
         var previousProjectiles = Main.projectile.Where(projectile => projectile.active).ToHashSet();
         var previousItems = Main.item.Where(item => item?.active == true).ToHashSet();
         Player original = Main.player[0];
+        int originalGameMode = Main.GameMode;
+        int[] originalKillCounts = (int[])NPC.killCount.Clone();
+        var progressSystem = ModContent.GetInstance<DownedBossSystem>();
+        var originalProgress = new TagCompound();
+        progressSystem.SaveWorldData(originalProgress);
+        int originalReputation = DownedBossSystem.SectReputation;
+
         string error = null;
         void Check(bool value, string name) {
             if (!value) throw new InvalidOperationException(name);
@@ -163,7 +171,7 @@ public class SummonAuditSystem : ModSystem
                     int protectedLife = tabletNpc.life;
                     Main.player[0].ApplyDamageToNPC(tabletNpc, 100, 0, 1, false, DamageClass.Generic);
                     Check(tabletNpc.life == protectedLife, "native player damage respects boss shield");
-                    int previousKillCount = NPC.killCount[marks[0].type];
+                    int[] previousKillCount = (int[])NPC.killCount.Clone();
                     foreach (NPC mark in marks) {
                         Check(mark.width == 40 && mark.height == 40 && mark.damage == 0 && mark.value == 0,
                             "registered seal body and no contact/coin rewards");
@@ -190,7 +198,7 @@ public class SummonAuditSystem : ModSystem
                         int previousLife = current.life;
                         int applied = current.StrikeNPC(new NPC.HitInfo { Damage = previousLife + 100, HitDirection = 1 }, noPlayerInteraction: true);
                         Check(applied > 0 && !current.active, $"seal {order} native strike consumes ordered mark");
-                        Check(NPC.killCount[current.type] == previousKillCount, "native seal strike does not increment kill count");
+                        Check(NPC.killCount.SequenceEqual(previousKillCount), "native seal strike does not increment kill count");
                         Check(!Main.item.Any(item => item?.active == true && !previousItems.Contains(item)),
                             "native seal strike creates no loot items");
                         Check(tabletNpc.dontTakeDamage == (order < 3), $"shield breaks after last ordered seal {order}");
@@ -410,12 +418,12 @@ public class SummonAuditSystem : ModSystem
             var archiveLocks=Main.npc.Where(npc=>npc.active&&!beforeArchiveNpcs.Contains(npc)).OrderBy(npc=>npc.ai[1]).ToArray();Check(archiveLocks.Length==4,"registered four archive locks");
             TickArchiveCore();Check(archiveCoreNpc.velocity==Vector2.Zero&&archiveCoreNpc.immortal,"registered core remains stationary while archive shield active");
             int archiveProtectedLife=archiveCoreNpc.life;Main.player[0].ApplyDamageToNPC(archiveCoreNpc,100,0,1,false,DamageClass.Generic);Check(archiveCoreNpc.life==archiveProtectedLife,"registered archive shield rejects actual native player damage");
-            int archiveKillCount=NPC.killCount[ModContent.NPCType<CoreArchiveLockNPC>()];
+            int[] archiveKillCount=(int[])NPC.killCount.Clone();
             foreach(int archiveIndex in new[]{3,1,0,2}) {
                 NPC archiveLock=archiveLocks[archiveIndex];archiveLock.ModNPC.AI();Check(archiveLock.ModNPC is CoreArchiveLockNPC&&archiveLock.ModNPC.CanBeHitByItem(Main.player[0],new Item())==true&&!archiveLock.immortal,"registered remaining archive is immediately vulnerable out of order");
                 using(var archivePacket=new MemoryStream()){archiveLock.ModNPC.SendExtraAI(new BinaryWriter(archivePacket));Check(archivePacket.Length==13&&BitConverter.ToInt64(archivePacket.ToArray(),2)==archiveCore.ArchiveSession,"registered archive real OnSpawn source session");}
                 int archiveApplied=archiveLock.StrikeNPC(new NPC.HitInfo{Damage=archiveLock.life+100,HitDirection=1},noPlayerInteraction:true);
-                Check(archiveApplied>0&&!archiveLock.active,"registered native strike breaks unordered archive");Check(NPC.killCount[archiveLock.type]==archiveKillCount&&!Main.item.Any(item=>item?.active==true&&!previousItems.Contains(item)),"registered archive no kill progression or item rewards");
+                Check(archiveApplied>0&&!archiveLock.active,"registered native strike breaks unordered archive");Check(NPC.killCount.SequenceEqual(archiveKillCount)&&!Main.item.Any(item=>item?.active==true&&!previousItems.Contains(item)),"registered archive no kill progression or item rewards");
                 Check(archiveCoreNpc.immortal==(archiveIndex!=2)&&archiveCoreNpc.dontTakeDamage==(archiveIndex!=2),"registered archive shield breaks only after final lock");
             }
             Check(!archiveCore.CanHitPlayer(Main.player[0],ref cooldownSlot),"registered last archive break immediately safe before next AI");
@@ -431,14 +439,25 @@ public class SummonAuditSystem : ModSystem
             int replacementArchiveSlot=NPC.NewNPC(new EntitySource_Misc("XianXiaArchiveReplacementAudit"),x,y+48,ModContent.NPCType<OldHeavenDaoCore>());Check(replacementArchiveSlot==reusedArchiveSlot,"registered archive parent slot actually reused");NPC replacementArchiveNpc=Main.npc[replacementArchiveSlot];owned.Add(replacementArchiveNpc);replacementArchiveNpc.target=0;Check(((OldHeavenDaoCore)replacementArchiveNpc.ModNPC).ArchiveSession!=previousArchiveSession,"registered replacement archive parent has new session");
             abandonedCompression.ModProjectile.AI();Check(abandonedCompression.ModProjectile.CanDamage()==false&&abandonedCompression.timeLeft<=6,"registered old compression does not follow same-type parent slot reuse");abandonedCompression.active=false;
             foreach(NPC abandonedArchive in abandonedArchiveLocks){abandonedArchive.ModNPC.AI();Check(!abandonedArchive.active&&abandonedArchive.damage==0,"registered old archive source cannot follow reused same-type parent slot");}
-            Check(NPC.killCount[ModContent.NPCType<CoreArchiveLockNPC>()]==archiveKillCount&&!Main.item.Any(item=>item?.active==true&&!previousItems.Contains(item)),"registered reused-source cleanup has no rewards");replacementArchiveNpc.active=false;
+            Check(NPC.killCount.SequenceEqual(archiveKillCount)&&!Main.item.Any(item=>item?.active==true&&!previousItems.Contains(item)),"registered reused-source cleanup has no rewards");replacementArchiveNpc.active=false;
+            try {
+                Main.GameMode=0;
+                foreach(var fatalWorm in new[]{(ModContent.NPCType<SpiritVeinWyrm>(),ModContent.NPCType<SpiritVeinWyrmBody>(),ModContent.NPCType<SpiritVeinWyrmTail>(),"spirit_vein_wyrm",ModContent.ItemType<global::XianXia.Content.Items.HandGenerated.LowGradeSpiritCore>(),1,1),(ModContent.NPCType<ThunderMarshJiao>(),ModContent.NPCType<ThunderMarshJiaoBody>(),ModContent.NPCType<ThunderMarshJiaoTail>(),"thunder_marsh_jiao",ModContent.ItemType<global::XianXia.Content.Items.Materials.TribulationCloudDew>(),16,28)}) {
+                    progressSystem.ClearWorld();var beforeFatalItems=Main.item.Where(item=>item?.active==true).ToHashSet();int fatalHeadIndex=NPC.NewNPC(new EntitySource_Misc("XianXiaWormFatalRewardAudit"),x,y+48,fatalWorm.Item1);Check(fatalHeadIndex>=0&&fatalHeadIndex<Main.maxNPCs,"registered fatal reward worm head created");NPC fatalHead=Main.npc[fatalHeadIndex];owned.Add(fatalHead);fatalHead.target=0;fatalHead.playerInteraction[0]=true;fatalHead.lastInteraction=0;
+                    var beforeFatalNpcs=Main.npc.Where(npc=>npc.active).ToHashSet();try{Check(SegmentedWormAI.TrySpawnChain(fatalHead,fatalWorm.Item2,fatalWorm.Item3,2),"registered fatal reward worm chain created");}finally{owned.AddRange(Main.npc.Where(npc=>npc.active&&!beforeFatalNpcs.Contains(npc)&&!owned.Contains(npc)));}NPC[] fatalSegments=Main.npc.Where(npc=>npc.active&&!beforeFatalNpcs.Contains(npc)).ToArray();Check(fatalSegments.Length==3,"registered fatal reward full short chain");
+                    int[] originalHeadKills=(int[])NPC.killCount.Clone();fatalHead.life=1;Main.player[0].ApplyDamageToNPC(fatalSegments[0],100,0,1,false,DamageClass.Generic);Check(!fatalHead.active&&DownedBossSystem.DownedBosses.Contains(fatalWorm.Item4),"registered fatal segment strike kills head and advances correct boss");Check(DownedBossSystem.DownedBosses.Count==1&&DownedBossSystem.SectReputation==(fatalWorm.Item4=="spirit_vein_wyrm"?5:18)&&NPC.killCount.SequenceEqual(originalHeadKills),"registered fatal head advances progress once without unrelated banner tally");
+                    int RewardCount()=>Main.item.Where(item=>item?.active==true&&!beforeFatalItems.Contains(item)&&item.type==fatalWorm.Item5).Sum(item=>item.stack);int actualReward=RewardCount();Check(actualReward>=fatalWorm.Item6&&actualReward<=fatalWorm.Item7,"registered fatal head gives one ordinary guaranteed material roll");int fatalReputation=DownedBossSystem.SectReputation;
+                    foreach(NPC orphan in fatalSegments){orphan.NPCLoot();orphan.ModNPC.AI();Check(!orphan.active,"registered remaining fatal chain cleaned after head death");}Check(RewardCount()==actualReward&&DownedBossSystem.SectReputation==fatalReputation&&NPC.killCount.SequenceEqual(originalHeadKills),"registered dead body/tail cannot repeat head rewards or progress");
+                    foreach(Item testReward in Main.item.Where(item=>item?.active==true&&!beforeFatalItems.Contains(item)))testReward.active=false;
+                }
+            } finally {Main.GameMode=originalGameMode;progressSystem.LoadWorldData(originalProgress);}
             for(int minionCase=0;minionCase<3;minionCase++) {
                 int minionParentIndex=NPC.NewNPC(new EntitySource_Misc("XianXiaMinionBindingAudit"),x,y+48,ModContent.NPCType<SpiritVeinWyrm>());Check(minionParentIndex>=0&&minionParentIndex<Main.maxNPCs,"registered minion protection parent created");NPC minionParent=Main.npc[minionParentIndex];owned.Add(minionParent);minionParent.target=0;
                 int minionHeadIndex=NPC.NewNPC(minionParent.GetSource_FromAI(),x+64,y+48,ModContent.NPCType<ShatteredJadeWyrmMinion>());Check(minionHeadIndex>=0&&minionHeadIndex<Main.maxNPCs,"registered minion protection head created");NPC minionHead=Main.npc[minionHeadIndex];owned.Add(minionHead);minionHead.target=0;byte[] minionBirth;using(var minionWire=new MemoryStream()){minionHead.ModNPC.SendExtraAI(new BinaryWriter(minionWire));minionBirth=minionWire.ToArray();}Check(minionBirth.Length==34,"registered minion full source/link packet unchanged");
                 minionHead.ai[3]=200;Check(minionHead.ModNPC.PreAI(),"registered minion observes advanced age");minionHead.ai[3]=0;Check(minionHead.ModNPC.PreAI()&&minionHead.ai[3]>=200,"registered minion old AI age cannot extend lifetime");
                 if(minionCase<2){var switchedMinion=(byte[])minionBirth.Clone();if(minionCase==0)BitConverter.GetBytes((short)((minionParentIndex+1)%Main.maxNPCs)).CopyTo(switchedMinion,0);else BitConverter.GetBytes(BitConverter.ToInt64(minionBirth,2)+1).CopyTo(switchedMinion,2);minionHead.ModNPC.ReceiveExtraAI(new BinaryReader(new MemoryStream(switchedMinion)));minionHead.ModNPC.ReceiveExtraAI(new BinaryReader(new MemoryStream(minionBirth)));Check(!minionHead.ModNPC.CanHitPlayer(Main.player[0],ref cooldownSlot)&&minionHead.ModNPC.CanBeHitByItem(Main.player[0],new Item())==false,"registered minion rejected source cannot reactivate");}
                 else{minionHead.ai[3]=900;Check(!minionHead.ModNPC.CanHitPlayer(Main.player[0],ref cooldownSlot),"registered minion observes expiry before AI");minionHead.ai[3]=0;Check(!minionHead.ModNPC.CanHitPlayer(Main.player[0],ref cooldownSlot),"registered expired minion rejects old age state");}
-                int minionKillCount=NPC.killCount[minionHead.type];int minionFatal=minionHead.StrikeNPC(new NPC.HitInfo{Damage=minionHead.life+100,HitDirection=1},noPlayerInteraction:true);Check(minionFatal>0&&!minionHead.active&&NPC.killCount[minionHead.type]==minionKillCount&&!Main.item.Any(item=>item?.active==true&&!previousItems.Contains(item)),"registered invalid minion native fatal strike has no rewards");minionParent.active=false;
+                int[] minionKillCount=(int[])NPC.killCount.Clone();int minionFatal=minionHead.StrikeNPC(new NPC.HitInfo{Damage=minionHead.life+100,HitDirection=1},noPlayerInteraction:true);Check(minionFatal>0&&!minionHead.active&&NPC.killCount.SequenceEqual(minionKillCount)&&!Main.item.Any(item=>item?.active==true&&!previousItems.Contains(item)),"registered invalid minion native fatal strike has no rewards");minionParent.active=false;
             }
             foreach(var rewardWormTypes in new[]{(ModContent.NPCType<SpiritVeinWyrm>(),ModContent.NPCType<SpiritVeinWyrmBody>(),ModContent.NPCType<SpiritVeinWyrmTail>()),(ModContent.NPCType<ThunderMarshJiao>(),ModContent.NPCType<ThunderMarshJiaoBody>(),ModContent.NPCType<ThunderMarshJiaoTail>())}) {
                 int rewardWormIndex=NPC.NewNPC(new EntitySource_Misc("XianXiaWormRewardAudit"),x,y+48,rewardWormTypes.Item1);Check(rewardWormIndex>=0&&rewardWormIndex<Main.maxNPCs,"registered reward-test worm head created");NPC rewardWormHead=Main.npc[rewardWormIndex];owned.Add(rewardWormHead);rewardWormHead.target=0;var beforeRewardWorm=Main.npc.Where(npc=>npc.active).ToHashSet();
@@ -457,8 +476,8 @@ public class SummonAuditSystem : ModSystem
                 int deathParentIndex=NPC.NewNPC(new EntitySource_Misc("XianXiaCompanionDeathAudit"),x,y+48,deathPair.Item1);Check(deathParentIndex>=0&&deathParentIndex<Main.maxNPCs,"registered source-death parent created");NPC deathParent=Main.npc[deathParentIndex];owned.Add(deathParent);deathParent.target=0;
                 int deathChildIndex=NPC.NewNPC(deathParent.GetSource_FromAI(),x+64,y+48,deathPair.Item2,ai0:deathParentIndex);Check(deathChildIndex>=0&&deathChildIndex<Main.maxNPCs,"registered source-death companion created");NPC deathChild=Main.npc[deathChildIndex];owned.Add(deathChild);deathChild.target=0;
                 Check(deathChild.ModNPC.CanBeHitByItem(Main.player[0],new Item())==null&&deathChild.ModNPC.CanBeHitByProjectile(new Projectile())==null,"registered valid source retains incoming hit behavior");deathParent.active=false;
-                Check(deathChild.ModNPC.CanBeHitByItem(Main.player[0],new Item())==false&&deathChild.ModNPC.CanBeHitByProjectile(new Projectile())==false,"registered source loss blocks incoming hit before AI");int previousCompanionKills=NPC.killCount[deathChild.type];int deathResult=deathChild.StrikeNPC(new NPC.HitInfo{Damage=deathChild.life+100,HitDirection=1},noPlayerInteraction:true);
-                Check(deathResult>0&&!deathChild.active,"registered native lethal strike cleans invalid source companion");Check(NPC.killCount[deathChild.type]==previousCompanionKills&&!Main.item.Any(item=>item?.active==true&&!previousItems.Contains(item)),"registered invalid source fatal strike gives no items or kill progression");
+                Check(deathChild.ModNPC.CanBeHitByItem(Main.player[0],new Item())==false&&deathChild.ModNPC.CanBeHitByProjectile(new Projectile())==false,"registered source loss blocks incoming hit before AI");int[] previousCompanionKills=(int[])NPC.killCount.Clone();int deathResult=deathChild.StrikeNPC(new NPC.HitInfo{Damage=deathChild.life+100,HitDirection=1},noPlayerInteraction:true);
+                Check(deathResult>0&&!deathChild.active,"registered native lethal strike cleans invalid source companion");Check(NPC.killCount.SequenceEqual(previousCompanionKills)&&!Main.item.Any(item=>item?.active==true&&!previousItems.Contains(item)),"registered invalid source fatal strike gives no items or kill progression");
             }
             foreach(var pair in bindingPairs)foreach(int switchKind in new[]{0,1,2}) {
                 int bindingParentSlot=NPC.NewNPC(new EntitySource_Misc("XianXiaAllSummonBindingAudit"),x,y+48,pair.Item1);Check(bindingParentSlot>=0&&bindingParentSlot<Main.maxNPCs,"registered companion binding parent created");NPC bindingParent=Main.npc[bindingParentSlot];owned.Add(bindingParent);bindingParent.target=0;
@@ -530,16 +549,26 @@ public class SummonAuditSystem : ModSystem
             foreach (Projectile projectile in ownedProjectiles) { projectile.damage = 0; projectile.active = false; }
             foreach (Item item in Main.item.Where(item => item?.active == true && !previousItems.Contains(item))) item.active = false;
             Main.player[0] = original;
+            Main.GameMode = originalGameMode;
+            progressSystem.LoadWorldData(originalProgress);
+            originalKillCounts.CopyTo(NPC.killCount, 0);
         }
         if (!ReferenceEquals(Main.player[0], original) || owned.Any(npc => npc.active)
             || ownedProjectiles.Any(projectile => projectile.active))
             error ??= "Audit cleanup did not restore the player slot and deactivate test NPCs.";
         else checks.Add("player slot restored and all test entities removed");
+        if (Main.GameMode != originalGameMode || DownedBossSystem.DownedSpiritVeinWyrm != originalProgress.GetBool("downedSpiritVeinWyrm")
+            || DownedBossSystem.SectReputation != originalReputation
+            || DownedBossSystem.ChosenRoute != (DownedBossSystem.EndgameRoute)originalProgress.GetInt("chosenRoute")
+            || !DownedBossSystem.DownedBosses.SetEquals(originalProgress.GetList<string>("downedBosses"))
+            || !DownedBossSystem.ClaimedCommissions.SetEquals(originalProgress.GetList<string>("claimedCommissions"))
+            || !NPC.killCount.SequenceEqual(originalKillCounts)) error ??= "Audit did not restore progress/difficulty/kill counts.";
+        else checks.Add("world progression difficulty and kill counts restored");
         string directory = Path.Combine(Main.SavePath, "XianXia");
         Directory.CreateDirectory(directory);
         File.WriteAllText(Path.Combine(directory, "summon-audit.json"), JsonSerializer.Serialize(new {
             schema = 1, passed = error == null, checks, error,
-            limitations = "Registered AI advanced manually for medicine, tablet, inspector, core modules, archive locks and thunder jiao chains/zones; one native compression Projectile.Update and local Projectile.Damage verify safe/unsafe regions with hit-text slots occupied. Native player damage/NPC.StrikeNPC verify shield breaks and reward suppression. No full world/player ticks, rendered graphics, real clients, combat balance or complete playthrough."
+            limitations = "Registered AI advanced manually for medicine, tablet, inspector, core modules, archive locks and thunder jiao chains/zones; one native compression Projectile.Update and local Projectile.Damage verify safe/unsafe regions with hit-text slots occupied. Native player damage/NPC.StrikeNPC verify shield breaks, reward suppression and ordinary worm head rewards through fatal segment hits. Progress/difficulty/banner tallies are restored; expert/master bag distribution is not covered. No full world/player ticks, rendered graphics, real clients, combat balance or complete playthrough."
         }, new JsonSerializerOptions { WriteIndented = true }));
         Mod.Logger.Info($"Summon audit finished: {checks.Count} checks; passed={error == null}");
     }
