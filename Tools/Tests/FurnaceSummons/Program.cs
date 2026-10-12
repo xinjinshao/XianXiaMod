@@ -141,4 +141,13 @@ foreach(int kind in Enumerable.Range(0,5))foreach(int mode in new[]{0,1,2})forea
 foreach(int kind in Enumerable.Range(0,5)){
  Reset();var companion=OtherBoundChild(kind);var originalPacket=Save(companion);var aged=(byte[])originalPacket.Clone();BitConverter.GetBytes((short)200).CopyTo(aged,11);Read(companion,aged);Read(companion,originalPacket);Check(BitConverter.ToInt16(Save(companion),11)==200,"all five summons reject old lifetime extension");BitConverter.GetBytes((short)0).CopyTo(aged,11);Read(companion,aged);Read(companion,originalPacket);Check(BitConverter.ToInt16(Save(companion),11)==0,"all five summons cannot revive expired lifetime");
 }
+foreach(int kind in Enumerable.Range(0,6))foreach(int mode in new[]{0,1,2}){
+ Reset();Terraria.ModLoader.ModNPC dyingCompanion=kind==5?Child(Parent()):OtherBoundChild(kind);Main.netMode=mode;Check(dyingCompanion.CanBeHitByItem(Main.player[0],new Item())==null&&dyingCompanion.CanBeHitByProjectile(new Projectile())==null,"valid source preserves ordinary incoming hit behavior");Main.npc[3].active=false;
+ Check(dyingCompanion.CanBeHitByItem(Main.player[0],new Item())==false&&dyingCompanion.CanBeHitByProjectile(new Projectile())==false,"invalid source blocks player damage before AI cleanup");dyingCompanion.NPC.life=0;
+ Check(!dyingCompanion.CheckDead()&&dyingCompanion.NPC.active==(mode==1),"invalid source fatal hit bypasses normal reward death path");int deathSync=NetMessage.Calls;dyingCompanion.CheckDead();Check(NetMessage.Calls==deathSync,"invalid-source death cleanup sync idempotent");
+}
+foreach(int kind in Enumerable.Range(0,6)){
+ Reset();Terraria.ModLoader.ModNPC liveDeath=kind==5?Child(Parent()):OtherBoundChild(kind);liveDeath.NPC.life=0;Check(liveDeath.CheckDead(),"valid encounter death still permits normal rewards");
+}
+Reset();Check(new IronShardSpirit().CheckDead()&&new ArchivedImmortalSoul().CheckDead()&&new TribulationCloudling().CheckDead()&&new ObsessedSwordCultivator().CheckDead()&&new HerbGardenVineSpirit().CheckDead()&&new CelestialPuppet().CheckDead(),"natural companion deaths remain ordinary");
 Console.WriteLine($"Furnace summon lifecycle: {checks} checks passed (mock engine boundary).");

@@ -40,11 +40,11 @@ public partial class IronShardSpirit
         NPC.ai[3] = -SummonWarningTicks;
     }
 
-    private bool HasSummonSource()
+    private bool HasSummonSource(bool dying = false)
     {
         if (!float.IsFinite(NPC.ai[3]) || NPC.ai[3] != System.MathF.Truncate(NPC.ai[3])
             || NPC.ai[3] < -SummonWarningTicks || NPC.ai[3] > 0f
-            || rejectedBinding || !NPC.active || NPC.life <= 0 || remaining <= 0 || parentSession <= 0
+            || rejectedBinding || !NPC.active || (!dying && NPC.life <= 0) || remaining <= 0 || parentSession <= 0
             || parentSlot < 0 || parentSlot >= Main.maxNPCs
             || !float.IsFinite(NPC.Center.X) || !float.IsFinite(NPC.Center.Y)
             || !float.IsFinite(NPC.velocity.X) || !float.IsFinite(NPC.velocity.Y)) return false;
@@ -99,6 +99,24 @@ public partial class IronShardSpirit
                 NetMessage.SendData(MessageID.SyncNPC, number: NPC.whoAmI);
         }
         return false;
+    }
+
+    public override bool? CanBeHitByItem(Player player, Item item)
+        => !furnaceSummon || HasSynchronizedSummonTarget() ? null : false;
+    public override bool? CanBeHitByProjectile(Projectile projectile)
+        => !furnaceSummon || HasSynchronizedSummonTarget() ? null : false;
+
+    public override bool CheckDead()
+    {
+        if (!furnaceSummon) return true;
+        if (Main.netMode == NetmodeID.MultiplayerClient) { NPC.life = 1; return false; }
+        if (HasSummonSource(dying: true) && NPC.target == Main.npc[parentSlot].target) return true;
+        NPC.damage = 0;
+        if (NPC.active) {
+            NPC.active = false;
+            if (Main.netMode == NetmodeID.Server) NetMessage.SendData(MessageID.SyncNPC, number: NPC.whoAmI);
+        }
+        return false; // An invalid encounter cannot produce ordinary death rewards between AI updates.
     }
 
     public override bool CanHitPlayer(Player target, ref int cooldownSlot)

@@ -26,9 +26,9 @@ public partial class HerbGardenVineSpirit
         remaining = MaximumSummonLifetime;
     }
 
-    private bool HasSummonSource()
+    private bool HasSummonSource(bool dying = false)
     {
-        if (rejectedBinding || !NPC.active || NPC.life <= 0 || remaining <= 0 || parentSession <= 0
+        if (rejectedBinding || !NPC.active || (!dying && NPC.life <= 0) || remaining <= 0 || parentSession <= 0
             || parentSlot < 0 || parentSlot >= Main.maxNPCs
             || !float.IsFinite(NPC.Center.X) || !float.IsFinite(NPC.Center.Y)
             || !float.IsFinite(NPC.velocity.X) || !float.IsFinite(NPC.velocity.Y)) return false;
@@ -73,6 +73,24 @@ public partial class HerbGardenVineSpirit
                 NetMessage.SendData(MessageID.SyncNPC, number: NPC.whoAmI);
         }
         return false;
+    }
+
+    public override bool? CanBeHitByItem(Player player, Item item)
+        => !vineSummon || HasSynchronizedSummonTarget() ? null : false;
+    public override bool? CanBeHitByProjectile(Projectile projectile)
+        => !vineSummon || HasSynchronizedSummonTarget() ? null : false;
+
+    public override bool CheckDead()
+    {
+        if (!vineSummon) return true;
+        if (Main.netMode == NetmodeID.MultiplayerClient) { NPC.life = 1; return false; }
+        if (HasSummonSource(dying: true) && NPC.target == Main.npc[parentSlot].target) return true;
+        NPC.damage = 0;
+        if (NPC.active) {
+            NPC.active = false;
+            if (Main.netMode == NetmodeID.Server) NetMessage.SendData(MessageID.SyncNPC, number: NPC.whoAmI);
+        }
+        return false; // An invalid encounter cannot produce ordinary death rewards between AI updates.
     }
 
     public override bool CanHitPlayer(Player target, ref int cooldownSlot)
