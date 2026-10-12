@@ -97,6 +97,8 @@ public class ShatteredJadeWyrmMinionBody : global::XianXia.Common.NPCs.LinkedWor
 
     public override bool CanHitPlayer(Player target, ref int cooldownSlot) => ShatteredJadeWyrmMinion.HasLinkedSummonTarget(NPC) && base.CanHitPlayer(target, ref cooldownSlot);
     public override bool CanHitNPC(NPC target) => ShatteredJadeWyrmMinion.HasLinkedSummonTarget(NPC) && base.CanHitNPC(target);
+    public override bool? CanBeHitByItem(Player player, Item item) => ShatteredJadeWyrmMinion.HasLinkedSummonTarget(NPC) ? base.CanBeHitByItem(player, item) : false;
+    public override bool? CanBeHitByProjectile(Projectile projectile) => ShatteredJadeWyrmMinion.HasLinkedSummonTarget(NPC) ? base.CanBeHitByProjectile(projectile) : false;
     public override void AI() => ShatteredJadeWyrmMinion.FollowSummonSegment(NPC, 0.13f, 0.1f);
 }
 
@@ -123,5 +125,7 @@ public class ShatteredJadeWyrmMinionTail : global::XianXia.Common.NPCs.LinkedWor
 
     public override bool CanHitPlayer(Player target, ref int cooldownSlot) => ShatteredJadeWyrmMinion.HasLinkedSummonTarget(NPC) && base.CanHitPlayer(target, ref cooldownSlot);
     public override bool CanHitNPC(NPC target) => ShatteredJadeWyrmMinion.HasLinkedSummonTarget(NPC) && base.CanHitNPC(target);
+    public override bool? CanBeHitByItem(Player player, Item item) => ShatteredJadeWyrmMinion.HasLinkedSummonTarget(NPC) ? base.CanBeHitByItem(player, item) : false;
+    public override bool? CanBeHitByProjectile(Projectile projectile) => ShatteredJadeWyrmMinion.HasLinkedSummonTarget(NPC) ? base.CanBeHitByProjectile(projectile) : false;
     public override void AI() => ShatteredJadeWyrmMinion.FollowSummonSegment(NPC, 0.1f, 0.08f);
 }

@@ -10,6 +10,15 @@ namespace XianXia.Content.NPCs.Bosses;
 public partial class ShatteredJadeWyrmMinion
 {
     public const int MaximumSummonLifetime = 900;
+    private bool rejectedBinding;
+    private float observedAge;
+    private float CurrentAge()
+    {
+        float age = NPC.ai[3];
+        if (!float.IsFinite(age) || age != System.MathF.Truncate(age) || age < 0f || age > MaximumSummonLifetime) return float.NaN;
+        observedAge = System.MathF.Max(observedAge, age);
+        return observedAge;
+    }
     private short parentSlot = -1;
     private long parentSession;
 
@@ -21,11 +30,12 @@ public partial class ShatteredJadeWyrmMinion
         parentSession = wyrm.SummonSession;
     }
 
-    private bool HasSummonSource()
+    private bool HasSummonSource(bool dying = false)
     {
-        if (!NPC.active || NPC.life <= 0 || parentSession <= 0
+        float age = CurrentAge();
+        if (rejectedBinding || !NPC.active || (!dying && NPC.life <= 0) || parentSession <= 0
             || parentSlot < 0 || parentSlot >= Main.maxNPCs
-            || !float.IsFinite(NPC.ai[3]) || NPC.ai[3] < 0 || NPC.ai[3] >= MaximumSummonLifetime
+            || !float.IsFinite(age) || age >= MaximumSummonLifetime
             || !float.IsFinite(NPC.Center.X) || !float.IsFinite(NPC.Center.Y)
             || !float.IsFinite(NPC.velocity.X) || !float.IsFinite(NPC.velocity.Y)) return false;
         NPC parent = Main.npc[parentSlot];
@@ -38,6 +48,7 @@ public partial class ShatteredJadeWyrmMinion
     public override bool PreAI()
     {
         if (HasSummonSource()) {
+            NPC.ai[3] = CurrentAge();
             NPC parent = Main.npc[parentSlot];
             if (Main.netMode == NetmodeID.MultiplayerClient) {
                 // The head's ordinary target/age data is also authoritative.
@@ -89,6 +100,16 @@ public partial class ShatteredJadeWyrmMinion
             Terraria.ModLoader.ModContent.NPCType<ShatteredJadeWyrmMinion>());
     }
 
+    public override bool? CanBeHitByItem(Player player, Item item) => HasSummonTarget() ? null : false;
+    public override bool? CanBeHitByProjectile(Projectile projectile) => HasSummonTarget() ? null : false;
+    public override bool CheckDead()
+    {
+        if (Main.netMode == NetmodeID.MultiplayerClient) { NPC.life = 1; return false; }
+        if (HasSummonSource(dying: true) && NPC.target == Main.npc[parentSlot].target) return true;
+        SegmentedWormAI.Deactivate(NPC);
+        return false;
+    }
+
     public override bool CanHitNPC(NPC target) => HasSummonTarget() && base.CanHitNPC(target);
 
     public override void SendExtraAI(BinaryWriter writer)
@@ -103,6 +124,10 @@ public partial class ShatteredJadeWyrmMinion
         short slot = reader.ReadInt16();
         long session = reader.ReadInt64();
         base.ReceiveExtraAI(reader);
+        if ((parentSlot >= 0 && slot != parentSlot) || (parentSession > 0 && session != parentSession)) {
+            rejectedBinding = true;
+            return;
+        }
         parentSlot = slot >= 0 && slot < Main.maxNPCs ? slot : (short)-1;
         parentSession = session > 0 ? session : 0;
     }
