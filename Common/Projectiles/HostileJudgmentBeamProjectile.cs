@@ -32,8 +32,9 @@ public abstract class HostileJudgmentBeamProjectile : ModProjectile
     public override void ReceiveExtraAI(BinaryReader reader) { if (!sourceBinding.Read(reader, Projectile, Lifetime)) invalidState = true; }
     public override bool? CanDamage() => !invalidState && ValidGeometry() && Projectile.timeLeft > 0
         && Projectile.timeLeft <= Lifetime && sourceBinding.IsValid();
-    public override bool CanHitPlayer(Player target) => CanDamage() == true && target.active && !target.dead
+    public override bool CanHitPlayer(Player target) => target != null && CanDamage() == true && target.active && !target.dead
         && float.IsFinite(target.Center.X) && float.IsFinite(target.Center.Y)
+        && float.IsFinite(target.velocity.X) && float.IsFinite(target.velocity.Y)
         && Collision.CanHitLine(Projectile.Center, 1, 1, target.Center, 1, 1);
     public override void AI()
     {
