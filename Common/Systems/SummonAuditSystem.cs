@@ -441,13 +441,17 @@ public class SummonAuditSystem : ModSystem
                 Check(Math.Abs(registeredShard.Center.X-furnaceSiteNpc.Center.X)<=60&&Math.Abs(registeredShard.Bottom.Y-furnaceSiteNpc.Center.Y)<=40,"registered NewNPC center/bottom fits sampled area");
                 Check(!Collision.SolidCollision(registeredShard.position,48,48,true)&&!Collision.LavaCollision(registeredShard.position,48,48),"registered entire shard body is terrain-safe");
                 Check(registeredShard.target==0&&registeredShard.netUpdate,"registered safe shard target synchronized");
-                using(var shardPacket=new MemoryStream()){registeredShard.ModNPC.SendExtraAI(new BinaryWriter(shardPacket));Check(shardPacket.Length==13&&BitConverter.ToInt64(shardPacket.ToArray(),3)==furnaceSiteBoss.SummonSession,"registered terrain-safe shard captures furnace encounter source");}
+                byte[] shardBirthPacket;
+                using(var shardPacket=new MemoryStream()){registeredShard.ModNPC.SendExtraAI(new BinaryWriter(shardPacket));shardBirthPacket=shardPacket.ToArray();Check(shardPacket.Length==13&&BitConverter.ToInt64(shardBirthPacket,3)==furnaceSiteBoss.SummonSession,"registered terrain-safe shard captures furnace encounter source");}
                 Check(registeredShard.ai[3]==-45&&!registeredShard.ModNPC.CanHitPlayer(Main.player[0],ref cooldownSlot),"registered shard born in harmless warning");
                 for(int birthFrame=1;birthFrame<=45;birthFrame++){
                     Check(!registeredShard.ModNPC.PreAI()&&registeredShard.active&&!registeredShard.ModNPC.CanHitPlayer(Main.player[0],ref cooldownSlot),"registered shard exact forty-five frame warning");
                     registeredShard.ModNPC.PostAI();Check(registeredShard.velocity==Vector2.Zero&&registeredShard.localAI[0]==0,"registered shard warning suppresses post-AI swarm dash");
                 }
                 Check(registeredShard.ModNPC.PreAI()&&registeredShard.ModNPC.CanHitPlayer(Main.player[0],ref cooldownSlot),"registered shard activates after full warning");
+                registeredShard.ai[3]=-45;Check(registeredShard.ModNPC.CanHitPlayer(Main.player[0],ref cooldownSlot),"registered old AI packet cannot refreeze active shard contact");
+                Check(registeredShard.ModNPC.PreAI()&&registeredShard.ai[3]==0,"registered old warning restored to observed completion");
+                using(var agedShardPacket=new MemoryStream()){registeredShard.ModNPC.SendExtraAI(new BinaryWriter(agedShardPacket));byte[] agedWire=agedShardPacket.ToArray();registeredShard.ModNPC.ReceiveExtraAI(new BinaryReader(new MemoryStream(shardBirthPacket)));using var restoredWire=new MemoryStream();registeredShard.ModNPC.SendExtraAI(new BinaryWriter(restoredWire));Check(restoredWire.ToArray().SequenceEqual(agedWire),"registered old source packet cannot extend shard life");}
                 registeredShard.active=false;
             }
             furnaceSiteNpc.active=false;

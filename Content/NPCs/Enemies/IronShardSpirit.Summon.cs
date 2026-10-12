@@ -13,8 +13,17 @@ public partial class IronShardSpirit
     public const int MaximumSummonLifetime = 900;
     public const int SummonWarningTicks = 45;
     private bool summonWarningFrame;
+    private float observedWarningClock = -SummonWarningTicks;
+    private float CurrentWarningClock()
+    {
+        float clock = NPC.ai[3];
+        if (!float.IsFinite(clock) || clock != System.MathF.Truncate(clock)
+            || clock < -SummonWarningTicks || clock > 0f) return float.NaN;
+        observedWarningClock = System.MathF.Max(observedWarningClock, clock);
+        return observedWarningClock;
+    }
     private bool HasFinishedSummonWarning() => !furnaceSummon
-        || (!summonWarningFrame && NPC.ai[3] == 0f);
+        || (!summonWarningFrame && CurrentWarningClock() == 0f);
     private bool furnaceSummon;
     private short parentSlot = -1;
     private long parentSession;
@@ -67,6 +76,8 @@ public partial class IronShardSpirit
         if (SynchronizeSummonTarget()) {
             if (Main.netMode != NetmodeID.MultiplayerClient) remaining--;
             if (remaining > 0) {
+                // A delayed NPC state cannot restart an already observed warning.
+                NPC.ai[3] = CurrentWarningClock();
                 if (NPC.ai[3] < 0f) {
                     summonWarningFrame = true;
                     NPC.velocity = Vector2.Zero;
@@ -110,9 +121,11 @@ public partial class IronShardSpirit
         short slot = reader.ReadInt16();
         long session = reader.ReadInt64();
         short lifetime = reader.ReadInt16();
+        short receivedLifetime = (short)System.Math.Clamp((int)lifetime, 0, MaximumSummonLifetime);
+        bool sameBinding = furnaceSummon && bound && slot == parentSlot && session == parentSession;
+        remaining = sameBinding ? System.Math.Min(remaining, receivedLifetime) : receivedLifetime;
         furnaceSummon = bound;
         parentSlot = slot >= 0 && slot < Main.maxNPCs ? slot : (short)-1;
         parentSession = session > 0 ? session : 0;
-        remaining = (short)System.Math.Clamp((int)lifetime, 0, MaximumSummonLifetime);
     }
 }

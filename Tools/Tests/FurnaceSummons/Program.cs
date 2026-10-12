@@ -33,7 +33,7 @@ Reset();var authority=Parent();var serverChild=Child(authority);var bossWire=Sav
 Check(!remoteChild.PreAI()&&!Hit(remoteChild)&&remoteChild.NPC.active,"child before parent packet waits harmlessly");Read(remote,bossWire);Check(remoteChild.PreAI()&&Hit(remoteChild),"parent packet restores client prediction");var age=Save(remoteChild);for(int i=0;i<1000;i++)remoteChild.PreAI();Check(Save(remoteChild).SequenceEqual(age),"client cannot expire authority child");
 for(int slotIndex=0;slotIndex<3;slotIndex++)for(int sessionIndex=0;sessionIndex<3;sessionIndex++)for(int lifetimeIndex=0;lifetimeIndex<4;lifetimeIndex++){
  using var stream=new MemoryStream();using(var writer=new BinaryWriter(stream,System.Text.Encoding.UTF8,true)){writer.Write(true);writer.Write(new short[]{-1,3,short.MaxValue}[slotIndex]);writer.Write(new long[]{-1,0,authority.SummonSession}[sessionIndex]);writer.Write(new short[]{-1,0,900,short.MaxValue}[lifetimeIndex]);}
- Read(remoteChild,stream.ToArray());bool expected=slotIndex==1&&sessionIndex==2&&lifetimeIndex>=2;Check(Hit(remoteChild)==expected,"malformed binding remains harmless or clamped");
+ remoteChild=new IronShardSpirit{NPC=new(){active=true,life=70}};Read(remoteChild,stream.ToArray());bool expected=slotIndex==1&&sessionIndex==2&&lifetimeIndex>=2;Check(Hit(remoteChild)==expected,"malformed binding remains harmless or clamped");
 }
 MoonboneImmortal MoonParent(){var boss=new MoonboneImmortal();boss.NPC=new(){active=true,life=100,whoAmI=3,target=0,ModNPC=boss};Main.npc[3]=boss.NPC;return boss;}
 ArchivedImmortalSoul MoonChild(MoonboneImmortal boss){var child=new ArchivedImmortalSoul();child.NPC=new(){active=true,life=70,whoAmI=4,ModNPC=child};child.OnSpawn(new EntitySource_Parent(boss.NPC));return child;}
@@ -118,5 +118,11 @@ foreach(int warningMode in new[]{0,1,2}) {
  for(int frame=1;frame<=45;frame++){Check(!warningChild.PreAI()&&!Hit(warningChild)&&warningChild.NPC.active,"furnace shard exact harmless birth warning");Check(warningChild.NPC.velocity==Microsoft.Xna.Framework.Vector2.Zero,"furnace shard warning stays stationary");}
  if(warningMode==1){Check(Save(warningChild).SequenceEqual(warningWire)&&warningChild.NPC.ai[3]==-45,"client cannot age life or warning");warningChild.NPC.ai[3]=0;}
  Check(warningChild.PreAI()&&Hit(warningChild),"furnace shard activates only after complete warning");
+}
+foreach(int staleMode in new[]{0,1,2}) {
+ Reset();var staleBoss=Parent();var staleChild=Child(staleBoss,false);var birthPacket=Save(staleChild);
+ staleChild.NPC.ai[3]=-20;staleChild.PreAI();staleChild.NPC.ai[3]=-45;Main.netMode=staleMode;staleChild.PreAI();Check(staleChild.NPC.ai[3]>=-20,"stale warning cannot roll back observed progress");
+ staleChild.NPC.ai[3]=0;staleChild.PreAI();staleChild.NPC.ai[3]=-45;Check(Hit(staleChild),"stale warning cannot refreeze activated shard before AI");staleChild.PreAI();Check(staleChild.NPC.ai[3]==0&&Hit(staleChild),"active shard restores observed warning completion");
+ var agedPacket=Save(staleChild);Read(staleChild,birthPacket);Check(Save(staleChild).SequenceEqual(agedPacket),"old same-instance source packet cannot extend remaining lifetime");
 }
 Console.WriteLine($"Furnace summon lifecycle: {checks} checks passed (mock engine boundary).");

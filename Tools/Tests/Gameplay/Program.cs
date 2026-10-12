@@ -680,6 +680,9 @@ try {
   }
   payload.Position=0;nativeSummonType.GetMethod("ReceiveExtraAI").Invoke(nativeSummon,new object[]{new BinaryReader(payload)});
   Check(SummonWire().SequenceEqual(bytes),"Compiled summon wire roundtrip");
+  var agedNativeShard=(byte[])bytes.Clone();BitConverter.GetBytes((short)200).CopyTo(agedNativeShard,11);nativeSummonType.GetMethod("ReceiveExtraAI").Invoke(nativeSummon,new object[]{new BinaryReader(new MemoryStream(agedNativeShard))});nativeSummonType.GetMethod("ReceiveExtraAI").Invoke(nativeSummon,new object[]{new BinaryReader(new MemoryStream(bytes))});Check(BitConverter.ToInt16(SummonWire(),11)==200,"Compiled old source packet cannot extend shard lifetime");
+  BitConverter.GetBytes((short)0).CopyTo(agedNativeShard,11);nativeSummonType.GetMethod("ReceiveExtraAI").Invoke(nativeSummon,new object[]{new BinaryReader(new MemoryStream(agedNativeShard))});nativeSummonType.GetMethod("ReceiveExtraAI").Invoke(nativeSummon,new object[]{new BinaryReader(new MemoryStream(bytes))});Check(BitConverter.ToInt16(SummonWire(),11)==0,"Compiled same-instance old packet cannot revive expired lifetime");
+
  }
  nativeTargetMain.GetField("netMode").SetValue(null,1);nativeTargetNpcType.GetField("active").SetValue(nativeSummonNpc,true);nativeTargetNpcType.GetField("life").SetValue(nativeSummonNpc,70);
  Check(!(bool)nativeSummonType.GetMethod("PreAI").Invoke(nativeSummon,null)&&(bool)nativeTargetNpcType.GetField("active").GetValue(nativeSummonNpc),"Compiled invalid source blocks client AI without authority removal");
