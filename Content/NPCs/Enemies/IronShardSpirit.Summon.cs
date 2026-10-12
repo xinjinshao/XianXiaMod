@@ -11,6 +11,10 @@ namespace XianXia.Content.NPCs.Enemies;
 public partial class IronShardSpirit
 {
     public const int MaximumSummonLifetime = 900;
+    public const int SummonWarningTicks = 45;
+    private bool summonWarningFrame;
+    private bool HasFinishedSummonWarning() => !furnaceSummon
+        || (!summonWarningFrame && NPC.ai[3] == 0f);
     private bool furnaceSummon;
     private short parentSlot = -1;
     private long parentSession;
@@ -24,11 +28,14 @@ public partial class IronShardSpirit
         parentSlot = (short)parent.whoAmI;
         parentSession = golem.SummonSession;
         remaining = MaximumSummonLifetime;
+        NPC.ai[3] = -SummonWarningTicks;
     }
 
     private bool HasSummonSource()
     {
-        if (!NPC.active || NPC.life <= 0 || remaining <= 0 || parentSession <= 0
+        if (!float.IsFinite(NPC.ai[3]) || NPC.ai[3] != System.MathF.Truncate(NPC.ai[3])
+            || NPC.ai[3] < -SummonWarningTicks || NPC.ai[3] > 0f
+            || !NPC.active || NPC.life <= 0 || remaining <= 0 || parentSession <= 0
             || parentSlot < 0 || parentSlot >= Main.maxNPCs
             || !float.IsFinite(NPC.Center.X) || !float.IsFinite(NPC.Center.Y)
             || !float.IsFinite(NPC.velocity.X) || !float.IsFinite(NPC.velocity.Y)) return false;
@@ -55,13 +62,21 @@ public partial class IronShardSpirit
 
     public override bool PreAI()
     {
+        summonWarningFrame = false;
         if (!furnaceSummon) return true;
         if (SynchronizeSummonTarget()) {
-            // Clients wait harmlessly for an out-of-order parent packet; only the authority ages summons.
-            if (Main.netMode == NetmodeID.MultiplayerClient) return true;
-            remaining--;
+            if (Main.netMode != NetmodeID.MultiplayerClient) remaining--;
             if (remaining > 0) {
-                if (remaining % 60 == 0) NPC.netUpdate = true;
+                if (NPC.ai[3] < 0f) {
+                    summonWarningFrame = true;
+                    NPC.velocity = Vector2.Zero;
+                    if (Main.netMode != NetmodeID.MultiplayerClient) {
+                        NPC.ai[3]++;
+                        if (NPC.ai[3] % 15f == 0f) NPC.netUpdate = true;
+                    }
+                    return false;
+                }
+                if (Main.netMode != NetmodeID.MultiplayerClient && remaining % 60 == 0) NPC.netUpdate = true;
                 return true;
             }
         }
@@ -76,9 +91,9 @@ public partial class IronShardSpirit
     }
 
     public override bool CanHitPlayer(Player target, ref int cooldownSlot)
-        => !furnaceSummon || (target.active && !target.dead && HasSynchronizedSummonTarget());
+        => !furnaceSummon || (target.active && !target.dead && HasFinishedSummonWarning() && HasSynchronizedSummonTarget());
 
-    public override bool CanHitNPC(NPC target) => !furnaceSummon || HasSynchronizedSummonTarget();
+    public override bool CanHitNPC(NPC target) => !furnaceSummon || (HasFinishedSummonWarning() && HasSynchronizedSummonTarget());
 
     public override void SendExtraAI(BinaryWriter writer)
     {

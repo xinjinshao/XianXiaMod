@@ -8,7 +8,7 @@ using XianXia.Content.NPCs.Enemies;
 int checks=0;
 void Check(bool ok,string name){checks++;if(!ok)throw new Exception(name);}
 BlackFurnaceIronGolem Parent(){var boss=new BlackFurnaceIronGolem();boss.NPC=new(){active=true,life=100,whoAmI=3,target=0,ModNPC=boss};Main.npc[3]=boss.NPC;return boss;}
-IronShardSpirit Child(BlackFurnaceIronGolem boss){var child=new IronShardSpirit();child.NPC=new(){active=true,life=70,whoAmI=4,ModNPC=child};child.OnSpawn(new EntitySource_Parent(boss.NPC));return child;}
+IronShardSpirit Child(BlackFurnaceIronGolem boss,bool ready=true){var child=new IronShardSpirit();child.NPC=new(){active=true,life=70,whoAmI=4,ModNPC=child};child.OnSpawn(new EntitySource_Parent(boss.NPC));if(ready)child.NPC.ai[3]=0;return child;}
 byte[] Save(Terraria.ModLoader.ModNPC npc){using var stream=new MemoryStream();using var writer=new BinaryWriter(stream);npc.SendExtraAI(writer);return stream.ToArray();}
 void Read(Terraria.ModLoader.ModNPC npc,byte[] data){using var stream=new MemoryStream(data);using var reader=new BinaryReader(stream);npc.ReceiveExtraAI(reader);}
 bool Hit(IronShardSpirit child){int cooldown=0;return child.CanHitPlayer(Main.player[0],ref cooldown)&&child.CanHitNPC(new());}
@@ -111,5 +111,12 @@ Reset();var orderedPuppet=PuppetParent();var orderedPuppetChild=PuppetChild(orde
 var remotePuppet=new BrokenHeavenInspector{NPC=orderedPuppet.NPC};remotePuppet.NPC.ModNPC=remotePuppet;var remotePuppetChild=new CelestialPuppet{NPC=new(){active=true,life=70}};Read(remotePuppetChild,puppetChildPacket);int puppetCooldown=0;
 Check(!remotePuppetChild.PreAI()&&!remotePuppetChild.CanHitPlayer(Main.player[0],ref puppetCooldown)&&remotePuppetChild.NPC.active,"Puppet child packet before parent waits harmlessly");Read(remotePuppet,puppetParentPacket);Check(remotePuppetChild.PreAI()&&remotePuppetChild.CanHitPlayer(Main.player[0],ref puppetCooldown),"Late puppet parent session restores client prediction");
 for(int length=0;length<8;length++){var before=Save(remotePuppet);try{Read(remotePuppet,puppetParentPacket[..length]);throw new Exception("truncated puppet parent accepted");}catch(EndOfStreamException){}Check(Save(remotePuppet).SequenceEqual(before),"Puppet parent truncated packet atomic");}
+}
+foreach(int warningMode in new[]{0,1,2}) {
+ Reset();var warningBoss=Parent();var warningChild=Child(warningBoss,false);Main.netMode=warningMode;
+ Check(!Hit(warningChild),"fresh furnace shard harmless before first AI");var warningWire=Save(warningChild);
+ for(int frame=1;frame<=45;frame++){Check(!warningChild.PreAI()&&!Hit(warningChild)&&warningChild.NPC.active,"furnace shard exact harmless birth warning");Check(warningChild.NPC.velocity==Microsoft.Xna.Framework.Vector2.Zero,"furnace shard warning stays stationary");}
+ if(warningMode==1){Check(Save(warningChild).SequenceEqual(warningWire)&&warningChild.NPC.ai[3]==-45,"client cannot age life or warning");warningChild.NPC.ai[3]=0;}
+ Check(warningChild.PreAI()&&Hit(warningChild),"furnace shard activates only after complete warning");
 }
 Console.WriteLine($"Furnace summon lifecycle: {checks} checks passed (mock engine boundary).");

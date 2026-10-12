@@ -442,6 +442,12 @@ public class SummonAuditSystem : ModSystem
                 Check(!Collision.SolidCollision(registeredShard.position,48,48,true)&&!Collision.LavaCollision(registeredShard.position,48,48),"registered entire shard body is terrain-safe");
                 Check(registeredShard.target==0&&registeredShard.netUpdate,"registered safe shard target synchronized");
                 using(var shardPacket=new MemoryStream()){registeredShard.ModNPC.SendExtraAI(new BinaryWriter(shardPacket));Check(shardPacket.Length==13&&BitConverter.ToInt64(shardPacket.ToArray(),3)==furnaceSiteBoss.SummonSession,"registered terrain-safe shard captures furnace encounter source");}
+                Check(registeredShard.ai[3]==-45&&!registeredShard.ModNPC.CanHitPlayer(Main.player[0],ref cooldownSlot),"registered shard born in harmless warning");
+                for(int birthFrame=1;birthFrame<=45;birthFrame++){
+                    Check(!registeredShard.ModNPC.PreAI()&&registeredShard.active&&!registeredShard.ModNPC.CanHitPlayer(Main.player[0],ref cooldownSlot),"registered shard exact forty-five frame warning");
+                    registeredShard.ModNPC.PostAI();Check(registeredShard.velocity==Vector2.Zero&&registeredShard.localAI[0]==0,"registered shard warning suppresses post-AI swarm dash");
+                }
+                Check(registeredShard.ModNPC.PreAI()&&registeredShard.ModNPC.CanHitPlayer(Main.player[0],ref cooldownSlot),"registered shard activates after full warning");
                 registeredShard.active=false;
             }
             furnaceSiteNpc.active=false;

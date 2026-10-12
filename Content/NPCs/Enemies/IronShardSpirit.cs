@@ -79,12 +79,14 @@ public partial class IronShardSpirit : ModNPC
 
 
 
+    public override Color? GetAlpha(Color drawColor) => HasFinishedSummonWarning() ? null : Color.OrangeRed;
+
     public override void PostAI()
     {
         if (!NPC.active) return;
         NPC.rotation = NPC.velocity.X * 0.04f;
         if (Main.netMode == NetmodeID.MultiplayerClient) return;
-        if (!SynchronizeSummonTarget()) return;
+        if (!SynchronizeSummonTarget() || !HasFinishedSummonWarning()) return;
         if (!global::XianXia.Common.Systems.EnemyTargeting.TryGetLivingTarget(NPC, out Player target))
         {
             NPC.localAI[0] = 0f;
