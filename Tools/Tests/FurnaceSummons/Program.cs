@@ -150,4 +150,5 @@ foreach(int kind in Enumerable.Range(0,6)){
  Reset();Terraria.ModLoader.ModNPC liveDeath=kind==5?Child(Parent()):OtherBoundChild(kind);liveDeath.NPC.life=0;Check(liveDeath.CheckDead(),"valid encounter death still permits normal rewards");
 }
 Reset();Check(new IronShardSpirit().CheckDead()&&new ArchivedImmortalSoul().CheckDead()&&new TribulationCloudling().CheckDead()&&new ObsessedSwordCultivator().CheckDead()&&new HerbGardenVineSpirit().CheckDead()&&new CelestialPuppet().CheckDead(),"natural companion deaths remain ordinary");
+foreach(int rewardMode in new[]{0,1,2}){Reset();var rewardBoss=Parent();var summonedReward=Child(rewardBoss);Main.netMode=rewardMode;Check(!summonedReward.PreKill(),"replenished furnace summons never run ordinary loot/death event path");Check(new IronShardSpirit().PreKill(),"natural furnace shards retain normal rewards");}
 Console.WriteLine($"Furnace summon lifecycle: {checks} checks passed (mock engine boundary).");

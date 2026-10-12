@@ -670,6 +670,7 @@ try {
  Check((int)nativeSummonType.GetField("MaximumSummonLifetime").GetRawConstantValue()==900,"Compiled summon lifetime 900 ticks");
  Check(SummonWire().Length==13,"Compiled summon extra-AI fixed thirteen bytes");
  Check((bool)nativeSummonType.GetMethod("PreAI").Invoke(nativeSummon,null),"Compiled natural shard has no boss binding");
+ Check((bool)nativeSummonType.GetMethod("PreKill").Invoke(nativeSummon,null),"Compiled natural shard permits loot path");
  using(var payload=new MemoryStream()){
   using(var writer=new BinaryWriter(payload,System.Text.Encoding.UTF8,true)){writer.Write(true);writer.Write((short)-1);writer.Write(123L);writer.Write((short)900);}
   var bytes=payload.ToArray();
@@ -680,6 +681,7 @@ try {
   }
   payload.Position=0;nativeSummonType.GetMethod("ReceiveExtraAI").Invoke(nativeSummon,new object[]{new BinaryReader(payload)});
   Check(SummonWire().SequenceEqual(bytes),"Compiled summon wire roundtrip");
+  Check(!(bool)nativeSummonType.GetMethod("PreKill").Invoke(nativeSummon,null),"Compiled bound shard suppresses loot path");
   var agedNativeShard=(byte[])bytes.Clone();BitConverter.GetBytes((short)200).CopyTo(agedNativeShard,11);nativeSummonType.GetMethod("ReceiveExtraAI").Invoke(nativeSummon,new object[]{new BinaryReader(new MemoryStream(agedNativeShard))});nativeSummonType.GetMethod("ReceiveExtraAI").Invoke(nativeSummon,new object[]{new BinaryReader(new MemoryStream(bytes))});Check(BitConverter.ToInt16(SummonWire(),11)==200,"Compiled old source packet cannot extend shard lifetime");
   BitConverter.GetBytes((short)0).CopyTo(agedNativeShard,11);nativeSummonType.GetMethod("ReceiveExtraAI").Invoke(nativeSummon,new object[]{new BinaryReader(new MemoryStream(agedNativeShard))});nativeSummonType.GetMethod("ReceiveExtraAI").Invoke(nativeSummon,new object[]{new BinaryReader(new MemoryStream(bytes))});Check(BitConverter.ToInt16(SummonWire(),11)==0,"Compiled same-instance old packet cannot revive expired lifetime");
 

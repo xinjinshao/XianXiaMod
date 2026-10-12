@@ -106,6 +106,9 @@ public partial class IronShardSpirit
     public override bool? CanBeHitByProjectile(Projectile projectile)
         => !furnaceSummon || HasSynchronizedSummonTarget() ? null : false;
 
+    // Furnace adds replenish indefinitely; materials must come from natural enemies or the boss.
+    public override bool PreKill() => !furnaceSummon;
+
     public override bool CheckDead()
     {
         if (!furnaceSummon) return true;
