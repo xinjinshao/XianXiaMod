@@ -5,7 +5,7 @@ Mods: {
 			GardenWardenMask: { DisplayName: "Garden Warden Mask" Tooltip: "Equip in the head vanity slot" }
 			BlackFurnaceIronGolemPet: { DisplayName: "Black Furnace Iron Golem Pet" Tooltip: "" }
 			TribulationCloudBottle: { DisplayName: "Tribulation Cloud in a Bottle" Tooltip: "Grants a cloud double jump and immunity to Electrified\nDoes not add another jump when combined with Cloud in a Bottle" }
-			ThunderMarshJiaoWing: { DisplayName: "Thunder Marsh Jiao Wing" Tooltip: "Allows flight and slow fall\nFlight time: 2 seconds" }
+			ThunderMarshJiaoWing: { DisplayName: "Thunder Marsh Jiao Wing" Tooltip: "Allows flight and slow fall\nFlight time: 2 seconds\nAn early Hardmode wing; Moonbone Immortal wings provide a later upgrade\nDropped by Thunder Marsh Jiao, or crafted after defeating it" RecipeCondition: "Defeat Thunder Marsh Jiao in Hardmode" }
 			AbyssalStarWombLamp: { DisplayName: "Abyssal Star Womb Lamp" Tooltip: "" }
 			FormlessSwordSoulCostume: { DisplayName: "Formless Sword Soul Costume" Tooltip: "Equip in the body vanity slot" }
 			MedicineKingCauldronDecoration: { DisplayName: "Medicine King Cauldron" Tooltip: "" }

@@ -2,6 +2,7 @@ using Terraria;
 using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
+using XianXia.Common.Systems;
 
 namespace XianXia.Content.Items.HandGenerated;
 
@@ -55,6 +56,21 @@ public class ThunderMarshJiaoWing : FlightReward
     protected override int VisualWing => ArmorIDs.Wing.FrozenWings;
     protected override int Price => 3;
     protected override int Rarity => ItemRarityID.LightRed;
+
+    internal static bool CanCraftJiaoWings() => Main.hardMode
+        && DownedBossSystem.DownedBosses.Contains("thunder_marsh_jiao");
+
+    public override void AddRecipes()
+    {
+        CreateRecipe()
+            .AddIngredient<ThunderPatternFeather>(12)
+            .AddIngredient<global::XianXia.Content.Items.Materials.TribulationCloudDew>(20)
+            .AddIngredient(ItemID.SoulofFlight, 20)
+            .AddTile(TileID.MythrilAnvil)
+            .AddCondition(this.GetLocalization("RecipeCondition"), CanCraftJiaoWings)
+            .Register();
+    }
+
 }
 
 public class MoonboneImmortalWingAccessory : FlightReward

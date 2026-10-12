@@ -603,6 +603,12 @@ var nativeTargetProgram=projectileType.Assembly.GetType("Terraria.Program",true)
 var nativeTargetSaveField=nativeTargetProgram.GetField("SavePath",BindingFlags.Static|BindingFlags.Public|BindingFlags.NonPublic);
 if(nativeTargetSaveField==null)throw new Exception("Official engine save-path field not found");
 nativeTargetSaveField.SetValue(null,Path.Combine(Path.GetTempPath(),"XianXia-native-hook-tests"));
+var jiaoWingType=type.Assembly.GetType("XianXia.Content.Items.HandGenerated.ThunderMarshJiaoWing",true);
+var jiaoWingGate=jiaoWingType.GetMethod("CanCraftJiaoWings",BindingFlags.Static|BindingFlags.NonPublic);
+var jiaoWingMain=tagType.Assembly.GetType("Terraria.Main",true);var jiaoWingHardMode=jiaoWingMain.GetField("hardMode");bool originalJiaoHardMode=(bool)jiaoWingHardMode.GetValue(null);
+var jiaoWingProgress=type.Assembly.GetType("XianXia.Common.Systems.DownedBossSystem",true);var jiaoWingDowned=(HashSet<string>)jiaoWingProgress.GetProperty("DownedBosses").GetValue(null);bool originallyDownedJiao=jiaoWingDowned.Contains("thunder_marsh_jiao");
+try{foreach(bool hardMode in new[]{false,true})foreach(bool defeated in new[]{false,true}){jiaoWingHardMode.SetValue(null,hardMode);if(defeated)jiaoWingDowned.Add("thunder_marsh_jiao");else jiaoWingDowned.Remove("thunder_marsh_jiao");Check((bool)jiaoWingGate.Invoke(null,null)==(hardMode&&defeated),"Compiled wing recipe requires hardmode and defeated boss");}}
+finally{jiaoWingHardMode.SetValue(null,originalJiaoHardMode);if(originallyDownedJiao)jiaoWingDowned.Add("thunder_marsh_jiao");else jiaoWingDowned.Remove("thunder_marsh_jiao");}
 var nativeTargetOldPlayers=nativeTargetMain.GetField("player").GetValue(null);
 object nativeTargetOldMode=nativeTargetMain.GetField("netMode").GetValue(null),nativeTargetOldDedicated=nativeTargetMain.GetField("dedServ").GetValue(null);
 int nativeTargetMax=(int)nativeTargetMain.GetField("maxPlayers").GetValue(null);
