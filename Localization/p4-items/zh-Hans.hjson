@@ -11,7 +11,7 @@ Mods: {
 			MedicineKingCauldronDecoration: { DisplayName: "药王鼎" Tooltip: "" }
 			SmallTabletPet: { DisplayName: "小天碑宠物" Tooltip: "" }
 			InspectorMask: { DisplayName: "监察使面具" Tooltip: "装备在头部时装栏" }
-			MoonboneImmortalWingAccessory: { DisplayName: "月骸仙君翅饰" Tooltip: "允许飞行和缓慢下落\n飞行时间：3秒" }
+			MoonboneImmortalWingAccessory: { DisplayName: "月骨真君翼" Tooltip: "允许飞行和缓慢下落\n飞行时间：3秒\n雷泽蛟翼的月后升级\n月骸仙君掉落，击败后也可制作" RecipeCondition: "在困难模式击败月亮领主和月骸仙君" }
 			SilentTabletDecoration: { DisplayName: "沉默天碑" Tooltip: "首次击败旧天道核心 100% 掉落。" }
 		}
 		Tiles: {

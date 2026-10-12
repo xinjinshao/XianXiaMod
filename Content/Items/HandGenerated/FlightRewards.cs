@@ -81,4 +81,20 @@ public class MoonboneImmortalWingAccessory : FlightReward
     protected override int VisualWing => ArmorIDs.Wing.BoneWings;
     protected override int Price => 5;
     protected override int Rarity => ItemRarityID.Red;
+
+    internal static bool CanCraftMoonboneWings() => Main.hardMode && NPC.downedMoonlord
+        && DownedBossSystem.DownedBosses.Contains("moonbone_immortal");
+
+    public override void AddRecipes()
+    {
+        CreateRecipe()
+            .AddIngredient<ThunderMarshJiaoWing>()
+            .AddIngredient<global::XianXia.Content.Items.Materials.Moonbone>(20)
+            .AddIngredient<global::XianXia.Content.Items.Materials.DaoSeveringDust>(12)
+            .AddIngredient(ItemID.SoulofFlight, 20)
+            .AddTile(TileID.LunarCraftingStation)
+            .AddCondition(this.GetLocalization("RecipeCondition"), CanCraftMoonboneWings)
+            .Register();
+    }
+
 }

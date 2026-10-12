@@ -11,7 +11,7 @@ Mods: {
 			MedicineKingCauldronDecoration: { DisplayName: "Medicine King Cauldron" Tooltip: "" }
 			SmallTabletPet: { DisplayName: "Small Tablet Pet" Tooltip: "" }
 			InspectorMask: { DisplayName: "Broken Heaven Inspector Mask" Tooltip: "Equip in the head vanity slot" }
-			MoonboneImmortalWingAccessory: { DisplayName: "Moonbone Immortal Wing" Tooltip: "Allows flight and slow fall\nFlight time: 3 seconds" }
+			MoonboneImmortalWingAccessory: { DisplayName: "Moonbone Immortal Wing" Tooltip: "Allows flight and slow fall\nFlight time: 3 seconds\nA post-Moon Lord upgrade to Thunder Marsh Jiao wings\nDropped by Moonbone Immortal, or crafted after defeating it" RecipeCondition: "Defeat Moon Lord and Moonbone Immortal in Hardmode" }
 			SilentTabletDecoration: { DisplayName: "Silent Heavenly Tablet" Tooltip: "100% drop on first Old Heaven Dao Core kill." }
 		}
 		Tiles: {
