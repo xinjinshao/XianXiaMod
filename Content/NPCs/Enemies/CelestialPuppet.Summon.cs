@@ -11,7 +11,7 @@ namespace XianXia.Content.NPCs.Enemies;
 public partial class CelestialPuppet
 {
     public const int MaximumSummonLifetime = 900;
-    private bool puppetSummon;
+    private bool puppetSummon, rejectedBinding;
     private short parentSlot = -1;
     private long parentSession;
     private short remaining;
@@ -28,7 +28,7 @@ public partial class CelestialPuppet
 
     private bool HasSummonSource()
     {
-        if (!NPC.active || NPC.life <= 0 || remaining <= 0 || parentSession <= 0
+        if (rejectedBinding || !NPC.active || NPC.life <= 0 || remaining <= 0 || parentSession <= 0
             || parentSlot < 0 || parentSlot >= Main.maxNPCs
             || !float.IsFinite(NPC.Center.X) || !float.IsFinite(NPC.Center.Y)
             || !float.IsFinite(NPC.velocity.X) || !float.IsFinite(NPC.velocity.Y)) return false;
@@ -95,9 +95,19 @@ public partial class CelestialPuppet
         short slot = reader.ReadInt16();
         long session = reader.ReadInt64();
         short lifetime = reader.ReadInt16();
+        if (puppetSummon && (!bound || (parentSlot >= 0 && slot != parentSlot)
+            || (parentSession > 0 && session != parentSession))) {
+            rejectedBinding = true;
+            remaining = 0;
+            return;
+        }
+        short receivedLifetime = lifetime >= 0 && lifetime <= MaximumSummonLifetime ? lifetime : (short)0;
+        bool sameBinding = puppetSummon && bound && slot == parentSlot && session == parentSession;
+        remaining = rejectedBinding ? (short)0
+            : sameBinding ? System.Math.Min(remaining, receivedLifetime) : receivedLifetime;
         puppetSummon = bound;
         parentSlot = slot >= 0 && slot < Main.maxNPCs ? slot : (short)-1;
         parentSession = session > 0 ? session : 0;
-        remaining = lifetime >= 0 && lifetime <= MaximumSummonLifetime ? lifetime : (short)0;
+
     }
 }
