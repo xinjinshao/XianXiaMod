@@ -24,6 +24,7 @@ Mods: {
 			BossPhase: {
 				SpiritPressureSurge: Spirit Pressure Surge
 				DaoScarUnstable: Dao Scar Unstable
+				FurnaceArmorExposed: "Furnace armor exposed — strike now"
 				SpiritVeinTremor: Spirit Vein Tremor
 				ShatteredJadeRampage: Shattered Jade Rampage
 			}

@@ -1141,6 +1141,17 @@ try {
   }
   Check(jiaoAi.All(v=>v==0),"Compiled jiao complete recovery resets all ordinary clocks");
  }
+ var armorFurnaceType=type.Assembly.GetType("XianXia.Content.NPCs.Bosses.BlackFurnaceIronGolem",true);
+ var armorFurnaceUpdate=armorFurnaceType.GetMethod("UpdateFurnaceCharge",BindingFlags.Instance|BindingFlags.NonPublic);var armorHitType=nativeTargetNpcType.GetNestedType("HitModifiers");var armorDefenseField=armorHitType.GetField("Defense");var armorFlatField=armorDefenseField.FieldType.GetField("Flat");
+ foreach(int armorMode in new[]{0,1,2}) {
+  object armorOwner=Activator.CreateInstance(nativeTargetPlayerType);nativeTargetPlayerType.GetField("active").SetValue(armorOwner,true);nativeTargetPlayers.SetValue(armorOwner,0);
+  object armorBoss=Activator.CreateInstance(armorFurnaceType),armorBody=Activator.CreateInstance(nativeTargetNpcType);armorFurnaceType.GetProperty("Entity",BindingFlags.Instance|BindingFlags.Public|BindingFlags.NonPublic).SetValue(armorBoss,armorBody);
+  nativeTargetNpcType.GetField("active").SetValue(armorBody,true);nativeTargetNpcType.GetField("life").SetValue(armorBody,100);nativeTargetNpcType.GetField("target").SetValue(armorBody,0);var armorAi=(float[])nativeTargetNpcType.GetField("ai").GetValue(armorBody);armorAi[1]=179;nativeTargetMain.GetField("netMode").SetValue(null,armorMode);
+  for(int armorFrame=1;armorFrame<=104;armorFrame++){
+   if(armorMode==1)armorAi[1]=-armorFrame;armorFurnaceUpdate.Invoke(armorBoss,new[]{armorOwner,(object)true});object armorHit=Activator.CreateInstance(armorHitType),armorDefense=armorDefenseField.GetValue(armorHit);armorFlatField.SetValue(armorDefense,-15f);armorDefenseField.SetValue(armorHit,armorDefense);object[] armorHitArgs={armorHit};armorFurnaceType.GetMethod("ModifyIncomingHit").Invoke(armorBoss,armorHitArgs);
+   Check((float)armorFlatField.GetValue(armorDefenseField.GetValue(armorHitArgs[0]))==(armorFrame>64?-25f:-15f),"Compiled actual hit modifier preserves other defense reductions and exact recovery window");
+  }
+ }
  // An isolated 100x100 Tilemap exercises the official solid/liquid collision code.
  // No NPC registration, world generation, sockets or graphical client is started.
  var terrainMapType=tagType.Assembly.GetType("Terraria.Tilemap",true);

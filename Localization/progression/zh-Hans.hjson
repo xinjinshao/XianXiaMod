@@ -24,6 +24,7 @@ Mods: {
 			BossPhase: {
 				SpiritPressureSurge: 灵压暴涨
 				DaoScarUnstable: 道痕失控
+				FurnaceArmorExposed: "炉甲破绽——趁机反击"
 				SpiritVeinTremor: 灵脉震荡
 				ShatteredJadeRampage: 碎玉暴走
 			}

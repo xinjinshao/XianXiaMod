@@ -414,4 +414,19 @@ foreach(bool replacement in new[]{false,true}) {
  if(replacement)Main.player[0]=new(){Center=new(100,0)};else Main.player[0].dead=true;
  invalidJiao.SpawnDiveThunderZones(Main.player[0],true,true);Check(Projectile.Positions.Count==0,"jiao invalid/replaced target cannot spawn thunder zones");
 }
+foreach(int exposureMode in new[]{0,1,2}) {
+ var exposedBoss=Setup();Main.netMode=exposureMode;exposedBoss.NPC.ai[1]=179;Main.dedServ=true;
+ for(int exposureFrame=1;exposureFrame<=104;exposureFrame++){
+  if(exposureMode==1)exposedBoss.NPC.ai[1]=-exposureFrame;
+  exposedBoss.UpdateFurnaceCharge(Main.player[0],true);var hit=new NPC.HitModifiers();hit.Defense.Flat=-15;exposedBoss.ModifyIncomingHit(ref hit);
+  Check(hit.Defense.Flat==(exposureFrame>64?-25:-15),"furnace exact recovery defense delta preserves other reductions");
+ }
+ if(exposureMode==1)exposedBoss.NPC.ai[1]=0;exposedBoss.UpdateFurnaceCharge(Main.player[0],true);var afterHit=new NPC.HitModifiers();exposedBoss.ModifyIncomingHit(ref afterHit);Check(afterHit.Defense.Flat==0,"furnace exposure ends after complete recovery");
+}
+foreach(bool replaceExposure in new[]{false,true}) {
+ var exposureBoss=Setup();exposureBoss.NPC.ai[1]=179;exposureBoss.UpdateFurnaceCharge(Main.player[0],true);exposureBoss.NPC.ai[1]=-65;exposureBoss.UpdateFurnaceCharge(Main.player[0],true);
+ if(replaceExposure)Main.player[0]=new(){Center=new(100,0)};else Main.player[0].dead=true;
+ var unsafeExposureHit=new NPC.HitModifiers();exposureBoss.ModifyIncomingHit(ref unsafeExposureHit);Check(unsafeExposureHit.Defense.Flat==0,"furnace dead/replaced target immediately cancels armor benefit before AI");
+}
+var exposureDraw=Setup();exposureDraw.NPC.ai[1]=179;exposureDraw.UpdateFurnaceCharge(Main.player[0],true);exposureDraw.NPC.ai[1]=-65;Main.dedServ=false;int priorExposureMessages=CombatText.Calls;exposureDraw.UpdateFurnaceCharge(Main.player[0],true);exposureDraw.UpdateFurnaceCharge(Main.player[0],true);Check(CombatText.Calls==priorExposureMessages+1,"furnace exposure message once per recovery");var exposureBatch=new Microsoft.Xna.Framework.Graphics.SpriteBatch();exposureDraw.PreDraw(exposureBatch,new(10,20),default);Check(exposureBatch.Calls==4,"furnace recovery outlines real rectangular body");Main.dedServ=true;exposureDraw.PreDraw(exposureBatch,new(10,20),default);Check(exposureBatch.Calls==4,"furnace dedicated server skips exposure graphics");exposureDraw.ClearFurnaceExposure();Check(!exposureDraw.ArmorExposed,"furnace departure clears cached exposure immediately");
 Console.WriteLine($"Actual furnace shard spawn hook passed: {checks} checks; native creation/target/network boundaries mocked.");

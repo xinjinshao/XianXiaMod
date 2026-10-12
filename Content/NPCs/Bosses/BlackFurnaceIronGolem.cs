@@ -89,6 +89,7 @@ public partial class BlackFurnaceIronGolem : ModNPC
 
         if (!BossTargeting.TryGetLivingTarget(NPC, out Player target))
         {
+            ClearFurnaceExposure();
             NPC.velocity = new Vector2(0f, -2f);
             if (Main.netMode != NetmodeID.MultiplayerClient) {
                 bool changed = NPC.ai[0] != 0f || NPC.ai[1] != 0f || NPC.ai[2] != 0f || NPC.timeLeft > 30;
