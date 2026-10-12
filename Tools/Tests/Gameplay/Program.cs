@@ -1123,6 +1123,18 @@ try {
  for(int verdictAge=0;verdictAge<=31;verdictAge++){projectileType.GetField("timeLeft").SetValue(nativeVerdictBody,verdictAge);Check((bool)nativeVerdictType.GetMethod("CanDamage").Invoke(nativeVerdict,null)==(verdictAge>0&&verdictAge<=30),"Compiled verdict blade bounded damage lifetime");}
  var nativeDecreeBeamType=type.Assembly.GetType("XianXia.Content.Projectiles.InspectorDecreeBeamProjectile",true);object nativeDecreeBeam=Activator.CreateInstance(nativeDecreeBeamType),nativeDecreeProjectile=Activator.CreateInstance(projectileType);nativeDecreeBeamType.GetProperty("Entity",BindingFlags.Instance|BindingFlags.Public|BindingFlags.NonPublic).SetValue(nativeDecreeBeam,nativeDecreeProjectile);nativeDecreeBeamType.GetMethod("SetDefaults").Invoke(nativeDecreeBeam,null);
  Check((int)projectileType.GetField("width").GetValue(nativeDecreeProjectile)==64&&(int)projectileType.GetField("height").GetValue(nativeDecreeProjectile)==480,"Compiled inspector wider beam body");for(int age=0;age<=31;age++){projectileType.GetField("timeLeft").SetValue(nativeDecreeProjectile,age);Check((bool)nativeDecreeBeamType.GetMethod("CanDamage").Invoke(nativeDecreeBeam,null)==(age>0&&age<=30),"Compiled shared beam preserves inspector lifetime boundaries");}
+ var compiledJiaoType=type.Assembly.GetType("XianXia.Content.NPCs.Bosses.ThunderMarshJiao",true);
+ var compiledJiaoUpdate=compiledJiaoType.GetMethod("UpdateJiaoCharge",BindingFlags.Instance|BindingFlags.NonPublic);
+ foreach(int jiaoMode in new[]{0,2})foreach(int jiaoInterval in new[]{150,190,240}) {
+  object jiaoOwner=Activator.CreateInstance(nativeTargetPlayerType);nativeTargetPlayerType.GetField("active").SetValue(jiaoOwner,true);nativeTargetPlayers.SetValue(jiaoOwner,0);
+  object jiaoActor=Activator.CreateInstance(compiledJiaoType),jiaoBody=Activator.CreateInstance(nativeTargetNpcType);compiledJiaoType.GetProperty("Entity",BindingFlags.Instance|BindingFlags.Public|BindingFlags.NonPublic).SetValue(jiaoActor,jiaoBody);
+  nativeTargetNpcType.GetField("active").SetValue(jiaoBody,true);nativeTargetNpcType.GetField("life").SetValue(jiaoBody,100);nativeTargetNpcType.GetField("target").SetValue(jiaoBody,0);var jiaoAi=(float[])nativeTargetNpcType.GetField("ai").GetValue(jiaoBody);jiaoAi[1]=jiaoInterval-1;nativeTargetMain.GetField("netMode").SetValue(null,jiaoMode);
+  for(int jiaoFrame=1;jiaoFrame<=141;jiaoFrame++){
+   Check((bool)compiledJiaoUpdate.Invoke(jiaoActor,new[]{jiaoOwner,(object)jiaoInterval}),"Compiled jiao charge consumes full frame");
+   Check((bool)compiledJiaoType.GetProperty("ContactEnabled",BindingFlags.Instance|BindingFlags.NonPublic).GetValue(jiaoActor)==(jiaoFrame>60&&jiaoFrame<=96),"Compiled worm head contact gates entire chain during warning/recovery");
+  }
+  Check(jiaoAi.All(v=>v==0),"Compiled jiao complete recovery resets all ordinary clocks");
+ }
  // An isolated 100x100 Tilemap exercises the official solid/liquid collision code.
  // No NPC registration, world generation, sockets or graphical client is started.
  var terrainMapType=tagType.Assembly.GetType("Terraria.Tilemap",true);

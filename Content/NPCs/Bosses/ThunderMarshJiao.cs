@@ -11,7 +11,7 @@ using XianXia.Common.Systems;
 namespace XianXia.Content.NPCs.Bosses;
 
 [AutoloadBossHead]
-public class ThunderMarshJiao : global::XianXia.Common.NPCs.LinkedWormNPC
+public partial class ThunderMarshJiao : global::XianXia.Common.NPCs.LinkedWormNPC
 {
     internal override bool IsWormHead => true;
     internal const float SegmentSpacing = 48f;
@@ -51,8 +51,7 @@ public class ThunderMarshJiao : global::XianXia.Common.NPCs.LinkedWormNPC
         Music = MusicID.Boss2;
     }
 
-    public override bool CanHitPlayer(Player target, ref int cooldownSlot) =>
-        global::XianXia.Common.Systems.BossTargeting.HasLivingTarget(NPC) && target.active && !target.dead;
+    internal override bool ContactEnabled => DiveContactEnabled;
 
     public override void AI()
     {
@@ -60,8 +59,9 @@ public class ThunderMarshJiao : global::XianXia.Common.NPCs.LinkedWormNPC
         {
             NPC.velocity = new Vector2(0f, -2f);
             if (Main.netMode != NetmodeID.MultiplayerClient) {
-                bool changed = NPC.ai[0] != 0f || NPC.ai[1] != 0f || NPC.ai[2] != 0f || NPC.localAI[1] != 0f || NPC.timeLeft > 30;
-                NPC.ai[0] = NPC.ai[1] = NPC.ai[2] = 0f;
+                bool changed = NPC.ai[0] != 0f || NPC.ai[1] != 0f || NPC.ai[2] != 0f || NPC.ai[3] != 0f || NPC.localAI[1] != 0f || NPC.timeLeft > 30;
+                NPC.ai[0] = NPC.ai[1] = NPC.ai[2] = NPC.ai[3] = 0f;
+                chargeFrame = true; chargeDashing = false; chargeTarget = -1; chargePlayer = null;
                 NPC.localAI[1] = 0f;
                 if (changed) NPC.netUpdate = true;
                 NPC.EncourageDespawn(30);
@@ -75,34 +75,13 @@ public class ThunderMarshJiao : global::XianXia.Common.NPCs.LinkedWormNPC
         bool brokenHorn = NPC.life < (int)(NPC.lifeMax * 0.35f);
         AnnouncePhases(phaseTwo, brokenHorn);
 
+        if (UpdateJiaoCharge(target, brokenHorn ? 150 : phaseTwo ? 190 : 240)) return;
         NPC.ai[0]++;
-        if (NPC.ai[1] > 0f)
-        {
-            NPC.ai[1]--;
-        }
-        else if (NPC.ai[0] >= (brokenHorn ? 150f : phaseTwo ? 190f : 240f))
-        {
-            NPC.ai[0] = 0f;
-            NPC.ai[1] = brokenHorn ? 64f : 52f;
-            NPC.netUpdate = true;
-        }
-
-        bool diving = NPC.ai[1] > 0f;
         float speed = brokenHorn ? 10.4f : phaseTwo ? 8f : 6.2f;
-        Vector2 desiredVelocity;
-        if (diving)
-        {
-            Vector2 diveAim = (target.Center - NPC.Center).SafeNormalize(Vector2.UnitY);
-            desiredVelocity = diveAim * (brokenHorn ? 15.5f : phaseTwo ? 13f : 11f);
-        }
-        else
-        {
-            float t = NPC.ai[0] * 0.035f;
-            Vector2 hoverPoint = target.Center + new Vector2((float)Math.Sin(t) * 340f, -300f + (float)Math.Sin(t * 1.7f) * 90f);
-            desiredVelocity = (hoverPoint - NPC.Center).SafeNormalize(Vector2.UnitY) * speed;
-        }
-
-        NPC.velocity = Vector2.Lerp(NPC.velocity, desiredVelocity, diving ? 0.12f : 0.055f);
+        float t = NPC.ai[0] * 0.035f;
+        Vector2 hoverPoint = target.Center + new Vector2((float)Math.Sin(t) * 340f, -300f + (float)Math.Sin(t * 1.7f) * 90f);
+        Vector2 desiredVelocity = (hoverPoint - NPC.Center).SafeNormalize(Vector2.UnitY) * speed;
+        NPC.velocity = Vector2.Lerp(NPC.velocity, desiredVelocity, 0.055f);
         NPC.rotation = NPC.velocity.ToRotation();
 
         FireLightningPatterns(target, phaseTwo, brokenHorn);
@@ -279,6 +258,7 @@ public class ThunderMarshJiaoTail : global::XianXia.Common.NPCs.LinkedWormNPC
             NPC.localAI[0] = 0f;
             return;
         }
+        if (head.ai[1] < 0f) { NPC.localAI[0] = 0f; return; }
         bool brokenHorn = head.life < (int)(head.lifeMax * 0.35f);
         NPC.localAI[0]++;
         if (!brokenHorn || Main.netMode == NetmodeID.MultiplayerClient || NPC.localAI[0] < 120f)

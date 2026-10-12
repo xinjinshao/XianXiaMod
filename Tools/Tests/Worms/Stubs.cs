@@ -5,4 +5,4 @@ namespace Terraria.ID {public static class NetmodeID {public const int Multiplay
 namespace Terraria {public class Player{public bool active=true,dead;public Microsoft.Xna.Framework.Vector2 Center,velocity;}}
 
 namespace Terraria.ModLoader{public class ModNPC{public Terraria.NPC NPC=new();public virtual bool CanHitPlayer(Terraria.Player target,ref int cooldownSlot)=>true;public virtual bool CanHitNPC(Terraria.NPC target)=>true;public virtual void SendExtraAI(System.IO.BinaryWriter writer){}public virtual void ReceiveExtraAI(System.IO.BinaryReader reader){}}}
-namespace XianXia.Content.NPCs.Bosses{public class TestHead:XianXia.Common.NPCs.LinkedWormNPC{internal override bool IsWormHead=>true;}public class TestSegment:XianXia.Common.NPCs.LinkedWormNPC{}}
+namespace XianXia.Content.NPCs.Bosses{public class TestHead:XianXia.Common.NPCs.LinkedWormNPC{internal override bool IsWormHead=>true;public bool ContactAllowed=true;internal override bool ContactEnabled=>ContactAllowed;}public class TestSegment:XianXia.Common.NPCs.LinkedWormNPC{}}

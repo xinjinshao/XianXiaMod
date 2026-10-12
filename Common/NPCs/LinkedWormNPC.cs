@@ -16,6 +16,7 @@ public abstract class LinkedWormNPC : ModNPC
     internal long HeadInstance { get; private set; }
     internal long PreviousInstance { get; private set; }
     internal virtual bool IsWormHead => false;
+    internal virtual bool ContactEnabled => true;
     internal long Instance {
         get {
             if (instance == 0 && Main.netMode != NetmodeID.MultiplayerClient)
@@ -28,8 +29,9 @@ public abstract class LinkedWormNPC : ModNPC
         HeadInstance = head.Instance;
         PreviousInstance = previous.Instance;
     }
-    private bool CanContact() => IsWormHead ? BossTargeting.HasLivingTarget(NPC)
-        : SegmentedWormAI.HasValidLinks(NPC, out NPC head) && BossTargeting.HasLivingTarget(head);
+    private bool CanContact() => IsWormHead ? ContactEnabled && BossTargeting.HasLivingTarget(NPC)
+        : SegmentedWormAI.HasValidLinks(NPC, out NPC head) && BossTargeting.HasLivingTarget(head)
+            && head.ModNPC is LinkedWormNPC linked && linked.ContactEnabled;
     public override bool CanHitPlayer(Player target, ref int cooldownSlot) => target.active && !target.dead && CanContact();
     public override bool CanHitNPC(NPC target) => CanContact();
     public override void SendExtraAI(BinaryWriter writer)

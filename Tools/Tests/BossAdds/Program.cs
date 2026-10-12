@@ -375,4 +375,27 @@ Main.netMode=1;int archiveClientCalls=NPC.Calls;for(int frame=0;frame<100;frame+
 Main.dedServ=false;var archivePreview=new Microsoft.Xna.Framework.Graphics.SpriteBatch();archiveWireBoss.PreDraw(archivePreview,Vector2.Zero,default);Check(archivePreview.Calls==5,"Core archive shows four bodies and full warning bar");Main.dedServ=true;
 
 foreach(int compressionFailure in new[]{-1,Main.maxProjectiles,int.MaxValue}) {var compressionBoss=ArchiveBoss();Projectile.FailureResult=compressionFailure;for(int frame=0;frame<60;frame++)compressionBoss.UpdateCoreArchives(Main.player[0],true,true);Check(!compressionBoss.NPC.immortal&&!compressionBoss.NPC.dontTakeDamage&&!Main.npc.Any(npc=>npc.active&&npc.ModNPC is XianXia.Content.NPCs.Enemies.CoreArchiveLockNPC),"Core compression capacity failure clears archive locks and shield");}Projectile.FailureResult=int.MinValue;
+foreach(int interval in new[]{150,190,240}) {
+ Setup();var jiao=new ThunderMarshJiao{NPC=Main.npc[0]};jiao.NPC.width=78;jiao.NPC.height=66;int jiaoSlot=0;
+ for(int tick=1;tick<interval;tick++)Check(!jiao.UpdateJiaoCharge(Main.player[0],interval),"jiao full phase cooldown");
+ for(int frame=1;frame<=141;frame++){
+  Check(jiao.UpdateJiaoCharge(Main.player[0],interval),"jiao consumes full charge frame");
+  Main.player[0].Center=new(0,100);
+  Check(jiao.CanHitPlayer(Main.player[0],ref jiaoSlot)==(frame>60&&frame<=96),"jiao exact harmless warning/recovery");
+  Check(frame>60&&frame<=96?jiao.NPC.velocity==new Vector2(13,0):jiao.NPC.velocity==Vector2.Zero,"jiao locked straight dash");
+ }
+ Check(jiao.NPC.ai.All(v=>v==0),"jiao recovery clears ordinary attack clocks");
+ jiao.UpdateJiaoCharge(Main.player[0],interval);Check(jiao.CanHitPlayer(Main.player[0],ref jiaoSlot),"jiao normal contact returns");
+}
+foreach(int phase in new[]{-10,-70,-120})foreach(bool replace in new[]{false,true}) {
+ Setup();var jiao=new ThunderMarshJiao{NPC=Main.npc[0]};jiao.NPC.ai[1]=239;jiao.UpdateJiaoCharge(Main.player[0],240);jiao.NPC.ai[1]=phase;
+ if(replace)Main.player[0]=new(){Center=new(200,100)};else jiao.NPC.target=1;
+ int jiaoSlot=0;Check(jiao.UpdateJiaoCharge(Main.player[jiao.NPC.target],240)&&jiao.NPC.ai.All(v=>v==0)&&!jiao.CanHitPlayer(Main.player[jiao.NPC.target],ref jiaoSlot),"jiao target change cancels harmlessly");
+}
+foreach(int mode in new[]{0,1,2})foreach(float bad in new[]{float.NaN,float.PositiveInfinity,-142f,241f,.5f}) {
+ Setup();Main.netMode=mode;var jiao=new ThunderMarshJiao{NPC=Main.npc[0]};jiao.NPC.ai[1]=bad;int jiaoSlot=0;
+ Check(jiao.UpdateJiaoCharge(Main.player[0],240)&&!jiao.CanHitPlayer(Main.player[0],ref jiaoSlot)&&jiao.NPC.velocity==Vector2.Zero,"jiao malformed state harmless");
+}
+Setup();Main.netMode=1;var clientJiao=new ThunderMarshJiao{NPC=Main.npc[0]};clientJiao.NPC.ai[1]=239;Check(!clientJiao.UpdateJiaoCharge(Main.player[0],240)&&clientJiao.NPC.ai[1]==239,"client cannot start jiao charge");clientJiao.NPC.ai[1]=-61;Check(clientJiao.UpdateJiaoCharge(Main.player[0],240)&&clientJiao.NPC.ai[1]==-61&&clientJiao.NPC.velocity==new Vector2(13,0),"client uses synchronized jiao phase without advancing");
+Setup();var drawingJiao=new ThunderMarshJiao{NPC=Main.npc[0]};drawingJiao.NPC.width=78;drawingJiao.NPC.height=66;drawingJiao.NPC.ai[1]=-20;var jiaoBatch=new Microsoft.Xna.Framework.Graphics.SpriteBatch();Main.dedServ=true;drawingJiao.PreDraw(jiaoBatch,new(10,20),default);Check(jiaoBatch.Calls==0,"jiao dedicated server skips graphics");Main.dedServ=false;drawingJiao.PreDraw(jiaoBatch,new(10,20),default);Check(jiaoBatch.Calls==3&&jiaoBatch.LastScale.X==546,"jiao warning includes 468 pixel dash and head body");
 Console.WriteLine($"Actual furnace shard spawn hook passed: {checks} checks; native creation/target/network boundaries mocked.");

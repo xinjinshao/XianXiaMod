@@ -57,3 +57,5 @@ namespace XianXia.Content.Projectiles{public class CoreSeveranceBladeProjectile{
 namespace XianXia.Content.NPCs.Enemies{public class CoreArchiveLockNPC:Terraria.ModLoader.ModNPC{public short BoundSlot;public long BoundSession;public byte Index;public bool MatchesParent(XianXia.Content.NPCs.Bosses.OldHeavenDaoCore parent,int expected)=>Index==expected&&BoundSlot==parent.NPC.whoAmI&&BoundSession==parent.ArchiveSession;}}
 
 namespace XianXia.Content.Projectiles{public class CoreArchiveCompressionProjectile{}}
+
+namespace XianXia.Content.NPCs.Bosses{public partial class ThunderMarshJiao:Terraria.ModLoader.ModNPC{}}
