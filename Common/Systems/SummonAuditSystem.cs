@@ -638,6 +638,73 @@ public class SummonAuditSystem : ModSystem
                     wheel.Update(wheel.whoAmI);
                     Check(wheel.active == (frame < 6) && wheel.timeLeft == 6 - frame, "native cancelled five wheels expire within six updates");
                 }
+                // Keep the throw preview free of prior audit bosses; no NPC AI/world tick runs here.
+                foreach (NPC auditNpc in owned) auditNpc.active = false;
+                Main.netMode = NetmodeID.SinglePlayer; Main.myPlayer = 0;
+                wheelActor.Center = new Vector2(x, 400); wheelActor.velocity = Vector2.Zero;
+                Check(!Collision.SolidCollision(wheelActor.Center - new Vector2(64), 128, 128, true), "registered hammer preview has clear terrain");
+                var hammerItem = new Item(); hammerItem.SetDefaults(ModContent.ItemType<global::XianXia.Content.Items.Weapons.BlackFurnaceWarhammer>());
+                wheelActor.inventory[0] = hammerItem;
+                var hammerGrowth = hammerItem.GetGlobalItem<global::XianXia.Common.Items.RefinedArtifact>();
+                hammerGrowth.SetLevel(3); Check(hammerGrowth.TryAwaken(), "registered hammer fixture awakened");
+                wheelState.spiritualEnergy = 100; wheelState.activeSkillCooldown = 0; wheelState.skillRequestCooldown = 0;
+                var beforeHammers = Main.projectile.Where(projectile => projectile.active).ToHashSet();
+                try { ArtifactSkillTransactions.HandleRequest(wheelActor, ArtifactSkill.HammerVolley, 0, hammerItem.type, wheelActor.MountedCenter + new Vector2(1000, 0)); }
+                finally { ownedProjectiles.AddRange(Main.projectile.Where(projectile => projectile.active && !beforeHammers.Contains(projectile) && !ownedProjectiles.Contains(projectile))); }
+                int hammerType = ModContent.ProjectileType<global::XianXia.Content.Projectiles.FurnaceHammerProjectile>();
+                int impactType = ModContent.ProjectileType<global::XianXia.Content.Projectiles.FurnaceImpactBurst>();
+                Projectile[] hammers = Main.projectile.Where(projectile => projectile.active && !beforeHammers.Contains(projectile)).ToArray();
+                Check(hammers.Length == 3 && hammers.All(projectile => projectile.type == hammerType && projectile.owner == 0 && projectile.netUpdate), "registered hammer skill creates three owned dirty hammers");
+                Check(wheelState.spiritualEnergy == 70 && wheelState.activeSkillCooldown == 1200, "registered hammer actual cost and shared cooldown");
+                int hammerDamage = (int)(wheelActor.GetWeaponDamage(hammerItem) * ArtifactSkillRules.HammerDamageMultiplier);
+                var priorImpactIdentities = Main.projectile.Where(projectile => projectile.active && projectile.type == impactType).Select(projectile => (projectile.owner, projectile.identity)).ToHashSet();
+                for (int index = 0; index < hammers.Length; index++) {
+                    Projectile hammer = hammers[index];
+                    Vector2 expectedVelocity = new Vector2(9, 0).RotatedBy((index - 1) * 0.24);
+                    Check(hammer.damage == hammerDamage && Vector2.DistanceSquared(hammer.velocity, expectedVelocity) < 0.001f && hammer.width == 32 && hammer.height == 32
+                        && hammer.penetrate == 1 && hammer.tileCollide && hammer.timeLeft == 90, "registered hammer skill damage fan and normal body");
+                    hammer.Update(hammer.whoAmI);
+                    Check(hammer.active && hammer.timeLeft == 89 && Math.Abs(hammer.velocity.Y - expectedVelocity.Y - 0.25f) < 0.001f, "native hammer first update retains gravity and lifetime");
+                    var hammerMod = hammer.ModProjectile;
+                    try { hammer.Kill(); hammerMod.OnKill(0); }
+                    finally { ownedProjectiles.AddRange(Main.projectile.Where(projectile => projectile.active && !previousProjectiles.Contains(projectile) && !ownedProjectiles.Contains(projectile))); }
+                    Check(Main.projectile.Count(projectile => projectile.active && projectile.type == impactType && !priorImpactIdentities.Contains((projectile.owner, projectile.identity))) == index + 1,
+                        "native hammer Kill and repeated callback produce exactly one impact each");
+                }
+                Projectile[] impacts = Main.projectile.Where(projectile => projectile.active && projectile.type == impactType && !priorImpactIdentities.Contains((projectile.owner, projectile.identity))).ToArray();
+                Check(impacts.Length == 3 && impacts.All(projectile => projectile.owner == 0 && projectile.damage == Math.Max(1, hammerDamage / 2)
+                    && projectile.width == 96 && projectile.height == 96 && projectile.timeLeft == 10 && projectile.usesLocalNPCImmunity && projectile.localNPCHitCooldown == -1), "native three half-damage impact defaults");
+                int impactDummyIndex = NPC.NewNPC(new EntitySource_Misc("XianXiaHammerImpactAudit"), x, 400, NPCID.BlueSlime);
+                Check(impactDummyIndex >= 0 && impactDummyIndex < Main.maxNPCs, "native impact target created");
+                NPC impactDummy = Main.npc[impactDummyIndex]; owned.Add(impactDummy);
+                impactDummy.damage = 0; impactDummy.life = impactDummy.lifeMax = 10000; impactDummy.defense = 0;
+                foreach (Projectile impact in impacts) {
+                    impactDummy.life = 10000; impactDummy.Center = impact.Center; impactDummy.velocity = Vector2.Zero;
+                    int firstImpactLife = 10000;
+                    for (int frame = 1; frame <= 10; frame++) {
+                        Array.Clear(impactDummy.immune);
+                        if (frame >= 3) Array.Clear(impact.localNPCImmunity);
+                        Check(frame <= 2 ? impact.ModProjectile.CanDamage() == null : impact.ModProjectile.CanDamage() == false, "native impact exact two-update damage window");
+                        impact.Update(impact.whoAmI);
+                        Check(impact.active == (frame < 10) && impact.timeLeft == 10 - frame, "native impact full ten-update lifetime");
+                        if (frame == 1) {
+                            firstImpactLife = impactDummy.life;
+                            Check(firstImpactLife < 10000 && impact.localNPCImmunity[impactDummyIndex] == -1, "native impact damages target and installs per-projectile immunity");
+                        } else Check(impactDummy.life == firstImpactLife, "native impact cannot hit same NPC twice or damage after active window");
+                    }
+                    Check(impactDummy.active && impactDummy.life > 0, "native impact target remains alive without kill rewards");
+                }
+                impactDummy.active = false;
+                var occupiedForCapacity = Main.projectile.Take(Main.maxProjectiles).Where(projectile => !projectile.active).ToArray();
+                try {
+                    foreach (Projectile occupied in occupiedForCapacity.Take(Math.Max(0, occupiedForCapacity.Length - 2))) occupied.active = true;
+                    int occupiedCount = Main.projectile.Take(Main.maxProjectiles).Count(projectile => projectile.active);
+                    wheelState.spiritualEnergy = 100; wheelState.activeSkillCooldown = 0; wheelState.skillRequestCooldown = 0;
+                    ArtifactSkillTransactions.HandleRequest(wheelActor, ArtifactSkill.HammerVolley, 0, hammerItem.type, wheelActor.MountedCenter + new Vector2(1000, 0));
+                    Check(occupiedCount == Main.maxProjectiles - 2 && Main.projectile.Take(Main.maxProjectiles).Count(projectile => projectile.active) == occupiedCount
+                        && wheelState.spiritualEnergy == 100 && wheelState.activeSkillCooldown == 0,
+                        $"native hammer capacity rejection spends and creates nothing; occupied={occupiedCount}, allocatable={Main.maxProjectiles}, array={Main.projectile.Length}");
+                } finally { foreach (Projectile occupied in occupiedForCapacity) occupied.active = false; }
             } finally {
                 wheelActor.dead = wheelOldDead; wheelActor.inventory[0] = wheelOldItem; wheelActor.selectedItem = wheelOldSlot;
                 wheelActor.Center = wheelOldCenter; wheelActor.velocity = wheelOldVelocity;
@@ -676,7 +743,7 @@ public class SummonAuditSystem : ModSystem
         Directory.CreateDirectory(directory);
         File.WriteAllText(Path.Combine(directory, "summon-audit.json"), JsonSerializer.Serialize(new {
             schema = 1, passed = error == null, checks, error,
-            limitations = "Registered AI advanced manually for medicine, tablet, inspector, core modules, archive locks and thunder jiao chains/zones; native compression and slam Projectile.Update/Projectile.Damage verify safe/unsafe regions, wall blocking and full thirty-frame slam expiry with hit-text slots occupied. Actual registered Five Wheels skill creation verifies damage, fan, cost and cooldown; all five projectiles run 150 native updates to natural expiry, and owner-death cancellation verifies server-update dirty-state handling and six-update cleanup. These use a temporary local skill context and occupied hit-text slots, with inventory/resources/owner counts/engine context restored; no real client receives the cancellation. Native player damage/NPC.StrikeNPC verify shield breaks, reward suppression and ordinary worm head rewards through fatal segment hits. Progress/difficulty/banner tallies are restored; expert/master bag distribution is not covered. No full world/player ticks, rendered graphics, real clients, combat balance or complete playthrough."
+            limitations = "Registered AI advanced manually for medicine, tablet, inspector, core modules, archive locks and thunder jiao chains/zones; native compression and slam Projectile.Update/Projectile.Damage verify safe/unsafe regions, wall blocking and full thirty-frame slam expiry with hit-text slots occupied. Actual registered Five Wheels skill creation verifies damage, fan, cost and cooldown; all five projectiles run 150 native updates to natural expiry, and owner-death cancellation verifies server-update dirty-state handling and six-update cleanup. Registered Triple Fall creation verifies three hammers and half-damage impacts through native Kill plus duplicate callbacks; native impact updates verify a two-frame damage window, per-projectile immunity against a living vanilla NPC and ten-frame expiry, with unrelated owner immunity cleared. A full-capacity check uses only allocatable projectile slots. These use a temporary local skill context and occupied hit-text slots, with inventory/resources/owner counts/engine context restored; no real client receives the cancellation. Native player damage/NPC.StrikeNPC verify shield breaks, reward suppression and ordinary worm head rewards through fatal segment hits. Progress/difficulty/banner tallies are restored; expert/master bag distribution is not covered. No full world/player ticks, rendered graphics, real clients, combat balance or complete playthrough."
         }, new JsonSerializerOptions { WriteIndented = true }));
         Mod.Logger.Info($"Summon audit finished: {checks.Count} checks; passed={error == null}");
     }
