@@ -137,6 +137,8 @@ namespace Terraria
     }
     public class NPC
     {
+        public int life = 100;
+        public Microsoft.Xna.Framework.Vector2 velocity;
         public struct HitInfo{} public int LastBuff,BuffDuration; public void AddBuff(int type,int duration){LastBuff=type;BuffDuration=duration;}
         public bool active = true, friendly, dontTakeDamage;
         public bool CanBeChasedBy(object source)=>active&&!friendly&&!dontTakeDamage;

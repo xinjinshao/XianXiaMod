@@ -705,6 +705,55 @@ public class SummonAuditSystem : ModSystem
                         && wheelState.spiritualEnergy == 100 && wheelState.activeSkillCooldown == 0,
                         $"native hammer capacity rejection spends and creates nothing; occupied={occupiedCount}, allocatable={Main.maxProjectiles}, array={Main.projectile.Length}");
                 } finally { foreach (Projectile occupied in occupiedForCapacity) occupied.active = false; }
+                foreach (int sourceType in new[] { hammerType, impactType }) {
+                    int cancellationIndex = Projectile.NewProjectile(new EntitySource_Misc("XianXiaFurnaceCancellationAudit"), wheelActor.Center, Vector2.Zero, sourceType, 59, 0, 0);
+                    Check(cancellationIndex >= 0 && cancellationIndex < Main.maxProjectiles, "registered furnace cancellation fixture created");
+                    Projectile cancelledShot = Main.projectile[cancellationIndex]; ownedProjectiles.Add(cancelledShot);
+                    var previousImpacts = Main.projectile.Where(projectile => projectile.active && projectile.type == impactType).Select(projectile => (projectile.owner, projectile.identity)).ToHashSet();
+                    wheelActor.dead = true;
+                    Check(cancelledShot.ModProjectile.CanDamage() == false && cancelledShot.ModProjectile.CanHitNPC(null) == false, "native furnace owner death harmless before update");
+                    cancelledShot.Update(cancelledShot.whoAmI);
+                    Check(cancelledShot.active && cancelledShot.timeLeft == 5 && !cancelledShot.friendly && cancelledShot.hide && cancelledShot.velocity == Vector2.Zero, "native furnace cancellation starts bounded cleanup");
+                    using var cancelledBytes = new MemoryStream(); cancelledShot.ModProjectile.SendExtraAI(new BinaryWriter(cancelledBytes));
+                    Check(cancelledBytes.ToArray().SequenceEqual(new byte[] { (byte)(sourceType == hammerType ? 3 : 1) }), "native furnace parent and impact cancellation packet");
+                    wheelActor.dead = false;
+                    cancelledShot.ModProjectile.ReceiveExtraAI(new BinaryReader(new MemoryStream(new byte[] { 0 })));
+                    Check(cancelledShot.ModProjectile.CanDamage() == false, "native furnace revived owner and old active packet cannot restore damage");
+                    for (int frame = 2; frame <= 6; frame++) {
+                        cancelledShot.Update(cancelledShot.whoAmI);
+                        Check(cancelledShot.active == (frame < 6) && cancelledShot.timeLeft == 6 - frame, "native furnace cancelled entity expires within six updates");
+                    }
+                    Check(!Main.projectile.Any(projectile => projectile.active && projectile.type == impactType && !previousImpacts.Contains((projectile.owner, projectile.identity))), "native cancelled hammer cleanup cannot spawn free impacts");
+                }
+                // Find an actual clear vertical flight corridor; keep the normal terrain collision flag.
+                Vector2 expiryPoint = Vector2.Zero;
+                foreach (int offset in new[] { 0, 256, -256, 512, -512 }) {
+                    Vector2 candidate = new Vector2(x + offset, 200), cursor = candidate; float verticalSpeed = 0; bool clear = true;
+                    for (int frame = 1; frame <= 90 && clear; frame++) {
+                        verticalSpeed = Math.Min(12, verticalSpeed + 0.25f); cursor.Y += verticalSpeed;
+                        clear = !Collision.SolidCollision(cursor - new Vector2(16), 32, 32, true);
+                    }
+                    if (clear) { expiryPoint = candidate; break; }
+                }
+                Check(expiryPoint != Vector2.Zero, "native furnace expiry has clear real terrain corridor");
+                int expiryIndex = Projectile.NewProjectile(new EntitySource_Misc("XianXiaFurnaceExpiryAudit"), expiryPoint, Vector2.Zero, hammerType, 59, 0, 0);
+                Check(expiryIndex >= 0 && expiryIndex < Main.maxProjectiles, "registered natural-expiry hammer created");
+                Projectile expiryHammer = Main.projectile[expiryIndex]; ownedProjectiles.Add(expiryHammer);
+                var expiryMod = expiryHammer.ModProjectile;
+                var previousExpiryImpacts = Main.projectile.Where(projectile => projectile.active && projectile.type == impactType).Select(projectile => (projectile.owner, projectile.identity)).ToHashSet();
+                try {
+                    for (int frame = 1; frame <= 90; frame++) {
+                        expiryHammer.Update(expiryHammer.whoAmI);
+                        Check(expiryHammer.active == (frame < 90) && expiryHammer.timeLeft == 90 - frame && expiryHammer.tileCollide, "native furnace full ninety-update flight and natural expiry");
+                    }
+                } finally { ownedProjectiles.AddRange(Main.projectile.Where(projectile => projectile.active && !previousProjectiles.Contains(projectile) && !ownedProjectiles.Contains(projectile))); }
+                Projectile[] expiryImpacts = Main.projectile.Where(projectile => projectile.active && projectile.type == impactType && !previousExpiryImpacts.Contains((projectile.owner, projectile.identity))).ToArray();
+                Check(expiryImpacts.Length == 1 && expiryImpacts[0].damage == 29, "native zero-lifetime hammer still releases one half-damage impact");
+                expiryMod.OnKill(0);
+                Check(Main.projectile.Count(projectile => projectile.active && projectile.type == impactType && !previousExpiryImpacts.Contains((projectile.owner, projectile.identity))) == 1, "native natural-expiry repeat callback cannot release second impact");
+                using var expiryState = new MemoryStream(); expiryMod.SendExtraAI(new BinaryWriter(expiryState));
+                Check(expiryState.ToArray().SequenceEqual(new byte[] { 2 }), "native normal expiry records release without cancellation");
+                foreach (Projectile expiredImpact in expiryImpacts) expiredImpact.active = false;
             } finally {
                 wheelActor.dead = wheelOldDead; wheelActor.inventory[0] = wheelOldItem; wheelActor.selectedItem = wheelOldSlot;
                 wheelActor.Center = wheelOldCenter; wheelActor.velocity = wheelOldVelocity;
@@ -743,7 +792,7 @@ public class SummonAuditSystem : ModSystem
         Directory.CreateDirectory(directory);
         File.WriteAllText(Path.Combine(directory, "summon-audit.json"), JsonSerializer.Serialize(new {
             schema = 1, passed = error == null, checks, error,
-            limitations = "Registered AI advanced manually for medicine, tablet, inspector, core modules, archive locks and thunder jiao chains/zones; native compression and slam Projectile.Update/Projectile.Damage verify safe/unsafe regions, wall blocking and full thirty-frame slam expiry with hit-text slots occupied. Actual registered Five Wheels skill creation verifies damage, fan, cost and cooldown; all five projectiles run 150 native updates to natural expiry, and owner-death cancellation verifies server-update dirty-state handling and six-update cleanup. Registered Triple Fall creation verifies three hammers and half-damage impacts through native Kill plus duplicate callbacks; native impact updates verify a two-frame damage window, per-projectile immunity against a living vanilla NPC and ten-frame expiry, with unrelated owner immunity cleared. A full-capacity check uses only allocatable projectile slots. These use a temporary local skill context and occupied hit-text slots, with inventory/resources/owner counts/engine context restored; no real client receives the cancellation. Native player damage/NPC.StrikeNPC verify shield breaks, reward suppression and ordinary worm head rewards through fatal segment hits. Progress/difficulty/banner tallies are restored; expert/master bag distribution is not covered. No full world/player ticks, rendered graphics, real clients, combat balance or complete playthrough."
+            limitations = "Registered AI advanced manually for medicine, tablet, inspector, core modules, archive locks and thunder jiao chains/zones; native compression and slam Projectile.Update/Projectile.Damage verify safe/unsafe regions, wall blocking and full thirty-frame slam expiry with hit-text slots occupied. Actual registered Five Wheels skill creation verifies damage, fan, cost and cooldown; all five projectiles run 150 native updates to natural expiry, and owner-death cancellation verifies server-update dirty-state handling and six-update cleanup. Registered Triple Fall creation verifies three hammers and half-damage impacts through native Kill plus duplicate callbacks; native impact updates verify a two-frame damage window, per-projectile immunity against a living vanilla NPC and ten-frame expiry, with unrelated owner immunity cleared. A full-capacity check uses only allocatable projectile slots. Furnace parent/impact owner-death cancellation runs six native updates without creating impacts; a normal hammer runs ninety updates in a clear real terrain corridor and still releases one half-damage impact at zero lifetime. These use a temporary local skill context and occupied hit-text slots, with inventory/resources/owner counts/engine context restored; no real client receives the cancellation. Native player damage/NPC.StrikeNPC verify shield breaks, reward suppression and ordinary worm head rewards through fatal segment hits. Progress/difficulty/banner tallies are restored; expert/master bag distribution is not covered. No full world/player ticks, rendered graphics, real clients, combat balance or complete playthrough."
         }, new JsonSerializerOptions { WriteIndented = true }));
         Mod.Logger.Info($"Summon audit finished: {checks.Count} checks; passed={error == null}");
     }
