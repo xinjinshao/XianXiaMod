@@ -3,7 +3,7 @@ Mods: {
   Items: {
    ArtifactAwakeningSeal: {
     DisplayName: Artifact Awakening Seal
-    Tooltip: "Craft at a Star Pattern Cauldron using 2 artifact shards, 6 tribulation cloud dew, 4 Greenwood Roots and 1 Medicine King Wood Heart\nUse near an artificing station to awaken an inscribed refinement-3 Cloudpiercer Flying Sword, Greenwood Array Plate, Heaven Tablet Ward Seal, Formless Sword Wheel, Black Furnace Warhammer or Moonbone Dharma Sword (Moonbone also requires Tribulation and defeating Moonbone Immortal)\nRequires Nascent Soul and Medicine King Echo; costs 24 extra low-grade stones\nAdds 10% weapon damage and lowers base energy cost; active skills available for the sword, array, ward, Moonbone and Wheel (Q or right-click; configurable)"
+    Tooltip: "Craft at a Star Pattern Cauldron using 2 artifact shards, 6 tribulation cloud dew, 4 Greenwood Roots and 1 Medicine King Wood Heart\nUse near an artificing station to awaken an inscribed refinement-3 Cloudpiercer Flying Sword, Greenwood Array Plate, Heaven Tablet Ward Seal, Formless Sword Wheel, Black Furnace Warhammer or Moonbone Dharma Sword (Moonbone also requires Tribulation and defeating Moonbone Immortal)\nRequires Nascent Soul and Medicine King Echo; costs 24 extra low-grade stones\nAdds 10% weapon damage and lowers base energy cost; active skills available for the sword, array, ward, Moonbone, Wheel and Hammer (Q or right-click; configurable)"
    }
    ArtifactQuenchingCrystal: {
     DisplayName: Artifact Quenching Crystal
@@ -33,7 +33,7 @@ Mods: {
    WheelDormant: Dormant; retain an inscription at refinement level 3, reach Nascent Soul and defeat Medicine King Echo; use 1 awakening seal and 24 low-grade spirit stones at a supported forge
    WheelHeritageReady: "Sect heritage active at {0} and reputation {1}: +{3}% damage; current base spirit cost {2}. Crafted awakening is shown separately"
    WheelHeritageLocked: "Sect heritage requires {0} and reputation {1}: grants +{3}% damage and base spirit cost 11; checked independently of crafted awakening"
-   HammerAwakened: Crafted awakening adds 10% weapon damage and lowers base spirit cost from 12 to 10; thrown hammer and impact behavior remain; active skill and Dao transformation not yet available
+   HammerAwakened: Crafted awakening adds 10% weapon damage and lowers base spirit cost from 12 to 10; thrown hammer and impact behavior remain; Furnace Triple Fall throws three 175% hammers for 30 base energy with a shared 20-second cooldown; use alternate attack, the artifact key or skill panel; Dao transformation not yet available
    HammerDormant: Dormant; retain an inscription at refinement level 3, reach Nascent Soul and defeat Medicine King Echo; use 1 awakening seal and 24 low-grade spirit stones at a supported forge
    BasicArtifact: Supports three refinement levels; crafted awakening and Dao transformation are not yet available for this weapon
    ToolCost: Each level costs 1 quenching crystal and 6/12/18 low-grade stones; canceling, failure and maximum level cost nothing

@@ -26,6 +26,7 @@ public class ArtifactSkillUIState : UIState
         AddButton("Sword",0,ArtifactSkill.SwordBurst); AddButton("Array",92,ArtifactSkill.ArrayPulse); AddButton("Ward",184,ArtifactSkill.WardGuard);
         AddButton("Moon",0,ArtifactSkill.MoonCrescent,64);
         AddButton("Wheel",92,ArtifactSkill.WheelFormation,64);
+        AddButton("Hammer",184,ArtifactSkill.HammerVolley,64);
     }
     private void AddButton(string key,float left,ArtifactSkill skill,float top=28)
     {
@@ -72,6 +73,7 @@ public class ArtifactSkillUIState : UIState
             ArtifactSkill.ArrayPulse => Text("ArrayRequirement"),
             ArtifactSkill.MoonCrescent => Text(route == DownedBossSystem.EndgameRoute.None ? "MoonRequirement" : "MoonDaoRequirement"),
             ArtifactSkill.WheelFormation => Text(route == DownedBossSystem.EndgameRoute.None ? "WheelRequirement" : "WheelDaoRequirement"),
+            ArtifactSkill.HammerVolley => Text("HammerRequirement"),
             _ => Text("WardRequirement")
         };
         return requirement + "\n" + Text("SkillNumbers", cost, ArtifactSkillRules.Cooldown(skill) / 60)

@@ -22,7 +22,7 @@ public class BlackFurnaceWarhammer : global::XianXia.Common.Items.CultivationWea
         Item.shootSpeed = 9f;
     }
     public override int GetSpiritCost(Player player) => global::XianXia.Common.Items.RefinedArtifact.IsAwakened(Item) ? 10 : 12;
-    public override bool AltFunctionUse(Player player) => false;
+    public override bool AltFunctionUse(Player player) => global::XianXia.Common.Items.RefinedArtifact.IsAwakened(Item);
     public override void ModifyWeaponDamage(Player player, ref StatModifier damage)
     {
         if (global::XianXia.Common.Items.RefinedArtifact.IsAwakened(Item)) damage += 0.1f;
@@ -30,8 +30,9 @@ public class BlackFurnaceWarhammer : global::XianXia.Common.Items.CultivationWea
     public override bool CanUseItem(Player player)
     {
         XianXiaPlayer state = player.GetModPlayer<XianXiaPlayer>();
-        return state.cultivationStage >= CultivationStage.QiCondensation
-            && state.CanConsumeSpiritualEnergy(GetSpiritCost(player));
+        if (state.cultivationStage < CultivationStage.QiCondensation || state.cultivationStage > CultivationStage.DaoSevering) return false;
+        if (player.altFunctionUse == 2) return global::XianXia.Common.Systems.ArtifactSkillTransactions.CanUseAlternative(player, Item);
+        return state.CanConsumeSpiritualEnergy(GetSpiritCost(player));
     }
     public override void AddRecipes() => CreateRecipe().AddIngredient<OldFurnaceEmber>(4)
         .AddIngredient<FurnaceSlagIron>(12).AddIngredient<LowGradeSpiritStone>(12)

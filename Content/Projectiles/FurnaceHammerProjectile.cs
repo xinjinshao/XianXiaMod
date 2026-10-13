@@ -7,6 +7,7 @@ namespace XianXia.Content.Projectiles;
 
 public class FurnaceHammerProjectile : ModProjectile
 {
+    private bool impactReleased;
     public override string Texture => "XianXia/Content/Items/Weapons/ThunderPatternSwordCase";
     public override void SetDefaults()
     {
@@ -24,9 +25,11 @@ public class FurnaceHammerProjectile : ModProjectile
     }
     public override void OnKill(int timeLeft)
     {
-        if (Main.netMode == NetmodeID.MultiplayerClient || Projectile.owner < 0 || Projectile.owner >= Main.maxPlayers) return;
+        if (Main.netMode == NetmodeID.MultiplayerClient || impactReleased) return;
+        impactReleased = true;
+        if (Projectile.owner < 0 || Projectile.owner >= Main.maxPlayers || Projectile.owner >= Main.player.Length) return;
         Player owner = Main.player[Projectile.owner];
-        if (!owner.active || owner.dead) return;
+        if (owner == null || !owner.active || owner.dead) return;
         Projectile.NewProjectile(Projectile.GetSource_FromAI(), Projectile.Center, Microsoft.Xna.Framework.Vector2.Zero,
             ModContent.ProjectileType<FurnaceImpactBurst>(), Math.Max(1, Projectile.damage / 2), Projectile.knockBack / 2f, Projectile.owner);
     }

@@ -16,9 +16,10 @@ namespace XianXia.Common.Systems;
 public static class ArtifactSkillTransactions
 {
     public static ArtifactSkill? HeldSkill(Item item) => RefinedArtifact.SupportsAwakening(item) ? item.ModItem.Name switch
-    { "CloudpiercerFlyingSword" => ArtifactSkill.SwordBurst, "GreenwoodArrayPlate" => ArtifactSkill.ArrayPulse, "HeavenTabletWardSeal" => ArtifactSkill.WardGuard, "MoonboneDharmaSword" => ArtifactSkill.MoonCrescent, "FormlessSwordWheel" => ArtifactSkill.WheelFormation, _ => null } : null;
+    { "CloudpiercerFlyingSword" => ArtifactSkill.SwordBurst, "GreenwoodArrayPlate" => ArtifactSkill.ArrayPulse, "HeavenTabletWardSeal" => ArtifactSkill.WardGuard, "MoonboneDharmaSword" => ArtifactSkill.MoonCrescent, "FormlessSwordWheel" => ArtifactSkill.WheelFormation, "BlackFurnaceWarhammer" => ArtifactSkill.HammerVolley, _ => null } : null;
     public static bool CanUseAlternative(Player player, Item item) => RefinedArtifact.IsAwakened(item)
         && HeldSkill(item) is ArtifactSkill skill && player.GetModPlayer<XianXiaPlayer>().activeSkillCooldown == 0
+        && (skill != ArtifactSkill.HammerVolley || HammerRealmAllowed(player))
         && player.GetModPlayer<XianXiaPlayer>().CanConsumeSpiritualEnergy(DaoArtifactRules.SkillCost(skill,RefinedArtifact.ActiveDaoRoute(item)));
     public static void Request(Player player, ArtifactSkill skill)
     {
@@ -31,6 +32,8 @@ public static class ArtifactSkillTransactions
         packet.Write(Main.MouseWorld.X); packet.Write(Main.MouseWorld.Y); packet.Send();
     }
     private static bool Finite(Vector2 value) => float.IsFinite(value.X) && float.IsFinite(value.Y);
+    private static bool HammerRealmAllowed(Player player) => player.GetModPlayer<XianXiaPlayer>().cultivationStage >= CultivationStage.QiCondensation
+        && player.GetModPlayer<XianXiaPlayer>().cultivationStage <= CultivationStage.DaoSevering;
     public static bool HasAwakenedWardSeal(Player player) => player.HeldItem.stack == 1
         && player.HeldItem.ModItem?.Name == "HeavenTabletWardSeal" && RefinedArtifact.IsAwakened(player.HeldItem)
         && player.GetModPlayer<XianXiaPlayer>().cultivationStage >= CultivationStage.SpiritSevering
@@ -54,7 +57,8 @@ public static class ArtifactSkillTransactions
         Item item = player.inventory[slot];
         string reason = "Mods.XianXia.Skills.Unavailable";
         bool eligible = item.type == type && (skill == ArtifactSkill.WardGuard ? HasWard(player) || HasAwakenedWardSeal(player)
-            : item.stack == 1 && HeldSkill(item) == skill && RefinedArtifact.IsAwakened(item));
+            : item.stack == 1 && HeldSkill(item) == skill && RefinedArtifact.IsAwakened(item)
+                && (skill != ArtifactSkill.HammerVolley || HammerRealmAllowed(player)));
         if (!eligible) { Reply(player, reason); return; }
         if (state.activeSkillCooldown > 0) { Reply(player, "Mods.XianXia.Skills.CoolingDown"); return; }
         List<Player> healTargets = new();
@@ -88,7 +92,7 @@ public static class ArtifactSkillTransactions
         Reply(player, "Mods.XianXia.Skills.Success");
     }
     private static bool Friendly(Player owner, Player target) => owner == target || !owner.hostile || !target.hostile || (owner.team > 0 && owner.team == target.team);
-    private static bool IsBurst(ArtifactSkill skill) => skill is ArtifactSkill.SwordBurst or ArtifactSkill.MoonCrescent or ArtifactSkill.WheelFormation;
+    private static bool IsBurst(ArtifactSkill skill) => skill is ArtifactSkill.SwordBurst or ArtifactSkill.MoonCrescent or ArtifactSkill.WheelFormation or ArtifactSkill.HammerVolley;
     private static Projectile FindArray(Player player)
     {
         int type = ModContent.ProjectileType<GreenwoodArrayField>();
@@ -104,16 +108,17 @@ public static class ArtifactSkillTransactions
     {
         Vector2 position = player.RotatedRelativePoint(player.MountedCenter), delta = aim - position;
         if (!Finite(position) || !Finite(delta) || !float.IsFinite(delta.LengthSquared())) return false;
-        Vector2 velocity = delta.SafeNormalize(Vector2.UnitX * player.direction) * 14f;
         bool moon = HeldSkill(item) == ArtifactSkill.MoonCrescent;
         bool wheel = HeldSkill(item) == ArtifactSkill.WheelFormation;
-        int damage = wheel ? (int)(player.GetWeaponDamage(item) * DaoArtifactRules.WheelBurstMultiplier(RefinedArtifact.ActiveDaoRoute(item))) : moon ? (int)(player.GetWeaponDamage(item) * DaoArtifactRules.MoonBurstMultiplier(RefinedArtifact.ActiveDaoRoute(item))) : player.GetWeaponDamage(item) * DaoArtifactRules.BurstMultiplier(RefinedArtifact.ActiveDaoRoute(item));
-        int type = wheel ? ModContent.ProjectileType<FormlessSwordWheelProjectile>() : moon ? ModContent.ProjectileType<MoonboneShardProjectile>() : ModContent.ProjectileType<CloudpiercerSwordProjectile>();
+        bool hammer = HeldSkill(item) == ArtifactSkill.HammerVolley;
+        Vector2 velocity = delta.SafeNormalize(Vector2.UnitX * player.direction) * (hammer ? 9f : 14f);
+        int damage = hammer ? (int)(player.GetWeaponDamage(item) * ArtifactSkillRules.HammerDamageMultiplier) : wheel ? (int)(player.GetWeaponDamage(item) * DaoArtifactRules.WheelBurstMultiplier(RefinedArtifact.ActiveDaoRoute(item))) : moon ? (int)(player.GetWeaponDamage(item) * DaoArtifactRules.MoonBurstMultiplier(RefinedArtifact.ActiveDaoRoute(item))) : player.GetWeaponDamage(item) * DaoArtifactRules.BurstMultiplier(RefinedArtifact.ActiveDaoRoute(item));
+        int type = hammer ? ModContent.ProjectileType<FurnaceHammerProjectile>() : wheel ? ModContent.ProjectileType<FormlessSwordWheelProjectile>() : moon ? ModContent.ProjectileType<MoonboneShardProjectile>() : ModContent.ProjectileType<CloudpiercerSwordProjectile>();
         var created = new List<int>();
         var source = new EntitySource_ItemUse_WithAmmo(player, item, 0);
         int halfCount = wheel ? 2 : 1;
         for (int i = -halfCount; i <= halfCount; i++) {
-            int index = Projectile.NewProjectile(source, position, velocity.RotatedBy(i * (wheel ? 0.3 : 0.18)), type, damage, player.GetWeaponKnockback(item, item.knockBack), player.whoAmI);
+            int index = Projectile.NewProjectile(source, position, velocity.RotatedBy(i * (hammer ? 0.24 : wheel ? 0.3 : 0.18)), type, damage, player.GetWeaponKnockback(item, item.knockBack), player.whoAmI);
             if (index < 0 || index >= Main.maxProjectiles) {
                 foreach (int old in created) {
                     Projectile p = Main.projectile[old]; p.active = false;

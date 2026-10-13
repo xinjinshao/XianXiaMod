@@ -25,6 +25,8 @@ Mods: {
    MoonRequirement: Hold a crafted-awakened Moonbone Dharma Sword: fire three aimed shards, each dealing 150% of current weapon damage, using the normal shard collision and penetration
    MoonDaoRequirement: "Hold a matching-route Dao-transformed Moonbone Dharma Sword: Rebuild gives three 200% shards and up to 20 self-heal; Sever gives three 250% shards; Star Abyss gives three 200% shards and adds 8 spiritual pressure; otherwise the awakened 150% skill applies"
    WheelDaoRequirement: "Hold a matching-route Dao-transformed Formless Sword Wheel: Rebuild gives five 200% wheels and up to 20 self-heal; Sever gives five 250% wheels; Star Abyss gives five 200% wheels and adds 8 spiritual pressure; otherwise the awakened 150% skill applies"
+   Hammer: Triple Fall
+   HammerRequirement: Reach Qi Condensation and hold a crafted-awakened Black Furnace Warhammer; throw three aimed hammers at 0.24-radian intervals and speed 9, each dealing 175% of current weapon damage with normal gravity and collision; each hammer releases at most one half-damage impact
    Ward: Guard
    Ready: Skills ready; configure keys in Mod Controls
    Cooldown: "Shared skill cooldown: {0}s"
