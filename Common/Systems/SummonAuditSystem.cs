@@ -17,6 +17,25 @@ namespace XianXia.Common.Systems;
 // Explicit opt-in for an isolated developer server. Never runs during ordinary play.
 public class SummonAuditSystem : ModSystem
 {
+    // Captures output only inside the explicitly opted-in audit; it never connects or listens.
+    private sealed class AuditOutputSocket : Terraria.Net.Sockets.ISocket
+    {
+        private bool connected;
+        internal readonly List<byte[]> Sent = new();
+        internal AuditOutputSocket(bool connected = false) => this.connected = connected;
+        public void Close() => connected = false;
+        public bool IsConnected() => connected;
+        public void Connect(Terraria.Net.RemoteAddress address) => throw new InvalidOperationException("Audit socket cannot connect");
+        public void AsyncSend(byte[] data, int offset, int size, Terraria.Net.Sockets.SocketSendCallback callback, object state = null) {
+            Sent.Add(data.AsSpan(offset, size).ToArray()); callback?.Invoke(state);
+        }
+        public void AsyncReceive(byte[] data, int offset, int size, Terraria.Net.Sockets.SocketReceiveCallback callback, object state = null) { }
+        public bool IsDataAvailable() => false;
+        public void SendQueuedPackets() { }
+        public bool StartListening(Terraria.Net.Sockets.SocketConnectionAccepted callback) => false;
+        public void StopListening() { }
+        public Terraria.Net.RemoteAddress GetRemoteAddress() => new Terraria.Net.TcpAddress(System.Net.IPAddress.Loopback, 0);
+    }
     private bool attempted;
     public override void OnWorldLoad()
     {
@@ -754,6 +773,86 @@ public class SummonAuditSystem : ModSystem
                 using var expiryState = new MemoryStream(); expiryMod.SendExtraAI(new BinaryWriter(expiryState));
                 Check(expiryState.ToArray().SequenceEqual(new byte[] { 2 }), "native normal expiry records release without cancellation");
                 foreach (Projectile expiredImpact in expiryImpacts) expiredImpact.active = false;
+                var daoSavedProgress = new TagCompound(); progressSystem.SaveWorldData(daoSavedProgress);
+                Player daoSavedPlayer = Main.player[0];
+                var daoSavedClients = (RemoteClient[])Netplay.Clients.Clone();
+                var daoOutputSocket = new AuditOutputSocket(true);
+                var daoTilePoint = wheelActor.Center.ToTileCoordinates();
+                Tile daoTile = Main.tile[daoTilePoint.X + 2, daoTilePoint.Y];
+                bool daoTileHadTile = daoTile.HasTile; ushort daoTileOldType = daoTile.TileType;
+                try {
+                    for (int clientIndex = 0; clientIndex < Netplay.Clients.Length; clientIndex++) {
+                        Netplay.Clients[clientIndex] = new RemoteClient { Id = clientIndex, Socket = clientIndex == 0 ? daoOutputSocket : new AuditOutputSocket(), IsActive = clientIndex == 0 };
+                    }
+                    // Only patch the two tile fields used by NearAltar; never replace the loaded Tilemap.
+                    daoTile.HasTile = true; daoTile.TileType = (ushort)ModContent.TileType<global::XianXia.Content.Tiles.Stations.DaoSeveringAltarTile>();
+                    Player MakeDaoFixture(int itemType, int stones = 36) {
+                        var actor = new Player { whoAmI = 0, active = true, dead = false, statLife = 100, statLifeMax2 = 100 };
+                        actor.Center = wheelActor.Center; actor.selectedItem = 0; Main.player[0] = actor;
+                        var daoState = actor.GetModPlayer<global::XianXia.Common.Players.XianXiaPlayer>();
+                        daoState.cultivationStage = global::XianXia.Common.Players.CultivationStage.DaoSevering;
+                        daoState.discoveredSpiritualEnergy = true;
+                        Check(daoState.TryInitializeNetwork(daoState.CaptureSnapshot()), "registered Dao fixture imports valid native player network state");
+                        var seal = new Item(); seal.SetDefaults(ModContent.ItemType<global::XianXia.Content.Items.HandGenerated.DaoTransformationSeal>()); seal.stack = 2;
+                        var target = new Item(); target.SetDefaults(itemType); Check(target.Prefix(PrefixID.Godly), "registered Dao fixture receives native combat prefix");
+                        target.GetGlobalItem<global::XianXia.Common.Items.InscribedEquipment>().SetKind(InscriptionKind.Greenwood);
+                        var growth = target.GetGlobalItem<global::XianXia.Common.Items.RefinedArtifact>(); growth.SetLevel(3); Check(growth.TryAwaken(), "registered Dao fixture awakened");
+                        var stone = new Item(); stone.SetDefaults(ModContent.ItemType<global::XianXia.Content.Items.Materials.LowGradeSpiritStone>()); stone.stack = stones;
+                        actor.inventory[0] = seal; actor.inventory[1] = target; actor.inventory[2] = stone;
+                        return actor;
+                    }
+                    void SubmitDao(Player actor, byte route, byte prior = 0) => DaoArtifactTransactions.Handle(actor, 0, actor.inventory[0].type,
+                        1, actor.inventory[1].type, actor.inventory[1].prefix, (byte)global::XianXia.Common.Items.InscribedEquipment.GetKind(actor.inventory[1]), 3, true, prior, route);
+                    foreach (byte route in new byte[] { 1, 2, 3 }) {
+                        Main.netMode = NetmodeID.SinglePlayer; Main.myPlayer = 0;
+                        var routeProgress = new TagCompound(); progressSystem.SaveWorldData(routeProgress); routeProgress["chosenRoute"] = 0; progressSystem.LoadWorldData(routeProgress);
+                        DownedBossSystem.DownedBosses.Add("old_heaven_dao_core");
+                        Check(DownedBossSystem.TryChooseRoute((DownedBossSystem.EndgameRoute)route), "registered Dao fixture chooses each real world route");
+                        foreach (int artifactType in new[] { ModContent.ItemType<global::XianXia.Content.Items.Weapons.FormlessSwordWheel>(), ModContent.ItemType<global::XianXia.Content.Items.Weapons.BlackFurnaceWarhammer>() }) foreach (int transactionMode in new[] { NetmodeID.SinglePlayer, NetmodeID.Server }) {
+                            Main.netMode = NetmodeID.SinglePlayer; Main.myPlayer = 0;
+                            Player actor = MakeDaoFixture(artifactType); Item target = actor.inventory[1]; int prefix = target.prefix;
+                            Main.netMode = transactionMode; Main.myPlayer = transactionMode == NetmodeID.Server ? Main.maxPlayers : 0;
+                            Check(EndgameRouteTransactions.NearAltar(actor), "registered Dao fixture detects station tile");
+                            int outputBeforeDao = daoOutputSocket.Sent.Count;
+                            SubmitDao(actor, route);
+                            Check(transactionMode == NetmodeID.Server ? daoOutputSocket.Sent.Count > outputBeforeDao : daoOutputSocket.Sent.Count == outputBeforeDao,
+                                "native Dao authority emits server reply output only in server mode");
+                            var growth = target.GetGlobalItem<global::XianXia.Common.Items.RefinedArtifact>();
+                            Check(actor.inventory[0].stack == 1 && actor.inventory[2].IsAir && (byte)growth.DaoRoute == route, "native Dao material transaction costs one seal and thirty-six stones");
+                            Check(ReferenceEquals(actor.inventory[1], target) && target.prefix == prefix && growth.Level == 3 && growth.Awakened
+                                && global::XianXia.Common.Items.InscribedEquipment.GetKind(target) == InscriptionKind.Greenwood, "native Dao preserves actual equipment prefix inscription and growth");
+                            SubmitDao(actor, route, route);
+                            Check(actor.inventory[0].stack == 1 && (byte)growth.DaoRoute == route, "native immediate Dao replay consumes nothing");
+                            actor.GetModPlayer<global::XianXia.Common.Players.InscriptionPlayer>().Initialize(); SubmitDao(actor, route, route);
+                            Check(actor.inventory[0].stack == 1 && (byte)growth.DaoRoute == route, "native Dao replay after request cooldown reset still consumes nothing");
+                            Item loadedTarget = ItemIO.Load(ItemIO.Save(target));
+                            Check(loadedTarget.type == target.type && loadedTarget.prefix == prefix && global::XianXia.Common.Items.RefinedArtifact.GetLevel(loadedTarget) == 3
+                                && global::XianXia.Common.Items.RefinedArtifact.IsAwakened(loadedTarget) && (byte)global::XianXia.Common.Items.RefinedArtifact.GetDaoRoute(loadedTarget) == route
+                                && global::XianXia.Common.Items.InscribedEquipment.GetKind(loadedTarget) == InscriptionKind.Greenwood, "native complete ItemIO save/load preserves Dao equipment state");
+                            Item clonedTarget = target.Clone(); clonedTarget.GetGlobalItem<global::XianXia.Common.Items.RefinedArtifact>().SetLevel(2);
+                            Check(growth.Level == 3 && growth.Awakened && (byte)growth.DaoRoute == route && !global::XianXia.Common.Items.RefinedArtifact.IsAwakened(clonedTarget)
+                                && global::XianXia.Common.Items.RefinedArtifact.GetDaoRoute(clonedTarget) == DownedBossSystem.EndgameRoute.None, "native full item clone growth remains independent");
+                            using var statePacket = new MemoryStream(); growth.NetSend(target, new BinaryWriter(statePacket));
+                            Check(statePacket.ToArray().SequenceEqual(new byte[] { 3, 1, route }), "native transformed equipment retains three-byte growth wire state");
+                            foreach (int invalidDao in new[] { 0, 1, 2, 3, 4 }) {
+                                Player rejectedActor = MakeDaoFixture(artifactType, invalidDao == 0 ? 35 : 36); Item rejectedTarget = rejectedActor.inventory[1];
+                                if (invalidDao == 1) daoTile.HasTile = false;
+                                if (invalidDao == 2) DownedBossSystem.DownedBosses.Remove("old_heaven_dao_core");
+                                if (invalidDao == 3) rejectedActor.GetModPlayer<global::XianXia.Common.Players.XianXiaPlayer>().cultivationStage = global::XianXia.Common.Players.CultivationStage.Tribulation;
+                                if (invalidDao == 4) rejectedTarget.GetGlobalItem<global::XianXia.Common.Items.InscribedEquipment>().SetKind(InscriptionKind.None);
+                                try {
+                                    SubmitDao(rejectedActor, route);
+                                    Check(rejectedActor.inventory[0].stack == 2 && rejectedActor.inventory[2].stack == (invalidDao == 0 ? 35 : 36)
+                                        && global::XianXia.Common.Items.RefinedArtifact.GetDaoRoute(rejectedTarget) == DownedBossSystem.EndgameRoute.None, "native Dao invalid material station boss realm or inscription consumes nothing");
+                                } finally { daoTile.HasTile = true; DownedBossSystem.DownedBosses.Add("old_heaven_dao_core"); }
+                            }
+                        }
+                    }
+                } finally { Main.player[0] = daoSavedPlayer; daoTile.HasTile = daoTileHadTile; daoTile.TileType = daoTileOldType; progressSystem.LoadWorldData(daoSavedProgress); daoSavedClients.CopyTo(Netplay.Clients, 0); }
+                Check(ReferenceEquals(Main.player[0], daoSavedPlayer) && daoTile.HasTile == daoTileHadTile && daoTile.TileType == daoTileOldType
+                    && Netplay.Clients.SequenceEqual(daoSavedClients)
+                    && (int)DownedBossSystem.ChosenRoute == daoSavedProgress.GetInt("chosenRoute") && DownedBossSystem.DownedBosses.SetEquals(daoSavedProgress.GetList<string>("downedBosses")),
+                    "native Dao fixture restores player slot station fields and world route progression");
             } finally {
                 wheelActor.dead = wheelOldDead; wheelActor.inventory[0] = wheelOldItem; wheelActor.selectedItem = wheelOldSlot;
                 wheelActor.Center = wheelOldCenter; wheelActor.velocity = wheelOldVelocity;
@@ -792,7 +891,7 @@ public class SummonAuditSystem : ModSystem
         Directory.CreateDirectory(directory);
         File.WriteAllText(Path.Combine(directory, "summon-audit.json"), JsonSerializer.Serialize(new {
             schema = 1, passed = error == null, checks, error,
-            limitations = "Registered AI advanced manually for medicine, tablet, inspector, core modules, archive locks and thunder jiao chains/zones; native compression and slam Projectile.Update/Projectile.Damage verify safe/unsafe regions, wall blocking and full thirty-frame slam expiry with hit-text slots occupied. Actual registered Five Wheels skill creation verifies damage, fan, cost and cooldown; all five projectiles run 150 native updates to natural expiry, and owner-death cancellation verifies server-update dirty-state handling and six-update cleanup. Registered Triple Fall creation verifies three hammers and half-damage impacts through native Kill plus duplicate callbacks; native impact updates verify a two-frame damage window, per-projectile immunity against a living vanilla NPC and ten-frame expiry, with unrelated owner immunity cleared. A full-capacity check uses only allocatable projectile slots. Furnace parent/impact owner-death cancellation runs six native updates without creating impacts; a normal hammer runs ninety updates in a clear real terrain corridor and still releases one half-damage impact at zero lifetime. These use a temporary local skill context and occupied hit-text slots, with inventory/resources/owner counts/engine context restored; no real client receives the cancellation. Native player damage/NPC.StrikeNPC verify shield breaks, reward suppression and ordinary worm head rewards through fatal segment hits. Progress/difficulty/banner tallies are restored; expert/master bag distribution is not covered. No full world/player ticks, rendered graphics, real clients, combat balance or complete playthrough."
+            limitations = "Registered AI advanced manually for medicine, tablet, inspector, core modules, archive locks and thunder jiao chains/zones; native compression and slam Projectile.Update/Projectile.Damage verify safe/unsafe regions, wall blocking and full thirty-frame slam expiry with hit-text slots occupied. Actual registered Five Wheels skill creation verifies damage, fan, cost and cooldown; all five projectiles run 150 native updates to natural expiry, and owner-death cancellation verifies server-update dirty-state handling and six-update cleanup. Registered Triple Fall creation verifies three hammers and half-damage impacts through native Kill plus duplicate callbacks; native impact updates verify a two-frame damage window, per-projectile immunity against a living vanilla NPC and ten-frame expiry, with unrelated owner immunity cleared. A full-capacity check uses only allocatable projectile slots. Furnace parent/impact owner-death cancellation runs six native updates without creating impacts; a normal hammer runs ninety updates in a clear real terrain corridor and still releases one half-damage impact at zero lifetime. These use a temporary local skill context and occupied hit-text slots, with inventory/resources/owner counts/engine context restored; no real client receives the cancellation. Actual Dao seal/stone/equipment transactions run both local and server authority modes for both recent artifacts and all three world routes, including full ItemIO save/load, full item cloning, duplicate refusal and five invalid-gate cases. Server reply output is captured by a non-networking audit ISocket; the real authority transaction and native packet creation run, but no peer receives or applies the inventory data. Station qualification uses only two temporarily patched fields of a loaded world tile, with player/client slots and world progress restored; no physical multi-tile placement or real inventory transport is covered. Native player damage/NPC.StrikeNPC verify shield breaks, reward suppression and ordinary worm head rewards through fatal segment hits. Progress/difficulty/banner tallies are restored; expert/master bag distribution is not covered. No full world/player ticks, rendered graphics, real clients, combat balance or complete playthrough."
         }, new JsonSerializerOptions { WriteIndented = true }));
         Mod.Logger.Info($"Summon audit finished: {checks.Count} checks; passed={error == null}");
     }
