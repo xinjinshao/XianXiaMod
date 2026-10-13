@@ -21,7 +21,12 @@ public class BlackFurnaceWarhammer : global::XianXia.Common.Items.CultivationWea
         Item.shoot = ModContent.ProjectileType<global::XianXia.Content.Projectiles.FurnaceHammerProjectile>();
         Item.shootSpeed = 9f;
     }
-    public override int GetSpiritCost(Player player) => 12;
+    public override int GetSpiritCost(Player player) => global::XianXia.Common.Items.RefinedArtifact.IsAwakened(Item) ? 10 : 12;
+    public override bool AltFunctionUse(Player player) => false;
+    public override void ModifyWeaponDamage(Player player, ref StatModifier damage)
+    {
+        if (global::XianXia.Common.Items.RefinedArtifact.IsAwakened(Item)) damage += 0.1f;
+    }
     public override bool CanUseItem(Player player)
     {
         XianXiaPlayer state = player.GetModPlayer<XianXiaPlayer>();

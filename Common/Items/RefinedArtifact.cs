@@ -17,7 +17,7 @@ public class RefinedArtifact : GlobalItem
     public static bool IsSample(Item item) => SupportsRefinement(item)
         && item.ModItem.Name is "CloudpiercerFlyingSword" or "GreenwoodArrayPlate";
     public static bool SupportsDaoTransformation(Item item) => IsSample(item) || SupportsRefinement(item) && item.ModItem.Name is "MoonboneDharmaSword" or "FormlessSwordWheel";
-    public static bool SupportsAwakening(Item item) => IsSample(item) || SupportsRefinement(item) && item.ModItem.Name is "HeavenTabletWardSeal" or "MoonboneDharmaSword" or "FormlessSwordWheel";
+    public static bool SupportsAwakening(Item item) => IsSample(item) || SupportsRefinement(item) && item.ModItem.Name is "HeavenTabletWardSeal" or "MoonboneDharmaSword" or "FormlessSwordWheel" or "BlackFurnaceWarhammer";
     public static bool SupportsRefinement(Item item) => item != null && InscribedEquipment.IsEligible(item)
         && !item.accessory && item.damage > 0;
     public override bool AppliesToEntity(Item entity, bool lateInstantiation) => SupportsRefinement(entity);
@@ -64,7 +64,7 @@ public class RefinedArtifact : GlobalItem
             tooltips.Add(new TooltipLine(Mod, "BasicArtifact", Language.GetTextValue("Mods.XianXia.Refinement.BasicArtifact")));
             return;
         }
-        string stateKey = item.ModItem.Name switch { "HeavenTabletWardSeal" => Awakened ? "WardAwakened" : "WardDormant", "MoonboneDharmaSword" => Awakened ? "MoonAwakened" : "MoonDormant", "FormlessSwordWheel" => Awakened ? "WheelAwakened" : "WheelDormant", _ => Awakened ? "Awakened" : "Unawakened" };
+        string stateKey = item.ModItem.Name switch { "HeavenTabletWardSeal" => Awakened ? "WardAwakened" : "WardDormant", "MoonboneDharmaSword" => Awakened ? "MoonAwakened" : "MoonDormant", "FormlessSwordWheel" => Awakened ? "WheelAwakened" : "WheelDormant", "BlackFurnaceWarhammer" => Awakened ? "HammerAwakened" : "HammerDormant", _ => Awakened ? "Awakened" : "Unawakened" };
         tooltips.Add(new TooltipLine(Mod, "ArtifactAwakening", Language.GetTextValue("Mods.XianXia.Refinement." + stateKey)));
         if (DaoRoute != DownedBossSystem.EndgameRoute.None)
             tooltips.Add(new TooltipLine(Mod, "DaoTransformation", Language.GetTextValue(item.ModItem.Name switch { "MoonboneDharmaSword" => "Mods.XianXia.DaoArtifacts.MoonTooltip", "FormlessSwordWheel" => "Mods.XianXia.DaoArtifacts.WheelTooltip", _ => "Mods.XianXia.DaoArtifacts.Tooltip" }, Language.GetTextValue(EndgameRouteTransactions.NameKey(DaoRoute)))));
