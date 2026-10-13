@@ -21,7 +21,10 @@ public class BlackFurnaceWarhammer : global::XianXia.Common.Items.CultivationWea
         Item.shoot = ModContent.ProjectileType<global::XianXia.Content.Projectiles.FurnaceHammerProjectile>();
         Item.shootSpeed = 9f;
     }
-    public override int GetSpiritCost(Player player) => global::XianXia.Common.Items.RefinedArtifact.IsAwakened(Item) ? 10 : 12;
+    public override int GetSpiritCost(Player player) => global::XianXia.Common.Items.RefinedArtifact.ActiveDaoRoute(Item) is var route
+        && route != global::XianXia.Common.Systems.DownedBossSystem.EndgameRoute.None
+        ? global::XianXia.Common.Systems.DaoArtifactRules.WeaponCost(Name, route)
+        : global::XianXia.Common.Items.RefinedArtifact.IsAwakened(Item) ? 10 : 12;
     public override bool AltFunctionUse(Player player) => global::XianXia.Common.Items.RefinedArtifact.IsAwakened(Item);
     public override void ModifyWeaponDamage(Player player, ref StatModifier damage)
     {

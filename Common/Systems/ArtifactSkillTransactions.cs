@@ -112,7 +112,7 @@ public static class ArtifactSkillTransactions
         bool wheel = HeldSkill(item) == ArtifactSkill.WheelFormation;
         bool hammer = HeldSkill(item) == ArtifactSkill.HammerVolley;
         Vector2 velocity = delta.SafeNormalize(Vector2.UnitX * player.direction) * (hammer ? 9f : 14f);
-        int damage = hammer ? (int)(player.GetWeaponDamage(item) * ArtifactSkillRules.HammerDamageMultiplier) : wheel ? (int)(player.GetWeaponDamage(item) * DaoArtifactRules.WheelBurstMultiplier(RefinedArtifact.ActiveDaoRoute(item))) : moon ? (int)(player.GetWeaponDamage(item) * DaoArtifactRules.MoonBurstMultiplier(RefinedArtifact.ActiveDaoRoute(item))) : player.GetWeaponDamage(item) * DaoArtifactRules.BurstMultiplier(RefinedArtifact.ActiveDaoRoute(item));
+        int damage = hammer ? (int)(player.GetWeaponDamage(item) * DaoArtifactRules.HammerBurstMultiplier(RefinedArtifact.ActiveDaoRoute(item))) : wheel ? (int)(player.GetWeaponDamage(item) * DaoArtifactRules.WheelBurstMultiplier(RefinedArtifact.ActiveDaoRoute(item))) : moon ? (int)(player.GetWeaponDamage(item) * DaoArtifactRules.MoonBurstMultiplier(RefinedArtifact.ActiveDaoRoute(item))) : player.GetWeaponDamage(item) * DaoArtifactRules.BurstMultiplier(RefinedArtifact.ActiveDaoRoute(item));
         int type = hammer ? ModContent.ProjectileType<FurnaceHammerProjectile>() : wheel ? ModContent.ProjectileType<FormlessSwordWheelProjectile>() : moon ? ModContent.ProjectileType<MoonboneShardProjectile>() : ModContent.ProjectileType<CloudpiercerSwordProjectile>();
         var created = new List<int>();
         var source = new EntitySource_ItemUse_WithAmmo(player, item, 0);

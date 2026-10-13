@@ -33,7 +33,7 @@ Mods: {
    WheelDormant: Dormant; retain an inscription at refinement level 3, reach Nascent Soul and defeat Medicine King Echo; use 1 awakening seal and 24 low-grade spirit stones at a supported forge
    WheelHeritageReady: "Sect heritage active at {0} and reputation {1}: +{3}% damage; current base spirit cost {2}. Crafted awakening is shown separately"
    WheelHeritageLocked: "Sect heritage requires {0} and reputation {1}: grants +{3}% damage and base spirit cost 11; checked independently of crafted awakening"
-   HammerAwakened: Crafted awakening adds 10% weapon damage and lowers base spirit cost from 12 to 10; thrown hammer and impact behavior remain; Furnace Triple Fall throws three 175% hammers for 30 base energy with a shared 20-second cooldown; use alternate attack, the artifact key or skill panel; Dao transformation not yet available
+   HammerAwakened: Crafted awakening adds 10% weapon damage and lowers base spirit cost from 12 to 10; thrown hammer and impact behavior remain; Furnace Triple Fall throws three 175% hammers for 30 base energy with a shared 20-second cooldown; use alternate attack, the artifact key or skill panel; Dao transformation available with a Dao seal after Dao Severing, choosing a world route and defeating the core
    HammerDormant: Dormant; retain an inscription at refinement level 3, reach Nascent Soul and defeat Medicine King Echo; use 1 awakening seal and 24 low-grade spirit stones at a supported forge
    BasicArtifact: Supports three refinement levels; crafted awakening and Dao transformation are not yet available for this weapon
    ToolCost: Each level costs 1 quenching crystal and 6/12/18 low-grade stones; canceling, failure and maximum level cost nothing

@@ -27,6 +27,7 @@ Mods: {
    WheelDaoRequirement: "Hold a matching-route Dao-transformed Formless Sword Wheel: Rebuild gives five 200% wheels and up to 20 self-heal; Sever gives five 250% wheels; Star Abyss gives five 200% wheels and adds 8 spiritual pressure; otherwise the awakened 150% skill applies"
    Hammer: Triple Fall
    HammerRequirement: Reach Qi Condensation and hold a crafted-awakened Black Furnace Warhammer; throw three aimed hammers at 0.24-radian intervals and speed 9, each dealing 175% of current weapon damage with normal gravity and collision; each hammer releases at most one half-damage impact
+   HammerDaoRequirement: "Reach Qi Condensation and hold a matching-route Dao-transformed Black Furnace Warhammer: Rebuild gives three 225% hammers and up to 20 self-heal; Sever gives three 275% hammers; Star Abyss gives three 225% hammers and adds 8 spiritual pressure; normal one-shot half-damage impacts remain; otherwise the awakened 175% skill applies"
    Ward: Guard
    Ready: Skills ready; configure keys in Mod Controls
    Cooldown: "Shared skill cooldown: {0}s"
