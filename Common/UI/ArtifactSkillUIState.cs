@@ -71,7 +71,7 @@ public class ArtifactSkillUIState : UIState
             ArtifactSkill.SwordBurst => Text("SwordRequirement"),
             ArtifactSkill.ArrayPulse => Text("ArrayRequirement"),
             ArtifactSkill.MoonCrescent => Text(route == DownedBossSystem.EndgameRoute.None ? "MoonRequirement" : "MoonDaoRequirement"),
-            ArtifactSkill.WheelFormation => Text("WheelRequirement"),
+            ArtifactSkill.WheelFormation => Text(route == DownedBossSystem.EndgameRoute.None ? "WheelRequirement" : "WheelDaoRequirement"),
             _ => Text("WardRequirement")
         };
         return requirement + "\n" + Text("SkillNumbers", cost, ArtifactSkillRules.Cooldown(skill) / 60)

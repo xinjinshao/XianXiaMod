@@ -24,6 +24,7 @@ Mods: {
    WheelRequirement: Hold a crafted-awakened Formless Sword Wheel; launch five wheels at 0.3-radian intervals across the aimed fan, each dealing 150% of current weapon damage with normal wheel collision and penetration
    MoonRequirement: Hold a crafted-awakened Moonbone Dharma Sword: fire three aimed shards, each dealing 150% of current weapon damage, using the normal shard collision and penetration
    MoonDaoRequirement: "Hold a matching-route Dao-transformed Moonbone Dharma Sword: Rebuild gives three 200% shards and up to 20 self-heal; Sever gives three 250% shards; Star Abyss gives three 200% shards and adds 8 spiritual pressure; otherwise the awakened 150% skill applies"
+   WheelDaoRequirement: "Hold a matching-route Dao-transformed Formless Sword Wheel: Rebuild gives five 200% wheels and up to 20 self-heal; Sever gives five 250% wheels; Star Abyss gives five 200% wheels and adds 8 spiritual pressure; otherwise the awakened 150% skill applies"
    Ward: Guard
    Ready: Skills ready; configure keys in Mod Controls
    Cooldown: "Shared skill cooldown: {0}s"
