@@ -575,6 +575,81 @@ public class SummonAuditSystem : ModSystem
                 Check(jiaoNpc.ai.All(value=>value==0),"registered jiao full recovery clears attack clocks");
                 foreach(Projectile zone in jiaoZones)zone.active=false;foreach(NPC segment in jiaoSegments)segment.active=false;jiaoNpc.active=false;Main.player[0].position.X-=64;
             }
+            // Run actual registered item/skill updates after the existing boss scenarios.
+            Player wheelActor = Main.player[0];
+            var wheelState = wheelActor.GetModPlayer<global::XianXia.Common.Players.XianXiaPlayer>();
+            var wheelSnapshot = wheelState.CaptureSnapshot();
+            int wheelOldSlot = wheelActor.selectedItem, wheelOldRequest = wheelState.skillRequestCooldown;
+            int wheelOldMode = Main.netMode, wheelOldLocal = Main.myPlayer;
+            Item wheelOldItem = wheelActor.inventory[0];
+            Vector2 wheelOldCenter = wheelActor.Center, wheelOldVelocity = wheelActor.velocity;
+            float wheelOldMultiplier = wheelState.spiritualEnergyCostMultiplier;
+            int[] wheelOldCounts = (int[])wheelActor.ownedProjectileCounts.Clone();
+            var wheelOldText = Main.combatText;
+            bool wheelOldDead = wheelActor.dead;
+            try {
+                Main.netMode = NetmodeID.SinglePlayer; Main.myPlayer = 0;
+                Main.combatText = Enumerable.Range(0, 100).Select(_ => new CombatText { active = true }).ToArray();
+                wheelActor.Center = new Vector2(x, Main.maxTilesY * 8f); wheelActor.velocity = Vector2.Zero;
+                wheelActor.dead = false;
+                wheelActor.selectedItem = 0;
+                var wheelItem = new Item(); wheelItem.SetDefaults(ModContent.ItemType<global::XianXia.Content.Items.Weapons.FormlessSwordWheel>());
+                wheelActor.inventory[0] = wheelItem;
+                var wheelGrowth = wheelItem.GetGlobalItem<global::XianXia.Common.Items.RefinedArtifact>();
+                wheelGrowth.SetLevel(3); Check(wheelGrowth.TryAwaken(), "registered wheel fixture awakened");
+                wheelState.cultivationStage = global::XianXia.Common.Players.CultivationStage.NascentSoul;
+                wheelState.spiritualEnergyCostMultiplier = 1;
+                int wheelType = ModContent.ProjectileType<global::XianXia.Content.Projectiles.FormlessSwordWheelProjectile>();
+                Projectile[] CastRegisteredWheels() {
+                    wheelState.spiritualEnergy = 100; wheelState.activeSkillCooldown = 0; wheelState.skillRequestCooldown = 0;
+                    var beforeWheels = Main.projectile.Where(projectile => projectile.active).ToHashSet();
+                    try { ArtifactSkillTransactions.HandleRequest(wheelActor, ArtifactSkill.WheelFormation, 0, wheelItem.type, wheelActor.MountedCenter + new Vector2(1000, 0)); }
+                    finally { ownedProjectiles.AddRange(Main.projectile.Where(projectile => projectile.active && !beforeWheels.Contains(projectile) && !ownedProjectiles.Contains(projectile))); }
+                    Projectile[] result = Main.projectile.Where(projectile => projectile.active && !beforeWheels.Contains(projectile)).ToArray();
+                    Check(result.Length == 5 && result.All(projectile => projectile.type == wheelType && projectile.owner == 0 && projectile.netUpdate), "registered skill creates exactly five owned dirty wheels");
+                    Check(wheelState.spiritualEnergy == 64 && wheelState.activeSkillCooldown == 1200, "registered wheel skill actual energy and shared cooldown");
+                    int wheelDamage = (int)(wheelActor.GetWeaponDamage(wheelItem) * 1.5f);
+                    for (int index = 0; index < result.Length; index++) {
+                        Check(result[index].damage == wheelDamage && Vector2.DistanceSquared(result[index].velocity, new Vector2(14, 0).RotatedBy((index - 2) * 0.3)) < 0.001f
+                            && result[index].width == 80 && result[index].height == 80 && result[index].penetrate == 5 && result[index].timeLeft == 150, "registered wheel skill actual damage fan and defaults");
+                    }
+                    return result;
+                }
+                Projectile[] lifetimeWheels = CastRegisteredWheels();
+                for (int frame = 1; frame <= 150; frame++) foreach (Projectile wheel in lifetimeWheels) {
+                    wheel.Update(wheel.whoAmI);
+                    Check(wheel.active == (frame < 150) && wheel.timeLeft == 150 - frame, "native five-wheel full lifetime and natural expiry");
+                }
+                Check(lifetimeWheels.All(wheel => wheel.ModProjectile.CanDamage() == false), "native expired wheels cannot damage");
+                Projectile[] deathWheels = CastRegisteredWheels();
+                wheelActor.dead = true;
+                Main.netMode = NetmodeID.Server; Main.myPlayer = Main.maxPlayers;
+                foreach (Projectile wheel in deathWheels) {
+                    Check(wheel.ModProjectile.CanDamage() == false, "native owner death blocks wheel contact before update");
+                    wheel.Update(wheel.whoAmI);
+                    Check(wheel.active && !wheel.friendly && wheel.hide && wheel.velocity == Vector2.Zero && wheel.timeLeft == 5 && !wheel.netUpdate, "native server wheel cancellation stops and clears dirty state");
+                    using var bytes = new MemoryStream(); wheel.ModProjectile.SendExtraAI(new BinaryWriter(bytes));
+                    Check(bytes.ToArray().SequenceEqual(new byte[] { 1 }), "registered cancelled wheel serializes one-byte state");
+                    wheel.ModProjectile.ReceiveExtraAI(new BinaryReader(new MemoryStream(new byte[] { 0 })));
+                }
+                wheelActor.dead = false;
+                Check(deathWheels.All(wheel => wheel.ModProjectile.CanDamage() == false), "native old active packet and revived owner cannot restore cancelled wheels");
+                for (int frame = 2; frame <= 6; frame++) foreach (Projectile wheel in deathWheels) {
+                    wheel.Update(wheel.whoAmI);
+                    Check(wheel.active == (frame < 6) && wheel.timeLeft == 6 - frame, "native cancelled five wheels expire within six updates");
+                }
+            } finally {
+                wheelActor.dead = wheelOldDead; wheelActor.inventory[0] = wheelOldItem; wheelActor.selectedItem = wheelOldSlot;
+                wheelActor.Center = wheelOldCenter; wheelActor.velocity = wheelOldVelocity;
+                wheelState.ApplySnapshot(wheelSnapshot); wheelState.skillRequestCooldown = wheelOldRequest;
+                wheelState.spiritualEnergyCostMultiplier = wheelOldMultiplier; wheelOldCounts.CopyTo(wheelActor.ownedProjectileCounts, 0);
+                Main.netMode = wheelOldMode; Main.myPlayer = wheelOldLocal; Main.combatText = wheelOldText;
+            }
+            Check(wheelState.CaptureSnapshot() == wheelSnapshot && wheelActor.inventory[0] == wheelOldItem && wheelActor.Center == wheelOldCenter
+                && wheelActor.dead == wheelOldDead && wheelActor.velocity == wheelOldVelocity && wheelActor.selectedItem == wheelOldSlot
+                && wheelState.skillRequestCooldown == wheelOldRequest && wheelState.spiritualEnergyCostMultiplier == wheelOldMultiplier
+                && wheelActor.ownedProjectileCounts.SequenceEqual(wheelOldCounts) && Main.netMode == wheelOldMode && Main.myPlayer == wheelOldLocal && Main.combatText == wheelOldText,
+                "registered wheel fixture restores inventory resource snapshot owner counts and engine context");
         }
         catch (Exception exception) { error = exception.ToString(); }
         finally {
@@ -601,7 +676,7 @@ public class SummonAuditSystem : ModSystem
         Directory.CreateDirectory(directory);
         File.WriteAllText(Path.Combine(directory, "summon-audit.json"), JsonSerializer.Serialize(new {
             schema = 1, passed = error == null, checks, error,
-            limitations = "Registered AI advanced manually for medicine, tablet, inspector, core modules, archive locks and thunder jiao chains/zones; native compression and slam Projectile.Update/Projectile.Damage verify safe/unsafe regions, wall blocking and full thirty-frame slam expiry with hit-text slots occupied. Native player damage/NPC.StrikeNPC verify shield breaks, reward suppression and ordinary worm head rewards through fatal segment hits. Progress/difficulty/banner tallies are restored; expert/master bag distribution is not covered. No full world/player ticks, rendered graphics, real clients, combat balance or complete playthrough."
+            limitations = "Registered AI advanced manually for medicine, tablet, inspector, core modules, archive locks and thunder jiao chains/zones; native compression and slam Projectile.Update/Projectile.Damage verify safe/unsafe regions, wall blocking and full thirty-frame slam expiry with hit-text slots occupied. Actual registered Five Wheels skill creation verifies damage, fan, cost and cooldown; all five projectiles run 150 native updates to natural expiry, and owner-death cancellation verifies server-update dirty-state handling and six-update cleanup. These use a temporary local skill context and occupied hit-text slots, with inventory/resources/owner counts/engine context restored; no real client receives the cancellation. Native player damage/NPC.StrikeNPC verify shield breaks, reward suppression and ordinary worm head rewards through fatal segment hits. Progress/difficulty/banner tallies are restored; expert/master bag distribution is not covered. No full world/player ticks, rendered graphics, real clients, combat balance or complete playthrough."
         }, new JsonSerializerOptions { WriteIndented = true }));
         Mod.Logger.Info($"Summon audit finished: {checks.Count} checks; passed={error == null}");
     }
