@@ -3,7 +3,7 @@ Mods: {
 		Items: {
 			LowGradeSpiritStone: {
 				DisplayName: Low-Grade Spirit Stone
-				Tooltip: A weak spirit stone condensed in shallow spirit veins. Picking it up awakens spiritual energy awareness.
+				Tooltip: A weak spirit stone condensed in shallow spirit veins. Picking it up awakens spiritual energy awareness. Some ordinary underground gold chests in new worlds also contain a small supply.
 			}
 
 			SpiritGel: {

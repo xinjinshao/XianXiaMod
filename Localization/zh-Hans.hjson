@@ -3,7 +3,7 @@ Mods: {
 		Items: {
 			LowGradeSpiritStone: {
 				DisplayName: 下品灵石
-				Tooltip: 浅层灵脉中凝成的低阶灵石。拾取后会唤醒灵气感知。
+				Tooltip: 浅层灵脉中凝成的低阶灵石。拾取后会唤醒灵气感知。新世界的部分普通地下金箱也藏有少量灵石。
 			}
 
 			SpiritGel: {

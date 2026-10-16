@@ -933,6 +933,7 @@ public partial class SummonAuditSystem : ModSystem
             AuditFailureBuffs(Check);
             AuditEnemyBuffs(Check, owned);
             AuditPacketDispatch(Check);
+            AuditChestSupplies(Check);
         }
         catch (Exception exception) { error = exception.ToString(); }
         finally {

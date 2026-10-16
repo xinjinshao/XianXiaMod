@@ -41,7 +41,17 @@ public class WorldAuditCommand : ModCommand
                         }
                 if (complete) count.Complete++;
             }
-        string report = JsonSerializer.Serialize(new { Width = Main.maxTilesX, Height = Main.maxTilesY, Objects = objects.Values });
+        int supplyChests = 0, spiritStones = 0;
+        int stone = ModContent.ItemType<global::XianXia.Content.Items.Materials.LowGradeSpiritStone>();
+        foreach (Chest chest in Main.chest) {
+            if (chest?.item == null) continue;
+            bool found = false;
+            foreach (Item item in chest.item)
+                if (item != null && item.type == stone && !item.IsAir) { found = true; spiritStones += item.stack; }
+            if (found) supplyChests++;
+        }
+        string report = JsonSerializer.Serialize(new { Width = Main.maxTilesX, Height = Main.maxTilesY, Objects = objects.Values,
+            ChestsWithSpiritStones = supplyChests, ChestSpiritStoneTotal = spiritStones });
         Mod.Logger.Info("SavedWorldAudit: " + report);
         caller.Reply(report);
     }
