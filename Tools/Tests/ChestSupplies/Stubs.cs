@@ -11,4 +11,4 @@ namespace Terraria.ModLoader {public class ModSystem{public virtual void ClearWo
 namespace XianXia {public class XianXiaConfig{public bool EnableWorldGeneration=true;}}
 namespace XianXia.Content.Items.Materials {public class LowGradeSpiritStone{}}
 
-namespace Terraria.Utilities {public class UnifiedRandom {public bool Win=true;public int Calls;public bool PickMaximum;public bool NextBool(int n){Calls++;return Win;}public int Next(int min,int max)=>PickMaximum?max-1:min;}}
+namespace Terraria.Utilities {public class UnifiedRandom {public bool Win=true;public int Calls;public bool PickMaximum;public bool NextBool(int n){Calls++;return Win;}public int Next(int min,int max)=>PickMaximum?max-1:min;public int Next(int max)=>PickMaximum?max-1:0;}}

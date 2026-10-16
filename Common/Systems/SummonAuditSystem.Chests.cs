@@ -21,15 +21,18 @@ public partial class SummonAuditSystem
         for (int c = 0; c < 2; c++) for (int r = 0; r < 2; r++) {
             Tile tile = Main.tile[x + c, y + r]; tiles.Add((x + c, y + r, tile.HasTile, tile.TileType, tile.TileFrameX, tile.TileFrameY));
         }
+        var captured = new HashSet<(int, int)>(tiles.Select(saved => (saved.X, saved.Y)));
         int seed = Enumerable.Range(0, 100).First(value => new UnifiedRandom(value).NextBool(4));
         int stone = ModContent.ItemType<LowGradeSpiritStone>();
         UnifiedRandom lootRandom = new UnifiedRandom(seed);
-        Chest MakeChest() {
+        Chest MakeChest(int offset = 0) {
             for (int c = 0; c < 2; c++) for (int r = 0; r < 2; r++) {
-                Tile tile = Main.tile[x + c, y + r]; tile.HasTile = true; tile.TileType = TileID.Containers;
+                Tile tile = Main.tile[x + offset + c, y + r];
+                if (captured.Add((x + offset + c, y + r))) tiles.Add((x + offset + c, y + r, tile.HasTile, tile.TileType, tile.TileFrameX, tile.TileFrameY));
+                tile.HasTile = true; tile.TileType = TileID.Containers;
                 tile.TileFrameX = (short)(36 + c * 18); tile.TileFrameY = (short)(r * 18);
             }
-            var chest = new Chest { x = x, y = y };
+            var chest = new Chest { x = x + offset, y = y };
             var original = new Item(); original.SetDefaults(ItemID.IronBroadsword); original.Prefix(PrefixID.Godly); chest.item[0] = original;
             Main.chest = new[] { chest }; lootRandom = new UnifiedRandom(seed); return chest;
         }
@@ -56,6 +59,21 @@ public partial class SummonAuditSystem
                 check(chest.item.Count(item => item != null && item.type == stone) == (gate == 4 ? 1 : 0)
                     && (gate != 4 || chest.item[1].stack == 5), "native supply guards disabled client locked full and pre-supplied chests");
             }
+            Main.netMode = NetmodeID.Server; config.EnableWorldGeneration = true;
+            int limit = Math.Max(1, Main.maxTilesX / 420);
+            var pool = new Chest[limit * 20];
+            for (int i = 0; i < pool.Length; i++) pool[i] = MakeChest(i * 3);
+            var originals = pool.Select(entry => entry.item[0]).ToArray(); Main.chest = pool;
+            new SpiritChestSuppliesSystem().GenerateSupplies(lootRandom);
+            check(pool.Count(entry => entry.item.Any(item => item != null && item.type == stone)) == limit
+                && pool.Select(entry => entry.item[0]).SequenceEqual(originals),
+                "native capped reservoir preserves original loot across a large real chest candidate pool");
+            check(pool.Skip(limit).Any(entry => entry.item.Any(item => item != null && item.type == stone)),
+                "native chest reservoir includes candidates beyond the initial array prefix");
+            chest = MakeChest(); Main.chest = new[] { chest, chest };
+            new SpiritChestSuppliesSystem().GenerateSupplies(lootRandom);
+            check(chest.item.Count(item => item != null && item.type == stone) == 1,
+                "native duplicate chest references cannot allocate duplicate supply stacks");
         } finally {
             foreach (var saved in tiles) { Tile tile = Main.tile[saved.X, saved.Y]; tile.HasTile = saved.HasTile; tile.TileType = saved.Type; tile.TileFrameX = saved.FrameX; tile.TileFrameY = saved.FrameY; }
             Main.chest = oldChests; Main.netMode = oldMode; config.EnableWorldGeneration = oldEnabled;

@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -17,11 +18,12 @@ public class SpiritChestSuppliesSystem : ModSystem
         if (completed || Main.netMode == NetmodeID.MultiplayerClient || Main.chest == null
             || !ModContent.GetInstance<XianXiaConfig>().EnableWorldGeneration) return;
         completed = true;
-        int added = 0, limit = Math.Max(1, Main.maxTilesX / 420);
+        int candidates = 0, limit = Math.Max(1, Main.maxTilesX / 420);
+        var selected = new List<(Chest Chest, int Slot)>();
+        var visited = new HashSet<Chest>();
         int stone = ModContent.ItemType<LowGradeSpiritStone>();
         foreach (Chest chest in Main.chest) {
-            if (added >= limit) break;
-            if (chest == null || chest.item == null || chest.x < 0 || chest.x >= Main.maxTilesX - 1
+            if (chest == null || !visited.Add(chest) || chest.item == null || chest.x < 0 || chest.x >= Main.maxTilesX - 1
                 || chest.y < Main.worldSurface || chest.y >= Main.maxTilesY - 200) continue;
             // Only intact, unlocked vanilla gold chests (style 1), including all four frames.
             bool gold = true;
@@ -39,8 +41,17 @@ public class SpiritChestSuppliesSystem : ModSystem
                 if (free < 0 && (item == null || item.IsAir)) free = slot;
             }
             if (supplied || free < 0 || !random.NextBool(4)) continue;
+            // Reservoir sampling gives later candidates the same retention chance as earlier ones.
+            candidates++;
+            if (selected.Count < limit) selected.Add((chest, free));
+            else {
+                int replacement = random.Next(candidates);
+                if (replacement < limit) selected[replacement] = (chest, free);
+            }
+        }
+        foreach (var destination in selected) {
             var supply = new Item(); supply.SetDefaults(stone); supply.stack = random.Next(4, 9);
-            chest.item[free] = supply; added++;
+            destination.Chest.item[destination.Slot] = supply;
         }
     }
 }

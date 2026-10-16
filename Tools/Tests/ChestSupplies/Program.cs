@@ -12,3 +12,15 @@ foreach(int invalid in Enumerable.Range(0,12)){var system=Setup();var chest=Gold
 foreach(int gate in new[]{0,1}){var system=Setup();var chest=Gold(0);if(gate==0)Main.netMode=1;else ModContent.GetInstance<XianXia.XianXiaConfig>().EnableWorldGeneration=false;system.PostWorldGen();Check(chest.item.All(i=>i.IsAir)&&WorldGen.genRand.Calls==0,"Client and disabled world generation never change loot");}
 {var system=Setup();Gold(0);system.PostWorldGen();Main.chest=new Chest[20];var next=Gold(0);system.ClearWorld();system.PostWorldGen();Check(next.item.Any(i=>i.type==900),"New world reset releases generation guard");}
 Console.WriteLine($"Spirit chest supply generation: {checks} checks; chest/tile/random engine boundary mocked.");
+
+foreach(bool maximum in new[]{false,true}) {
+ var system=Setup();WorldGen.genRand.PickMaximum=maximum;
+ for(int i=0;i<10;i++){var chest=Gold(i,20+i*3);chest.item[0]=new Item{type=1,stack=i+1,prefix=7};}
+ var originals=Main.chest.Where(c=>c!=null).Select(c=>c.item[0]).ToArray();system.PostWorldGen();
+ Check(WorldGen.genRand.Calls==10,"Every eligible chest rolls even after the reservoir reaches its cap");
+ Check(Main.chest.Where(c=>c!=null).Count(c=>c.item.Any(i=>i.type==900))==2,"Reservoir preserves the world supply cap");
+ Check(maximum?Main.chest[0].item.Any(i=>i.type==900)&&Main.chest[1].item.Any(i=>i.type==900):Main.chest[9].item.Any(i=>i.type==900),"Random retention can keep early candidates or select the last candidate");
+ Check(Main.chest.Where(c=>c!=null).Select(c=>c.item[0]).SequenceEqual(originals),"Deferred supply allocation never replaces existing chest items");
+}
+{var system=Setup();var duplicate=Gold(0);Main.chest[1]=duplicate;system.PostWorldGen();Check(WorldGen.genRand.Calls==1&&duplicate.item.Count(i=>i.type==900)==1,"Duplicate chest references enter selection only once");}
+Console.WriteLine($"Including unbiased capped chest selection: {checks} checks.");
