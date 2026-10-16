@@ -39,3 +39,16 @@ foreach(int invalid in Enumerable.Range(0,5)) {
 }
 {var actor=new Player();var stone=new XianXia.Content.Items.Materials.LowGradeSpiritStone();stone.Item.type=900;stone.Item.stack=1;Check(stone.OnPickup(actor)&&actor.State.discoveredSpiritualEnergy,"Existing ground pickup behavior remains available");}
 Console.WriteLine($"Including carried stone awareness: {checks} checks; player inventory boundary mocked.");
+
+foreach(int invalid in Enumerable.Range(0,5)) {
+ Main.netMode=2;var actor=new Player();var stone=new XianXia.Content.Items.Materials.LowGradeSpiritStone();stone.Item.type=900;stone.Item.stack=1;
+ switch(invalid){case 0:actor=null;break;case 1:actor.active=false;break;case 2:actor.dead=true;break;case 3:actor.Ready=false;break;case 4:stone.Item.stack=0;break;}
+ Check(stone.OnPickup(actor)&&(actor==null||!actor.State.discoveredSpiritualEnergy),"Unavailable pickup recipient safely skips awareness without changing pickup permission");
+}
+foreach(int mode in new[]{0,1,2}) {
+ Main.netMode=mode;var actor=new Player();var stone=new XianXia.Content.Items.Materials.LowGradeSpiritStone();stone.Item.type=900;stone.Item.stack=2;
+ Check(stone.OnPickup(actor)&&actor.State.discoveredSpiritualEnergy&&actor.State.Revisions==(mode==1?0:1),"Pickup retains immediate awareness and authority revision");
+ stone.UpdateInventory(actor);stone.OnPickup(actor);
+ Check(actor.State.Revisions==(mode==1?0:1)&&stone.Item.stack==2,"Pickup followed by inventory and repeated pickup grants no duplicate revision");
+}
+Console.WriteLine($"Including safe pickup awareness: {checks} checks.");

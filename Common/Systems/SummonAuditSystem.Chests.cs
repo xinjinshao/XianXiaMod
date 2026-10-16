@@ -97,6 +97,16 @@ public partial class SummonAuditSystem
                         "native discovered awareness persists through actual character save/load hooks without advancing realm");
                 }
             }
+            foreach (int mode in new[] { NetmodeID.SinglePlayer, NetmodeID.MultiplayerClient, NetmodeID.Server }) {
+                Main.netMode = mode; var actor = new Player { active = true, dead = false };
+                Item pickupStone = carriedStone.Clone(); int amount = pickupStone.stack;
+                var state = actor.GetModPlayer<XianXiaPlayer>(); var before = state.CaptureSnapshot();
+                check(ItemLoader.OnPickup(pickupStone, actor) && state.CaptureSnapshot() == (before with { Discovered = true, Revision = before.Revision + (mode == NetmodeID.MultiplayerClient ? 0u : 1u) }),
+                    "native registered pickup keeps local awareness and authority-only discovery revision");
+                var afterPickup = state.CaptureSnapshot(); ItemLoader.UpdateInventory(pickupStone, actor); ItemLoader.OnPickup(pickupStone, actor);
+                check(state.CaptureSnapshot() == afterPickup && pickupStone.stack == amount,
+                    "native pickup followed by inventory dispatch cannot repeat discovery revision or consume stone");
+            }
             Main.netMode = NetmodeID.Server;
             foreach (int invalid in new[] { 0, 1, 2 }) {
                 var actor = new Player { active = invalid != 0, dead = invalid == 1 }; Item heldStone = carriedStone.Clone();
@@ -104,10 +114,15 @@ public partial class SummonAuditSystem
                 ItemLoader.UpdateInventory(heldStone, actor);
                 check(!actor.GetModPlayer<XianXiaPlayer>().discoveredSpiritualEnergy,
                     "native inactive dead or empty inventory cannot discover awareness");
+                check(ItemLoader.OnPickup(heldStone, actor) && !actor.GetModPlayer<XianXiaPlayer>().discoveredSpiritualEnergy,
+                    "native pickup dispatch skips inactive dead or empty recipients without cancelling pickup permission");
             }
             Player unready = Main.player.First(player => player != null && !player.TryGetModPlayer<XianXiaPlayer>(out _));
             bool unreadyWasActive = unready.active;
-            try { unready.active = true; ItemLoader.UpdateInventory(carriedStone, unready); check(true, "native inventory dispatch skips missing player components safely"); }
+            try {
+                unready.active = true; ItemLoader.UpdateInventory(carriedStone, unready); check(true, "native inventory dispatch skips missing player components safely");
+                check(ItemLoader.OnPickup(carriedStone, unready), "native pickup safely skips actual missing player components");
+            }
             finally { unready.active = unreadyWasActive; }
 
         } finally {
