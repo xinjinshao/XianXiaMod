@@ -154,6 +154,21 @@ foreach (string lifecycle in new[]{"world load","world unload","disconnect","ini
     occupant.State.spiritualEnergyRegenBonus=0; nearby.PostUpdateEquips();
     Check(occupant.State.spiritualEnergyRegenBonus==0,$"{lifecycle} discards prior world object effects immediately");
 }
+foreach(string lifecycle in new[]{"world load","world unload","disconnect","initialize","enter world","inactive update"}) {
+ var actor=MakePlayer(50,50,0); Game.player[0]=actor; var exposure=actor.GetModPlayer<BiomeEffectsPlayer>();
+ exposure.starAbyssCorruption=3600; exposure.thunderCloudTimer=419; int spawned=Projectile.Spawns;
+ switch(lifecycle) {
+  case "world load": cacheLifecycle.OnWorldLoad(); break;
+  case "world unload": cacheLifecycle.OnWorldUnload(); break;
+  case "disconnect": actor.active=false; cacheLifecycle.PostUpdatePlayers(); actor.active=true; break;
+  case "initialize": exposure.Initialize(); break;
+  case "enter world": exposure.OnEnterWorld(); break;
+  case "inactive update": actor.active=false; exposure.PostUpdate(); actor.active=true; break;
+ }
+ Check(exposure.starAbyssCorruption==0&&exposure.thunderCloudTimer==0,$"{lifecycle} clears previous occupant/world environmental exposure");
+ actor.Thunder=true; Game.netMode=NetmodeID.Server; exposure.PostUpdate();
+ Check(exposure.thunderCloudTimer==1&&Projectile.Spawns==spawned,$"{lifecycle} grants a full fresh lightning interval");
+}
 Console.WriteLine($"Including world/occupant scan lifecycle regression: {assertions} assertions; tile and transport boundaries mocked.");
 
 // Malformed network coordinates must not convert into valid tiles or retain caches.

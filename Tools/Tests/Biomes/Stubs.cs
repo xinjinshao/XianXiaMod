@@ -53,12 +53,14 @@ namespace Terraria
         public XianXia.Common.Players.ServerBiomePlayer Biome;
         public XianXia.Common.Players.XianXiaPlayer State = new();
         public XianXia.Common.Players.BiomeObjectEffectsPlayer Objects;
+        public XianXia.Common.Players.BiomeEffectsPlayer Exposure;
         public bool ModPlayersReady = true;
         public bool TryGetModPlayer<T>(out T value) { value = ModPlayersReady ? GetModPlayer<T>() : default; return ModPlayersReady && value != null; }
 
         public T GetModPlayer<T>() => (T)(object)(typeof(T) == typeof(XianXia.Common.Players.ServerBiomePlayer) ? Biome
             : typeof(T) == typeof(XianXia.Common.Players.BiomeObjectEffectsPlayer)
-                ? Objects ??= new XianXia.Common.Players.BiomeObjectEffectsPlayer { Player = this } : State);
+                ? Objects ??= new XianXia.Common.Players.BiomeObjectEffectsPlayer { Player = this }
+                : typeof(T) == typeof(XianXia.Common.Players.BiomeEffectsPlayer) ? Exposure ??= new XianXia.Common.Players.BiomeEffectsPlayer { Player = this } : State);
         public bool InModBiome<T>() => typeof(T).Name switch
         { "StarAbyssRiftBiome" => Rift, "ThunderMarshCloudsBiome" => Thunder, "MoonboneAbyssBiome" => Moonbone, _ => false };
         public object GetSource_FromThis() => null;

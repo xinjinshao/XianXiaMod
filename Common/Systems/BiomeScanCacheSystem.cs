@@ -13,6 +13,7 @@ public class BiomeScanCacheSystem : ModSystem
         // World loading also visits vanilla slots whose mod-player arrays are not installed yet.
         if (player.TryGetModPlayer<ServerBiomePlayer>(out var biome)) biome.ResetScan();
         if (player.TryGetModPlayer<BiomeObjectEffectsPlayer>(out var objects)) objects.ResetScan();
+        if (player.TryGetModPlayer<BiomeEffectsPlayer>(out var effects)) effects.ResetExposure();
     }
     private static void ResetAll()
     {
