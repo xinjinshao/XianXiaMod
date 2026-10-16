@@ -84,7 +84,10 @@ namespace Terraria
         public XianXia.Common.Players.XianXiaPlayer State = new();
         private XianXia.Common.Players.InscriptionPlayer inscription;
         private XianXia.Common.Players.InventoryAuthorityPlayer inventoryAuthority;
+        public bool ModPlayersReady = true;
+        public bool TryGetModPlayer<T>(out T value) { if (!ModPlayersReady) {value=default;return false;} value=GetModPlayer<T>();return value is not null; }
         public T GetModPlayer<T>() {
+            if (!ModPlayersReady) throw new IndexOutOfRangeException("Mod-player arrays not installed");
             if(typeof(T)==typeof(XianXia.Common.Players.InventoryAuthorityPlayer))
                 return (T)(object)(inventoryAuthority ??= new XianXia.Common.Players.InventoryAuthorityPlayer { Player=this });
             if(typeof(T)==typeof(XianXia.Common.Players.InscriptionPlayer))

@@ -26,7 +26,9 @@ public static class AuthoritativeInventorySync
         if (Main.netMode != NetmodeID.MultiplayerClient || sender != 256) return;
         byte owner = reader.ReadByte(), slot = reader.ReadByte(); ulong revision = reader.ReadUInt64();
         if (owner != Main.myPlayer || owner >= Main.maxPlayers || slot >= 58 || revision == 0) return;
+        if (Main.player == null || owner >= Main.player.Length || Main.player[owner] is not Player player
+            || !player.TryGetModPlayer<InventoryAuthorityPlayer>(out var state)) return;
         Item item = ItemIO.Receive(reader, true, false);
-        Main.player[owner].GetModPlayer<InventoryAuthorityPlayer>().Apply(slot, revision, item);
+        state.Apply(slot, revision, item);
     }
 }

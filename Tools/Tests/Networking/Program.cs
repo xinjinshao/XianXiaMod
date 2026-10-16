@@ -134,7 +134,7 @@ Check(Game.player[0].State.spiritualEnergy == 40, "Energy is limited to actual r
 State(0, 0, 20, 1);
 Check(Game.player[0].State.spiritualEnergy == 40 && ModPacket.Sent.Count == 1, "Even legal-range owner balance reports are retired and cannot mutate resource state.");
 Game.netMode = NetmodeID.MultiplayerClient;
-FullState(0, 4, 0, initial with { Stage = 3, Timer = 100, TrialStage = 3, Intensity = 2, Kind = 1 });
+FullState(256, 4, 0, initial with { Stage = 3, Timer = 100, TrialStage = 3, Intensity = 2, Kind = 1 });
 Check(Game.player[0].State.Snapshot.Timer == 100, "Client receives complete canonical trial state.");
 Game.netMode = NetmodeID.Server;
 
@@ -1532,6 +1532,33 @@ int guardedBuffPackets=Terraria.NetMessage.BuffPackets.Count;buffSyncOwner.dead=
 Game.player[0]=new Terraria.Player();AuthoritativeBuffSync.Send(buffSyncOwner,4,10);
 Game.netMode=NetmodeID.MultiplayerClient;AuthoritativeBuffSync.Send(buffSyncOwner,4,10);
 Check(Terraria.NetMessage.BuffPackets.Count==guardedBuffPackets,"Dead replaced and client-side actors cannot send authority buffs");
+
+// Packet dispatch tolerates unavailable slots before entering any transaction handler.
+foreach(int shape in Enumerable.Range(0,5)) {
+ Game.netMode=NetmodeID.Server;
+ Game.player=shape==0?null:shape==1?Array.Empty<Terraria.Player>():new Terraria.Player[]{shape==2?null:new(){ModPlayersReady=shape!=3,active=true}};
+ int sender=shape==4?1:0;int outputCount=ModPacket.Sent.Count;
+ foreach(byte opcode in new byte[]{0,1,3,5,6,8,9,10,11,12,13}) Packet(sender,w=>{w.Write(opcode);w.Write(new byte[64]);});
+ Check(ModPacket.Sent.Count==outputCount,"Unavailable packet sender slots cannot enter handlers or produce output");
+}
+Game.netMode=NetmodeID.MultiplayerClient;Game.myPlayer=0;
+Game.player=new Terraria.Player[]{new(){active=true,whoAmI=0}};
+foreach(int sender in new[]{-1,0,1,255}) {
+ FullState(sender,4,0,initial);
+ Check(Game.player[0].State.spiritualEnergy==0,"Only server-origin client snapshots can replace state");
+}
+FullState(256,4,0,initial);
+Check(Game.player[0].State.spiritualEnergy==40,"Canonical server snapshot still applies on ready owner");
+foreach(int shape in Enumerable.Range(0,4)) {
+ Game.player=shape==0?null:shape==1?Array.Empty<Terraria.Player>():new Terraria.Player[]{shape==2?null:new(){ModPlayersReady=false}};
+ FullState(256,4,0,initial);DeliverInventory(InventoryPacket(0,0,1));
+ Check(true,"Server snapshots and inventory corrections safely skip unavailable recipient components");
+}
+Game.player=new Terraria.Player[]{new(){active=true,whoAmI=0}};Game.netMode=NetmodeID.Server;
+foreach(var unavailableNpcTable in new Terraria.NPC[][]{null,Array.Empty<Terraria.NPC>(),new Terraria.NPC[]{null}}) {
+ Game.npc=unavailableNpcTable;Packet(0,w=>{w.Write((byte)1);w.Write((short)0);});
+ Check(true,"Commission packets safely skip absent NPC table and entries");
+}
 
 Console.WriteLine($"Networking including actual recovery pill hooks: {assertions} assertions; buff/inventory engine boundaries mocked.");
 

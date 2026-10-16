@@ -22,9 +22,19 @@ public class XianXia : Mod
         }
     }
 
+    private static bool TryGetPacketPlayer(int index, out Player player)
+    {
+        player = null;
+        if (Main.player == null || index < 0 || index >= Main.maxPlayers || index >= Main.player.Length
+            || Main.player[index] is not Player candidate || !candidate.TryGetModPlayer<XianXiaPlayer>(out _)) return false;
+        player = candidate; return true;
+    }
+
     private void ReadPacket(BinaryReader reader, int whoAmI)
     {
         byte message = reader.ReadByte();
+        if (Main.netMode == NetmodeID.MultiplayerClient && whoAmI != 256) return;
+        if (Main.netMode == NetmodeID.Server && !TryGetPacketPlayer(whoAmI, out _)) return;
         if (message == 13)
         {
             Common.Systems.AuthoritativeInventorySync.Receive(reader, whoAmI);
@@ -99,8 +109,8 @@ public class XianXia : Mod
         {
             byte index = reader.ReadByte();
             CultivationSnapshot state = CultivationSnapshot.Read(reader);
-            if (index >= Main.maxPlayers || !state.IsValid()) return;
-            XianXiaPlayer target = Main.player[index].GetModPlayer<XianXiaPlayer>();
+            if (!state.IsValid() || !TryGetPacketPlayer(index, out Player recipient)) return;
+            XianXiaPlayer target = recipient.GetModPlayer<XianXiaPlayer>();
             if (message == 3 && Main.netMode == NetmodeID.Server && index == whoAmI)
             {
                 if (target.TryInitializeNetwork(state)) target.SyncPlayer(-1, -1, false);
@@ -125,12 +135,12 @@ public class XianXia : Mod
         {
             short npcIndex = reader.ReadInt16();
             if (Main.netMode != NetmodeID.Server || whoAmI < 0 || whoAmI >= Main.maxPlayers
-                || npcIndex < 0 || npcIndex >= Main.maxNPCs)
+                || npcIndex < 0 || Main.npc == null || npcIndex >= Main.npc.Length || npcIndex >= Main.maxNPCs)
                 return;
 
             Player player = Main.player[whoAmI];
             NPC npc = Main.npc[npcIndex];
-            if (!player.active || player.dead || !npc.active
+            if (!player.active || player.dead || npc == null || !npc.active
                 || npc.ModNPC is not CultivationTownNPC town
                 || player.talkNPC != npcIndex
                 || Microsoft.Xna.Framework.Vector2.DistanceSquared(player.Center, npc.Center) > 600f * 600f)
@@ -151,7 +161,7 @@ public class XianXia : Mod
                 return;
             short npcIndex = reader.ReadInt16();
             NetworkText response = NetworkText.Deserialize(reader);
-            if (Main.netMode == NetmodeID.MultiplayerClient && Main.LocalPlayer.talkNPC == npcIndex)
+            if (TryGetPacketPlayer(Main.myPlayer, out Player local) && local.talkNPC == npcIndex)
                 Main.npcChatText = response.ToString();
             return;
         }

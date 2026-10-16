@@ -929,6 +929,7 @@ public partial class SummonAuditSystem : ModSystem
             AuditPillBuffs(Check);
             AuditFailureBuffs(Check);
             AuditEnemyBuffs(Check, owned);
+            AuditPacketDispatch(Check);
         }
         catch (Exception exception) { error = exception.ToString(); }
         finally {
