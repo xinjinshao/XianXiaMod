@@ -126,3 +126,32 @@ Game.netMode=NetmodeID.MultiplayerClient;first.State.spiritualEnergyRegenBonus=0
 Game.netMode=NetmodeID.Server;first.dead=true;object1.PostUpdateEquips();Check(first.State.spiritualEnergyRegenBonus==0&&first.AddedBuffs==1,"Dead player receives no effects");first.dead=false;first.Center=second.Center;object1.PostUpdateEquips();Check(first.State.spiritualEnergyRegenBonus==0&&first.AddedBuffs==1,"Teleport immediately invalidates cached object effects");
 first.Center=new(50*16,50*16);first.State.spiritPressure=100;object1.PostUpdateEquips();Check(first.State.spiritPressure==100,"Rift pressure clamps at cap");
 Console.WriteLine($"Including nearby-object authority regression: {assertions} assertions.");
+
+// Same player and same coordinates, different world tiles and a reset world clock.
+var cacheLifecycle = new BiomeScanCacheSystem();
+for(int x=30;x<=70;x++) for(int y=35;y<=65;y++) Game.tile[x,y]=default;
+foreach (string lifecycle in new[]{"world load","world unload","disconnect","initialize","enter world"}) {
+    var occupant=MakePlayer(50,50,0); Game.player[0]=occupant; Game.player[1]=null;
+    var nearby=occupant.GetModPlayer<BiomeObjectEffectsPlayer>();
+    Game.netMode=NetmodeID.Server; Game.GameUpdateCount=10000;
+    Game.tile[50,50]=new Tile {HasTile=true,TileType=3};
+    Game.tile[51,50]=new Tile {HasTile=true,TileType=(ushort)Terraria.ModLoader.ModContent.TileType<XianXia.Content.Tiles.SingingThunderStoneTile>()};
+    Check(occupant.Biome.Count(3)>0,"Old world populated scan is primed");
+    occupant.State.spiritualEnergyRegenBonus=0; nearby.PostUpdateEquips();
+    Check(occupant.State.spiritualEnergyRegenBonus==1,"Old world thunder object scan is primed");
+    Game.tile[50,50]=default; Game.tile[51,50]=default; Game.GameUpdateCount=0;
+    Check(occupant.Biome.Count(3)>0,"Clock rollback alone cannot expire the old scan");
+    occupant.State.spiritualEnergyRegenBonus=0; nearby.PostUpdateEquips();
+    Check(occupant.State.spiritualEnergyRegenBonus==1,"Same-position old object cache demonstrates stale effect before lifecycle reset");
+    switch(lifecycle) {
+        case "world load": cacheLifecycle.OnWorldLoad(); break;
+        case "world unload": cacheLifecycle.OnWorldUnload(); break;
+        case "disconnect": occupant.active=false; cacheLifecycle.PostUpdatePlayers(); occupant.active=true; break;
+        case "initialize": occupant.Biome.Initialize(); nearby.Initialize(); break;
+        case "enter world": occupant.Biome.OnEnterWorld(); nearby.OnEnterWorld(); break;
+    }
+    Check(occupant.Biome.Count(3)==0,$"{lifecycle} discards prior world tile counts immediately");
+    occupant.State.spiritualEnergyRegenBonus=0; nearby.PostUpdateEquips();
+    Check(occupant.State.spiritualEnergyRegenBonus==0,$"{lifecycle} discards prior world object effects immediately");
+}
+Console.WriteLine($"Including world/occupant scan lifecycle regression: {assertions} assertions; tile and transport boundaries mocked.");

@@ -50,7 +50,10 @@ namespace Terraria
         public Microsoft.Xna.Framework.Vector2 Center, position;
         public XianXia.Common.Players.ServerBiomePlayer Biome;
         public XianXia.Common.Players.XianXiaPlayer State = new();
-        public T GetModPlayer<T>() => (T)(object)(typeof(T) == typeof(XianXia.Common.Players.ServerBiomePlayer) ? Biome : State);
+        public XianXia.Common.Players.BiomeObjectEffectsPlayer Objects;
+        public T GetModPlayer<T>() => (T)(object)(typeof(T) == typeof(XianXia.Common.Players.ServerBiomePlayer) ? Biome
+            : typeof(T) == typeof(XianXia.Common.Players.BiomeObjectEffectsPlayer)
+                ? Objects ??= new XianXia.Common.Players.BiomeObjectEffectsPlayer { Player = this } : State);
         public bool InModBiome<T>() => typeof(T).Name switch
         { "StarAbyssRiftBiome" => Rift, "ThunderMarshCloudsBiome" => Thunder, "MoonboneAbyssBiome" => Moonbone, _ => false };
         public object GetSource_FromThis() => null;
@@ -93,8 +96,8 @@ namespace Terraria.ModLoader
 {
     public class ModProjectile { public Terraria.Projectile Projectile = new(); public virtual bool? CanDamage()=>null; public virtual void SetDefaults() { } public virtual void AI() { } public virtual void OnSpawn(Terraria.DataStructures.IEntitySource source) { } public virtual void SendExtraAI(System.IO.BinaryWriter writer) { } public virtual void ReceiveExtraAI(System.IO.BinaryReader reader) { } }
     public static class DamageClass { public static object Generic = new(), Magic = new(), Melee = new(); }
-    public class ModPlayer { public Terraria.Player Player; public virtual void PostUpdateEquips() { } public virtual void ResetEffects() { } public virtual void PostUpdate() { } }
-    public class ModSystem { public virtual void ClearWorld() { } }
+    public class ModPlayer { public virtual void Initialize() { } public virtual void OnEnterWorld() { } public Terraria.Player Player; public virtual void PostUpdateEquips() { } public virtual void ResetEffects() { } public virtual void PostUpdate() { } }
+    public class ModSystem { public virtual void OnWorldLoad() { } public virtual void OnWorldUnload() { } public virtual void PostUpdatePlayers() { } public virtual void ClearWorld() { } }
     public static class TileLoader { public const int TileCount = 16; }
     public static class ModContent { public static int ProjectileType<T>() => 1; public static int BuffType<T>() => 1; public static int TileType<T>() => typeof(T).Name switch { "SwordTabletTile"=>11, "SingingThunderStoneTile"=>12, "RiftMembraneTile"=>13, _=>14 }; }
 }

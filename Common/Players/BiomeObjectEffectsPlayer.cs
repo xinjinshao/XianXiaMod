@@ -15,6 +15,14 @@ public class BiomeObjectEffectsPlayer : ModPlayer
     private ulong nextScan;
     private bool scanned, sword, thunder, rift;
 
+    internal void ResetScan()
+    {
+        scanned = sword = thunder = rift = false;
+        lastCenter = default; nextScan = 0;
+    }
+    public override void Initialize() => ResetScan();
+    public override void OnEnterWorld() => ResetScan();
+
     public override void PostUpdateEquips()
     {
         if (Main.netMode == NetmodeID.MultiplayerClient || !Player.active || Player.dead)

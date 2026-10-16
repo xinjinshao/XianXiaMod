@@ -42,7 +42,7 @@ namespace Terraria.ID {
  public static class DustID { public const int Stone=1,GoldCoin=2,IceTorch=3,Electric=4,GemSapphire=5; }
 }
 namespace Terraria.ModLoader {
- public class ModPlayer { public Terraria.Player Player; }
+ public class ModPlayer { public virtual void Initialize() { } public virtual void OnEnterWorld() { } public Terraria.Player Player; }
  public class ModSystem { public virtual void TileCountsAvailable(ReadOnlySpan<int> counts){} }
  public enum SceneEffectPriority { BiomeLow }
  public class ModBiome {

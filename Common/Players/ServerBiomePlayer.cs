@@ -14,6 +14,10 @@ public class ServerBiomePlayer : ModPlayer
     private Point lastCenter;
     private ulong nextScan;
 
+    internal void ResetScan() { counts = null; lastCenter = default; nextScan = 0; }
+    public override void Initialize() => ResetScan();
+    public override void OnEnterWorld() => ResetScan();
+
     public int Count(int tileType)
     {
         if (Main.netMode != NetmodeID.Server || !Player.active) return 0;
