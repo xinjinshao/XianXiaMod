@@ -13,7 +13,7 @@ Mods: {
 
 			QiDrawingTalisman: {
 				DisplayName: 引气符
-				Tooltip: 使用后进入引气阶段，并恢复少量灵气。
+				Tooltip: 仅未入境时可用。进入引气阶段，并恢复少量灵气。
 				Awakened: 你感到经脉中有一缕灵气流动。
 			}
 

@@ -233,7 +233,8 @@ public class XianXiaPlayer : ModPlayer
 
     public void UnlockQiAwakening()
     {
-        if (Main.netMode == NetmodeID.MultiplayerClient) return;
+        if (Main.netMode == NetmodeID.MultiplayerClient || Player == null || !Player.active || Player.dead
+            || Player.noItems || Player.CCed || !CanAdvanceCultivation(CultivationStage.QiAwakening)) return;
         discoveredSpiritualEnergy = true;
         if (cultivationStage < CultivationStage.QiAwakening)
         {

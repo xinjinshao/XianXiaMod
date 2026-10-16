@@ -13,7 +13,7 @@ Mods: {
 
 			QiDrawingTalisman: {
 				DisplayName: Qi-Drawing Talisman
-				Tooltip: Use to enter Qi Awakening and restore a little spiritual energy.
+				Tooltip: Only usable before Qi Awakening. Enters Qi Awakening and restores a small amount of spiritual energy.
 				Awakened: You feel a thread of spiritual energy moving through your meridians.
 			}
 

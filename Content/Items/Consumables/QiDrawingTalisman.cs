@@ -28,8 +28,13 @@ public class QiDrawingTalisman : ModItem
         Item.rare = ItemRarityID.White;
     }
 
+    public override bool CanUseItem(Player player) => player != null && player.active && !player.dead
+        && !player.noItems && !player.CCed && player.TryGetModPlayer<XianXiaPlayer>(out var state)
+        && state.CanUseBreakthroughItem(CultivationStage.QiAwakening);
+
     public override bool? UseItem(Player player)
     {
+        if (!CanUseItem(player)) return false;
         if (global::XianXia.Common.Systems.CultivationItemTransactions.RequestIfMultiplayer(player, Item))
             return true;
 
