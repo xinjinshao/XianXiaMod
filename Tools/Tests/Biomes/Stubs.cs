@@ -43,7 +43,9 @@ namespace Terraria
     public struct Tile { public bool HasTile; public ushort TileType; }
     public class Player
     {
-        public bool active = true, dead, Rift, Thunder, Moonbone; public int AddedBuffs; public void AddBuff(int type,int time)=>AddedBuffs++;
+        public bool active = true, dead, Rift, Thunder, Moonbone; public int AddedBuffs; public bool LastBuffQuiet; public int[] buffTime=new int[1];
+        public int FindBuffIndex(int type)=>buffTime[0]>0?0:-1;
+        public void AddBuff(int type,int time,bool quiet=true) {AddedBuffs++;buffTime[0]=time;LastBuffQuiet=quiet;}
         public int whoAmI, width = 20, height = 42, statLife, statLifeMax2 = 100;
         public Microsoft.Xna.Framework.Rectangle Hitbox => new((int)position.X,(int)position.Y,width,height);
         public void Heal(int amount) => statLife = Math.Min(statLifeMax2, statLife + amount);
@@ -64,8 +66,8 @@ namespace Terraria
     public static class Lighting { public static void AddLight(Microsoft.Xna.Framework.Vector2 center, float r, float g, float b) { } }
     public static class NetMessage
     {
-        public static int HealMessages;
-        public static void SendData(int type, int toWho, int fromWho, object text, int player, float amount) => HealMessages++;
+        public static int HealMessages, BuffMessages;
+        public static void SendData(int type, int toWho, int fromWho, object text, int player, float amount,float duration=0) {if(type==Terraria.ID.MessageID.AddPlayerBuff) BuffMessages++;else HealMessages++;}
     }
     public class Projectile
     {
@@ -92,7 +94,7 @@ namespace Terraria
 namespace Terraria.ID
 {
     public static class NetmodeID { public const int SinglePlayer = 0, MultiplayerClient = 1, Server = 2; }
-    public static class MessageID { public const int SpiritHeal = 66; }
+    public static class MessageID { public const int AddPlayerBuff=55; public const int SpiritHeal = 66; }
     public static class DustID { public const int GemSapphire = 1, IceTorch = 2; }
 }
 namespace Terraria.ModLoader

@@ -187,3 +187,21 @@ Game.player[0]=new Player {active=false,ModPlayersReady=false}; Game.player[1]=n
 cacheLifecycle.OnWorldLoad(); cacheLifecycle.OnWorldUnload(); cacheLifecycle.PostUpdatePlayers();
 Check(true,"World/disconnect cleanup safely skips vanilla-only uninitialized player slots");
 Console.WriteLine($"Including uninitialized world slots: {assertions} assertions.");
+
+Game.netMode=NetmodeID.Server; Game.GameUpdateCount=600;
+int swordPacketsBefore=NetMessage.BuffMessages;
+var swordOwner=MakePlayer(50,50,0);Game.player[0]=swordOwner;var swordEffects=swordOwner.GetModPlayer<BiomeObjectEffectsPlayer>();
+Game.tile[50,50]=new Tile{HasTile=true,TileType=11};
+swordEffects.PostUpdateEquips();
+Check(swordOwner.AddedBuffs==1&&swordOwner.buffTime[0]==30&&NetMessage.BuffMessages==swordPacketsBefore+1,"Server sword lease explicitly synchronizes the registered buff");
+for(int time=30;time>15;time--) {swordOwner.buffTime[0]=time;swordEffects.PostUpdateEquips();}
+Check(swordOwner.AddedBuffs==1&&NetMessage.BuffMessages==swordPacketsBefore+1,"Healthy sword buff does not generate per-frame sync traffic");
+swordOwner.buffTime[0]=15;swordEffects.PostUpdateEquips();
+Check(swordOwner.AddedBuffs==2&&swordOwner.buffTime[0]==30&&NetMessage.BuffMessages==swordPacketsBefore+2,"Sword buff refreshes exactly at the lease threshold");
+Game.tile[50,50]=default; swordOwner.Center=new(1600,800); swordOwner.buffTime[0]=15;
+swordEffects.PostUpdateEquips();
+Check(swordOwner.AddedBuffs==2&&swordOwner.buffTime[0]==15,"Leaving sword tablet range stops lease refresh");
+Game.netMode=NetmodeID.SinglePlayer;swordOwner.Center=new(800,800);Game.tile[50,50]=new Tile{HasTile=true,TileType=11};swordOwner.buffTime[0]=0;
+swordEffects.PostUpdateEquips();
+Check(swordOwner.buffTime[0]==2&&swordOwner.LastBuffQuiet,"Single player retains two-frame local buff refresh without sync");
+Console.WriteLine($"Including sword tablet buff sync lease: {assertions} assertions; transport mocked.");

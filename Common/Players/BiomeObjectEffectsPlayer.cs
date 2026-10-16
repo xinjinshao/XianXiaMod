@@ -11,6 +11,7 @@ namespace XianXia.Common.Players;
 public class BiomeObjectEffectsPlayer : ModPlayer
 {
     public const int RadiusX = 20, RadiusY = 15;
+    public const int SwordBuffDuration = 30, SwordBuffRefreshThreshold = 15;
     private Point lastCenter;
     private ulong nextScan;
     private bool scanned, sword, thunder, rift;
@@ -50,7 +51,22 @@ public class BiomeObjectEffectsPlayer : ModPlayer
                 }
         }
         XianXiaPlayer state = Player.GetModPlayer<XianXiaPlayer>();
-        if (sword) Player.AddBuff(ModContent.BuffType<Content.Buffs.TribulationResistanceBuff>(), 2);
+        if (sword) {
+            int buff = ModContent.BuffType<Content.Buffs.TribulationResistanceBuff>();
+            if (Main.netMode == NetmodeID.Server) {
+                // Only the authority scans tiles. Explicitly notify the owner, with a short
+                // lease so latency does not consume the entire buff and refreshes are bounded.
+                int index = Player.FindBuffIndex(buff);
+                if (index < 0 || Player.buffTime[index] <= SwordBuffRefreshThreshold) {
+                    Player.AddBuff(buff, SwordBuffDuration);
+                    index = Player.FindBuffIndex(buff);
+                    if (index >= 0 && Player.whoAmI >= 0 && Player.whoAmI < Main.maxPlayers
+                        && ReferenceEquals(Main.player[Player.whoAmI], Player))
+                        NetMessage.SendData(MessageID.AddPlayerBuff, Player.whoAmI, -1, null,
+                            Player.whoAmI, buff, Player.buffTime[index]);
+                }
+            } else Player.AddBuff(buff, 2);
+        }
         if (thunder) state.spiritualEnergyRegenBonus += 1;
         if (rift && Main.GameUpdateCount % 120 == 0) state.spiritPressure = Math.Min(100, state.spiritPressure + 1);
     }
