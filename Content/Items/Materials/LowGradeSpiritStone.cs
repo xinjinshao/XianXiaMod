@@ -21,6 +21,15 @@ public class LowGradeSpiritStone : ModItem
         Item.rare = ItemRarityID.White;
     }
 
+    public override void UpdateInventory(Player player)
+    {
+        // Chest transfers, crafting and old inventory saves need not raise a ground-pickup hook.
+        if (Main.netMode == NetmodeID.MultiplayerClient || player == null || !player.active || player.dead || Item.IsAir
+            || !player.TryGetModPlayer<XianXiaPlayer>(out var state) || state.discoveredSpiritualEnergy) return;
+        state.discoveredSpiritualEnergy = true;
+        state.AdvanceResourceRevision();
+    }
+
     public override bool OnPickup(Player player)
     {
         player.GetModPlayer<XianXiaPlayer>().discoveredSpiritualEnergy = true;

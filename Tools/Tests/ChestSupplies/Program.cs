@@ -24,3 +24,18 @@ foreach(bool maximum in new[]{false,true}) {
 }
 {var system=Setup();var duplicate=Gold(0);Main.chest[1]=duplicate;system.PostWorldGen();Check(WorldGen.genRand.Calls==1&&duplicate.item.Count(i=>i.type==900)==1,"Duplicate chest references enter selection only once");}
 Console.WriteLine($"Including unbiased capped chest selection: {checks} checks.");
+
+foreach(int mode in new[]{0,1,2}) {
+ Main.netMode=mode;var actor=new Player();var stone=new XianXia.Content.Items.Materials.LowGradeSpiritStone();stone.SetDefaults();stone.Item.type=900;stone.Item.stack=5;
+ stone.UpdateInventory(actor);
+ Check(actor.State.discoveredSpiritualEnergy==(mode!=1)&&actor.State.Revisions==(mode!=1?1:0),"Inventory awareness is discovered once by authority only");
+ stone.UpdateInventory(actor);Check(actor.State.Revisions==(mode!=1?1:0)&&stone.Item.stack==5,"Carried stones are not consumed and repeated ticks do not change revision");
+}
+Main.netMode=2;
+foreach(int invalid in Enumerable.Range(0,5)) {
+ var actor=new Player();var stone=new XianXia.Content.Items.Materials.LowGradeSpiritStone();stone.Item.type=900;stone.Item.stack=1;
+ switch(invalid){case 0:actor=null;break;case 1:actor.active=false;break;case 2:actor.dead=true;break;case 3:actor.Ready=false;break;case 4:stone.Item.stack=0;break;}
+ stone.UpdateInventory(actor);Check(actor==null||!actor.State.discoveredSpiritualEnergy,"Invalid inventory lifecycle cannot grant awareness");
+}
+{var actor=new Player();var stone=new XianXia.Content.Items.Materials.LowGradeSpiritStone();stone.Item.type=900;stone.Item.stack=1;Check(stone.OnPickup(actor)&&actor.State.discoveredSpiritualEnergy,"Existing ground pickup behavior remains available");}
+Console.WriteLine($"Including carried stone awareness: {checks} checks; player inventory boundary mocked.");

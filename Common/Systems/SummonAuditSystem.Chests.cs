@@ -4,6 +4,8 @@ using System.Linq;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
+using Terraria.ModLoader.IO;
+using XianXia.Common.Players;
 using Terraria.Utilities;
 using XianXia.Content.Items.Materials;
 
@@ -74,6 +76,40 @@ public partial class SummonAuditSystem
             new SpiritChestSuppliesSystem().GenerateSupplies(lootRandom);
             check(chest.item.Count(item => item != null && item.type == stone) == 1,
                 "native duplicate chest references cannot allocate duplicate supply stacks");
+            Item carriedStone = chest.item.First(item => item != null && item.type == stone);
+            foreach (int mode in new[] { NetmodeID.SinglePlayer, NetmodeID.MultiplayerClient, NetmodeID.Server }) {
+                Main.netMode = mode;
+                var actor = new Player { whoAmI = 0, active = true, dead = false };
+                actor.inventory[0] = carriedStone.Clone(); Item heldStone = actor.inventory[0]; int originalStack = heldStone.stack;
+                var state = actor.GetModPlayer<XianXiaPlayer>(); var before = state.CaptureSnapshot();
+                ItemLoader.UpdateInventory(heldStone, actor); var after = state.CaptureSnapshot();
+                bool authority = mode != NetmodeID.MultiplayerClient;
+                check(after == (before with { Discovered = authority, Revision = before.Revision + (authority ? 1u : 0u) }),
+                    "native registered inventory dispatch discovers awareness only on authority without realm energy or pressure grants");
+                check(ReferenceEquals(actor.inventory[0], heldStone) && heldStone.stack == originalStack,
+                    "native carried supply discovery neither consumes nor replaces chest loot");
+                ItemLoader.UpdateInventory(heldStone, actor);
+                check(state.CaptureSnapshot() == after, "native repeated inventory frames do not repeat awareness revision");
+                if (authority) {
+                    var tag = new TagCompound(); state.SaveData(tag);
+                    var restored = new Player().GetModPlayer<XianXiaPlayer>(); restored.LoadData(tag);
+                    check(restored.discoveredSpiritualEnergy && restored.cultivationStage == CultivationStage.None && restored.spiritualEnergy == before.Energy,
+                        "native discovered awareness persists through actual character save/load hooks without advancing realm");
+                }
+            }
+            Main.netMode = NetmodeID.Server;
+            foreach (int invalid in new[] { 0, 1, 2 }) {
+                var actor = new Player { active = invalid != 0, dead = invalid == 1 }; Item heldStone = carriedStone.Clone();
+                if (invalid == 2) heldStone.stack = 0;
+                ItemLoader.UpdateInventory(heldStone, actor);
+                check(!actor.GetModPlayer<XianXiaPlayer>().discoveredSpiritualEnergy,
+                    "native inactive dead or empty inventory cannot discover awareness");
+            }
+            Player unready = Main.player.First(player => player != null && !player.TryGetModPlayer<XianXiaPlayer>(out _));
+            bool unreadyWasActive = unready.active;
+            try { unready.active = true; ItemLoader.UpdateInventory(carriedStone, unready); check(true, "native inventory dispatch skips missing player components safely"); }
+            finally { unready.active = unreadyWasActive; }
+
         } finally {
             foreach (var saved in tiles) { Tile tile = Main.tile[saved.X, saved.Y]; tile.HasTile = saved.HasTile; tile.TileType = saved.Type; tile.TileFrameX = saved.FrameX; tile.TileFrameY = saved.FrameY; }
             Main.chest = oldChests; Main.netMode = oldMode; config.EnableWorldGeneration = oldEnabled;
