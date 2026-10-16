@@ -10,6 +10,7 @@ namespace XianXia.Content.Items.Materials;
 public class FoundationPill : ModItem
 
 {
+    public const int GreenwoodRootCost = 4, FurnaceSlagCost = 4, SpiritStoneCost = 10;
 
     public override void SetStaticDefaults() => Item.ResearchUnlockCount = 25;
 
@@ -83,11 +84,11 @@ public class FoundationPill : ModItem
 
         CreateRecipe()
 
-            .AddIngredient<global::XianXia.Content.Items.Materials.GreenwoodRoot>(4)
+            .AddIngredient<global::XianXia.Content.Items.Materials.GreenwoodRoot>(GreenwoodRootCost)
 
-            .AddIngredient<global::XianXia.Content.Items.Materials.FurnaceSlagIron>(4)
+            .AddIngredient<global::XianXia.Content.Items.Materials.FurnaceSlagIron>(FurnaceSlagCost)
 
-            .AddIngredient<global::XianXia.Content.Items.Materials.LowGradeSpiritStone>(10)
+            .AddIngredient<global::XianXia.Content.Items.Materials.LowGradeSpiritStone>(SpiritStoneCost)
 
             .AddTile(ModContent.TileType<global::XianXia.Content.Tiles.Stations.AlchemyCauldronTile>())
 

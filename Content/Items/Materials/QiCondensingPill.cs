@@ -10,6 +10,7 @@ namespace XianXia.Content.Items.Materials;
 public class QiCondensingPill : ModItem
 
 {
+    public const int GreenwoodRootCost = 3, SpiritStoneCost = 5;
 
     public override void SetStaticDefaults() => Item.ResearchUnlockCount = 25;
 
@@ -83,9 +84,9 @@ public class QiCondensingPill : ModItem
 
         CreateRecipe()
 
-            .AddIngredient<global::XianXia.Content.Items.Materials.GreenwoodRoot>(3)
+            .AddIngredient<global::XianXia.Content.Items.Materials.GreenwoodRoot>(GreenwoodRootCost)
 
-            .AddIngredient<global::XianXia.Content.Items.Materials.LowGradeSpiritStone>(5)
+            .AddIngredient<global::XianXia.Content.Items.Materials.LowGradeSpiritStone>(SpiritStoneCost)
 
             .AddTile(ModContent.TileType<global::XianXia.Content.Tiles.Stations.EarthClayFurnaceTile>())
 

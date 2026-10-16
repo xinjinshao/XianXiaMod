@@ -4,6 +4,7 @@ using XianXia.Common.Players;
 int count=0;void Check(bool ok,string name){count++;if(!ok)throw new Exception(name);}
 foreach(string culture in new[]{"en-US","zh-Hans"}){
  using var json=JsonDocument.Parse(File.ReadAllText(Path.Combine(args[0],"Localization","cultivation-status",culture+".hjson")));Language.Root=json.RootElement;
+ using var guide=JsonDocument.Parse(File.ReadAllText(Path.Combine(args[0],"Localization","breakthrough-guide",culture+".hjson")));Language.GuideRoot=guide.RootElement;
  foreach(CultivationStage stage in Enum.GetValues<CultivationStage>())Check(!string.IsNullOrWhiteSpace(CultivationStatusText.StageName(stage)),"Every realm localized");
  Check(CultivationStatusText.StageName((CultivationStage)99)==CultivationStatusText.StageName(CultivationStage.None),"Unknown realm fallback");
  var p=new XianXiaPlayer{cultivationStage=CultivationStage.Foundation,spiritualEnergy=12,maxSpiritualEnergy=90,spiritPressure=37,tribulationTimer=61,tribulationWeakness=1};
@@ -15,6 +16,13 @@ foreach(string culture in new[]{"en-US","zh-Hans"}){
  Check(text.Contains(Language.GetTextValue("Mods.XianXia.CultivationStatus.Weakness",0)),"Negative weakness clamped");
  p.Cleared=false;p.cultivationStage=CultivationStage.QiAwakening;Check(CultivationStatusText.Summary(p).Contains(Language.GetTextValue("Mods.XianXia.CultivationStatus.NoActiveTrial")),"Early realm has no retry");
  Check(p.spiritualEnergy==12&&p.spiritPressure==37&&p.tribulationTimer==0&&p.tribulationWeakness==-1,"Summary read only");
+ foreach(CultivationStage target in Enum.GetValues<CultivationStage>().Where(stage=>stage!=CultivationStage.None)) {
+  string source=CultivationStatusText.BreakthroughSource(target);
+  Check(!string.IsNullOrWhiteSpace(source)&&!source.Contains("{0}")&&!source.Contains("{1}")&&!source.Contains("{2}"),"Every breakthrough source formats real bilingual text without placeholders");
+ }
+ Check(CultivationStatusText.BreakthroughSource(CultivationStage.QiAwakening)==Language.GetTextValue("Mods.XianXia.BreakthroughGuide.Sources.QiAwakening",3,2),"Awakening source formats shared recipe quantities");
+ Check(CultivationStatusText.BreakthroughSource(CultivationStage.QiCondensation)==Language.GetTextValue("Mods.XianXia.BreakthroughGuide.Sources.QiCondensation",3,5),"Condensation source formats shared recipe quantities");
+ Check(CultivationStatusText.BreakthroughSource(CultivationStage.Foundation)==Language.GetTextValue("Mods.XianXia.BreakthroughGuide.Sources.Foundation",4,4,10),"Foundation source formats shared recipe quantities");
  var beginner=new XianXiaPlayer{cultivationStage=CultivationStage.None,maxSpiritualEnergy=40};
  Check(CultivationStatusText.Summary(beginner).EndsWith(Language.GetTextValue("Mods.XianXia.CultivationStatus.DiscoverySeek")),"Undiscovered novice sees material acquisition guidance");
  beginner.discoveredSpiritualEnergy=true;

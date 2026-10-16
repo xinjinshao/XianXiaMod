@@ -51,7 +51,7 @@ public class SectLedger : ModItem
             .Register();
     }
 
-    private static string GetPreparation(Player player)
+    internal static string GetPreparation(Player player)
     {
         var cultivation = player.GetModPlayer<XianXiaPlayer>();
         if (cultivation.cultivationStage >= CultivationStage.DaoSevering)
@@ -78,7 +78,7 @@ public class SectLedger : ModItem
                 failure == "BreakthroughRequiresTrial" ? Language.GetTextValue("Mods.XianXia.Progression.TrialNames." + boss) : "");
         return Language.GetTextValue("Mods.XianXia.BreakthroughGuide.Next",
             CultivationStatusText.StageName(target), Lang.GetItemNameValue(item))
-            + "\n" + availability + "\n" + Language.GetTextValue("Mods.XianXia.BreakthroughGuide.Sources." + target);
+            + "\n" + availability + "\n" + CultivationStatusText.BreakthroughSource(target);
     }
 
     private static string GetNextGuidance(Player player)

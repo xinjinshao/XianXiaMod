@@ -120,6 +120,26 @@ public partial class SummonAuditSystem
                 && recipe.requiredItem.Any(item => item.type == stone && item.stack == global::XianXia.Content.Items.Consumables.QiDrawingTalisman.SpiritStoneCost)
                 && recipe.requiredItem.Any(item => item.type == ModContent.ItemType<SpiritGel>() && item.stack == global::XianXia.Content.Items.Consumables.QiDrawingTalisman.SpiritGelCost)),
                 "native starter hint costs match registered Qi talisman recipe and workbench station");
+            var sourceRecipes = new[] {
+                (CultivationStage.QiAwakening, qiTalisman, TileID.WorkBenches, new[] {
+                    (stone, global::XianXia.Content.Items.Consumables.QiDrawingTalisman.SpiritStoneCost),
+                    (ModContent.ItemType<SpiritGel>(), global::XianXia.Content.Items.Consumables.QiDrawingTalisman.SpiritGelCost) }),
+                (CultivationStage.QiCondensation, ModContent.ItemType<QiCondensingPill>(), ModContent.TileType<global::XianXia.Content.Tiles.Stations.EarthClayFurnaceTile>(), new[] {
+                    (ModContent.ItemType<GreenwoodRoot>(), QiCondensingPill.GreenwoodRootCost), (stone, QiCondensingPill.SpiritStoneCost) }),
+                (CultivationStage.Foundation, ModContent.ItemType<FoundationPill>(), ModContent.TileType<global::XianXia.Content.Tiles.Stations.AlchemyCauldronTile>(), new[] {
+                    (ModContent.ItemType<GreenwoodRoot>(), FoundationPill.GreenwoodRootCost), (ModContent.ItemType<FurnaceSlagIron>(), FoundationPill.FurnaceSlagCost),
+                    (stone, FoundationPill.SpiritStoneCost) })
+            };
+            foreach (var entry in sourceRecipes) {
+                check(Main.recipe.Take(Recipe.numRecipes).Any(recipe => !recipe.Disabled && recipe.createItem.type == entry.Item2
+                    && recipe.requiredTile.Contains(entry.Item3) && entry.Item4.All(ingredient => recipe.requiredItem.Any(item => item.type == ingredient.Item1 && item.stack == ingredient.Item2))),
+                    "native breakthrough source quantities and station match registered early-realm recipe");
+                var reader = new Player(); var state = reader.GetModPlayer<XianXiaPlayer>(); state.cultivationStage = entry.Item1 - 1; state.discoveredSpiritualEnergy = true;
+                var beforeGuide = state.CaptureSnapshot(); string source = CultivationStatusText.BreakthroughSource(entry.Item1);
+                string preparation = global::XianXia.Content.Items.Guides.SectLedger.GetPreparation(reader);
+                check(preparation.EndsWith(source) && !source.Contains("{0}") && !source.Contains("{1}") && !source.Contains("{2}") && state.CaptureSnapshot() == beforeGuide,
+                    "native ledger preparation uses formatted recipe sources without mutating player state");
+            }
             Main.netMode = NetmodeID.Server;
             foreach (int invalid in new[] { 0, 1, 2 }) {
                 var actor = new Player { active = invalid != 0, dead = invalid == 1 }; Item heldStone = carriedStone.Clone();

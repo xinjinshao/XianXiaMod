@@ -31,5 +31,23 @@ public static class CultivationStatusText
         return summary;
     }
 
+    internal static string BreakthroughSource(CultivationStage target)
+    {
+        string key = "Mods.XianXia.BreakthroughGuide.Sources." + target;
+        return target switch {
+            CultivationStage.QiAwakening => Language.GetTextValue(key,
+                global::XianXia.Content.Items.Consumables.QiDrawingTalisman.SpiritStoneCost,
+                global::XianXia.Content.Items.Consumables.QiDrawingTalisman.SpiritGelCost),
+            CultivationStage.QiCondensation => Language.GetTextValue(key,
+                global::XianXia.Content.Items.Materials.QiCondensingPill.GreenwoodRootCost,
+                global::XianXia.Content.Items.Materials.QiCondensingPill.SpiritStoneCost),
+            CultivationStage.Foundation => Language.GetTextValue(key,
+                global::XianXia.Content.Items.Materials.FoundationPill.GreenwoodRootCost,
+                global::XianXia.Content.Items.Materials.FoundationPill.FurnaceSlagCost,
+                global::XianXia.Content.Items.Materials.FoundationPill.SpiritStoneCost),
+            _ => Language.GetTextValue(key)
+        };
+    }
+
     private static int Seconds(int ticks) => (int)Math.Ceiling(Math.Max(0, ticks) / 60d);
 }

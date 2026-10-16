@@ -3,9 +3,11 @@ namespace XianXia.Common.Players {
 }
 namespace Terraria.Localization {
  public static class Language {
-  public static System.Text.Json.JsonElement Root;
-  public static string GetTextValue(string key,params object[] args){var value=Root;foreach(var part in key.Split('.'))value=value.GetProperty(part);return string.Format(value.GetString(),args);}
+  public static System.Text.Json.JsonElement Root, GuideRoot;
+  public static string GetTextValue(string key,params object[] args){var value=key.StartsWith("Mods.XianXia.BreakthroughGuide.")?GuideRoot:Root;foreach(var part in key.Split('.'))value=value.GetProperty(part);return string.Format(value.GetString(),args);}
  }
 }
 
 namespace XianXia.Content.Items.Consumables {public class QiDrawingTalisman{public const int SpiritStoneCost=3,SpiritGelCost=2;}}
+
+namespace XianXia.Content.Items.Materials {public class QiCondensingPill {public const int GreenwoodRootCost=3,SpiritStoneCost=5;}public class FoundationPill{public const int GreenwoodRootCost=4,FurnaceSlagCost=4,SpiritStoneCost=10;}}
