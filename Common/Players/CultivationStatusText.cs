@@ -45,9 +45,15 @@ public static class CultivationStatusText
                 global::XianXia.Content.Items.Materials.FoundationPill.GreenwoodRootCost,
                 global::XianXia.Content.Items.Materials.FoundationPill.FurnaceSlagCost,
                 global::XianXia.Content.Items.Materials.FoundationPill.SpiritStoneCost),
+            CultivationStage.GoldenCore => Language.GetTextValue(key, NpcName("AbyssalStarWomb")),
+            CultivationStage.NascentSoul => Language.GetTextValue(key, NpcName("ArchiveScrollSpirit")),
+            CultivationStage.SpiritSevering => Language.GetTextValue(key, NpcName("HeavenTabletGuardian"), NpcName("BrokenHeavenInspector")),
+            CultivationStage.Tribulation => Language.GetTextValue(key, NpcName("MoonboneImmortal")),
+            CultivationStage.DaoSevering => Language.GetTextValue(key, NpcName("MoonboneImmortal"), NpcName("OldHeavenDaoCore")),
             _ => Language.GetTextValue(key)
         };
     }
+    private static string NpcName(string name) => Language.GetTextValue("Mods.XianXia.NPCs." + name + ".DisplayName");
 
     private static int Seconds(int ticks) => (int)Math.Ceiling(Math.Max(0, ticks) / 60d);
 }

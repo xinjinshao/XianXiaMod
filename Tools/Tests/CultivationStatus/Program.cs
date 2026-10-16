@@ -3,6 +3,7 @@ using Terraria.Localization;
 using XianXia.Common.Players;
 int count=0;void Check(bool ok,string name){count++;if(!ok)throw new Exception(name);}
 foreach(string culture in new[]{"en-US","zh-Hans"}){
+ Language.NpcPrefix=culture+" localized NPC: ";
  using var json=JsonDocument.Parse(File.ReadAllText(Path.Combine(args[0],"Localization","cultivation-status",culture+".hjson")));Language.Root=json.RootElement;
  using var guide=JsonDocument.Parse(File.ReadAllText(Path.Combine(args[0],"Localization","breakthrough-guide",culture+".hjson")));Language.GuideRoot=guide.RootElement;
  foreach(CultivationStage stage in Enum.GetValues<CultivationStage>())Check(!string.IsNullOrWhiteSpace(CultivationStatusText.StageName(stage)),"Every realm localized");
@@ -23,6 +24,12 @@ foreach(string culture in new[]{"en-US","zh-Hans"}){
  Check(CultivationStatusText.BreakthroughSource(CultivationStage.QiAwakening)==Language.GetTextValue("Mods.XianXia.BreakthroughGuide.Sources.QiAwakening",3,2),"Awakening source formats shared recipe quantities");
  Check(CultivationStatusText.BreakthroughSource(CultivationStage.QiCondensation)==Language.GetTextValue("Mods.XianXia.BreakthroughGuide.Sources.QiCondensation",3,5),"Condensation source formats shared recipe quantities");
  Check(CultivationStatusText.BreakthroughSource(CultivationStage.Foundation)==Language.GetTextValue("Mods.XianXia.BreakthroughGuide.Sources.Foundation",4,4,10),"Foundation source formats shared recipe quantities");
+ foreach(var entry in new[]{(CultivationStage.GoldenCore,new[]{"AbyssalStarWomb"}),(CultivationStage.NascentSoul,new[]{"ArchiveScrollSpirit"}),
+  (CultivationStage.SpiritSevering,new[]{"HeavenTabletGuardian","BrokenHeavenInspector"}),
+  (CultivationStage.Tribulation,new[]{"MoonboneImmortal"}),(CultivationStage.DaoSevering,new[]{"MoonboneImmortal","OldHeavenDaoCore"})}) {
+  string source=CultivationStatusText.BreakthroughSource(entry.Item1);
+  foreach(string npc in entry.Item2)Check(source.Contains(Language.NpcPrefix+npc),"Source reads the current NPC display name instead of an independently maintained literal");
+ }
  var beginner=new XianXiaPlayer{cultivationStage=CultivationStage.None,maxSpiritualEnergy=40};
  Check(CultivationStatusText.Summary(beginner).EndsWith(Language.GetTextValue("Mods.XianXia.CultivationStatus.DiscoverySeek")),"Undiscovered novice sees material acquisition guidance");
  beginner.discoveredSpiritualEnergy=true;

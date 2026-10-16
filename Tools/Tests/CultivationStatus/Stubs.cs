@@ -4,7 +4,8 @@ namespace XianXia.Common.Players {
 namespace Terraria.Localization {
  public static class Language {
   public static System.Text.Json.JsonElement Root, GuideRoot;
-  public static string GetTextValue(string key,params object[] args){var value=key.StartsWith("Mods.XianXia.BreakthroughGuide.")?GuideRoot:Root;foreach(var part in key.Split('.'))value=value.GetProperty(part);return string.Format(value.GetString(),args);}
+  public static string NpcPrefix;
+  public static string GetTextValue(string key,params object[] args){if(key.StartsWith("Mods.XianXia.NPCs."))return NpcPrefix+key.Split('.')[3];var value=key.StartsWith("Mods.XianXia.BreakthroughGuide.")?GuideRoot:Root;foreach(var part in key.Split('.'))value=value.GetProperty(part);return string.Format(value.GetString(),args);}
  }
 }
 

@@ -140,6 +140,17 @@ public partial class SummonAuditSystem
                 check(preparation.EndsWith(source) && !source.Contains("{0}") && !source.Contains("{1}") && !source.Contains("{2}") && state.CaptureSnapshot() == beforeGuide,
                     "native ledger preparation uses formatted recipe sources without mutating player state");
             }
+            foreach (var entry in new[] {
+                (CultivationStage.GoldenCore, new[] { "AbyssalStarWomb" }), (CultivationStage.NascentSoul, new[] { "ArchiveScrollSpirit" }),
+                (CultivationStage.SpiritSevering, new[] { "HeavenTabletGuardian", "BrokenHeavenInspector" }),
+                (CultivationStage.Tribulation, new[] { "MoonboneImmortal" }), (CultivationStage.DaoSevering, new[] { "MoonboneImmortal", "OldHeavenDaoCore" }) }) {
+                string source = CultivationStatusText.BreakthroughSource(entry.Item1);
+                foreach (string npc in entry.Item2) {
+                    string displayName = ModLoader.GetMod("XianXia").Find<ModNPC>(npc).DisplayName.Value;
+                    check(!string.IsNullOrWhiteSpace(displayName) && source.Contains(displayName) && !source.Contains("{0}") && !source.Contains("{1}"),
+                        "native breakthrough source names match actual registered NPC display names");
+                }
+            }
             Main.netMode = NetmodeID.Server;
             foreach (int invalid in new[] { 0, 1, 2 }) {
                 var actor = new Player { active = invalid != 0, dead = invalid == 1 }; Item heldStone = carriedStone.Clone();
