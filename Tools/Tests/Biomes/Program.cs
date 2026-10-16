@@ -182,3 +182,8 @@ foreach(var badPosition in new[]{new Vector2(float.NaN,800),new Vector2(800,floa
     Check(scanOwner.State.spiritualEnergyRegenBonus==0,"Returning to the old coordinate cannot revive a removed object effect");
 }
 Console.WriteLine($"Including bounded coordinate scan regression: {assertions} assertions; engine/map boundaries mocked.");
+
+Game.player[0]=new Player {active=false,ModPlayersReady=false}; Game.player[1]=null;
+cacheLifecycle.OnWorldLoad(); cacheLifecycle.OnWorldUnload(); cacheLifecycle.PostUpdatePlayers();
+Check(true,"World/disconnect cleanup safely skips vanilla-only uninitialized player slots");
+Console.WriteLine($"Including uninitialized world slots: {assertions} assertions.");

@@ -51,6 +51,9 @@ namespace Terraria
         public XianXia.Common.Players.ServerBiomePlayer Biome;
         public XianXia.Common.Players.XianXiaPlayer State = new();
         public XianXia.Common.Players.BiomeObjectEffectsPlayer Objects;
+        public bool ModPlayersReady = true;
+        public bool TryGetModPlayer<T>(out T value) { value = ModPlayersReady ? GetModPlayer<T>() : default; return ModPlayersReady && value != null; }
+
         public T GetModPlayer<T>() => (T)(object)(typeof(T) == typeof(XianXia.Common.Players.ServerBiomePlayer) ? Biome
             : typeof(T) == typeof(XianXia.Common.Players.BiomeObjectEffectsPlayer)
                 ? Objects ??= new XianXia.Common.Players.BiomeObjectEffectsPlayer { Player = this } : State);
