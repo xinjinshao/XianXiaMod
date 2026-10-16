@@ -28,11 +28,4 @@ public class AlchemyCauldronTile : ModTile
         AddMapEntry(new Color(70, 180, 145), CreateMapEntryName());
     }
 
-    public override void NearbyEffects(int i, int j, bool closer)
-    {
-        if (closer)
-        {
-            Main.LocalPlayer.AddBuff(ModContent.BuffType<global::XianXia.Content.Buffs.AlchemyInsightBuff>(), 20);
-        }
-    }
 }

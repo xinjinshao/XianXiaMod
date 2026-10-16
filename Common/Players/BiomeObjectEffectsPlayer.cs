@@ -14,15 +14,18 @@ public class BiomeObjectEffectsPlayer : ModPlayer
     public const int SwordBuffDuration = 30, SwordBuffRefreshThreshold = 15;
     private Point lastCenter;
     private ulong nextScan;
-    private bool scanned, sword, thunder, rift;
+    private bool scanned, sword, thunder, rift, alchemy, forge;
 
     internal void ResetScan()
     {
-        scanned = sword = thunder = rift = false;
+        scanned = sword = thunder = rift = alchemy = forge = false;
         lastCenter = default; nextScan = 0;
     }
     public override void Initialize() => ResetScan();
     public override void OnEnterWorld() => ResetScan();
+
+    private void ApplyStationBuff(int buff) => global::XianXia.Common.Systems.AuthoritativeBuffSync.Apply(Player, buff,
+        Main.netMode == NetmodeID.Server ? SwordBuffDuration : 2, Main.netMode == NetmodeID.Server ? SwordBuffRefreshThreshold : -1);
 
     public override void PostUpdateEquips()
     {
@@ -36,10 +39,12 @@ public class BiomeObjectEffectsPlayer : ModPlayer
             scanned = true;
             lastCenter = center;
             nextScan = Main.GameUpdateCount + 15;
-            sword = thunder = rift = false;
+            sword = thunder = rift = alchemy = forge = false;
             int swordType = ModContent.TileType<SwordTabletTile>();
             int thunderType = ModContent.TileType<SingingThunderStoneTile>();
             int riftType = ModContent.TileType<RiftMembraneTile>();
+            int alchemyType = ModContent.TileType<Content.Tiles.Stations.AlchemyCauldronTile>();
+            int forgeType = ModContent.TileType<Content.Tiles.Stations.ArtifactForgeTile>();
             for (int x = Math.Max(0, center.X - RadiusX); x <= Math.Min(Main.maxTilesX - 1, center.X + RadiusX); x++)
                 for (int y = Math.Max(0, center.Y - RadiusY); y <= Math.Min(Main.maxTilesY - 1, center.Y + RadiusY); y++)
                 {
@@ -48,6 +53,8 @@ public class BiomeObjectEffectsPlayer : ModPlayer
                     sword |= tile.TileType == swordType;
                     thunder |= tile.TileType == thunderType;
                     rift |= tile.TileType == riftType;
+                    alchemy |= tile.TileType == alchemyType;
+                    forge |= tile.TileType == forgeType;
                 }
         }
         XianXiaPlayer state = Player.GetModPlayer<XianXiaPlayer>();
@@ -64,6 +71,8 @@ public class BiomeObjectEffectsPlayer : ModPlayer
                 }
             } else Player.AddBuff(buff, 2);
         }
+        if (alchemy) ApplyStationBuff(ModContent.BuffType<Content.Buffs.AlchemyInsightBuff>());
+        if (forge) ApplyStationBuff(ModContent.BuffType<Content.Buffs.ArtifactResonanceBuff>());
         if (thunder) state.spiritualEnergyRegenBonus += 1;
         if (rift && Main.GameUpdateCount % 120 == 0) state.spiritPressure = Math.Min(100, state.spiritPressure + 1);
     }

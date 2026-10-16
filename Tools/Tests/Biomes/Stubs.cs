@@ -104,7 +104,7 @@ namespace Terraria.ModLoader
     public class ModPlayer { public virtual void Initialize() { } public virtual void OnEnterWorld() { } public Terraria.Player Player; public virtual void PostUpdateEquips() { } public virtual void ResetEffects() { } public virtual void PostUpdate() { } }
     public class ModSystem { public virtual void OnWorldLoad() { } public virtual void OnWorldUnload() { } public virtual void PostUpdatePlayers() { } public virtual void ClearWorld() { } }
     public static class TileLoader { public const int TileCount = 16; }
-    public static class ModContent { public static int ProjectileType<T>() => 1; public static int BuffType<T>() => 1; public static int TileType<T>() => typeof(T).Name switch { "SwordTabletTile"=>11, "SingingThunderStoneTile"=>12, "RiftMembraneTile"=>13, _=>14 }; }
+    public static class ModContent { public static int ProjectileType<T>() => 1; public static int BuffType<T>() => 1; public static int TileType<T>() => typeof(T).Name switch { "SwordTabletTile"=>11, "SingingThunderStoneTile"=>12, "RiftMembraneTile"=>13, "AlchemyCauldronTile"=>15, "ArtifactForgeTile"=>16, _=>14 }; }
 }
 namespace XianXia.Common.Players
 {
@@ -128,3 +128,6 @@ namespace Terraria.DataStructures { public interface IEntitySource { } public cl
 
 namespace XianXia.Content.Tiles { public class SwordTabletTile {} public class SingingThunderStoneTile {} public class RiftMembraneTile {} }
 namespace XianXia.Content.Buffs { public class TribulationResistanceBuff {} }
+
+namespace XianXia.Content.Tiles.Stations { public class AlchemyCauldronTile {} public class ArtifactForgeTile {} }
+namespace XianXia.Content.Buffs { public class AlchemyInsightBuff {} public class ArtifactResonanceBuff {} }

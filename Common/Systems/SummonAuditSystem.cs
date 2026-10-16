@@ -939,6 +939,7 @@ public partial class SummonAuditSystem : ModSystem
             AuditCompanionContact(Check);
             AuditCompanionBolts(Check, owned, ownedProjectiles);
             AuditStationRecipes(Check);
+            AuditStationBuffs(Check);
         }
         catch (Exception exception) { error = exception.ToString(); }
         finally {

@@ -3,11 +3,11 @@ Mods: {
 		Items: {
 			AlchemyCauldron: {
 				DisplayName: "Alchemy Cauldron"
-				Tooltip: "Used to refine cultivation pills."
+				Tooltip: "Used to refine cultivation pills. Grants Alchemy Insight within 20 tiles horizontally and 15 vertically."
 			}
 			ArtifactForge: {
 				DisplayName: "Artifact Forge"
-				Tooltip: "Used to forge flying swords, arrays, and other artifacts."
+				Tooltip: "Used to forge flying swords, arrays, and other artifacts. Grants Artifact Resonance within 20 tiles horizontally and 15 vertically."
 			}
 			EarthClayFurnace: {
 				DisplayName: "Earth Clay Furnace"

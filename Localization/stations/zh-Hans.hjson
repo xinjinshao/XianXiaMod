@@ -3,11 +3,11 @@ Mods: {
 		Items: {
 			AlchemyCauldron: {
 				DisplayName: "炼丹炉"
-				Tooltip: "用于炼制丹药。"
+				Tooltip: "用于炼制丹药。附近横向20格、纵向15格内获得丹炉温养。"
 			}
 			ArtifactForge: {
 				DisplayName: "器胚炉"
-				Tooltip: "用于铸造飞剑、阵盘和法器。"
+				Tooltip: "用于铸造飞剑、阵盘和法器。附近横向20格、纵向15格内获得器胚共鸣。"
 			}
 			EarthClayFurnace: {
 				DisplayName: "土炉"
