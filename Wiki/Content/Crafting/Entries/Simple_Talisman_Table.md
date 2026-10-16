@@ -21,7 +21,7 @@
 
 ## 定位
 
-- ID: simple_talisman_table | 阶段: Pre-Boss | 获取: 木材x15+书x1@工作台
+- ID: simple_talisman_table | 阶段: Pre-Boss | 获取: 任意木材x15+书x1@工作台
 
 ## 用途
 

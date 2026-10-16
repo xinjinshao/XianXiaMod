@@ -42,7 +42,7 @@ public class SpiritwoodCrossbow : global::XianXia.Common.Items.CultivationWeapon
     public override void AddRecipes()
     {
         CreateRecipe()
-            .AddIngredient(ItemID.Wood, 16)
+            .AddRecipeGroup(RecipeGroupID.Wood, 16)
             .AddIngredient<LowGradeSpiritStone>(4)
             .AddTile(ModContent.TileType<ArtifactForgeTile>())
             .Register();

@@ -44,7 +44,7 @@ public class WoodgrainFlyingSword : global::XianXia.Common.Items.CultivationWeap
     public override void AddRecipes()
     {
         CreateRecipe()
-            .AddIngredient(ItemID.Wood, 12)
+            .AddRecipeGroup(RecipeGroupID.Wood, 12)
             .AddIngredient<LowGradeSpiritStone>(6)
             .AddIngredient<SpiritGel>(10)
             .AddTile(TileID.WorkBenches)

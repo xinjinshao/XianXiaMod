@@ -21,7 +21,7 @@
 
 ## 定位
 
-- ID: earth_clay_furnace | 阶段: Pre-Boss | 获取: 泥土x20+石块x15+木材x10@工作台
+- ID: earth_clay_furnace | 阶段: Pre-Boss | 获取: 黏土x20+石块x15+任意木材x10@工作台
 
 ## 用途
 

@@ -19,7 +19,7 @@ public class EarthClayFurnace : ModItem
     }
     public override void AddRecipes()
     {
-        CreateRecipe().AddIngredient(ItemID.ClayBlock, 20).AddIngredient(ItemID.StoneBlock, 15).AddIngredient(ItemID.Wood, 10).AddTile(TileID.WorkBenches).Register();
+        CreateRecipe().AddIngredient(ItemID.ClayBlock, 20).AddIngredient(ItemID.StoneBlock, 15).AddRecipeGroup(RecipeGroupID.Wood, 10).AddTile(TileID.WorkBenches).Register();
     }
 }
 
@@ -37,7 +37,7 @@ public class SimpleTalismanTable : ModItem
     }
     public override void AddRecipes()
     {
-        CreateRecipe().AddIngredient(ItemID.Wood, 15).AddIngredient(ItemID.Book, 1).AddTile(TileID.WorkBenches).Register();
+        CreateRecipe().AddRecipeGroup(RecipeGroupID.Wood, 15).AddIngredient(ItemID.Book, 1).AddTile(TileID.WorkBenches).Register();
     }
 }
 
