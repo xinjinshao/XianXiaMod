@@ -928,6 +928,7 @@ public partial class SummonAuditSystem : ModSystem
             AuditBiomeScans(Check);
             AuditPillBuffs(Check);
             AuditFailureBuffs(Check);
+            AuditEnemyBuffs(Check, owned);
         }
         catch (Exception exception) { error = exception.ToString(); }
         finally {

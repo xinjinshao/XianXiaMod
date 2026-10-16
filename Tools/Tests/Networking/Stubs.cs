@@ -70,6 +70,7 @@ namespace Terraria
         public ref Terraria.ModLoader.StatModifier GetDamage(Terraria.ModLoader.DamageClass damage)=>ref damageModifier;
         public ref Terraria.ModLoader.StatModifier GetKnockback(Terraria.ModLoader.DamageClass damage)=>ref knockbackModifier;
         public int[] buffType = new int[22], buffTime = new int[22], ownedProjectileCounts = new int[16];
+        public int FindBuffIndex(int type)=>buffTime[type]>0?type:-1;
         public void AddBuff(int type, int time) {buffType[type]=type;buffTime[type]=time;} public bool HasBuff(int type)=>buffTime[type]>0;
         public Microsoft.Xna.Framework.Rectangle Hitbox => new((int)Center.X-10,(int)Center.Y-20,20,40);
         public Microsoft.Xna.Framework.Vector2 MountedCenter => Center;

@@ -3,7 +3,9 @@ public struct Vector2(float x,float y) { public float X=x,Y=y; public float ToRo
 }
 namespace Terraria {
 public static class Main {public static int maxTilesX=1000,maxTilesY=500;public static NPC[] npc=Array.Empty<NPC>();public static IEnumerable<NPC> ActiveNPCs=>npc.Where(n=>n.active);public static RandomStub rand=new();public static bool dedServ;public static IEnumerable<Player> ActivePlayers=>player.Where(p=>p.active);public static int netMode,maxPlayers=2;public static Player[] player=[new(),new()];public static bool hardMode;public static int[] npcFrameCount=new int[100];}
-public class Player {public struct HurtInfo {}public Microsoft.Xna.Framework.Vector2 velocity;public int Buffs;public void AddBuff(int type,int time)=>Buffs++;public bool active=true,dead;public Microsoft.Xna.Framework.Vector2 Center;public bool InModBiome<T>()=>true;}
+public class Player {public struct HurtInfo {}public Microsoft.Xna.Framework.Vector2 velocity;public int Buffs,whoAmI;public int[] buffType=new int[400],buffTime=new int[400];
+public int FindBuffIndex(int type)=>buffTime[type]>0?type:-1;
+public void AddBuff(int type,int time){Buffs++;buffType[type]=type;buffTime[type]=Math.Max(buffTime[type],time);}public bool active=true,dead;public Microsoft.Xna.Framework.Vector2 Center;public bool InModBiome<T>()=>true;}
 public class NPC {public bool active=true;public int whoAmI,type;public bool justHit;public struct HitInfo {public int HitDirection;} public int defDamage;public static bool downedPlantBoss,downedGolemBoss,downedMoonlord;public bool noGravity;public int life;public int width,height,lifeMax,damage,defense,aiStyle,target;public float value,knockBackResist;public object HitSound,DeathSound;public bool netUpdate;public float rotation;public float[] ai=new float[4];public float[] localAI=new float[4];public Microsoft.Xna.Framework.Vector2 velocity,Center,position;public object GetSource_FromAI()=>null;public void TargetClosest(bool face){target=255;for(int i=0;i<Main.maxPlayers;i++)if(Main.player[i].active&&!Main.player[i].dead){target=i;break;}}}
 public class Projectile {public int owner;public static Microsoft.Xna.Framework.Vector2 LastPosition;public static int Spawns;public static int NewProjectile(object source,Microsoft.Xna.Framework.Vector2 position,Microsoft.Xna.Framework.Vector2 velocity,int type,int damage,float knockback){LastPosition=position;Spawns++;return 0;}}
 }
@@ -74,3 +76,6 @@ namespace XianXia.Content.NPCs.Enemies{public partial class ObsessedSwordCultiva
 namespace XianXia.Content.NPCs.Enemies{public partial class HerbGardenVineSpirit{private bool SynchronizeSummonTarget()=>true;}}
 
 namespace XianXia.Content.NPCs.Enemies{public partial class CelestialPuppet{private bool SynchronizeSummonTarget()=>true;}}
+
+namespace Terraria {public static class NetMessage {public static List<(int Message,int Target,int Owner,int Buff,int Time)> Sent=new();public static void SendData(int message,int target,int excluded,object text,int owner,float buff,float time)=>Sent.Add((message,target,owner,(int)buff,(int)time));}}
+namespace Terraria.ID {public static class MessageID {public const int AddPlayerBuff=55;}}

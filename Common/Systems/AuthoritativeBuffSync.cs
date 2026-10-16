@@ -8,6 +8,16 @@ namespace XianXia.Common.Systems;
 // Buff slots can move after removals: compare durations by buff type, not slot index.
 public static class AuthoritativeBuffSync
 {
+    public static void Apply(Player player, int buff, int duration, int refreshThreshold = -1)
+    {
+        if (Main.netMode == NetmodeID.MultiplayerClient || player == null || !player.active || player.dead || buff <= 0 || duration <= 0) return;
+        int index = player.FindBuffIndex(buff), before = index < 0 ? 0 : player.buffTime[index];
+        if (refreshThreshold >= 0 && before > refreshThreshold) return;
+        player.AddBuff(buff, duration);
+        index = player.FindBuffIndex(buff);
+        if (index >= 0 && player.buffTime[index] != before) Send(player, buff, player.buffTime[index]);
+    }
+
     public static Dictionary<int, int> Capture(Player player)
     {
         var result = new Dictionary<int, int>();

@@ -91,7 +91,8 @@ public class StarAbyssLarva : ModNPC
         if (NPC.localAI[1] > 0f)
         {
             NPC.localAI[1]--;
-            if (distance < 40f) target.AddBuff(BuffID.Slow, 2);
+            if (distance < 40f) global::XianXia.Common.Systems.AuthoritativeBuffSync.Apply(target, BuffID.Slow,
+                Main.netMode == NetmodeID.Server ? 30 : 2, Main.netMode == NetmodeID.Server ? 15 : -1);
             if (NPC.localAI[1] == 0f) NPC.netUpdate = true;
         }
         else if (NPC.localAI[0] >= 90f && distance < 260f)

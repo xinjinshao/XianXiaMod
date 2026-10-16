@@ -109,3 +109,12 @@ Main.netMode=NetmodeID.MultiplayerClient;cloud.NPC.localAI[0]=149;attempts=Colli
 
 Main.dedServ=true;dust=Dust.Calls;var ash=new FurnaceAshGolem();var slime=new WanderingSpiritSlime();ash.HitEffect(default);slime.HitEffect(default);Check(Dust.Calls==dust,"Server skips golem and slime hit particles");Main.dedServ=false;ash.HitEffect(default);slime.HitEffect(default);Check(Dust.Calls==dust+12,"Client preserves original hit particles");Main.netMode=NetmodeID.MultiplayerClient;buffs=Main.player[0].Buffs;ash.OnHitPlayer(Main.player[0],default);Check(Main.player[0].Buffs==buffs+1,"Native local-client contact debuff remains functional");
 Main.netMode=NetmodeID.Server;Main.player[0].dead=false;Main.player[0].Center=new(50,0);sword.NPC.target=0;sword.NPC.justHit=true;sword.NPC.localAI[0]=119;sword.NPC.localAI[1]=0;sword.NPC.localAI[2]=0;sword.PostAI();Check(sword.NPC.damage==93&&sword.NPC.localAI[2]==30,"Server-native justHit arms counter without owner-client callback");sword.NPC.localAI[0]=0;sword.NPC.localAI[1]=0;Main.player[0].Center=new(200,0);sword.PostAI();Check(sword.NPC.localAI[1]==0,"Native damage outside guarding range cannot prepare counter");Console.WriteLine($"Enemy assertions updated: {checks}.");
+
+Main.netMode=NetmodeID.Server;Main.dedServ=true;Main.player[0]=new Player{whoAmI=0,active=true};Main.player[1].active=false;
+var syncLarva=new StarAbyssLarva();syncLarva.SetDefaults();syncLarva.NPC.target=0;syncLarva.NPC.localAI[1]=90;Main.player[0].Center=new(20,0);
+int packetsBefore=NetMessage.Sent.Count;syncLarva.PostAI();
+Check(Main.player[0].buffTime[BuffID.Slow]==30&&NetMessage.Sent.Count==packetsBefore+1,"Server larva slow sends a thirty-frame owner buff");
+syncLarva.PostAI();Check(NetMessage.Sent.Count==packetsBefore+1,"Healthy larva slow is not sent each frame");
+Main.player[0].buffTime[BuffID.Slow]=15;syncLarva.PostAI();Check(Main.player[0].buffTime[BuffID.Slow]==30&&NetMessage.Sent.Count==packetsBefore+2,"Larva slow renews at threshold");
+Main.player[0].Center=new(40,0);Main.player[0].buffTime[BuffID.Slow]=15;syncLarva.PostAI();Check(NetMessage.Sent.Count==packetsBefore+2,"Larva forty-pixel boundary stops renewal");
+Console.WriteLine($"Including authority enemy buff packets: {checks} assertions; transport mocked.");

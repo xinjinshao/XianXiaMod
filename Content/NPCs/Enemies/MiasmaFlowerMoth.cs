@@ -87,7 +87,7 @@ public class MiasmaFlowerMoth : ModNPC
         if (Main.netMode != NetmodeID.MultiplayerClient)
             foreach (Player player in Main.ActivePlayers)
                 if (!player.dead && Vector2.Distance(player.Center, NPC.Center) <= 128f)
-                    player.AddBuff(BuffID.Poisoned, 90);
+                    global::XianXia.Common.Systems.AuthoritativeBuffSync.Apply(player, BuffID.Poisoned, 90);
         if (!Main.dedServ)
             for (int i = 0; i < 10; i++)
             {
