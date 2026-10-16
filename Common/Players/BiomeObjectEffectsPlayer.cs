@@ -25,12 +25,11 @@ public class BiomeObjectEffectsPlayer : ModPlayer
 
     public override void PostUpdateEquips()
     {
-        if (Main.netMode == NetmodeID.MultiplayerClient || !Player.active || Player.dead)
+        if (Main.netMode == NetmodeID.MultiplayerClient || !ServerBiomePlayer.TryScanCenter(Player, out Point center) || Player.dead)
         {
-            scanned = false;
+            ResetScan();
             return;
         }
-        Point center = Player.Center.ToTileCoordinates();
         if (!scanned || center != lastCenter || Main.GameUpdateCount >= nextScan)
         {
             scanned = true;

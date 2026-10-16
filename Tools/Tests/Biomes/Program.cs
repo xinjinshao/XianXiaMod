@@ -155,3 +155,30 @@ foreach (string lifecycle in new[]{"world load","world unload","disconnect","ini
     Check(occupant.State.spiritualEnergyRegenBonus==0,$"{lifecycle} discards prior world object effects immediately");
 }
 Console.WriteLine($"Including world/occupant scan lifecycle regression: {assertions} assertions; tile and transport boundaries mocked.");
+
+// Malformed network coordinates must not convert into valid tiles or retain caches.
+var scanOwner=MakePlayer(50,50,0); Game.player[0]=scanOwner;
+var scanObjects=scanOwner.GetModPlayer<BiomeObjectEffectsPlayer>();
+foreach(var badPosition in new[]{new Vector2(float.NaN,800),new Vector2(800,float.NaN),
+    new Vector2(float.PositiveInfinity,800),new Vector2(800,float.NegativeInfinity),
+    new Vector2(float.MaxValue,800),new Vector2(800,float.MinValue),
+    new Vector2(-1,800),new Vector2(800,-1),
+    new Vector2(Game.maxTilesX*16,800),new Vector2(800,Game.maxTilesY*16)}) {
+    scanOwner.Biome.Initialize(); scanObjects.Initialize();
+    Game.netMode=NetmodeID.Server; Game.GameUpdateCount=500;
+    scanOwner.Center=new(800,800);
+    Game.tile[50,50]=new Tile {HasTile=true,TileType=3};
+    Game.tile[51,50]=new Tile {HasTile=true,TileType=12};
+    Check(scanOwner.Biome.Count(3)==1,"Valid scan before bad position is primed");
+    scanOwner.State.spiritualEnergyRegenBonus=0; scanObjects.PostUpdateEquips();
+    Check(scanOwner.State.spiritualEnergyRegenBonus==1,"Valid object effect before bad position is primed");
+    scanOwner.Center=badPosition; scanOwner.State.spiritualEnergyRegenBonus=0;
+    Check(scanOwner.Biome.Count(3)==0,"Invalid coordinate cannot activate cached server biome");
+    scanObjects.PostUpdateEquips();
+    Check(scanOwner.State.spiritualEnergyRegenBonus==0,"Invalid coordinate cannot apply cached object effect");
+    Game.tile[50,50]=default; Game.tile[51,50]=default; scanOwner.Center=new(800,800);
+    Check(scanOwner.Biome.Count(3)==0,"Returning to the old coordinate requires a fresh biome scan");
+    scanObjects.PostUpdateEquips();
+    Check(scanOwner.State.spiritualEnergyRegenBonus==0,"Returning to the old coordinate cannot revive a removed object effect");
+}
+Console.WriteLine($"Including bounded coordinate scan regression: {assertions} assertions; engine/map boundaries mocked.");

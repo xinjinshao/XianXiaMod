@@ -18,10 +18,27 @@ public class ServerBiomePlayer : ModPlayer
     public override void Initialize() => ResetScan();
     public override void OnEnterWorld() => ResetScan();
 
+    // Validate in world space before Terraria converts coordinates to tile-sized integers.
+    // Non-finite/huge inputs can otherwise wrap, overflow distance checks or scan unrelated tiles.
+    internal static bool TryScanCenter(Player player, out Point center)
+    {
+        center = default;
+        if (player == null || !player.active || Main.maxTilesX <= 0 || Main.maxTilesY <= 0) return false;
+        Vector2 position = player.Center;
+        if (!float.IsFinite(position.X) || !float.IsFinite(position.Y)
+            || position.X < 0 || position.Y < 0
+            || position.X >= Main.maxTilesX * 16d || position.Y >= Main.maxTilesY * 16d) return false;
+        center = position.ToTileCoordinates();
+        return true;
+    }
+
     public int Count(int tileType)
     {
-        if (Main.netMode != NetmodeID.Server || !Player.active) return 0;
-        Point center = Player.Center.ToTileCoordinates();
+        if (Main.netMode != NetmodeID.Server || !TryScanCenter(Player, out Point center))
+        {
+            ResetScan();
+            return 0;
+        }
         if (counts == null || Main.GameUpdateCount >= nextScan
             || Math.Abs(center.X - lastCenter.X) > 8 || Math.Abs(center.Y - lastCenter.Y) > 8)
         {

@@ -1328,3 +1328,32 @@ try{
  }
 }finally{nativeTargetMain.GetField("player").SetValue(null,furnaceSavedPlayers);nativeTargetMain.GetField("netMode").SetValue(null,furnaceSavedMode);nativeTargetMain.GetField("dedServ").SetValue(null,furnaceSavedDedicated);}
 Console.WriteLine($"Actual engine gameplay assertions including boss targets and worm instance links: {assertions}.");
+
+// Official coordinate conversion boundary: reject bad centers before tile access.
+var boundedScanType=type.Assembly.GetType("XianXia.Common.Players.ServerBiomePlayer",true);
+var boundedObjectsType=type.Assembly.GetType("XianXia.Common.Players.BiomeObjectEffectsPlayer",true);
+var boundedTry=boundedScanType.GetMethod("TryScanCenter",BindingFlags.Static|BindingFlags.NonPublic);
+object boundedSavedMode=nativeTargetMain.GetField("netMode").GetValue(null);
+int boundedWidth=(int)nativeTargetMain.GetField("maxTilesX").GetValue(null),boundedHeight=(int)nativeTargetMain.GetField("maxTilesY").GetValue(null);
+try {
+ nativeTargetMain.GetField("netMode").SetValue(null,2);
+ // Use positive bounds without constructing a Tilemap or touching loaded tile storage.
+ nativeTargetMain.GetField("maxTilesX").SetValue(null,200);nativeTargetMain.GetField("maxTilesY").SetValue(null,100);
+ foreach(var badCenter in new[]{(float.NaN,800f),(800f,float.NaN),(float.PositiveInfinity,800f),(800f,float.NegativeInfinity),(float.MaxValue,800f),(800f,float.MinValue),(-1f,800f),(800f,-1f),(3200f,800f),(800f,1600f)}) {
+  object boundedOwner=Activator.CreateInstance(nativeTargetPlayerType);nativeTargetPlayerType.GetField("active").SetValue(boundedOwner,true);
+  nativeTargetPlayerType.GetProperty("Center").SetValue(boundedOwner,Activator.CreateInstance(nativeTargetVectorType,new object[]{badCenter.Item1,badCenter.Item2}));
+  object boundedScan=Activator.CreateInstance(boundedScanType),boundedObjects=Activator.CreateInstance(boundedObjectsType);
+  boundedScanType.GetProperty("Entity",BindingFlags.Instance|BindingFlags.Public|BindingFlags.NonPublic).SetValue(boundedScan,boundedOwner);
+  boundedObjectsType.GetProperty("Entity",BindingFlags.Instance|BindingFlags.Public|BindingFlags.NonPublic).SetValue(boundedObjects,boundedOwner);
+  Check(!(bool)boundedTry.Invoke(null,new object[]{boundedOwner,null}),"Native world scan rejects malformed/outside center before integer conversion");
+  Check((int)boundedScanType.GetMethod("Count").Invoke(boundedScan,new object[]{3})==0,"Native invalid center returns no biome count without map access");
+  boundedObjectsType.GetMethod("PostUpdateEquips").Invoke(boundedObjects,null);
+  Check(true,"Native invalid center produces no object effects and requires no registered buff/player state");
+ }
+ object edgeOwner=Activator.CreateInstance(nativeTargetPlayerType);nativeTargetPlayerType.GetField("active").SetValue(edgeOwner,true);
+ foreach(var edgeCenter in new[]{(0f,0f),(3199f,1599f)}) {
+  nativeTargetPlayerType.GetProperty("Center").SetValue(edgeOwner,Activator.CreateInstance(nativeTargetVectorType,new object[]{edgeCenter.Item1,edgeCenter.Item2}));
+  Check((bool)boundedTry.Invoke(null,new object[]{edgeOwner,null}),"Native bounded world-edge center remains valid");
+ }
+} finally { nativeTargetMain.GetField("netMode").SetValue(null,boundedSavedMode);nativeTargetMain.GetField("maxTilesX").SetValue(null,boundedWidth);nativeTargetMain.GetField("maxTilesY").SetValue(null,boundedHeight); }
+Console.WriteLine($"Actual engine gameplay assertions including bounded biome coordinates: {assertions}.");
