@@ -937,6 +937,7 @@ public partial class SummonAuditSystem : ModSystem
             AuditQiAwakening(Check);
             AuditBossScaling(Check);
             AuditCompanionContact(Check);
+            AuditCompanionBolts(Check, owned, ownedProjectiles);
         }
         catch (Exception exception) { error = exception.ToString(); }
         finally {
