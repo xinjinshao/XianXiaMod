@@ -84,6 +84,13 @@ public partial class SummonAuditSystem
                 var state = actor.GetModPlayer<XianXiaPlayer>(); var before = state.CaptureSnapshot();
                 ItemLoader.UpdateInventory(heldStone, actor); var after = state.CaptureSnapshot();
                 bool authority = mode != NetmodeID.MultiplayerClient;
+                string summary = CultivationStatusText.Summary(state);
+                string expectedHint = authority
+                    ? Terraria.Localization.Language.GetTextValue("Mods.XianXia.CultivationStatus.DiscoveryFound", CultivationStatusText.StageName(CultivationStage.QiAwakening),
+                        global::XianXia.Content.Items.Consumables.QiDrawingTalisman.SpiritStoneCost, global::XianXia.Content.Items.Consumables.QiDrawingTalisman.SpiritGelCost)
+                    : Terraria.Localization.Language.GetTextValue("Mods.XianXia.CultivationStatus.DiscoverySeek");
+                check(summary.EndsWith(expectedHint) && state.CaptureSnapshot() == after,
+                    "native starter status follows replicated discovery state and remains read-only");
                 check(after == (before with { Discovered = authority, Revision = before.Revision + (authority ? 1u : 0u) }),
                     "native registered inventory dispatch discovers awareness only on authority without realm energy or pressure grants");
                 check(ReferenceEquals(actor.inventory[0], heldStone) && heldStone.stack == originalStack,
@@ -107,6 +114,12 @@ public partial class SummonAuditSystem
                 check(state.CaptureSnapshot() == afterPickup && pickupStone.stack == amount,
                     "native pickup followed by inventory dispatch cannot repeat discovery revision or consume stone");
             }
+            int qiTalisman = ModContent.ItemType<global::XianXia.Content.Items.Consumables.QiDrawingTalisman>();
+            check(Main.recipe.Take(Recipe.numRecipes).Any(recipe => !recipe.Disabled && recipe.createItem.type == qiTalisman
+                && recipe.requiredTile.Contains(TileID.WorkBenches)
+                && recipe.requiredItem.Any(item => item.type == stone && item.stack == global::XianXia.Content.Items.Consumables.QiDrawingTalisman.SpiritStoneCost)
+                && recipe.requiredItem.Any(item => item.type == ModContent.ItemType<SpiritGel>() && item.stack == global::XianXia.Content.Items.Consumables.QiDrawingTalisman.SpiritGelCost)),
+                "native starter hint costs match registered Qi talisman recipe and workbench station");
             Main.netMode = NetmodeID.Server;
             foreach (int invalid in new[] { 0, 1, 2 }) {
                 var actor = new Player { active = invalid != 0, dead = invalid == 1 }; Item heldStone = carriedStone.Clone();

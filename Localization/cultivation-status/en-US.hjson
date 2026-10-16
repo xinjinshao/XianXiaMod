@@ -18,7 +18,9 @@
         "RetryTrial": "Current realm trial unfinished: use a Training Token to retry",
         "NoActiveTrial": "No trial currently active",
         "Weakness": "Tribulation weakness: {0}s remaining",
-        "DragHint": "Hold Shift and drag with the left mouse button for this world session. Save a position through client settings."
+        "DragHint": "Hold Shift and drag with the left mouse button for this world session. Save a position through client settings.",
+        "DiscoverySeek": "Find and carry a Low-Grade Spirit Stone to discover energy (spirit-vein enemies or some new-world underground gold chests).",
+        "DiscoveryFound": "Energy discovered. Craft and use a Qi-Drawing Talisman for {0} (Work Bench: {1} Low-Grade Spirit Stones + {2} Spirit Gel)."
       }
     }
   }

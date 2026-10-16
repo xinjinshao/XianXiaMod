@@ -15,6 +15,14 @@ foreach(string culture in new[]{"en-US","zh-Hans"}){
  Check(text.Contains(Language.GetTextValue("Mods.XianXia.CultivationStatus.Weakness",0)),"Negative weakness clamped");
  p.Cleared=false;p.cultivationStage=CultivationStage.QiAwakening;Check(CultivationStatusText.Summary(p).Contains(Language.GetTextValue("Mods.XianXia.CultivationStatus.NoActiveTrial")),"Early realm has no retry");
  Check(p.spiritualEnergy==12&&p.spiritPressure==37&&p.tribulationTimer==0&&p.tribulationWeakness==-1,"Summary read only");
+ var beginner=new XianXiaPlayer{cultivationStage=CultivationStage.None,maxSpiritualEnergy=40};
+ Check(CultivationStatusText.Summary(beginner).EndsWith(Language.GetTextValue("Mods.XianXia.CultivationStatus.DiscoverySeek")),"Undiscovered novice sees material acquisition guidance");
+ beginner.discoveredSpiritualEnergy=true;
+ Check(CultivationStatusText.Summary(beginner).EndsWith(Language.GetTextValue("Mods.XianXia.CultivationStatus.DiscoveryFound",CultivationStatusText.StageName(CultivationStage.QiAwakening),3,2)),"Discovered novice sees localized awakening action and realm");
+ Check(beginner.cultivationStage==CultivationStage.None&&beginner.spiritualEnergy==0&&beginner.spiritPressure==0&&beginner.discoveredSpiritualEnergy,"Reading discovery guidance grants no progression or resources");
+ foreach(CultivationStage advanced in Enum.GetValues<CultivationStage>().Where(stage=>stage!=CultivationStage.None)) {
+  beginner.cultivationStage=advanced;Check(CultivationStatusText.Summary(beginner).Split('\n').Length==3,"Starter guidance disappears in advanced realms");
+ }
  p.tribulationTimer=int.MaxValue;Check(CultivationStatusText.Summary(p).Contains(Language.GetTextValue("Mods.XianXia.CultivationStatus.ActiveTrial",35791395)),"Large tick count no overflow");
 }
 Console.WriteLine($"Cultivation status source and real bilingual format regression passed: {count} assertions; player/rendering boundary mocked.");

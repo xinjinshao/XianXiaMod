@@ -8,6 +8,7 @@ namespace XianXia.Content.Items.Consumables;
 
 public class QiDrawingTalisman : ModItem
 {
+    public const int SpiritStoneCost = 3, SpiritGelCost = 2;
     public override void SetStaticDefaults()
     {
         Item.ResearchUnlockCount = 20;
@@ -43,8 +44,8 @@ public class QiDrawingTalisman : ModItem
     public override void AddRecipes()
     {
         CreateRecipe()
-            .AddIngredient<LowGradeSpiritStone>(3)
-            .AddIngredient<SpiritGel>(2)
+            .AddIngredient<LowGradeSpiritStone>(SpiritStoneCost)
+            .AddIngredient<SpiritGel>(SpiritGelCost)
             .AddTile(TileID.WorkBenches)
             .Register();
     }

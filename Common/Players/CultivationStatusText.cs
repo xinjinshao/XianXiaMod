@@ -20,8 +20,15 @@ public static class CultivationStatusText
             trial = Language.GetTextValue("Mods.XianXia.CultivationStatus.RetryTrial");
         else
             trial = Language.GetTextValue("Mods.XianXia.CultivationStatus.NoActiveTrial");
-        return resource + "\n" + trial + "\n" + Language.GetTextValue(
+        string summary = resource + "\n" + trial + "\n" + Language.GetTextValue(
             "Mods.XianXia.CultivationStatus.Weakness", Seconds(player.tribulationWeakness));
+        if (player.cultivationStage == CultivationStage.None)
+            summary += "\n" + (player.discoveredSpiritualEnergy
+                ? Language.GetTextValue("Mods.XianXia.CultivationStatus.DiscoveryFound", StageName(CultivationStage.QiAwakening),
+                    global::XianXia.Content.Items.Consumables.QiDrawingTalisman.SpiritStoneCost,
+                    global::XianXia.Content.Items.Consumables.QiDrawingTalisman.SpiritGelCost)
+                : Language.GetTextValue("Mods.XianXia.CultivationStatus.DiscoverySeek"));
+        return summary;
     }
 
     private static int Seconds(int ticks) => (int)Math.Ceiling(Math.Max(0, ticks) / 60d);

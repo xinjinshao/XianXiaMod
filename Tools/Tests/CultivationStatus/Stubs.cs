@@ -1,5 +1,5 @@
 namespace XianXia.Common.Players {
- public class XianXiaPlayer { public CultivationStage cultivationStage; public int spiritualEnergy,maxSpiritualEnergy,spiritPressure,tribulationTimer,tribulationWeakness; public bool Cleared; public bool CanRetryTribulation()=>CultivationRules.CanRetry(cultivationStage,tribulationTimer,Cleared); }
+ public class XianXiaPlayer { public CultivationStage cultivationStage; public int spiritualEnergy,maxSpiritualEnergy,spiritPressure,tribulationTimer,tribulationWeakness; public bool Cleared,discoveredSpiritualEnergy; public bool CanRetryTribulation()=>CultivationRules.CanRetry(cultivationStage,tribulationTimer,Cleared); }
 }
 namespace Terraria.Localization {
  public static class Language {
@@ -7,3 +7,5 @@ namespace Terraria.Localization {
   public static string GetTextValue(string key,params object[] args){var value=Root;foreach(var part in key.Split('.'))value=value.GetProperty(part);return string.Format(value.GetString(),args);}
  }
 }
+
+namespace XianXia.Content.Items.Consumables {public class QiDrawingTalisman{public const int SpiritStoneCost=3,SpiritGelCost=2;}}
