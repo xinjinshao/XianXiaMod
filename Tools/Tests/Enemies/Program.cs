@@ -118,3 +118,22 @@ syncLarva.PostAI();Check(NetMessage.Sent.Count==packetsBefore+1,"Healthy larva s
 Main.player[0].buffTime[BuffID.Slow]=15;syncLarva.PostAI();Check(Main.player[0].buffTime[BuffID.Slow]==30&&NetMessage.Sent.Count==packetsBefore+2,"Larva slow renews at threshold");
 Main.player[0].Center=new(40,0);Main.player[0].buffTime[BuffID.Slow]=15;syncLarva.PostAI();Check(NetMessage.Sent.Count==packetsBefore+2,"Larva forty-pixel boundary stops renewal");
 Console.WriteLine($"Including authority enemy buff packets: {checks} assertions; transport mocked.");
+
+foreach(int mode in new[]{0,1,2}) foreach(int bad in Enumerable.Range(0,9)) {
+ Main.netMode=mode;Main.player=new Player[]{new(){active=true,whoAmI=0,Center=new(10,0)},new(){active=true,whoAmI=1,Center=new(20,0)}};Main.maxPlayers=2;
+ var targetingNpc=new NPC {target=0,life=100,active=true};
+ switch(bad){case 0:Main.player[0]=null;break;case 1:Main.player[0].dead=true;break;case 2:Main.player[0].active=false;break;
+ case 3:Main.player[0].Center=new(float.NaN,0);break;case 4:Main.player[0].velocity=new(float.PositiveInfinity,0);break;
+ case 5:Main.player[0].Center=new(float.MaxValue,0);break;case 6:targetingNpc.target=-1;break;case 7:targetingNpc.target=int.MaxValue;break;
+ case 8:Main.player=new Player[]{null,Main.player[1]};Main.maxPlayers=3;break;}
+ bool selected=XianXia.Common.Systems.EnemyTargeting.TryGetLivingTarget(targetingNpc,out var selectedPlayer);
+ Check(selected==(mode!=1),"Only authority selects a replacement for an invalid target");
+ if(mode!=1) Check(selectedPlayer!=null&&selectedPlayer.active&&!selectedPlayer.dead&&targetingNpc.netUpdate,"Authority target replacement is valid and marked for synchronization");
+ else Check(selectedPlayer==null&&!targetingNpc.netUpdate&&targetingNpc.TargetCalls==0,"Client waits without selecting or dirtying target state");
+}
+Main.netMode=NetmodeID.Server;Main.maxPlayers=2;Main.player=new Player[]{null,null};
+var noTargetNpc=new NPC {life=100};Check(!XianXia.Common.Systems.EnemyTargeting.TryGetLivingTarget(noTargetNpc,out _),"All missing slots return no target without native null dereference");
+Main.player=new Player[]{new(){active=true},new(){active=true}};
+foreach(int badNpc in Enumerable.Range(0,6)) {var invalidNpc=new NPC{life=100};switch(badNpc){case 0:invalidNpc=null;break;case 1:invalidNpc.active=false;break;case 2:invalidNpc.life=0;break;case 3:invalidNpc.Center=new(float.NaN,0);break;case 4:invalidNpc.velocity=new(float.PositiveInfinity,0);break;case 5:invalidNpc.Center=new(float.MaxValue,0);break;}
+ Check(!XianXia.Common.Systems.EnemyTargeting.TryGetLivingTarget(invalidNpc,out _),"Invalid enemy cannot acquire a live target");}
+Console.WriteLine($"Including safe ordinary enemy targeting: {checks} assertions; native targeting boundary mocked.");

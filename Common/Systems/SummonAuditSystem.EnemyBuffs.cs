@@ -75,6 +75,34 @@ public partial class SummonAuditSystem
             actor.Center = moth.Center + new Vector2(64, 0); moth.localAI[0] = 44; moth.ModNPC.PostAI();
             check(actor.HasBuff(BuffID.Poisoned) && actor.buffTime[actor.FindBuffIndex(BuffID.Poisoned)] == 90 && BuffPackets() == 2,
                 "native singleplayer moth retains ninety-frame poison without packets");
+            Main.netMode = NetmodeID.Server; actor.Center = larva.Center + new Vector2(20, 0);
+            larva.target = -1; larva.netUpdate = false;
+            check(EnemyTargeting.TryGetLivingTarget(larva, out var healthyTarget) && ReferenceEquals(healthyTarget, actor) && larva.netUpdate,
+                "native ordinary enemy retains healthy-table vanilla target acquisition");
+            Main.player[0] = null; larva.target = 0; larva.netUpdate = false;
+            check(EnemyTargeting.TryGetLivingTarget(larva, out var replacement) && ReferenceEquals(replacement, distant) && larva.target == 1 && larva.netUpdate,
+                "native ordinary enemy safely replaces a missing player slot");
+            Main.netMode = NetmodeID.MultiplayerClient; larva.target = 0; larva.netUpdate = false;
+            check(!EnemyTargeting.TryGetLivingTarget(larva, out _) && larva.target == 0 && !larva.netUpdate,
+                "native client waits for authority when ordinary enemy target slot is missing");
+            Main.netMode = NetmodeID.Server; Main.player[0] = actor; actor.Center = new Vector2(float.NaN, 0); larva.target = 0;
+            check(EnemyTargeting.TryGetLivingTarget(larva, out replacement) && ReferenceEquals(replacement, distant),
+                "native ordinary enemy ignores malformed player position and chooses valid peer");
+            Main.player[0] = null; Main.player[1] = null; larva.target = 0;
+            check(!EnemyTargeting.TryGetLivingTarget(larva, out _), "native ordinary enemy has no target when all active slots disappear");
+            Main.player[0] = actor; actor.Center = larva.Center + new Vector2(20, 0); larva.Center = new Vector2(float.NaN, 0);
+            check(!EnemyTargeting.TryGetLivingTarget(larva, out _), "native malformed ordinary enemy cannot acquire target");
+            Main.player[0] = actor; Main.player[1] = distant;
+            int gardenIndex = NPC.NewNPC(new EntitySource_Misc("XianXiaGardenRetargetAudit"), Main.maxTilesX * 8, 200, ModContent.NPCType<global::XianXia.Content.NPCs.Bosses.GardenWarden>());
+            check(gardenIndex >= 0 && gardenIndex < Main.maxNPCs, "registered garden warden created for shared targeting regression");
+            NPC garden = Main.npc[gardenIndex]; owned.Add(garden);
+            actor.Center = garden.Center + new Vector2(300, 0); distant.Center = garden.Center + new Vector2(400, 0); garden.target = 0;
+            var gardenAI = (global::XianXia.Content.NPCs.Bosses.GardenWarden)garden.ModNPC; gardenAI.AI(); int oldHazardSession = gardenAI.HazardSession;
+            actor.Center = new Vector2(float.NaN, 0); gardenAI.AI();
+            check(gardenAI.BattleTarget == 1 && gardenAI.HazardSession > 0 && gardenAI.HazardSession != oldHazardSession,
+                "native garden warden safely selects valid peer and replaces prior hazard identity");
+            distant.Center = new Vector2(float.NaN, 0); gardenAI.AI();
+            check(gardenAI.HazardSession == 0, "native garden warden cancels hazards when all targets are malformed");
         } finally {
             for (int i = 0; i < oldPlayers.Length; i++) Main.player[i] = oldPlayers[i]; oldClients.CopyTo(Netplay.Clients, 0);
             Main.netMode = oldMode; Main.myPlayer = oldLocal; Netplay.Connection = oldConnection;
