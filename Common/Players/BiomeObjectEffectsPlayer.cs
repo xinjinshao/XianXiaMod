@@ -60,10 +60,7 @@ public class BiomeObjectEffectsPlayer : ModPlayer
                 if (index < 0 || Player.buffTime[index] <= SwordBuffRefreshThreshold) {
                     Player.AddBuff(buff, SwordBuffDuration);
                     index = Player.FindBuffIndex(buff);
-                    if (index >= 0 && Player.whoAmI >= 0 && Player.whoAmI < Main.maxPlayers
-                        && ReferenceEquals(Main.player[Player.whoAmI], Player))
-                        NetMessage.SendData(MessageID.AddPlayerBuff, Player.whoAmI, -1, null,
-                            Player.whoAmI, buff, Player.buffTime[index]);
+                    if (index >= 0) global::XianXia.Common.Systems.AuthoritativeBuffSync.Send(Player, buff, Player.buffTime[index]);
                 }
             } else Player.AddBuff(buff, 2);
         }

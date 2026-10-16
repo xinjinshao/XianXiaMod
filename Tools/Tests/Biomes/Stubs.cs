@@ -43,9 +43,9 @@ namespace Terraria
     public struct Tile { public bool HasTile; public ushort TileType; }
     public class Player
     {
-        public bool active = true, dead, Rift, Thunder, Moonbone; public int AddedBuffs; public bool LastBuffQuiet; public int[] buffTime=new int[1];
+        public bool active = true, dead, Rift, Thunder, Moonbone; public int AddedBuffs; public bool LastBuffQuiet; public int[] buffType=new int[1],buffTime=new int[1];
         public int FindBuffIndex(int type)=>buffTime[0]>0?0:-1;
-        public void AddBuff(int type,int time,bool quiet=true) {AddedBuffs++;buffTime[0]=time;LastBuffQuiet=quiet;}
+        public void AddBuff(int type,int time,bool quiet=true) {AddedBuffs++;buffType[0]=type;buffTime[0]=time;LastBuffQuiet=quiet;}
         public int whoAmI, width = 20, height = 42, statLife, statLifeMax2 = 100;
         public Microsoft.Xna.Framework.Rectangle Hitbox => new((int)position.X,(int)position.Y,width,height);
         public void Heal(int amount) => statLife = Math.Min(statLifeMax2, statLife + amount);

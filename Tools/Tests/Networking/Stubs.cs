@@ -69,8 +69,8 @@ namespace Terraria
         public ref float GetCritChance(Terraria.ModLoader.DamageClass damage)=>ref critChance;
         public ref Terraria.ModLoader.StatModifier GetDamage(Terraria.ModLoader.DamageClass damage)=>ref damageModifier;
         public ref Terraria.ModLoader.StatModifier GetKnockback(Terraria.ModLoader.DamageClass damage)=>ref knockbackModifier;
-        public int[] buffTime = new int[22], ownedProjectileCounts = new int[16];
-        public void AddBuff(int type, int time) => buffTime[type] = time; public bool HasBuff(int type)=>buffTime[type]>0;
+        public int[] buffType = new int[22], buffTime = new int[22], ownedProjectileCounts = new int[16];
+        public void AddBuff(int type, int time) {buffType[type]=type;buffTime[type]=time;} public bool HasBuff(int type)=>buffTime[type]>0;
         public Microsoft.Xna.Framework.Rectangle Hitbox => new((int)Center.X-10,(int)Center.Y-20,20,40);
         public Microsoft.Xna.Framework.Vector2 MountedCenter => Center;
         public Microsoft.Xna.Framework.Vector2 RotatedRelativePoint(Microsoft.Xna.Framework.Vector2 value) => value;
@@ -161,11 +161,12 @@ namespace Terraria
     }
     public static class NetMessage
     {
+        public static List<(int Message,int Target,int Owner,int Buff,int Duration)> BuffPackets=new();
         public static readonly List<(int Message,int Number,float Number2)> Sent=new();
         public static readonly List<(int Message,int To,int Ignore,int Number,float Amount)> Routed=new();
         public static int Broadcasts;
         public static int WorldSends;
-        public static void SendData(int message, int toWho = -1, int fromWho = -1, object text = null, int number = 0, float number2 = 0) { Sent.Add((message,number,number2));Routed.Add((message,toWho,fromWho,number,number2));Broadcasts++; if(message==Terraria.ID.MessageID.WorldData) WorldSends++; }
+        public static void SendData(int message, int toWho = -1, int fromWho = -1, object text = null, int number = 0, float number2 = 0,float number3 = 0) { BuffPackets.Add((message,toWho,number,(int)number2,(int)number3));Sent.Add((message,number,number2));Routed.Add((message,toWho,fromWho,number,number2));Broadcasts++; if(message==Terraria.ID.MessageID.WorldData) WorldSends++; }
     }
 }
 
@@ -175,7 +176,7 @@ namespace Terraria.ID
     public static class SoundID { public const int Item4=1,Item20=2,Item5=3,Item3=4; }
     public static class BuffID { public const int Regeneration = 1,Ichor=2,OnFire3=3; }
     public static class NetmodeID { public const int SinglePlayer = 0, MultiplayerClient = 1, Server = 2; }
-    public static class MessageID { public const int WorldData = 7, SyncEquipment = 5,SpiritHeal=66,KillProjectile=29,SyncProjectile=27; }
+    public static class MessageID { public const int AddPlayerBuff=55; public const int WorldData = 7, SyncEquipment = 5,SpiritHeal=66,KillProjectile=29,SyncProjectile=27; }
 }
 
 namespace Terraria.ModLoader

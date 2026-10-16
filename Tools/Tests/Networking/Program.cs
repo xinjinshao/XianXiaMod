@@ -1517,6 +1517,22 @@ inventoryOwner.inventory[0].favorited=true;
 favoriteState.Apply(0,104,new Terraria.Item());
 Check(inventoryOwner.inventory[0].IsAir&&!inventoryOwner.inventory[0].favorited,"Consumed slot cannot retain favorite on air");
 
+// Buff deltas are keyed by type so slot compaction does not create false updates.
+Game.netMode=NetmodeID.Server; var buffSyncOwner=new Terraria.Player {whoAmI=0,active=true};Game.player[0]=buffSyncOwner;
+buffSyncOwner.buffType[0]=4;buffSyncOwner.buffTime[0]=2700;
+var beforeBuffSync=AuthoritativeBuffSync.Capture(buffSyncOwner);int beforeBuffPackets=Terraria.NetMessage.BuffPackets.Count;
+buffSyncOwner.buffType[0]=0;buffSyncOwner.buffTime[0]=0;buffSyncOwner.buffType[1]=4;buffSyncOwner.buffTime[1]=2700;
+AuthoritativeBuffSync.SendChanges(buffSyncOwner,beforeBuffSync);
+Check(Terraria.NetMessage.BuffPackets.Count==beforeBuffPackets,"Compacting unchanged buff slots does not send a false update");
+buffSyncOwner.buffTime[1]=3000;buffSyncOwner.buffType[2]=2;buffSyncOwner.buffTime[2]=1800;
+AuthoritativeBuffSync.SendChanges(buffSyncOwner,beforeBuffSync);
+Check(Terraria.NetMessage.BuffPackets.Count==beforeBuffPackets+2,"Changed duration and new fatigue each emit one owner packet");
+Check(Terraria.NetMessage.BuffPackets.TakeLast(2).All(packet=>packet.Message==55&&packet.Target==0&&packet.Owner==0),"Buff changes route only to the owning client");
+int guardedBuffPackets=Terraria.NetMessage.BuffPackets.Count;buffSyncOwner.dead=true;AuthoritativeBuffSync.Send(buffSyncOwner,4,10);buffSyncOwner.dead=false;
+Game.player[0]=new Terraria.Player();AuthoritativeBuffSync.Send(buffSyncOwner,4,10);
+Game.netMode=NetmodeID.MultiplayerClient;AuthoritativeBuffSync.Send(buffSyncOwner,4,10);
+Check(Terraria.NetMessage.BuffPackets.Count==guardedBuffPackets,"Dead replaced and client-side actors cannot send authority buffs");
+
 Console.WriteLine($"Networking including actual recovery pill hooks: {assertions} assertions; buff/inventory engine boundaries mocked.");
 
 sealed class TestBossSummon : XianXia.Common.Items.CultivationBossSummonItem
