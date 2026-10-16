@@ -840,6 +840,12 @@ public class SummonAuditSystem : ModSystem
                                         Main.myPlayer = receivingPlayer;
                                         var receiver = new Player { whoAmI = 0, active = true, dead = false };
                                         for (int slot = 0; slot < 3; slot++) receiver.inventory[slot] = ItemIO.Load(inventoryBeforeDao[slot]);
+                                        // Favorite state is client-local: deliberately differ from the server item.
+                                        if (receivingPlayer == 0) {
+                                            receiver.inventory[0].favorited = true;
+                                            receiver.inventory[1].favorited = true;
+                                            receiver.inventory[2].favorited = true;
+                                        }
                                         Main.player[0] = receiver;
                                         foreach (byte[] packet in inventoryPackets) {
                                             byte[] payload = packet.Skip(2).ToArray();
@@ -855,6 +861,8 @@ public class SummonAuditSystem : ModSystem
                                                 using var reader = new BinaryReader(new MemoryStream(packet.Skip(modPayloadOffset).ToArray()));
                                                 inventoryMod.HandlePacket(reader, 256);
                                             }
+                                            Check(receiver.inventory[0].favorited && receiver.inventory[1].favorited && !receiver.inventory[2].favorited,
+                                                "native owner correction retains local favorites for surviving items and clears consumed air");
                                             Item firstAppliedTarget = receiver.inventory[1];
                                             foreach (byte[] packet in ownerPackets) {
                                                 using var reader = new BinaryReader(new MemoryStream(packet.Skip(modPayloadOffset).ToArray()));

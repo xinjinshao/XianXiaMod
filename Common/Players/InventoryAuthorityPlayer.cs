@@ -14,6 +14,11 @@ public class InventoryAuthorityPlayer : ModPlayer
     {
         if (slot < 0 || slot >= received.Length || slot >= Player.inventory.Length || revision == 0
             || received[slot] != 0 && unchecked((long)(revision - received[slot])) <= 0) return false;
+        // Favorites belong to the local inventory UI and are intentionally absent from the wire payload.
+        // Keep them for corrections to the same item, never for a consumed or replaced slot.
+        Item previous = Player.inventory[slot];
+        item.favorited = !item.IsAir && previous != null && !previous.IsAir
+            && previous.type == item.type && previous.favorited;
         Player.inventory[slot] = item; received[slot] = revision; return true;
     }
 }

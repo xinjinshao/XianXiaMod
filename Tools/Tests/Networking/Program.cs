@@ -1502,6 +1502,21 @@ Check(ModPacket.Sent.Count==beforeOwnerSend,"Local inventory changes do not send
 Game.netMode=NetmodeID.Server; AuthoritativeInventorySync.Send(inventoryOwner,0);
 Check(ModPacket.Sent.Count==beforeOwnerSend+1&&ModPacket.Sent.Last().Data[0]==13,"Server emits canonical owner correction");
 
+// Favorite is local UI state, absent from canonical ItemIO payloads.
+Game.netMode=NetmodeID.MultiplayerClient;
+inventoryOwner.inventory[0]=new Terraria.Item {type=123,stack=2,favorited=true};
+DeliverInventory(InventoryPacket(0,0,101));
+Check(inventoryOwner.inventory[0].favorited&&inventoryOwner.inventory[0].stack==7,"Authority correction preserves favorite on the same item type");
+inventoryOwner.inventory[0].favorited=false; DeliverInventory(InventoryPacket(0,0,102));
+Check(!inventoryOwner.inventory[0].favorited,"Local unfavorite remains unfavorited after correction");
+inventoryOwner.inventory[0]=new Terraria.Item {type=999,stack=1,favorited=true};
+DeliverInventory(InventoryPacket(0,0,103));
+Check(!inventoryOwner.inventory[0].favorited,"Different item cannot inherit the old slot favorite");
+var favoriteState=inventoryOwner.GetModPlayer<InventoryAuthorityPlayer>();
+inventoryOwner.inventory[0].favorited=true;
+favoriteState.Apply(0,104,new Terraria.Item());
+Check(inventoryOwner.inventory[0].IsAir&&!inventoryOwner.inventory[0].favorited,"Consumed slot cannot retain favorite on air");
+
 Console.WriteLine($"Networking including actual recovery pill hooks: {assertions} assertions; buff/inventory engine boundaries mocked.");
 
 sealed class TestBossSummon : XianXia.Common.Items.CultivationBossSummonItem

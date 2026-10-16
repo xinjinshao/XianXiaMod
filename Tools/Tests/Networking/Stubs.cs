@@ -99,7 +99,7 @@ namespace Terraria
         public int type, stack, shoot = 2, damage = 20, useTime = 30;
         public int maxStack=1,useAmmo,ammo,prefix,width,height,value,rare,useStyle,useAnimation,ResearchUnlockCount;
         public object UseSound;
-        public bool accessory,vanity,noMelee,autoReuse; public int crit; public object DamageType;
+        public bool accessory,vanity,noMelee,autoReuse,favorited; public int crit; public object DamageType;
         public static int buyPrice(int gold=0,int silver=0)=>gold*10000+silver*100;
         public bool IsAir=>type==0||stack<=0;
         public float shootSpeed = 10f, knockBack = 2f;
