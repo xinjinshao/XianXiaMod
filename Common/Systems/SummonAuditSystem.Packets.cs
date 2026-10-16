@@ -33,6 +33,9 @@ public partial class SummonAuditSystem
                 Main.netMode = NetmodeID.Server;
                 Main.player = shape == 0 ? null : shape == 1 ? Array.Empty<Player>() : new Player[] { shape == 2 ? null : unready };
                 int sender = shape == 4 ? 1 : 0, before = output.Sent.Count;
+                new CultivationNetworkingSystem().PostUpdatePlayers();
+                var caches = new BiomeScanCacheSystem(); caches.OnWorldLoad(); caches.PostUpdatePlayers(); caches.OnWorldUnload();
+                check(output.Sent.Count == before, "native lifecycle systems safely visit null short and uninitialized player tables without output");
                 foreach (byte opcode in new byte[] { 0, 1, 3, 5, 6, 8, 9, 10, 11, 12, 13 }) Deliver(opcode, sender);
                 check(output.Sent.Count == before, "native unavailable packet sender slots skip all request dispatch without reply");
             }
@@ -41,6 +44,15 @@ public partial class SummonAuditSystem
             Deliver(3, 0, writer => { writer.Write((byte)0); initial.Write(writer); });
             check(joining.GetModPlayer<XianXiaPlayer>().NetworkInitialized && joining.GetModPlayer<XianXiaPlayer>().spiritualEnergy == 40,
                 "native ready mod-player accepts initial character import even before active flag");
+            var sessions = new CultivationNetworkingSystem(); sessions.PostUpdatePlayers();
+            check(joining.GetModPlayer<XianXiaPlayer>().NetworkInitialized && !joining.GetModPlayer<XianXiaPlayer>().NetworkWasActive,
+                "native pre-active server tick preserves imported character");
+            joining.active = true; sessions.PostUpdatePlayers(); joining.active = false; sessions.PostUpdatePlayers();
+            check(!joining.GetModPlayer<XianXiaPlayer>().NetworkInitialized && !joining.GetModPlayer<XianXiaPlayer>().NetworkWasActive,
+                "native disconnected slot releases its active network session");
+            Deliver(3, 0, writer => { writer.Write((byte)0); initial.Write(writer); });
+            check(joining.GetModPlayer<XianXiaPlayer>().NetworkInitialized,
+                "native same-player object can re-import after inactive session cleanup");
             Main.netMode = NetmodeID.MultiplayerClient; Main.myPlayer = 0;
             var recipient = new Player { whoAmI = 0, active = true }; Main.player = new Player[] { recipient };
             recipient.GetModPlayer<XianXiaPlayer>().ApplySnapshot(initial);

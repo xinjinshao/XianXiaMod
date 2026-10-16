@@ -9,11 +9,12 @@ public class CultivationNetworkingSystem : ModSystem
 {
     public override void PostUpdatePlayers()
     {
-        if (Main.netMode != NetmodeID.Server) return;
-        for (int i = 0; i < Main.maxPlayers; i++)
+        if (Main.netMode != NetmodeID.Server || Main.player == null) return;
+        for (int i = 0; i < System.Math.Min(Main.maxPlayers, Main.player.Length); i++)
         {
-            XianXiaPlayer state = Main.player[i].GetModPlayer<XianXiaPlayer>();
-            if (Main.player[i].active) state.NetworkWasActive = true;
+            Player player = Main.player[i];
+            if (player == null || !player.TryGetModPlayer<XianXiaPlayer>(out var state)) continue;
+            if (player.active) state.NetworkWasActive = true;
             else if (state.NetworkWasActive) state.ResetNetworkSession();
         }
     }

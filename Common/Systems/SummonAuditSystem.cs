@@ -68,6 +68,9 @@ public partial class SummonAuditSystem : ModSystem
         }
         try {
             Check(!Main.player.Any(player => player?.active == true), "no connected players");
+            new CultivationNetworkingSystem().PostUpdatePlayers();
+            new BiomeScanCacheSystem().PostUpdatePlayers();
+            Check(true, "native first no-player server maintenance safely skips vanilla world-load slots");
             Check(Main.npc.Count(npc => npc?.active != true) >= 4, "four free NPC slots");
             int x = Main.maxTilesX * 8;
             int y = 200;

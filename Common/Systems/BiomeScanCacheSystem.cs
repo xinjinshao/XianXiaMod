@@ -16,13 +16,15 @@ public class BiomeScanCacheSystem : ModSystem
     }
     private static void ResetAll()
     {
-        for (int i = 0; i < Main.maxPlayers; i++) Reset(Main.player[i]);
+        if (Main.player == null) return;
+        for (int i = 0; i < System.Math.Min(Main.maxPlayers, Main.player.Length); i++) Reset(Main.player[i]);
     }
     public override void OnWorldLoad() => ResetAll();
     public override void OnWorldUnload() => ResetAll();
     public override void PostUpdatePlayers()
     {
-        for (int i = 0; i < Main.maxPlayers; i++)
+        if (Main.player == null) return;
+        for (int i = 0; i < System.Math.Min(Main.maxPlayers, Main.player.Length); i++)
             if (Main.player[i] != null && !Main.player[i].active) Reset(Main.player[i]);
     }
 }

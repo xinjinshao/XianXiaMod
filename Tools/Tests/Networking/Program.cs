@@ -1560,6 +1560,18 @@ foreach(var unavailableNpcTable in new Terraria.NPC[][]{null,Array.Empty<Terrari
  Check(true,"Commission packets safely skip absent NPC table and entries");
 }
 
+// Normal server ticks must tolerate the same slot states as packet dispatch.
+foreach(int mode in new[]{0,1,2})foreach(int shape in Enumerable.Range(0,5)) {
+ Game.netMode=mode;Game.player=shape==0?null:shape==1?Array.Empty<Terraria.Player>():new Terraria.Player[]{shape==2?null:new(){ModPlayersReady=shape!=3,active=true}};
+ sessions.PostUpdatePlayers();
+ Check(shape!=4||Game.player[0].State.NetworkWasActive==(mode==2),"Only server tracks active installed components, safely skipping unavailable slots");
+}
+Game.netMode=NetmodeID.Server;var joiningTickPlayer=new Terraria.Player{active=false,whoAmI=0};Game.player=new Terraria.Player[]{joiningTickPlayer};
+joiningTickPlayer.State.TryInitializeNetwork(initial);sessions.PostUpdatePlayers();
+Check(joiningTickPlayer.State.NetworkInitialized&&!joiningTickPlayer.State.NetworkWasActive,"Short-table joining import survives pre-active server tick");
+joiningTickPlayer.active=true;sessions.PostUpdatePlayers();joiningTickPlayer.active=false;sessions.PostUpdatePlayers();
+Check(!joiningTickPlayer.State.NetworkInitialized&&!joiningTickPlayer.State.NetworkWasActive,"Short-table disconnect still clears a previously active session");
+
 Console.WriteLine($"Networking including actual recovery pill hooks: {assertions} assertions; buff/inventory engine boundaries mocked.");
 
 sealed class TestBossSummon : XianXia.Common.Items.CultivationBossSummonItem
