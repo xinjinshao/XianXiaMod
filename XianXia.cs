@@ -25,6 +25,11 @@ public class XianXia : Mod
     private void ReadPacket(BinaryReader reader, int whoAmI)
     {
         byte message = reader.ReadByte();
+        if (message == 13)
+        {
+            Common.Systems.AuthoritativeInventorySync.Receive(reader, whoAmI);
+            return;
+        }
         if (message == 10)
         {
             var skill = (Common.Systems.ArtifactSkill)reader.ReadByte(); byte slot = reader.ReadByte(); int type = reader.ReadInt32();

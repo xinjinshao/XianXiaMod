@@ -82,7 +82,10 @@ namespace Terraria
         public Microsoft.Xna.Framework.Vector2 Center,velocity;
         public XianXia.Common.Players.XianXiaPlayer State = new();
         private XianXia.Common.Players.InscriptionPlayer inscription;
+        private XianXia.Common.Players.InventoryAuthorityPlayer inventoryAuthority;
         public T GetModPlayer<T>() {
+            if(typeof(T)==typeof(XianXia.Common.Players.InventoryAuthorityPlayer))
+                return (T)(object)(inventoryAuthority ??= new XianXia.Common.Players.InventoryAuthorityPlayer { Player=this });
             if(typeof(T)==typeof(XianXia.Common.Players.InscriptionPlayer))
                 return (T)(object)(inscription ??= new XianXia.Common.Players.InscriptionPlayer { Player=this });
             return (T)(object)State;
@@ -241,6 +244,7 @@ namespace Terraria.ModLoader
     public struct StatModifier { public float Bonus,Base; public static StatModifier operator +(StatModifier value,float amount) { value.Bonus+=amount; return value; } }
     public class DamageClass { public static DamageClass Generic=new(),Magic=new(),Ranged=new(),Melee=new(); }
     public class ModPlayer {
+        public virtual void OnEnterWorld() { }
         public Terraria.Player Player;
         public virtual void Initialize() { }
         public virtual void ResetEffects() { }
@@ -281,6 +285,10 @@ namespace Terraria.ModLoader
 
 namespace Terraria.ModLoader.IO
 {
+    public static class ItemIO {
+        public static void Send(Terraria.Item item,BinaryWriter writer,bool stack,bool favorite){writer.Write(item.type);writer.Write(item.stack);writer.Write(item.prefix);writer.Write(item.damage);}
+        public static Terraria.Item Receive(BinaryReader reader,bool stack,bool favorite){int type=reader.ReadInt32(),count=reader.ReadInt32(),prefix=reader.ReadInt32(),damage=reader.ReadInt32();return new Terraria.Item{type=type,stack=count,prefix=prefix,damage=damage};}
+    }
     public class TagCompound : Dictionary<string, object>
     {
         public bool GetBool(string key) => TryGetValue(key, out object v) && (bool)v;

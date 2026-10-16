@@ -776,13 +776,15 @@ public class SummonAuditSystem : ModSystem
                 var daoSavedProgress = new TagCompound(); progressSystem.SaveWorldData(daoSavedProgress);
                 Player daoSavedPlayer = Main.player[0];
                 var daoSavedClients = (RemoteClient[])Netplay.Clients.Clone();
+                bool daoSavedBroadcast = NetMessage.buffer[0].broadcast;
                 var daoOutputSocket = new AuditOutputSocket(true);
                 var daoTilePoint = wheelActor.Center.ToTileCoordinates();
                 Tile daoTile = Main.tile[daoTilePoint.X + 2, daoTilePoint.Y];
                 bool daoTileHadTile = daoTile.HasTile; ushort daoTileOldType = daoTile.TileType;
                 try {
+                    NetMessage.buffer[0].broadcast = true;
                     for (int clientIndex = 0; clientIndex < Netplay.Clients.Length; clientIndex++) {
-                        Netplay.Clients[clientIndex] = new RemoteClient { Id = clientIndex, Socket = clientIndex == 0 ? daoOutputSocket : new AuditOutputSocket(), IsActive = clientIndex == 0 };
+                        Netplay.Clients[clientIndex] = new RemoteClient { Id = clientIndex, Socket = clientIndex == 0 ? daoOutputSocket : new AuditOutputSocket(), IsActive = clientIndex == 0, State = clientIndex == 0 ? 10 : 0 };
                     }
                     // Only patch the two tile fields used by NearAltar; never replace the loaded Tilemap.
                     daoTile.HasTile = true; daoTile.TileType = (ushort)ModContent.TileType<global::XianXia.Content.Tiles.Stations.DaoSeveringAltarTile>();
@@ -813,6 +815,7 @@ public class SummonAuditSystem : ModSystem
                             Player actor = MakeDaoFixture(artifactType); Item target = actor.inventory[1]; int prefix = target.prefix;
                             Main.netMode = transactionMode; Main.myPlayer = transactionMode == NetmodeID.Server ? Main.maxPlayers : 0;
                             Check(EndgameRouteTransactions.NearAltar(actor), "registered Dao fixture detects station tile");
+                            TagCompound[] inventoryBeforeDao = Enumerable.Range(0, 3).Select(slot => ItemIO.Save(actor.inventory[slot])).ToArray();
                             int outputBeforeDao = daoOutputSocket.Sent.Count;
                             SubmitDao(actor, route);
                             Check(transactionMode == NetmodeID.Server ? daoOutputSocket.Sent.Count > outputBeforeDao : daoOutputSocket.Sent.Count == outputBeforeDao,
@@ -821,6 +824,54 @@ public class SummonAuditSystem : ModSystem
                             Check(actor.inventory[0].stack == 1 && actor.inventory[2].IsAir && (byte)growth.DaoRoute == route, "native Dao material transaction costs one seal and thirty-six stones");
                             Check(ReferenceEquals(actor.inventory[1], target) && target.prefix == prefix && growth.Level == 3 && growth.Awakened
                                 && global::XianXia.Common.Items.InscribedEquipment.GetKind(target) == InscriptionKind.Greenwood, "native Dao preserves actual equipment prefix inscription and growth");
+                            if (transactionMode == NetmodeID.Server) {
+                                byte[][] inventoryPackets = daoOutputSocket.Sent.Skip(outputBeforeDao).Where(packet => packet.Length > 2 && packet[2] == MessageID.SyncEquipment).ToArray();
+                                Check(inventoryPackets.Length == 3, "native Dao sends exactly three equipment packets for material and target slots; sent="
+                                    + string.Join(",", daoOutputSocket.Sent.Skip(outputBeforeDao).Select(packet => packet.Length > 2 ? packet[2] : -1)));
+                                var inventoryMod = ModContent.GetInstance<global::XianXia.XianXia>();
+                                using var headerProbe = inventoryMod.GetPacket();
+                                int modPayloadOffset = (int)headerProbe.BaseStream.Position;
+                                byte[][] ownerPackets = daoOutputSocket.Sent.Skip(outputBeforeDao).Where(packet => packet.Length > modPayloadOffset && packet[modPayloadOffset] == 13).ToArray();
+                                Check(ownerPackets.Length == 3, "native Dao produces three authoritative owner slot packets");
+                                var oldConnection = Netplay.Connection; bool oldServerSideCharacter = Main.ServerSideCharacter;
+                                try {
+                                    Main.netMode = NetmodeID.MultiplayerClient; Main.ServerSideCharacter = false; Netplay.Connection = new RemoteServer();
+                                    foreach (int receivingPlayer in new[] { 0, 1 }) {
+                                        Main.myPlayer = receivingPlayer;
+                                        var receiver = new Player { whoAmI = 0, active = true, dead = false };
+                                        for (int slot = 0; slot < 3; slot++) receiver.inventory[slot] = ItemIO.Load(inventoryBeforeDao[slot]);
+                                        Main.player[0] = receiver;
+                                        foreach (byte[] packet in inventoryPackets) {
+                                            byte[] payload = packet.Skip(2).ToArray();
+                                            var buffer = new MessageBuffer { whoAmI = 256, readBuffer = payload, reader = new BinaryReader(new MemoryStream(payload)) };
+                                            try { buffer.GetData(0, payload.Length, out int messageType); Check(messageType == MessageID.SyncEquipment, "official receiver parses server equipment packet"); }
+                                            finally { buffer.reader.Dispose(); }
+                                        }
+                                        if (receivingPlayer == 0) {
+                                            Check(receiver.inventory[0].stack == 2 && receiver.inventory[2].stack == 36
+                                                && global::XianXia.Common.Items.RefinedArtifact.GetDaoRoute(receiver.inventory[1]) == DownedBossSystem.EndgameRoute.None,
+                                                "official normal client ignores its own vanilla equipment correction");
+                                            foreach (byte[] packet in ownerPackets) {
+                                                using var reader = new BinaryReader(new MemoryStream(packet.Skip(modPayloadOffset).ToArray()));
+                                                inventoryMod.HandlePacket(reader, 256);
+                                            }
+                                            Item firstAppliedTarget = receiver.inventory[1];
+                                            foreach (byte[] packet in ownerPackets) {
+                                                using var reader = new BinaryReader(new MemoryStream(packet.Skip(modPayloadOffset).ToArray()));
+                                                inventoryMod.HandlePacket(reader, 256);
+                                            }
+                                            Check(ReferenceEquals(receiver.inventory[1], firstAppliedTarget) && receiver.inventory[0].stack == 1 && receiver.inventory[2].IsAir,
+                                                "native owner slot correction replay is ignored without replacing canonical item");
+                                        }
+                                        Item receivedTarget = receiver.inventory[1];
+                                        Check(receiver.inventory[0].stack == 1 && receiver.inventory[2].IsAir && receivedTarget.type == target.type && receivedTarget.prefix == prefix
+                                            && global::XianXia.Common.Items.InscribedEquipment.GetKind(receivedTarget) == InscriptionKind.Greenwood
+                                            && global::XianXia.Common.Items.RefinedArtifact.IsAwakened(receivedTarget) && global::XianXia.Common.Items.RefinedArtifact.GetLevel(receivedTarget) == 3
+                                            && (byte)global::XianXia.Common.Items.RefinedArtifact.GetDaoRoute(receivedTarget) == route,
+                                            $"official inventory receiver preserves owner/observer Dao state; receiver={receivingPlayer}");
+                                    }
+                                } finally { Main.player[0] = actor; Main.netMode = transactionMode; Main.myPlayer = Main.maxPlayers; Main.ServerSideCharacter = oldServerSideCharacter; Netplay.Connection = oldConnection; }
+                            }
                             SubmitDao(actor, route, route);
                             Check(actor.inventory[0].stack == 1 && (byte)growth.DaoRoute == route, "native immediate Dao replay consumes nothing");
                             actor.GetModPlayer<global::XianXia.Common.Players.InscriptionPlayer>().Initialize(); SubmitDao(actor, route, route);
@@ -848,9 +899,10 @@ public class SummonAuditSystem : ModSystem
                             }
                         }
                     }
-                } finally { Main.player[0] = daoSavedPlayer; daoTile.HasTile = daoTileHadTile; daoTile.TileType = daoTileOldType; progressSystem.LoadWorldData(daoSavedProgress); daoSavedClients.CopyTo(Netplay.Clients, 0); }
+                } finally { Main.player[0] = daoSavedPlayer; daoTile.HasTile = daoTileHadTile; daoTile.TileType = daoTileOldType; progressSystem.LoadWorldData(daoSavedProgress); daoSavedClients.CopyTo(Netplay.Clients, 0); NetMessage.buffer[0].broadcast = daoSavedBroadcast; }
                 Check(ReferenceEquals(Main.player[0], daoSavedPlayer) && daoTile.HasTile == daoTileHadTile && daoTile.TileType == daoTileOldType
                     && Netplay.Clients.SequenceEqual(daoSavedClients)
+                    && NetMessage.buffer[0].broadcast == daoSavedBroadcast
                     && (int)DownedBossSystem.ChosenRoute == daoSavedProgress.GetInt("chosenRoute") && DownedBossSystem.DownedBosses.SetEquals(daoSavedProgress.GetList<string>("downedBosses")),
                     "native Dao fixture restores player slot station fields and world route progression");
             } finally {
@@ -891,7 +943,7 @@ public class SummonAuditSystem : ModSystem
         Directory.CreateDirectory(directory);
         File.WriteAllText(Path.Combine(directory, "summon-audit.json"), JsonSerializer.Serialize(new {
             schema = 1, passed = error == null, checks, error,
-            limitations = "Registered AI advanced manually for medicine, tablet, inspector, core modules, archive locks and thunder jiao chains/zones; native compression and slam Projectile.Update/Projectile.Damage verify safe/unsafe regions, wall blocking and full thirty-frame slam expiry with hit-text slots occupied. Actual registered Five Wheels skill creation verifies damage, fan, cost and cooldown; all five projectiles run 150 native updates to natural expiry, and owner-death cancellation verifies server-update dirty-state handling and six-update cleanup. Registered Triple Fall creation verifies three hammers and half-damage impacts through native Kill plus duplicate callbacks; native impact updates verify a two-frame damage window, per-projectile immunity against a living vanilla NPC and ten-frame expiry, with unrelated owner immunity cleared. A full-capacity check uses only allocatable projectile slots. Furnace parent/impact owner-death cancellation runs six native updates without creating impacts; a normal hammer runs ninety updates in a clear real terrain corridor and still releases one half-damage impact at zero lifetime. These use a temporary local skill context and occupied hit-text slots, with inventory/resources/owner counts/engine context restored; no real client receives the cancellation. Actual Dao seal/stone/equipment transactions run both local and server authority modes for both recent artifacts and all three world routes, including full ItemIO save/load, full item cloning, duplicate refusal and five invalid-gate cases. Server reply output is captured by a non-networking audit ISocket; the real authority transaction and native packet creation run, but no peer receives or applies the inventory data. Station qualification uses only two temporarily patched fields of a loaded world tile, with player/client slots and world progress restored; no physical multi-tile placement or real inventory transport is covered. Native player damage/NPC.StrikeNPC verify shield breaks, reward suppression and ordinary worm head rewards through fatal segment hits. Progress/difficulty/banner tallies are restored; expert/master bag distribution is not covered. No full world/player ticks, rendered graphics, real clients, combat balance or complete playthrough."
+            limitations = "Registered AI advanced manually for medicine, tablet, inspector, core modules, archive locks and thunder jiao chains/zones; native compression and slam Projectile.Update/Projectile.Damage verify safe/unsafe regions, wall blocking and full thirty-frame slam expiry with hit-text slots occupied. Actual registered Five Wheels skill creation verifies damage, fan, cost and cooldown; all five projectiles run 150 native updates to natural expiry, and owner-death cancellation verifies server-update dirty-state handling and six-update cleanup. Registered Triple Fall creation verifies three hammers and half-damage impacts through native Kill plus duplicate callbacks; native impact updates verify a two-frame damage window, per-projectile immunity against a living vanilla NPC and ten-frame expiry, with unrelated owner immunity cleared. A full-capacity check uses only allocatable projectile slots. Furnace parent/impact owner-death cancellation runs six native updates without creating impacts; a normal hammer runs ninety updates in a clear real terrain corridor and still releases one half-damage impact at zero lifetime. These use a temporary local skill context and occupied hit-text slots, with inventory/resources/owner counts/engine context restored; no real client receives the cancellation. Actual Dao seal/stone/equipment transactions run both local and server authority modes for both recent artifacts and all three world routes, including full ItemIO save/load, full item cloning, duplicate refusal and five invalid-gate cases. Server reply output is captured by a non-networking audit ISocket; native packet creation and official vanilla client decoding run on isolated receiver copies. The ordinary non-SSC owner ignores vanilla equipment updates; the server-only mod correction applies full ItemIO data and rejects replay, while the observer applies vanilla updates. No live peer or real network transport is covered. Station qualification uses only two temporarily patched fields of a loaded world tile, with player/client slots and world progress restored; no physical multi-tile placement or real inventory transport is covered. Native player damage/NPC.StrikeNPC verify shield breaks, reward suppression and ordinary worm head rewards through fatal segment hits. Progress/difficulty/banner tallies are restored; expert/master bag distribution is not covered. No full world/player ticks, rendered graphics, real clients, combat balance or complete playthrough."
         }, new JsonSerializerOptions { WriteIndented = true }));
         Mod.Logger.Info($"Summon audit finished: {checks.Count} checks; passed={error == null}");
     }

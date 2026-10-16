@@ -104,6 +104,6 @@ public static class InscriptionTransactions
     }
     private static void SyncSlot(Player player, int slot)
     {
-        if (Main.netMode == NetmodeID.Server) NetMessage.SendData(MessageID.SyncEquipment, -1, -1, null, player.whoAmI, slot);
+        if (Main.netMode == NetmodeID.Server) AuthoritativeInventorySync.Send(player, slot);
     }
 }

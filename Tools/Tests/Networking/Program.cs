@@ -1458,6 +1458,50 @@ foreach(int hammerMode in new[]{NetmodeID.SinglePlayer,NetmodeID.Server})foreach
 }
 foreach(Action reject in new Action[]{()=>Dao(route:2),()=>Dao(prefix:0),()=>Dao(kind:2),()=>Dao(level:2),()=>Dao(awakened:false),()=>{Game.player[0].State.cultivationStage=CultivationStage.Tribulation;Dao();},()=>{Game.tile[0,0].TileType=1;Dao();},()=>{DownedBossSystem.DownedBosses.Clear();Dao();},()=>{Game.player[0].inventory[2].stack=35;Dao();}}){SetupDao(name:"BlackFurnaceWarhammer");reject();Check(Game.player[0].inventory[0].stack==2&&Game.player[0].inventory[2].stack>0&&XianXia.Common.Items.RefinedArtifact.GetDaoRoute(Game.player[0].inventory[1])==DownedBossSystem.EndgameRoute.None,"Hammer Dao invalid or stale request preserves materials and route");}
 foreach(int mode in new[]{NetmodeID.SinglePlayer,NetmodeID.Server})foreach(byte route in new byte[]{1,2,3}){SetupDao(route,"BlackFurnaceWarhammer");Game.netMode=mode;HammerDao(mode,route);Game.player[0].selectedItem=1;HammerCast(mode);var daoParents=Game.projectile.Where(p=>p.active&&p.type==6).ToArray();foreach(var parent in daoParents){var child=new XianXia.Content.Projectiles.FurnaceHammerProjectile();child.SetDefaults();child.Projectile.owner=0;child.Projectile.damage=parent.damage;child.OnKill(0);child.OnKill(0);}Check(daoParents.Length==3&&Game.projectile.Count(p=>p.active&&p.type==7)==3&&Game.projectile.Where(p=>p.active&&p.type==7).All(p=>p.damage==(route==2?34:28)),"Dao hammer parent multipliers retain three one-shot half-damage impacts");}
+// Canonical owner inventory packets: trust direction, atomic decode and per-slot ordering.
+byte[] InventoryPacket(byte owner, byte slot, ulong revision) {
+    using var output = new MemoryStream(); using var writer = new BinaryWriter(output);
+    writer.Write((byte)13); writer.Write(owner); writer.Write(slot); writer.Write(revision);
+    Terraria.ModLoader.IO.ItemIO.Send(new Terraria.Item {type=123,stack=7,prefix=4,damage=55},writer,true,false);
+    return output.ToArray();
+}
+void DeliverInventory(byte[] bytes,int sender=256) {
+    using var reader = new BinaryReader(new MemoryStream(bytes)); mod.HandlePacket(reader,sender);
+}
+var inventoryOwner = new Terraria.Player {whoAmI=0,active=true}; Game.player[0]=inventoryOwner;
+Game.netMode=NetmodeID.MultiplayerClient; Game.myPlayer=0;
+var untouched=inventoryOwner.inventory[0];
+foreach(int sender in new[]{-1,0,1,255}) DeliverInventory(InventoryPacket(0,0,1),sender);
+foreach(byte owner in new byte[]{1,255}) DeliverInventory(InventoryPacket(owner,0,1));
+foreach(byte slot in new byte[]{58,255}) DeliverInventory(InventoryPacket(0,slot,1));
+DeliverInventory(InventoryPacket(0,0,0));
+Check(ReferenceEquals(untouched,inventoryOwner.inventory[0]),"Invalid inventory authority headers cannot mutate owner slots");
+byte[] completeInventoryPacket=InventoryPacket(0,0,10);
+for(int length=1;length<completeInventoryPacket.Length;length++) {
+    DeliverInventory(completeInventoryPacket.Take(length).ToArray());
+    Check(ReferenceEquals(untouched,inventoryOwner.inventory[0]),"Every truncated inventory packet is atomic");
+}
+DeliverInventory(completeInventoryPacket);
+var canonicalItem=inventoryOwner.inventory[0];
+Check(canonicalItem.type==123&&canonicalItem.stack==7&&canonicalItem.prefix==4&&canonicalItem.damage==55,"Owner receives complete serialized item");
+DeliverInventory(InventoryPacket(0,0,10)); DeliverInventory(InventoryPacket(0,0,9));
+Check(ReferenceEquals(canonicalItem,inventoryOwner.inventory[0]),"Replay and stale revisions preserve canonical item identity");
+DeliverInventory(InventoryPacket(0,1,1));
+Check(inventoryOwner.inventory[1].type==123,"Revisions are independent for each inventory slot");
+DeliverInventory(InventoryPacket(0,0,11));
+Check(!ReferenceEquals(canonicalItem,inventoryOwner.inventory[0]),"Newer owner correction applies");
+inventoryOwner.GetModPlayer<InventoryAuthorityPlayer>().OnEnterWorld();
+DeliverInventory(InventoryPacket(0,0,1));
+Check(inventoryOwner.inventory[0].type==123,"Entering a world resets received inventory revision");
+var beforeServerPacket=inventoryOwner.inventory[0]; Game.netMode=NetmodeID.Server;
+DeliverInventory(InventoryPacket(0,0,100));
+Check(ReferenceEquals(beforeServerPacket,inventoryOwner.inventory[0]),"Server cannot accept an inventory correction from a client");
+Game.netMode=NetmodeID.SinglePlayer;
+int beforeOwnerSend=ModPacket.Sent.Count; AuthoritativeInventorySync.Send(inventoryOwner,0);
+Check(ModPacket.Sent.Count==beforeOwnerSend,"Local inventory changes do not send owner packets");
+Game.netMode=NetmodeID.Server; AuthoritativeInventorySync.Send(inventoryOwner,0);
+Check(ModPacket.Sent.Count==beforeOwnerSend+1&&ModPacket.Sent.Last().Data[0]==13,"Server emits canonical owner correction");
+
 Console.WriteLine($"Networking including actual recovery pill hooks: {assertions} assertions; buff/inventory engine boundaries mocked.");
 
 sealed class TestBossSummon : XianXia.Common.Items.CultivationBossSummonItem

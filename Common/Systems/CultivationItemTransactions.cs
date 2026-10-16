@@ -62,7 +62,7 @@ public class CultivationItemTransactions : GlobalItem
             }
         }
         // Success or failure: return canonical inventory and state to the owner.
-        NetMessage.SendData(MessageID.SyncEquipment, -1, -1, null, player.whoAmI, slot);
+        AuthoritativeInventorySync.Send(player, slot);
         state.SyncPlayer(-1, -1, false);
     }
 }

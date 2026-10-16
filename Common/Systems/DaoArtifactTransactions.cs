@@ -58,7 +58,7 @@ public static class DaoArtifactTransactions
         }
         Reply(player,"Mods.XianXia.DaoArtifacts." + result);
     }
-    private static void Sync(Player player,int slot) { if (Main.netMode == NetmodeID.Server) NetMessage.SendData(MessageID.SyncEquipment,-1,-1,null,player.whoAmI,slot); }
+    private static void Sync(Player player,int slot) { if (Main.netMode == NetmodeID.Server) AuthoritativeInventorySync.Send(player,slot); }
     private static void Reply(Player player,string key)
     {
         if (Main.netMode == NetmodeID.SinglePlayer) Main.NewText(Language.GetTextValue(key),220,210,120);

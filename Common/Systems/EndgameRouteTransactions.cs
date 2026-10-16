@@ -46,7 +46,7 @@ public static class EndgameRouteTransactions
         else if (!NearAltar(player)) result = "NeedAltar";
         else if (DownedBossSystem.TryChooseRoute((DownedBossSystem.EndgameRoute)route)) {
             item.stack--; if (item.stack == 0) item.TurnToAir();
-            if (Main.netMode == NetmodeID.Server) NetMessage.SendData(MessageID.SyncEquipment, -1, -1, null, player.whoAmI, slot);
+            if (Main.netMode == NetmodeID.Server) AuthoritativeInventorySync.Send(player, slot);
             BroadcastChoice((DownedBossSystem.EndgameRoute)route);
             return;
         }

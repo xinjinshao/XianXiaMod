@@ -36,7 +36,7 @@ public static class BossSummonTransactions
             item.stack--;
             if (item.stack <= 0) item.TurnToAir();
         }
-        NetMessage.SendData(MessageID.SyncEquipment, -1, -1, null, player.whoAmI, slot);
+        AuthoritativeInventorySync.Send(player, slot);
         if (!spawned)
         {
             var reply = summon.Mod.GetPacket();
