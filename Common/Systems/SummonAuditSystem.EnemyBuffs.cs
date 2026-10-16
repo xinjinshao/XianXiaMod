@@ -103,6 +103,34 @@ public partial class SummonAuditSystem
                 "native garden warden safely selects valid peer and replaces prior hazard identity");
             distant.Center = new Vector2(float.NaN, 0); gardenAI.AI();
             check(gardenAI.HazardSession == 0, "native garden warden cancels hazards when all targets are malformed");
+            check(!BossTargeting.HasLivingTarget(null) && !BossTargeting.TryGetLivingTarget(null, out _), "native boss targeting rejects null NPC");
+            actor.Center = garden.Center + new Vector2(200, 0); distant.Center = garden.Center + new Vector2(300, 0);
+            var fullPlayerTable = Main.player; bool missingTableRejected;
+            try {
+                Main.player = null;
+                missingTableRejected = !BossTargeting.HasLivingTarget(garden) && !BossTargeting.TryGetLivingTarget(garden, out _);
+            } finally { Main.player = fullPlayerTable; }
+            check(missingTableRejected, "native boss targeting safely rejects absent player table");
+            try {
+                Main.player = new Player[] { actor, distant }; garden.target = Main.maxPlayers - 1; garden.netUpdate = false;
+                check(!BossTargeting.HasLivingTarget(garden), "native boss contact rejects missing index in shortened table");
+                check(BossTargeting.TryGetLivingTarget(garden, out var shortTarget) && ReferenceEquals(shortTarget, actor) && garden.target == 0 && garden.netUpdate,
+                    "native boss authority chooses nearest existing slot in shortened table");
+                Main.netMode = NetmodeID.MultiplayerClient; garden.target = Main.maxPlayers - 1; garden.netUpdate = false;
+                check(!BossTargeting.TryGetLivingTarget(garden, out _) && !garden.netUpdate,
+                    "native boss client waits rather than selecting from shortened table");
+            } finally { Main.player = fullPlayerTable; Main.netMode = NetmodeID.Server; }
+            garden.target = 0; distant.active = false;
+            actor.Center = garden.Center + new Vector2(4000, 0); check(BossTargeting.HasLivingTarget(garden), "native boss exact four-thousand-pixel contact boundary remains valid");
+            actor.Center = garden.Center + new Vector2(4001, 0); check(!BossTargeting.HasLivingTarget(garden) && !BossTargeting.TryGetLivingTarget(garden, out _),
+                "native boss still rejects targets beyond four thousand pixels");
+            actor.Center = garden.Center + new Vector2(20, 0); actor.velocity = new Vector2(float.MaxValue, 0);
+            check(BossTargeting.HasLivingTarget(garden) && BossTargeting.TryGetLivingTarget(garden, out _), "native finite player motion remains eligible for bounded boss-specific prediction");
+            actor.velocity = Vector2.Zero; Vector2 ordinaryGardenCenter = garden.Center;
+            garden.Center = new Vector2(float.MaxValue, 0); actor.Center = garden.Center;
+            bool hugeBossRejected = !BossTargeting.HasLivingTarget(garden) && !BossTargeting.TryGetLivingTarget(garden, out _);
+            garden.Center = ordinaryGardenCenter;
+            check(hugeBossRejected, "native matching huge boss/player coordinates cannot bypass valid geometry");
         } finally {
             for (int i = 0; i < oldPlayers.Length; i++) Main.player[i] = oldPlayers[i]; oldClients.CopyTo(Netplay.Clients, 0);
             Main.netMode = oldMode; Main.myPlayer = oldLocal; Netplay.Connection = oldConnection;
