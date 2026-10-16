@@ -1,0 +1,11 @@
+{
+  "Mods": {
+    "XianXia": {
+      "RecipeGroups": {
+        "EarlyAnvil": "铁砧或铅砧",
+        "HardmodeAnvil": "秘银砧或山铜砧",
+        "HardmodeForge": "精金熔炉或钛金熔炉"
+      }
+    }
+  }
+}

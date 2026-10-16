@@ -21,7 +21,7 @@
 
 ## 定位
 
-- ID: thunder_pattern_forge | 阶段: Hardmode | 获取: 劫云露x8+秘银砧@秘银砧
+- ID: thunder_pattern_forge | 阶段: Hardmode | 获取: 劫云露x8+秘银砧或山铜砧@秘银砧或山铜砧
 
 ## 用途
 

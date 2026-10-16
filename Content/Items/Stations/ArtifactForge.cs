@@ -31,7 +31,7 @@ public class ArtifactForge : ModItem
         CreateRecipe()
             .AddIngredient<LowGradeSpiritStone>(10)
             .AddIngredient<FurnaceSlagIron>(6)
-            .AddIngredient(ItemID.IronAnvil)
+            .AddRecipeGroup(global::XianXia.Common.Systems.StationRecipeGroups.EarlyAnvil)
             .AddTile(TileID.WorkBenches)
             .Register();
     }

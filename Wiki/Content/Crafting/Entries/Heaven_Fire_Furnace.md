@@ -21,7 +21,7 @@
 
 ## 定位
 
-- ID: heaven_fire_furnace | 阶段: Post-Golem | 获取: 天道碎片x12+精金熔炉@秘银砧
+- ID: heaven_fire_furnace | 阶段: Post-Golem | 获取: 天道碎片x12+精金熔炉或钛金熔炉@秘银砧或山铜砧
 
 ## 用途
 

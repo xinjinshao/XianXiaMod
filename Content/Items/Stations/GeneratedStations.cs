@@ -76,7 +76,7 @@ public class ThunderPatternForge : ModItem
     public override void AddRecipes()
     {
         CreateRecipe().AddIngredient<global::XianXia.Content.Items.Materials.TribulationCloudDew>(8)
-            .AddIngredient(ItemID.MythrilAnvil).AddTile(TileID.MythrilAnvil).Register();
+            .AddRecipeGroup(global::XianXia.Common.Systems.StationRecipeGroups.HardmodeAnvil).AddTile(TileID.MythrilAnvil).Register();
     }
 }
 
@@ -115,7 +115,7 @@ public class HeavenFireFurnace : ModItem
     public override void AddRecipes()
     {
         CreateRecipe().AddIngredient<global::XianXia.Content.Items.Materials.HeavenDaoFragment>(12)
-            .AddIngredient(ItemID.AdamantiteForge).AddTile(TileID.MythrilAnvil).Register();
+            .AddRecipeGroup(global::XianXia.Common.Systems.StationRecipeGroups.HardmodeForge).AddTile(TileID.MythrilAnvil).Register();
     }
 }
 

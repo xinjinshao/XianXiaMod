@@ -21,7 +21,7 @@
 
 ## 定位
 
-- ID: artifact_forge | 阶段: Pre-Hardmode | 获取: 灵石x10+炉渣铁x6+铁砧
+- ID: artifact_forge | 阶段: Pre-Hardmode | 获取: 灵石x10+炉渣铁x6+铁砧或铅砧
 
 ## 用途
 

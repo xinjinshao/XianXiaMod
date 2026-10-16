@@ -1,0 +1,11 @@
+{
+  "Mods": {
+    "XianXia": {
+      "RecipeGroups": {
+        "EarlyAnvil": "Iron or Lead Anvil",
+        "HardmodeAnvil": "Mythril or Orichalcum Anvil",
+        "HardmodeForge": "Adamantite or Titanium Forge"
+      }
+    }
+  }
+}
