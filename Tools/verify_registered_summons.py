@@ -11,6 +11,56 @@ import time
 import uuid
 
 
+FATAL_MARKERS = ("Load failed!  No backup found.", "Main engine crash")
+
+
+def log_tail(path, limit=65536):
+    """Read bounded current-run output without loading an ever-growing log."""
+    if not path.exists():
+        return ""
+    with path.open("rb") as stream:
+        stream.seek(0, 2)
+        stream.seek(max(0, stream.tell() - limit))
+        return stream.read(limit).decode("utf-8", errors="replace")
+
+
+def validate_report(result, report):
+    if not isinstance(result, dict) or type(result.get("schema")) is not int or result["schema"] != 1:
+        raise RuntimeError(f"Invalid summon report schema; inspect {report}")
+    if result.get("passed") is not True:
+        raise RuntimeError(f"Summon audit failed: {result.get('error')}; report: {report}")
+    checks = result.get("checks")
+    if not isinstance(checks, list) or not checks or any(not isinstance(check, str) or not check.strip() for check in checks):
+        raise RuntimeError(f"Missing or invalid summon check evidence; inspect {report}")
+    if not isinstance(result.get("limitations"), str) or not result["limitations"].strip():
+        raise RuntimeError(f"Missing summon evidence limitations; inspect {report}")
+    return result
+
+
+def wait_for_report(process, report, output, timeout):
+    deadline = time.monotonic() + timeout
+    while True:
+        exit_code = process.poll()
+        tail = log_tail(output)
+        marker = next((marker for marker in FATAL_MARKERS if marker in tail), None)
+        if marker:
+            raise RuntimeError(f"Server failed before audit acceptance ({marker}); inspect {output}")
+        incomplete = False
+        if report.exists():
+            try:
+                result = json.loads(report.read_text(encoding="utf-8"))
+            except (json.JSONDecodeError, UnicodeDecodeError):
+                incomplete = True
+            else:
+                return validate_report(result, report)
+        if exit_code is not None:
+            raise RuntimeError(f"Server exited with code {exit_code} without a complete summon report; inspect {output}")
+        if time.monotonic() >= deadline:
+            state = "incomplete JSON" if incomplete else "no report"
+            raise RuntimeError(f"Timed out waiting for summon audit ({state}); inspect {output}")
+        time.sleep(0.25)
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--dotnet", required=True)
@@ -60,20 +110,7 @@ def main():
         ], cwd=tml, env=environment, stdin=subprocess.PIPE, stdout=output,
             stderr=errors, text=True)
         try:
-            deadline = time.monotonic() + args.timeout
-            while not report.exists() and process.poll() is None and time.monotonic() < deadline:
-                time.sleep(0.25)
-            if not report.exists():
-                raise RuntimeError(f"No summon report; inspect {root}")
-            # The report is written after entity/player cleanup. Wait for complete JSON.
-            while True:
-                try:
-                    result = json.loads(report.read_text(encoding="utf-8"))
-                    break
-                except json.JSONDecodeError:
-                    if time.monotonic() >= deadline:
-                        raise
-                    time.sleep(0.25)
+            result = wait_for_report(process, report, root / "server.log", args.timeout)
             # Redirected Windows servers cannot reliably consume console shutdown.
             # This disposable world is deliberately never saved back to its source.
             if process.poll() is None:
@@ -86,8 +123,6 @@ def main():
     engine_log = tml / "tModLoader-Logs" / "server.log"
     if engine_log.exists():
         shutil.copy2(engine_log, root / "runtime.log")
-    if result.get("schema") != 1 or result.get("passed") is not True:
-        raise RuntimeError(f"Summon audit failed: {result.get('error')}; report: {report}")
     if (root / "server.err.log").read_text(encoding="utf-8").strip():
         raise RuntimeError(f"Server wrote stderr; inspect {root}")
     if any(hashlib.sha256(path.read_bytes()).hexdigest() != digest for path, digest in original_hashes.items()):
