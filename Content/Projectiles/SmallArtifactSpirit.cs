@@ -30,11 +30,25 @@ public class SmallArtifactSpirit : ModProjectile
     }
     public override bool MinionContactDamage() => true;
     public override bool? CanCutTiles() => false;
+    private static bool Finite(Vector2 value) => float.IsFinite(value.X) && float.IsFinite(value.Y)
+        && float.IsFinite(value.LengthSquared());
+    private bool TryOwner(out Player owner)
+    {
+        owner = null;
+        if (Main.player == null || Projectile.owner < 0 || Projectile.owner >= Main.player.Length) return false;
+        owner = Main.player[Projectile.owner];
+        return owner != null && owner.active && !owner.dead && Finite(owner.Center)
+            && Finite(Projectile.Center) && Finite(Projectile.velocity);
+    }
+    private bool Reachable(Player owner, NPC npc) => npc != null && Finite(npc.Center) && Finite(npc.position)
+        && npc.width > 0 && npc.height > 0 && npc.CanBeChasedBy(Projectile)
+        && Vector2.DistanceSquared(npc.Center, owner.Center) <= AttackRange * AttackRange
+        && Collision.CanHitLine(Projectile.position, Projectile.width, Projectile.height, npc.position, npc.width, npc.height);
+    public override bool? CanHitNPC(NPC target) => TryOwner(out var owner) && owner.HasBuff(SpiritBuff)
+        && MinionContactDamage() && Reachable(owner, target) ? null : false;
     public override void AI()
     {
-        if (Projectile.owner < 0 || Projectile.owner >= Main.player.Length) { Projectile.Kill(); return; }
-        Player owner = Main.player[Projectile.owner];
-        if (!owner.active || owner.dead) { Projectile.Kill(); return; }
+        if (!TryOwner(out Player owner)) { Projectile.friendly = false; Projectile.Kill(); return; }
         if (owner.HasBuff(SpiritBuff)) Projectile.timeLeft = 2;
         else { Projectile.friendly = false; if (Main.myPlayer == Projectile.owner) Projectile.Kill(); return; }
         Vector2 idle = owner.Center + new Vector2(-40 * owner.direction,-48);
@@ -42,15 +56,15 @@ public class SmallArtifactSpirit : ModProjectile
             Projectile.Center = idle; Projectile.velocity = Vector2.Zero; Projectile.netUpdate = true;
         }
         NPC target = null;
-        bool Reachable(NPC npc) => npc.CanBeChasedBy(Projectile) && Vector2.DistanceSquared(npc.Center,owner.Center) <= AttackRange*AttackRange
-            && Collision.CanHitLine(Projectile.position,Projectile.width,Projectile.height,npc.position,npc.width,npc.height);
         if (owner.HasMinionAttackTargetNPC && owner.MinionAttackTargetNPC >= 0 && owner.MinionAttackTargetNPC < Main.maxNPCs
-            && Reachable(Main.npc[owner.MinionAttackTargetNPC])) target = Main.npc[owner.MinionAttackTargetNPC];
-        if (target == null) {
+            && Main.npc != null && owner.MinionAttackTargetNPC < Main.npc.Length
+            && Reachable(owner, Main.npc[owner.MinionAttackTargetNPC])) target = Main.npc[owner.MinionAttackTargetNPC];
+        if (target == null && Main.npc != null) {
             float nearest = AttackRange*AttackRange;
-            foreach (NPC npc in Main.ActiveNPCs) {
+            foreach (NPC npc in Main.npc) {
+                if (npc == null) continue;
                 float distance = Vector2.DistanceSquared(npc.Center,Projectile.Center);
-                if (distance < nearest && Reachable(npc)) { nearest = distance; target = npc; }
+                if (distance < nearest && Reachable(owner, npc)) { nearest = distance; target = npc; }
             }
         }
         Projectile.friendly = target != null && MinionContactDamage();

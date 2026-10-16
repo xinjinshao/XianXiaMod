@@ -72,7 +72,7 @@ namespace Terraria.ModLoader {
  public static class ModContent {public static int ProjectileType<T>()=>typeof(T).Name switch {"FurnaceAshSpirit"=>3,"StarAbyssSpirit"=>4,"ContractSpiritBolt"=>5,"NascentSoulSpirit"=>6,"CelestialPuppetSpirit"=>7,"ArchivedSoulSpirit"=>8,_=>1};public static int BuffType<T>()=>typeof(T).Name switch {"FurnaceAshSpiritBuff"=>3,"StarAbyssSpiritBuff"=>4,"NascentSoulSpiritBuff"=>6,"CelestialPuppetSpiritBuff"=>7,"ArchivedSoulSpiritBuff"=>8,_=>2};public static int TileType<T>()=>3;}
  public class ModProjectile {
   public int Type=1;public Terraria.Projectile Projectile=new(){active=true};public virtual string Texture=>"";
-  public virtual void SetStaticDefaults(){}public virtual void SetDefaults(){}public virtual bool MinionContactDamage()=>false;public virtual bool? CanCutTiles()=>null;public virtual bool? CanDamage()=>null;public virtual void AI(){} public virtual void OnHitNPC(Terraria.NPC target,Terraria.NPC.HitInfo hit,int damageDone){}
+  public virtual void SetStaticDefaults(){}public virtual void SetDefaults(){}public virtual bool MinionContactDamage()=>false;public virtual bool? CanCutTiles()=>null;public virtual bool? CanDamage()=>null;public virtual bool? CanHitNPC(Terraria.NPC target)=>null;public virtual void AI(){} public virtual void OnHitNPC(Terraria.NPC target,Terraria.NPC.HitInfo hit,int damageDone){}
  }
  public class ModBuff {public int Type=2;public virtual string Texture=>"";public virtual void SetStaticDefaults(){}public virtual void Update(Terraria.Player player,ref int index){} }
  public class ModItem {

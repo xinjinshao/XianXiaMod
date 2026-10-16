@@ -936,6 +936,7 @@ public partial class SummonAuditSystem : ModSystem
             AuditChestSupplies(Check);
             AuditQiAwakening(Check);
             AuditBossScaling(Check);
+            AuditCompanionContact(Check);
         }
         catch (Exception exception) { error = exception.ToString(); }
         finally {

@@ -48,6 +48,26 @@ Setup();Game.player[0].dead=true;pendant.Shoot(Game.player[0],null,Vector2.Zero,
 Check(!Game.ActiveProjectiles.Any(),"Death between preflight and shooting cannot create a minion.");
 Setup();Game.player[0].Buff=false;spirit= new SmallArtifactSpirit();spirit.SetDefaults();Game.myPlayer=255;Game.dedServ=true;spirit.AI();
 Check(spirit.Projectile.active&&!spirit.Projectile.friendly&&spirit.Projectile.timeLeft==180,"The dedicated server waits for the initial owner buff sync without killing or attacking.");
+foreach (var contact in new SmallArtifactSpirit[] { new SmallArtifactSpirit(), new XianXia.Content.Projectiles.FurnaceAshSpirit(), new XianXia.Content.Projectiles.CelestialPuppetSpirit() }) {
+ Setup(); contact.SetDefaults(); contact.Projectile.owner=0; contact.Projectile.ai[1]=18;
+ var victim=Game.npc[0]; victim.active=true; victim.Center=new(100,0);
+ contact.AI(); Check(contact.CanHitNPC(victim) is null,"Valid maintained contact spirit retains native hit eligibility");
+ Game.player[0].Buff=false; Check(contact.CanHitNPC(victim) is false,"Buff cancellation blocks contact before another AI update");
+ Game.player[0].Buff=true; Game.player[0].dead=true; Check(contact.CanHitNPC(victim) is false,"Owner death blocks stale friendly contact immediately");
+ Game.player[0].dead=false; Collision.Visible=false; Check(contact.CanHitNPC(victim) is false,"New wall obstruction blocks contact at hit time");
+ Collision.Visible=true; victim.Center=new(1001,0); Check(contact.CanHitNPC(victim) is false,"Contact cannot exceed its owner's attack range");
+ victim.Center=new(float.NaN,0); Check(contact.CanHitNPC(victim) is false,"Invalid target geometry cannot receive contact damage");
+ Check(contact.CanHitNPC(null) is false,"Absent target is refused");
+ Game.player[0]=null; Check(contact.CanHitNPC(victim) is false,"Absent owner is refused before AI");
+ contact.AI(); Check(!contact.Projectile.active&&!contact.Projectile.friendly,"Absent owner ends the spirit without stale damage");
+}
+foreach(var bad in new[]{new Vector2(float.NaN,0),new Vector2(float.PositiveInfinity,0),new Vector2(float.MaxValue,0)}) {
+ spirit=Setup(); Game.player[0].Center=bad; spirit.AI(); Check(!spirit.Projectile.active&&!spirit.Projectile.friendly,"Invalid or overflowing owner coordinates end the minion");
+ spirit=Setup(); spirit.Projectile.velocity=bad; spirit.AI(); Check(!spirit.Projectile.active&&!spirit.Projectile.friendly,"Invalid velocity ends the minion without spreading bad coordinates");
+}
+spirit=Setup(); Game.npc[0]=null; Game.npc[1].active=true; Game.npc[1].Center=new(100,0); spirit.AI();
+Check(spirit.Projectile.friendly,"A missing NPC slot does not hide another valid target");
+Game.npc[0]=new NPC();
 Console.WriteLine($"Companion lifecycle regression passed: {assertions} assertions against actual item/buff/projectile hooks; engine boundaries mocked.");
 
 // Execute new contract item, minion and buff sources using independent type IDs.
