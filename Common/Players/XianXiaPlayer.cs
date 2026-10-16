@@ -499,6 +499,7 @@ public class XianXiaPlayer : ModPlayer
         if (Main.netMode == NetmodeID.MultiplayerClient || tribulationTimer <= 0)
             return;
 
+        var previousBuffs = AuthoritativeBuffSync.Capture(Player);
         tribulationTimer = 0;
         tribulationStage = 0;
         AdvanceResourceRevision();
@@ -510,6 +511,7 @@ public class XianXiaPlayer : ModPlayer
         tribulationWeakness = 60 * 60 * 3;
         Player.AddBuff(BuffID.Weak, tribulationWeakness);
         Player.AddBuff(ModContent.BuffType<global::XianXia.Content.Buffs.SpiritualPressureDisorderBuff>(), 60 * 2);
+        AuthoritativeBuffSync.SendChanges(Player, previousBuffs);
         if (Main.netMode == NetmodeID.Server) SyncPlayer(-1, -1, false);
 
         if (Main.myPlayer == Player.whoAmI)

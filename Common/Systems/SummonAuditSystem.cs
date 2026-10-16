@@ -927,6 +927,7 @@ public partial class SummonAuditSystem : ModSystem
                 "registered wheel fixture restores inventory resource snapshot owner counts and engine context");
             AuditBiomeScans(Check);
             AuditPillBuffs(Check);
+            AuditFailureBuffs(Check);
         }
         catch (Exception exception) { error = exception.ToString(); }
         finally {
