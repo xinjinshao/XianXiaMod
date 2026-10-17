@@ -34,8 +34,8 @@ public partial class SummonAuditSystem
                     if (route != 0) check(refined.TryTransform((DownedBossSystem.EndgameRoute)route), "native skill tooltip fixture uses actual matching-world Dao state");
                     var selectedSkill = ArtifactSkillTransactions.HeldSkill(item);
                     if (item.ModItem is ThunderPatternSwordCase)
-                        check(selectedSkill == ArtifactSkill.ThunderVolley && item.ModItem.AltFunctionUse(actor) && !RefinedArtifact.SupportsDaoTransformation(item),
-                            "native awakened thunder case exposes its active skill without unimplemented Dao support");
+                        check(selectedSkill == ArtifactSkill.ThunderVolley && item.ModItem.AltFunctionUse(actor) && RefinedArtifact.SupportsDaoTransformation(item),
+                            "native awakened thunder case exposes its active skill with supported Dao transformation");
                     check(selectedSkill.HasValue, "native existing active artifacts retain their skill mappings");
                     var skill = selectedSkill.Value;
                     foreach (float multiplier in new[] { 0.92f, 1f, 1.1f }) foreach (int cooldown in new[] { 0, 61 }) {
@@ -49,8 +49,8 @@ public partial class SummonAuditSystem
                             Terraria.Localization.Language.GetTextValue("Mods.XianXia.Skills." + name), cost, ArtifactSkillRules.Cooldown(skill) / 60, cooldown == 0 ? 0 : 2);
                         check(preview == expected && !preview.Contains("{0}") && !preview.Contains("Mods.XianXia."), "native active skill preview resolves matching route costs and rounded remaining shared cooldown");
                         if (item.ModItem is ThunderPatternSwordCase)
-                            check(lines.Single(line => line.Name == "CurrentSpiritCost").Text == Terraria.Localization.Language.GetTextValue("Mods.XianXia.DamageClasses.CurrentCastCost",state.GetSpiritualEnergyCost(6)),
-                                "native thunder active tooltip keeps separate rounded ordinary six-energy cost");
+                            check(lines.Single(line => line.Name == "CurrentSpiritCost").Text == Terraria.Localization.Language.GetTextValue("Mods.XianXia.DamageClasses.CurrentCastCost",state.GetSpiritualEnergyCost(((ThunderPatternSwordCase)item.ModItem).GetSpiritCost(actor))),
+                                "native thunder active tooltip keeps separate rounded ordinary route-specific cost");
                         check(state.CaptureSnapshot() == before && actor.HeldItem == item, "native skill preview does not activate a skill spend energy or change inventory");
                     }
                 }

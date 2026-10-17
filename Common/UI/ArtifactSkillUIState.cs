@@ -76,7 +76,7 @@ public class ArtifactSkillUIState : UIState
             ArtifactSkill.MoonCrescent => Text(route == DownedBossSystem.EndgameRoute.None ? "MoonRequirement" : "MoonDaoRequirement"),
             ArtifactSkill.WheelFormation => Text(route == DownedBossSystem.EndgameRoute.None ? "WheelRequirement" : "WheelDaoRequirement"),
             ArtifactSkill.HammerVolley => Text(route == DownedBossSystem.EndgameRoute.None ? "HammerRequirement" : "HammerDaoRequirement"),
-            ArtifactSkill.ThunderVolley => Text("ThunderRequirement"),
+            ArtifactSkill.ThunderVolley => Text(route == DownedBossSystem.EndgameRoute.None ? "ThunderRequirement" : "ThunderDaoRequirement"),
             _ => Text("WardRequirement")
         };
         return requirement + "\n" + Text("SkillNumbers", cost, ArtifactSkillRules.Cooldown(skill) / 60)

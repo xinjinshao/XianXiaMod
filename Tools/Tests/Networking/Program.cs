@@ -1127,7 +1127,7 @@ foreach(string expandedName in new[]{"WoodgrainFlyingSword","SpiritwoodCrossbow"
  }
  bool craftedAllowed = expandedName is "FormlessSwordWheel" or "BlackFurnaceWarhammer" or "ThunderPatternSwordCase";
  bool supportsAwake = expandedName is "MoonboneDharmaSword" or "FormlessSwordWheel" or "BlackFurnaceWarhammer" or "ThunderPatternSwordCase";
- bool supportsDao = expandedName is "MoonboneDharmaSword" or "FormlessSwordWheel" or "BlackFurnaceWarhammer";
+ bool supportsDao = expandedName is "MoonboneDharmaSword" or "FormlessSwordWheel" or "BlackFurnaceWarhammer" or "ThunderPatternSwordCase";
  SetupAwakening(expandedName);Awaken();Check(craftedAllowed ? Game.player[0].inventory[0].stack==1&&Game.player[0].inventory[2].IsAir&&XianXia.Common.Items.RefinedArtifact.IsAwakened(Game.player[0].inventory[1]) : Game.player[0].inventory[0].stack==2&&!XianXia.Common.Items.RefinedArtifact.IsAwakened(Game.player[0].inventory[1]),"Expanded weapons spend awakening seals only on defined advanced paths and realm gates");
  var plain=Game.player[0].inventory[1];var meta=plain.GetGlobalItem<XianXia.Common.Items.RefinedArtifact>();
  var forged=new Terraria.ModLoader.IO.TagCompound{{"refinement",3},{"awakened",true},{"daoRoute",1}};meta.LoadData(plain,forged);
@@ -1143,7 +1143,7 @@ foreach(Action reject in new Action[]{()=>Game.player[0].inventory[1].accessory=
  SetupRefinement(name:"SpiritwoodCrossbow");reject();Refine();Check(Game.player[0].inventory[0].stack==2&&Game.player[0].inventory[2].stack==6&&!XianXia.Common.Items.RefinedArtifact.SupportsRefinement(Game.player[0].inventory[1]),"Ineligible categories/origins cannot spend refinement materials");
 }
 foreach(byte route in new byte[]{1,2,3}){SetupDao(route,"HeavenTabletWardSeal");Dao(route);Check(Game.player[0].inventory[0].stack==2&&Game.player[0].inventory[2].stack==36&&XianXia.Common.Items.RefinedArtifact.GetDaoRoute(Game.player[0].inventory[1])==DownedBossSystem.EndgameRoute.None,"Ward rejects all sample Dao transactions without consumption");}
-// Thunder case joins the shared crafted awakening transaction without receiving any Dao route.
+// Thunder case uses shared crafted awakening; Dao remains an explicit later transaction.
 foreach(int mode in new[]{NetmodeID.SinglePlayer,NetmodeID.Server}) {
  SetupAwakening("ThunderPatternSwordCase");Game.netMode=mode;var target=Game.player[0].inventory[1];Awaken();
  Check(XianXia.Common.Items.RefinedArtifact.IsAwakened(target)&&Game.player[0].inventory[0].stack==1&&Game.player[0].inventory[2].IsAir&&target.prefix==300&&CurrentInscription()==InscriptionKind.Greenwood,"Thunder case shared authority transaction preserves equipment and exact material cost");
@@ -1154,7 +1154,7 @@ foreach(Action reject in new Action[]{()=>Game.player[0].State.cultivationStage=
  SetupAwakening("ThunderPatternSwordCase");reject();int stones=Game.player[0].inventory[2].stack;Awaken();
  Check(!XianXia.Common.Items.RefinedArtifact.IsAwakened(Game.player[0].inventory[1])&&Game.player[0].inventory[0].stack==2&&Game.player[0].inventory[2].stack==stones,"Thunder case failed gates do not consume materials");
 }
-foreach(byte route in new byte[]{1,2,3}){SetupDao(route,"ThunderPatternSwordCase");Dao(route);Check(Game.player[0].inventory[0].stack==2&&Game.player[0].inventory[2].stack==36&&XianXia.Common.Items.RefinedArtifact.GetDaoRoute(Game.player[0].inventory[1])==DownedBossSystem.EndgameRoute.None,"Thunder case rejects all unimplemented Dao transformations without material loss");}
+foreach(byte route in new byte[]{1,2,3}){SetupDao(route,"ThunderPatternSwordCase");Dao(route);Check(Game.player[0].inventory[0].stack==1&&Game.player[0].inventory[2].IsAir&&(byte)XianXia.Common.Items.RefinedArtifact.GetDaoRoute(Game.player[0].inventory[1])==route,"Thunder case explicit Dao transaction spends exact materials and binds selected route");}
 // Third crafted artifact: ward awakening is independent of sample-only Dao transformation.
 SetupAwakening("HeavenTabletWardSeal");Awaken();var grownWard=Game.player[0].inventory[1];
 Check(XianXia.Common.Items.RefinedArtifact.IsAwakened(grownWard)&&Game.player[0].inventory[0].stack==1&&Game.player[0].inventory[2].IsAir,"Ward awakening spends one seal and exactly 24 stones");
@@ -1605,7 +1605,7 @@ foreach(int mode in new[]{NetmodeID.SinglePlayer,NetmodeID.Server}) {
  ThunderSkillFixture(mode);Game.player[0].inventory[1].GetGlobalItem<XianXia.Common.Items.RefinedArtifact>().SetLevel(2);ThunderCast(mode);Check(!Game.projectile.Any(p=>p.active)&&Game.player[0].State.spiritualEnergy==100,"Thunderfall requires actually awakened held equipment");
  ThunderSkillFixture(mode);ThunderCast(mode,1e20f,1e20f);Check(!Game.projectile.Any(p=>p.active)&&Game.player[0].State.spiritualEnergy==100,"Thunderfall rejects non-finite squared aim geometry");
 }
-foreach(var route in Enum.GetValues<DownedBossSystem.EndgameRoute>())Check(DaoArtifactRules.SkillCost(ArtifactSkill.ThunderVolley,route)==30,"Thunderfall cost cannot inherit unsupported Dao branch fees");
+foreach(var route in Enum.GetValues<DownedBossSystem.EndgameRoute>())Check(DaoArtifactRules.SkillCost(ArtifactSkill.ThunderVolley,route)==(route==DownedBossSystem.EndgameRoute.RebuildHeaven?36:route==DownedBossSystem.EndgameRoute.SeverHeaven?48:30),"Thunderfall uses explicit route fees");
 foreach(int mode in new[]{NetmodeID.SinglePlayer,NetmodeID.Server,NetmodeID.MultiplayerClient}) {
  ThunderSkillFixture(mode);var owner=Game.player[0];var strike=new XianXia.Content.Projectiles.ThunderCaseStrikeProjectile{Mod=mod};strike.SetDefaults();strike.Projectile.owner=0;strike.Projectile.active=true;strike.Projectile.Center=owner.Center;strike.Projectile.velocity=new(0,12);strike.OnSpawn(new Terraria.DataStructures.EntitySource_Parent(owner));
  Check(strike.Projectile.DamageType==DamageClass.Melee&&strike.Projectile.netImportant&&strike.CanDamage()==null,"Thunderfall registered-source defaults keep fixed melee class and important sync");
@@ -1622,6 +1622,16 @@ foreach(int mode in new[]{0,1,2}) foreach(int invalid in Enumerable.Range(0,10))
 }
 foreach(int mode in new[]{0,1,2}) {
  ThunderSkillFixture(mode);var owner=Game.player[0];var strike=new XianXia.Content.Projectiles.ThunderCaseStrikeProjectile{Mod=mod};strike.SetDefaults();strike.Projectile.owner=0;strike.Projectile.Center=owner.Center;strike.Projectile.velocity=new(0,12);strike.OnSpawn(new Terraria.DataStructures.EntitySource_Parent(owner));owner.velocity=new(float.NaN,0);Terraria.Lighting.Calls=0;Check(strike.CanDamage()==false,"Thunderfall invalid owner velocity suppresses damage");strike.AI();Check(Terraria.Lighting.Calls==0,"Thunderfall invalid owner suppresses presentation on every peer");owner.velocity=default;Check((strike.CanDamage()==false)==(mode!=1),"Client waits for authority owner cancellation while authority remains sticky");
+}
+// Thunder case Dao authority effects and failure atomicity, using actual shared transactions.
+foreach(int mode in new[]{0,2}) foreach(byte route in new byte[]{1,2,3}) {
+ void ReadyThunderDao() {SetupDao(route,"ThunderPatternSwordCase");Game.netMode=mode;Terraria.Collision.Visible=true;Terraria.Collision.Solid=false;HammerDao(mode,route);Game.player[0].selectedItem=1;Game.player[0].statLife=50;Game.player[0].State.spiritPressure=0;}
+ ReadyThunderDao();var actor=Game.player[0];ThunderCast(mode);int cost=route==1?36:route==2?48:30;
+ Check(Game.projectile.Count(p=>p.active)==3&&Game.projectile.Where(p=>p.active).All(p=>p.type==11&&p.damage==(route==2?62:50)),"Thunder Dao skill uses actual route multiplier and three strikes");
+ Check(actor.State.spiritualEnergy==100-cost&&actor.State.activeSkillCooldown==1200&&actor.statLife==(route==1?70:50)&&actor.State.spiritPressure==(route==3?8:0),"Thunder Dao exact cost cooldown and success-only route effects");
+ foreach(int budget in new[]{0,1,2}){ReadyThunderDao();actor=Game.player[0];Terraria.Projectile.SpawnBudget=budget;ThunderCast(mode);Check(!Game.projectile.Any(p=>p.active)&&actor.State.spiritualEnergy==100&&actor.State.activeSkillCooldown==0&&actor.statLife==50&&actor.State.spiritPressure==0,"Thunder Dao partial failure restores cost without healing or pressure");}
+ foreach(bool missingCore in new[]{false,true}){ReadyThunderDao();actor=Game.player[0];if(missingCore)DownedBossSystem.DownedBosses.Remove("old_heaven_dao_core");else typeof(DownedBossSystem).GetProperty("ChosenRoute").SetValue(null,(DownedBossSystem.EndgameRoute)(route==1?2:1));ThunderCast(mode);Check(actor.State.spiritualEnergy==70&&Game.projectile.Count(p=>p.active)==3&&Game.projectile.Where(p=>p.active).All(p=>p.damage==37)&&actor.statLife==50&&actor.State.spiritPressure==0&&(byte)XianXia.Common.Items.RefinedArtifact.GetDaoRoute(actor.HeldItem)==route,"Thunder Dao inactive world restores awakened burst and preserves stored route");}
+ ReadyThunderDao();actor=Game.player[0];Terraria.Collision.Solid=true;ThunderCast(mode);Check(actor.State.spiritualEnergy==100&&actor.State.activeSkillCooldown==0&&actor.statLife==50&&actor.State.spiritPressure==0&&!Game.projectile.Any(p=>p.active),"Thunder Dao blocked geometry never grants route effects");Terraria.Collision.Solid=false;
 }
 // Actual Thunder Sword hit hook: owner authority, lifecycle, minimum half damage and no observer/server RNG.
 XianXia.Content.Projectiles.ThunderSwordProjectile ThunderProcFixture(int mode,int local=0,int damage=201) {

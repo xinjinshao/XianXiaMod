@@ -69,7 +69,9 @@ public class ThunderPatternSwordCase : global::XianXia.Common.Items.CultivationW
 
 
     public const int AwakenedSpiritCost = 6;
-    public override int GetSpiritCost(Player player) => global::XianXia.Common.Items.RefinedArtifact.IsAwakened(Item)
+    public override int GetSpiritCost(Player player) => global::XianXia.Common.Items.RefinedArtifact.ActiveDaoRoute(Item) is var route && route != global::XianXia.Common.Systems.DownedBossSystem.EndgameRoute.None
+        ? global::XianXia.Common.Systems.DaoArtifactRules.WeaponCost(Name,route)
+        : global::XianXia.Common.Items.RefinedArtifact.IsAwakened(Item)
         ? AwakenedSpiritCost : HasSectInheritance(player) ? 7 : 9;
     public override bool AltFunctionUse(Player player) => global::XianXia.Common.Items.RefinedArtifact.IsAwakened(Item);
 

@@ -17,9 +17,12 @@ public partial class SummonAuditSystem
     {
         Player previous = Main.player[0]; var clients = (RemoteClient[])Netplay.Clients.Clone();
         int mode = Main.netMode, local = Main.myPlayer;
+        var oldText = Main.combatText;
         var before = Main.projectile.Where(p => p.active).ToHashSet();
+        var world = ModContent.GetInstance<DownedBossSystem>(); var savedWorld = new Terraria.ModLoader.IO.TagCompound(); world.SaveWorldData(savedWorld);
         void Clear() { foreach (var p in Main.projectile.Where(p => p.active && !before.Contains(p))) { p.damage = 0; p.active = false; } }
         try {
+            Main.combatText = Enumerable.Range(0,100).Select(_ => new CombatText { active = true }).ToArray();
             for (int i = 0; i < Netplay.Clients.Length; i++) Netplay.Clients[i] = new RemoteClient { Id = i, Socket = new AuditOutputSocket(false), State = 0 };
             Player Fixture(int netMode) {
                 Clear(); Main.netMode = netMode; Main.myPlayer = netMode == NetmodeID.Server ? Main.maxPlayers : 0;
@@ -121,8 +124,25 @@ public partial class SummonAuditSystem
                     check(!malformed.active,"native malformed Thunderfall completes bounded native cleanup without unsafe geometry");
                 }
             }
+            foreach (int netMode in new[] { NetmodeID.SinglePlayer,NetmodeID.Server }) foreach (int route in new[] { 1,2,3 }) {
+                var tag = new Terraria.ModLoader.IO.TagCompound(); world.SaveWorldData(tag); tag["chosenRoute"] = route; world.LoadWorldData(tag); DownedBossSystem.DownedBosses.Add("old_heaven_dao_core");
+                var actor = Fixture(netMode); var state = actor.GetModPlayer<XianXiaPlayer>(); var item = actor.HeldItem; var growth = item.GetGlobalItem<RefinedArtifact>();
+                check(growth.TryTransform((DownedBossSystem.EndgameRoute)route),"native thunder combat fixture explicitly transforms along world route");
+                var modifier = StatModifier.Default; growth.ModifyWeaponDamage(item,actor,ref modifier);
+                check(Math.Abs(modifier.Base - 36) < .001f,"native thunder Dao base damage grows from fifty-four to ninety");
+                check(((ThunderPatternSwordCase)item.ModItem).GetSpiritCost(actor) == (route == 3 ? 8 : 10),"native thunder Dao ordinary route-specific fee");
+                actor.statLife = 50; state.spiritPressure = 0; Vector2 aim = actor.Center + new Vector2(200,0); Cast(actor,aim);
+                var strikes = Main.projectile.Where(p => p.active && !before.Contains(p)).ToArray(); int cost = route == 1 ? 36 : route == 2 ? 48 : 30;
+                check(strikes.Length == 3 && strikes.All(p => p.damage == (int)(actor.GetWeaponDamage(item) * (route == 2 ? 2.5f : 2f)) && p.DamageType == DamageClass.Melee),"native thunder Dao canonical three-strike route damage");
+                check(state.spiritualEnergy == 100 - cost && state.activeSkillCooldown == 1200 && actor.statLife == (route == 1 ? 70 : 50) && state.spiritPressure == (route == 3 ? 8 : 0),"native thunder Dao cost cooldown healing and pressure");
+                Clear(); state.activeSkillCooldown = state.skillRequestCooldown = 0; state.spiritualEnergy = 100; actor.statLife = 50; state.spiritPressure = 0;
+                DownedBossSystem.DownedBosses.Remove("old_heaven_dao_core");
+                check(((ThunderPatternSwordCase)item.ModItem).GetSpiritCost(actor) == 6 && (int)RefinedArtifact.GetDaoRoute(item) == route,"native thunder inactive Dao restores six-energy ordinary cast and retains route");
+                Cast(actor,aim); strikes = Main.projectile.Where(p => p.active && !before.Contains(p)).ToArray();
+                check(strikes.Length == 3 && strikes.All(p => p.damage == (int)(actor.GetWeaponDamage(item) * 1.5f)) && state.spiritualEnergy == 70 && actor.statLife == 50 && state.spiritPressure == 0,"native thunder missing core restores awakened skill without route effects");
+            }
         }
-        finally { Clear(); Main.player[0] = previous; Array.Copy(clients,Netplay.Clients,clients.Length); Main.netMode = mode; Main.myPlayer = local; }
+        finally { Clear(); world.LoadWorldData(savedWorld); Main.combatText = oldText; Main.player[0] = previous; Array.Copy(clients,Netplay.Clients,clients.Length); Main.netMode = mode; Main.myPlayer = local; }
         check(ReferenceEquals(Main.player[0],previous) && Main.netMode == mode && Main.myPlayer == local,"native Thunderfall fixture restores authority context");
     }
 }

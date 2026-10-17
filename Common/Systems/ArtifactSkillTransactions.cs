@@ -146,7 +146,7 @@ public static class ArtifactSkillTransactions
             if (Collision.SolidCollision(spawn - new Vector2(12,40),24,80) || !Collision.CanHitLine(spawn,1,1,focus + new Vector2(i * ArtifactSkillRules.ThunderSpacing,0),1,1)) return false;
             positions[i + 1] = spawn;
         }
-        int damage = Math.Max(1,(int)(player.GetWeaponDamage(item) * ArtifactSkillRules.ThunderDamageMultiplier));
+        int damage = Math.Max(1,(int)(player.GetWeaponDamage(item) * DaoArtifactRules.ThunderBurstMultiplier(RefinedArtifact.ActiveDaoRoute(item))));
         var created = new List<int>(); var source = new EntitySource_ItemUse_WithAmmo(player,item,0);
         foreach (Vector2 spawn in positions) {
             int index = Projectile.NewProjectile(source,spawn,Vector2.UnitY * 12,ModContent.ProjectileType<ThunderCaseStrikeProjectile>(),damage,
