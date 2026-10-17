@@ -1,6 +1,8 @@
 Mods: {
  XianXia: {
   DamageClasses: {
+   CurrentCastCost: "Current normal cast energy cost: {0}\nBased on current equipment/held effects, rounded up; excludes active skills"
+   CurrentArrayCost: "Current array deployment energy cost: {0}\nBased on current equipment/held effects, rounded up; excludes active skills"
    SpiritMagic: Magic-class spiritual weapon: benefits from vanilla magic damage/crit bonuses and uses spiritual energy; mana cost reductions do not reduce spiritual energy costs
   }
  }

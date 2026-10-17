@@ -1,6 +1,8 @@
 Mods: {
  XianXia: {
   DamageClasses: {
+   CurrentCastCost: "当前状态普通施放灵耗：{0}\n按当前装备与手持效果向上取整；不含主动技能"
+   CurrentArrayCost: "当前状态法阵部署灵耗：{0}\n按当前装备与手持效果向上取整；不含主动技能"
    SpiritMagic: 魔法职业灵气武器：受原版魔法伤害/暴击等加成，使用灵气；魔力减耗不降低灵气消耗
   }
  }
