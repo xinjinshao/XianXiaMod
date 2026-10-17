@@ -26,7 +26,7 @@ public static class DaoArtifactRules
         _ => route == DownedBossSystem.EndgameRoute.AcceptStarAbyss ? 22 : 28
     };
     public static int SkillCost(ArtifactSkill skill, DownedBossSystem.EndgameRoute route) => route == DownedBossSystem.EndgameRoute.None
-        || skill == ArtifactSkill.WardGuard ? ArtifactSkillRules.Cost(skill)
+        || skill is ArtifactSkill.WardGuard or ArtifactSkill.ThunderVolley ? ArtifactSkillRules.Cost(skill)
         : skill == ArtifactSkill.HammerVolley ? route == DownedBossSystem.EndgameRoute.AcceptStarAbyss ? 34 : route == DownedBossSystem.EndgameRoute.SeverHeaven ? 54 : 40
         : skill == ArtifactSkill.WheelFormation ? route == DownedBossSystem.EndgameRoute.AcceptStarAbyss ? 40 : route == DownedBossSystem.EndgameRoute.SeverHeaven ? 60 : 48
         : skill == ArtifactSkill.MoonCrescent ? route == DownedBossSystem.EndgameRoute.AcceptStarAbyss ? 30 : route == DownedBossSystem.EndgameRoute.SeverHeaven ? 48 : 36

@@ -141,6 +141,7 @@ namespace Terraria
             int index = Array.FindIndex(Main.projectile, p => !p.active);
             if (index < 0) return Main.maxProjectiles;
             Main.projectile[index] = new() { active = true, owner = owner, type = type, damage = damage, velocity = velocity, identity = nextIdentity++ };
+            if(type==11)Main.projectile[index].Center=position;
             Main.player[owner].ownedProjectileCounts[type]++;
             return index;
         }
@@ -264,7 +265,7 @@ namespace Terraria.ModLoader
     public static class ModContent {
         public static int TileType<T>() => typeof(T).Name switch { "ArtifactForgeTile"=>1,"ThunderPatternForgeTile"=>2,"HeavenFireFurnaceTile"=>3,_=>4 };
         public static int ItemType<T>()=>200;
-        public static int ProjectileType<T>()=>typeof(T).Name=="GreenwoodArrayField"?3:typeof(T).Name=="MedicineCauldronField"?4:typeof(T).Name=="MedicineSpiritBolt"?5:typeof(T).Name=="FurnaceHammerProjectile"?6:typeof(T).Name=="FurnaceImpactBurst"?7:typeof(T).Name=="HeavenTabletWardProjectile"?8:typeof(T).Name=="ThunderTalismanArray"?9:typeof(T).Name=="MinorThunderboltProjectile"?10:2;
+        public static int ProjectileType<T>()=>typeof(T).Name=="GreenwoodArrayField"?3:typeof(T).Name=="MedicineCauldronField"?4:typeof(T).Name=="MedicineSpiritBolt"?5:typeof(T).Name=="FurnaceHammerProjectile"?6:typeof(T).Name=="FurnaceImpactBurst"?7:typeof(T).Name=="HeavenTabletWardProjectile"?8:typeof(T).Name=="ThunderTalismanArray"?9:typeof(T).Name=="MinorThunderboltProjectile"?10:typeof(T).Name=="ThunderCaseStrikeProjectile"?11:2;
         public static int BuffType<T>()=>typeof(T).Name=="FurnaceGuardBuff"?3:typeof(T).Name=="WindStepBuff"?4:typeof(T).Name=="ThunderBurstBuff"?5:2;
         public static T GetInstance<T>() where T:new()=>new T();
     }
@@ -433,7 +434,7 @@ namespace XianXia.Content.Tiles.Stations {public class SectTrialAltarTile{}}
 
 namespace XianXia.Content.Items.Materials {public class ArtifactBlankShard{}}
 
-namespace Terraria {public static class Collision {public static bool Visible=true;public static bool CanHitLine(Microsoft.Xna.Framework.Vector2 start,int w,int h,Microsoft.Xna.Framework.Vector2 end,int ew,int eh)=>Visible;}}
+namespace Terraria {public static class Collision {public static bool Visible=true,Solid;public static bool SolidCollision(Microsoft.Xna.Framework.Vector2 position,int width,int height,bool acceptTopSurfaces=false)=>Solid;public static bool CanHitLine(Microsoft.Xna.Framework.Vector2 start,int w,int h,Microsoft.Xna.Framework.Vector2 end,int ew,int eh)=>Visible;}}
 namespace XianXia.Content.Items.HandGenerated {public class MedicineKingWoodHeart{}}
 namespace XianXia.Content.Items.Materials {public class GreenwoodRoot{}}
 

@@ -16,7 +16,7 @@ namespace XianXia.Common.Systems;
 public static class ArtifactSkillTransactions
 {
     public static ArtifactSkill? HeldSkill(Item item) => RefinedArtifact.SupportsAwakening(item) ? item.ModItem.Name switch
-    { "CloudpiercerFlyingSword" => ArtifactSkill.SwordBurst, "GreenwoodArrayPlate" => ArtifactSkill.ArrayPulse, "HeavenTabletWardSeal" => ArtifactSkill.WardGuard, "MoonboneDharmaSword" => ArtifactSkill.MoonCrescent, "FormlessSwordWheel" => ArtifactSkill.WheelFormation, "BlackFurnaceWarhammer" => ArtifactSkill.HammerVolley, _ => null } : null;
+    { "CloudpiercerFlyingSword" => ArtifactSkill.SwordBurst, "GreenwoodArrayPlate" => ArtifactSkill.ArrayPulse, "HeavenTabletWardSeal" => ArtifactSkill.WardGuard, "MoonboneDharmaSword" => ArtifactSkill.MoonCrescent, "FormlessSwordWheel" => ArtifactSkill.WheelFormation, "BlackFurnaceWarhammer" => ArtifactSkill.HammerVolley, "ThunderPatternSwordCase" => ArtifactSkill.ThunderVolley, _ => null } : null;
     public static bool CanUseAlternative(Player player, Item item) => RefinedArtifact.IsAwakened(item)
         && HeldSkill(item) is ArtifactSkill skill && player.GetModPlayer<XianXiaPlayer>().activeSkillCooldown == 0
         && (skill != ArtifactSkill.HammerVolley || HammerRealmAllowed(player))
@@ -92,7 +92,7 @@ public static class ArtifactSkillTransactions
         Reply(player, "Mods.XianXia.Skills.Success");
     }
     private static bool Friendly(Player owner, Player target) => owner == target || !owner.hostile || !target.hostile || (owner.team > 0 && owner.team == target.team);
-    private static bool IsBurst(ArtifactSkill skill) => skill is ArtifactSkill.SwordBurst or ArtifactSkill.MoonCrescent or ArtifactSkill.WheelFormation or ArtifactSkill.HammerVolley;
+    private static bool IsBurst(ArtifactSkill skill) => skill is ArtifactSkill.SwordBurst or ArtifactSkill.MoonCrescent or ArtifactSkill.WheelFormation or ArtifactSkill.HammerVolley or ArtifactSkill.ThunderVolley;
     private static Projectile FindArray(Player player)
     {
         int type = ModContent.ProjectileType<GreenwoodArrayField>();
@@ -106,6 +106,7 @@ public static class ArtifactSkillTransactions
     private static int CountActive() { int count = 0; for (int i = 0; i < Main.maxProjectiles; i++) if (Main.projectile[i].active) count++; return count; }
     private static bool Burst(Player player, Item item, Vector2 aim)
     {
+        if (HeldSkill(item) == ArtifactSkill.ThunderVolley) return ThunderBurst(player,item,aim);
         Vector2 position = player.RotatedRelativePoint(player.MountedCenter), delta = aim - position;
         if (!Finite(position) || !Finite(delta) || !float.IsFinite(delta.LengthSquared())) return false;
         bool moon = HeldSkill(item) == ArtifactSkill.MoonCrescent;
@@ -120,19 +121,54 @@ public static class ArtifactSkillTransactions
         for (int i = -halfCount; i <= halfCount; i++) {
             int index = Projectile.NewProjectile(source, position, velocity.RotatedBy(i * (hammer ? 0.24 : wheel ? 0.3 : 0.18)), type, damage, player.GetWeaponKnockback(item, item.knockBack), player.whoAmI);
             if (index < 0 || index >= Main.maxProjectiles) {
-                foreach (int old in created) {
-                    Projectile p = Main.projectile[old]; p.active = false;
-                    if (Main.netMode == NetmodeID.Server) NetMessage.SendData(MessageID.KillProjectile, -1, -1, null, p.identity, p.owner);
-                }
+                RemoveCreated(created);
                 return false;
             }
             created.Add(index);
         }
+        PublishCreated(created);
+        return true;
+    }
+    private static bool ThunderBurst(Player player,Item item,Vector2 aim)
+    {
+        Vector2 position = player.RotatedRelativePoint(player.MountedCenter), delta = aim - position;
+        float worldWidth = Main.maxTilesX * 16f, worldHeight = Main.maxTilesY * 16f;
+        float horizontalMargin = ArtifactSkillRules.ThunderSpacing + 28f, verticalMinimum = ArtifactSkillRules.ThunderDrop + 56f;
+        if (!Finite(position) || !Finite(delta) || !float.IsFinite(delta.LengthSquared()) || position.X < 0 || position.Y < 0
+            || position.X >= worldWidth || position.Y >= worldHeight || worldWidth < horizontalMargin * 2 || worldHeight < verticalMinimum + 16) return false;
+        Vector2 focus = position + delta.SafeNormalize(Vector2.UnitX * player.direction) * Math.Min(ArtifactSkillRules.ThunderRange,MathF.Sqrt(delta.LengthSquared()));
+        focus.X = Math.Clamp(focus.X,horizontalMargin,worldWidth - horizontalMargin); focus.Y = Math.Clamp(focus.Y,verticalMinimum,worldHeight - 16);
+        if (Vector2.DistanceSquared(position,focus) > ArtifactSkillRules.ThunderRange * ArtifactSkillRules.ThunderRange
+            || !Collision.CanHitLine(position,1,1,focus,1,1)) return false;
+        var positions = new Vector2[3];
+        for (int i = -1; i <= 1; i++) {
+            Vector2 spawn = focus + new Vector2(i * ArtifactSkillRules.ThunderSpacing,-ArtifactSkillRules.ThunderDrop);
+            if (Collision.SolidCollision(spawn - new Vector2(12,40),24,80) || !Collision.CanHitLine(spawn,1,1,focus + new Vector2(i * ArtifactSkillRules.ThunderSpacing,0),1,1)) return false;
+            positions[i + 1] = spawn;
+        }
+        int damage = Math.Max(1,(int)(player.GetWeaponDamage(item) * ArtifactSkillRules.ThunderDamageMultiplier));
+        var created = new List<int>(); var source = new EntitySource_ItemUse_WithAmmo(player,item,0);
+        foreach (Vector2 spawn in positions) {
+            int index = Projectile.NewProjectile(source,spawn,Vector2.UnitY * 12,ModContent.ProjectileType<ThunderCaseStrikeProjectile>(),damage,
+                player.GetWeaponKnockback(item,item.knockBack),player.whoAmI);
+            if (index < 0 || index >= Main.maxProjectiles) { RemoveCreated(created); return false; }
+            created.Add(index);
+        }
+        PublishCreated(created); return true;
+    }
+    private static void RemoveCreated(List<int> created)
+    {
+        foreach (int index in created) {
+            Projectile projectile = Main.projectile[index]; projectile.damage = 0; projectile.active = false;
+            if (Main.netMode == NetmodeID.Server) NetMessage.SendData(MessageID.KillProjectile,-1,-1,null,projectile.identity,projectile.owner);
+        }
+    }
+    private static void PublishCreated(List<int> created)
+    {
         foreach (int index in created) {
             Main.projectile[index].netUpdate = true;
-            if (Main.netMode == NetmodeID.Server) NetMessage.SendData(MessageID.SyncProjectile, -1, -1, null, index);
+            if (Main.netMode == NetmodeID.Server) NetMessage.SendData(MessageID.SyncProjectile,-1,-1,null,index);
         }
-        return true;
     }
     private static void Reply(Player player, string key)
     {

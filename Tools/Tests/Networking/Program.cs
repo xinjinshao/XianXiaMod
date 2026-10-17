@@ -1588,6 +1588,30 @@ Check(joiningTickPlayer.State.NetworkInitialized&&!joiningTickPlayer.State.Netwo
 joiningTickPlayer.active=true;sessions.PostUpdatePlayers();joiningTickPlayer.active=false;sessions.PostUpdatePlayers();
 Check(!joiningTickPlayer.State.NetworkInitialized&&!joiningTickPlayer.State.NetworkWasActive,"Short-table disconnect still clears a previously active session");
 
+// Thunderfall actual shared transaction: three target-relative strikes, capacity and refund boundaries.
+void ThunderSkillFixture(int mode) {SetupSkill("ThunderPatternSwordCase");Game.netMode=mode;Terraria.Collision.Visible=true;Terraria.Collision.Solid=false;}
+void ThunderCast(int mode,float x=200,float y=320){if(mode==NetmodeID.SinglePlayer)ArtifactSkillTransactions.HandleRequest(Game.player[0],ArtifactSkill.ThunderVolley,1,601,new Microsoft.Xna.Framework.Vector2(x,y));else Skill(ArtifactSkill.ThunderVolley,x:x,y:y);}
+foreach(int mode in new[]{NetmodeID.SinglePlayer,NetmodeID.Server}) {
+ ThunderSkillFixture(mode);ThunderCast(mode);var strikes=Game.projectile.Where(p=>p.active).OrderBy(p=>p.Center.X).ToArray();
+ Check(strikes.Length==3&&strikes.All(p=>p.type==11&&p.damage==37&&p.owner==0&&p.velocity.X==0&&p.velocity.Y==12),"Thunderfall actual transaction creates three owned 150-percent downward strikes");
+ Check(strikes.Select((p,i)=>Math.Abs(p.Center.X-(104+i*96))<.001f&&Math.Abs(p.Center.Y-80)<.001f).All(ok=>ok),"Thunderfall target-relative spacing and drop height");
+ Check(Game.player[0].State.spiritualEnergy==70&&Game.player[0].State.activeSkillCooldown==1200,"Thunderfall exact thirty-energy and shared twenty-second cooldown");
+ Game.player[0].State.skillRequestCooldown=0;ThunderCast(mode);Check(Game.projectile.Count(p=>p.active)==3&&Game.player[0].State.spiritualEnergy==70,"Thunderfall duplicate request during shared cooldown does nothing");
+ foreach(int budget in new[]{0,1,2}){ThunderSkillFixture(mode);Terraria.Projectile.SpawnBudget=budget;ThunderCast(mode);Check(!Game.projectile.Any(p=>p.active)&&Game.player[0].State.spiritualEnergy==100&&Game.player[0].State.activeSkillCooldown==0,"Thunderfall partial creation cancels all strikes and restores energy without shared cooldown");}
+ ThunderSkillFixture(mode);for(int j=0;j<Game.maxProjectiles-2;j++)Game.projectile[j].active=true;ThunderCast(mode);Check(Game.projectile.Count(p=>p.active)==Game.maxProjectiles-2&&Game.player[0].State.spiritualEnergy==100,"Thunderfall preflights three available slots");
+ ThunderSkillFixture(mode);Game.player[0].State.spiritualEnergy=29;ThunderCast(mode);Check(!Game.projectile.Any(p=>p.active)&&Game.player[0].State.spiritualEnergy==29,"Thunderfall refuses below actual energy cost");
+ ThunderSkillFixture(mode);Terraria.Collision.Visible=false;ThunderCast(mode);Check(!Game.projectile.Any(p=>p.active)&&Game.player[0].State.spiritualEnergy==100&&Game.player[0].State.activeSkillCooldown==0,"Thunderfall blocked aim or fall path refunds resources");Terraria.Collision.Visible=true;
+ ThunderSkillFixture(mode);Terraria.Collision.Solid=true;ThunderCast(mode);Check(!Game.projectile.Any(p=>p.active)&&Game.player[0].State.spiritualEnergy==100,"Thunderfall refuses occupied spawn volumes");Terraria.Collision.Solid=false;
+ ThunderSkillFixture(mode);Game.player[0].inventory[1].GetGlobalItem<XianXia.Common.Items.RefinedArtifact>().SetLevel(2);ThunderCast(mode);Check(!Game.projectile.Any(p=>p.active)&&Game.player[0].State.spiritualEnergy==100,"Thunderfall requires actually awakened held equipment");
+ ThunderSkillFixture(mode);ThunderCast(mode,1e20f,1e20f);Check(!Game.projectile.Any(p=>p.active)&&Game.player[0].State.spiritualEnergy==100,"Thunderfall rejects non-finite squared aim geometry");
+}
+foreach(var route in Enum.GetValues<DownedBossSystem.EndgameRoute>())Check(DaoArtifactRules.SkillCost(ArtifactSkill.ThunderVolley,route)==30,"Thunderfall cost cannot inherit unsupported Dao branch fees");
+foreach(int mode in new[]{NetmodeID.SinglePlayer,NetmodeID.Server,NetmodeID.MultiplayerClient}) {
+ ThunderSkillFixture(mode);var owner=Game.player[0];var strike=new XianXia.Content.Projectiles.ThunderCaseStrikeProjectile{Mod=mod};strike.SetDefaults();strike.Projectile.owner=0;strike.Projectile.active=true;strike.Projectile.Center=owner.Center;strike.Projectile.velocity=new(0,12);strike.OnSpawn(new Terraria.DataStructures.EntitySource_Parent(owner));
+ Check(strike.Projectile.DamageType==DamageClass.Melee&&strike.Projectile.netImportant&&strike.CanDamage()==null,"Thunderfall registered-source defaults keep fixed melee class and important sync");
+ owner.dead=true;Check(strike.CanDamage()==false,"Invalid owner suppresses strike damage immediately");strike.AI();
+ if(mode!=NetmodeID.MultiplayerClient){owner.dead=false;strike.AI();Check(strike.CanDamage()==false&&strike.Projectile.timeLeft<=6&&!strike.Projectile.friendly,"Authority cancellation is sticky after owner revival");using var bytes=new MemoryStream();strike.SendExtraAI(new BinaryWriter(bytes));Check(bytes.ToArray().SequenceEqual(new byte[]{1,1}),"Strike cancellation uses fixed melee plus cancellation state");}
+}
 // Actual Thunder Sword hit hook: owner authority, lifecycle, minimum half damage and no observer/server RNG.
 XianXia.Content.Projectiles.ThunderSwordProjectile ThunderProcFixture(int mode,int local=0,int damage=201) {
  Game.myPlayer=0;SetupSkill("ThunderPatternSwordCase");Game.netMode=mode;Game.myPlayer=local;Game.rand=new Terraria.RandomStub{Roll=0};

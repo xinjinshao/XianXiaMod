@@ -51,6 +51,7 @@
   <Compile Include="../../../Common/Systems/ServerPlayerProjectileSync.cs" Link="ServerPlayerProjectileSync.cs" />
   <Compile Include="../../../Content/Projectiles/GreenwoodArrayField.cs" Link="GreenwoodArrayField.cs" />
   <Compile Include="../../../Content/Projectiles/ThunderTalismanArray.cs" Link="ThunderTalismanArray.cs" />
+  <Compile Include="../../../Content/Projectiles/ThunderCaseStrikeProjectile.cs" Link="ThunderCaseStrikeProjectile.cs" />
   <Compile Include="../../../Content/Projectiles/ThunderSwordProjectile.cs" Link="ThunderSwordProjectile.cs" />
   <Compile Include="../../../Content/Projectiles/MinorThunderboltProjectile.cs" Link="MinorThunderboltProjectile.cs" />
 <Compile Include="../../../Content/Items/Materials/QiRecoveryPill.cs" /><Compile Include="../../../Common/Systems/QiRecoveryRules.cs" /><Compile Include="../../../Content/Items/Materials/FurnaceGuardPill.cs" /><Compile Include="../../../Content/Buffs/FurnaceGuardBuff.cs" /><Compile Include="../../../Content/Items/Materials/WindStepPill.cs" /><Compile Include="../../../Content/Buffs/WindStepBuff.cs" /><Compile Include="../../../Content/Items/Materials/ThunderBurstPill.cs" /><Compile Include="../../../Content/Buffs/ThunderBurstBuff.cs" /></ItemGroup>

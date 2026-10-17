@@ -59,6 +59,7 @@ public class ThunderPatternSwordCase : global::XianXia.Common.Items.CultivationW
 
     {
 
+        if (player.altFunctionUse == 2) return global::XianXia.Common.Systems.ArtifactSkillTransactions.CanUseAlternative(player,Item);
         return player.GetModPlayer<global::XianXia.Common.Players.XianXiaPlayer>()
 
             .CanConsumeSpiritualEnergy(GetSpiritCost(player));
@@ -70,8 +71,7 @@ public class ThunderPatternSwordCase : global::XianXia.Common.Items.CultivationW
     public const int AwakenedSpiritCost = 6;
     public override int GetSpiritCost(Player player) => global::XianXia.Common.Items.RefinedArtifact.IsAwakened(Item)
         ? AwakenedSpiritCost : HasSectInheritance(player) ? 7 : 9;
-    // The crafted passive upgrade does not expose an unimplemented alternate skill.
-    public override bool AltFunctionUse(Player player) => false;
+    public override bool AltFunctionUse(Player player) => global::XianXia.Common.Items.RefinedArtifact.IsAwakened(Item);
 
 
     private static bool HasSectInheritance(Player player)

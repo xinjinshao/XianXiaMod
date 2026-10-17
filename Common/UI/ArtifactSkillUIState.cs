@@ -15,18 +15,20 @@ namespace XianXia.Common.UI;
 
 public class ArtifactSkillUIState : UIState
 {
+    private const float PanelHeight = 156f;
     private UIPanel panel;
     private UIText status;
     private readonly List<(UIElement Button, ArtifactSkill Skill)> skillButtons = new();
     private string Text(string key, params object[] args) => Language.GetTextValue("Mods.XianXia.Skills." + key, args);
     public override void OnInitialize()
     {
-        panel = new UIPanel(); panel.Left.Set(28,0); panel.Top.Set(140,0); panel.Width.Set(300,0); panel.Height.Set(120,0); Append(panel);
+        panel = new UIPanel(); panel.Left.Set(28,0); panel.Top.Set(140,0); panel.Width.Set(300,0); panel.Height.Set(PanelHeight,0); Append(panel);
         status = new UIText("",0.75f); panel.Append(status);
         AddButton("Sword",0,ArtifactSkill.SwordBurst); AddButton("Array",92,ArtifactSkill.ArrayPulse); AddButton("Ward",184,ArtifactSkill.WardGuard);
         AddButton("Moon",0,ArtifactSkill.MoonCrescent,64);
         AddButton("Wheel",92,ArtifactSkill.WheelFormation,64);
         AddButton("Hammer",184,ArtifactSkill.HammerVolley,64);
+        AddButton("Thunder",0,ArtifactSkill.ThunderVolley,100);
     }
     private void AddButton(string key,float left,ArtifactSkill skill,float top=28)
     {
@@ -41,7 +43,7 @@ public class ArtifactSkillUIState : UIState
         var config = Terraria.ModLoader.ModContent.GetInstance<XianXiaClientConfig>();
         float scale = Math.Max(0.01f, Main.UIScale);
         float x = MathHelper.Clamp(config.SkillPanelX, 0f, Math.Max(0f, Main.screenWidth / scale - 300f));
-        float y = MathHelper.Clamp(config.SkillPanelY, 0f, Math.Max(0f, Main.screenHeight / scale - 120f));
+        float y = MathHelper.Clamp(config.SkillPanelY, 0f, Math.Max(0f, Main.screenHeight / scale - PanelHeight));
         if (panel.Left.Pixels != x || panel.Top.Pixels != y)
         {
             panel.Left.Set(x, 0); panel.Top.Set(y, 0); panel.Recalculate();
@@ -74,6 +76,7 @@ public class ArtifactSkillUIState : UIState
             ArtifactSkill.MoonCrescent => Text(route == DownedBossSystem.EndgameRoute.None ? "MoonRequirement" : "MoonDaoRequirement"),
             ArtifactSkill.WheelFormation => Text(route == DownedBossSystem.EndgameRoute.None ? "WheelRequirement" : "WheelDaoRequirement"),
             ArtifactSkill.HammerVolley => Text(route == DownedBossSystem.EndgameRoute.None ? "HammerRequirement" : "HammerDaoRequirement"),
+            ArtifactSkill.ThunderVolley => Text("ThunderRequirement"),
             _ => Text("WardRequirement")
         };
         return requirement + "\n" + Text("SkillNumbers", cost, ArtifactSkillRules.Cooldown(skill) / 60)
