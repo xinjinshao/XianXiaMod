@@ -75,4 +75,18 @@ for(int i=0;i<entries.Length;i++) {
  Prepare(i,false); Main.LocalPlayer.Center=new(600,0); entry.Town.ClaimCommissionOnServer(Main.LocalPlayer);
  Check(DownedBossSystem.ClaimedCommissions.Contains(entry.Prior)&&Main.LocalPlayer.Rewards.Count==2,"Initial commission accepts the exact six-hundred-pixel interaction boundary");
 }
+for(int i=0;i<entries.Length;i++) {
+ var entry=entries[i];
+ foreach(bool badNpc in new[]{false,true}) foreach(float coordinate in new[]{float.NaN,float.PositiveInfinity,float.NegativeInfinity,float.MaxValue}) {
+  Prepare(i); if(badNpc)entry.Town.NPC.Center=new(coordinate,0);else Main.LocalPlayer.Center=new(coordinate,0);
+  int reputation=DownedBossSystem.SectReputation;
+  bool accepted=FollowupCommissions.TryClaim(Main.LocalPlayer,entry.Town.NPC,entry.Town.Name,out var response);
+  Check(!accepted&&response.Key=="Mods.XianXia.NPCs.Commission.Unavailable"&&!DownedBossSystem.ClaimedCommissions.Contains(entry.Id)
+   &&Main.LocalPlayer.Rewards.Count==0&&DownedBossSystem.SectReputation==reputation,"Nonfinite or overflowing geometry on either side cannot claim a followup");
+ }
+ Prepare(i); Main.LocalPlayer.Center=new(600,0);
+ Check(FollowupCommissions.TryClaim(Main.LocalPlayer,entry.Town.NPC,entry.Town.Name,out _),"Followup exact six-hundred-pixel boundary still succeeds");
+ Prepare(i); Main.LocalPlayer.Center=new(601,0);
+ Check(!FollowupCommissions.TryClaim(Main.LocalPlayer,entry.Town.NPC,entry.Town.Name,out _),"Followup one pixel past range is refused");
+}
 Console.WriteLine($"Actual five-NPC followup hooks passed: {count} assertions; world save and claims linked, engine inventory/packet/UI boundaries mocked.");

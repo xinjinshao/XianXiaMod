@@ -51,8 +51,10 @@ public static class FollowupCommissions
         Entry entry = Find(npcName);
         if (Main.netMode == NetmodeID.MultiplayerClient || player == null || !player.active || player.dead
             || player.CCed || player.noItems || npc == null || !npc.active || npc.ModNPC?.Name != npcName
-            || player.talkNPC != npc.whoAmI || Microsoft.Xna.Framework.Vector2.DistanceSquared(player.Center, npc.Center) > 600f * 600f
+            || player.talkNPC != npc.whoAmI
             || entry == null || !DownedBossSystem.ClaimedCommissions.Contains(entry.Prior)) return false;
+        float distance = Microsoft.Xna.Framework.Vector2.DistanceSquared(player.Center, npc.Center);
+        if (!float.IsFinite(distance) || distance > 600f * 600f) return false;
         string key = $"Mods.XianXia.FollowupCommissions.{npcName}.";
         if (DownedBossSystem.ClaimedCommissions.Contains(entry.Id))
         {
