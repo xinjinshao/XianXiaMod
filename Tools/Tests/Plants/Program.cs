@@ -8,6 +8,13 @@ int assertions=0;
 void Check(bool ok,string reason) { assertions++; if(!ok) throw new Exception(reason); }
 var crop=new CultivatedSpiritHerbTile();
 crop.SetStaticDefaults();
+Check(crop.MapEntries.SequenceEqual(new object[]{"Seedling","Growing","Mature"}),"Map labels register in the same order as the three growth stages");
+foreach(short frame in new short[]{-18,0,18,36,54,short.MaxValue}) {
+ Framing.Cell.TileFrameX=frame;
+ Check(crop.GetMapOption(0,0)==(frame<18?0:frame<36?1:2),"Map option follows clamped real crop stage without changing growth");
+ Check(Framing.Cell.TileFrameX==frame,"Map inspection cannot mature or harvest a crop");
+}
+Framing.Cell.TileFrameX=0;
 Check(TileObjectData.newTile.AnchorValidTiles.SequenceEqual(new[]{0,2,60,70,71}),"Configured soil anchors include ordinary and cultivation soils.");
 Check(TileObjectData.newTile.AnchorAlternateTiles.SequenceEqual(new[]{78,380}),"Pots and planter boxes are supported.");
 Check(!TileObjectData.newTile.WaterDeath && TileObjectData.newTile.LavaDeath,"Water pauses rather than destroys; lava destroys.");

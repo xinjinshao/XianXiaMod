@@ -3,6 +3,9 @@ Mods: {
   Tiles: {
    CultivatedSpiritHerbTile: {
     MapEntry: 栽培灵草
+    Seedling: 栽培灵草（幼苗）
+    Growing: 栽培灵草（生长中）
+    Mature: 栽培灵草（成熟，可收获青木根）
    }
   }
  }

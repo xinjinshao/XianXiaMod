@@ -3,6 +3,9 @@ Mods: {
   Tiles: {
    CultivatedSpiritHerbTile: {
     MapEntry: Cultivated Spirit Herb
+    Seedling: Cultivated Spirit Herb (seedling)
+    Growing: Cultivated Spirit Herb (growing)
+    Mature: Cultivated Spirit Herb (mature; yields Greenwood Root)
    }
   }
  }

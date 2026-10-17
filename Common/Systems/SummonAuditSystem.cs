@@ -941,6 +941,7 @@ public partial class SummonAuditSystem : ModSystem
             AuditStationRecipes(Check);
             AuditStationBuffs(Check);
             AuditExposureLifecycle(Check);
+            AuditHerbMap(Check);
         }
         catch (Exception exception) { error = exception.ToString(); }
         finally {

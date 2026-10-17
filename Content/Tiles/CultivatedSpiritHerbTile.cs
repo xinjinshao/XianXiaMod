@@ -35,8 +35,13 @@ public class CultivatedSpiritHerbTile : ModTile
         TileObjectData.addTile(Type);
         HitSound = SoundID.Grass;
         DustType = DustID.Grass;
-        AddMapEntry(new Color(90, 190, 130), CreateMapEntryName());
+        AddMapEntry(new Color(60, 110, 80), this.GetLocalization("Seedling"));
+        AddMapEntry(new Color(80, 150, 105), this.GetLocalization("Growing"));
+        AddMapEntry(new Color(90, 190, 130), this.GetLocalization("Mature"));
     }
+
+    public override ushort GetMapOption(int i, int j) =>
+        (ushort)SpiritHerbRules.Stage(Framing.GetTileSafely(i, j).TileFrameX);
 
     // Do not replace a crop or consume a seed merely to harvest it.
     public override bool CanPlace(int i, int j)

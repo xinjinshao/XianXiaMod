@@ -60,7 +60,8 @@ namespace Terraria.ModLoader {
  public class ModTile {
   public int Type=72,HitSound,DustType;
   public object CreateMapEntryName()=>null;
-  public void AddMapEntry(Microsoft.Xna.Framework.Color color,object name) { }
+  public object GetLocalization(string key)=>key; public List<object> MapEntries=new(); public virtual ushort GetMapOption(int i,int j)=>0;
+  public void AddMapEntry(Microsoft.Xna.Framework.Color color,object name) { MapEntries.Add(name); }
   public virtual void SetStaticDefaults() { }
   public virtual bool CanPlace(int i,int j)=>true;
   public virtual void RandomUpdate(int i,int j) { }
