@@ -12,6 +12,24 @@ namespace XianXia.Common.Systems;
 
 public partial class SummonAuditSystem
 {
+    private static void AuditArmorPreview(Action<bool, string> check)
+    {
+        foreach (int type in new[] { ModContent.ItemType<SpiritweaveHood>(), ModContent.ItemType<SpiritweaveRobe>(), ModContent.ItemType<SpiritweaveLeggings>(),
+            ModContent.ItemType<FurnaceguardHelmet>(), ModContent.ItemType<FurnaceguardBreastplate>(), ModContent.ItemType<FurnaceguardGreaves>() }) {
+            var item = new Item(); item.SetDefaults(type);
+            var lines = new System.Collections.Generic.List<TooltipLine>(); item.ModItem.ModifyTooltips(lines);
+            bool spiritweave = item.ModItem is SpiritweaveArmor;
+            string bonus = spiritweave ? SpiritweaveHood.BonusText() : FurnaceguardHelmet.BonusText();
+            check(lines.Count == 1 && lines[0].Text.Contains(bonus) && !lines[0].Text.Contains("Mods.XianXia.") && !lines[0].Text.Contains("{0}"),
+                "native each unworn cultivation armor piece previews its actual formatted complete-set tradeoff");
+            var actor = new Player { active = true }; actor.GetDamage(DamageClass.Generic) = StatModifier.Default;
+            var state = actor.GetModPlayer<XianXiaPlayer>(); state.spiritualEnergyCostMultiplier = 1f;
+            if (spiritweave) ModContent.GetInstance<SpiritweaveHood>().UpdateArmorSet(actor);
+            else ModContent.GetInstance<FurnaceguardHelmet>().UpdateArmorSet(actor);
+            check(actor.setBonus == bonus, "native armor preview and active set bonus share exactly the same localized formatter");
+        }
+    }
+
     private static void AuditArmorDamageBaseline(Action<bool, string> check)
     {
         Player previous = Main.player[0]; var text = Main.combatText; var random = Main.rand;

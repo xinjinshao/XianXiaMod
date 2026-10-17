@@ -9,6 +9,7 @@ namespace XianXia.Content.Items.Armor;
 
 public abstract class FurnaceguardArmor : CultivationArmorItem
 {
+    protected override string SetPreview => FurnaceguardHelmet.BonusText();
     protected override int Rarity => ItemRarityID.Green;
     protected abstract int BarCost { get; }
     protected abstract int SlagCost { get; }
@@ -20,6 +21,8 @@ public abstract class FurnaceguardArmor : CultivationArmorItem
 public class FurnaceguardHelmet : FurnaceguardArmor
 {
     public const int ResistancePercent = 5, MovementPenaltyPercent = 10, CostPenaltyPercent = 10;
+    internal static string BonusText() => ModContent.GetInstance<FurnaceguardHelmet>().GetLocalization("SetBonus")
+        .Format(ResistancePercent, MovementPenaltyPercent, CostPenaltyPercent);
     protected override EquipType Kind => EquipType.Head;
     protected override int Visual => ArmorIDs.Head.IronHelmet;
     protected override int Icon => ItemID.IronHelmet;
@@ -30,7 +33,7 @@ public class FurnaceguardHelmet : FurnaceguardArmor
         && body.type == ModContent.ItemType<FurnaceguardBreastplate>() && legs.type == ModContent.ItemType<FurnaceguardGreaves>();
     public override void UpdateArmorSet(Player player)
     {
-        player.setBonus = this.GetLocalization("SetBonus").Format(ResistancePercent, MovementPenaltyPercent, CostPenaltyPercent);
+        player.setBonus = BonusText();
         player.endurance += ResistancePercent / 100f;
         player.moveSpeed *= 1f - MovementPenaltyPercent / 100f;
         player.GetModPlayer<XianXiaPlayer>().spiritualEnergyCostMultiplier *= 1f + CostPenaltyPercent / 100f;

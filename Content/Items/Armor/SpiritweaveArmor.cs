@@ -14,6 +14,7 @@ public abstract class CultivationArmorItem : ModItem
     protected abstract int Visual { get; }
     protected abstract int Icon { get; }
     protected abstract int Defense { get; }
+    protected abstract string SetPreview { get; }
     protected virtual int Rarity => ItemRarityID.Blue;
     public override string Texture => "Terraria/Images/Item_" + Icon;
     public override void Load() => slot = EquipLoader.AddEquipTexture(Mod, Kind switch {
@@ -22,6 +23,8 @@ public abstract class CultivationArmorItem : ModItem
         _ => "Terraria/Images/Armor_Legs_" + Visual
     }, Kind, this);
     public override void SetStaticDefaults() => Item.ResearchUnlockCount = 1;
+    public override void ModifyTooltips(System.Collections.Generic.List<TooltipLine> tooltips) =>
+        tooltips.Add(new TooltipLine(Mod, "CultivationSetPreview", Terraria.Localization.Language.GetTextValue("Mods.XianXia.ArmorGuide.CompleteSet", SetPreview)));
     public override void SetDefaults()
     {
         Item.width = Item.height = 28; Item.maxStack = 1; Item.defense = Defense;
@@ -34,6 +37,7 @@ public abstract class CultivationArmorItem : ModItem
 
 public abstract class SpiritweaveArmor : CultivationArmorItem
 {
+    protected override string SetPreview => SpiritweaveHood.BonusText();
     protected abstract int WoodCost { get; }
     protected abstract int GelCost { get; }
     protected abstract int StoneCost { get; }
@@ -45,6 +49,8 @@ public abstract class SpiritweaveArmor : CultivationArmorItem
 public class SpiritweaveHood : SpiritweaveArmor
 {
     public const int RegenBonus = 1, CostReductionPercent = 8, DamagePenaltyPercent = 10;
+    internal static string BonusText() => ModContent.GetInstance<SpiritweaveHood>().GetLocalization("SetBonus")
+        .Format(RegenBonus, CostReductionPercent, DamagePenaltyPercent);
     protected override EquipType Kind => EquipType.Head;
     protected override int Visual => ArmorIDs.Head.WoodHelmet;
     protected override int Icon => ItemID.WoodHelmet;
@@ -56,7 +62,7 @@ public class SpiritweaveHood : SpiritweaveArmor
         && body.type == ModContent.ItemType<SpiritweaveRobe>() && legs.type == ModContent.ItemType<SpiritweaveLeggings>();
     public override void UpdateArmorSet(Player player)
     {
-        player.setBonus = this.GetLocalization("SetBonus").Format(RegenBonus, CostReductionPercent, DamagePenaltyPercent);
+        player.setBonus = BonusText();
         var state = player.GetModPlayer<XianXiaPlayer>();
         state.spiritualEnergyRegenBonus += RegenBonus;
         state.spiritualEnergyCostMultiplier *= 1f - CostReductionPercent / 100f;

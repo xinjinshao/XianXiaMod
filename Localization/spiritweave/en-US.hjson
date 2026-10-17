@@ -15,6 +15,9 @@
           "DisplayName": "Spiritweave Leggings",
           "Tooltip": "Part of the Spiritweave set; the full set trades damage for energy sustain"
         }
+      },
+      "ArmorGuide": {
+        "CompleteSet": "Complete three-piece set (no effect when mixed): {0}"
       }
     }
   }

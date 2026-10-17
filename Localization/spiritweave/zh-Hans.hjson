@@ -15,6 +15,9 @@
           "DisplayName": "灵织护腿",
           "Tooltip": "灵织套装部件；完整套装以伤害换取灵气续航"
         }
+      },
+      "ArmorGuide": {
+        "CompleteSet": "完整三件套效果（混穿不生效）：{0}"
       }
     }
   }
