@@ -35,9 +35,13 @@ public partial class SummonAuditSystem
                 check(Math.Abs(damage.Base - 54) < .001f,"native ward Dao grows base damage from 156 to 210");
                 var weapon = (HeavenTabletWardSeal)item.ModItem; int cost = route == 1 ? 24 : route == 2 ? 30 : 20;
                 actor.altFunctionUse = 2; state.spiritualEnergy = cost - 1; check(!weapon.CanUseItem(actor),"native ward Dao alternative input checks route-specific energy");
+                check(ArtifactSkillTransactions.UnavailableReason(actor,ArtifactSkill.WardGuard) == "Mods.XianXia.Skills.NeedEnergy","native panel readiness reports actual Dao ward shortage");
                 state.spiritualEnergy = 100;
+                var snapshot = state.CaptureSnapshot(); int life = actor.statLife;
+                check(ArtifactSkillTransactions.UnavailableReason(actor,ArtifactSkill.WardGuard) == null && state.CaptureSnapshot() == snapshot && actor.statLife == life,"native panel readiness is read-only before Dao ward cast");
                 void Cast() => ArtifactSkillTransactions.HandleRequest(actor,ArtifactSkill.WardGuard,0,item.type,actor.Center);
                 Cast();
+                check(ArtifactSkillTransactions.UnavailableReason(actor,ArtifactSkill.WardGuard) == "Mods.XianXia.Skills.CoolingDown","native panel readiness follows actual Dao ward cooldown");
                 check(state.spiritualEnergy == 100 - cost && state.wardGuardTimer == 180 && state.activeSkillCooldown == 1200
                     && actor.statLife == (route == 1 ? 70 : 50) && state.spiritPressure == (route == 3 ? 8 : 0),"native ward Dao authoritative protection route cost healing and pressure");
                 actor.statDefense = Player.DefenseStat.Default; int buffIndex = 0; float oldEndurance = actor.endurance; int oldDefense = actor.statDefense;

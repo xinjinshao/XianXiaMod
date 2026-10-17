@@ -32,7 +32,8 @@ Mods: {
    ThunderDaoRequirement: "Hold a Thunder Pattern Sword Case transformed along the matching world route: Rebuild strikes for 200% each and heals up to 20, Sever strikes for 250%, Star Abyss strikes for 200% and adds 8 pressure; keeps the 800-pixel range and terrain checks; inactive routes restore awakened 150% strikes"
    ThunderRequirement: Hold a crafted-awakened Thunder Pattern Sword Case; call three bolts above a visible point within 800 pixels, spaced 96 pixels apart, each dealing 150% of current weapon damage; blocked spawn or fall paths spend nothing
    Ward: Guard
-   Ready: Skills ready; configure keys in Mod Controls
+   CanRequest: Current prerequisites allow a cast request; aim and terrain are checked when casting
+   Ready: Shared cooldown ready; hover a skill to check prerequisites; configure keys in Mod Controls
    Cooldown: "Shared skill cooldown: {0}s"
    WardStatus: "Cooldown: {0}s | Guard: {1}s"
    Unavailable: Hold the corresponding awakened artifact, or equip Lightning Ward Jade in an unlocked functional slot

@@ -48,6 +48,32 @@ public static class ArtifactSkillTransactions
             if (player.IsItemSlotUnlockedAndUsable(slot) && player.armor[slot].type == ModContent.ItemType<LightningWardJade>() && !player.armor[slot].IsAir) return true;
         return false;
     }
+    // A null result means the current replicated prerequisites allow a request; aim and terrain are checked when casting.
+    public static string UnavailableReason(Player player, ArtifactSkill skill) => EvaluateReadiness(player,skill,out _);
+    private static string EvaluateReadiness(Player player, ArtifactSkill skill, out List<Player> healTargets)
+    {
+        healTargets = null;
+        if (!ArtifactSkillRules.IsValid(skill) || player == null || !player.active || player.dead || player.noItems || player.CCed)
+            return "Mods.XianXia.Skills.Unavailable";
+        Item item = player.HeldItem;
+        bool eligible = skill == ArtifactSkill.WardGuard ? HasWard(player) || HasAwakenedWardSeal(player)
+            : item.stack == 1 && HeldSkill(item) == skill && RefinedArtifact.IsAwakened(item)
+                && (skill != ArtifactSkill.HammerVolley || HammerRealmAllowed(player));
+        if (!eligible) return "Mods.XianXia.Skills.Unavailable";
+        var state = player.GetModPlayer<XianXiaPlayer>();
+        if (state.activeSkillCooldown > 0) return "Mods.XianXia.Skills.CoolingDown";
+        if (IsBurst(skill) && Main.maxProjectiles - CountActive() < (skill == ArtifactSkill.WheelFormation ? 5 : 3)) return "Mods.XianXia.Skills.Capacity";
+        if (skill == ArtifactSkill.ArrayPulse) {
+            Projectile field = FindArray(player);
+            if (field == null) return "Mods.XianXia.Skills.NeedArray";
+            healTargets = new List<Player>();
+            foreach (Player target in Main.ActivePlayers)
+                if (!target.dead && target.statLife > 0 && target.statLife < target.statLifeMax2 && Finite(target.Center) && Friendly(player,target)
+                    && Vector2.DistanceSquared(target.Center,field.Center) <= 160 * 160) healTargets.Add(target);
+            if (healTargets.Count == 0) return "Mods.XianXia.Skills.NoHealing";
+        }
+        return state.CanConsumeSpiritualEnergy(DaoArtifactRules.SkillCost(skill,SkillDaoRoute(player,skill))) ? null : "Mods.XianXia.Skills.NeedEnergy";
+    }
     public static void HandleRequest(Player player, ArtifactSkill skill, int slot, int type, Vector2 aim)
     {
         if (Main.netMode == NetmodeID.MultiplayerClient || !ArtifactSkillRules.IsValid(skill) || !player.active || player.dead
@@ -57,22 +83,9 @@ public static class ArtifactSkillTransactions
         if (state.skillRequestCooldown > 0) return;
         state.skillRequestCooldown = 10;
         Item item = player.inventory[slot];
-        string reason = "Mods.XianXia.Skills.Unavailable";
-        bool eligible = item.type == type && (skill == ArtifactSkill.WardGuard ? HasWard(player) || HasAwakenedWardSeal(player)
-            : item.stack == 1 && HeldSkill(item) == skill && RefinedArtifact.IsAwakened(item)
-                && (skill != ArtifactSkill.HammerVolley || HammerRealmAllowed(player)));
-        if (!eligible) { Reply(player, reason); return; }
-        if (state.activeSkillCooldown > 0) { Reply(player, "Mods.XianXia.Skills.CoolingDown"); return; }
-        List<Player> healTargets = new();
-        if (IsBurst(skill) && Main.maxProjectiles - CountActive() < (skill == ArtifactSkill.WheelFormation ? 5 : 3)) { Reply(player,"Mods.XianXia.Skills.Capacity"); return; }
-        if (skill == ArtifactSkill.ArrayPulse) {
-            Projectile field = FindArray(player);
-            if (field == null) { Reply(player, "Mods.XianXia.Skills.NeedArray"); return; }
-            foreach (Player target in Main.ActivePlayers)
-                if (!target.dead && target.statLife > 0 && target.statLife < target.statLifeMax2 && Finite(target.Center) && Friendly(player, target)
-                    && Vector2.DistanceSquared(target.Center, field.Center) <= 160 * 160) healTargets.Add(target);
-            if (healTargets.Count == 0) { Reply(player, "Mods.XianXia.Skills.NoHealing"); return; }
-        }
+        if (item.type != type) { Reply(player,"Mods.XianXia.Skills.Unavailable"); return; }
+        string reason = EvaluateReadiness(player,skill,out List<Player> healTargets);
+        if (reason != null) { Reply(player,reason); return; }
         CultivationSnapshot before = state.CaptureSnapshot();
         var daoRoute = SkillDaoRoute(player,skill);
         if (!state.TryConsumeSpiritualEnergy(DaoArtifactRules.SkillCost(skill,daoRoute))) { Reply(player, "Mods.XianXia.Skills.NeedEnergy"); return; }

@@ -18,7 +18,7 @@ public class ArtifactSkillUIState : UIState
     private const float PanelHeight = 156f;
     private UIPanel panel;
     private UIText status;
-    private readonly List<(UIElement Button, ArtifactSkill Skill)> skillButtons = new();
+    private readonly List<(UITextPanel<string> Button, ArtifactSkill Skill)> skillButtons = new();
     private string Text(string key, params object[] args) => Language.GetTextValue("Mods.XianXia.Skills." + key, args);
     public override void OnInitialize()
     {
@@ -35,7 +35,9 @@ public class ArtifactSkillUIState : UIState
         var button = new UITextPanel<string>(Text(key),0.75f); button.Left.Set(left,0); button.Top.Set(top,0);
         button.Width.Set(86,0); button.Height.Set(30,0);
         skillButtons.Add((button, skill));
-        button.OnLeftClick += (_,_) => ArtifactSkillTransactions.Request(Main.LocalPlayer,skill); panel.Append(button);
+        button.OnLeftClick += (_,_) => {
+            if (ArtifactSkillTransactions.UnavailableReason(Main.LocalPlayer,skill) == null) ArtifactSkillTransactions.Request(Main.LocalPlayer,skill);
+        }; panel.Append(button);
     }
     public override void Update(GameTime gameTime)
     {
@@ -53,9 +55,13 @@ public class ArtifactSkillUIState : UIState
         status.SetText(state.wardGuardTimer > 0 ? Text("WardStatus",(state.activeSkillCooldown+59)/60,(state.wardGuardTimer+59)/60)
             : state.activeSkillCooldown > 0 ? Text("Cooldown", (state.activeSkillCooldown + 59)/60) : Text("Ready"));
         if (panel.ContainsPoint(Main.MouseScreen / scale)) Main.LocalPlayer.mouseInterface = true;
-        foreach (var entry in skillButtons)
+        foreach (var entry in skillButtons) {
+            bool available = ArtifactSkillTransactions.UnavailableReason(Main.LocalPlayer,entry.Skill) == null;
+            entry.Button.BackgroundColor = available ? new Color(45,75,105) : new Color(45,45,50);
+            entry.Button.BorderColor = available ? new Color(130,190,215) : new Color(80,80,85);
             if (entry.Button.ContainsPoint(Main.MouseScreen / scale))
                 Main.instance.MouseText(SkillTooltip(entry.Skill, state));
+        }
     }
     private string SkillTooltip(ArtifactSkill skill, XianXiaPlayer state)
     {
@@ -78,7 +84,8 @@ public class ArtifactSkillUIState : UIState
             ArtifactSkill.ThunderVolley => Text(route == DownedBossSystem.EndgameRoute.None ? "ThunderRequirement" : "ThunderDaoRequirement"),
             _ => Text(route == DownedBossSystem.EndgameRoute.None ? "WardRequirement" : "WardDaoRequirement")
         };
-        return requirement + "\n" + Text("SkillNumbers", cost, ArtifactSkillRules.Cooldown(skill) / 60)
+        string reason = ArtifactSkillTransactions.UnavailableReason(Main.LocalPlayer,skill);
+        return (reason == null ? Text("CanRequest") : Language.GetTextValue(reason)) + "\n" + requirement + "\n" + Text("SkillNumbers", cost, ArtifactSkillRules.Cooldown(skill) / 60)
             + "\n" + Text("AssignedControls", Keys(InputMode.Keyboard), Keys(InputMode.XBoxGamepad));
     }
 }
