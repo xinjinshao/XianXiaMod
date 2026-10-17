@@ -19,3 +19,5 @@ public static class ModContent {private static Dictionary<Type,int> ids=new();pu
 namespace XianXia.Content.Biomes {public class ShallowSpiritVeinsBiome{}public class GreenwoodHerbGardenBiome{}public class SunkenFurnaceVeinBiome{}public class StarAbyssRiftBiome{}public class ThunderMarshCloudsBiome{}public class TenThousandSectsRuinsBiome{}public class FallenHeavenPalaceBiome{}public class MoonboneAbyssBiome{}}
 namespace XianXia.Content.Items.Materials {public class LowGradeSpiritStone{}public class SpiritGel{}public class GreenwoodRoot{}public class FurnaceSlagIron{}public class StarAbyssMembrane{}public class SectTrialToken{}public class HeavenTabletRubbing{}}
 namespace XianXia.Content.Items.HandGenerated {public class ThunderPatternFeather{}public class ColdMoonDust{}}
+
+namespace Terraria.Localization {public static class Language {public static Dictionary<string,string> Text=new(); public static string GetTextValue(string key,params object[] args)=>string.Format(Text[key],args);}}

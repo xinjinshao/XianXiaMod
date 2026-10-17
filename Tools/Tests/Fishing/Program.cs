@@ -45,4 +45,15 @@ foreach(var attempt in new[]{new FishingAttempt{rare=true},new FishingAttempt{cr
 Check(Catch(normal,-1)==-1&&Catch(normal,0)==0&&Catch(normal,50,12)==50,"Failed or enemy catches preserved");
 hook.Player.dead=true;Check(Catch(normal)==50,"Dead player does not fish");hook.Player.dead=false;hook.Player.active=false;Check(Catch(normal)==50,"Inactive player does not fish");
 Check(!CultivationFishingRules.Allows(-1,true,true,true,true)&&!CultivationFishingRules.Allows(5,true,true,true,true),"Invalid tier rejected");
+foreach(string culture in new[]{"en-US","zh-Hans"}) {
+ using var guide=System.Text.Json.JsonDocument.Parse(File.ReadAllText(Path.Combine("Localization","fishing-guide",culture+".hjson")));
+ foreach(var text in guide.RootElement.GetProperty("Mods").GetProperty("XianXia").GetProperty("FishingGuide").EnumerateObject())
+  Terraria.Localization.Language.Text["Mods.XianXia.FishingGuide."+text.Name]=text.Value.GetString();
+ for(int tier=0;tier<=4;tier++) {
+  var before=(Main.hardMode,NPC.downedPlantBoss,NPC.downedGolemBoss,NPC.downedMoonlord);
+  string text=CultivationFishingRules.GetGuidance(tier>=1,tier>=2,tier>=3,tier>=4);
+  Check(text.Contains(Terraria.Localization.Language.Text["Mods.XianXia.FishingGuide.Tier"+tier])&&text.Contains("4–8")&&text.Contains("2–4")&&!text.Contains("{0}")&&!text.Contains("Mods.XianXia."),"Bilingual fishing guide reports the unlocked tier and shared crate quantities");
+  Check(before==(Main.hardMode,NPC.downedPlantBoss,NPC.downedGolemBoss,NPC.downedMoonlord),"Reading fishing guide cannot change world progression");
+ }
+}
 Console.WriteLine($"Fishing actual catch/crate source hooks passed: {count} assertions; biome scan, native fishing, crate consumption and loot engine mocked.");

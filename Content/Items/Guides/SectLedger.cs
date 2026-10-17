@@ -30,10 +30,16 @@ public class SectLedger : ModItem
         Item.rare = ItemRarityID.Green;
     }
 
+    public override bool AltFunctionUse(Player player) => true;
+
     public override bool? UseItem(Player player)
     {
         if (!Main.dedServ && Main.myPlayer == player.whoAmI && player.active && !player.dead)
         {
+            if (player.altFunctionUse == 2) {
+                Main.NewText(CultivationFishingRules.GetGuidance(Main.hardMode, NPC.downedPlantBoss, NPC.downedGolemBoss, NPC.downedMoonlord), 120, 245, 220);
+                return true;
+            }
             Main.NewText(CultivationStatusText.Summary(player.GetModPlayer<XianXiaPlayer>()), 120, 245, 220);
             Main.NewText(GetPreparation(player), 120, 245, 220);
             Main.NewText(GetNextGuidance(player), 120, 245, 220);

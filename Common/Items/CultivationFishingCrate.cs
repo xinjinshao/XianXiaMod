@@ -9,6 +9,7 @@ namespace XianXia.Common.Items;
 
 public abstract class CultivationFishingCrate : ModItem
 {
+    public const int StoneMin = 4, StoneMax = 8, MaterialMin = 2, MaterialMax = 4;
     public abstract int ProgressionTier { get; }
     protected abstract int MaterialType { get; }
     public override void SetStaticDefaults()
@@ -30,7 +31,7 @@ public abstract class CultivationFishingCrate : ModItem
         Main.hardMode, NPC.downedPlantBoss, NPC.downedGolemBoss, NPC.downedMoonlord);
     public override void ModifyItemLoot(ItemLoot itemLoot)
     {
-        itemLoot.Add(ItemDropRule.Common(ModContent.ItemType<LowGradeSpiritStone>(), 1, 4, 8));
-        itemLoot.Add(ItemDropRule.Common(MaterialType, 1, 2, 4));
+        itemLoot.Add(ItemDropRule.Common(ModContent.ItemType<LowGradeSpiritStone>(), 1, StoneMin, StoneMax));
+        itemLoot.Add(ItemDropRule.Common(MaterialType, 1, MaterialMin, MaterialMax));
     }
 }

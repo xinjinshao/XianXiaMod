@@ -1,0 +1,14 @@
+{
+  "Mods": {
+    "XianXia": {
+      "FishingGuide": {
+        "Tier0": "Spirit Veins, Herb Garden, Furnace Vein",
+        "Tier1": "Spirit Veins, Herb Garden, Furnace Vein, Star Abyss, Thunder Marsh",
+        "Tier2": "Spirit Veins, Herb Garden, Furnace Vein, Star Abyss, Thunder Marsh, Sect Ruins",
+        "Tier3": "Spirit Veins, Herb Garden, Furnace Vein, Star Abyss, Thunder Marsh, Sect Ruins, Fallen Heaven Palace",
+        "Tier4": "all eight biomes, including the Moonbone Abyss",
+        "Guide": "Fishing supplies | Biome crates available to catch and open in this world: {0}. Fish in water in the corresponding biome. Half of eligible ordinary biome-crate rolls become cultivation crates; this is not a 50% chance per cast. Artificial biomes work too. Honey, lava, top-tier vanilla crates and enemy catches are preserved. Right-click a crate for {1}–{2} Low-Grade Spirit Stones and {3}–{4} corresponding common materials. Imported crates still require the current world's progression."
+      }
+    }
+  }
+}
