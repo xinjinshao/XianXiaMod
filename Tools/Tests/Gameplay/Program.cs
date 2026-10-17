@@ -1392,3 +1392,10 @@ foreach(int current in new[]{0,1,2,3,4,255})foreach(bool previous in new[]{false
  Check(moved>=1&&moved<=3&&(current<1||current>3||Convert.ToInt32(routeBrowse.Invoke(null,new object[]{Enum.ToObject(routeEnum,moved),!previous}))==current),"Compiled route preview navigation is bounded and reversible");
 }
 Console.WriteLine($"Actual engine gameplay assertions including route preview navigation: {assertions}.");
+
+var routeExtent=type.Assembly.GetType("XianXia.Common.Systems.CultivationPanelLayoutRules",true).GetMethod("FitExtent");
+foreach(int pixels in new[]{320,480,720,1080,1920})foreach(float scale in new[]{.75f,1f,1.5f,2f})foreach(int maximum in new[]{410,680}){
+ float extent=Convert.ToSingle(routeExtent.Invoke(null,new object[]{pixels,scale,maximum}));
+ Check(extent>0&&extent<=maximum&&extent<=pixels/scale-20+.001f,"Compiled route shell fits scaled viewport with shared layout rules");
+}
+Console.WriteLine($"Actual engine gameplay assertions including shared route layout: {assertions}.");

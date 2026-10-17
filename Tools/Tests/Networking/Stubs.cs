@@ -31,6 +31,7 @@ namespace Terraria
 {
     public static class Main
     {
+        public static string hoverItemName;
         public static ulong GameUpdateCount;
         public static bool gameMenu,blockInput,drawingPlayerChat,playerInventory;
         public static int netMode, maxPlayers = 4, maxNPCs = 4, myPlayer;

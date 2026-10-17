@@ -2,10 +2,8 @@ using System;
 using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
-using Microsoft.Xna.Framework.Graphics;
 using Terraria;
 using Terraria.GameContent.UI.Elements;
-using Terraria.GameContent;
 using Terraria.Localization;
 using Terraria.ModLoader;
 using Terraria.UI;
@@ -20,7 +18,7 @@ public class InscriptionUIState : UIState
     private UIElement rows, content;
     private UIList viewport;
     private UIScrollbar scrollbar;
-    private InscriptionButton previousButton, nextButton, confirmButton, closeButton;
+    private ResponsiveTextButton previousButton, nextButton, confirmButton, closeButton;
     private UIText navigationHint;
     private UIText title, summary, pageLabel;
     private int toolSlot, toolType, page, targetSlot = -1, targetType;
@@ -56,39 +54,11 @@ public class InscriptionUIState : UIState
         previousButton.Width.Set(-4,.2f); nextButton.Left.Set(0,.2f); nextButton.Width.Set(-4,.2f); pageLabel.Left.Set(8,.4f);
         confirmButton.Width.Set(-8,.65f); closeButton.Left.Set(0,.65f); closeButton.Width.Set(0,.35f);
     }
-    private static InscriptionButton Button(UIElement parent, string text, float x, float y, float width, Action action)
+    private static ResponsiveTextButton Button(UIElement parent, string text, float x, float y, float width, Action action)
     {
-        var button = new InscriptionButton(text, text); button.Left.Set(x, 0); button.Top.Set(y, 0);
+        var button = new ResponsiveTextButton(text); button.Left.Set(x, 0); button.Top.Set(y, 0);
         button.Width.Set(width, 0); button.Height.Set(30, 0);
         button.OnLeftClick += (_, _) => action(); parent.Append(button); return button;
-    }
-    private sealed class InscriptionButton : UITextPanel<string>
-    {
-        private readonly string fullText;
-        private float lastTextWidth = -1;
-        public InscriptionButton(string shown, string full) : base(shown, 0.75f) { fullText = full; }
-        public override void Recalculate()
-        {
-            MinWidth.Set(0,0);
-            base.Recalculate();
-            if (fullText == null) return;
-            float width = Math.Max(0,GetInnerDimensions().Width);
-            if (Math.Abs(width - lastTextWidth) < .01f) return;
-            lastTextWidth = width;
-            string shown = fullText;
-            while (shown.Length > 0 && FontAssets.MouseText.Value.MeasureString(shown).X * .75f > width) shown = shown[..^1];
-            if (shown.Length < fullText.Length) {
-                const string suffix = "…";
-                while (shown.Length > 0 && FontAssets.MouseText.Value.MeasureString(shown + suffix).X * .75f > width) shown = shown[..^1];
-                shown = FontAssets.MouseText.Value.MeasureString(suffix).X * .75f <= width ? shown + suffix : "";
-            }
-            if (shown != Text) SetText(shown);
-        }
-        protected override void DrawSelf(SpriteBatch spriteBatch)
-        {
-            base.DrawSelf(spriteBatch);
-            if (IsMouseHovering) Main.hoverItemName = fullText;
-        }
     }
     public void SelectTool(int slot)
     {

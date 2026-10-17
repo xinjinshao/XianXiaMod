@@ -5,12 +5,7 @@ public enum InscriptionKind : byte { None, Greenwood, Furnace, Thunder, StarAbys
 public static class InscriptionRules
 {
     public const int SpiritStoneCost = 3;
-    public static float PanelExtent(int pixels, float scale, int maximum)
-    {
-        float safeScale = float.IsFinite(scale) && scale > 0 ? scale : 1f;
-        float viewport = System.Math.Max(1,pixels / safeScale);
-        return System.Math.Min(maximum,System.Math.Max(1,viewport - 20));
-    }
+    public static float PanelExtent(int pixels, float scale, int maximum) => CultivationPanelLayoutRules.FitExtent(pixels,scale,maximum);
     public static int AdjacentTarget(System.Collections.Generic.IReadOnlyList<int> slots, int current, bool previous)
     {
         if (slots == null || slots.Count == 0) return -1;

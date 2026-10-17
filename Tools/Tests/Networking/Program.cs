@@ -1660,6 +1660,20 @@ foreach(int mode in new[]{0,1,2}) foreach(ArtifactSkill skill in Enum.GetValues<
  item.GetGlobalItem<XianXia.Common.Items.RefinedArtifact>().SetLevel(2);Check(ArtifactSkillTransactions.UnavailableReason(actor,skill)=="Mods.XianXia.Skills.Unavailable","Panel refuses dormant held artifact");
 }
 Check(ArtifactSkillTransactions.UnavailableReason(null,ArtifactSkill.WardGuard)=="Mods.XianXia.Skills.Unavailable","Readiness rejects absent player without side effects");
+// Execute the actual responsive button against deterministic measurement, preserving requested font scale.
+foreach(float scale in new[]{.75f,.8f,.85f}) {
+ const string full="Long artifact route confirmation label";
+ var button=new XianXia.Common.UI.ResponsiveTextButton(full,scale);button.Width.Set(70,0);button.Recalculate();
+ Check(button.Text!=full&&button.Text.EndsWith("…")&&Math.Abs(button.EffectiveTextScale-scale)<.001f,"Responsive button truncation preserves requested scale instead of SetText default one");
+ Check(Terraria.GameContent.FontAssets.MouseText.Value.MeasureString(button.Text).X*scale<=button.GetInnerDimensions().Width,"Responsive button suffix fits its measured available width");
+ button.Width.Set(600,0);button.Recalculate();Check(button.Text==full&&Math.Abs(button.EffectiveTextScale-scale)<.001f,"Growing responsive button restores original full label and scale");
+ button.SetFullText("Changed confirmation route");Check(button.Text=="Changed confirmation route"&&Math.Abs(button.EffectiveTextScale-scale)<.001f,"Dynamic confirmation labels preserve font scale");
+ button.Width.Set(24,0);button.Recalculate();Check(button.Text=="","No available text width does not force an overflowing ellipsis");
+ button.IsMouseHovering=true;button.DrawMeasurementOnly();Check(Game.hoverItemName=="Changed confirmation route","Truncated button retains full hover label");
+}
+foreach(int pixels in new[]{320,480,720,1080,1920})foreach(float scale in new[]{.75f,1f,1.5f,2f})foreach(int maximum in new[]{410,680}) {
+ float extent=CultivationPanelLayoutRules.FitExtent(pixels,scale,maximum);Check(extent>0&&extent<=maximum&&extent<=pixels/scale-20+.001f,"World route shell fits scaled viewport without a forced overflowing minimum");
+}
 // Route browsing is a reversible preview operation, independent of authority world mutation.
 foreach(var route in new[]{DownedBossSystem.EndgameRoute.RebuildHeaven,DownedBossSystem.EndgameRoute.SeverHeaven,DownedBossSystem.EndgameRoute.AcceptStarAbyss})foreach(bool previous in new[]{false,true}){
  var chosen=DownedBossSystem.ChosenRoute;int sent=ModPacket.Sent.Count;var next=EndgameRouteTransactions.AdjacentPreview(route,previous);
