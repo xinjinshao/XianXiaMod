@@ -68,4 +68,21 @@ foreach(int wave in new[]{1,2,3}) {
  Check(SpiritTideSystem.Active&&SpiritTideSystem.Wave==wave&&SpiritTideSystem.Kills==5&&SpiritTideSystem.RunId==1,"Each saved active wave resumes its progress with a fresh world encounter identity");
 }
 var pearl=new XianXia.Content.Items.Accessories.SpiritTidePearl();pearl.SetDefaults();Main.player[0].statManaMax2=100;pearl.UpdateAccessory(Main.player[0],false);Check(pearl.Item.accessory&&Main.player[0].statManaMax2==120&&Main.player[0].State.spiritualEnergyRegenBonus==1,"Actual unique reward accessory effect");
+foreach(string culture in new[]{"en-US","zh-Hans"}) {
+ using var guide=System.Text.Json.JsonDocument.Parse(File.ReadAllText(Path.Combine("Localization","spirit-tide",culture+".hjson")));
+ var mod=guide.RootElement.GetProperty("Mods").GetProperty("XianXia");
+ foreach(var text in mod.GetProperty("SpiritTide").EnumerateObject())Terraria.Localization.Language.Text["Mods.XianXia.SpiritTide."+text.Name]=text.Value.GetString();
+ Terraria.Localization.Language.Text["Mods.XianXia.Items.SpiritTidePearl.DisplayName"]=mod.GetProperty("Items").GetProperty("SpiritTidePearl").GetProperty("DisplayName").GetString();
+ using var realms=System.Text.Json.JsonDocument.Parse(File.ReadAllText(Path.Combine("Localization","cultivation-status",culture+".hjson")));
+ Terraria.Localization.Language.Text["Mods.XianXia.CultivationStatus.Realms.Foundation"]=realms.RootElement.GetProperty("Mods").GetProperty("XianXia").GetProperty("CultivationStatus").GetProperty("Realms").GetProperty("Foundation").GetString();
+ ImportWorld(WorldPacket(false,0,0));string idle=SpiritTideSystem.GetGuidance();
+ Check(idle.StartsWith(Terraria.Localization.Language.GetTextValue("Mods.XianXia.SpiritTide.Optional")),"Idle guide clearly marks the event optional");
+ Check(idle.Contains("1/8")&&idle.Contains("12/18/24")&&!idle.Contains("{0}")&&!idle.Contains("Mods.XianXia."),"Real bilingual event guide formats current chance and all wave targets without raw keys");
+ foreach(byte wave in new byte[]{1,2,3}) {
+  ImportWorld(WorldPacket(true,wave,5));byte[] beforeGuide=ExportWorld();int loot=Item.Drops.Count;uint run=SpiritTideSystem.RunId;
+  string text=SpiritTideSystem.GetGuidance();
+  Check(text.StartsWith(Terraria.Localization.Language.GetTextValue("Mods.XianXia.SpiritTide.Progress",wave,5,SpiritTideSystem.RequiredKills)),"Active guide reports the current synchronized wave and kills");
+  Check(ExportWorld().SequenceEqual(beforeGuide)&&Item.Drops.Count==loot&&SpiritTideSystem.RunId==run,"Reading event guide cannot start advance or reward an event");
+ }
+}
 Console.WriteLine($"Spirit Tide actual world/enemy/reward hooks passed: {count} assertions; native spawns, world transport, HUD and loot engine mocked.");

@@ -17,7 +17,17 @@ public class SpiritTideSystem : ModSystem
     public static uint RunId { get; private set; }
     private bool wasDay, dirty;
     private int syncTimer;
-    public static int RequiredKills => Wave switch { 1 => 12, 2 => 18, 3 => 24, _ => 0 };
+    public const int StartChance = 8;
+    public static int KillTarget(int wave) => wave switch { 1 => 12, 2 => 18, 3 => 24, _ => 0 };
+    public static int RequiredKills => KillTarget(Wave);
+    public static string GetGuidance()
+    {
+        string status = Active ? Language.GetTextValue("Mods.XianXia.SpiritTide.Progress", Wave, Kills, RequiredKills)
+            : Language.GetTextValue("Mods.XianXia.SpiritTide.Optional");
+        return status + "\n" + Language.GetTextValue("Mods.XianXia.SpiritTide.Guide",
+            Language.GetTextValue("Mods.XianXia.CultivationStatus.Realms.Foundation"), StartChance,
+            KillTarget(1), KillTarget(2), KillTarget(3), Language.GetTextValue("Mods.XianXia.Items.SpiritTidePearl.DisplayName"));
+    }
     public override void OnWorldLoad() { RunId=0; Active=false; Wave=Kills=0; wasDay=Main.dayTime; dirty=false; syncTimer=0; }
     public override void OnWorldUnload() { Active=false; Wave=Kills=0; dirty=false; }
     public override void SaveWorldData(TagCompound tag)
@@ -50,7 +60,7 @@ public class SpiritTideSystem : ModSystem
             bool eligible=false,boss=false;
             foreach(var player in Main.ActivePlayers) if(!player.dead&&player.GetModPlayer<Players.XianXiaPlayer>().cultivationStage>=Players.CultivationStage.Foundation) eligible=true;
             foreach(var npc in Main.ActiveNPCs) if(npc.boss) boss=true;
-            if(eligible&&!boss&&Main.rand.NextBool(8)) { RunId++;Active=true;Wave=1;Kills=0;Announce("Started");Sync(); }
+            if(eligible&&!boss&&Main.rand.NextBool(StartChance)) { RunId++;Active=true;Wave=1;Kills=0;Announce("Started");Sync(); }
         }
         wasDay=Main.dayTime;
         if(Active&&Main.dayTime) { Active=false;Wave=Kills=0;Announce("DawnEnded");Sync(); }

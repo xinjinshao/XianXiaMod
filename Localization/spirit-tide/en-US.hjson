@@ -6,7 +6,9 @@
         "WaveAdvanced": "The spirit tide advances to its next wave.",
         "DawnEnded": "Dawn disperses the unfinished spirit tide.",
         "Completed": "The spirit tide settles! The final spirit leaves a Tide Pearl and supplies.",
-        "Progress": "Spirit Tide wave {0}/3: {1}/{2}"
+        "Progress": "Spirit Tide wave {0}/3: {1}/{2}",
+        "Optional": "Optional event: Spirit Tide Night (not required for progression)",
+        "Guide": "In Hardmode, with at least one living player at {0} or higher, each dusk has a 1/{1} chance to start. Blood/Pumpkin/Frost Moons, invasions or a living boss prevent the start. Fight tide enemies on the surface outside towns: the three waves require {2}/{3}/{4} kills. Dawn ends an unfinished event. The final enemy of wave three drops {5}, Spirit Stones, herb seeds and Qi Recovery Pills."
       },
       "Items": {
         "SpiritTidePearl": {

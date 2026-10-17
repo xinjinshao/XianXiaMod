@@ -9,7 +9,7 @@ public static class Main {public static bool dayTime=true,hardMode=true,bloodMoo
 public static class NetMessage {public static int Sent;public static void SendData(int type)=>Sent++;}
 }
 namespace Terraria.ID {public static class NetmodeID {public const int SinglePlayer=0,MultiplayerClient=1,Server=2;}public static class MessageID {public const int WorldData=7;}public static class ItemRarityID {public const int Pink=5;}}
-namespace Terraria.Localization {public class NetworkText {public static NetworkText FromKey(string key)=>new();}public static class Language {public static string GetTextValue(string key)=>key;}}
+namespace Terraria.Localization {public class NetworkText {public static NetworkText FromKey(string key)=>new();}public static class Language {public static Dictionary<string,string> Text=new();public static string GetTextValue(string key,params object[] args)=>Text.TryGetValue(key,out var value)?string.Format(value,args):key;}}
 namespace Terraria.Chat {public static class ChatHelper {public static int Messages;public static void BroadcastChatMessage(Terraria.Localization.NetworkText text,Microsoft.Xna.Framework.Color color)=>Messages++;}}
 namespace Terraria.ModLoader.IO {public class BitWriter{}public class BitReader{}public class TagCompound:Dictionary<string,object>{public bool GetBool(string key)=>TryGetValue(key,out var v)&&v is true;public int GetInt(string key)=>TryGetValue(key,out var v)?(int)v:0;}}
 namespace Terraria.ModLoader {

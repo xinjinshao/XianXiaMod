@@ -37,6 +37,7 @@ public class SectLedger : ModItem
             Main.NewText(CultivationStatusText.Summary(player.GetModPlayer<XianXiaPlayer>()), 120, 245, 220);
             Main.NewText(GetPreparation(player), 120, 245, 220);
             Main.NewText(GetNextGuidance(player), 120, 245, 220);
+            Main.NewText(SpiritTideSystem.GetGuidance(), 120, 245, 220);
         }
 
         return true;
