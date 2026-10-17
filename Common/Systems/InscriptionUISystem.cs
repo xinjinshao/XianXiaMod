@@ -11,6 +11,7 @@ public class InscriptionUISystem : ModSystem
 {
     private UserInterface userInterface;
     private InscriptionUIState state;
+    public bool IsOpen => userInterface?.CurrentState != null;
     public void Open(int toolSlot)
     {
         if (Main.dedServ || userInterface == null || Main.gameMenu || !Main.LocalPlayer.active

@@ -43,6 +43,12 @@ Mods: {
    RouteScrollDown: {
     DisplayName: "终局路线：说明下滚"
    }
+   ForgeScrollUp: {
+    DisplayName: "铭刻/炼器：说明上滚"
+   }
+   ForgeScrollDown: {
+    DisplayName: "铭刻/炼器：说明下滚"
+   }
    ArtifactSkill: {
     DisplayName: 法器主动技能
    }

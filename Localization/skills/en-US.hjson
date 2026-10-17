@@ -43,6 +43,12 @@ Mods: {
    RouteScrollDown: {
     DisplayName: "World route: scroll description down"
    }
+   ForgeScrollUp: {
+    DisplayName: "Inscription/refining: scroll description up"
+   }
+   ForgeScrollDown: {
+    DisplayName: "Inscription/refining: scroll description down"
+   }
    ArtifactSkill: {
     DisplayName: Artifact active skill
    }

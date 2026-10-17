@@ -412,7 +412,7 @@ namespace Terraria.DataStructures
     }
 }
 
-namespace XianXia.Common.Systems { public class InscriptionUISystem { public void Open(int slot) { } } }
+namespace XianXia.Common.Systems { public class InscriptionUISystem { public static bool OpenState; public bool IsOpen=>OpenState; public void Open(int slot) { } } public class EndgameRouteUISystem { public static bool OpenState; public bool IsOpen=>OpenState; } }
 namespace XianXia.Content.Items.Materials { public class LowGradeSpiritStone { } }
 namespace XianXia.Content.Tiles.Stations { public class AlchemyCauldronTile {} public class ArtifactForgeTile { } public class ThunderPatternForgeTile { } public class HeavenFireFurnaceTile { } public class DaoSeveringAltarTile { } }
 namespace XianXia.Content.Items.HandGenerated { public class RouteMaterial { } }

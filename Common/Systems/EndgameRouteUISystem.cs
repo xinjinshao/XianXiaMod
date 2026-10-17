@@ -11,6 +11,7 @@ public class EndgameRouteUISystem : ModSystem
 {
     private UserInterface userInterface;
     private EndgameRouteUIState state;
+    public bool IsOpen => userInterface?.CurrentState != null;
     public void Open(int slot)
     {
         if (Main.dedServ || userInterface == null || Main.gameMenu) return;

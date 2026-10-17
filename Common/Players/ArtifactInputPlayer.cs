@@ -14,6 +14,7 @@ public class ArtifactInputPlayer : ModPlayer
     public override void ProcessTriggers(TriggersSet triggersSet)
     {
         if (Main.dedServ || Player.whoAmI != Main.myPlayer || Main.gameMenu || Main.blockInput || Main.drawingPlayerChat || !Player.active || Player.dead || Player.noItems || Player.CCed) { SelectedPanelSkill = null; return; }
+        if (CultivationPanelFocus.MaterialPanelOpen) { SelectedPanelSkill = null; return; }
         if (Main.playerInventory || !Player.GetModPlayer<XianXiaPlayer>().discoveredSpiritualEnergy) SelectedPanelSkill = null;
         else {
             bool next = ArtifactKeybindSystem.PanelNextKey?.JustPressed == true, previous = ArtifactKeybindSystem.PanelPreviousKey?.JustPressed == true;

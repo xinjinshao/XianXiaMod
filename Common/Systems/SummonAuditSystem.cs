@@ -970,6 +970,7 @@ public partial class SummonAuditSystem : ModSystem
             AuditWardDao(Check);
             AuditInscriptionNavigation(Check);
             AuditRouteNavigation(Check);
+            AuditPanelFocus(Check);
             AuditCalamityRecipes(Check);
             }
         }

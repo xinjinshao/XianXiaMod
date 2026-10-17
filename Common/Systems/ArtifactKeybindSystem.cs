@@ -15,6 +15,8 @@ public class ArtifactKeybindSystem : ModSystem
     public static ModKeybind ForgePreviousKey { get; private set; }
     public static ModKeybind ForgeConfirmKey { get; private set; }
     public static ModKeybind ForgeCancelKey { get; private set; }
+    public static ModKeybind ForgeScrollUpKey { get; private set; }
+    public static ModKeybind ForgeScrollDownKey { get; private set; }
     public static ModKeybind RouteNextKey { get; private set; }
     public static ModKeybind RoutePreviousKey { get; private set; }
     public static ModKeybind RouteConfirmKey { get; private set; }
@@ -36,10 +38,12 @@ public class ArtifactKeybindSystem : ModSystem
         ForgePreviousKey = KeybindLoader.RegisterKeybind(Mod,"ForgePanelPrevious","None");
         ForgeConfirmKey = KeybindLoader.RegisterKeybind(Mod,"ForgePanelConfirm","None");
         ForgeCancelKey = KeybindLoader.RegisterKeybind(Mod,"ForgePanelCancel","None");
+        ForgeScrollUpKey = KeybindLoader.RegisterKeybind(Mod,"ForgeScrollUp","None");
+        ForgeScrollDownKey = KeybindLoader.RegisterKeybind(Mod,"ForgeScrollDown","None");
         PanelNextKey = KeybindLoader.RegisterKeybind(Mod,"SkillPanelNext","None");
         PanelPreviousKey = KeybindLoader.RegisterKeybind(Mod,"SkillPanelPrevious","None");
         PanelCastKey = KeybindLoader.RegisterKeybind(Mod,"SkillPanelCast","None");
         PanelCancelKey = KeybindLoader.RegisterKeybind(Mod,"SkillPanelCancel","None");
     }
-    public override void Unload() { ArtifactSkillKey = WardSkillKey = PanelNextKey = PanelPreviousKey = PanelCastKey = PanelCancelKey = ForgeNextKey = ForgePreviousKey = ForgeConfirmKey = ForgeCancelKey = RouteNextKey = RoutePreviousKey = RouteConfirmKey = RouteCancelKey = RouteScrollUpKey = RouteScrollDownKey = null; }
+    public override void Unload() { ArtifactSkillKey = WardSkillKey = PanelNextKey = PanelPreviousKey = PanelCastKey = PanelCancelKey = ForgeNextKey = ForgePreviousKey = ForgeConfirmKey = ForgeCancelKey = ForgeScrollUpKey = ForgeScrollDownKey = RouteNextKey = RoutePreviousKey = RouteConfirmKey = RouteCancelKey = RouteScrollUpKey = RouteScrollDownKey = null; }
 }

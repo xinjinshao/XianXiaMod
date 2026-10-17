@@ -186,6 +186,8 @@ public class InscriptionUIState : UIState
         bool next = ArtifactKeybindSystem.ForgeNextKey?.JustPressed == true, previous = ArtifactKeybindSystem.ForgePreviousKey?.JustPressed == true;
         if (next && previous) { Close(); return; }
         if (next || previous) { NavigateTarget(previous); return; }
+        bool up = ArtifactKeybindSystem.ForgeScrollUpKey?.JustPressed == true, down = ArtifactKeybindSystem.ForgeScrollDownKey?.JustPressed == true;
+        if (up || down) { scrollbar.ViewPosition = Math.Max(0,scrollbar.ViewPosition + (down && !up ? 60 : up && !down ? -60 : 0)); return; }
         if (ArtifactKeybindSystem.ForgeConfirmKey?.JustPressed == true) { ConfirmSelection(); return; }
         base.Update(gameTime);
         if (++refreshTimer >= 20) { refreshTimer = 0; Refresh(); }

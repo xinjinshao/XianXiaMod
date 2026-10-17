@@ -1,7 +1,7 @@
 Mods: {
  XianXia: {
   Inscriptions: {
-   NavigationHint: Bind previous/next target, confirm and cancel in Mod Controls (keyboard/gamepad).
+   NavigationHint: Bind target previous/next, text up/down, confirm and cancel in Mod Controls (keyboard/gamepad).
    TargetChanged: "The equipment or world route changed, so the old preview was cleared. Select the target again; no operation was submitted or materials spent."
    None: Uninscribed
    Greenwood: Greenwood

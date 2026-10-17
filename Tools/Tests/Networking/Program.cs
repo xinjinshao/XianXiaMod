@@ -1715,9 +1715,24 @@ foreach(int mode in new[]{0,1}) {
  PressPanel("SkillPanelNext");input.UpdateDead();Check(input.SelectedPanelSkill==null,"Death hook clears selection");PressPanel("SkillPanelNext");input.OnEnterWorld();Check(input.SelectedPanelSkill==null,"World entry clears prior selection");
 }
 Check(ArtifactKeybindSystem.ForgeNextKey!=null&&ArtifactKeybindSystem.ForgePreviousKey!=null&&ArtifactKeybindSystem.ForgeConfirmKey!=null&&ArtifactKeybindSystem.ForgeCancelKey!=null,"All four forging navigation bindings register independently of skill controls");
+Check(ArtifactKeybindSystem.ForgeScrollUpKey!=null&&ArtifactKeybindSystem.ForgeScrollDownKey!=null,"Forging page has independently bindable text scrolling");
+foreach(int mode in new[]{0,1})foreach(int panels in new[]{1,2,3}) {
+ SetupSkill();Game.netMode=mode;Game.myPlayer=0;Game.playerInventory=false;InscriptionUISystem.OpenState=EndgameRouteUISystem.OpenState=false;
+ var actor=Game.player[0];actor.armor[3]=new Terraria.Item{type=200,stack=1};var input=new XianXia.Common.Players.ArtifactInputPlayer{Player=actor};input.Initialize();
+ foreach(var key in KeybindLoader.Keys.Values)key.JustPressed=false;ArtifactKeybindSystem.PanelNextKey.JustPressed=true;input.ProcessTriggers(new Terraria.GameInput.TriggersSet());
+ Check(input.SelectedPanelSkill==ArtifactSkill.SwordBurst,"Combat selection exists before a material panel opens");
+ InscriptionUISystem.OpenState=(panels&1)!=0;EndgameRouteUISystem.OpenState=(panels&2)!=0;Game.playerInventory=true;
+ var snapshot=actor.State.CaptureSnapshot();int before=ModPacket.Sent.Count;
+ ArtifactKeybindSystem.WardSkillKey.JustPressed=ArtifactKeybindSystem.ArtifactSkillKey.JustPressed=ArtifactKeybindSystem.PanelCastKey.JustPressed=true;
+ input.ProcessTriggers(new Terraria.GameInput.TriggersSet());
+ Check(CultivationPanelFocus.MaterialPanelOpen&&input.SelectedPanelSkill==null&&actor.State.CaptureSnapshot()==snapshot&&ModPacket.Sent.Count==before&&!Game.projectile.Any(p=>p.active),"Material panel focus suppresses all combat keys without casting spending or transmitting");
+ InscriptionUISystem.OpenState=EndgameRouteUISystem.OpenState=false;Game.playerInventory=false;foreach(var key in KeybindLoader.Keys.Values)key.JustPressed=false;ArtifactKeybindSystem.WardSkillKey.JustPressed=true;input.ProcessTriggers(new Terraria.GameInput.TriggersSet());
+ Check(!CultivationPanelFocus.MaterialPanelOpen&&(mode==0?actor.State.spiritualEnergy==82&&actor.State.wardGuardTimer==180:actor.State.CaptureSnapshot()==snapshot&&ModPacket.Sent.Count==before+1&&ModPacket.Sent.Last().Data[1]==3),"Closing material panels restores normal direct ward authority or client request path");
+}
 Check(ArtifactKeybindSystem.RouteNextKey!=null&&ArtifactKeybindSystem.RoutePreviousKey!=null&&ArtifactKeybindSystem.RouteConfirmKey!=null&&ArtifactKeybindSystem.RouteCancelKey!=null&&ArtifactKeybindSystem.RouteScrollUpKey!=null&&ArtifactKeybindSystem.RouteScrollDownKey!=null,"All six route browsing and text reading bindings register independently");
 panelBindings.Unload();Check(ArtifactKeybindSystem.PanelNextKey==null&&ArtifactKeybindSystem.PanelPreviousKey==null&&ArtifactKeybindSystem.PanelCastKey==null&&ArtifactKeybindSystem.PanelCancelKey==null&&ArtifactKeybindSystem.ForgeNextKey==null&&ArtifactKeybindSystem.ForgePreviousKey==null&&ArtifactKeybindSystem.ForgeConfirmKey==null&&ArtifactKeybindSystem.ForgeCancelKey==null,"Unload releases panel and forging bindings");
 Check(ArtifactKeybindSystem.RouteNextKey==null&&ArtifactKeybindSystem.RoutePreviousKey==null&&ArtifactKeybindSystem.RouteConfirmKey==null&&ArtifactKeybindSystem.RouteCancelKey==null&&ArtifactKeybindSystem.RouteScrollUpKey==null&&ArtifactKeybindSystem.RouteScrollDownKey==null,"Unload releases route and text scrolling bindings");
+Check(ArtifactKeybindSystem.ForgeScrollUpKey==null&&ArtifactKeybindSystem.ForgeScrollDownKey==null,"Unload releases forging scrolling bindings");
 // Actual Thunder Sword hit hook: owner authority, lifecycle, minimum half damage and no observer/server RNG.
 XianXia.Content.Projectiles.ThunderSwordProjectile ThunderProcFixture(int mode,int local=0,int damage=201) {
  Game.myPlayer=0;SetupSkill("ThunderPatternSwordCase");Game.netMode=mode;Game.myPlayer=local;Game.rand=new Terraria.RandomStub{Roll=0};
