@@ -76,8 +76,20 @@ public class WorldAuditCommand : ModCommand
             }
             hallReports.Add(new { area.X, area.Y, area.Width, area.Height, Bricks = bricks, BlockedInterior = blockedInterior, EntrancesOpen = entrances, Dry = dry, SwordTablets = tablets, SupplyChests = hallChests });
         }
+        var pathReports = new List<object>();
+        var halls = ModContent.GetInstance<global::XianXia.Common.Systems.SectRuinHallSystem>().Halls;
+        foreach (var path in ModContent.GetInstance<global::XianXia.Common.Systems.SectRuinPathSystem>().Paths) {
+            bool clear = true, shell = true, dry = true;
+            for (int x = path.Left; x < path.Right; x++) for (int y = path.Top; y < path.Bottom; y++) {
+                Tile tile = Main.tile[x,y]; dry &= tile.LiquidAmount == 0;
+                if (y == path.Top || y == path.Bottom - 1) shell &= tile.HasTile && tile.TileType == ModContent.TileType<SectRuinBrickTile>() && !tile.IsHalfBlock && tile.Slope == 0;
+                else clear &= !tile.HasTile;
+            }
+            bool attached = halls.Any(hall => path.Y == hall.Bottom - 9 && (path.Right == hall.Left || path.Left == hall.Right));
+            pathReports.Add(new { path.X, path.Y, path.Width, path.Height, InteriorClear = clear, ShellIntact = shell, Dry = dry, AttachedHall = attached });
+        }
         string report = JsonSerializer.Serialize(new { Width = Main.maxTilesX, Height = Main.maxTilesY, Objects = objects.Values,
-            SectRuinHalls = hallReports, ChestsWithSpiritStones = supplyChests, ChestSpiritStoneTotal = spiritStones });
+            SectRuinHalls = hallReports, SectRuinPaths = pathReports, ChestsWithSpiritStones = supplyChests, ChestSpiritStoneTotal = spiritStones });
         Mod.Logger.Info("SavedWorldAudit: " + report);
         caller.Reply(report);
     }

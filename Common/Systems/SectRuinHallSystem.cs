@@ -30,6 +30,7 @@ public class SectRuinHallSystem : ModSystem
     internal List<Rectangle> Generate(List<Rectangle> regions)
     {
         Halls.Clear();
+        ModContent.GetInstance<SectRuinPathSystem>().Paths.Clear();
         var refusals = new Dictionary<string, int>();
         foreach (Rectangle source in regions) {
             // Nearby dry terrain can be safer than the original ore patch after vanilla structures finish.
@@ -39,8 +40,11 @@ public class SectRuinHallSystem : ModSystem
             for (int y = region.Top; y <= region.Bottom - Height && !built; y += 3)
                 for (int x = region.Left; x <= region.Right - Width && !built; x += 3) {
                     var area = new Rectangle(x, y, Width, Height);
-                    if (TryBuild(area, GenVars.structures, out string reason)) {
+                    if (TryBuild(area, GenVars.structures, out string reason, registerProtection: false)) {
                         Halls.Add(area); built = true;
+                        if (SectRuinPathSystem.TryConnect(area, GenVars.structures, out Rectangle path))
+                            ModContent.GetInstance<SectRuinPathSystem>().Paths.Add(path);
+                        GenVars.structures.AddProtectedStructure(area, 2);
                         if (TryPlaceSupplyChest(area, WorldGen.genRand) < 0) Mod.Logger.Warn("Sect ruin hall supply chest could not be placed; terrain retained.");
                     }
                     else refusals[reason] = refusals.GetValueOrDefault(reason) + 1;
@@ -80,24 +84,14 @@ public class SectRuinHallSystem : ModSystem
     internal static bool IsBrick(int x, int y) => y < 3 || y >= Height - 3
         || ((x < 2 || x >= Width - 2) && y < Height - 8);
     internal static bool TryBuild(Rectangle area, StructureMap structures) => TryBuild(area, structures, out _);
-    private static bool TryBuild(Rectangle area, StructureMap structures, out string reason)
+    private static bool TryBuild(Rectangle area, StructureMap structures, out string reason, bool registerProtection = true)
     {
         reason = "bounds";
         if (structures == null || area.Width != Width || area.Height != Height
             || !WorldGen.InWorld(area.Left, area.Top, 12)
             || area.X > Main.maxTilesX - Width - 12 || area.Y > Main.maxTilesY - Height - 12) return false;
         int brick = ModContent.TileType<SectRuinBrickTile>();
-        var allowed = new bool[TileLoader.TileCount];
-        foreach (int type in new[] { TileID.Dirt, TileID.Stone, TileID.ClayBlock, TileID.Mud,
-            TileID.SnowBlock, TileID.IceBlock, TileID.Sand, TileID.Silt, TileID.Slush,
-            TileID.HardenedSand, TileID.Sandstone, TileID.DesertFossil,
-            TileID.Cobweb, TileID.Stalactite, TileID.SmallPiles, TileID.Plants, TileID.Plants2,
-            TileID.JunglePlants, TileID.JunglePlants2, TileID.MushroomPlants, TileID.MushroomVines,
-            TileID.WaterDrip, TileID.LavaDrip, TileID.SandDrip, TileID.ExposedGems,
-            TileID.Sapphire, TileID.Ruby, TileID.Emerald, TileID.Topaz, TileID.Amethyst, TileID.Diamond,
-            TileID.GreenMoss, TileID.BrownMoss, TileID.RedMoss, TileID.BlueMoss, TileID.PurpleMoss, TileID.LongMoss,
-            TileID.Grass, TileID.JungleGrass, TileID.MushroomGrass, TileID.Ash, TileID.Ebonstone, TileID.Crimstone, TileID.Pearlstone, brick }) allowed[type] = true;
-        for (int type = 0; type < allowed.Length; type++) if (TileID.Sets.Ore[type]) allowed[type] = true;
+        var allowed = NaturalTiles();
         reason = "protected structure or non-natural tile";
         if (!structures.CanPlace(area, allowed, 2)) {
             var any = new bool[allowed.Length]; System.Array.Fill(any, true);
@@ -127,7 +121,24 @@ public class SectRuinHallSystem : ModSystem
             tile.TileFrameX = tile.TileFrameY = 0;
         }
         for (int x = area.Left; x < area.Right; x++) for (int y = area.Top; y < area.Bottom; y++) WorldGen.SquareTileFrame(x, y);
-        structures.AddProtectedStructure(area, 2);
+        if (registerProtection) structures.AddProtectedStructure(area, 2);
         return true;
     }
+    internal static bool[] NaturalTiles()
+    {
+        int brick = ModContent.TileType<SectRuinBrickTile>();
+        var allowed = new bool[TileLoader.TileCount];
+        foreach (int type in new[] { TileID.Dirt, TileID.Stone, TileID.ClayBlock, TileID.Mud,
+            TileID.SnowBlock, TileID.IceBlock, TileID.Sand, TileID.Silt, TileID.Slush,
+            TileID.HardenedSand, TileID.Sandstone, TileID.DesertFossil,
+            TileID.Cobweb, TileID.Stalactite, TileID.SmallPiles, TileID.Plants, TileID.Plants2,
+            TileID.JunglePlants, TileID.JunglePlants2, TileID.MushroomPlants, TileID.MushroomVines,
+            TileID.WaterDrip, TileID.LavaDrip, TileID.SandDrip, TileID.ExposedGems,
+            TileID.Sapphire, TileID.Ruby, TileID.Emerald, TileID.Topaz, TileID.Amethyst, TileID.Diamond,
+            TileID.GreenMoss, TileID.BrownMoss, TileID.RedMoss, TileID.BlueMoss, TileID.PurpleMoss, TileID.LongMoss,
+            TileID.Grass, TileID.JungleGrass, TileID.MushroomGrass, TileID.Ash, TileID.Ebonstone, TileID.Crimstone, TileID.Pearlstone, brick }) allowed[type] = true;
+        for (int type = 0; type < allowed.Length; type++) if (TileID.Sets.Ore[type]) allowed[type] = true;
+        return allowed;
+    }
+
 }
