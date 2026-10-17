@@ -42,8 +42,12 @@ public class SpiritTideEnemies : GlobalNPC
     }
     public override void ReceiveExtraAI(NPC npc,BitReader bitReader,BinaryReader reader)
     {
-        tideEnemy=reader.ReadBoolean();
-        if(!tideEnemy)return;
-        tideRun=reader.ReadUInt32();npc.lifeMax=reader.ReadInt32();npc.damage=reader.ReadInt32();npc.defense=reader.ReadInt32();
+        bool incoming = reader.ReadBoolean();
+        if (!incoming) { tideEnemy = false; tideRun = 0; return; }
+        uint run = reader.ReadUInt32();
+        int life = reader.ReadInt32(), damage = reader.ReadInt32(), defense = reader.ReadInt32();
+        if (life <= 0 || damage < 0 || defense < 0) return;
+        tideEnemy = true; tideRun = run;
+        npc.lifeMax = life; npc.damage = damage; npc.defense = defense;
     }
 }

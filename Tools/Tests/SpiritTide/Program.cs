@@ -18,6 +18,21 @@ using(var memory=new MemoryStream()) {
  Check(remoteNpc.lifeMax==80&&remoteNpc.damage==13&&remoteNpc.defense==3,"Boosted combat stats reach clients through extra AI");
  Main.netMode=1;remoteHook.OnKill(remoteNpc);Check(SpiritTideSystem.Kills==0,"Synced enemy cannot credit client-side death");Main.netMode=2;
 }
+byte[] Packet(bool active,uint run,int life,int damage,int defense) {using var stream=new MemoryStream();using var writer=new BinaryWriter(stream);writer.Write(active);if(active){writer.Write(run);writer.Write(life);writer.Write(damage);writer.Write(defense);}return stream.ToArray();}
+byte[] Export(SpiritTideEnemies state,NPC npc) {using var stream=new MemoryStream();using var writer=new BinaryWriter(stream);state.SendExtraAI(npc,new BitWriter(),writer);return stream.ToArray();}
+void Import(SpiritTideEnemies state,NPC npc,byte[] bytes){using var reader=new BinaryReader(new MemoryStream(bytes));state.ReceiveExtraAI(npc,new BitReader(),reader);}
+var receiver=new SpiritTideEnemies();var received=new NPC();var validPacket=Packet(true,9,300,50,12);Import(receiver,received,validPacket);
+Check(Export(receiver,received).SequenceEqual(validPacket),"Complete event metadata round trips without changing wire layout");
+var replacement=Packet(true,10,600,75,18);
+for(int cut=0;cut<replacement.Length;cut++) {
+ bool threw=false;try{Import(receiver,received,replacement.Take(cut).ToArray());}catch(EndOfStreamException){threw=true;}
+ Check(threw&&Export(receiver,received).SequenceEqual(validPacket),"Every truncated active event packet preserves tag run and all combat values atomically");
+}
+foreach(var invalid in new[]{Packet(true,10,0,75,18),Packet(true,10,-1,75,18),Packet(true,10,600,-1,18),Packet(true,10,600,75,-1)}) {
+ Import(receiver,received,invalid);Check(Export(receiver,received).SequenceEqual(validPacket),"Invalid complete combat metadata cannot replace an accepted event state");
+}
+Import(receiver,received,replacement);Check(Export(receiver,received).SequenceEqual(replacement),"Valid complete newer event metadata still applies");
+Import(receiver,received,Packet(false,0,0,0,0));Check(Export(receiver,received).SequenceEqual(new byte[]{0})&&received.lifeMax==600&&received.damage==75&&received.defense==18,"Untagged metadata clears event identity without rewriting combat stats");
 int before=SpiritTideSystem.Kills;foreach(var n in new[]{new NPC{SpawnedFromStatue=true},new NPC{Center=new(0,2000)},new NPC{type=99}}){var h=new SpiritTideEnemies();h.OnSpawn(n,new EntitySource_SpawnNPC());h.OnKill(n);}hook.OnSpawn(new NPC(),new OtherSource());hook.OnKill(new NPC());Check(SpiritTideSystem.Kills==before,"Statues underground unrelated and artificial enemies excluded");
 Kill();Check(SpiritTideSystem.Kills==1,"Each tagged death credited once");
 for(int i=1;i<12;i++)Kill();Check(SpiritTideSystem.Wave==2&&SpiritTideSystem.Kills==0&&SpiritTideSystem.RequiredKills==18,"Wave two transition");
