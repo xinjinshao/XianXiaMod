@@ -964,6 +964,7 @@ public partial class SummonAuditSystem : ModSystem
             AuditArmorPreview(Check);
             AuditWeaponCostTooltips(Check);
             AuditSkillTooltips(Check);
+            AuditThunderCaseAwakening(Check);
             AuditCalamityRecipes(Check);
             }
         }

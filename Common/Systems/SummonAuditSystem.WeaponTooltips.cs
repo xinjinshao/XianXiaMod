@@ -32,7 +32,21 @@ public partial class SummonAuditSystem
                     var item = new Item(); item.SetDefaults(sample.Type); actor.inventory[0] = item; actor.selectedItem = 0;
                     var refined = item.GetGlobalItem<RefinedArtifact>(); refined.SetLevel(3); check(refined.TryAwaken(), "native skill tooltip fixture uses actual awakening state");
                     if (route != 0) check(refined.TryTransform((DownedBossSystem.EndgameRoute)route), "native skill tooltip fixture uses actual matching-world Dao state");
-                    var skill = ArtifactSkillTransactions.HeldSkill(item).Value;
+                    var selectedSkill = ArtifactSkillTransactions.HeldSkill(item);
+                    if (item.ModItem is ThunderPatternSwordCase) {
+                        check(selectedSkill == null && !item.ModItem.AltFunctionUse(actor), "native passive thunder case does not expose an unfinished skill");
+                        foreach (float multiplier in new[] { 0.92f, 1f, 1.1f }) foreach (int cooldown in new[] { 0, 61 }) {
+                            state.spiritualEnergyCostMultiplier = multiplier; state.activeSkillCooldown = cooldown; var before = state.CaptureSnapshot();
+                            var lines = new List<TooltipLine>(); item.GetGlobalItem<CultivationDamageClassHelp>().ModifyTooltips(item, lines);
+                            string expected = Terraria.Localization.Language.GetTextValue("Mods.XianXia.DamageClasses.CurrentCastCost", state.GetSpiritualEnergyCost(6));
+                            check(lines.All(line => line.Name != "CurrentArtifactSkill") && lines.Single(line => line.Name == "CurrentSpiritCost").Text == expected,
+                                "native awakened passive thunder case advertises only its real rounded ordinary cast cost");
+                            check(state.CaptureSnapshot() == before && actor.HeldItem == item, "native passive thunder tooltip does not spend energy or alter shared cooldown");
+                        }
+                        continue;
+                    }
+                    check(selectedSkill.HasValue, "native existing active artifacts retain their skill mappings");
+                    var skill = selectedSkill.Value;
                     foreach (float multiplier in new[] { 0.92f, 1f, 1.1f }) foreach (int cooldown in new[] { 0, 61 }) {
                         state.spiritualEnergyCostMultiplier = multiplier; state.activeSkillCooldown = cooldown; var before = state.CaptureSnapshot();
                         var lines = new List<TooltipLine>(); item.GetGlobalItem<CultivationDamageClassHelp>().ModifyTooltips(item, lines);

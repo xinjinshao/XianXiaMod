@@ -61,19 +61,24 @@ public class ThunderPatternSwordCase : global::XianXia.Common.Items.CultivationW
 
         return player.GetModPlayer<global::XianXia.Common.Players.XianXiaPlayer>()
 
-            .CanConsumeSpiritualEnergy(HasArtifactAwakening(player) ? 7 : 9);
+            .CanConsumeSpiritualEnergy(GetSpiritCost(player));
 
     }
 
 
 
-    public override int GetSpiritCost(Player player) => HasArtifactAwakening(player) ? 7 : 9;
+    public const int AwakenedSpiritCost = 6;
+    public override int GetSpiritCost(Player player) => global::XianXia.Common.Items.RefinedArtifact.IsAwakened(Item)
+        ? AwakenedSpiritCost : HasSectInheritance(player) ? 7 : 9;
+    // The crafted passive upgrade does not expose an unimplemented alternate skill.
+    public override bool AltFunctionUse(Player player) => false;
 
 
-    private static bool HasArtifactAwakening(Player player)
+    private static bool HasSectInheritance(Player player)
 
     {
 
+        if (player == null) return false;
         global::XianXia.Common.Players.XianXiaPlayer cultivation = player.GetModPlayer<global::XianXia.Common.Players.XianXiaPlayer>();
 
         return cultivation.cultivationStage >= global::XianXia.Common.Players.CultivationStage.GoldenCore
@@ -88,7 +93,8 @@ public class ThunderPatternSwordCase : global::XianXia.Common.Items.CultivationW
 
     {
 
-        if (HasArtifactAwakening(player))
+        if (global::XianXia.Common.Items.RefinedArtifact.IsAwakened(Item)) damage += 0.1f;
+        if (HasSectInheritance(player))
 
             damage += 0.12f;
 
@@ -102,19 +108,19 @@ public class ThunderPatternSwordCase : global::XianXia.Common.Items.CultivationW
 
         Player player = Main.LocalPlayer;
 
-        string key = HasArtifactAwakening(player)
+        string key = HasSectInheritance(player)
 
-            ? "Mods.XianXia.Progression.ArtifactAwakeningReady"
+            ? "Mods.XianXia.Refinement.ThunderCaseHeritageReady"
 
-            : "Mods.XianXia.Progression.ArtifactAwakeningLocked";
+            : "Mods.XianXia.Refinement.ThunderCaseHeritageLocked";
 
         tooltips.Add(new TooltipLine(
 
             Mod,
 
-            "XianXiaArtifactAwakening",
+            "XianXiaThunderHeritage",
 
-            Terraria.Localization.Language.GetTextValue(key, global::XianXia.Common.Players.CultivationStatusText.StageName(global::XianXia.Common.Players.CultivationStage.GoldenCore), 40, 7, 12)));
+            Terraria.Localization.Language.GetTextValue(key, global::XianXia.Common.Players.CultivationStatusText.StageName(global::XianXia.Common.Players.CultivationStage.GoldenCore), 40, GetSpiritCost(player), 12)));
 
     }
 

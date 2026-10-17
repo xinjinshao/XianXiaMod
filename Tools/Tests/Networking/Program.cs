@@ -1125,20 +1125,36 @@ foreach(string expandedName in new[]{"WoodgrainFlyingSword","SpiritwoodCrossbow"
   var expandedDamage=new StatModifier();expandedItem.GetGlobalItem<XianXia.Common.Items.RefinedArtifact>().ModifyWeaponDamage(expandedItem,Game.player[0],ref expandedDamage);
   Check(Math.Abs(expandedDamage.Bonus-(current+1)*.04f)<.001f&&expandedDamage.Base==0,"Expanded hook applies bounded damage without sample Dao scaling");
  }
- SetupAwakening(expandedName);Awaken();Check(expandedName is "FormlessSwordWheel" or "BlackFurnaceWarhammer" ? Game.player[0].inventory[0].stack==1&&Game.player[0].inventory[2].IsAir&&XianXia.Common.Items.RefinedArtifact.IsAwakened(Game.player[0].inventory[1]) : Game.player[0].inventory[0].stack==2&&!XianXia.Common.Items.RefinedArtifact.IsAwakened(Game.player[0].inventory[1]),"Expanded weapons cannot spend awakening seals without a defined advanced path");
+ bool craftedAllowed = expandedName is "FormlessSwordWheel" or "BlackFurnaceWarhammer" or "ThunderPatternSwordCase";
+ bool supportsAwake = expandedName is "MoonboneDharmaSword" or "FormlessSwordWheel" or "BlackFurnaceWarhammer" or "ThunderPatternSwordCase";
+ bool supportsDao = expandedName is "MoonboneDharmaSword" or "FormlessSwordWheel" or "BlackFurnaceWarhammer";
+ SetupAwakening(expandedName);Awaken();Check(craftedAllowed ? Game.player[0].inventory[0].stack==1&&Game.player[0].inventory[2].IsAir&&XianXia.Common.Items.RefinedArtifact.IsAwakened(Game.player[0].inventory[1]) : Game.player[0].inventory[0].stack==2&&!XianXia.Common.Items.RefinedArtifact.IsAwakened(Game.player[0].inventory[1]),"Expanded weapons spend awakening seals only on defined advanced paths and realm gates");
  var plain=Game.player[0].inventory[1];var meta=plain.GetGlobalItem<XianXia.Common.Items.RefinedArtifact>();
  var forged=new Terraria.ModLoader.IO.TagCompound{{"refinement",3},{"awakened",true},{"daoRoute",1}};meta.LoadData(plain,forged);
- Check(meta.Level==3&&meta.Awakened==(expandedName is "MoonboneDharmaSword" or "FormlessSwordWheel" or "BlackFurnaceWarhammer")&&meta.DaoRoute==(expandedName is "MoonboneDharmaSword" or "FormlessSwordWheel" or "BlackFurnaceWarhammer"?DownedBossSystem.EndgameRoute.RebuildHeaven:DownedBossSystem.EndgameRoute.None),"Expanded save retains only supported awakening/Dao flags");
+ Check(meta.Level==3&&meta.Awakened==supportsAwake&&meta.DaoRoute==(supportsDao?DownedBossSystem.EndgameRoute.RebuildHeaven:DownedBossSystem.EndgameRoute.None),"Expanded save retains only supported awakening/Dao flags");
  using(var bytes=new MemoryStream(new byte[]{3,1,1}))meta.NetReceive(plain,new BinaryReader(bytes));
- Check(meta.Level==3&&meta.Awakened==(expandedName is "MoonboneDharmaSword" or "FormlessSwordWheel" or "BlackFurnaceWarhammer")&&meta.DaoRoute==(expandedName is "MoonboneDharmaSword" or "FormlessSwordWheel" or "BlackFurnaceWarhammer"?DownedBossSystem.EndgameRoute.RebuildHeaven:DownedBossSystem.EndgameRoute.None),"Expanded network metadata retains only supported advanced state");
+ Check(meta.Level==3&&meta.Awakened==supportsAwake&&meta.DaoRoute==(supportsDao?DownedBossSystem.EndgameRoute.RebuildHeaven:DownedBossSystem.EndgameRoute.None),"Expanded network metadata retains only supported advanced state");
  var persisted=new Terraria.ModLoader.IO.TagCompound();meta.SaveData(plain,persisted);var expandedLoaded=new XianXia.Common.Items.RefinedArtifact();expandedLoaded.LoadData(plain,persisted);
- Check(expandedLoaded.Level==3&&expandedLoaded.Awakened==(expandedName is "MoonboneDharmaSword" or "FormlessSwordWheel" or "BlackFurnaceWarhammer"),"Expanded refinement persists independently of advanced flags");
- var expandedTips=new List<TooltipLine>();meta.ModifyTooltips(plain,expandedTips);Check(expandedTips.Count==(expandedName is "MoonboneDharmaSword" or "FormlessSwordWheel" or "BlackFurnaceWarhammer"?3:2)&&expandedTips[1].Text.Contains(expandedName=="MoonboneDharmaSword"?"Refinement.MoonAwakened":expandedName=="FormlessSwordWheel"?"Refinement.WheelAwakened":expandedName=="BlackFurnaceWarhammer"?"Refinement.HammerAwakened":"Refinement.BasicArtifact"),"Expanded tooltip explains its defined growth scope");
+ Check(expandedLoaded.Level==3&&expandedLoaded.Awakened==supportsAwake,"Expanded refinement persists independently of advanced flags");
+ string stateKey=expandedName switch{"MoonboneDharmaSword"=>"MoonAwakened","FormlessSwordWheel"=>"WheelAwakened","BlackFurnaceWarhammer"=>"HammerAwakened","ThunderPatternSwordCase"=>"ThunderCaseAwakened",_=>"BasicArtifact"};
+ var expandedTips=new List<TooltipLine>();meta.ModifyTooltips(plain,expandedTips);Check(expandedTips.Count==(supportsDao?3:2)&&expandedTips[1].Text.Contains("Refinement."+stateKey),"Expanded tooltip explains its defined growth scope");
 }
 foreach(Action reject in new Action[]{()=>Game.player[0].inventory[1].accessory=true,()=>Game.player[0].inventory[1].consumable=true,()=>Game.player[0].inventory[1].ammo=1,()=>Game.player[0].inventory[1].maxStack=2,()=>Game.player[0].inventory[1].vanity=true,()=>Game.player[0].inventory[1].damage=0,()=>Game.player[0].inventory[1].ModItem.Mod=new Mod()}){
  SetupRefinement(name:"SpiritwoodCrossbow");reject();Refine();Check(Game.player[0].inventory[0].stack==2&&Game.player[0].inventory[2].stack==6&&!XianXia.Common.Items.RefinedArtifact.SupportsRefinement(Game.player[0].inventory[1]),"Ineligible categories/origins cannot spend refinement materials");
 }
 foreach(byte route in new byte[]{1,2,3}){SetupDao(route,"HeavenTabletWardSeal");Dao(route);Check(Game.player[0].inventory[0].stack==2&&Game.player[0].inventory[2].stack==36&&XianXia.Common.Items.RefinedArtifact.GetDaoRoute(Game.player[0].inventory[1])==DownedBossSystem.EndgameRoute.None,"Ward rejects all sample Dao transactions without consumption");}
+// Thunder case joins the shared crafted awakening transaction without receiving any Dao route.
+foreach(int mode in new[]{NetmodeID.SinglePlayer,NetmodeID.Server}) {
+ SetupAwakening("ThunderPatternSwordCase");Game.netMode=mode;var target=Game.player[0].inventory[1];Awaken();
+ Check(XianXia.Common.Items.RefinedArtifact.IsAwakened(target)&&Game.player[0].inventory[0].stack==1&&Game.player[0].inventory[2].IsAir&&target.prefix==300&&CurrentInscription()==InscriptionKind.Greenwood,"Thunder case shared authority transaction preserves equipment and exact material cost");
+ Game.player[0].GetModPlayer<XianXia.Common.Players.InscriptionPlayer>().Initialize();Awaken(true);
+ Check(Game.player[0].inventory[0].stack==1,"Repeated thunder case awakening cannot consume another seal");
+}
+foreach(Action reject in new Action[]{()=>Game.player[0].State.cultivationStage=CultivationStage.GoldenCore,()=>DownedBossSystem.DownedBosses.Remove("greenwood_medicine_king_echo"),()=>Game.player[0].inventory[1].GetGlobalItem<XianXia.Common.Items.RefinedArtifact>().SetLevel(2),()=>Game.player[0].inventory[1].GetGlobalItem<XianXia.Common.Items.InscribedEquipment>().SetKind(InscriptionKind.None),()=>Game.player[0].inventory[2].stack=23}) {
+ SetupAwakening("ThunderPatternSwordCase");reject();int stones=Game.player[0].inventory[2].stack;Awaken();
+ Check(!XianXia.Common.Items.RefinedArtifact.IsAwakened(Game.player[0].inventory[1])&&Game.player[0].inventory[0].stack==2&&Game.player[0].inventory[2].stack==stones,"Thunder case failed gates do not consume materials");
+}
+foreach(byte route in new byte[]{1,2,3}){SetupDao(route,"ThunderPatternSwordCase");Dao(route);Check(Game.player[0].inventory[0].stack==2&&Game.player[0].inventory[2].stack==36&&XianXia.Common.Items.RefinedArtifact.GetDaoRoute(Game.player[0].inventory[1])==DownedBossSystem.EndgameRoute.None,"Thunder case rejects all unimplemented Dao transformations without material loss");}
 // Third crafted artifact: ward awakening is independent of sample-only Dao transformation.
 SetupAwakening("HeavenTabletWardSeal");Awaken();var grownWard=Game.player[0].inventory[1];
 Check(XianXia.Common.Items.RefinedArtifact.IsAwakened(grownWard)&&Game.player[0].inventory[0].stack==1&&Game.player[0].inventory[2].IsAir,"Ward awakening spends one seal and exactly 24 stones");
