@@ -20,7 +20,9 @@ public static class ArtifactSkillTransactions
     public static bool CanUseAlternative(Player player, Item item) => RefinedArtifact.IsAwakened(item)
         && HeldSkill(item) is ArtifactSkill skill && player.GetModPlayer<XianXiaPlayer>().activeSkillCooldown == 0
         && (skill != ArtifactSkill.HammerVolley || HammerRealmAllowed(player))
-        && player.GetModPlayer<XianXiaPlayer>().CanConsumeSpiritualEnergy(DaoArtifactRules.SkillCost(skill,RefinedArtifact.ActiveDaoRoute(item)));
+        && player.GetModPlayer<XianXiaPlayer>().CanConsumeSpiritualEnergy(DaoArtifactRules.SkillCost(skill,SkillDaoRoute(player,skill)));
+    public static DownedBossSystem.EndgameRoute SkillDaoRoute(Player player, ArtifactSkill skill) => HeldSkill(player.HeldItem) == skill
+        && (skill != ArtifactSkill.WardGuard || HasAwakenedWardSeal(player)) ? RefinedArtifact.ActiveDaoRoute(player.HeldItem) : DownedBossSystem.EndgameRoute.None;
     public static void Request(Player player, ArtifactSkill skill)
     {
         if (Main.netMode == NetmodeID.Server || player.whoAmI != Main.myPlayer || !ArtifactSkillRules.IsValid(skill)) return;
@@ -72,7 +74,7 @@ public static class ArtifactSkillTransactions
             if (healTargets.Count == 0) { Reply(player, "Mods.XianXia.Skills.NoHealing"); return; }
         }
         CultivationSnapshot before = state.CaptureSnapshot();
-        var daoRoute = RefinedArtifact.ActiveDaoRoute(item);
+        var daoRoute = SkillDaoRoute(player,skill);
         if (!state.TryConsumeSpiritualEnergy(DaoArtifactRules.SkillCost(skill,daoRoute))) { Reply(player, "Mods.XianXia.Skills.NeedEnergy"); return; }
         if (IsBurst(skill) && !Burst(player, item, aim)) {
             state.ApplySnapshot(before); state.SyncPlayer(player.whoAmI, -1, false); return;
@@ -82,10 +84,11 @@ public static class ArtifactSkillTransactions
         }
         if (IsBurst(skill) && daoRoute == DownedBossSystem.EndgameRoute.RebuildHeaven) AuthoritativeHealing.Apply(player,20);
         if (skill == ArtifactSkill.WardGuard) {
+            if (daoRoute == DownedBossSystem.EndgameRoute.RebuildHeaven) AuthoritativeHealing.Apply(player,20);
             state.wardGuardTimer = 180;
             player.AddBuff(ModContent.BuffType<global::XianXia.Content.Buffs.ArtifactWardBuff>(), 2);
         }
-        if (skill != ArtifactSkill.WardGuard && daoRoute == DownedBossSystem.EndgameRoute.AcceptStarAbyss)
+        if (daoRoute == DownedBossSystem.EndgameRoute.AcceptStarAbyss)
             state.spiritPressure = Math.Min(100,state.spiritPressure + 8);
         state.activeSkillCooldown = ArtifactSkillRules.Cooldown(skill); state.AdvanceResourceRevision();
         state.SyncPlayer(-1, -1, false);

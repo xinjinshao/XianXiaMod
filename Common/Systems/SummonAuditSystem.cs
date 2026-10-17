@@ -820,7 +820,7 @@ public partial class SummonAuditSystem : ModSystem
                         var routeProgress = new TagCompound(); progressSystem.SaveWorldData(routeProgress); routeProgress["chosenRoute"] = 0; progressSystem.LoadWorldData(routeProgress);
                         DownedBossSystem.DownedBosses.Add("old_heaven_dao_core");
                         Check(DownedBossSystem.TryChooseRoute((DownedBossSystem.EndgameRoute)route), "registered Dao fixture chooses each real world route");
-                        foreach (int artifactType in new[] { ModContent.ItemType<global::XianXia.Content.Items.Weapons.FormlessSwordWheel>(), ModContent.ItemType<global::XianXia.Content.Items.Weapons.BlackFurnaceWarhammer>(), ModContent.ItemType<global::XianXia.Content.Items.Weapons.ThunderPatternSwordCase>() }) foreach (int transactionMode in new[] { NetmodeID.SinglePlayer, NetmodeID.Server }) {
+                        foreach (int artifactType in new[] { ModContent.ItemType<global::XianXia.Content.Items.Weapons.FormlessSwordWheel>(), ModContent.ItemType<global::XianXia.Content.Items.Weapons.BlackFurnaceWarhammer>(), ModContent.ItemType<global::XianXia.Content.Items.Weapons.ThunderPatternSwordCase>(), ModContent.ItemType<global::XianXia.Content.Items.Weapons.HeavenTabletWardSeal>() }) foreach (int transactionMode in new[] { NetmodeID.SinglePlayer, NetmodeID.Server }) {
                             Main.netMode = NetmodeID.SinglePlayer; Main.myPlayer = 0;
                             Player actor = MakeDaoFixture(artifactType); Item target = actor.inventory[1]; int prefix = target.prefix;
                             Main.netMode = transactionMode; Main.myPlayer = transactionMode == NetmodeID.Server ? Main.maxPlayers : 0;
@@ -967,6 +967,7 @@ public partial class SummonAuditSystem : ModSystem
             AuditThunderCaseAwakening(Check);
             AuditThunderHitProc(Check);
             AuditThunderSkill(Check);
+            AuditWardDao(Check);
             AuditCalamityRecipes(Check);
             }
         }

@@ -512,18 +512,18 @@ foreach(string weaponName in new[]{"WoodgrainFlyingSword","SpiritwoodCrossbow","
  }
 
  refinedType.GetMethod("LoadData").Invoke(growthMeta,new[]{growthOwner,Tag(("refinement",3),("awakened",true),("daoRoute",1))});
- Check(Refinement(growthMeta)==3&&(bool)refinedType.GetProperty("Awakened").GetValue(growthMeta)==(weaponName is "MoonboneDharmaSword" or "FormlessSwordWheel" or "BlackFurnaceWarhammer")&&DaoRoute(growthMeta)==(weaponName is "MoonboneDharmaSword" or "FormlessSwordWheel" or "BlackFurnaceWarhammer"?1:0),weaponName+" actual save loader keeps refinement and strips unsupported advanced flags");
+ Check(Refinement(growthMeta)==3&&(bool)refinedType.GetProperty("Awakened").GetValue(growthMeta)==(weaponName is "MoonboneDharmaSword" or "FormlessSwordWheel" or "BlackFurnaceWarhammer" or "ThunderPatternSwordCase")&&DaoRoute(growthMeta)==(weaponName is "MoonboneDharmaSword" or "FormlessSwordWheel" or "BlackFurnaceWarhammer" or "ThunderPatternSwordCase"?1:0),weaponName+" actual save loader keeps refinement and strips unsupported advanced flags");
  object growthSave=Tag();refinedType.GetMethod("SaveData").Invoke(growthMeta,new[]{growthOwner,growthSave});
- Check(Convert.ToBoolean(tagType.GetMethod("GetBool").Invoke(growthSave,new object[]{"awakened"}))==(weaponName is "MoonboneDharmaSword" or "FormlessSwordWheel" or "BlackFurnaceWarhammer")&&Convert.ToInt32(tagType.GetMethod("GetInt").Invoke(growthSave,new object[]{"daoRoute"}))==(weaponName is "MoonboneDharmaSword" or "FormlessSwordWheel" or "BlackFurnaceWarhammer"?1:0),weaponName+" native TagCompound stores supported growth only");
+ Check(Convert.ToBoolean(tagType.GetMethod("GetBool").Invoke(growthSave,new object[]{"awakened"}))==(weaponName is "MoonboneDharmaSword" or "FormlessSwordWheel" or "BlackFurnaceWarhammer" or "ThunderPatternSwordCase")&&Convert.ToInt32(tagType.GetMethod("GetInt").Invoke(growthSave,new object[]{"daoRoute"}))==(weaponName is "MoonboneDharmaSword" or "FormlessSwordWheel" or "BlackFurnaceWarhammer" or "ThunderPatternSwordCase"?1:0),weaponName+" native TagCompound stores supported growth only");
  using(var growthBytes=new MemoryStream()){
   using(var writer=new BinaryWriter(growthBytes,System.Text.Encoding.UTF8,true))refinedType.GetMethod("NetSend").Invoke(growthMeta,new object[]{growthOwner,writer});
-  Check(growthBytes.ToArray().SequenceEqual(new byte[]{3,(byte)(weaponName is "MoonboneDharmaSword" or "FormlessSwordWheel" or "BlackFurnaceWarhammer"?1:0),(byte)(weaponName is "MoonboneDharmaSword" or "FormlessSwordWheel" or "BlackFurnaceWarhammer"?1:0)}),weaponName+" actual wire payload keeps supported three-byte growth");
+  Check(growthBytes.ToArray().SequenceEqual(new byte[]{3,(byte)(weaponName is "MoonboneDharmaSword" or "FormlessSwordWheel" or "BlackFurnaceWarhammer" or "ThunderPatternSwordCase"?1:0),(byte)(weaponName is "MoonboneDharmaSword" or "FormlessSwordWheel" or "BlackFurnaceWarhammer" or "ThunderPatternSwordCase"?1:0)}),weaponName+" actual wire payload keeps supported three-byte growth");
   object growthClone=refinedType.GetMethod("Clone",new[]{refinementItemType,refinementItemType}).Invoke(growthMeta,new[]{growthOwner,growthOwner});
   refinedType.GetMethod("SetLevel").Invoke(growthClone,new object[]{1});
   Check(Refinement(growthMeta)==3&&Refinement(growthClone)==1,weaponName+" native metadata clone is independent");
  }
  using(var growthBytes=new MemoryStream(new byte[]{3,1,1}))refinedType.GetMethod("NetReceive").Invoke(growthMeta,new object[]{growthOwner,new BinaryReader(growthBytes)});
- Check(Refinement(growthMeta)==3&&(bool)refinedType.GetProperty("Awakened").GetValue(growthMeta)==(weaponName is "MoonboneDharmaSword" or "FormlessSwordWheel" or "BlackFurnaceWarhammer")&&DaoRoute(growthMeta)==(weaponName is "MoonboneDharmaSword" or "FormlessSwordWheel" or "BlackFurnaceWarhammer"?1:0),weaponName+" native receive accepts only supported growth metadata");
+ Check(Refinement(growthMeta)==3&&(bool)refinedType.GetProperty("Awakened").GetValue(growthMeta)==(weaponName is "MoonboneDharmaSword" or "FormlessSwordWheel" or "BlackFurnaceWarhammer" or "ThunderPatternSwordCase")&&DaoRoute(growthMeta)==(weaponName is "MoonboneDharmaSword" or "FormlessSwordWheel" or "BlackFurnaceWarhammer" or "ThunderPatternSwordCase"?1:0),weaponName+" native receive accepts only supported growth metadata");
  if(weaponName=="BlackFurnaceWarhammer"){
   Check((bool)refinedType.GetMethod("SupportsAwakening").Invoke(null,new[]{growthOwner})&&(bool)refinedType.GetMethod("SupportsDaoTransformation").Invoke(null,new[]{growthOwner}),"Compiled hammer supports awakening and Dao transformation");
   var compiledHammerDaoRules=type.Assembly.GetType("XianXia.Common.Systems.DaoArtifactRules",true);
@@ -545,7 +545,7 @@ foreach(string weaponName in new[]{"WoodgrainFlyingSword","SpiritwoodCrossbow","
 }
 Console.WriteLine($"Actual engine gameplay assertions including expanded refinement: {assertions}.");
 
-// Actual third artifact metadata preserves awakening while rejecting all sample Dao routes.
+// Actual ward metadata retains supported Dao routes independently of sample identity.
 object nativeGrownWard=Activator.CreateInstance(refinementItemType),grownWardWeapon=Activator.CreateInstance(sealType),grownWardMeta=Activator.CreateInstance(refinedType);
 sealType.GetProperty("Entity",BindingFlags.Instance|BindingFlags.Public|BindingFlags.NonPublic).SetValue(grownWardWeapon,nativeGrownWard);
 sealType.GetProperty("Mod",BindingFlags.Instance|BindingFlags.Public|BindingFlags.NonPublic).SetValue(grownWardWeapon,Activator.CreateInstance(type.Assembly.GetType("XianXia.XianXia",true)));
@@ -555,13 +555,13 @@ sealType.GetMethod("SetDefaults").Invoke(grownWardWeapon,null);
 Check((bool)refinedType.GetMethod("SupportsRefinement").Invoke(null,new[]{nativeGrownWard})&&(bool)refinedType.GetMethod("SupportsAwakening").Invoke(null,new[]{nativeGrownWard})&&!(bool)refinedType.GetMethod("IsSample").Invoke(null,new[]{nativeGrownWard}),"Actual ward defaults separate three growth capabilities");
 foreach(int forbiddenRoute in new[]{1,2,3}){
  refinedType.GetMethod("LoadData").Invoke(grownWardMeta,new[]{nativeGrownWard,Tag(("refinement",3),("awakened",true),("daoRoute",forbiddenRoute))});
- Check(Refinement(grownWardMeta)==3&&(bool)refinedType.GetProperty("Awakened").GetValue(grownWardMeta)&&DaoRoute(grownWardMeta)==0,"Actual ward save strips each unsupported route but keeps awakening");
+ Check(Refinement(grownWardMeta)==3&&(bool)refinedType.GetProperty("Awakened").GetValue(grownWardMeta)&&DaoRoute(grownWardMeta)==forbiddenRoute,"Actual ward save retains each supported route and awakening");
  using(var bytes=new MemoryStream(new byte[]{3,1,(byte)forbiddenRoute}))refinedType.GetMethod("NetReceive").Invoke(grownWardMeta,new object[]{nativeGrownWard,new BinaryReader(bytes)});
- Check((bool)refinedType.GetProperty("Awakened").GetValue(grownWardMeta)&&DaoRoute(grownWardMeta)==0,"Actual ward wire strips each unsupported route");
+ Check((bool)refinedType.GetProperty("Awakened").GetValue(grownWardMeta)&&DaoRoute(grownWardMeta)==forbiddenRoute,"Actual ward wire retains each supported route");
 }
 object nativeWardSave=Tag();refinedType.GetMethod("SaveData").Invoke(grownWardMeta,new[]{nativeGrownWard,nativeWardSave});
-Check(Convert.ToBoolean(tagType.GetMethod("GetBool").Invoke(nativeWardSave,new object[]{"awakened"}))&&Convert.ToInt32(tagType.GetMethod("GetInt").Invoke(nativeWardSave,new object[]{"daoRoute"}))==0,"Native ward save retains crafted awakening only");
-using(var bytes=new MemoryStream()){using(var writer=new BinaryWriter(bytes,System.Text.Encoding.UTF8,true))refinedType.GetMethod("NetSend").Invoke(grownWardMeta,new object[]{nativeGrownWard,writer});Check(bytes.ToArray().SequenceEqual(new byte[]{3,1,0}),"Native ward serializes bounded three-byte growth state");}
+Check(Convert.ToBoolean(tagType.GetMethod("GetBool").Invoke(nativeWardSave,new object[]{"awakened"}))&&Convert.ToInt32(tagType.GetMethod("GetInt").Invoke(nativeWardSave,new object[]{"daoRoute"}))==3,"Native ward save retains explicit awakening and stored route");
+using(var bytes=new MemoryStream()){using(var writer=new BinaryWriter(bytes,System.Text.Encoding.UTF8,true))refinedType.GetMethod("NetSend").Invoke(grownWardMeta,new object[]{nativeGrownWard,writer});Check(bytes.ToArray().SequenceEqual(new byte[]{3,1,3}),"Native ward serializes bounded three-byte growth state");}
 object nativeWardClone=refinedType.GetMethod("Clone",new[]{refinementItemType,refinementItemType}).Invoke(grownWardMeta,new[]{nativeGrownWard,nativeGrownWard});refinedType.GetMethod("SetLevel").Invoke(nativeWardClone,new object[]{1});
 Check((bool)refinedType.GetProperty("Awakened").GetValue(grownWardMeta)&&!(bool)refinedType.GetProperty("Awakened").GetValue(nativeWardClone),"Native ward cloned growth is independent");
 Console.WriteLine($"Actual engine gameplay assertions including crafted ward: {assertions}.");

@@ -1142,7 +1142,7 @@ foreach(string expandedName in new[]{"WoodgrainFlyingSword","SpiritwoodCrossbow"
 foreach(Action reject in new Action[]{()=>Game.player[0].inventory[1].accessory=true,()=>Game.player[0].inventory[1].consumable=true,()=>Game.player[0].inventory[1].ammo=1,()=>Game.player[0].inventory[1].maxStack=2,()=>Game.player[0].inventory[1].vanity=true,()=>Game.player[0].inventory[1].damage=0,()=>Game.player[0].inventory[1].ModItem.Mod=new Mod()}){
  SetupRefinement(name:"SpiritwoodCrossbow");reject();Refine();Check(Game.player[0].inventory[0].stack==2&&Game.player[0].inventory[2].stack==6&&!XianXia.Common.Items.RefinedArtifact.SupportsRefinement(Game.player[0].inventory[1]),"Ineligible categories/origins cannot spend refinement materials");
 }
-foreach(byte route in new byte[]{1,2,3}){SetupDao(route,"HeavenTabletWardSeal");Dao(route);Check(Game.player[0].inventory[0].stack==2&&Game.player[0].inventory[2].stack==36&&XianXia.Common.Items.RefinedArtifact.GetDaoRoute(Game.player[0].inventory[1])==DownedBossSystem.EndgameRoute.None,"Ward rejects all sample Dao transactions without consumption");}
+foreach(byte route in new byte[]{1,2,3}){SetupDao(route,"HeavenTabletWardSeal");Dao(route);Check(Game.player[0].inventory[0].stack==1&&Game.player[0].inventory[2].IsAir&&(byte)XianXia.Common.Items.RefinedArtifact.GetDaoRoute(Game.player[0].inventory[1])==route,"Ward explicit Dao transaction consumes exact materials and binds route");}
 // Thunder case uses shared crafted awakening; Dao remains an explicit later transaction.
 foreach(int mode in new[]{NetmodeID.SinglePlayer,NetmodeID.Server}) {
  SetupAwakening("ThunderPatternSwordCase");Game.netMode=mode;var target=Game.player[0].inventory[1];Awaken();
@@ -1162,11 +1162,11 @@ Check(grownWard.prefix==300&&CurrentInscription()==InscriptionKind.Greenwood&&Xi
 Awaken(true);Check(Game.player[0].inventory[0].stack==1,"Already awakened ward cannot consume again");
 var wardMeta=grownWard.GetGlobalItem<XianXia.Common.Items.RefinedArtifact>();
 wardMeta.LoadData(grownWard,new Terraria.ModLoader.IO.TagCompound{{"refinement",3},{"awakened",true},{"daoRoute",1}});
-Check(wardMeta.Awakened&&wardMeta.DaoRoute==DownedBossSystem.EndgameRoute.None,"Ward saves retain awakening but cannot import Dao");
+Check(wardMeta.Awakened&&wardMeta.DaoRoute==DownedBossSystem.EndgameRoute.RebuildHeaven,"Ward saves retain supported Dao and awakening");
 using(var bytes=new MemoryStream(new byte[]{3,1,3}))wardMeta.NetReceive(grownWard,new BinaryReader(bytes));
-Check(wardMeta.Awakened&&wardMeta.DaoRoute==DownedBossSystem.EndgameRoute.None,"Ward network rejects unsupported Dao");
-using(var bytes=new MemoryStream()){using(var writer=new BinaryWriter(bytes,Encoding.UTF8,true))wardMeta.NetSend(grownWard,writer);Check(bytes.ToArray().SequenceEqual(new byte[]{3,1,0}),"Ward network preserves existing three-byte layout");}
-var wardTips=new List<TooltipLine>();wardMeta.ModifyTooltips(grownWard,wardTips);Check(wardTips.Count==2&&wardTips[1].Text.Contains("WardAwakened"),"Ward describes its own awakening effects");
+Check(wardMeta.Awakened&&wardMeta.DaoRoute==DownedBossSystem.EndgameRoute.AcceptStarAbyss,"Ward network retains supported Dao");
+using(var bytes=new MemoryStream()){using(var writer=new BinaryWriter(bytes,Encoding.UTF8,true))wardMeta.NetSend(grownWard,writer);Check(bytes.ToArray().SequenceEqual(new byte[]{3,1,3}),"Ward network preserves existing three-byte layout");}
+var wardTips=new List<TooltipLine>();wardMeta.ModifyTooltips(grownWard,wardTips);Check(wardTips.Count==3&&wardTips[1].Text.Contains("WardAwakened"),"Ward describes its own awakening effects");
 foreach(Action invalid in new Action[]{()=>Game.player[0].State.cultivationStage=CultivationStage.GoldenCore,()=>DownedBossSystem.DownedBosses.Remove("greenwood_medicine_king_echo"),()=>Game.player[0].inventory[2].stack=23,()=>Game.player[0].inventory[1].GetGlobalItem<XianXia.Common.Items.RefinedArtifact>().SetLevel(2),()=>Game.player[0].inventory[1].GetGlobalItem<XianXia.Common.Items.InscribedEquipment>().SetKind(InscriptionKind.None)}){
  SetupAwakening("HeavenTabletWardSeal");invalid();Awaken();Check(Game.player[0].inventory[0].stack==2,"Ward unmet requirements never consume seal");
 }
@@ -1632,6 +1632,17 @@ foreach(int mode in new[]{0,2}) foreach(byte route in new byte[]{1,2,3}) {
  foreach(int budget in new[]{0,1,2}){ReadyThunderDao();actor=Game.player[0];Terraria.Projectile.SpawnBudget=budget;ThunderCast(mode);Check(!Game.projectile.Any(p=>p.active)&&actor.State.spiritualEnergy==100&&actor.State.activeSkillCooldown==0&&actor.statLife==50&&actor.State.spiritPressure==0,"Thunder Dao partial failure restores cost without healing or pressure");}
  foreach(bool missingCore in new[]{false,true}){ReadyThunderDao();actor=Game.player[0];if(missingCore)DownedBossSystem.DownedBosses.Remove("old_heaven_dao_core");else typeof(DownedBossSystem).GetProperty("ChosenRoute").SetValue(null,(DownedBossSystem.EndgameRoute)(route==1?2:1));ThunderCast(mode);Check(actor.State.spiritualEnergy==70&&Game.projectile.Count(p=>p.active)==3&&Game.projectile.Where(p=>p.active).All(p=>p.damage==37)&&actor.statLife==50&&actor.State.spiritPressure==0&&(byte)XianXia.Common.Items.RefinedArtifact.GetDaoRoute(actor.HeldItem)==route,"Thunder Dao inactive world restores awakened burst and preserves stored route");}
  ReadyThunderDao();actor=Game.player[0];Terraria.Collision.Solid=true;ThunderCast(mode);Check(actor.State.spiritualEnergy==100&&actor.State.activeSkillCooldown==0&&actor.statLife==50&&actor.State.spiritPressure==0&&!Game.projectile.Any(p=>p.active),"Thunder Dao blocked geometry never grants route effects");Terraria.Collision.Solid=false;
+}
+// Ward Dao routes are tied to the actual eligible ward, never to another held artifact.
+foreach(int mode in new[]{0,2}) foreach(byte route in new byte[]{1,2,3}) {
+ void ReadyWardDao(string name="HeavenTabletWardSeal") {SetupDao(route,name);Game.netMode=mode;HammerDao(mode,route);Game.player[0].selectedItem=1;Game.hardMode=true;Terraria.NPC.downedPlantBoss=Terraria.NPC.downedGolemBoss=true;Game.player[0].statLife=50;Game.player[0].State.spiritPressure=0;}
+ void CastWard(){var a=Game.player[0];if(mode==0)ArtifactSkillTransactions.HandleRequest(a,ArtifactSkill.WardGuard,1,601,new(100,100));else Skill(ArtifactSkill.WardGuard);}
+ ReadyWardDao();var actor=Game.player[0];CastWard();int cost=route==1?24:route==2?30:20;
+ Check(actor.State.spiritualEnergy==100-cost&&actor.State.wardGuardTimer==180&&actor.State.activeSkillCooldown==1200&&actor.statLife==(route==1?70:50)&&actor.State.spiritPressure==(route==3?8:0),"Ward Dao exact route cost protection timer and success effects");
+ actor.State.skillRequestCooldown=0;CastWard();Check(actor.State.spiritualEnergy==100-cost&&actor.statLife==(route==1?70:50)&&actor.State.spiritPressure==(route==3?8:0),"Ward Dao duplicate cannot repeat healing pressure or cost");
+ ReadyWardDao();actor=Game.player[0];actor.State.spiritualEnergy=cost-1;CastWard();Check(actor.State.spiritualEnergy==cost-1&&actor.State.wardGuardTimer==0&&actor.State.activeSkillCooldown==0&&actor.statLife==50&&actor.State.spiritPressure==0,"Ward Dao insufficient energy changes no resources or effects");
+ foreach(bool missingCore in new[]{false,true}){ReadyWardDao();actor=Game.player[0];if(missingCore)DownedBossSystem.DownedBosses.Remove("old_heaven_dao_core");else typeof(DownedBossSystem).GetProperty("ChosenRoute").SetValue(null,(DownedBossSystem.EndgameRoute)(route==1?2:1));CastWard();Check(actor.State.spiritualEnergy==82&&actor.State.wardGuardTimer==180&&actor.statLife==50&&actor.State.spiritPressure==0&&(byte)XianXia.Common.Items.RefinedArtifact.GetDaoRoute(actor.HeldItem)==route,"Ward Dao world mismatch restores eighteen-energy original protection without route effects");}
+ ReadyWardDao("ThunderPatternSwordCase");actor=Game.player[0];actor.armor[3]=new Terraria.Item{type=200,stack=1};CastWard();Check(actor.State.spiritualEnergy==82&&actor.State.wardGuardTimer==180&&actor.statLife==50&&actor.State.spiritPressure==0,"Jade ward never borrows held thunder Dao route fees healing or pressure");
 }
 // Actual Thunder Sword hit hook: owner authority, lifecycle, minimum half damage and no observer/server RNG.
 XianXia.Content.Projectiles.ThunderSwordProjectile ThunderProcFixture(int mode,int local=0,int damage=201) {

@@ -66,8 +66,7 @@ public class ArtifactSkillUIState : UIState
             var assigned = binding?.GetAssignedKeys(mode);
             return assigned == null || assigned.Count == 0 ? Text("Unbound") : string.Join(", ", assigned);
         }
-        var route = ArtifactSkillTransactions.HeldSkill(Main.LocalPlayer.HeldItem) == skill
-            ? RefinedArtifact.ActiveDaoRoute(Main.LocalPlayer.HeldItem) : DownedBossSystem.EndgameRoute.None;
+        var route = ArtifactSkillTransactions.SkillDaoRoute(Main.LocalPlayer,skill);
         int cost = state.GetSpiritualEnergyCost(DaoArtifactRules.SkillCost(skill, route));
         string requirement = skill switch
         {
@@ -77,7 +76,7 @@ public class ArtifactSkillUIState : UIState
             ArtifactSkill.WheelFormation => Text(route == DownedBossSystem.EndgameRoute.None ? "WheelRequirement" : "WheelDaoRequirement"),
             ArtifactSkill.HammerVolley => Text(route == DownedBossSystem.EndgameRoute.None ? "HammerRequirement" : "HammerDaoRequirement"),
             ArtifactSkill.ThunderVolley => Text(route == DownedBossSystem.EndgameRoute.None ? "ThunderRequirement" : "ThunderDaoRequirement"),
-            _ => Text("WardRequirement")
+            _ => Text(route == DownedBossSystem.EndgameRoute.None ? "WardRequirement" : "WardDaoRequirement")
         };
         return requirement + "\n" + Text("SkillNumbers", cost, ArtifactSkillRules.Cooldown(skill) / 60)
             + "\n" + Text("AssignedControls", Keys(InputMode.Keyboard), Keys(InputMode.XBoxGamepad));
