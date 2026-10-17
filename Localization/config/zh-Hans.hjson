@@ -17,7 +17,7 @@ Mods: {
 				}
 				EnableSoftCompatibilityHooks: {
 					Label: 启用软兼容钩子
-					Tooltip: 启用可选兼容检测和扩展入口，但不会强制依赖其他 Mod。
+					Tooltip: 启用灾厄精华炼化配方及其他可选兼容入口；不强制依赖其他模组，修改后需重新加载模组。
 				}
 			}
 		}

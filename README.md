@@ -30,7 +30,7 @@ XianXiaMod 是一个 Terraria/tModLoader 仙侠主题内容 Mod。项目目标�
 - 已接入宗门声望：Boss 击败会提升声望，并影响部分高阶 NPC 商店。
 - 已新增宗门玉简：玩家可使用它读取当前世界和自身修行对应的下一步目标。
 - 宗门玉简会显示当前宗门声望，便于判断高阶商店门槛。
-- 已接入 Calamity Mod 软兼容探测入口，但不强依赖 Calamity。
+- 可选灾厄材料互通：困难模式下，三种灾厄精华可在炼丹炉各转换为8枚下品灵石；由软兼容配置控制，不强制依赖灾厄。[范围与验收记录](Docs/CALAMITY_SOFT_COMPATIBILITY_2026-10-17.md)
 - 已接入调试掉落配置：开启 `DebugDrops` 时，XianXia 敌怪和 Boss 会额外掉落测试材料，方便本地验证。
 - 已为服务器配置项补充中英文名称和说明。
 - 已新增 tModLoader smoke test，用于确认 Mod 能被 tModLoader 实际加载。

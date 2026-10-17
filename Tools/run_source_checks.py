@@ -8,6 +8,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 # These harnesses link production source and mock the engine boundary.
 PROJECTS = (
+    "CalamityRecipes/CalamityRecipes.Tests.csproj",
     "ChestSupplies/ChestSupplies.Tests.csproj", "Networking/Networking.csproj", "Progression/Progression.csproj",
     "Biomes/Biomes.csproj", "Plants/Plants.csproj",
     "Companions/Companions.csproj", "ConstructedBiomes/ConstructedBiomes.csproj",

@@ -25,7 +25,7 @@ public class FurnaceguardHelmet : FurnaceguardArmor
         .Format(ResistancePercent, MovementPenaltyPercent, CostPenaltyPercent);
     protected override EquipType Kind => EquipType.Head;
     protected override int Visual => ArmorIDs.Head.IronHelmet;
-    protected override int Icon => ItemID.IronHelmet;
+    public override string Texture => $"Terraria/Images/Item_{ItemID.IronHelmet}";
     protected override int Defense => 3;
     protected override int BarCost => 6;
     protected override int SlagCost => 8;
@@ -44,7 +44,7 @@ public class FurnaceguardBreastplate : FurnaceguardArmor
 {
     protected override EquipType Kind => EquipType.Body;
     protected override int Visual => ArmorIDs.Body.IronChainmail;
-    protected override int Icon => ItemID.IronChainmail;
+    public override string Texture => $"Terraria/Images/Item_{ItemID.IronChainmail}";
     protected override int Defense => 5;
     protected override int BarCost => 10;
     protected override int SlagCost => 12;
@@ -54,7 +54,7 @@ public class FurnaceguardGreaves : FurnaceguardArmor
 {
     protected override EquipType Kind => EquipType.Legs;
     protected override int Visual => ArmorIDs.Legs.IronGreaves;
-    protected override int Icon => ItemID.IronGreaves;
+    public override string Texture => $"Terraria/Images/Item_{ItemID.IronGreaves}";
     protected override int Defense => 4;
     protected override int BarCost => 8;
     protected override int SlagCost => 10;

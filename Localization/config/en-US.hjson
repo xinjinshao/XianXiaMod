@@ -17,7 +17,7 @@ Mods: {
 				}
 				EnableSoftCompatibilityHooks: {
 					Label: Enable Soft Compatibility Hooks
-					Tooltip: Enables optional compatibility detection and extension hooks without requiring other mods.
+					Tooltip: Enables Calamity essence conversion recipes and other optional integrations without requiring other mods. Changing this requires a mod reload.
 				}
 			}
 		}

@@ -17,7 +17,7 @@ public class ModCompatibilitySystem : ModSystem
         CalamityLoaded = ModLoader.TryGetMod("CalamityMod", out _);
         if (CalamityLoaded)
         {
-            Mod.Logger.Info("Calamity Mod detected. XianXiaMod soft compatibility hooks are available.");
+            Mod.Logger.Info("Calamity Mod detected. Optional material recipes will be resolved during recipe setup.");
         }
     }
 

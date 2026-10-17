@@ -12,11 +12,9 @@ public abstract class CultivationArmorItem : ModItem
     private int slot;
     protected abstract EquipType Kind { get; }
     protected abstract int Visual { get; }
-    protected abstract int Icon { get; }
     protected abstract int Defense { get; }
     protected abstract string SetPreview { get; }
     protected virtual int Rarity => ItemRarityID.Blue;
-    public override string Texture => "Terraria/Images/Item_" + Icon;
     public override void Load() => slot = EquipLoader.AddEquipTexture(Mod, Kind switch {
         EquipType.Head => "Terraria/Images/Armor_Head_" + Visual,
         EquipType.Body => "Terraria/Images/Armor/Armor_" + Visual,
@@ -53,7 +51,7 @@ public class SpiritweaveHood : SpiritweaveArmor
         .Format(RegenBonus, CostReductionPercent, DamagePenaltyPercent);
     protected override EquipType Kind => EquipType.Head;
     protected override int Visual => ArmorIDs.Head.WoodHelmet;
-    protected override int Icon => ItemID.WoodHelmet;
+    public override string Texture => $"Terraria/Images/Item_{ItemID.WoodHelmet}";
     protected override int Defense => 1;
     protected override int WoodCost => 16;
     protected override int GelCost => 6;
@@ -74,7 +72,7 @@ public class SpiritweaveRobe : SpiritweaveArmor
 {
     protected override EquipType Kind => EquipType.Body;
     protected override int Visual => ArmorIDs.Body.WoodBreastplate;
-    protected override int Icon => ItemID.WoodBreastplate;
+    public override string Texture => $"Terraria/Images/Item_{ItemID.WoodBreastplate}";
     protected override int Defense => 2;
     protected override int WoodCost => 24;
     protected override int GelCost => 10;
@@ -85,7 +83,7 @@ public class SpiritweaveLeggings : SpiritweaveArmor
 {
     protected override EquipType Kind => EquipType.Legs;
     protected override int Visual => ArmorIDs.Legs.WoodGreaves;
-    protected override int Icon => ItemID.WoodGreaves;
+    public override string Texture => $"Terraria/Images/Item_{ItemID.WoodGreaves}";
     protected override int Defense => 1;
     protected override int WoodCost => 20;
     protected override int GelCost => 8;

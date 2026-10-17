@@ -19,5 +19,6 @@ public class XianXiaConfig : ModConfig
     public bool DebugDrops { get; set; } = false;
 
     [DefaultValue(true)]
+    [ReloadRequired]
     public bool EnableSoftCompatibilityHooks { get; set; } = true;
 }
