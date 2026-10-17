@@ -1612,6 +1612,17 @@ foreach(int mode in new[]{NetmodeID.SinglePlayer,NetmodeID.Server,NetmodeID.Mult
  owner.dead=true;Check(strike.CanDamage()==false,"Invalid owner suppresses strike damage immediately");strike.AI();
  if(mode!=NetmodeID.MultiplayerClient){owner.dead=false;strike.AI();Check(strike.CanDamage()==false&&strike.Projectile.timeLeft<=6&&!strike.Projectile.friendly,"Authority cancellation is sticky after owner revival");using var bytes=new MemoryStream();strike.SendExtraAI(new BinaryWriter(bytes));Check(bytes.ToArray().SequenceEqual(new byte[]{1,1}),"Strike cancellation uses fixed melee plus cancellation state");}
 }
+// Thunderfall malformed geometry must leave finite, hidden, bounded cleanup on every peer.
+foreach(int mode in new[]{0,1,2}) foreach(int invalid in Enumerable.Range(0,10)) {
+ ThunderSkillFixture(mode);var owner=Game.player[0];var strike=new XianXia.Content.Projectiles.ThunderCaseStrikeProjectile{Mod=mod};strike.SetDefaults();var p=strike.Projectile;p.owner=0;p.active=true;p.Center=owner.Center;p.velocity=new(0,12);strike.OnSpawn(new Terraria.DataStructures.EntitySource_Parent(owner));
+ switch(invalid){case 0:p.Center=new(float.NaN,0);break;case 1:p.Center=new(1e30f,0);break;case 2:p.velocity=new(float.PositiveInfinity,0);break;case 3:p.velocity=new(1e30f,0);break;case 4:p.rotation=float.NaN;break;case 5:p.width=25;break;case 6:p.height=81;break;case 7:p.timeLeft=181;break;case 8:p.timeLeft=0;break;case 9:p.timeLeft=-1;break;}
+ Check(strike.CanDamage()==false,"Malformed Thunderfall geometry cannot deal damage before AI");Terraria.Lighting.Calls=0;strike.AI();
+ Check(p.hide&&!p.friendly&&p.width==24&&p.height==80&&p.timeLeft>=0&&p.timeLeft<=6&&p.velocity.LengthSquared()==0&&float.IsFinite(p.Center.LengthSquared())&&float.IsFinite(p.rotation)&&Terraria.Lighting.Calls==0,"Malformed Thunderfall safely sanitizes geometry and skips lighting");
+ Check(p.netUpdate==(mode!=1),"Only authority requests synchronization of malformed Thunderfall cancellation");p.Center=owner.Center;p.velocity=new(0,12);p.rotation=0;p.timeLeft=180;strike.ReceiveExtraAI(new BinaryReader(new MemoryStream(new byte[]{1,0})));strike.AI();Check(strike.CanDamage()==false&&p.timeLeft<=6&&p.velocity.LengthSquared()==0,"Corrected geometry and old packets cannot revive a cancelled Thunderfall");
+}
+foreach(int mode in new[]{0,1,2}) {
+ ThunderSkillFixture(mode);var owner=Game.player[0];var strike=new XianXia.Content.Projectiles.ThunderCaseStrikeProjectile{Mod=mod};strike.SetDefaults();strike.Projectile.owner=0;strike.Projectile.Center=owner.Center;strike.Projectile.velocity=new(0,12);strike.OnSpawn(new Terraria.DataStructures.EntitySource_Parent(owner));owner.velocity=new(float.NaN,0);Terraria.Lighting.Calls=0;Check(strike.CanDamage()==false,"Thunderfall invalid owner velocity suppresses damage");strike.AI();Check(Terraria.Lighting.Calls==0,"Thunderfall invalid owner suppresses presentation on every peer");owner.velocity=default;Check((strike.CanDamage()==false)==(mode!=1),"Client waits for authority owner cancellation while authority remains sticky");
+}
 // Actual Thunder Sword hit hook: owner authority, lifecycle, minimum half damage and no observer/server RNG.
 XianXia.Content.Projectiles.ThunderSwordProjectile ThunderProcFixture(int mode,int local=0,int damage=201) {
  Game.myPlayer=0;SetupSkill("ThunderPatternSwordCase");Game.netMode=mode;Game.myPlayer=local;Game.rand=new Terraria.RandomStub{Roll=0};

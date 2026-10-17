@@ -98,6 +98,28 @@ public partial class SummonAuditSystem
                     Cast(actor,actor.Center + new Vector2(200,0));
                     check(state.spiritualEnergy == 100 && state.activeSkillCooldown == 0 && free.Count(p => !p.active) == 2,"native Thunderfall requires three allocatable slots before charging");
                 } finally { foreach (var p in free) p.active = false; }
+                for (int invalid = 0; invalid < 10; invalid++) {
+                    actor = Fixture(netMode); Cast(actor,actor.Center + new Vector2(200,0));
+                    var malformed = Main.projectile.First(p => p.active && !before.Contains(p)); var logic = (ThunderCaseStrikeProjectile)malformed.ModProjectile;
+                    switch (invalid) {
+                        case 0: malformed.Center = new Vector2(float.NaN,0); break;
+                        case 1: malformed.Center = new Vector2(1e30f,0); break;
+                        case 2: malformed.velocity = new Vector2(float.PositiveInfinity,0); break;
+                        case 3: malformed.velocity = new Vector2(1e30f,0); break;
+                        case 4: malformed.rotation = float.NaN; break;
+                        case 5: malformed.width = 25; break;
+                        case 6: malformed.height = 81; break;
+                        case 7: malformed.timeLeft = 181; break;
+                        case 8: malformed.timeLeft = 0; break;
+                        case 9: malformed.timeLeft = -1; break;
+                    }
+                    check(logic.CanDamage() == false,"native malformed Thunderfall suppresses damage before AI"); logic.AI();
+                    check(malformed.hide && !malformed.friendly && malformed.width == 24 && malformed.height == 80 && malformed.velocity == Vector2.Zero
+                        && float.IsFinite(malformed.Center.LengthSquared()) && float.IsFinite(malformed.rotation) && malformed.timeLeft >= 0 && malformed.timeLeft <= 6,
+                        "native malformed Thunderfall sanitizes position rotation dimensions and lifetime");
+                    for (int tick = 0; tick < 6 && malformed.active; tick++) malformed.Update(malformed.whoAmI);
+                    check(!malformed.active,"native malformed Thunderfall completes bounded native cleanup without unsafe geometry");
+                }
             }
         }
         finally { Clear(); Main.player[0] = previous; Array.Copy(clients,Netplay.Clients,clients.Length); Main.netMode = mode; Main.myPlayer = local; }
