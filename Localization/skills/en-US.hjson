@@ -25,6 +25,24 @@ Mods: {
    ForgePanelCancel: {
     DisplayName: "Inscription/refining: cancel"
    }
+   RouteNext: {
+    DisplayName: "World route: next route"
+   }
+   RoutePrevious: {
+    DisplayName: "World route: previous route"
+   }
+   RouteConfirm: {
+    DisplayName: "World route: confirm route"
+   }
+   RouteCancel: {
+    DisplayName: "World route: cancel"
+   }
+   RouteScrollUp: {
+    DisplayName: "World route: scroll description up"
+   }
+   RouteScrollDown: {
+    DisplayName: "World route: scroll description down"
+   }
    ArtifactSkill: {
     DisplayName: Artifact active skill
    }

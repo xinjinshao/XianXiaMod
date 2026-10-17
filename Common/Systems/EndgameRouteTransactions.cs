@@ -11,6 +11,9 @@ namespace XianXia.Common.Systems;
 
 public static class EndgameRouteTransactions
 {
+    public static DownedBossSystem.EndgameRoute AdjacentPreview(DownedBossSystem.EndgameRoute current, bool previous) =>
+        (DownedBossSystem.EndgameRoute)(previous ? current <= DownedBossSystem.EndgameRoute.RebuildHeaven || current > DownedBossSystem.EndgameRoute.AcceptStarAbyss ? 3 : (int)current - 1
+            : current < DownedBossSystem.EndgameRoute.RebuildHeaven || current >= DownedBossSystem.EndgameRoute.AcceptStarAbyss ? 1 : (int)current + 1);
     public static string NameKey(DownedBossSystem.EndgameRoute route) => "Mods.XianXia.Routes." + route;
     public static bool NearAltar(Player player)
     {

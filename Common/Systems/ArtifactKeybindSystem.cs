@@ -15,11 +15,23 @@ public class ArtifactKeybindSystem : ModSystem
     public static ModKeybind ForgePreviousKey { get; private set; }
     public static ModKeybind ForgeConfirmKey { get; private set; }
     public static ModKeybind ForgeCancelKey { get; private set; }
+    public static ModKeybind RouteNextKey { get; private set; }
+    public static ModKeybind RoutePreviousKey { get; private set; }
+    public static ModKeybind RouteConfirmKey { get; private set; }
+    public static ModKeybind RouteCancelKey { get; private set; }
+    public static ModKeybind RouteScrollUpKey { get; private set; }
+    public static ModKeybind RouteScrollDownKey { get; private set; }
     public override void Load()
     {
         if (Main.dedServ) return;
         ArtifactSkillKey = KeybindLoader.RegisterKeybind(Mod, "ArtifactSkill", "Q");
         WardSkillKey = KeybindLoader.RegisterKeybind(Mod, "WardSkill", "V");
+        RouteNextKey = KeybindLoader.RegisterKeybind(Mod,"RouteNext","None");
+        RoutePreviousKey = KeybindLoader.RegisterKeybind(Mod,"RoutePrevious","None");
+        RouteConfirmKey = KeybindLoader.RegisterKeybind(Mod,"RouteConfirm","None");
+        RouteCancelKey = KeybindLoader.RegisterKeybind(Mod,"RouteCancel","None");
+        RouteScrollUpKey = KeybindLoader.RegisterKeybind(Mod,"RouteScrollUp","None");
+        RouteScrollDownKey = KeybindLoader.RegisterKeybind(Mod,"RouteScrollDown","None");
         ForgeNextKey = KeybindLoader.RegisterKeybind(Mod,"ForgePanelNext","None");
         ForgePreviousKey = KeybindLoader.RegisterKeybind(Mod,"ForgePanelPrevious","None");
         ForgeConfirmKey = KeybindLoader.RegisterKeybind(Mod,"ForgePanelConfirm","None");
@@ -29,5 +41,5 @@ public class ArtifactKeybindSystem : ModSystem
         PanelCastKey = KeybindLoader.RegisterKeybind(Mod,"SkillPanelCast","None");
         PanelCancelKey = KeybindLoader.RegisterKeybind(Mod,"SkillPanelCancel","None");
     }
-    public override void Unload() { ArtifactSkillKey = WardSkillKey = PanelNextKey = PanelPreviousKey = PanelCastKey = PanelCancelKey = ForgeNextKey = ForgePreviousKey = ForgeConfirmKey = ForgeCancelKey = null; }
+    public override void Unload() { ArtifactSkillKey = WardSkillKey = PanelNextKey = PanelPreviousKey = PanelCastKey = PanelCancelKey = ForgeNextKey = ForgePreviousKey = ForgeConfirmKey = ForgeCancelKey = RouteNextKey = RoutePreviousKey = RouteConfirmKey = RouteCancelKey = RouteScrollUpKey = RouteScrollDownKey = null; }
 }

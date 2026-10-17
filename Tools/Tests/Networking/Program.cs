@@ -1660,6 +1660,13 @@ foreach(int mode in new[]{0,1,2}) foreach(ArtifactSkill skill in Enum.GetValues<
  item.GetGlobalItem<XianXia.Common.Items.RefinedArtifact>().SetLevel(2);Check(ArtifactSkillTransactions.UnavailableReason(actor,skill)=="Mods.XianXia.Skills.Unavailable","Panel refuses dormant held artifact");
 }
 Check(ArtifactSkillTransactions.UnavailableReason(null,ArtifactSkill.WardGuard)=="Mods.XianXia.Skills.Unavailable","Readiness rejects absent player without side effects");
+// Route browsing is a reversible preview operation, independent of authority world mutation.
+foreach(var route in new[]{DownedBossSystem.EndgameRoute.RebuildHeaven,DownedBossSystem.EndgameRoute.SeverHeaven,DownedBossSystem.EndgameRoute.AcceptStarAbyss})foreach(bool previous in new[]{false,true}){
+ var chosen=DownedBossSystem.ChosenRoute;int sent=ModPacket.Sent.Count;var next=EndgameRouteTransactions.AdjacentPreview(route,previous);
+ Check(next!=route&&DaoArtifactRules.Normalize((int)next)==next&&EndgameRouteTransactions.AdjacentPreview(next,!previous)==route,"Route browsing reaches a different valid preview and reverses without loss");
+ Check(DownedBossSystem.ChosenRoute==chosen&&ModPacket.Sent.Count==sent,"Route browsing never commits world state or sends packets");
+}
+foreach(byte invalid in new byte[]{0,4,255})foreach(bool previous in new[]{false,true})Check((int)EndgameRouteTransactions.AdjacentPreview((DownedBossSystem.EndgameRoute)invalid,previous)==(previous?3:1),"Route browsing starts at first or last valid preview");
 // Responsive forge shell stays within the scaled viewport while preserving its design maximum.
 foreach(int pixels in new[]{320,480,600,720,800,1080,1280,1920,3840})foreach(float scale in new[]{.75f,1f,1.25f,1.5f,2f,3f})foreach(int maximum in new[]{500,540}){
  float extent=InscriptionRules.PanelExtent(pixels,scale,maximum),available=pixels/scale;
@@ -1694,7 +1701,9 @@ foreach(int mode in new[]{0,1}) {
  PressPanel("SkillPanelNext");input.UpdateDead();Check(input.SelectedPanelSkill==null,"Death hook clears selection");PressPanel("SkillPanelNext");input.OnEnterWorld();Check(input.SelectedPanelSkill==null,"World entry clears prior selection");
 }
 Check(ArtifactKeybindSystem.ForgeNextKey!=null&&ArtifactKeybindSystem.ForgePreviousKey!=null&&ArtifactKeybindSystem.ForgeConfirmKey!=null&&ArtifactKeybindSystem.ForgeCancelKey!=null,"All four forging navigation bindings register independently of skill controls");
+Check(ArtifactKeybindSystem.RouteNextKey!=null&&ArtifactKeybindSystem.RoutePreviousKey!=null&&ArtifactKeybindSystem.RouteConfirmKey!=null&&ArtifactKeybindSystem.RouteCancelKey!=null&&ArtifactKeybindSystem.RouteScrollUpKey!=null&&ArtifactKeybindSystem.RouteScrollDownKey!=null,"All six route browsing and text reading bindings register independently");
 panelBindings.Unload();Check(ArtifactKeybindSystem.PanelNextKey==null&&ArtifactKeybindSystem.PanelPreviousKey==null&&ArtifactKeybindSystem.PanelCastKey==null&&ArtifactKeybindSystem.PanelCancelKey==null&&ArtifactKeybindSystem.ForgeNextKey==null&&ArtifactKeybindSystem.ForgePreviousKey==null&&ArtifactKeybindSystem.ForgeConfirmKey==null&&ArtifactKeybindSystem.ForgeCancelKey==null,"Unload releases panel and forging bindings");
+Check(ArtifactKeybindSystem.RouteNextKey==null&&ArtifactKeybindSystem.RoutePreviousKey==null&&ArtifactKeybindSystem.RouteConfirmKey==null&&ArtifactKeybindSystem.RouteCancelKey==null&&ArtifactKeybindSystem.RouteScrollUpKey==null&&ArtifactKeybindSystem.RouteScrollDownKey==null,"Unload releases route and text scrolling bindings");
 // Actual Thunder Sword hit hook: owner authority, lifecycle, minimum half damage and no observer/server RNG.
 XianXia.Content.Projectiles.ThunderSwordProjectile ThunderProcFixture(int mode,int local=0,int damage=201) {
  Game.myPlayer=0;SetupSkill("ThunderPatternSwordCase");Game.netMode=mode;Game.myPlayer=local;Game.rand=new Terraria.RandomStub{Roll=0};

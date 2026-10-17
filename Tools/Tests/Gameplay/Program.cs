@@ -1384,3 +1384,11 @@ foreach(int pixels in new[]{320,480,720,1080,1920})foreach(float scale in new[]{
  Check(float.IsFinite(extent)&&extent>0&&extent<=maximum&&extent<=pixels/scale-20+.001f,"Compiled responsive forge extent stays inside scaled viewport");
 }
 Console.WriteLine($"Actual engine gameplay assertions including responsive forge extent: {assertions}.");
+
+var routeBrowse=type.Assembly.GetType("XianXia.Common.Systems.EndgameRouteTransactions",true).GetMethod("AdjacentPreview");
+var routeEnum=type.Assembly.GetType("XianXia.Common.Systems.DownedBossSystem+EndgameRoute",true);
+foreach(int current in new[]{0,1,2,3,4,255})foreach(bool previous in new[]{false,true}){
+ int moved=Convert.ToInt32(routeBrowse.Invoke(null,new object[]{Enum.ToObject(routeEnum,current),previous}));
+ Check(moved>=1&&moved<=3&&(current<1||current>3||Convert.ToInt32(routeBrowse.Invoke(null,new object[]{Enum.ToObject(routeEnum,moved),!previous}))==current),"Compiled route preview navigation is bounded and reversible");
+}
+Console.WriteLine($"Actual engine gameplay assertions including route preview navigation: {assertions}.");

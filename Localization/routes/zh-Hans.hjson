@@ -1,6 +1,7 @@
 Mods: {
  XianXia: {
   Routes: {
+   NavigationHint: 可在模组控制绑定路线前后项、说明上下滚、确认和取消；路线不可逆，确认前请阅读完整说明
    Title: 终局路线
    None: 尚未选择
    RebuildHeaven: 重铸天道

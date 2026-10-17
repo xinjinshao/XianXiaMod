@@ -25,6 +25,24 @@ Mods: {
    ForgePanelCancel: {
     DisplayName: "铭刻/炼器：取消"
    }
+   RouteNext: {
+    DisplayName: "终局路线：下一路线"
+   }
+   RoutePrevious: {
+    DisplayName: "终局路线：上一路线"
+   }
+   RouteConfirm: {
+    DisplayName: "终局路线：确认路线"
+   }
+   RouteCancel: {
+    DisplayName: "终局路线：取消"
+   }
+   RouteScrollUp: {
+    DisplayName: "终局路线：说明上滚"
+   }
+   RouteScrollDown: {
+    DisplayName: "终局路线：说明下滚"
+   }
    ArtifactSkill: {
     DisplayName: 法器主动技能
    }
