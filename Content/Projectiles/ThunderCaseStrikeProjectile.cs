@@ -5,16 +5,22 @@ using Terraria;
 using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
+using XianXia.Common.Players;
 
 namespace XianXia.Content.Projectiles;
 
 public class ThunderCaseStrikeProjectile : MinorThunderboltProjectile
 {
     private Player ownerAtSpawn;
+    private long ownerSessionAtSpawn;
     private bool cancelled;
     public override string Texture => "XianXia/Content/Projectiles/MinorThunderboltProjectile";
     public override void SetDefaults() { base.SetDefaults(); Projectile.DamageType = DamageClass.Melee; Projectile.netImportant = true; }
-    public override void OnSpawn(IEntitySource source) { ownerAtSpawn = Owner(); Projectile.DamageType = DamageClass.Melee; }
+    public override void OnSpawn(IEntitySource source) {
+        ownerAtSpawn = Owner();
+        ownerSessionAtSpawn = Main.netMode != NetmodeID.MultiplayerClient && ownerAtSpawn != null && ownerAtSpawn.TryGetModPlayer<XianXiaPlayer>(out var state) ? state.ArtifactOwnerSession : 0;
+        Projectile.DamageType = DamageClass.Melee;
+    }
     private static bool Finite(Vector2 value) => float.IsFinite(value.X) && float.IsFinite(value.Y) && float.IsFinite(value.LengthSquared());
     private Player Owner() => Main.player != null && Projectile.owner >= 0 && Projectile.owner < Main.maxPlayers && Projectile.owner < Main.player.Length ? Main.player[Projectile.owner] : null;
     private bool ValidGeometry() => Projectile.width == 24 && Projectile.height == 80 && Projectile.timeLeft > 0 && Projectile.timeLeft <= 180
@@ -22,7 +28,7 @@ public class ThunderCaseStrikeProjectile : MinorThunderboltProjectile
     private bool Valid() {
         Player owner = Owner();
         return owner != null && owner.active && !owner.dead && Finite(owner.Center) && Finite(owner.velocity) && ValidGeometry()
-            && (Main.netMode == NetmodeID.MultiplayerClient || ReferenceEquals(owner,ownerAtSpawn));
+            && (Main.netMode == NetmodeID.MultiplayerClient || ReferenceEquals(owner,ownerAtSpawn) && ownerSessionAtSpawn != 0 && owner.TryGetModPlayer<XianXiaPlayer>(out var state) && state.ArtifactOwnerSession == ownerSessionAtSpawn);
     }
     public override bool? CanDamage() => cancelled || !Valid() ? false : null;
     public override void AI()

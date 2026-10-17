@@ -328,6 +328,10 @@ namespace XianXia.Common.Players
 {
     public class XianXiaPlayer
     {
+        private static long nextArtifactOwnerSession;
+        private long artifactOwnerSession;
+        internal long ArtifactOwnerSession => Terraria.Main.netMode==Terraria.ID.NetmodeID.MultiplayerClient ? 0 : artifactOwnerSession==0 ? artifactOwnerSession=System.Threading.Interlocked.Increment(ref nextArtifactOwnerSession) : artifactOwnerSession;
+
         public int spiritualEnergy;
         public int activeSkillCooldown,wardGuardTimer,skillRequestCooldown;
         public int spiritPressure,spiritualEnergyRegenBonus;
@@ -335,7 +339,7 @@ namespace XianXia.Common.Players
         public CultivationStage cultivationStage;
         public int maxSpiritualEnergy = 40, arrayDeploymentCooldown;
         public bool discoveredSpiritualEnergy=true; public bool NetworkInitialized, ApplyingProgressionItem, NetworkWasActive;
-        public void ResetNetworkSession() { NetworkInitialized = NetworkWasActive = false; ProgressionItemCooldown = BossSummonCooldown = 0; }
+        public void ResetNetworkSession() { artifactOwnerSession=0; NetworkInitialized = NetworkWasActive = false; ProgressionItemCooldown = BossSummonCooldown = 0; }
         public int ProgressionItemCooldown, BossSummonCooldown, WeaponShotCooldown;
         public bool ApplyingWeaponShot;
         public void RestoreSpiritualEnergy(int amount) => spiritualEnergy = Math.Clamp(spiritualEnergy + amount, 0, maxSpiritualEnergy);
@@ -366,7 +370,7 @@ namespace XianXia.Common.Players
         public bool TryInitializeNetwork(CultivationSnapshot state)
         {
             if (NetworkInitialized || !state.IsValid()) return false;
-            ApplySnapshot(state); ResourceRevision = 0; NetworkInitialized = true; return true;
+            artifactOwnerSession=0; ApplySnapshot(state); ResourceRevision = 0; NetworkInitialized = true; return true;
         }
         public void SyncPlayer(int toWho, int fromWho, bool newPlayer)
         {

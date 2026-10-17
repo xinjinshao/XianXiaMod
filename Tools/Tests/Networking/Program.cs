@@ -1698,6 +1698,19 @@ foreach(int length in new[]{0,1,6,7,12,57}) {
  Check(slots.SequenceEqual(unchanged),"Forging target navigation does not mutate eligible inventory list");
 }
 Check(InscriptionRules.AdjacentTarget(null,0,false)==-1,"Absent forging target list has no selection");
+// Same Player object reconnect cannot revive a strike bound to its earlier authority session.
+foreach(int mode in new[]{0,2}){
+ ThunderSkillFixture(mode);var owner=Game.player[0];var strike=new XianXia.Content.Projectiles.ThunderCaseStrikeProjectile();strike.SetDefaults();strike.Projectile.owner=0;strike.Projectile.Center=owner.Center;strike.Projectile.velocity=new(0,12);strike.OnSpawn(new Terraria.DataStructures.EntitySource_Parent(owner));
+ long oldIdentity=owner.State.ArtifactOwnerSession;var saved=owner.State.CaptureSnapshot() with { Discovered=true };
+ Check(!owner.State.TryInitializeNetwork(saved)&&owner.State.ArtifactOwnerSession==oldIdentity&&strike.CanDamage()==null,"Rejected duplicate import does not invalidate a live strike session");
+ owner.State.ResetNetworkSession();Check(owner.State.ArtifactOwnerSession!=oldIdentity&&strike.CanDamage()==false,"Same-owner network reset immediately invalidates old strike before AI");
+ Check(owner.State.TryInitializeNetwork(saved)&&strike.CanDamage()==false,"Accepted same-object rejoin cannot restore old strike damage");strike.AI();
+ Check(!strike.Projectile.friendly&&strike.Projectile.timeLeft<=6&&strike.CanDamage()==false,"Rejoined owner strike locks cancellation and bounded cleanup");
+}
+foreach(int mode in new[]{0,2})foreach(bool missingAtSpawn in new[]{false,true}){
+ ThunderSkillFixture(mode);var owner=Game.player[0];var strike=new XianXia.Content.Projectiles.ThunderCaseStrikeProjectile();strike.SetDefaults();strike.Projectile.owner=0;strike.Projectile.Center=owner.Center;strike.Projectile.velocity=new(0,12);owner.ModPlayersReady=!missingAtSpawn;strike.OnSpawn(new Terraria.DataStructures.EntitySource_Parent(owner));owner.ModPlayersReady=false;
+ Check(strike.CanDamage()==false,"Unavailable owner components cannot damage or throw during session validation");strike.AI();owner.ModPlayersReady=true;Check(strike.CanDamage()==false&&strike.Projectile.timeLeft<=6,"Restored owner components cannot revive an unbound or cancelled strike");
+}
 // Actual input hook: bindable panel selection is local and only explicit confirmation may request a cast.
 Game.dedServ=false;var panelBindings=new ArtifactKeybindSystem();panelBindings.Load();
 foreach(int mode in new[]{0,1}) {

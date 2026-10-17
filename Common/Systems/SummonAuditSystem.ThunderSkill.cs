@@ -124,6 +124,34 @@ public partial class SummonAuditSystem
                     check(!malformed.active,"native malformed Thunderfall completes bounded native cleanup without unsafe geometry");
                 }
             }
+            foreach (int netMode in new[] { NetmodeID.SinglePlayer,NetmodeID.Server }) foreach (int lifecycle in new[] { 0,1,2,3,4 }) {
+                var actor = Fixture(netMode); var state = actor.GetModPlayer<XianXiaPlayer>(); Cast(actor,actor.Center + new Vector2(200,0));
+                var p = Main.projectile.First(projectile => projectile.active && !before.Contains(projectile)); var logic = (ThunderCaseStrikeProjectile)p.ModProjectile;
+                long identity = state.ArtifactOwnerSession; var snapshot = state.CaptureSnapshot();
+                check(!state.TryInitializeNetwork(snapshot) && state.ArtifactOwnerSession == identity && logic.CanDamage() == null,"native duplicate import preserves current live artifact owner session");
+                state.ApplySnapshot(snapshot); state.tribulationTimer = 1; _ = state.TribulationSession; state.tribulationTimer = 0;
+                check(state.ArtifactOwnerSession == identity && logic.CanDamage() == null,"native resource snapshots and independent trial session identity do not expire live artifact strikes");
+                switch (lifecycle) {
+                    case 0:
+                        state.ResetNetworkSession(); long pending = state.ArtifactOwnerSession;
+                        check(!state.TryInitializeNetwork(snapshot with { Energy = -1 }) && state.ArtifactOwnerSession == pending,"native invalid rejoin snapshot leaves pending artifact owner session unchanged");
+                        check(state.TryInitializeNetwork(snapshot),"native same Player reconnect accepts fresh bounded snapshot"); break;
+                    case 1: actor.dead = true; state.UpdateDead(); actor.dead = false; break;
+                    case 2: state.OnEnterWorld(); break;
+                    case 3: var tag = new Terraria.ModLoader.IO.TagCompound(); state.SaveData(tag); state.LoadData(tag); break;
+                    case 4: state.Initialize(); break;
+                }
+                check(state.ArtifactOwnerSession != identity && logic.CanDamage() == false,"native same-object reconnect death world entry load or initialization invalidates old strike before AI");
+                logic.AI(); check(logic.CanDamage() == false && !p.friendly && p.timeLeft <= 6 && p.velocity == Vector2.Zero,"native old artifact session strike cancels without depending on Player reference replacement");
+                for (int tick = 0; tick < 6 && p.active; tick++) p.Update(p.whoAmI);
+                check(!p.active,"native stale-session thunder strike exits within six actual updates");
+                if (lifecycle == 0) {
+                    Clear(); state.activeSkillCooldown = state.skillRequestCooldown = 0; state.spiritualEnergy = 100;
+                    Cast(actor,actor.Center + new Vector2(200,0));
+                    var fresh = Main.projectile.Where(projectile => projectile.active && !before.Contains(projectile)).ToArray();
+                    check(fresh.Length == 3 && fresh.All(projectile => projectile.ModProjectile.CanDamage() == null),"native same-object rejoined owner can create fresh valid strikes after old session cleanup");
+                }
+            }
             foreach (int netMode in new[] { NetmodeID.SinglePlayer,NetmodeID.Server }) foreach (int route in new[] { 1,2,3 }) {
                 var tag = new Terraria.ModLoader.IO.TagCompound(); world.SaveWorldData(tag); tag["chosenRoute"] = route; world.LoadWorldData(tag); DownedBossSystem.DownedBosses.Add("old_heaven_dao_core");
                 var actor = Fixture(netMode); var state = actor.GetModPlayer<XianXiaPlayer>(); var item = actor.HeldItem; var growth = item.GetGlobalItem<RefinedArtifact>();

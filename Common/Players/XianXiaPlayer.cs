@@ -20,6 +20,16 @@ public class XianXiaPlayer : ModPlayer
     public int maxSpiritualEnergy;
     public int spiritPressure;
     public int spiritualEnergyRegenBonus;
+    // Authority-only lifetime identity, independent of trial IDs and resource snapshot revisions.
+    private static long nextArtifactOwnerSession;
+    private long artifactOwnerSession;
+    internal long ArtifactOwnerSession {
+        get {
+            if (Main.netMode == NetmodeID.MultiplayerClient) return 0;
+            if (artifactOwnerSession == 0) artifactOwnerSession = System.Threading.Interlocked.Increment(ref nextArtifactOwnerSession);
+            return artifactOwnerSession;
+        }
+    }
     private static long nextTribulationSession;
     private long tribulationSession;
     internal long TribulationSession {
@@ -61,6 +71,7 @@ public class XianXiaPlayer : ModPlayer
     {
         IsResourceAuthority = true;
         tribulationSession = 0;
+        artifactOwnerSession = 0;
         lastArrayRecoveryTick = ulong.MaxValue;
         maxSpiritualEnergy = BaseMaxSpiritualEnergy;
         spiritualEnergy = 0;
@@ -90,7 +101,7 @@ public class XianXiaPlayer : ModPlayer
         lastSentSnapshot = default;
     }
 
-    public override void OnEnterWorld() => IsResourceAuthority = Main.netMode != NetmodeID.MultiplayerClient;
+    public override void OnEnterWorld() { artifactOwnerSession = 0; IsResourceAuthority = Main.netMode != NetmodeID.MultiplayerClient; }
 
     public override void ResetEffects()
     {
@@ -116,6 +127,7 @@ public class XianXiaPlayer : ModPlayer
 
     public override void UpdateDead()
     {
+        artifactOwnerSession = 0;
         if (activeSkillCooldown > 0) activeSkillCooldown--;
         wardGuardTimer = 0;
         if (Main.netMode == NetmodeID.MultiplayerClient) return;
@@ -673,6 +685,7 @@ public class XianXiaPlayer : ModPlayer
     public override void LoadData(TagCompound tag)
     {
         tribulationSession = 0;
+        artifactOwnerSession = 0;
         activeSkillCooldown = Math.Clamp(tag.GetInt("activeSkillCooldown"), 0, 1200);
         wardGuardTimer = 0; // Temporary protection does not resume after loading.
         tribulationWeakness = Math.Clamp(tag.GetInt("tribulationWeakness"), 0, 10800);
@@ -779,6 +792,7 @@ public class XianXiaPlayer : ModPlayer
     {
         if (NetworkInitialized || !state.IsValid()) return false;
         tribulationSession = 0;
+        artifactOwnerSession = 0;
         ApplySnapshot(state with { WardTimer = 0 });
         ResourceRevision = 0;
         NetworkInitialized = true;
@@ -789,6 +803,7 @@ public class XianXiaPlayer : ModPlayer
     public void ResetNetworkSession()
     {
         tribulationSession = 0;
+        artifactOwnerSession = 0;
         NetworkInitialized = NetworkWasActive = false;
         ProgressionItemCooldown = networkSyncTimer = 0;
         BossSummonCooldown = WeaponShotCooldown = 0;
