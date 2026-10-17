@@ -19,3 +19,6 @@ namespace Terraria.ModLoader {
 namespace XianXia.Common.Systems {public class XianXiaConfig {public bool EnableSoftCompatibilityHooks=true;}}
 namespace XianXia.Content.Items.Materials {public class LowGradeSpiritStone {}}
 namespace XianXia.Content.Tiles.Stations {public class AlchemyCauldronTile {}}
+
+namespace Terraria {public static class Lang {public static string Prefix="item:";public static string GetItemNameValue(int type)=>Prefix+type;}}
+namespace Terraria.Localization {public static class Language {public static Dictionary<string,string> Texts=new();public static string GetTextValue(string key,params object[] args)=>string.Format(Texts[key],args);}}

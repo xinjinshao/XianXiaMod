@@ -52,3 +52,11 @@ foreach(int mode in new[]{0,1,2}) {
  Check(actor.State.Revisions==(mode==1?0:1)&&stone.Item.stack==2,"Pickup followed by inventory and repeated pickup grants no duplicate revision");
 }
 Console.WriteLine($"Including safe pickup awareness: {checks} checks.");
+var sourceStone=new XianXia.Content.Items.Materials.LowGradeSpiritStone();sourceStone.Item.type=900;sourceStone.Item.stack=4;
+var sourceLines=new List<Terraria.ModLoader.TooltipLine>();
+XianXia.Common.Systems.CalamityRecipeSystem.SourceHint="";sourceStone.ModifyTooltips(sourceLines);
+Check(sourceLines.Count==0,"Spirit stone has no optional-source line when no integration recipes exist");
+XianXia.Common.Systems.CalamityRecipeSystem.SourceHint="localized registered recipe source";sourceStone.ModifyTooltips(sourceLines);
+Check(sourceLines.Count==1&&sourceLines[0].Text==XianXia.Common.Systems.CalamityRecipeSystem.SourceHint,"Actual spirit stone tooltip displays only the registry's source hint");
+Check(sourceStone.Item.type==900&&sourceStone.Item.stack==4,"Reading source hint does not consume or replace the stone");
+Console.WriteLine($"Including optional source tooltip: {checks} checks.");

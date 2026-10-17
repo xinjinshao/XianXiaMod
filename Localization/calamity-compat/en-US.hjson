@@ -1,0 +1,9 @@
+{
+  "Mods": {
+    "XianXia": {
+      "SoftCompatibility": {
+        "SpiritStoneRecipe": "Optional Calamity conversion: in Hardmode, refine 1 of any listed material into {1} Low-Grade Spirit Stones at an Alchemy Cauldron: {0}"
+      }
+    }
+  }
+}

@@ -1,0 +1,9 @@
+{
+  "Mods": {
+    "XianXia": {
+      "SoftCompatibility": {
+        "SpiritStoneRecipe": "可选灾厄炼化：困难模式下，在炼丹炉将以下任一材料×1转换为下品灵石×{1}：{0}"
+      }
+    }
+  }
+}

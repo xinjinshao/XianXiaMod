@@ -7,6 +7,11 @@ namespace XianXia.Content.Items.Materials;
 
 public class LowGradeSpiritStone : ModItem
 {
+    public override void ModifyTooltips(System.Collections.Generic.List<TooltipLine> tooltips)
+    {
+        string hint = global::XianXia.Common.Systems.CalamityRecipeSystem.GetSourceHint();
+        if (hint.Length > 0) tooltips.Add(new TooltipLine(Mod, "CalamitySource", hint));
+    }
     public override void SetStaticDefaults()
     {
         Item.ResearchUnlockCount = 25;

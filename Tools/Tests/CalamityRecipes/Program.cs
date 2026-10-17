@@ -19,4 +19,18 @@ foreach(string missing in new[]{"EssenceofEleum","EssenceofHavoc","EssenceofSunl
 }
 Reset();system.AddRecipes();Check(Recipe.Registered.Count==0&&system.Mod.Logger.Warnings.Count==3,"Unsupported dependency version has no invalid ingredient recipes");
 system.Unload();Check(CalamityRecipeSystem.RegisteredRecipeCount==0,"Unload clears recipe registration status");
+foreach(string culture in new[]{"en-US","zh-Hans"}) {
+ using var json=System.Text.Json.JsonDocument.Parse(File.ReadAllText(Path.Combine("Localization","calamity-compat",culture+".hjson")));
+ foreach(var text in json.RootElement.GetProperty("Mods").GetProperty("XianXia").GetProperty("SoftCompatibility").EnumerateObject())
+  Terraria.Localization.Language.Texts["Mods.XianXia.SoftCompatibility."+text.Name]=text.Value.GetString();
+ Lang.Prefix=culture+" item:";
+ Reset();Populate();system.AddRecipes();int calls=ModLoader.Calls;string hint=CalamityRecipeSystem.GetSourceHint();
+ Check(new[]{2001,2002,2003}.All(type=>hint.Contains(Lang.GetItemNameValue(type)))&&hint.Contains("8")&&!hint.Contains("{0}")&&!hint.Contains("Mods.XianXia."),"Real bilingual source hint lists exactly the current localized registered ingredient names and shared output");
+ Check(ModLoader.Calls==calls&&Recipe.Registered.Count==3,"Reading source hint neither re-resolves the dependency nor registers recipes");
+ Reset();Populate();ModLoader.Calamity.Items.Remove("EssenceofHavoc");system.AddRecipes();hint=CalamityRecipeSystem.GetSourceHint();
+ Check(hint.Contains(Lang.GetItemNameValue(2001))&&!hint.Contains(Lang.GetItemNameValue(2002))&&hint.Contains(Lang.GetItemNameValue(2003)),"Missing material is excluded from displayed sources");
+ Reset(false);Populate();system.AddRecipes();Check(CalamityRecipeSystem.GetSourceHint()=="","Disabled integration clears cached source hint");
+ Reset(loaded:false);system.AddRecipes();Check(CalamityRecipeSystem.GetSourceHint()=="","Absent dependency has no source hint");
+ Reset();Populate();system.AddRecipes();system.Unload();Check(CalamityRecipeSystem.GetSourceHint()=="","Unload clears localized source cache");
+}
 Console.WriteLine($"Calamity recipe source integration passed: {count} assertions; optional mod registry and recipe engine boundaries mocked.");

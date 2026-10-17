@@ -11,6 +11,8 @@ namespace Terraria.ModLoader {public class ModSystem{public virtual void ClearWo
 namespace XianXia {public class XianXiaConfig{public bool EnableWorldGeneration=true;}}
 namespace XianXia.Common.Players {public class XianXiaPlayer{public bool discoveredSpiritualEnergy;public int Revisions;public void AdvanceResourceRevision()=>Revisions++;}}
 namespace Terraria {public class Player{public bool active=true,dead,Ready=true;public XianXia.Common.Players.XianXiaPlayer State=new();public T GetModPlayer<T>(){if(!Ready)throw new IndexOutOfRangeException("Mod-player array not installed");return (T)(object)State;}public bool TryGetModPlayer<T>(out T value){value=Ready?GetModPlayer<T>():default;return Ready;}}}
-namespace Terraria.ModLoader {public class ModItem{public Terraria.Item Item=new();public virtual void SetStaticDefaults(){}public virtual void SetDefaults(){}public virtual bool OnPickup(Terraria.Player player)=>true;public virtual void UpdateInventory(Terraria.Player player){}}}
+namespace Terraria.ModLoader {public class TooltipLine{public string Text;public TooltipLine(object mod,string name,string text){Text=text;}} public class ModItem{public object Mod;public virtual void ModifyTooltips(List<TooltipLine> lines){} public Terraria.Item Item=new();public virtual void SetStaticDefaults(){}public virtual void SetDefaults(){}public virtual bool OnPickup(Terraria.Player player)=>true;public virtual void UpdateInventory(Terraria.Player player){}}}
 
 namespace Terraria.Utilities {public class UnifiedRandom {public bool Win=true;public int Calls;public bool PickMaximum;public bool NextBool(int n){Calls++;return Win;}public int Next(int min,int max)=>PickMaximum?max-1:min;public int Next(int max)=>PickMaximum?max-1:0;}}
+
+namespace XianXia.Common.Systems {public static class CalamityRecipeSystem {public static string SourceHint="";public static string GetSourceHint()=>SourceHint;}}
