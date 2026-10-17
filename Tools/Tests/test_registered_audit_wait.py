@@ -72,11 +72,13 @@ class AuditWaitTests(unittest.TestCase):
         world = self.root / "source.wld"; world.write_bytes(b"original world")
         companion = world.with_suffix(".twld"); companion.write_bytes(b"original mod world")
         package = self.root / "mod.tmod"; package.write_bytes(b"test package")
+        dependency = self.root / "optional.tmod"; dependency.write_bytes(b"optional package")
         real_popen = subprocess.Popen; children = []
         def launch(*args, **kwargs):
             process = real_popen(*args, **kwargs); children.append(process)
             return process
         args = ["verify", "--dotnet", sys.executable, "--tml", str(engine), "--package", str(package), "--world", str(world), "--timeout", "5"]
+        args += ["--extra-mod", "Helper=" + str(dependency)]
         with patch.object(sys, "argv", args), patch.object(runner, "__file__", str(self.root / "Tools" / "verify.py")), patch.object(runner.subprocess, "Popen", side_effect=launch), patch("builtins.print"):
             with self.assertRaisesRegex(RuntimeError, "Server failed"):
                 runner.main()
@@ -84,6 +86,24 @@ class AuditWaitTests(unittest.TestCase):
         self.assertIsNotNone(children[0].poll())
         self.assertEqual(world.read_bytes(), b"original world")
         self.assertEqual(companion.read_bytes(), b"original mod world")
+        mods = next((self.root / ".tml-test").glob("summons-*/save/Mods"))
+        self.assertEqual(json.loads((mods / "enabled.json").read_text()), ["XianXia", "Helper"])
+        self.assertEqual((mods / "Helper.tmod").read_bytes(), b"optional package")
+        self.assertEqual(dependency.read_bytes(), b"optional package")
+
+    def test_extra_mod_validation(self):
+        package = self.root / "optional.tmod"; package.write_bytes(b"optional")
+        self.assertEqual(runner.extra_mods(["CalamityMod=" + str(package)]), {"CalamityMod": package.resolve()})
+        for name in ("../escape", "XianXia", "CON", "lpt1", "bad/name", ""):
+            with self.subTest(name=name), self.assertRaises(ValueError):
+                runner.extra_mods([name + "=" + str(package)])
+        with self.assertRaises(ValueError):
+            runner.extra_mods(["Helper=" + str(package), "helper=" + str(package)])
+        with self.assertRaises(ValueError):
+            runner.extra_mods([str(package)])
+        wrong = self.root / "wrong.txt"; wrong.write_text("test")
+        with self.assertRaises(ValueError):
+            runner.extra_mods(["Helper=" + str(wrong)])
 
     def test_partial_utf8_report_can_finish(self):
         self.report.write_bytes(b'{"checks":["' + bytes([0xe4]))

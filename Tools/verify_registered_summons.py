@@ -1,5 +1,6 @@
 """Run opt-in NewNPC integration checks in a disposable copy of a saved world."""
 import argparse
+import re
 import hashlib
 import json
 import os
@@ -61,6 +62,23 @@ def wait_for_report(process, report, output, timeout):
         time.sleep(0.25)
 
 
+def extra_mods(entries):
+    result = {}
+    seen = {"xianxia"}
+    for entry in entries:
+        name, separator, filename = entry.partition("=")
+        if not separator or not re.fullmatch(r"[A-Za-z][A-Za-z0-9_]*", name):
+            raise ValueError("Extra mod must be NAME=PATH with an internal alphanumeric/underscore mod name")
+        if name.casefold() in seen or re.fullmatch(r"CON|PRN|AUX|NUL|COM[1-9]|LPT[1-9]", name, re.I):
+            raise ValueError("Duplicate, primary or reserved extra mod name: " + name)
+        package = Path(filename).resolve(strict=True)
+        if not package.is_file() or package.suffix.lower() != ".tmod":
+            raise ValueError("Extra mod package must be a .tmod file")
+        seen.add(name.casefold())
+        result[name] = package
+    return result
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--dotnet", required=True)
@@ -68,12 +86,15 @@ def main():
     parser.add_argument("--package", required=True, type=Path)
     parser.add_argument("--world", required=True, type=Path)
     parser.add_argument("--timeout", type=int, default=180)
+    parser.add_argument("--extra-mod", action="append", default=[], metavar="NAME=PATH", help="Copy and enable an explicit optional dependency in the disposable mod directory; repeat for dependencies")
     args = parser.parse_args()
+    dependencies = extra_mods(args.extra_mod)
     tml = args.tml.resolve(strict=True)
     package = args.package.resolve(strict=True)
     source = args.world.resolve(strict=True)
     companion = source.with_suffix(".twld").resolve(strict=True)
     original_hashes = {path: hashlib.sha256(path.read_bytes()).hexdigest() for path in (source, companion)}
+    original_hashes.update({path: hashlib.sha256(path.read_bytes()).hexdigest() for path in dependencies.values()})
     if source.suffix.lower() != ".wld" or package.suffix.lower() != ".tmod":
         parser.error("Expected a .wld world with its .twld companion and a .tmod package")
     if args.timeout <= 0:
@@ -88,7 +109,9 @@ def main():
     shutil.copy2(source, world)
     shutil.copy2(companion, world.with_suffix(".twld"))
     shutil.copy2(package, mods / "XianXia.tmod")
-    (mods / "enabled.json").write_text('["XianXia"]', encoding="utf-8")
+    for name, dependency in dependencies.items():
+        shutil.copy2(dependency, mods / (name + ".tmod"))
+    (mods / "enabled.json").write_text(json.dumps(["XianXia", *dependencies]), encoding="utf-8")
     with socket.socket() as listener:
         listener.bind(("127.0.0.1", 0))
         port = listener.getsockname()[1]
@@ -126,7 +149,7 @@ def main():
     if (root / "server.err.log").read_text(encoding="utf-8").strip():
         raise RuntimeError(f"Server wrote stderr; inspect {root}")
     if any(hashlib.sha256(path.read_bytes()).hexdigest() != digest for path, digest in original_hashes.items()):
-        raise RuntimeError("Source world changed during the isolated audit")
+        raise RuntimeError("Source world or dependency package changed during the isolated audit")
     print(f"Registered summon integration passed: {len(result['checks'])} checks. Report: {report}")
     print(result["limitations"])
 
