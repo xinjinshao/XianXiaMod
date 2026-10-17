@@ -1377,3 +1377,10 @@ foreach(int count in new[]{0,1,6,7,12,57}){
  }
 }
 Console.WriteLine($"Actual engine gameplay assertions including forge target navigation: {assertions}.");
+
+var forgeExtent=type.Assembly.GetType("XianXia.Common.Systems.InscriptionRules",true).GetMethod("PanelExtent");
+foreach(int pixels in new[]{320,480,720,1080,1920})foreach(float scale in new[]{.75f,1f,1.5f,2f})foreach(int maximum in new[]{500,540}){
+ float extent=Convert.ToSingle(forgeExtent.Invoke(null,new object[]{pixels,scale,maximum}));
+ Check(float.IsFinite(extent)&&extent>0&&extent<=maximum&&extent<=pixels/scale-20+.001f,"Compiled responsive forge extent stays inside scaled viewport");
+}
+Console.WriteLine($"Actual engine gameplay assertions including responsive forge extent: {assertions}.");

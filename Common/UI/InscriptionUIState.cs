@@ -17,7 +17,11 @@ namespace XianXia.Common.UI;
 public class InscriptionUIState : UIState
 {
     private UIPanel panel;
-    private UIElement rows;
+    private UIElement rows, content;
+    private UIList viewport;
+    private UIScrollbar scrollbar;
+    private InscriptionButton previousButton, nextButton, confirmButton, closeButton;
+    private UIText navigationHint;
     private UIText title, summary, pageLabel;
     private int toolSlot, toolType, page, targetSlot = -1, targetType;
     private int targetPrefix;
@@ -35,32 +39,51 @@ public class InscriptionUIState : UIState
     public override void OnInitialize()
     {
         panel = new UIPanel(); panel.Width.Set(540, 0); panel.Height.Set(500, 0); panel.HAlign = 0.75f; panel.VAlign = 0.5f;
-        panel.BackgroundColor = new Color(25, 45, 55, 235); Append(panel);
-        title = new UIText(""); title.Top.Set(2, 0); panel.Append(title);
+        panel.BackgroundColor = new Color(25, 45, 55, 235); panel.SetPadding(12); Append(panel);
+        viewport = new UIList(); viewport.Width.Set(-24,1); viewport.Height.Set(0,1); panel.Append(viewport);
+        scrollbar = new UIScrollbar(); scrollbar.Left.Set(-20,1); scrollbar.Width.Set(20,0); scrollbar.Height.Set(0,1); panel.Append(scrollbar); viewport.SetScrollbar(scrollbar);
+        content = new UIElement(); content.Width.Set(0,1); content.Height.Set(476,0); viewport.Add(content);
+        title = new UIText("") { IsWrapped = true }; title.Top.Set(2, 0); title.Width.Set(0,1); content.Append(title);
         summary = new UIText("", 0.75f) { IsWrapped = true }; summary.Top.Set(32, 0);
-        summary.Width.Set(0, 1); summary.Height.Set(110, 0); panel.Append(summary);
-        rows = new UIElement(); rows.Top.Set(150, 0); rows.Width.Set(0, 1); rows.Height.Set(210, 0); panel.Append(rows);
-        Button(panel, Text("Previous"), 0, 366, 72, () => { page--; Refresh(); });
-        Button(panel, Text("Next"), 80, 366, 72, () => { page++; Refresh(); });
-        pageLabel = new UIText(""); pageLabel.Left.Set(164, 0); pageLabel.Top.Set(374, 0); panel.Append(pageLabel);
-        Button(panel, Text("Confirm"), 0, 405, 330, ConfirmSelection);
-        Button(panel, Text("Close"), 350, 405, 160, Close);
-        var hint = new UIText(Text("NavigationHint"),0.65f) { IsWrapped = true }; hint.Top.Set(442,0); hint.Width.Set(0,1); hint.Height.Set(32,0); panel.Append(hint);
+        summary.Width.Set(0, 1); summary.Height.Set(110, 0); content.Append(summary);
+        rows = new UIElement(); rows.Top.Set(150, 0); rows.Width.Set(0, 1); rows.Height.Set(210, 0); content.Append(rows);
+        previousButton = Button(content, Text("Previous"), 0, 366, 72, () => { page--; Refresh(); });
+        nextButton = Button(content, Text("Next"), 80, 366, 72, () => { page++; Refresh(); });
+        pageLabel = new UIText("",0.75f) { IsWrapped = true }; pageLabel.Width.Set(-8,.6f); pageLabel.Left.Set(164, 0); pageLabel.Top.Set(374, 0); content.Append(pageLabel);
+        confirmButton = Button(content, Text("Confirm"), 0, 405, 330, ConfirmSelection);
+        closeButton = Button(content, Text("Close"), 350, 405, 160, Close);
+        navigationHint = new UIText(Text("NavigationHint"),0.65f) { IsWrapped = true }; navigationHint.Top.Set(442,0); navigationHint.Width.Set(0,1); navigationHint.Height.Set(32,0); content.Append(navigationHint);
+        previousButton.Width.Set(-4,.2f); nextButton.Left.Set(0,.2f); nextButton.Width.Set(-4,.2f); pageLabel.Left.Set(8,.4f);
+        confirmButton.Width.Set(-8,.65f); closeButton.Left.Set(0,.65f); closeButton.Width.Set(0,.35f);
     }
     private static InscriptionButton Button(UIElement parent, string text, float x, float y, float width, Action action)
     {
-        string shown = text;
-        while (shown.Length > 1 && FontAssets.MouseText.Value.MeasureString(shown).X * 0.75f > width - 24)
-            shown = shown[..^1];
-        if (shown.Length < text.Length && shown.Length > 2) shown = shown[..^2] + "…";
-        var button = new InscriptionButton(shown, text); button.Left.Set(x, 0); button.Top.Set(y, 0);
+        var button = new InscriptionButton(text, text); button.Left.Set(x, 0); button.Top.Set(y, 0);
         button.Width.Set(width, 0); button.Height.Set(30, 0);
         button.OnLeftClick += (_, _) => action(); parent.Append(button); return button;
     }
     private sealed class InscriptionButton : UITextPanel<string>
     {
         private readonly string fullText;
+        private float lastTextWidth = -1;
         public InscriptionButton(string shown, string full) : base(shown, 0.75f) { fullText = full; }
+        public override void Recalculate()
+        {
+            MinWidth.Set(0,0);
+            base.Recalculate();
+            if (fullText == null) return;
+            float width = Math.Max(0,GetInnerDimensions().Width);
+            if (Math.Abs(width - lastTextWidth) < .01f) return;
+            lastTextWidth = width;
+            string shown = fullText;
+            while (shown.Length > 0 && FontAssets.MouseText.Value.MeasureString(shown).X * .75f > width) shown = shown[..^1];
+            if (shown.Length < fullText.Length) {
+                const string suffix = "…";
+                while (shown.Length > 0 && FontAssets.MouseText.Value.MeasureString(shown + suffix).X * .75f > width) shown = shown[..^1];
+                shown = FontAssets.MouseText.Value.MeasureString(suffix).X * .75f <= width ? shown + suffix : "";
+            }
+            if (shown != Text) SetText(shown);
+        }
         protected override void DrawSelf(SpriteBatch spriteBatch)
         {
             base.DrawSelf(spriteBatch);
@@ -70,7 +93,7 @@ public class InscriptionUIState : UIState
     public void SelectTool(int slot)
     {
         toolSlot = slot; toolType = Main.LocalPlayer.inventory[slot].type;
-        targetSlot = -1; targetChanged = false; page = 0; refreshTimer = 0; Refresh();
+        targetSlot = -1; targetChanged = false; page = 0; refreshTimer = 0; Refresh(); scrollbar.ViewPosition = 0;
     }
     private void Refresh()
     {
@@ -98,7 +121,7 @@ public class InscriptionUIState : UIState
         int pages = Math.Max(1, (eligibleSlots.Count + 5) / 6); page = Math.Clamp(page, 0, pages - 1);
         pageLabel.SetText(Text("Page", page + 1, pages));
         rows.RemoveAllChildren();
-        if (eligibleSlots.Count == 0) { rows.Append(new UIText(Text("NoTargets"), 0.75f)); return; }
+        if (eligibleSlots.Count == 0) { var empty = new UIText(Text("NoTargets"), 0.75f) { IsWrapped = true }; empty.Width.Set(0,1); rows.Append(empty); LayoutContent(); return; }
         for (int row = 0; row < 6 && page * 6 + row < eligibleSlots.Count; row++) {
             int slot = eligibleSlots[page * 6 + row]; Item item = player.inventory[slot];
             int shownType = item.type, shownPrefix = item.prefix;
@@ -124,8 +147,23 @@ public class InscriptionUIState : UIState
             };
             selectTargetActions[slot] = choose;
             var button = Button(rows,label,0,row * 35,508,choose);
+            button.Width.Set(0,1);
             if (slot == targetSlot) button.BorderColor = Color.Gold;
         }
+        LayoutContent();
+    }
+    private void LayoutContent()
+    {
+        title.Recalculate();
+        summary.Top.Set(Math.Max(32,title.GetOuterDimensions().Height + 8),0); summary.Recalculate();
+        rows.Top.Set(summary.Top.Pixels + Math.Max(110,summary.GetOuterDimensions().Height) + 8,0);
+        float pagingTop = rows.Top.Pixels + 216;
+        previousButton.Top.Set(pagingTop,0); nextButton.Top.Set(pagingTop,0); pageLabel.Top.Set(pagingTop + 8,0); pageLabel.Recalculate();
+        float confirmTop = pagingTop + Math.Max(30,pageLabel.GetOuterDimensions().Height + 8) + 9;
+        confirmButton.Top.Set(confirmTop,0); closeButton.Top.Set(confirmTop,0);
+        navigationHint.Top.Set(confirmTop + 37,0); navigationHint.Recalculate();
+        content.Height.Set(navigationHint.Top.Pixels + Math.Max(32,navigationHint.GetOuterDimensions().Height),0);
+        viewport.Recalculate();
     }
     private bool ToolStillMatches(Player player) => !Main.gameMenu && !Main.blockInput && !Main.drawingPlayerChat
         && player.active && !player.dead && Main.playerInventory && !player.noItems && !player.CCed
@@ -150,6 +188,7 @@ public class InscriptionUIState : UIState
         if (slot < 0) return;
         page = eligibleSlots.IndexOf(slot) / 6; Refresh();
         if (selectTargetActions.TryGetValue(slot,out var choose)) choose();
+        scrollbar.ViewPosition = 0;
     }
     private bool TargetStillMatches(Player player)
     {
@@ -168,6 +207,10 @@ public class InscriptionUIState : UIState
         Player player = Main.LocalPlayer;
         if (!ToolStillMatches(player) || Main.keyState.IsKeyDown(Keys.Escape)
             || ArtifactKeybindSystem.ForgeCancelKey?.JustPressed == true) { Close(); return; }
+        float width = InscriptionRules.PanelExtent(Main.screenWidth,Main.UIScale,540), height = InscriptionRules.PanelExtent(Main.screenHeight,Main.UIScale,500);
+        if (panel.Width.Pixels != width || panel.Height.Pixels != height) {
+            panel.Width.Set(width,0); panel.Height.Set(height,0); panel.Recalculate(); LayoutContent();
+        }
         if (panel.ContainsPoint(Main.MouseScreen / Math.Max(0.01f, Main.UIScale))) player.mouseInterface = true;
         if (targetSlot >= 0 && !TargetStillMatches(player)) { targetSlot = -1; targetChanged = true; Refresh(); }
         bool next = ArtifactKeybindSystem.ForgeNextKey?.JustPressed == true, previous = ArtifactKeybindSystem.ForgePreviousKey?.JustPressed == true;

@@ -1660,6 +1660,13 @@ foreach(int mode in new[]{0,1,2}) foreach(ArtifactSkill skill in Enum.GetValues<
  item.GetGlobalItem<XianXia.Common.Items.RefinedArtifact>().SetLevel(2);Check(ArtifactSkillTransactions.UnavailableReason(actor,skill)=="Mods.XianXia.Skills.Unavailable","Panel refuses dormant held artifact");
 }
 Check(ArtifactSkillTransactions.UnavailableReason(null,ArtifactSkill.WardGuard)=="Mods.XianXia.Skills.Unavailable","Readiness rejects absent player without side effects");
+// Responsive forge shell stays within the scaled viewport while preserving its design maximum.
+foreach(int pixels in new[]{320,480,600,720,800,1080,1280,1920,3840})foreach(float scale in new[]{.75f,1f,1.25f,1.5f,2f,3f})foreach(int maximum in new[]{500,540}){
+ float extent=InscriptionRules.PanelExtent(pixels,scale,maximum),available=pixels/scale;
+ Check(float.IsFinite(extent)&&extent>0&&extent<=maximum&&extent<=available-20+.001f,"Forge shell fits scaled viewport with margin and never grows beyond its intended size");
+}
+foreach(float invalid in new[]{0f,-1f,float.NaN,float.PositiveInfinity})Check(InscriptionRules.PanelExtent(480,invalid,500)==InscriptionRules.PanelExtent(480,1,500),"Invalid forge UI scale falls back to finite one-scale layout");
+Check(InscriptionRules.PanelExtent(1280,2,540)==540&&InscriptionRules.PanelExtent(720,2,500)==340,"720p double-scale forge keeps width and scrolls vertical content within 340 UI pixels");
 // Actual target navigation rules preserve inventory-slot identity across six-row page boundaries.
 foreach(int length in new[]{0,1,6,7,12,57}) {
  var slots=Enumerable.Range(0,length).Select(i=>i+1).ToArray();var unchanged=slots.ToArray();
