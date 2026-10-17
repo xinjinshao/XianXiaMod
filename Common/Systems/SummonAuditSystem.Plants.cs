@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using Terraria;
 using Terraria.ModLoader;
 using XianXia.Content.Tiles;
@@ -31,6 +32,31 @@ public partial class SummonAuditSystem
                 Tile crop = Main.tile[x, y]; bool planted = crop.HasTile && crop.TileType == herb;
                 check(planted == (support != Terraria.ID.TileID.Stone), "native object placement matches advertised herb soil/pot/planter anchors; support=" + support + "; support shape=" + Terraria.ObjectData.TileObjectData.GetTileData(support, 0)?.Width + "x" + Terraria.ObjectData.TileObjectData.GetTileData(support, 0)?.Height + "; anchor=" + Terraria.ObjectData.TileObjectData.GetTileData(herb, 0).AnchorBottom.type);
                 if (planted) check(crop.TileFrameX == 0, "native object placement starts the herb as an immature seedling");
+            }
+            int seedType = ModContent.ItemType<Content.Items.HandGenerated.SpiritHerbSeeds>();
+            int rootType = ModContent.ItemType<Content.Items.Materials.GreenwoodRoot>();
+            for (int stage = 0; stage < 3; stage++) {
+                foreach (var cell in saved) {
+                    Tile tile = Main.tile[cell.X, cell.Y]; tile.HasTile = false; tile.LiquidAmount = 0;
+                    tile.TileFrameX = tile.TileFrameY = 0; tile.Slope = Terraria.ID.SlopeType.Solid; tile.IsHalfBlock = false;
+                }
+                Tile support = Main.tile[x, y + 1]; support.HasTile = true; support.TileType = Terraria.ID.TileID.Dirt;
+                WorldGen.PlaceObject(x, y, herb);
+                Tile crop = Main.tile[x, y]; check(crop.HasTile && crop.TileType == herb, "native harvest fixture places a real herb object");
+                crop.TileFrameX = (short)(stage * 18);
+                var previous = Main.item.Where(item => item?.active == true).ToHashSet();
+                WorldGen.KillTile(x, y);
+                check(!crop.HasTile, "native tile destruction actually removes the harvested herb");
+                Item[] drops = Main.item.Where(item => item?.active == true && !previous.Contains(item)).ToArray();
+                int seeds = drops.Where(item => item.type == seedType).Sum(item => item.stack);
+                int roots = drops.Where(item => item.type == rootType).Sum(item => item.stack);
+                check(stage == 2 ? roots == 1 && seeds >= 1 && seeds <= 3 && drops.Length == 2
+                    : roots == 0 && seeds == 1 && drops.Length == 1,
+                    "native KillTile creates actual world harvest drops without extra rewards; stage=" + stage + "; roots=" + roots + "; seeds=" + seeds + "; drops=" + drops.Length);
+                WorldGen.KillTile(x, y);
+                check(Main.item.Count(item => item?.active == true && !previous.Contains(item)) == drops.Length,
+                    "native repeated destruction of the empty cell creates no duplicate harvest");
+                foreach (Item item in drops) item.active = false;
             }
         } finally {
             foreach (var cell in saved) { Tile tile = Main.tile[cell.X, cell.Y]; tile.HasTile = cell.Has; tile.TileType = cell.Type;
