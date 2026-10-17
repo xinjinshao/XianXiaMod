@@ -53,4 +53,26 @@ for(int i=0;i<entries.Length;i++) {
  Prepare(i); Main.LocalPlayer.dead=true; Check(FollowupCommissions.ReadyGuidance(Main.LocalPlayer)=="","Dead readers cannot produce ready guidance");
 }
 Check(FollowupCommissions.ReadyGuidance(null)=="","Absent reader has no ready guidance");
+for(int i=0;i<entries.Length;i++) {
+ var entry=entries[i];
+ foreach(string invalid in new[]{"client","inactive","dead","blocked","controlled","wrong talk","far","nan"}) {
+  Prepare(i,false); var actor=Main.LocalPlayer;
+  switch(invalid) {
+   case "client": Main.netMode=1; break;
+   case "inactive": actor.active=false; break;
+   case "dead": actor.dead=true; break;
+   case "blocked": actor.noItems=true; break;
+   case "controlled": actor.CCed=true; break;
+   case "wrong talk": actor.talkNPC=-1; break;
+   case "far": actor.Center=new(601,0); break;
+   case "nan": actor.Center=new(float.NaN,0); break;
+  }
+  int reputation=DownedBossSystem.SectReputation;
+  var denied=entry.Town.ClaimCommissionOnServer(actor);
+  Check(denied.Key=="Mods.XianXia.NPCs.Commission.Unavailable","Invalid initial interaction reports unavailable instead of falsely reporting an already claimed reward");
+  Check(!DownedBossSystem.ClaimedCommissions.Contains(entry.Prior)&&DownedBossSystem.SectReputation==reputation&&actor.Rewards.Count==0,"Actual initial commission refuses invalid authority/lifecycle/interaction state without rewards: "+invalid);
+ }
+ Prepare(i,false); Main.LocalPlayer.Center=new(600,0); entry.Town.ClaimCommissionOnServer(Main.LocalPlayer);
+ Check(DownedBossSystem.ClaimedCommissions.Contains(entry.Prior)&&Main.LocalPlayer.Rewards.Count==2,"Initial commission accepts the exact six-hundred-pixel interaction boundary");
+}
 Console.WriteLine($"Actual five-NPC followup hooks passed: {count} assertions; world save and claims linked, engine inventory/packet/UI boundaries mocked.");

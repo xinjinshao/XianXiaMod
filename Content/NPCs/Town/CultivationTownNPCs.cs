@@ -178,8 +178,21 @@ public abstract class CultivationTownNPC : ModNPC
 
     protected bool ClaimCommission(Player player, string key, int reputation, string textKey, params (int Type, int Stack)[] rewards)
     {
+        if (Main.netMode == NetmodeID.MultiplayerClient || player == null || !player.active || player.dead
+            || player.noItems || player.CCed || NPC == null || !NPC.active || player.talkNPC != NPC.whoAmI)
+        {
+            CommissionText("Mods.XianXia.NPCs.Commission.Unavailable");
+            return false;
+        }
+        float distance = Microsoft.Xna.Framework.Vector2.DistanceSquared(player.Center, NPC.Center);
+        if (!float.IsFinite(distance) || distance > 600f * 600f)
+        {
+            CommissionText("Mods.XianXia.NPCs.Commission.Unavailable");
+            return false;
+        }
         if (!DownedBossSystem.TryClaimCommission(key, reputation))
         {
+            CommissionText("Mods.XianXia.NPCs.Commission.AlreadyClaimed");
             return false;
         }
 
@@ -280,10 +293,6 @@ public class HerbSectApprentice : CultivationTownNPC
             (ModContent.ItemType<GreenwoodRoot>(), 10),
             (ModContent.ItemType<SpringReturnPill>(), 3));
         text = commissionResponse.ToString();
-        if (!claimed)
-        {
-            text = CommissionText("Mods.XianXia.NPCs.Commission.AlreadyClaimed");
-        }
         return claimed;
     }
 }
@@ -385,10 +394,6 @@ public class WanderingArtificer : CultivationTownNPC
             (ModContent.ItemType<FurnaceSlagIron>(), 10),
             (ModContent.ItemType<ArtifactBlankShard>(), 3));
         text = commissionResponse.ToString();
-        if (!claimed)
-        {
-            text = CommissionText("Mods.XianXia.NPCs.Commission.AlreadyClaimed");
-        }
         return claimed;
     }
 }
@@ -481,10 +486,6 @@ public class TribulationObserver : CultivationTownNPC
             (ModContent.ItemType<TribulationCloudDew>(), 8),
             (ModContent.ItemType<TribulationResistingPill>(), 3));
         text = commissionResponse.ToString();
-        if (!claimed)
-        {
-            text = CommissionText("Mods.XianXia.NPCs.Commission.AlreadyClaimed");
-        }
         return claimed;
     }
 }
@@ -585,10 +586,6 @@ public class ArchiveScrollSpirit : CultivationTownNPC
             (ModContent.ItemType<SectTrialToken>(), 2),
             (ModContent.ItemType<OldHeavenDaoScroll>(), 1));
         text = commissionResponse.ToString();
-        if (!claimed)
-        {
-            text = CommissionText("Mods.XianXia.NPCs.Commission.AlreadyClaimed");
-        }
         return claimed;
     }
 }
@@ -698,10 +695,6 @@ public class FallenHeavenMessenger : CultivationTownNPC
             (ModContent.ItemType<HeavenDaoFragment>(), 6),
             (ModContent.ItemType<BrokenHeavenDecree>(), 1));
         text = commissionResponse.ToString();
-        if (!claimed)
-        {
-            text = CommissionText("Mods.XianXia.NPCs.Commission.AlreadyClaimed");
-        }
         return claimed;
     }
 }
