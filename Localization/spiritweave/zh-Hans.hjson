@@ -1,0 +1,21 @@
+{
+  "Mods": {
+    "XianXia": {
+      "Items": {
+        "SpiritweaveHood": {
+          "DisplayName": "灵织兜帽",
+          "Tooltip": "注重灵气续航的早期修行护甲\n穿齐灵织三件套获得套装效果",
+          "SetBonus": "每次灵气恢复额外+{0}，灵气消耗降低{1}%\n通用伤害降低{2}%"
+        },
+        "SpiritweaveRobe": {
+          "DisplayName": "灵织短衣",
+          "Tooltip": "灵织套装部件；完整套装以伤害换取灵气续航"
+        },
+        "SpiritweaveLeggings": {
+          "DisplayName": "灵织护腿",
+          "Tooltip": "灵织套装部件；完整套装以伤害换取灵气续航"
+        }
+      }
+    }
+  }
+}

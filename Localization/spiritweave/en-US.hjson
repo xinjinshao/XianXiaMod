@@ -1,0 +1,21 @@
+{
+  "Mods": {
+    "XianXia": {
+      "Items": {
+        "SpiritweaveHood": {
+          "DisplayName": "Spiritweave Hood",
+          "Tooltip": "Early cultivation armor focused on energy sustain\nWear all three Spiritweave pieces for the set bonus",
+          "SetBonus": "+{0} energy per regeneration pulse; {1}% lower spiritual energy costs\n{2}% lower generic damage"
+        },
+        "SpiritweaveRobe": {
+          "DisplayName": "Spiritweave Tunic",
+          "Tooltip": "Part of the Spiritweave set; the full set trades damage for energy sustain"
+        },
+        "SpiritweaveLeggings": {
+          "DisplayName": "Spiritweave Leggings",
+          "Tooltip": "Part of the Spiritweave set; the full set trades damage for energy sustain"
+        }
+      }
+    }
+  }
+}
