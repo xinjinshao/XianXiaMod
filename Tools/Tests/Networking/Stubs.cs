@@ -50,7 +50,7 @@ namespace Terraria
         public static readonly List<string> Chat = new();
         public static void NewText(string value, byte r, byte g, byte b) => Chat.Add(value);
     }
-    public class RandomStub { public float Roll = 0.9f; public float NextFloat() => Roll; public float NextFloat(float min,float max)=>min+(max-min)*Roll; }
+    public class RandomStub { public float Roll = 0.9f; public int BoolCalls; public bool NextBool(int denominator){BoolCalls++;return Roll<1f/denominator;} public float NextFloat() => Roll; public float NextFloat(float min,float max)=>min+(max-min)*Roll; }
     public class Player
     {
         public bool active = true, dead, noItems, CCed;
@@ -124,7 +124,9 @@ namespace Terraria
         public Terraria.ModLoader.ModProjectile ModProjectile;public int whoAmI;
         public int owner, type, damage, identity; public float knockBack;
         public Microsoft.Xna.Framework.Rectangle Hitbox=>new((int)Center.X-width/2,(int)Center.Y-height/2,width,height);
-        public object GetSource_FromAI()=>new(); public void Kill(){if(!active)return;new XianXia.Common.Systems.ServerPlayerProjectileSync().OnKill(this,timeLeft);active=false;}
+        public object GetSource_OnHit(NPC target)=>new Terraria.DataStructures.EntitySource_Parent(this); public object GetSource_FromAI()=>new(); public void Kill(){if(!active)return;new XianXia.Common.Systems.ServerPlayerProjectileSync().OnKill(this,timeLeft);active=false;}
+        public static int SpawnCalls;
+        public static (object Source,Microsoft.Xna.Framework.Vector2 Position,Microsoft.Xna.Framework.Vector2 Velocity,int Type,int Damage,float Knockback,int Owner) LastSpawn;
         private static int nextIdentity;
         public Microsoft.Xna.Framework.Vector2 velocity;
         public Microsoft.Xna.Framework.Vector2 Center;
@@ -133,6 +135,7 @@ namespace Terraria
         public static int NewProjectile(object source, Microsoft.Xna.Framework.Vector2 position,
             Microsoft.Xna.Framework.Vector2 velocity, int type, int damage, float knockback, int owner)
         {
+            SpawnCalls++; LastSpawn=(source,position,velocity,type,damage,knockback,owner);
             if (!AllowSpawn || SpawnBudget == 0) return Main.maxProjectiles;
             if (SpawnBudget > 0) SpawnBudget--;
             int index = Array.FindIndex(Main.projectile, p => !p.active);

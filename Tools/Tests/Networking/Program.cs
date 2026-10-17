@@ -1588,6 +1588,32 @@ Check(joiningTickPlayer.State.NetworkInitialized&&!joiningTickPlayer.State.Netwo
 joiningTickPlayer.active=true;sessions.PostUpdatePlayers();joiningTickPlayer.active=false;sessions.PostUpdatePlayers();
 Check(!joiningTickPlayer.State.NetworkInitialized&&!joiningTickPlayer.State.NetworkWasActive,"Short-table disconnect still clears a previously active session");
 
+// Actual Thunder Sword hit hook: owner authority, lifecycle, minimum half damage and no observer/server RNG.
+XianXia.Content.Projectiles.ThunderSwordProjectile ThunderProcFixture(int mode,int local=0,int damage=201) {
+ Game.myPlayer=0;SetupSkill("ThunderPatternSwordCase");Game.netMode=mode;Game.myPlayer=local;Game.rand=new Terraria.RandomStub{Roll=0};
+ var sword=new XianXia.Content.Projectiles.ThunderSwordProjectile{Mod=mod};sword.SetDefaults();sword.Projectile.owner=0;sword.Projectile.damage=damage;
+ sword.Projectile.Center=new Microsoft.Xna.Framework.Vector2(100,300);sword.Projectile.velocity=new Microsoft.Xna.Framework.Vector2(13,0);return sword;
+}
+foreach(int mode in new[]{NetmodeID.SinglePlayer,NetmodeID.MultiplayerClient}) foreach(int damage in new[]{1,2,201}) {
+ var sword=ThunderProcFixture(mode,0,damage);var target=new Terraria.NPC{Center=new Microsoft.Xna.Framework.Vector2(200,300)};
+ int before=Terraria.Projectile.SpawnCalls;var resources=Game.player[0].State.CaptureSnapshot();sword.OnHitNPC(target,default,1);var call=Terraria.Projectile.LastSpawn;
+ Check(Terraria.Projectile.SpawnCalls==before+1&&Game.projectile.Count(p=>p.active)==1&&Game.rand.BoolCalls==1,"Actual owner hit produces one proc from one successful probability roll in singleplayer and client mode");
+ Check(call.Damage==Math.Max(1,damage/2)&&call.Owner==0&&call.Type==ModContent.ProjectileType<XianXia.Content.Projectiles.MinorThunderboltProjectile>()&&Math.Abs(call.Knockback-.5f)<.001f,"Actual thunder proc keeps half/minimum damage owner type and knockback");
+ Check(call.Position.X>=168&&call.Position.X<232&&call.Position.Y==60&&call.Velocity.X==0&&call.Velocity.Y==12
+  &&call.Source is Terraria.DataStructures.EntitySource_Parent parent&&ReferenceEquals(parent.Entity,sword.Projectile),"Actual proc preserves target-relative fall geometry and parent source");
+ Check(Game.player[0].State.CaptureSnapshot()==resources,"Hit proc does not spend spiritual resources or alter skill cooldown");
+}
+foreach(int local in new[]{1,255}) {var sword=ThunderProcFixture(local==255?NetmodeID.Server:NetmodeID.MultiplayerClient,local);int before=Terraria.Projectile.SpawnCalls;sword.OnHitNPC(new Terraria.NPC(),default,1);Check(Terraria.Projectile.SpawnCalls==before&&Game.rand.BoolCalls==0,"Observer and dedicated server neither roll nor duplicate owner hit proc");}
+foreach(int invalid in Enumerable.Range(0,8)) {
+ var sword=ThunderProcFixture(NetmodeID.MultiplayerClient,0);var target=new Terraria.NPC{Center=new Microsoft.Xna.Framework.Vector2(200,300)};
+ if(invalid==0)sword.Projectile.owner=-1;if(invalid==1)sword.Projectile.owner=Game.maxPlayers;if(invalid==2)Game.player[0].active=false;if(invalid==3)Game.player[0].dead=true;
+ if(invalid==4)Game.player[0]=null;if(invalid==5)target.Center=new Microsoft.Xna.Framework.Vector2(float.NaN,300);if(invalid==6)sword.Projectile.Center=new Microsoft.Xna.Framework.Vector2(float.PositiveInfinity,300);if(invalid==7)sword.Projectile.velocity=new Microsoft.Xna.Framework.Vector2(1e30f,0);
+ int before=Terraria.Projectile.SpawnCalls;sword.OnHitNPC(target,default,1);Check(Terraria.Projectile.SpawnCalls==before&&Game.rand.BoolCalls==0,"Invalid owner lifecycle or geometry cannot roll or create proc");
+}
+{var sword=ThunderProcFixture(NetmodeID.MultiplayerClient,0);Game.rand.Roll=.9f;int before=Terraria.Projectile.SpawnCalls;sword.OnHitNPC(new Terraria.NPC(),default,1);Check(Terraria.Projectile.SpawnCalls==before&&Game.rand.BoolCalls==1,"Failed one-in-three roll creates no bolt");}
+{var sword=ThunderProcFixture(NetmodeID.MultiplayerClient,0);foreach(var projectile in Game.projectile)projectile.active=true;int before=Terraria.Projectile.SpawnCalls;sword.OnHitNPC(new Terraria.NPC(),default,1);Check(Terraria.Projectile.SpawnCalls==before&&Game.rand.BoolCalls==0,"Full projectile pool suppresses optional proc without replacing another projectile");}
+{var sword=ThunderProcFixture(NetmodeID.MultiplayerClient,0);int before=Terraria.Projectile.SpawnCalls;sword.OnHitNPC(new Terraria.NPC{active=false,life=0},default,1);Check(Terraria.Projectile.SpawnCalls==before+1,"A legitimate killing hit still gets its authority proc");}
+{var sword=ThunderProcFixture(NetmodeID.Server,255);Game.dedServ=true;int light=Terraria.Lighting.Calls;sword.AI();Check(Terraria.Lighting.Calls==light,"Dedicated thunder sword AI avoids graphical lighting dependency");Game.dedServ=false;sword.AI();Check(Terraria.Lighting.Calls==light+1,"Client/singleplayer thunder sword light remains");}
 Console.WriteLine($"Networking including actual recovery pill hooks: {assertions} assertions; buff/inventory engine boundaries mocked.");
 
 sealed class TestBossSummon : XianXia.Common.Items.CultivationBossSummonItem

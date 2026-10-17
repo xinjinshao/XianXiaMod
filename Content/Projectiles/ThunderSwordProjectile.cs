@@ -54,7 +54,7 @@ public class ThunderSwordProjectile : ModProjectile
 
             Projectile.rotation = Projectile.velocity.ToRotation();
 
-        Lighting.AddLight(Projectile.Center, 0.06f, 0.18f, 0.2f);
+        if (!Main.dedServ) Lighting.AddLight(Projectile.Center, 0.06f, 0.18f, 0.2f);
 
     }
 
@@ -66,7 +66,13 @@ public class ThunderSwordProjectile : ModProjectile
 
     {
 
-        if (Projectile.owner == Main.myPlayer && Main.rand.NextBool(3))
+        // Friendly projectile NPC hits follow vanilla owner authority, including clients on dedicated servers.
+        // Killing hits may already have deactivated the target, so do not require target.active here.
+        if (Main.netMode == NetmodeID.Server || Projectile.owner != Main.myPlayer || Main.player == null || Projectile.owner < 0
+            || Projectile.owner >= Main.maxPlayers || Projectile.owner >= Main.player.Length
+            || Main.player[Projectile.owner] == null || !Main.player[Projectile.owner].active || Main.player[Projectile.owner].dead
+            || target == null || !Finite(target.Center) || !Finite(Projectile.Center) || !Finite(Projectile.velocity) || !HasFreeSlot()) return;
+        if (Main.rand.NextBool(3))
 
         {
 
@@ -91,5 +97,14 @@ public class ThunderSwordProjectile : ModProjectile
     }
 
 
+
+    private static bool HasFreeSlot()
+    {
+        if (Main.projectile == null) return false;
+        for (int i = 0; i < Math.Min(Main.maxProjectiles,Main.projectile.Length); i++)
+            if (Main.projectile[i] != null && !Main.projectile[i].active) return true;
+        return false;
+    }
+    private static bool Finite(Vector2 point) => float.IsFinite(point.X) && float.IsFinite(point.Y) && float.IsFinite(point.LengthSquared());
 
 }
