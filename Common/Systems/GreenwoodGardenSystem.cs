@@ -12,7 +12,7 @@ namespace XianXia.Common.Systems;
 // A traversable herb clearing in new worlds; saved bounds never rebuild terrain or crops.
 public class GreenwoodGardenSystem : ModSystem
 {
-    internal const int Width = 31, Height = 13, SoilDepth = 4;
+    internal const int Width = 31, Height = 13, SoilDepth = 4, CoastBuffer = 360;
     internal static readonly int[] CropOffsets = { 3, 7, 11, 19, 23, 27 };
     internal readonly List<Rectangle> Gardens = new();
     public override void ClearWorld() => Gardens.Clear();
@@ -43,8 +43,13 @@ public class GreenwoodGardenSystem : ModSystem
     internal static bool TryBuild(Rectangle area, StructureMap structures)
     {
         if (structures == null || Main.netMode == NetmodeID.MultiplayerClient || !ModContent.GetInstance<XianXiaConfig>().EnableWorldGeneration
-            || area.Width != Width || area.Height != Height || !WorldGen.InWorld(area.X,area.Y,12)
+            || area.Width != Width || area.Height != Height || area.Left < CoastBuffer || area.Right > Main.maxTilesX - CoastBuffer || !WorldGen.InWorld(area.X,area.Y,12)
             || area.X > Main.maxTilesX - Width - 12 || area.Y > Main.maxTilesY - Height - 12) return false;
+        // Final liquid settling can drain a nearby pool into newly excavated space.
+        // Keep clear of coasts and water sources anywhere above the bed, including tall cave shafts.
+        for (int x = System.Math.Max(10,area.Left - 24); x < System.Math.Min(Main.maxTilesX - 10,area.Right + 24); x++)
+            for (int y = 10; y < area.Bottom; y++)
+                if (Main.tile[x,y].LiquidAmount > 0) return false;
         var allowed = SectRuinHallSystem.NaturalTiles();
         allowed[ModContent.TileType<SectRuinBrickTile>()] = false;
         int soil = ModContent.TileType<GreenwoodSoilTile>(), crop = ModContent.TileType<CultivatedSpiritHerbTile>();

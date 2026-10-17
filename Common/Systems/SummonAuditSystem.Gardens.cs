@@ -35,11 +35,14 @@ public partial class SummonAuditSystem
             try { check(!GreenwoodGardenSystem.TryBuild(area,new StructureMap()) && obstacle.TileType == TileID.Containers,"native garden preserves existing chest tile"); } finally { obstacle.TileType = TileID.Stone; }
             obstacle.LiquidAmount = 1;
             try { check(!GreenwoodGardenSystem.TryBuild(area,new StructureMap()),"native garden refuses liquid"); } finally { obstacle.LiquidAmount = 0; }
+            Tile nearbyWater = Main.tile[area.Left - 3,area.Top]; nearbyWater.LiquidAmount = 1;
+            try { check(!GreenwoodGardenSystem.TryBuild(area,new StructureMap()),"native garden refuses nearby water outside immediate framing buffer"); } finally { nearbyWater.LiquidAmount = 0; }
             obstacle.RedWire = true;
             try { check(!GreenwoodGardenSystem.TryBuild(area,new StructureMap()),"native garden refuses wiring"); } finally { obstacle.RedWire = false; }
             obstacle.WallType = WallID.Wood;
             try { check(!GreenwoodGardenSystem.TryBuild(area,new StructureMap()),"native garden refuses housing walls"); } finally { obstacle.WallType = 0; }
             check(!GreenwoodGardenSystem.TryBuild(new Rectangle(-1,30,31,13),new StructureMap()),"native garden rejects invalid bounds");
+            check(!GreenwoodGardenSystem.TryBuild(new Rectangle(20,30,31,13),new StructureMap()),"native garden keeps dry cultivation clearings out of the coastal margin");
             var map = new StructureMap(); check(GreenwoodGardenSystem.TryBuild(area,map),"native garden builds approved terrain");
             int soil = ModContent.TileType<GreenwoodSoilTile>(), crop = ModContent.TileType<CultivatedSpiritHerbTile>(), soilCount = 0, plantCount = 0;
             int floor = area.Bottom - GreenwoodGardenSystem.SoilDepth; bool geometry = true;

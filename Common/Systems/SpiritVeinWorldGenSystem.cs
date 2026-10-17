@@ -38,33 +38,24 @@ public class SpiritVeinWorldGenSystem : ModSystem
             int radiusX = WorldGen.genRand.Next(10, 24);
             int radiusY = WorldGen.genRand.Next(7, 16);
 
-            for (int tx = x - radiusX; tx <= x + radiusX; tx++)
-            {
-                for (int ty = y - radiusY; ty <= y + radiusY; ty++)
-                {
-                    if (!WorldGen.InWorld(tx, ty, 10))
-                    {
-                        continue;
-                    }
+            PaintVein(x,y,radiusX,radiusY,GenVars.structures);
+        }
+    }
 
-                    float nx = (tx - x) / (float)radiusX;
-                    float ny = (ty - y) / (float)radiusY;
-                    if (nx * nx + ny * ny > 1f || !Main.tile[tx, ty].HasTile)
-                    {
-                        continue;
-                    }
-
-                    ushort type = WorldGen.genRand.NextBool(4)
-                        ? (ushort)ModContent.TileType<SpiritOreTile>()
-                        : (ushort)ModContent.TileType<SpiritMossTile>();
-                    Tile tile = Main.tile[tx, ty];
-                    if (tile.TileType == TileID.Stone || tile.TileType == TileID.Dirt || tile.TileType == TileID.ClayBlock)
-                    {
-                        tile.TileType = type;
-                        WorldGen.SquareTileFrame(tx, ty);
-                    }
-                }
+    internal static int PaintVein(int x,int y,int radiusX,int radiusY,StructureMap structures)
+    {
+        int painted = 0;
+        for (int tx = x - radiusX; tx <= x + radiusX; tx++) for (int ty = y - radiusY; ty <= y + radiusY; ty++) {
+            if (!WorldGen.InWorld(tx,ty,10)) continue;
+            float nx = (tx - x) / (float)radiusX, ny = (ty - y) / (float)radiusY;
+            if (nx * nx + ny * ny > 1f || !Main.tile[tx,ty].HasTile) continue;
+            ushort type = WorldGen.genRand.NextBool(4) ? (ushort)ModContent.TileType<SpiritOreTile>() : (ushort)ModContent.TileType<SpiritMossTile>();
+            Tile tile = Main.tile[tx,ty];
+            if ((tile.TileType == TileID.Stone || tile.TileType == TileID.Dirt || tile.TileType == TileID.ClayBlock)
+                && WorldGenerationProtection.CanChange(tx,ty,structures)) {
+                tile.TileType = type; painted++; WorldGen.SquareTileFrame(tx,ty);
             }
         }
+        return painted;
     }
 }

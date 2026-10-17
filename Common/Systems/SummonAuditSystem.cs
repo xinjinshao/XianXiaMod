@@ -951,6 +951,7 @@ public partial class SummonAuditSystem : ModSystem
             AuditSectRuinHalls(Check);
             AuditSectRuinPaths(Check);
             AuditGreenwoodGardens(Check);
+            AuditGenerationProtection(Check);
             AuditHerbMap(Check);
             AuditHerbGrowth(Check);
             AuditHerbPlacement(Check);

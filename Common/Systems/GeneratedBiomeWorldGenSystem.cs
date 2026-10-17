@@ -163,35 +163,31 @@ public class GeneratedBiomeWorldGenSystem : ModSystem
         {
             int x = WorldGen.genRand.Next(180, Main.maxTilesX - 180);
             int y = NextWorldY(minY, maxY);
-            regions.Add(new Rectangle(x - radiusX, y - radiusY, radiusX * 2 + 1, radiusY * 2 + 1));
-            for (int tx = x - radiusX; tx <= x + radiusX; tx++)
-            {
-                for (int ty = y - radiusY; ty <= y + radiusY; ty++)
-                {
-                    if (!WorldGen.InWorld(tx, ty, 10))
-                    {
-                        continue;
-                    }
-
-                    float nx = (tx - x) / (float)radiusX;
-                    float ny = (ty - y) / (float)radiusY;
-                    if (nx * nx + ny * ny > 1f || !WorldGen.genRand.NextBool(2))
-                    {
-                        continue;
-                    }
-
-                    Tile tile = Main.tile[tx, ty];
-                    if (tile.HasTile || tile.LiquidAmount > 0) continue;
-                    tile.HasTile = true;
-                    tile.TileType = (ushort)cloudTile;
-                    WorldGen.SquareTileFrame(tx, ty);
-                }
-            }
+            if (PaintCloudEllipse(x,y,radiusX,radiusY,cloudTile,GenVars.structures) > 0)
+                regions.Add(new Rectangle(x - radiusX, y - radiusY, radiusX * 2 + 1, radiusY * 2 + 1));
         }
         return regions;
     }
 
-    private static int PaintEllipse(int x, int y, int radiusX, int radiusY, int primaryTile, int accentTile, int wallType)
+    internal static int PaintCloudEllipse(int x, int y, int radiusX, int radiusY, int cloudTile, StructureMap structures)
+    {
+        int painted = 0;
+        for (int tx = x - radiusX; tx <= x + radiusX; tx++) for (int ty = y - radiusY; ty <= y + radiusY; ty++) {
+            if (!WorldGen.InWorld(tx,ty,10)) continue;
+            float nx = (tx - x) / (float)radiusX, ny = (ty - y) / (float)radiusY;
+            if (nx * nx + ny * ny > 1f || !WorldGen.genRand.NextBool(2)) continue;
+            Tile tile = Main.tile[tx,ty];
+            if (tile.HasTile || tile.LiquidAmount > 0 || !WorldGenerationProtection.CanChange(tx,ty,structures)) continue;
+            tile.HasTile = true; tile.TileType = (ushort)cloudTile; painted++;
+            WorldGen.SquareTileFrame(tx,ty);
+        }
+        return painted;
+    }
+
+    private static int PaintEllipse(int x, int y, int radiusX, int radiusY, int primaryTile, int accentTile, int wallType) =>
+        PaintProtectedEllipse(x,y,radiusX,radiusY,primaryTile,accentTile,wallType,GenVars.structures);
+
+    internal static int PaintProtectedEllipse(int x, int y, int radiusX, int radiusY, int primaryTile, int accentTile, int wallType, StructureMap structures)
     {
         int painted = 0;
         for (int tx = x - radiusX; tx <= x + radiusX; tx++)
@@ -211,7 +207,7 @@ public class GeneratedBiomeWorldGenSystem : ModSystem
                 }
 
                 Tile tile = Main.tile[tx, ty];
-                if (!CanReplace(tile.TileType))
+                if (!CanReplace(tile.TileType) || !WorldGenerationProtection.CanChange(tx,ty,structures))
                 {
                     continue;
                 }

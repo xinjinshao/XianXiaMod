@@ -87,3 +87,10 @@
 | <img src="../../../Assets/Final/tribulation_warning_line/tribulation_warning_line__ui__v09.png" alt="天劫预警线 ui" width="64"> | 天劫预警线 | `tribulation_warning_line` | `ui` | 16x4 |
 
 <!-- ART_SECTION:tile-ui-art:END -->
+
+
+## 当前生成保护
+
+浅层灵脉、生态椭圆涂色和雷云填充会避开执行时已登记的原生结构保护范围，保留一格帧更新缓冲，并继续检查各自材料或空位条件。后续生成步骤及未登记的结构仍需单独验收。
+
+青木药圃避开世界左右各360格海岸边缘，并检查附近水平24格范围内整段上方的已有水源，减少新挖空地在液体沉降时被灌入的情况；不合适候选位置可全部跳过。旧世界不会自动重建药圃或排水。
