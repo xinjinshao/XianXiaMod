@@ -41,4 +41,16 @@ for(int i=0;i<entries.Length;i++){
  Prepare(i);Check(!FollowupCommissions.TryClaim(Main.LocalPlayer,entry.Town.NPC,"WrongNPC",out _),"Unknown or mismatched NPC rejected");DownedBossSystem.ClaimedCommissions.Clear();Check(!FollowupCommissions.TryClaim(Main.LocalPlayer,entry.Town.NPC,entry.Town.Name,out _),"Prior completion is mandatory");
  Prepare(i);Main.netMode=0;entry.Town.OnChatButtonClicked(false,ref shop);Check(DownedBossSystem.ClaimedCommissions.Contains(entry.Id)&&Main.LocalPlayer.Rewards.Count==2&&!string.IsNullOrWhiteSpace(Main.npcChatText),"Actual single-player button claims and displays feedback");
 }
+for(int i=0;i<entries.Length;i++) {
+ var entry=entries[i]; Prepare(i);
+ int reputation=DownedBossSystem.SectReputation,rewards=Main.LocalPlayer.Rewards.Count,claimed=DownedBossSystem.ClaimedCommissions.Count;
+ Check(FollowupCommissions.ReadyGuidance(Main.LocalPlayer)==Language.GetTextValue("Mods.XianXia.FollowupCommissions."+entry.Town.Name+".Ready"),"Ledger-ready guidance finds each eligible followup using its actual localized hint");
+ Check(DownedBossSystem.SectReputation==reputation&&Main.LocalPlayer.Rewards.Count==rewards&&DownedBossSystem.ClaimedCommissions.Count==claimed,"Reading ready guidance grants no reputation items or claim flags");
+ DownedBossSystem.ClaimedCommissions.Add(entry.Id); Check(FollowupCommissions.ReadyGuidance(Main.LocalPlayer)=="","Claimed followup disappears from ready guidance");
+ Prepare(i,false); Check(FollowupCommissions.ReadyGuidance(Main.LocalPlayer)=="","Guidance requires the primary commission first");
+ Prepare(i); Main.LocalPlayer.State.cultivationStage=CultivationStage.None; Check(FollowupCommissions.ReadyGuidance(Main.LocalPlayer)=="","Guidance respects the current character realm");
+ Prepare(i); DownedBossSystem.DownedBosses.Remove(entry.Boss); Check(FollowupCommissions.ReadyGuidance(Main.LocalPlayer)=="","Guidance requires the actual followup boss");
+ Prepare(i); Main.LocalPlayer.dead=true; Check(FollowupCommissions.ReadyGuidance(Main.LocalPlayer)=="","Dead readers cannot produce ready guidance");
+}
+Check(FollowupCommissions.ReadyGuidance(null)=="","Absent reader has no ready guidance");
 Console.WriteLine($"Actual five-NPC followup hooks passed: {count} assertions; world save and claims linked, engine inventory/packet/UI boundaries mocked.");

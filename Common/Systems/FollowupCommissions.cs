@@ -26,6 +26,17 @@ public static class FollowupCommissions
         && CultivationRules.GetWorldFailure(entry.Stage, Main.hardMode, NPC.downedPlantBoss,
             NPC.downedGolemBoss, NPC.downedMoonlord).Length == 0
         && DownedBossSystem.DownedBosses.Contains(entry.Boss);
+    public static string ReadyGuidance(Player player)
+    {
+        if (player == null || !player.active || player.dead) return "";
+        foreach (string npc in new[] { "HerbSectApprentice", "WanderingArtificer", "TribulationObserver", "ArchiveScrollSpirit", "FallenHeavenMessenger" }) {
+            Entry entry = Find(npc);
+            if (DownedBossSystem.ClaimedCommissions.Contains(entry.Prior)
+                && !DownedBossSystem.ClaimedCommissions.Contains(entry.Id) && Eligible(player, entry))
+                return Language.GetTextValue($"Mods.XianXia.FollowupCommissions.{npc}.Ready");
+        }
+        return "";
+    }
     public static string Hint(string npc, Player player)
     {
         Entry entry = Find(npc);

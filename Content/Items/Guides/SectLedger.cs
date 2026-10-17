@@ -88,121 +88,121 @@ public class SectLedger : ModItem
         string reputation = Guidance("SectReputation").Format(DownedBossSystem.SectReputation);
 
         if (cultivation.tribulationTimer > 0)
-            return WithCommission($"{reputation} {GuidanceValue("ActiveTribulation")}");
+            return WithCommission(player, $"{reputation} {GuidanceValue("ActiveTribulation")}");
         if (cultivation.CanRetryTribulation())
-            return WithCommission($"{reputation} {GuidanceValue("RetryTribulation")}");
+            return WithCommission(player, $"{reputation} {GuidanceValue("RetryTribulation")}");
         string worldFailure = CultivationRules.GetWorldFailure(
             (CultivationStage)((int)cultivation.cultivationStage + 1), Main.hardMode,
             NPC.downedPlantBoss, NPC.downedGolemBoss, NPC.downedMoonlord);
         if (cultivation.cultivationStage >= CultivationStage.Foundation
             && cultivation.cultivationStage < CultivationStage.DaoSevering && worldFailure.Length > 0)
-            return WithCommission($"{reputation} {Language.GetTextValue($"Mods.XianXia.Progression.{worldFailure}")}");
+            return WithCommission(player, $"{reputation} {Language.GetTextValue($"Mods.XianXia.Progression.{worldFailure}")}");
 
         if (cultivation.cultivationStage < CultivationStage.QiAwakening)
         {
-            return WithCommission($"{reputation} {GuidanceValue("AwakenQi")}");
+            return WithCommission(player, $"{reputation} {GuidanceValue("AwakenQi")}");
         }
 
         if (!DownedBossSystem.DownedSpiritVeinWyrm)
         {
-            return WithCommission($"{reputation} {GuidanceValue("SpiritVeinWyrm")}");
+            return WithCommission(player, $"{reputation} {GuidanceValue("SpiritVeinWyrm")}");
         }
 
         if (cultivation.cultivationStage < CultivationStage.QiCondensation)
         {
-            return WithCommission($"{reputation} {GuidanceValue("QiCondensation")}");
+            return WithCommission(player, $"{reputation} {GuidanceValue("QiCondensation")}");
         }
 
         if (!DownedBossSystem.DownedBosses.Contains("garden_warden"))
         {
-            return WithCommission($"{reputation} {GuidanceValue("GardenWarden")}");
+            return WithCommission(player, $"{reputation} {GuidanceValue("GardenWarden")}");
         }
 
         if (!DownedBossSystem.DownedBosses.Contains("black_furnace_iron_golem"))
         {
-            return WithCommission($"{reputation} {GuidanceValue("BlackFurnace")}");
+            return WithCommission(player, $"{reputation} {GuidanceValue("BlackFurnace")}");
         }
 
         if (!DownedBossSystem.DownedBosses.Contains("tribulation_cloud_avatar"))
         {
-            return WithCommission($"{reputation} {GuidanceValue("TribulationCloud")}");
+            return WithCommission(player, $"{reputation} {GuidanceValue("TribulationCloud")}");
         }
 
         if (cultivation.cultivationStage < CultivationStage.Foundation)
-            return WithCommission($"{reputation} {GuidanceValue("Foundation")}");
+            return WithCommission(player, $"{reputation} {GuidanceValue("Foundation")}");
 
         if (!DownedBossSystem.DownedBosses.Contains("thunder_marsh_jiao"))
         {
-            return WithCommission($"{reputation} {GuidanceValue("ThunderJiao")}");
+            return WithCommission(player, $"{reputation} {GuidanceValue("ThunderJiao")}");
         }
 
         if (!DownedBossSystem.DownedBosses.Contains("abyssal_star_womb"))
         {
-            return WithCommission($"{reputation} {GuidanceValue("StarWomb")}");
+            return WithCommission(player, $"{reputation} {GuidanceValue("StarWomb")}");
         }
 
         if (cultivation.cultivationStage < CultivationStage.GoldenCore)
         {
-            return WithCommission($"{reputation} {GuidanceValue("GoldenCore")}");
+            return WithCommission(player, $"{reputation} {GuidanceValue("GoldenCore")}");
         }
 
         if (!DownedBossSystem.DownedBosses.Contains("formless_sword_soul"))
         {
-            return WithCommission($"{reputation} {GuidanceValue("SwordSoul")}");
+            return WithCommission(player, $"{reputation} {GuidanceValue("SwordSoul")}");
         }
 
         if (!DownedBossSystem.DownedBosses.Contains("greenwood_medicine_king_echo"))
         {
-            return WithCommission($"{reputation} {GuidanceValue("MedicineKing")}");
+            return WithCommission(player, $"{reputation} {GuidanceValue("MedicineKing")}");
         }
 
         if (cultivation.cultivationStage < CultivationStage.NascentSoul)
         {
-            return WithCommission($"{reputation} {GuidanceValue("NascentSoul")}");
+            return WithCommission(player, $"{reputation} {GuidanceValue("NascentSoul")}");
         }
 
         if (!DownedBossSystem.DownedBosses.Contains("heaven_tablet_guardian"))
         {
-            return WithCommission($"{reputation} {GuidanceValue("HeavenTablet")}");
+            return WithCommission(player, $"{reputation} {GuidanceValue("HeavenTablet")}");
         }
 
         if (!DownedBossSystem.DownedBosses.Contains("broken_heaven_inspector"))
         {
-            return WithCommission($"{reputation} {GuidanceValue("BrokenInspector")}");
+            return WithCommission(player, $"{reputation} {GuidanceValue("BrokenInspector")}");
         }
 
         if (cultivation.cultivationStage < CultivationStage.SpiritSevering)
-            return WithCommission($"{reputation} {GuidanceValue("SpiritSevering")}");
+            return WithCommission(player, $"{reputation} {GuidanceValue("SpiritSevering")}");
 
         if (cultivation.cultivationStage < CultivationStage.Tribulation)
         {
-            return WithCommission($"{reputation} {GuidanceValue("TribulationStage")}");
+            return WithCommission(player, $"{reputation} {GuidanceValue("TribulationStage")}");
         }
 
         if (!DownedBossSystem.DownedBosses.Contains("moonbone_immortal"))
         {
-            return WithCommission($"{reputation} {GuidanceValue("MoonboneImmortal")}");
+            return WithCommission(player, $"{reputation} {GuidanceValue("MoonboneImmortal")}");
         }
 
         if (!DownedBossSystem.DownedBosses.Contains("old_heaven_dao_core"))
         {
-            return WithCommission($"{reputation} {GuidanceValue("OldHeavenCore")}");
+            return WithCommission(player, $"{reputation} {GuidanceValue("OldHeavenCore")}");
         }
 
         if (cultivation.cultivationStage < CultivationStage.DaoSevering)
         {
-            return WithCommission($"{reputation} {Guidance("DaoSevering").Format(DownedBossSystem.SectReputation)}");
+            return WithCommission(player, $"{reputation} {Guidance("DaoSevering").Format(DownedBossSystem.SectReputation)}");
         }
 
-        return WithCommission($"{reputation} {Guidance("Endgame").Format(DownedBossSystem.SectReputation)}");
+        return WithCommission(player, $"{reputation} {Guidance("Endgame").Format(DownedBossSystem.SectReputation)}");
     }
 
-    private static string WithCommission(string guidance)
+    private static string WithCommission(Player player, string guidance)
     {
-        return $"{guidance} {GetCommissionGuidance()}";
+        return $"{guidance} {GetCommissionGuidance(player)}";
     }
 
-    private static string GetCommissionGuidance()
+    private static string GetCommissionGuidance(Player player)
     {
         if (CanClaimCommission("herb_sect_apprentice_garden", "garden_warden"))
         {
@@ -229,7 +229,8 @@ public class SectLedger : ModItem
             return GuidanceValue("CommissionHeavenReady");
         }
 
-        return GuidanceValue("CommissionNoneReady");
+        string followup = FollowupCommissions.ReadyGuidance(player);
+        return followup.Length > 0 ? followup : GuidanceValue("CommissionNoneReady");
     }
 
     private static bool CanClaimCommission(string commissionId, string requiredBoss)
