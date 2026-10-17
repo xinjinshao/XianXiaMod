@@ -88,8 +88,22 @@ public class WorldAuditCommand : ModCommand
             bool attached = halls.Any(hall => path.Y == hall.Bottom - 9 && (path.Right == hall.Left || path.Left == hall.Right));
             pathReports.Add(new { path.X, path.Y, path.Width, path.Height, InteriorClear = clear, ShellIntact = shell, Dry = dry, AttachedHall = attached });
         }
+        var gardenReports = new List<object>();
+        foreach (var garden in ModContent.GetInstance<global::XianXia.Common.Systems.GreenwoodGardenSystem>().Gardens) {
+            int floor = garden.Bottom - global::XianXia.Common.Systems.GreenwoodGardenSystem.SoilDepth, soils = 0, crops = 0;
+            bool bed = true, clear = true, dry = true; var frames = new List<int>();
+            for (int x = garden.Left; x < garden.Right; x++) for (int y = garden.Top; y < garden.Bottom; y++) {
+                Tile tile = Main.tile[x,y]; dry &= tile.LiquidAmount == 0;
+                bool soil = tile.HasTile && tile.TileType == ModContent.TileType<GreenwoodSoilTile>();
+                bool crop = tile.HasTile && tile.TileType == ModContent.TileType<CultivatedSpiritHerbTile>();
+                if (soil) soils++; if (crop) { crops++; frames.Add(tile.TileFrameX); }
+                if (y >= floor) bed &= soil && tile.Slope == 0 && !tile.IsHalfBlock;
+                else clear &= !tile.HasTile || crop;
+            }
+            gardenReports.Add(new { garden.X, garden.Y, garden.Width, garden.Height, SoilTiles = soils, Crops = crops, CropFrames = frames, BedIntact = bed, WalkwayClear = clear, Dry = dry });
+        }
         string report = JsonSerializer.Serialize(new { Width = Main.maxTilesX, Height = Main.maxTilesY, Objects = objects.Values,
-            SectRuinHalls = hallReports, SectRuinPaths = pathReports, ChestsWithSpiritStones = supplyChests, ChestSpiritStoneTotal = spiritStones });
+            SectRuinHalls = hallReports, SectRuinPaths = pathReports, GreenwoodGardens = gardenReports, ChestsWithSpiritStones = supplyChests, ChestSpiritStoneTotal = spiritStones });
         Mod.Logger.Info("SavedWorldAudit: " + report);
         caller.Reply(report);
     }

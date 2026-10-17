@@ -11,3 +11,6 @@ namespace XianXia.Content.Tiles{public class GreenwoodSoilTile{}public class Spi
 
 // Hall construction is verified against the native engine; this project isolates object placement.
 namespace XianXia.Common.Systems { public class SectRuinHallSystem { public static List<Microsoft.Xna.Framework.Rectangle> Fixtures=new(); public List<Microsoft.Xna.Framework.Rectangle> Halls=>Fixtures; public List<Microsoft.Xna.Framework.Rectangle> Generate(List<Microsoft.Xna.Framework.Rectangle> regions)=>regions; } }
+
+// Garden terrain/crops are verified by the native audit; this harness isolates object placement.
+namespace XianXia.Common.Systems { public class GreenwoodGardenSystem { public void Generate(List<Microsoft.Xna.Framework.Rectangle> regions) {} } }

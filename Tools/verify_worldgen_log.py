@@ -9,6 +9,7 @@ parser.add_argument("run", type=Path)
 parser.add_argument("--require-sect-halls", action="store_true", help="Require persisted open sect halls in the final read-only world audit")
 parser.add_argument("--require-sect-supplies", action="store_true", help="Also require intact fresh hall supply chests and advertised loot")
 parser.add_argument("--require-sect-paths", action="store_true", help="Require at least one persisted clear protected hall-to-cave connector")
+parser.add_argument("--require-greenwood-gardens", action="store_true", help="Require fresh planted Greenwood clearings in the final scan")
 args = parser.parse_args()
 log = (args.run / "runtime.log").read_text(encoding="utf-8-sig")
 records = re.findall(r"\[XianXia\]: Cultivation object (\d+): (\d+)/(\d+) placed in (\d+) matching regions", log)
@@ -23,10 +24,11 @@ assert "Mods.XianXia.WorldGeneration.CultivationDomains" not in log, "Untranslat
 worlds = args.run / "save" / "Worlds"
 for suffix in ("wld", "twld"):
     assert (worlds / f"GenerationProbe.{suffix}").stat().st_size > 0, f"Missing saved {suffix}"
+audits = re.findall(r"SavedWorldAudit: (\{[^\r\n]+\})", log)
+if args.require_sect_halls or args.require_sect_supplies or args.require_sect_paths or args.require_greenwood_gardens:
+    assert audits, "Run xianxia-world-audit before saving"
 hall_reports = []
 if args.require_sect_halls or args.require_sect_supplies or args.require_sect_paths:
-    audits = re.findall(r"SavedWorldAudit: (\{[^\r\n]+\})", log)
-    assert audits, "Run xianxia-world-audit before saving"
     hall_reports = json.loads(audits[-1]).get("SectRuinHalls", [])
     assert 1 <= len(hall_reports) <= 2, "Expected one or two safely placed sect halls"
     for hall in hall_reports:
@@ -49,12 +51,22 @@ if args.require_sect_paths:
     for path in path_reports:
         assert 5 <= path["Width"] <= 48 and path["Height"] == 7, "Invalid connector bounds"
         assert all(path.get(flag) is True for flag in ("InteriorClear", "ShellIntact", "Dry", "AttachedHall")), "Connector obstructed or detached"
+garden_reports = []
+if args.require_greenwood_gardens:
+    garden_reports = json.loads(audits[-1]).get("GreenwoodGardens", [])
+    assert 1 <= len(garden_reports) <= 3, "Expected one to three safe Greenwood clearings"
+    for garden in garden_reports:
+        assert (garden["Width"], garden["Height"]) == (31, 13) and garden["SoilTiles"] == 124, "Invalid herb bed geometry"
+        assert all(garden.get(flag) is True for flag in ("BedIntact", "WalkwayClear", "Dry")), "Garden obstructed or flooded"
+        assert garden["Crops"] == 6 and len(garden["CropFrames"]) == 6, "Garden crops incomplete"
+        assert all(frame in (0, 18, 36) for frame in garden["CropFrames"]), "Invalid herb growth frames"
 report = {
-    "scope": "generation-stage object placement, server startup, and saved files; optional final read-only sect hall/chest/path scans",
+    "scope": "generation-stage object placement, server startup, and saved files; optional final read-only sect hall/chest/path and Greenwood scans",
     "sect_halls": hall_reports,
     "sect_paths": path_reports,
+    "greenwood_gardens": garden_reports,
     "objects": [{"tile_type": int(t), "placed": int(p), "target": int(n), "regions": int(r)} for t, p, n, r in records],
-    "limitations": "Only requested sect scans inspect final geometry and chest data. No actual player traversal, global cave connectivity, full biome matrix, client rendering or gameplay acceptance."
+    "limitations": "Only requested scans inspect final geometry, plants and chest data. No actual player traversal, global cave connectivity, full biome matrix, client rendering or gameplay acceptance."
 }
 (args.run / "worldgen-report.json").write_text(json.dumps(report, indent=2) + "\n", encoding="utf-8")
 print("Real generation log verified: five object targets met, server started, WLD/TWLD saved.")
