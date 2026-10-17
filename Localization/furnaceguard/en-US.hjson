@@ -1,0 +1,21 @@
+{
+  "Mods": {
+    "XianXia": {
+      "Items": {
+        "FurnaceguardHelmet": {
+          "DisplayName": "Furnaceguard Helmet",
+          "Tooltip": "Defensive cultivation armor crafted with Old Furnace Embers\nWear all three Furnaceguard pieces for the set bonus",
+          "SetBonus": "+{0} percentage points damage reduction\n{1}% lower movement speed and {2}% higher spiritual energy costs"
+        },
+        "FurnaceguardBreastplate": {
+          "DisplayName": "Furnaceguard Breastplate",
+          "Tooltip": "Part of the Furnaceguard set; the full set trades mobility and energy efficiency for protection"
+        },
+        "FurnaceguardGreaves": {
+          "DisplayName": "Furnaceguard Greaves",
+          "Tooltip": "Part of the Furnaceguard set; the full set trades mobility and energy efficiency for protection"
+        }
+      }
+    }
+  }
+}

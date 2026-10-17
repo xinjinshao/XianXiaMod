@@ -1,0 +1,21 @@
+{
+  "Mods": {
+    "XianXia": {
+      "Items": {
+        "FurnaceguardHelmet": {
+          "DisplayName": "玄炉守御盔",
+          "Tooltip": "使用玄炉余烬制作的防护型修行护甲\n穿齐玄炉守御三件套获得套装效果",
+          "SetBonus": "伤害减免增加{0}个百分点\n移动速度降低{1}%，灵气消耗增加{2}%"
+        },
+        "FurnaceguardBreastplate": {
+          "DisplayName": "玄炉守御甲",
+          "Tooltip": "玄炉守御套装部件；完整套装以机动与灵气效率换取防护"
+        },
+        "FurnaceguardGreaves": {
+          "DisplayName": "玄炉守御胫甲",
+          "Tooltip": "玄炉守御套装部件；完整套装以机动与灵气效率换取防护"
+        }
+      }
+    }
+  }
+}

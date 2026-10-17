@@ -12,6 +12,52 @@ namespace XianXia.Common.Systems;
 
 public partial class SummonAuditSystem
 {
+    private static void AuditFurnaceguardArmor(Action<bool, string> check)
+    {
+        int[] types = { ModContent.ItemType<FurnaceguardHelmet>(), ModContent.ItemType<FurnaceguardBreastplate>(), ModContent.ItemType<FurnaceguardGreaves>() };
+        int[] vanilla = { ItemID.IronHelmet, ItemID.IronChainmail, ItemID.IronGreaves };
+        int[] defense = { 3, 5, 4 }, bars = { 6, 10, 8 }, slag = { 8, 12, 10 };
+        for (int i = 0; i < 3; i++) {
+            var item = new Item(); item.SetDefaults(types[i]);
+            check(item.defense == defense[i] && !item.vanity && (i == 0 ? item.headSlot : i == 1 ? item.bodySlot : item.legSlot) >= 0,
+                "native Furnaceguard piece has its functional defense and independent equip slot");
+            check(ItemIO.Load(ItemIO.Save(item)).type == item.type && item.Clone().defense == item.defense,
+                "native Furnaceguard serialization and cloning preserve item identity");
+            var recipe = Main.recipe.Take(Recipe.numRecipes).Single(entry => !entry.Disabled && entry.createItem.type == types[i]);
+            check(recipe.createItem.stack == 1 && recipe.requiredTile.Contains(ModContent.TileType<Content.Tiles.Stations.ArtifactForgeTile>())
+                && recipe.requiredItem.Any(entry => entry.type == ItemID.IronBar && entry.stack == bars[i])
+                && recipe.requiredItem.Any(entry => entry.type == ModContent.ItemType<FurnaceSlagIron>() && entry.stack == slag[i])
+                && recipe.requiredItem.Any(entry => entry.type == ModContent.ItemType<OldFurnaceEmber>() && entry.stack == 1),
+                "native Furnaceguard recipe preserves all advertised costs and station");
+            check(recipe.acceptedGroups.Contains(RecipeGroupID.IronBar) && recipe.AcceptedByItemGroups(ItemID.LeadBar, ItemID.IronBar),
+                "native Furnaceguard crafting accepts lead bars as the vanilla iron alternative");
+        }
+        Player previous = Main.player[0]; int oldMode = Main.netMode, oldLocal = Main.myPlayer;
+        try {
+            foreach (int mode in new[] { NetmodeID.SinglePlayer, NetmodeID.Server, NetmodeID.MultiplayerClient }) for (int mask = 0; mask < 8; mask++) {
+                Main.netMode = mode; Main.myPlayer = 0;
+                var actor = new Player { active = true, whoAmI = 0 }; Main.player[0] = actor;
+                var state = actor.GetModPlayer<XianXiaPlayer>();
+                for (int i = 0; i < 3; i++) actor.armor[i].SetDefaults((mask & (1 << i)) != 0 ? types[i] : vanilla[i]);
+                actor.ResetEffects(); actor.UpdateEquips(0); actor.UpdateArmorSets(0);
+                bool full = mask == 7;
+                check(Math.Abs(actor.endurance - (full ? 0.05f : 0f)) < 0.0001f
+                    && Math.Abs(actor.moveSpeed - (full ? 0.9f : 1f)) < 0.0001f && state.GetSpiritualEnergyCost(100) == (full ? 110 : 100),
+                    "native Furnaceguard full set grants protection with both mobility and energy penalties; mixed sets do not");
+                check(Math.Abs(actor.GetDamage(DamageClass.Generic).ApplyTo(100) - 100) < 0.01f,
+                    "native Furnaceguard does not increase generic damage");
+                if (full) {
+                    check(actor.statDefense == 12 && !string.IsNullOrWhiteSpace(actor.setBonus) && !actor.setBonus.Contains("{0}"),
+                        "native Furnaceguard provides twelve defense and formatted localized tradeoff text");
+                    actor.ResetEffects(); actor.UpdateEquips(0); actor.UpdateArmorSets(0);
+                    check(Math.Abs(actor.endurance - 0.05f) < 0.0001f && Math.Abs(actor.moveSpeed - 0.9f) < 0.0001f && state.GetSpiritualEnergyCost(100) == 110,
+                        "native repeated equipment frame does not stack Furnaceguard bonuses or penalties");
+                }
+            }
+        } finally { Main.player[0] = previous; Main.netMode = oldMode; Main.myPlayer = oldLocal; }
+        check(Main.player[0] == previous && Main.netMode == oldMode && Main.myPlayer == oldLocal, "native Furnaceguard audit restores occupant and authority context");
+    }
+
     private static void AuditSpiritweaveFrames(Action<bool, string> check)
     {
         Player previous = Main.player[0]; int oldMode = Main.netMode, oldLocal = Main.myPlayer;

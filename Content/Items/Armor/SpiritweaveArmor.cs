@@ -6,17 +6,15 @@ using XianXia.Content.Items.Materials;
 
 namespace XianXia.Content.Items.Armor;
 
-// Vanilla wooden armor visuals are temporary; each piece owns its equip slot.
-public abstract class SpiritweaveArmor : ModItem
+// Vanilla armor visuals are temporary; each piece owns its equip slot.
+public abstract class CultivationArmorItem : ModItem
 {
     private int slot;
     protected abstract EquipType Kind { get; }
     protected abstract int Visual { get; }
     protected abstract int Icon { get; }
     protected abstract int Defense { get; }
-    protected abstract int WoodCost { get; }
-    protected abstract int GelCost { get; }
-    protected abstract int StoneCost { get; }
+    protected virtual int Rarity => ItemRarityID.Blue;
     public override string Texture => "Terraria/Images/Item_" + Icon;
     public override void Load() => slot = EquipLoader.AddEquipTexture(Mod, Kind switch {
         EquipType.Head => "Terraria/Images/Armor_Head_" + Visual,
@@ -27,11 +25,18 @@ public abstract class SpiritweaveArmor : ModItem
     public override void SetDefaults()
     {
         Item.width = Item.height = 28; Item.maxStack = 1; Item.defense = Defense;
-        Item.value = Item.buyPrice(silver: 2); Item.rare = ItemRarityID.Blue;
+        Item.value = Item.buyPrice(silver: 2); Item.rare = Rarity;
         if (Kind == EquipType.Head) Item.headSlot = slot;
         else if (Kind == EquipType.Body) Item.bodySlot = slot;
         else Item.legSlot = slot;
     }
+}
+
+public abstract class SpiritweaveArmor : CultivationArmorItem
+{
+    protected abstract int WoodCost { get; }
+    protected abstract int GelCost { get; }
+    protected abstract int StoneCost { get; }
     public override void AddRecipes() => CreateRecipe().AddRecipeGroup(RecipeGroupID.Wood, WoodCost)
         .AddIngredient<SpiritGel>(GelCost).AddIngredient<LowGradeSpiritStone>(StoneCost)
         .AddTile(TileID.WorkBenches).Register();

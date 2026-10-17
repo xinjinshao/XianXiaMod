@@ -5,6 +5,7 @@
 ## 修行护甲
 
 - [灵织套装](Entries/Spiritweave_Set.md)：早期工作台制作；完整套装以10%通用伤害换取灵气恢复与费用收益。
+- [玄炉守御套装](Entries/Furnaceguard_Set.md)：器胚炉制作；完整套装以机动和灵气效率换取防护。
 
 ## 飞剑
 
