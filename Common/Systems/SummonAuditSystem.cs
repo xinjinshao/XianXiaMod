@@ -945,6 +945,7 @@ public partial class SummonAuditSystem : ModSystem
             AuditHerbGrowth(Check);
             AuditHerbPlacement(Check);
             AuditSpiritweaveArmor(Check);
+            AuditSpiritweaveFrames(Check);
         }
         catch (Exception exception) { error = exception.ToString(); }
         finally {

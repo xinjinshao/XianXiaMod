@@ -12,6 +12,33 @@ namespace XianXia.Common.Systems;
 
 public partial class SummonAuditSystem
 {
+    private static void AuditSpiritweaveFrames(Action<bool, string> check)
+    {
+        Player previous = Main.player[0]; int oldMode = Main.netMode, oldLocal = Main.myPlayer;
+        int[] types = { ModContent.ItemType<SpiritweaveHood>(), ModContent.ItemType<SpiritweaveRobe>(), ModContent.ItemType<SpiritweaveLeggings>() };
+        try {
+            foreach (int mode in new[] { NetmodeID.SinglePlayer, NetmodeID.Server, NetmodeID.MultiplayerClient }) {
+                Main.netMode = mode; Main.myPlayer = 0;
+                var actor = new Player { whoAmI = 0, active = true }; Main.player[0] = actor;
+                var state = actor.GetModPlayer<XianXiaPlayer>();
+                for (int phase = 0; phase < 4; phase++) {
+                    for (int i = 0; i < 3; i++) actor.armor[i].SetDefaults(types[i]);
+                    if (phase == 2) actor.armor[1].SetDefaults(ItemID.WoodBreastplate);
+                    if (phase == 3) for (int i = 0; i < 3; i++) { actor.armor[i].TurnToAir(); actor.armor[10 + i].SetDefaults(types[i]); }
+                    actor.ResetEffects(); actor.UpdateEquips(0); actor.UpdateArmorSets(0);
+                    bool full = phase < 2;
+                    check(state.spiritualEnergyRegenBonus == (full ? 1 : 0) && state.GetSpiritualEnergyCost(100) == (full ? 92 : 100),
+                        "native reset/equipment/set sequence refreshes Spiritweave sustain without stacking and removes it on mixed/vanity-only equipment");
+                    check(Math.Abs(actor.GetDamage(DamageClass.Generic).ApplyTo(100) - (full ? 90 : 100)) < 0.01f,
+                        "native equipment frame removes the Spiritweave damage penalty when the functional set is broken");
+                    if (full) check(actor.statDefense == 4, "native equipment frame adds exactly four defense from the complete Spiritweave set");
+                }
+            }
+        } finally { Main.player[0] = previous; Main.netMode = oldMode; Main.myPlayer = oldLocal; }
+        check(ReferenceEquals(Main.player[0], previous) && Main.netMode == oldMode && Main.myPlayer == oldLocal,
+            "native Spiritweave equipment frame audit restores occupant and authority contexts");
+    }
+
     private static void AuditSpiritweaveArmor(Action<bool, string> check)
     {
         int[] types = { ModContent.ItemType<SpiritweaveHood>(), ModContent.ItemType<SpiritweaveRobe>(), ModContent.ItemType<SpiritweaveLeggings>() };
