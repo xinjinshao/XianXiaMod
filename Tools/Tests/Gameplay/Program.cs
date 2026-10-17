@@ -1367,3 +1367,13 @@ foreach(int id in Enumerable.Range(1,7))foreach(bool previous in new[]{false,tru
 }
 foreach(int invalid in new[]{0,255})foreach(bool previous in new[]{false,true})Check(Convert.ToInt32(panelStep.Invoke(null,new object[]{Enum.ToObject(panelSkillType,invalid),previous}))==(previous?7:1),"Compiled panel navigation normalizes invalid selection");
 Console.WriteLine($"Actual engine gameplay assertions including panel navigation: {assertions}.");
+
+var forgeRules=type.Assembly.GetType("XianXia.Common.Systems.InscriptionRules",true).GetMethod("AdjacentTarget");
+foreach(int count in new[]{0,1,6,7,12,57}){
+ int[] slots=Enumerable.Range(1,count).ToArray();
+ foreach(bool previous in new[]{false,true}){
+  Check(Convert.ToInt32(forgeRules.Invoke(null,new object[]{slots,-1,previous}))==(count==0?-1:previous?count:1),"Compiled forge navigation chooses initial target or none");
+  foreach(int index in Enumerable.Range(0,count))Check(Convert.ToInt32(forgeRules.Invoke(null,new object[]{slots,slots[index],previous}))==slots[(index+(previous?count-1:1))%count],"Compiled forge target navigation preserves slot order across pages");
+ }
+}
+Console.WriteLine($"Actual engine gameplay assertions including forge target navigation: {assertions}.");

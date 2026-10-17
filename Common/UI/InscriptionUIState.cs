@@ -29,11 +29,12 @@ public class InscriptionUIState : UIState
     private bool targetChanged;
     private string targetName;
     private readonly List<int> eligibleSlots = new();
+    private readonly Dictionary<int,Action> selectTargetActions = new();
     private string Text(string key, params object[] args) => Language.GetTextValue("Mods.XianXia.Inscriptions." + key, args);
     private void Close() => ModContent.GetInstance<InscriptionUISystem>().Close();
     public override void OnInitialize()
     {
-        panel = new UIPanel(); panel.Width.Set(540, 0); panel.Height.Set(470, 0); panel.HAlign = 0.75f; panel.VAlign = 0.5f;
+        panel = new UIPanel(); panel.Width.Set(540, 0); panel.Height.Set(500, 0); panel.HAlign = 0.75f; panel.VAlign = 0.5f;
         panel.BackgroundColor = new Color(25, 45, 55, 235); Append(panel);
         title = new UIText(""); title.Top.Set(2, 0); panel.Append(title);
         summary = new UIText("", 0.75f) { IsWrapped = true }; summary.Top.Set(32, 0);
@@ -42,17 +43,11 @@ public class InscriptionUIState : UIState
         Button(panel, Text("Previous"), 0, 366, 72, () => { page--; Refresh(); });
         Button(panel, Text("Next"), 80, 366, 72, () => { page++; Refresh(); });
         pageLabel = new UIText(""); pageLabel.Left.Set(164, 0); pageLabel.Top.Set(374, 0); panel.Append(pageLabel);
-        Button(panel, Text("Confirm"), 0, 405, 330, () => {
-            if (targetSlot < 0) return;
-            if (!TargetStillMatches(Main.LocalPlayer)) { targetSlot = -1; targetChanged = true; Refresh(); return; }
-            if (Main.LocalPlayer.inventory[toolSlot].ModItem is InscriptionToolItem tool && tool.TransformsArtifact)
-                DaoArtifactTransactions.Request(Main.LocalPlayer,toolSlot,toolType,targetSlot,targetType,targetPrefix,previousKind,previousLevel,previousAwakened,previousDaoRoute,previousWorldRoute);
-            else InscriptionTransactions.Request(Main.LocalPlayer, toolSlot, toolType, targetSlot, targetType, targetPrefix, previousKind, previousLevel, previousAwakened);
-            Close();
-        });
+        Button(panel, Text("Confirm"), 0, 405, 330, ConfirmSelection);
         Button(panel, Text("Close"), 350, 405, 160, Close);
+        var hint = new UIText(Text("NavigationHint"),0.65f) { IsWrapped = true }; hint.Top.Set(442,0); hint.Width.Set(0,1); hint.Height.Set(32,0); panel.Append(hint);
     }
-    private static void Button(UIElement parent, string text, float x, float y, float width, Action action)
+    private static InscriptionButton Button(UIElement parent, string text, float x, float y, float width, Action action)
     {
         string shown = text;
         while (shown.Length > 1 && FontAssets.MouseText.Value.MeasureString(shown).X * 0.75f > width - 24)
@@ -60,7 +55,7 @@ public class InscriptionUIState : UIState
         if (shown.Length < text.Length && shown.Length > 2) shown = shown[..^2] + "…";
         var button = new InscriptionButton(shown, text); button.Left.Set(x, 0); button.Top.Set(y, 0);
         button.Width.Set(width, 0); button.Height.Set(30, 0);
-        button.OnLeftClick += (_, _) => action(); parent.Append(button);
+        button.OnLeftClick += (_, _) => action(); parent.Append(button); return button;
     }
     private sealed class InscriptionButton : UITextPanel<string>
     {
@@ -94,7 +89,7 @@ public class InscriptionUIState : UIState
         if (tool.TransformsArtifact) summary.SetText(Language.GetTextValue("Mods.XianXia.DaoArtifacts.Selection",targetSlot < 0 ? Text("ChooseTarget") : targetName,
             Language.GetTextValue(EndgameRouteTransactions.NameKey(DownedBossSystem.ChosenRoute))));
         if (targetChanged) summary.SetText(Text("TargetChanged"));
-        eligibleSlots.Clear();
+        eligibleSlots.Clear(); selectTargetActions.Clear();
         for (int slot = 0; slot < Math.Min(58, player.inventory.Length); slot++)
             if (slot != toolSlot && (tool.RefinesArtifact ? RefinedArtifact.SupportsRefinement(player.inventory[slot])
                 : tool.AwakensArtifact ? RefinedArtifact.SupportsAwakening(player.inventory[slot])
@@ -117,7 +112,7 @@ public class InscriptionUIState : UIState
             if (tool.AwakensArtifact) label = Language.GetTextValue("Mods.XianXia.Refinement.AwakeningRow", slot + 1, shownName,
                 Language.GetTextValue(shownAwakened ? "Mods.XianXia.Refinement.AwakeState" : "Mods.XianXia.Refinement.DormantState"));
             if (tool.TransformsArtifact) label = Language.GetTextValue("Mods.XianXia.DaoArtifacts.Row",slot + 1,shownName,Language.GetTextValue(EndgameRouteTransactions.NameKey((DownedBossSystem.EndgameRoute)shownDaoRoute)));
-            Button(rows, label, 0, row * 35, 508, () => {
+            Action choose = () => {
                 Item chosen = Main.LocalPlayer.inventory[slot];
                 if (!InscribedEquipment.IsEligible(chosen) || chosen.type != shownType || chosen.prefix != shownPrefix
                     || (byte)InscribedEquipment.GetKind(chosen) != shownKind || RefinedArtifact.GetLevel(chosen) != shownLevel
@@ -126,8 +121,35 @@ public class InscriptionUIState : UIState
                 previousKind = shownKind; previousLevel = shownLevel; previousAwakened = shownAwakened; previousDaoRoute = shownDaoRoute;
                 targetChanged = false;
                 previousWorldRoute = (byte)DownedBossSystem.ChosenRoute; targetName = shownName; Refresh();
-            });
+            };
+            selectTargetActions[slot] = choose;
+            var button = Button(rows,label,0,row * 35,508,choose);
+            if (slot == targetSlot) button.BorderColor = Color.Gold;
         }
+    }
+    private bool ToolStillMatches(Player player) => !Main.gameMenu && !Main.blockInput && !Main.drawingPlayerChat
+        && player.active && !player.dead && Main.playerInventory && !player.noItems && !player.CCed
+        && toolSlot >= 0 && toolSlot < Math.Min(58,player.inventory.Length) && Main.mouseItem.IsAir
+        && player.selectedItem == toolSlot && player.inventory[toolSlot].type == toolType
+        && player.inventory[toolSlot].ModItem is InscriptionToolItem;
+    private void ConfirmSelection()
+    {
+        Player player = Main.LocalPlayer;
+        if (!ToolStillMatches(player)) { Close(); return; }
+        if (targetSlot < 0) return;
+        if (!TargetStillMatches(player)) { targetSlot = -1; targetChanged = true; Refresh(); return; }
+        if (player.inventory[toolSlot].ModItem is InscriptionToolItem tool && tool.TransformsArtifact)
+            DaoArtifactTransactions.Request(player,toolSlot,toolType,targetSlot,targetType,targetPrefix,previousKind,previousLevel,previousAwakened,previousDaoRoute,previousWorldRoute);
+        else InscriptionTransactions.Request(player,toolSlot,toolType,targetSlot,targetType,targetPrefix,previousKind,previousLevel,previousAwakened);
+        Close();
+    }
+    private void NavigateTarget(bool previous)
+    {
+        Refresh();
+        int slot = InscriptionRules.AdjacentTarget(eligibleSlots,targetSlot,previous);
+        if (slot < 0) return;
+        page = eligibleSlots.IndexOf(slot) / 6; Refresh();
+        if (selectTargetActions.TryGetValue(slot,out var choose)) choose();
     }
     private bool TargetStillMatches(Player player)
     {
@@ -144,14 +166,15 @@ public class InscriptionUIState : UIState
     public override void Update(GameTime gameTime)
     {
         Player player = Main.LocalPlayer;
-        if (Main.gameMenu || player.dead || !Main.playerInventory || !player.active || player.noItems || player.CCed
-            || toolSlot < 0 || toolSlot >= Math.Min(58, player.inventory.Length)
-            || !Main.mouseItem.IsAir
-            || player.selectedItem != toolSlot || player.inventory[toolSlot].type != toolType
-            || Main.keyState.IsKeyDown(Keys.Escape)) { Close(); return; }
-        if (targetSlot >= 0 && !TargetStillMatches(player)) { targetSlot = -1; targetChanged = true; Refresh(); }
-        base.Update(gameTime);
+        if (!ToolStillMatches(player) || Main.keyState.IsKeyDown(Keys.Escape)
+            || ArtifactKeybindSystem.ForgeCancelKey?.JustPressed == true) { Close(); return; }
         if (panel.ContainsPoint(Main.MouseScreen / Math.Max(0.01f, Main.UIScale))) player.mouseInterface = true;
+        if (targetSlot >= 0 && !TargetStillMatches(player)) { targetSlot = -1; targetChanged = true; Refresh(); }
+        bool next = ArtifactKeybindSystem.ForgeNextKey?.JustPressed == true, previous = ArtifactKeybindSystem.ForgePreviousKey?.JustPressed == true;
+        if (next && previous) { Close(); return; }
+        if (next || previous) { NavigateTarget(previous); return; }
+        if (ArtifactKeybindSystem.ForgeConfirmKey?.JustPressed == true) { ConfirmSelection(); return; }
+        base.Update(gameTime);
         if (++refreshTimer >= 20) { refreshTimer = 0; Refresh(); }
     }
 }

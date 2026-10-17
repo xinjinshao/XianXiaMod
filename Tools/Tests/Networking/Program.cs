@@ -1660,6 +1660,16 @@ foreach(int mode in new[]{0,1,2}) foreach(ArtifactSkill skill in Enum.GetValues<
  item.GetGlobalItem<XianXia.Common.Items.RefinedArtifact>().SetLevel(2);Check(ArtifactSkillTransactions.UnavailableReason(actor,skill)=="Mods.XianXia.Skills.Unavailable","Panel refuses dormant held artifact");
 }
 Check(ArtifactSkillTransactions.UnavailableReason(null,ArtifactSkill.WardGuard)=="Mods.XianXia.Skills.Unavailable","Readiness rejects absent player without side effects");
+// Actual target navigation rules preserve inventory-slot identity across six-row page boundaries.
+foreach(int length in new[]{0,1,6,7,12,57}) {
+ var slots=Enumerable.Range(0,length).Select(i=>i+1).ToArray();var unchanged=slots.ToArray();
+ foreach(bool previous in new[]{false,true}) {
+  Check(InscriptionRules.AdjacentTarget(slots,-1,previous)==(length==0?-1:previous?slots.Last():slots.First()),"Unselected forging target starts at first or last eligible slot");
+  foreach(int index in Enumerable.Range(0,length)){int expected=slots[(index+(previous?length-1:1))%length];int chosen=InscriptionRules.AdjacentTarget(slots,slots[index],previous);Check(chosen==expected&&InscriptionRules.AdjacentTarget(slots,chosen,!previous)==slots[index],"Forging target selection wraps reversibly across pages and skipped tool slots");}
+ }
+ Check(slots.SequenceEqual(unchanged),"Forging target navigation does not mutate eligible inventory list");
+}
+Check(InscriptionRules.AdjacentTarget(null,0,false)==-1,"Absent forging target list has no selection");
 // Actual input hook: bindable panel selection is local and only explicit confirmation may request a cast.
 Game.dedServ=false;var panelBindings=new ArtifactKeybindSystem();panelBindings.Load();
 foreach(int mode in new[]{0,1}) {
@@ -1676,7 +1686,8 @@ foreach(int mode in new[]{0,1}) {
  foreach(int guard in Enumerable.Range(0,9)){PressPanel("SkillPanelCancel");PressPanel("SkillPanelNext");switch(guard){case 0:Game.gameMenu=true;break;case 1:Game.blockInput=true;break;case 2:Game.drawingPlayerChat=true;break;case 3:Game.playerInventory=true;break;case 4:actor.dead=true;break;case 5:actor.noItems=true;break;case 6:actor.CCed=true;break;case 7:actor.State.discoveredSpiritualEnergy=false;break;case 8:actor.active=false;break;}int sent=ModPacket.Sent.Count;PressPanel("SkillPanelCast");Check(input.SelectedPanelSkill==null&&ModPacket.Sent.Count==sent,"Unavailable UI/input context clears selection and cannot confirm a stale skill");Game.gameMenu=Game.blockInput=Game.drawingPlayerChat=Game.playerInventory=false;actor.dead=actor.noItems=actor.CCed=false;actor.active=true;actor.State.discoveredSpiritualEnergy=true;}
  PressPanel("SkillPanelNext");input.UpdateDead();Check(input.SelectedPanelSkill==null,"Death hook clears selection");PressPanel("SkillPanelNext");input.OnEnterWorld();Check(input.SelectedPanelSkill==null,"World entry clears prior selection");
 }
-panelBindings.Unload();Check(ArtifactKeybindSystem.PanelNextKey==null&&ArtifactKeybindSystem.PanelPreviousKey==null&&ArtifactKeybindSystem.PanelCastKey==null&&ArtifactKeybindSystem.PanelCancelKey==null,"Unload releases panel bindings");
+Check(ArtifactKeybindSystem.ForgeNextKey!=null&&ArtifactKeybindSystem.ForgePreviousKey!=null&&ArtifactKeybindSystem.ForgeConfirmKey!=null&&ArtifactKeybindSystem.ForgeCancelKey!=null,"All four forging navigation bindings register independently of skill controls");
+panelBindings.Unload();Check(ArtifactKeybindSystem.PanelNextKey==null&&ArtifactKeybindSystem.PanelPreviousKey==null&&ArtifactKeybindSystem.PanelCastKey==null&&ArtifactKeybindSystem.PanelCancelKey==null&&ArtifactKeybindSystem.ForgeNextKey==null&&ArtifactKeybindSystem.ForgePreviousKey==null&&ArtifactKeybindSystem.ForgeConfirmKey==null&&ArtifactKeybindSystem.ForgeCancelKey==null,"Unload releases panel and forging bindings");
 // Actual Thunder Sword hit hook: owner authority, lifecycle, minimum half damage and no observer/server RNG.
 XianXia.Content.Projectiles.ThunderSwordProjectile ThunderProcFixture(int mode,int local=0,int damage=201) {
  Game.myPlayer=0;SetupSkill("ThunderPatternSwordCase");Game.netMode=mode;Game.myPlayer=local;Game.rand=new Terraria.RandomStub{Roll=0};

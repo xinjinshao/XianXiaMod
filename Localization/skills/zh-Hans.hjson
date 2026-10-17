@@ -13,6 +13,18 @@ Mods: {
    SkillPanelCancel: {
     DisplayName: "技能面板：取消选择"
    }
+   ForgePanelNext: {
+    DisplayName: "铭刻/炼器：下一个目标"
+   }
+   ForgePanelPrevious: {
+    DisplayName: "铭刻/炼器：上一个目标"
+   }
+   ForgePanelConfirm: {
+    DisplayName: "铭刻/炼器：确认"
+   }
+   ForgePanelCancel: {
+    DisplayName: "铭刻/炼器：取消"
+   }
    ArtifactSkill: {
     DisplayName: 法器主动技能
    }

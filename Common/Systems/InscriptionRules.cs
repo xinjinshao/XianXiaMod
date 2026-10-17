@@ -5,6 +5,13 @@ public enum InscriptionKind : byte { None, Greenwood, Furnace, Thunder, StarAbys
 public static class InscriptionRules
 {
     public const int SpiritStoneCost = 3;
+    public static int AdjacentTarget(System.Collections.Generic.IReadOnlyList<int> slots, int current, bool previous)
+    {
+        if (slots == null || slots.Count == 0) return -1;
+        for (int i = 0; i < slots.Count; i++)
+            if (slots[i] == current) return slots[(i + (previous ? slots.Count - 1 : 1)) % slots.Count];
+        return slots[previous ? slots.Count - 1 : 0];
+    }
     public static InscriptionKind Normalize(int value) => value >= 0 && value <= 5 ? (InscriptionKind)value : InscriptionKind.None;
     public static bool CanChange(InscriptionKind current, InscriptionKind next) =>
         Normalize((int)current) == current && Normalize((int)next) == next && current != next;

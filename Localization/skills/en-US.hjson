@@ -13,6 +13,18 @@ Mods: {
    SkillPanelCancel: {
     DisplayName: "Skill panel: clear selection"
    }
+   ForgePanelNext: {
+    DisplayName: "Inscription/refining: next target"
+   }
+   ForgePanelPrevious: {
+    DisplayName: "Inscription/refining: previous target"
+   }
+   ForgePanelConfirm: {
+    DisplayName: "Inscription/refining: confirm"
+   }
+   ForgePanelCancel: {
+    DisplayName: "Inscription/refining: cancel"
+   }
    ArtifactSkill: {
     DisplayName: Artifact active skill
    }
