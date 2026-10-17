@@ -7,6 +7,7 @@ using Terraria.GameContent.Generation;
 using Terraria.ID;
 using Terraria.IO;
 using Terraria.ModLoader;
+using Terraria.ObjectData;
 using Terraria.WorldBuilding;
 using XianXia.Content.Tiles;
 
@@ -90,55 +91,91 @@ public class GeneratedBiomeWorldGenSystem : ModSystem
         if (placed < count) Mod.Logger.Warn($"Cultivation object {tileType} placement incomplete; no suitable space in generated regions.");
     }
 
-    private static bool TryPlacePedestal(int tileType, int groundType, int height, int x, int groundY)
+    private static bool TryPlacePedestal(int tileType, int groundType, int height, int x, int groundY) =>
+        TryPlaceProtectedPedestal(tileType,groundType,height,x,groundY,GenVars.structures);
+
+    internal static bool TryPlaceProtectedPedestal(int tileType,int groundType,int height,int x,int groundY,StructureMap structures)
     {
-        if (!WorldGen.InWorld(x, groundY, 10) || !WorldGen.InWorld(x + 1, groundY - height, 10)) return false;
-        for (int column = 0; column < 2; column++)
-            for (int row = 0; row <= height; row++)
-            {
-                Tile space = Main.tile[x + column, groundY - row];
-                if (space.HasTile || space.LiquidAmount > 0) return false;
+        if (!PlacementAllowed(tileType,groundType,height,x,groundY,structures)) return false;
+        for (int column = 0; column < 2; column++) for (int row = 0; row <= height; row++) {
+            Tile space = Main.tile[x + column,groundY - row];
+            if (space.HasTile || space.LiquidAmount > 0) return false;
+        }
+        var original = CapturePlacement(x,groundY,height); bool placed = false;
+        try {
+            for (int column = 0; column < 2; column++) {
+                Tile support = Main.tile[x + column,groundY];
+                support.HasTile = true; support.TileType = (ushort)groundType; support.IsHalfBlock = false; support.Slope = 0;
             }
-        for (int column = 0; column < 2; column++)
-        {
-            Tile support = Main.tile[x + column, groundY];
-            support.HasTile = true;
-            support.TileType = (ushort)groundType;
-            support.IsHalfBlock = false;
-            support.Slope = 0;
-            WorldGen.SquareTileFrame(x + column, groundY);
-        }
-        if (TryPlaceObject(tileType, groundType, height, x, groundY)) return true;
-        for (int column = 0; column < 2; column++)
-        {
-            Tile support = Main.tile[x + column, groundY];
-            support.HasTile = false;
-        }
-        return false;
+            if (!TryPlaceProtectedObject(tileType,groundType,height,x,groundY,structures)) return false;
+            for (int column = 0; column < 2; column++) WorldGen.SquareTileFrame(x + column,groundY);
+            placed = true;
+            return true;
+        } finally { if (!placed) RestorePlacement(original); }
     }
 
-    private static bool TryPlaceObject(int tileType, int groundType, int height, int x, int groundY)
+    private static bool TryPlaceObject(int tileType, int groundType, int height, int x, int groundY) =>
+        TryPlaceProtectedObject(tileType,groundType,height,x,groundY,GenVars.structures);
+
+    internal static bool TryPlaceProtectedObject(int tileType,int groundType,int height,int x,int groundY,StructureMap structures)
     {
-            if (!WorldGen.InWorld(x, groundY, 10) || !WorldGen.InWorld(x + 1, groundY - height, 10)) return false;
-            bool valid = true;
-            for (int column = 0; column < 2; column++)
-            {
-                Tile support = Main.tile[x + column, groundY];
-                if (!support.HasTile || support.TileType != groundType || support.IsHalfBlock || support.Slope != 0) valid = false;
-                for (int row = 1; row <= height; row++)
-                {
-                    Tile space = Main.tile[x + column, groundY - row];
-                    if (space.HasTile || space.LiquidAmount > 0) valid = false;
-                }
+        if (!PlacementAllowed(tileType,groundType,height,x,groundY,structures)) return false;
+        for (int column = 0; column < 2; column++) {
+            Tile support = Main.tile[x + column,groundY];
+            if (!support.HasTile || support.TileType != groundType || support.IsHalfBlock || support.Slope != 0) return false;
+            for (int row = 1; row <= height; row++) {
+                Tile space = Main.tile[x + column,groundY - row];
+                if (space.HasTile || space.LiquidAmount > 0) return false;
             }
-            if (!valid) return false;
-            WorldGen.PlaceObject(x, groundY - 1, tileType);
-            // Do not count an attempted placement: inspect the full resulting object.
-            bool complete = true;
-            for (int column = 0; column < 2; column++)
-                for (int row = 1; row <= height; row++)
-                    if (!Main.tile[x + column, groundY - row].HasTile || Main.tile[x + column, groundY - row].TileType != tileType) complete = false;
+        }
+        var original = CapturePlacement(x,groundY,height); bool complete = false;
+        try {
+            WorldGen.PlaceObject(x,groundY - 1,tileType);
+            bool valid = true;
+            for (int column = 0; column < 2; column++) for (int row = 0; row < height; row++) {
+                Tile part = Main.tile[x + column,groundY - height + row];
+                if (!part.HasTile || part.TileType != tileType || part.TileFrameX != column * 16 || part.TileFrameY != row * 16) valid = false;
+            }
+            complete = valid;
             return complete;
+        } finally { if (!complete) RestorePlacement(original); }
+    }
+
+    private static bool PlacementAllowed(int tileType,int groundType,int height,int x,int groundY,StructureMap structures)
+    {
+        if (structures == null || height < 1 || height >= Main.maxTilesY || tileType < 0 || tileType >= TileLoader.TileCount
+            || groundType < 0 || groundType >= TileLoader.TileCount || !WorldGen.InWorld(x,groundY,10) || !WorldGen.InWorld(x + 1,groundY - height,10)) return false;
+        var data = TileObjectData.GetTileData(tileType,0);
+        if (data == null || data.Width != 2 || data.Height != height || data.Origin.X != 0 || data.Origin.Y != height - 1
+            || data.CoordinateWidth != 16 || data.CoordinatePadding != 0) return false;
+        bool ownedHall = false;
+        if (tileType == ModContent.TileType<SwordTabletTile>() && groundType == ModContent.TileType<SectRuinBrickTile>() && height == 3)
+            foreach (Rectangle hall in ModContent.GetInstance<SectRuinHallSystem>().Halls)
+                if (x >= hall.Left + 2 && x + 1 < hall.Right - 2 && groundY == hall.Bottom - 3 && groundY - height >= hall.Top) { ownedHall = true; break; }
+        for (int column = 0; column < 2; column++) for (int row = 0; row <= height; row++) {
+            int tx = x + column, ty = groundY - row; Tile tile = Main.tile[tx,ty];
+            if (Main.wallHouse[tile.WallType] || tile.HasActuator || tile.RedWire || tile.BlueWire || tile.GreenWire || tile.YellowWire
+                || (!ownedHall && !WorldGenerationProtection.CanChange(tx,ty,structures))) return false;
+        }
+        return true;
+    }
+
+    private readonly record struct PlacementCell(int X,int Y,bool Has,ushort Type,short FX,short FY,Terraria.ID.SlopeType Slope,bool Half);
+    private static List<PlacementCell> CapturePlacement(int x,int groundY,int height)
+    {
+        var cells = new List<PlacementCell>();
+        for (int column = 0; column < 2; column++) for (int row = 0; row <= height; row++) {
+            Tile tile = Main.tile[x + column,groundY - row];
+            cells.Add(new PlacementCell(x + column,groundY - row,tile.HasTile,tile.TileType,tile.TileFrameX,tile.TileFrameY,tile.Slope,tile.IsHalfBlock));
+        }
+        return cells;
+    }
+    private static void RestorePlacement(List<PlacementCell> cells)
+    {
+        foreach (var cell in cells) {
+            Tile tile = Main.tile[cell.X,cell.Y]; tile.HasTile = cell.Has; tile.TileType = cell.Type;
+            tile.TileFrameX = cell.FX; tile.TileFrameY = cell.FY; tile.Slope = cell.Slope; tile.IsHalfBlock = cell.Half;
+        }
     }
 
     private static List<Rectangle> GenerateGroundPatches(int primaryTile, int accentTile, int patches, int minY, int maxY, int radiusX, int radiusY, int wallType = -1)

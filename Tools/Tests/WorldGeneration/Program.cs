@@ -1,5 +1,5 @@
 using Terraria;using Microsoft.Xna.Framework;using XianXia.Common.Systems;using System.Reflection;
-int assertions=0;void Check(bool ok,string msg){assertions++;if(!ok)throw new Exception(msg);}void Reset(){for(int x=0;x<60;x++)for(int y=0;y<60;y++)Main.tile[x,y]=new();WorldGen.genRand=new();WorldGen.Calls=0;WorldGen.Positions.Clear();WorldGen.Allow=true;Terraria.WorldBuilding.GenVars.structures=new();}
+int assertions=0;void Check(bool ok,string msg){assertions++;if(!ok)throw new Exception(msg);}void Reset(){for(int x=0;x<60;x++)for(int y=0;y<60;y++)Main.tile[x,y]=new();WorldGen.genRand=new();WorldGen.Calls=0;WorldGen.Positions.Clear();WorldGen.Allow=true;WorldGen.Partial=WorldGen.BadFrames=WorldGen.Throws=WorldGen.FrameThrows=false;Terraria.WorldBuilding.GenVars.structures=new();}
 var type=typeof(GeneratedBiomeWorldGenSystem);var place=type.GetMethod("PlaceObjects",BindingFlags.NonPublic|BindingFlags.Instance);var paint=type.GetMethod("PaintEllipse",BindingFlags.NonPublic|BindingFlags.Static);List<Rectangle> regions=[new(12,12,20,20)];
 Reset();for(int x=12;x<32;x++){Main.tile[x,25].HasTile=true;Main.tile[x,25].TileType=88;}var system=new GeneratedBiomeWorldGenSystem();place.Invoke(system,new object[]{77,2,regions,88,3});Check(system.Mod.Logger.InfoMessages[0].Contains("2/2"),"Count complete placed objects");Check(WorldGen.Positions.All(p=>p.X>=12&&p.X+1<32&&p.Y-2>=12&&p.Y<32),"Placement stays in matching region");Check(WorldGen.Positions.Count==2,"Stops after enough complete objects");
 Reset();for(int x=12;x<32;x++){Main.tile[x,25].HasTile=true;Main.tile[x,25].TileType=99;}for(int x=12;x<32;x++)for(int y=12;y<32;y++){Main.tile[x,y].HasTile=true;Main.tile[x,y].TileType=99;}system=new();place.Invoke(system,new object[]{77,2,regions,88,3});Check(WorldGen.Calls==0&&system.Mod.Logger.WarnMessages.Count==1,"Wrong biome support rejected and reported");
@@ -33,4 +33,22 @@ Check(!WorldGenerationProtection.CanChange(-1,20,new()),"Out of world cell rejec
 var full=new Terraria.WorldBuilding.StructureMap();full.AddProtectedStructure(new Rectangle(10,10,20,20));
 Check(GeneratedBiomeWorldGenSystem.PaintCloudEllipse(20,20,7,7,42,full)==0,"Fully protected clouds report zero placed cells");
 Check(!WorldGenerationProtection.CanChange(18,20,reserved)&&WorldGenerationProtection.CanChange(17,20,reserved),"One-cell framing buffer respected");
+Reset();var occupied=new Terraria.WorldBuilding.StructureMap();occupied.AddProtectedStructure(new Rectangle(20,20,2,6));
+Check(!GeneratedBiomeWorldGenSystem.TryPlaceProtectedPedestal(77,88,3,20,25,occupied)&&WorldGen.Calls==0&&!Main.tile[20,25].HasTile,"Protected empty pedestal site never changes terrain or calls engine");
+Reset();for(int x=20;x<22;x++){Main.tile[x,25].HasTile=true;Main.tile[x,25].TileType=88;}
+Check(!GeneratedBiomeWorldGenSystem.TryPlaceProtectedObject(77,88,3,20,25,occupied)&&WorldGen.Calls==0,"Protected direct object placement rejected");
+Reset();Main.tile[20,23].RedWire=true;
+Check(!GeneratedBiomeWorldGenSystem.TryPlaceProtectedPedestal(77,88,3,20,25,new())&&WorldGen.Calls==0,"Wired empty site rejected");
+Reset();Check(!GeneratedBiomeWorldGenSystem.TryPlaceProtectedPedestal(77,88,2,20,25,new())&&WorldGen.Calls==0,"Mismatched engine dimensions rejected before writing outside footprint");
+foreach(int failure in new[]{0,1,2,3,4}) {
+ Reset();var support=Main.tile[20,25];support.TileType=99;support.TileFrameX=36;support.TileFrameY=54;support.Slope=(Terraria.ID.SlopeType)1;support.IsHalfBlock=true;
+ WorldGen.Allow=failure!=0;WorldGen.Partial=failure==1;WorldGen.BadFrames=failure==2;WorldGen.Throws=failure==3;WorldGen.FrameThrows=failure==4;
+ bool failed=false;try{failed=!GeneratedBiomeWorldGenSystem.TryPlaceProtectedPedestal(77,88,3,20,25,new());}catch(InvalidOperationException){failed=true;}
+ Check(failed&&support.TileType==99&&support.TileFrameX==36&&support.TileFrameY==54&&support.Slope==(Terraria.ID.SlopeType)1&&support.IsHalfBlock
+  &&Enumerable.Range(20,2).All(x=>Enumerable.Range(22,4).All(y=>!Main.tile[x,y].HasTile)),"Engine refusal/partial/wrong-frame/placement or frame exception restores full original footprint including foundation metadata");
+}
+Reset();SectRuinHallSystem.Fixtures.Add(new Rectangle(12,12,41,19));occupied=new();occupied.AddProtectedStructure(SectRuinHallSystem.Fixtures[0]);
+for(int x=22;x<24;x++){Main.tile[x,28].HasTile=true;Main.tile[x,28].TileType=42;}
+Check(GeneratedBiomeWorldGenSystem.TryPlaceProtectedObject(42,42,3,22,28,occupied),"Owned hall interior allows its planned sword tablet despite own reservation");
+SectRuinHallSystem.Fixtures.Clear();
 Console.WriteLine($"Actual world-generation source regression passed: {assertions} assertions; mocked tile placement and structure-map boundaries, no full world generated.");
