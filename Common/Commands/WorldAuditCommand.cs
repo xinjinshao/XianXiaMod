@@ -50,8 +50,22 @@ public class WorldAuditCommand : ModCommand
                 if (item != null && item.type == stone && !item.IsAir) { found = true; spiritStones += item.stack; }
             if (found) supplyChests++;
         }
+        var hallReports = new List<object>();
+        foreach (var area in ModContent.GetInstance<global::XianXia.Common.Systems.SectRuinHallSystem>().Halls) {
+            int bricks = 0, blockedInterior = 0, tablets = 0; bool entrances = true, dry = true;
+            for (int x = 0; x < area.Width; x++) for (int y = 0; y < area.Height; y++) {
+                Tile tile = Main.tile[area.X + x,area.Y + y];
+                dry &= tile.LiquidAmount == 0;
+                if (tile.HasTile && tile.TileType == ModContent.TileType<SectRuinBrickTile>()) bricks++;
+                bool shell = global::XianXia.Common.Systems.SectRuinHallSystem.IsBrick(x,y);
+                if (!shell && tile.HasTile && Main.tileSolid[tile.TileType]) blockedInterior++;
+                if (!shell && (x < 2 || x >= area.Width - 2)) entrances &= !tile.HasTile;
+                if (tile.HasTile && tile.TileType == ModContent.TileType<SwordTabletTile>() && tile.TileFrameX == 0 && tile.TileFrameY == 0) tablets++;
+            }
+            hallReports.Add(new { area.X, area.Y, area.Width, area.Height, Bricks = bricks, BlockedInterior = blockedInterior, EntrancesOpen = entrances, Dry = dry, SwordTablets = tablets });
+        }
         string report = JsonSerializer.Serialize(new { Width = Main.maxTilesX, Height = Main.maxTilesY, Objects = objects.Values,
-            ChestsWithSpiritStones = supplyChests, ChestSpiritStoneTotal = spiritStones });
+            SectRuinHalls = hallReports, ChestsWithSpiritStones = supplyChests, ChestSpiritStoneTotal = spiritStones });
         Mod.Logger.Info("SavedWorldAudit: " + report);
         caller.Reply(report);
     }

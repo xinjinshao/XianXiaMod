@@ -49,6 +49,7 @@ public class GeneratedBiomeWorldGenSystem : ModSystem
     private void PlaceCultivationObjects(GenerationProgress progress, GameConfiguration configuration)
     {
         progress.Message = Language.GetTextValue("Mods.XianXia.WorldGeneration.CultivationDomains");
+        sect = ModContent.GetInstance<SectRuinHallSystem>().Generate(sect);
         PlaceObjects(ModContent.TileType<SwordTabletTile>(), 4, sect, ModContent.TileType<SectRuinBrickTile>(), 3);
         PlaceObjects(ModContent.TileType<SingingThunderStoneTile>(), 3, thunder, ModContent.TileType<ThunderCloudTile>(), 2);
         PlaceObjects(ModContent.TileType<RiftMembraneTile>(), 3, star, ModContent.TileType<StarAbyssCrystalTile>(), 2);
@@ -59,6 +60,10 @@ public class GeneratedBiomeWorldGenSystem : ModSystem
     private void PlaceObjects(int tileType, int count, List<Rectangle> regions, int groundType, int height)
     {
         int placed = 0;
+        if (tileType == ModContent.TileType<SwordTabletTile>())
+            foreach (Rectangle hall in ModContent.GetInstance<SectRuinHallSystem>().Halls)
+                foreach (int offset in new[] { 10, 29 })
+                    if (placed < count && TryPlaceObject(tileType, groundType, height, hall.Left + offset, hall.Bottom - 3)) placed++;
         for (int attempt = 0; attempt < count * 600 && placed < count && regions.Count > 0; attempt++)
         {
             Rectangle region = regions[WorldGen.genRand.Next(regions.Count)];

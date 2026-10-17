@@ -948,6 +948,7 @@ public partial class SummonAuditSystem : ModSystem
             AuditStationRecipes(Check);
             AuditStationBuffs(Check);
             AuditExposureLifecycle(Check);
+            AuditSectRuinHalls(Check);
             AuditHerbMap(Check);
             AuditHerbGrowth(Check);
             AuditHerbPlacement(Check);

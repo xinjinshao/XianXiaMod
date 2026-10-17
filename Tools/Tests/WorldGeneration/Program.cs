@@ -13,4 +13,9 @@ Reset();Main.tile[20,23].HasTile=true;Main.tile[20,23].TileType=99;Check(!(bool)
 Reset();WorldGen.Allow=false;Check(!(bool)pedestal.Invoke(null,new object[]{77,88,3,20,25})&&!Main.tile[20,25].HasTile&&!Main.tile[21,25].HasTile,"Failed object placement removes newly added pedestal");
 var passes = new List<Terraria.WorldBuilding.GenPass> { new() { Name="Shinies" }, new() { Name="Cleanup" } }; double weight=0;
 system.ModifyWorldGenTasks(passes,ref weight);Check(passes.Last().Name=="XianXia Cultivation Objects","Objects follow every existing terrain/cleanup pass");
+Reset();SectRuinHallSystem.Fixtures.Add(new Rectangle(12,12,41,19));
+for(int x=12;x<53;x++){Main.tile[x,28].HasTile=true;Main.tile[x,28].TileType=88;}
+system=new();place.Invoke(system,new object[]{42,2,new List<Rectangle>{new(12,12,41,19)},88,3});
+Check(WorldGen.Positions.SequenceEqual(new[]{(22,27),(41,27)}),"Sword tablets prefer two deliberate hall floor positions before random fallback");
+SectRuinHallSystem.Fixtures.Clear();
 Console.WriteLine($"Actual world-generation source regression passed: {assertions} assertions; mocked tile placement boundary, no full world generated.");
