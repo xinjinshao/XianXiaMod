@@ -46,5 +46,26 @@ foreach(var invalid in new[]{new TagCompound{{"spiritTideActive",true},{"spiritT
 foreach(Action blocker in new Action[]{()=>Main.bloodMoon=true,()=>Main.pumpkinMoon=true,()=>Main.snowMoon=true,()=>Main.invasionType=1,()=>Main.hardMode=false,()=>Main.player[0].dead=true,()=>Main.npc=new[]{new NPC{boss=true}}}){
  Main.bloodMoon=Main.pumpkinMoon=Main.snowMoon=false;Main.invasionType=0;Main.hardMode=true;Main.player[0].dead=false;Main.npc=Array.Empty<NPC>();Main.dayTime=true;system.OnWorldLoad();blocker();Main.dayTime=false;system.PostUpdateWorld();Check(!SpiritTideSystem.Active,"Conflicting event/progression/player/boss blocks start");
 }
+byte[] WorldPacket(bool active,byte wave,byte kills)=>new[]{active?(byte)1:(byte)0,wave,kills};
+void ImportWorld(byte[] bytes){using var reader=new BinaryReader(new MemoryStream(bytes));system.NetReceive(reader);}
+byte[] ExportWorld(){using var stream=new MemoryStream();using var writer=new BinaryWriter(stream);system.NetSend(writer);return stream.ToArray();}
+ImportWorld(WorldPacket(true,2,7));
+for(int cut=0;cut<3;cut++) {
+ bool threw=false;try{ImportWorld(WorldPacket(true,3,18).Take(cut).ToArray());}catch(EndOfStreamException){threw=true;}
+ Check(threw&&ExportWorld().SequenceEqual(WorldPacket(true,2,7)),"Truncated world packet preserves all previously accepted event fields");
+}
+int lootBefore=Item.Drops.Count;
+foreach(bool active in new[]{false,true}) foreach(byte wave in new byte[]{0,1,2,3,4,99,255}) foreach(byte kills in new byte[]{0,1,11,12,17,18,23,24,255}) {
+ ImportWorld(WorldPacket(active,wave,kills));bool expectedActive=active&&wave>=1&&wave<=3;
+ int required=wave switch{1=>12,2=>18,3=>24,_=>0};
+ Check(SpiritTideSystem.Active==expectedActive&&SpiritTideSystem.Wave==(expectedActive?wave:0)
+  &&SpiritTideSystem.Kills==(expectedActive?Math.Min((int)kills,required-1):0),"World packet normalization keeps legal wave bounds and clamps progress without completing a wave");
+}
+Check(Item.Drops.Count==lootBefore,"Importing event state never grants completion loot");
+foreach(int wave in new[]{1,2,3}) {
+ ImportWorld(WorldPacket(true,(byte)wave,5));var savedEvent=new TagCompound();system.SaveWorldData(savedEvent);
+ system.OnWorldUnload();system.OnWorldLoad();system.LoadWorldData(savedEvent);
+ Check(SpiritTideSystem.Active&&SpiritTideSystem.Wave==wave&&SpiritTideSystem.Kills==5&&SpiritTideSystem.RunId==1,"Each saved active wave resumes its progress with a fresh world encounter identity");
+}
 var pearl=new XianXia.Content.Items.Accessories.SpiritTidePearl();pearl.SetDefaults();Main.player[0].statManaMax2=100;pearl.UpdateAccessory(Main.player[0],false);Check(pearl.Item.accessory&&Main.player[0].statManaMax2==120&&Main.player[0].State.spiritualEnergyRegenBonus==1,"Actual unique reward accessory effect");
 Console.WriteLine($"Spirit Tide actual world/enemy/reward hooks passed: {count} assertions; native spawns, world transport, HUD and loot engine mocked.");
