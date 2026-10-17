@@ -7,6 +7,42 @@ namespace XianXia.Common.Systems;
 
 public partial class SummonAuditSystem
 {
+    private static void AuditHerbPlacement(Action<bool, string> check)
+    {
+        int x = Main.maxTilesX / 2, y = 12;
+        var saved = new System.Collections.Generic.List<(int X, int Y, bool Has, ushort Type, short FX, short FY, byte Liquid, Terraria.ID.SlopeType Slope, bool Half)>();
+        for (int dx = -3; dx <= 3; dx++) for (int dy = -3; dy <= 3; dy++) {
+            Tile tile = Main.tile[x + dx, y + dy];
+            saved.Add((x + dx, y + dy, tile.HasTile, tile.TileType, tile.TileFrameX, tile.TileFrameY, tile.LiquidAmount, tile.Slope, tile.IsHalfBlock));
+        }
+        int herb = ModContent.TileType<CultivatedSpiritHerbTile>();
+        try {
+            foreach (int support in new int[] { Terraria.ID.TileID.Dirt, Terraria.ID.TileID.Grass, Terraria.ID.TileID.JungleGrass,
+                ModContent.TileType<GreenwoodSoilTile>(), ModContent.TileType<SpiritMossTile>(), Terraria.ID.TileID.ClayPot, Terraria.ID.TileID.PlanterBox, Terraria.ID.TileID.Stone }) {
+                foreach (var cell in saved) {
+                    Tile tile = Main.tile[cell.X, cell.Y]; tile.HasTile = false; tile.LiquidAmount = 0;
+                    tile.TileFrameX = tile.TileFrameY = 0; tile.Slope = Terraria.ID.SlopeType.Solid; tile.IsHalfBlock = false;
+                }
+                Tile ground = Main.tile[x, y + 1]; ground.HasTile = true; ground.TileType = (ushort)support;
+                if (support == Terraria.ID.TileID.ClayPot || support == Terraria.ID.TileID.PlanterBox) {
+                    Tile floor = Main.tile[x, y + 2]; floor.HasTile = true; floor.TileType = Terraria.ID.TileID.Dirt;
+                }
+                WorldGen.PlaceObject(x, y, herb);
+                Tile crop = Main.tile[x, y]; bool planted = crop.HasTile && crop.TileType == herb;
+                check(planted == (support != Terraria.ID.TileID.Stone), "native object placement matches advertised herb soil/pot/planter anchors; support=" + support + "; support shape=" + Terraria.ObjectData.TileObjectData.GetTileData(support, 0)?.Width + "x" + Terraria.ObjectData.TileObjectData.GetTileData(support, 0)?.Height + "; anchor=" + Terraria.ObjectData.TileObjectData.GetTileData(herb, 0).AnchorBottom.type);
+                if (planted) check(crop.TileFrameX == 0, "native object placement starts the herb as an immature seedling");
+            }
+        } finally {
+            foreach (var cell in saved) { Tile tile = Main.tile[cell.X, cell.Y]; tile.HasTile = cell.Has; tile.TileType = cell.Type;
+                tile.TileFrameX = cell.FX; tile.TileFrameY = cell.FY; tile.LiquidAmount = cell.Liquid; tile.Slope = cell.Slope; tile.IsHalfBlock = cell.Half; }
+        }
+        check(System.Linq.Enumerable.All(saved, cell => {
+            Tile tile = Main.tile[cell.X, cell.Y];
+            return tile.HasTile == cell.Has && tile.TileType == cell.Type && tile.TileFrameX == cell.FX && tile.TileFrameY == cell.FY
+                && tile.LiquidAmount == cell.Liquid && tile.Slope == cell.Slope && tile.IsHalfBlock == cell.Half;
+        }), "native herb placement audit restores the complete bounded terrain fixture fields");
+    }
+
     private static void AuditHerbMap(Action<bool, string> check)
     {
         int x = Main.maxTilesX / 2, y = 12;
