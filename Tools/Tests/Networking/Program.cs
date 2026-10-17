@@ -1660,6 +1660,23 @@ foreach(int mode in new[]{0,1,2}) foreach(ArtifactSkill skill in Enum.GetValues<
  item.GetGlobalItem<XianXia.Common.Items.RefinedArtifact>().SetLevel(2);Check(ArtifactSkillTransactions.UnavailableReason(actor,skill)=="Mods.XianXia.Skills.Unavailable","Panel refuses dormant held artifact");
 }
 Check(ArtifactSkillTransactions.UnavailableReason(null,ArtifactSkill.WardGuard)=="Mods.XianXia.Skills.Unavailable","Readiness rejects absent player without side effects");
+// Actual input hook: bindable panel selection is local and only explicit confirmation may request a cast.
+Game.dedServ=false;var panelBindings=new ArtifactKeybindSystem();panelBindings.Load();
+foreach(int mode in new[]{0,1}) {
+ SetupSkill();Game.netMode=mode;Game.myPlayer=0;Game.MouseWorld=new(100,100);Game.gameMenu=Game.blockInput=Game.drawingPlayerChat=Game.playerInventory=false;var actor=Game.player[0];var input=new XianXia.Common.Players.ArtifactInputPlayer{Player=actor};input.Initialize();
+ void PressPanel(params string[] names){foreach(var key in KeybindLoader.Keys.Values)key.JustPressed=false;foreach(string name in names)KeybindLoader.Keys[name].JustPressed=true;input.ProcessTriggers(new Terraria.GameInput.TriggersSet());}
+ int count=ModPacket.Sent.Count;var snapshot=actor.State.CaptureSnapshot();PressPanel("SkillPanelNext");Check(input.SelectedPanelSkill==ArtifactSkill.SwordBurst,"Panel navigation begins at held artifact");
+ var visited=new HashSet<ArtifactSkill>();for(int i=0;i<7;i++){visited.Add(input.SelectedPanelSkill.Value);PressPanel("SkillPanelNext");}
+ Check(visited.Count==7&&input.SelectedPanelSkill==ArtifactSkill.SwordBurst,"Panel navigation reaches all seven skills and wraps");PressPanel("SkillPanelPrevious");Check(input.SelectedPanelSkill==ArtifactSkill.ThunderVolley,"Previous wraps across first skill");PressPanel("SkillPanelNext");
+ Check(actor.State.CaptureSnapshot()==snapshot&&ModPacket.Sent.Count==count&&!Game.projectile.Any(p=>p.active),"Navigation never spends casts or transmits");
+ PressPanel("SkillPanelCancel","SkillPanelCast");Check(input.SelectedPanelSkill==null&&ModPacket.Sent.Count==count&&actor.State.CaptureSnapshot()==snapshot,"Cancel takes priority over confirmation");
+ PressPanel("SkillPanelNext","SkillPanelCast");Check(input.SelectedPanelSkill==ArtifactSkill.SwordBurst&&ModPacket.Sent.Count==count&&actor.State.CaptureSnapshot()==snapshot,"Selection change cannot also cast in same input frame");
+ actor.State.spiritualEnergy=0;PressPanel("SkillPanelCast");Check(ModPacket.Sent.Count==count&&!Game.projectile.Any(p=>p.active),"Unavailable selected skill never sends or creates");actor.State.spiritualEnergy=100;
+ PressPanel("SkillPanelCast");Check(mode==0?Game.projectile.Count(p=>p.active)==3&&actor.State.spiritualEnergy==76:ModPacket.Sent.Count==count+1&&ModPacket.Sent.Last().Data[0]==10&&ModPacket.Sent.Last().Data[1]==1&&actor.State.spiritualEnergy==100&&!Game.projectile.Any(p=>p.active),"Explicit confirmation uses normal local authority or one client request without local creation");
+ foreach(int guard in Enumerable.Range(0,9)){PressPanel("SkillPanelCancel");PressPanel("SkillPanelNext");switch(guard){case 0:Game.gameMenu=true;break;case 1:Game.blockInput=true;break;case 2:Game.drawingPlayerChat=true;break;case 3:Game.playerInventory=true;break;case 4:actor.dead=true;break;case 5:actor.noItems=true;break;case 6:actor.CCed=true;break;case 7:actor.State.discoveredSpiritualEnergy=false;break;case 8:actor.active=false;break;}int sent=ModPacket.Sent.Count;PressPanel("SkillPanelCast");Check(input.SelectedPanelSkill==null&&ModPacket.Sent.Count==sent,"Unavailable UI/input context clears selection and cannot confirm a stale skill");Game.gameMenu=Game.blockInput=Game.drawingPlayerChat=Game.playerInventory=false;actor.dead=actor.noItems=actor.CCed=false;actor.active=true;actor.State.discoveredSpiritualEnergy=true;}
+ PressPanel("SkillPanelNext");input.UpdateDead();Check(input.SelectedPanelSkill==null,"Death hook clears selection");PressPanel("SkillPanelNext");input.OnEnterWorld();Check(input.SelectedPanelSkill==null,"World entry clears prior selection");
+}
+panelBindings.Unload();Check(ArtifactKeybindSystem.PanelNextKey==null&&ArtifactKeybindSystem.PanelPreviousKey==null&&ArtifactKeybindSystem.PanelCastKey==null&&ArtifactKeybindSystem.PanelCancelKey==null,"Unload releases panel bindings");
 // Actual Thunder Sword hit hook: owner authority, lifecycle, minimum half damage and no observer/server RNG.
 XianXia.Content.Projectiles.ThunderSwordProjectile ThunderProcFixture(int mode,int local=0,int damage=201) {
  Game.myPlayer=0;SetupSkill("ThunderPatternSwordCase");Game.netMode=mode;Game.myPlayer=local;Game.rand=new Terraria.RandomStub{Roll=0};

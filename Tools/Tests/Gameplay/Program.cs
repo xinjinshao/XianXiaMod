@@ -1357,3 +1357,13 @@ try {
  }
 } finally { nativeTargetMain.GetField("netMode").SetValue(null,boundedSavedMode);nativeTargetMain.GetField("maxTilesX").SetValue(null,boundedWidth);nativeTargetMain.GetField("maxTilesY").SetValue(null,boundedHeight); }
 Console.WriteLine($"Actual engine gameplay assertions including bounded biome coordinates: {assertions}.");
+
+var panelRulesType=type.Assembly.GetType("XianXia.Common.Systems.ArtifactSkillRules",true);
+var panelSkillType=type.Assembly.GetType("XianXia.Common.Systems.ArtifactSkill",true);
+var panelStep=panelRulesType.GetMethod("StepPanelSkill");
+foreach(int id in Enumerable.Range(1,7))foreach(bool previous in new[]{false,true}){
+ object selected=Enum.ToObject(panelSkillType,id);object moved=panelStep.Invoke(null,new object[]{selected,previous});object restored=panelStep.Invoke(null,new object[]{moved,!previous});
+ Check(Convert.ToInt32(moved)==(previous?(id==1?7:id-1):(id==7?1:id+1))&&Convert.ToInt32(restored)==id,"Compiled panel navigation order wraps and is reversible");
+}
+foreach(int invalid in new[]{0,255})foreach(bool previous in new[]{false,true})Check(Convert.ToInt32(panelStep.Invoke(null,new object[]{Enum.ToObject(panelSkillType,invalid),previous}))==(previous?7:1),"Compiled panel navigation normalizes invalid selection");
+Console.WriteLine($"Actual engine gameplay assertions including panel navigation: {assertions}.");

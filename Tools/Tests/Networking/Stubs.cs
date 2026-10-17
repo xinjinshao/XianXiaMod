@@ -32,6 +32,7 @@ namespace Terraria
     public static class Main
     {
         public static ulong GameUpdateCount;
+        public static bool gameMenu,blockInput,drawingPlayerChat,playerInventory;
         public static int netMode, maxPlayers = 4, maxNPCs = 4, myPlayer;
         public static int maxTilesX=30,maxTilesY=30;
         public static Tile[,] tile = CreateTiles();
@@ -253,6 +254,7 @@ namespace Terraria.ModLoader
     public struct StatModifier { public float Bonus,Base; public static StatModifier operator +(StatModifier value,float amount) { value.Bonus+=amount; return value; } }
     public class DamageClass { public static DamageClass Generic=new(),Magic=new(),Ranged=new(),Melee=new(); }
     public class ModPlayer {
+        public virtual void ProcessTriggers(Terraria.GameInput.TriggersSet triggersSet) { }
         public virtual void OnEnterWorld() { }
         public Terraria.Player Player;
         public virtual void Initialize() { }
@@ -271,6 +273,7 @@ namespace Terraria.ModLoader
     }
     public class ModSystem
     {
+        public Mod Mod=new(); public virtual void Load() { } public virtual void Unload() { }
         public virtual void ClearWorld() { }
         public virtual void PostUpdatePlayers() { }
         public virtual void SaveWorldData(IO.TagCompound tag) { }
@@ -460,3 +463,6 @@ namespace XianXia.Content.Projectiles{public class MoonboneShardProjectile{}}
 namespace XianXia.Common.Players{public static class CultivationStatusText{public static string StageName(CultivationStage stage)=>stage.ToString();}}
 
 namespace XianXia.Content.Items.HandGenerated {public class BrokenSwordIntent{}}
+
+namespace Terraria.GameInput { public class TriggersSet {} }
+namespace Terraria.ModLoader { public class ModKeybind { public bool JustPressed; } public static class KeybindLoader { public static readonly Dictionary<string,ModKeybind> Keys=new(); public static ModKeybind RegisterKeybind(Mod mod,string name,string binding){var key=new ModKeybind();Keys[name]=key;return key;} } }

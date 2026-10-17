@@ -4,6 +4,9 @@ public enum ArtifactSkill : byte { SwordBurst = 1, ArrayPulse = 2, WardGuard = 3
 public static class ArtifactSkillRules
 {
     public const int MaximumCooldown = 1200;
+    public static ArtifactSkill StepPanelSkill(ArtifactSkill current, bool previous) => !IsValid(current)
+        ? previous ? ArtifactSkill.ThunderVolley : ArtifactSkill.SwordBurst
+        : (ArtifactSkill)(previous ? current == ArtifactSkill.SwordBurst ? 7 : (int)current - 1 : current == ArtifactSkill.ThunderVolley ? 1 : (int)current + 1);
     public const float HammerDamageMultiplier = 1.75f;
     public const float ThunderDamageMultiplier = 1.5f;
     public const int ThunderRange = 800, ThunderSpacing = 96, ThunderDrop = 240;

@@ -55,13 +55,16 @@ public class ArtifactSkillUIState : UIState
         status.SetText(state.wardGuardTimer > 0 ? Text("WardStatus",(state.activeSkillCooldown+59)/60,(state.wardGuardTimer+59)/60)
             : state.activeSkillCooldown > 0 ? Text("Cooldown", (state.activeSkillCooldown + 59)/60) : Text("Ready"));
         if (panel.ContainsPoint(Main.MouseScreen / scale)) Main.LocalPlayer.mouseInterface = true;
+        var selected = Main.LocalPlayer.GetModPlayer<ArtifactInputPlayer>().SelectedPanelSkill;
+        bool hovered = false;
         foreach (var entry in skillButtons) {
             bool available = ArtifactSkillTransactions.UnavailableReason(Main.LocalPlayer,entry.Skill) == null;
             entry.Button.BackgroundColor = available ? new Color(45,75,105) : new Color(45,45,50);
-            entry.Button.BorderColor = available ? new Color(130,190,215) : new Color(80,80,85);
+            entry.Button.BorderColor = selected == entry.Skill ? Color.Gold : available ? new Color(130,190,215) : new Color(80,80,85);
             if (entry.Button.ContainsPoint(Main.MouseScreen / scale))
-                Main.instance.MouseText(SkillTooltip(entry.Skill, state));
+            { hovered = true; Main.instance.MouseText(SkillTooltip(entry.Skill, state)); }
         }
+        if (!hovered && selected is ArtifactSkill selectedSkill) Main.instance.MouseText(Text("PanelControls") + "\n" + SkillTooltip(selectedSkill,state));
     }
     private string SkillTooltip(ArtifactSkill skill, XianXiaPlayer state)
     {
