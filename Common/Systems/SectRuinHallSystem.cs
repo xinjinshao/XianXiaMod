@@ -6,6 +6,7 @@ using Terraria.ModLoader;
 using Terraria.ModLoader.IO;
 using Terraria.WorldBuilding;
 using XianXia.Content.Tiles;
+using XianXia.Content.Items.Materials;
 
 namespace XianXia.Common.Systems;
 
@@ -38,13 +39,43 @@ public class SectRuinHallSystem : ModSystem
             for (int y = region.Top; y <= region.Bottom - Height && !built; y += 3)
                 for (int x = region.Left; x <= region.Right - Width && !built; x += 3) {
                     var area = new Rectangle(x, y, Width, Height);
-                    if (TryBuild(area, GenVars.structures, out string reason)) { Halls.Add(area); built = true; }
+                    if (TryBuild(area, GenVars.structures, out string reason)) {
+                        Halls.Add(area); built = true;
+                        if (TryPlaceSupplyChest(area, WorldGen.genRand) < 0) Mod.Logger.Warn("Sect ruin hall supply chest could not be placed; terrain retained.");
+                    }
                     else refusals[reason] = refusals.GetValueOrDefault(reason) + 1;
                 }
         }
         Mod.Logger.Info($"Sect ruin halls: {Halls.Count}/{regions.Count} safely placed.");
         foreach (var refusal in refusals) Mod.Logger.Debug($"Sect hall rejected {refusal.Key}: {refusal.Value}");
         return Halls.Count > 0 ? new List<Rectangle>(Halls) : regions;
+    }
+    // Called only for newly generated halls; occupied/looted chest positions are never refilled.
+    internal static int TryPlaceSupplyChest(Rectangle area, Terraria.Utilities.UnifiedRandom random)
+    {
+        if (random == null || Main.netMode == NetmodeID.MultiplayerClient
+            || !ModContent.GetInstance<XianXiaConfig>().EnableWorldGeneration
+            || area.Width != Width || area.Height != Height || !WorldGen.InWorld(area.Left, area.Top, 12)
+            || area.X > Main.maxTilesX - Width - 12 || area.Y > Main.maxTilesY - Height - 12) return -1;
+        int x = area.X + 19, floor = area.Bottom - 3;
+        if (Chest.FindChest(x, floor - 2) >= 0) return -1;
+        for (int dx = 0; dx < 2; dx++) {
+            Tile support = Main.tile[x + dx, floor];
+            if (!support.HasTile || support.TileType != ModContent.TileType<SectRuinBrickTile>() || support.IsHalfBlock || support.Slope != SlopeType.Solid) return -1;
+            for (int dy = 1; dy <= 2; dy++) {
+                Tile tile = Main.tile[x + dx, floor - dy];
+                if (tile.HasTile || tile.LiquidAmount > 0) return -1;
+            }
+        }
+        int index = WorldGen.PlaceChest(x, floor - 1, TileID.Containers, false, 0);
+        if (index < 0) return -1;
+        Chest chest = Main.chest[index];
+        void Add(int slot, int type, int count) { chest.item[slot].SetDefaults(type); chest.item[slot].stack = count; }
+        Add(0, ModContent.ItemType<LowGradeSpiritStone>(), random.Next(6, 11));
+        Add(1, ModContent.ItemType<ArtifactBlankShard>(), random.Next(2, 5));
+        Add(2, ItemID.RecallPotion, random.Next(1, 3));
+        Add(3, ItemID.Torch, 10);
+        return index;
     }
     internal static bool IsBrick(int x, int y) => y < 3 || y >= Height - 3
         || ((x < 2 || x >= Width - 2) && y < Height - 8);

@@ -56,16 +56,17 @@ public partial class SummonAuditSystem
             } finally { Main.netMode = oldMode; }
             check(!map.CanPlace(area, 2), "native hall registers protection for subsequent generation");
             int floor = area.Bottom - 3;
-            WorldGen.PlaceObject(area.X + 20, floor - 1, ModContent.TileType<SwordTabletTile>());
+            WorldGen.PlaceObject(area.X + 10, floor - 1, ModContent.TileType<SwordTabletTile>());
             bool tablet = true;
             for (int dx = 0; dx < 2; dx++) for (int dy = 0; dy < 3; dy++) {
-                Tile tile = Main.tile[area.X + 20 + dx,floor - 3 + dy];
+                Tile tile = Main.tile[area.X + 10 + dx,floor - 3 + dy];
                 tablet &= tile.HasTile && tile.TileType == ModContent.TileType<SwordTabletTile>() && tile.TileFrameX == dx * 16 && tile.TileFrameY == dy * 16;
             }
             check(tablet, "native hall floor accepts a complete framed sword tablet");
+            AuditHallSupplyChest(area, check);
             halls.Halls.Clear(); halls.Halls.Add(area); var tag = new TagCompound(); halls.SaveWorldData(tag); halls.ClearWorld(); halls.LoadWorldData(tag);
             check(halls.Halls.Count == 1 && halls.Halls[0] == area, "native hall bounds persist without regenerating terrain");
-            check(Main.tile[area.X + 20,floor - 3].TileType == ModContent.TileType<SwordTabletTile>(), "native hall loading preserves existing decorations");
+            check(Main.tile[area.X + 10,floor - 3].TileType == ModContent.TileType<SwordTabletTile>(), "native hall loading preserves existing decorations");
         } finally {
             foreach (var cell in saved) {
                 Tile tile = Main.tile[cell.X,cell.Y]; tile.HasTile = cell.Has; tile.TileType = cell.Type;
@@ -74,4 +75,49 @@ public partial class SummonAuditSystem
             halls.LoadWorldData(original);
         }
     }
+    private static void AuditHallSupplyChest(Rectangle area, Action<bool, string> check)
+    {
+        var previous = (Chest[])Main.chest.Clone(); int mode = Main.netMode;
+        var config = ModContent.GetInstance<XianXiaConfig>(); bool enabled = config.EnableWorldGeneration;
+        int x = area.X + 19, floor = area.Bottom - 3;
+        var random = new Terraria.Utilities.UnifiedRandom(20261019);
+        try {
+            config.EnableWorldGeneration = false;
+            check(SectRuinHallSystem.TryPlaceSupplyChest(area, random) == -1, "native disabled generation does not create hall loot");
+            config.EnableWorldGeneration = true; Main.netMode = NetmodeID.MultiplayerClient;
+            check(SectRuinHallSystem.TryPlaceSupplyChest(area, random) == -1, "native clients cannot create hall loot");
+            Main.netMode = NetmodeID.Server;
+            Tile obstacle = Main.tile[x,floor - 2]; obstacle.HasTile = true; obstacle.TileType = TileID.Stone;
+            try { check(SectRuinHallSystem.TryPlaceSupplyChest(area, random) == -1 && obstacle.HasTile && obstacle.TileType == TileID.Stone, "native chest placement preserves obstructing tile"); }
+            finally { obstacle.HasTile = false; }
+            obstacle.LiquidAmount = 1;
+            try { check(SectRuinHallSystem.TryPlaceSupplyChest(area, random) == -1, "native chest placement refuses liquid"); }
+            finally { obstacle.LiquidAmount = 0; }
+            for (int i = 0; i < Main.chest.Length; i++) Main.chest[i] ??= new Chest { x = -100, y = -100 };
+            try { check(SectRuinHallSystem.TryPlaceSupplyChest(area, random) == -1 && !obstacle.HasTile, "native full chest table fails without creating loot tiles"); }
+            finally { previous.CopyTo(Main.chest, 0); }
+            int index = SectRuinHallSystem.TryPlaceSupplyChest(area, random);
+            check(index >= 0, "native hall supply chest uses actual engine creation");
+            Chest chest = Main.chest[index];
+            check(chest.x == x && chest.y == floor - 2, "native chest stored top-left matches planned hall location");
+            bool intact = true;
+            for (int dx = 0; dx < 2; dx++) for (int dy = 0; dy < 2; dy++) {
+                Tile tile = Main.tile[x + dx,floor - 2 + dy];
+                intact &= tile.HasTile && tile.TileType == TileID.Containers && tile.TileFrameX == dx * 18 && tile.TileFrameY == dy * 18;
+            }
+            check(intact, "native hall chest all four vanilla frames intact");
+            check(chest.item[0].type == ModContent.ItemType<global::XianXia.Content.Items.Materials.LowGradeSpiritStone>() && chest.item[0].stack >= 6 && chest.item[0].stack <= 10
+                && chest.item[1].type == ModContent.ItemType<global::XianXia.Content.Items.Materials.ArtifactBlankShard>() && chest.item[1].stack >= 2 && chest.item[1].stack <= 4
+                && chest.item[2].type == ItemID.RecallPotion && chest.item[2].stack >= 1 && chest.item[2].stack <= 2
+                && chest.item[3].type == ItemID.Torch && chest.item[3].stack == 10, "native hall chest contains four advertised bounded supply stacks");
+            for (int i = 4; i < chest.item.Length; i++) check(chest.item[i].IsAir, "native hall chest contains no unadvertised additional loot");
+            int count = 0; foreach (Chest entry in Main.chest) if (entry != null) count++;
+            check(SectRuinHallSystem.TryPlaceSupplyChest(area, random) == -1 && Main.chest[index] == chest, "native repeated placement preserves existing chest and loot");
+            foreach (Item item in chest.item) item.TurnToAir();
+            check(SectRuinHallSystem.TryPlaceSupplyChest(area, random) == -1 && Array.TrueForAll(chest.item, item => item.IsAir), "native looted chest cannot be refilled through placement");
+            int after = 0; foreach (Chest entry in Main.chest) if (entry != null) after++;
+            check(count == after, "native repeated chest placement does not allocate duplicate entries");
+        } finally { previous.CopyTo(Main.chest, 0); config.EnableWorldGeneration = enabled; Main.netMode = mode; }
+    }
+
 }

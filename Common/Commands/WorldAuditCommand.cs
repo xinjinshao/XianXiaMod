@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using System.Text.Json;
 using Terraria;
 using Terraria.Localization;
@@ -62,7 +63,18 @@ public class WorldAuditCommand : ModCommand
                 if (!shell && (x < 2 || x >= area.Width - 2)) entrances &= !tile.HasTile;
                 if (tile.HasTile && tile.TileType == ModContent.TileType<SwordTabletTile>() && tile.TileFrameX == 0 && tile.TileFrameY == 0) tablets++;
             }
-            hallReports.Add(new { area.X, area.Y, area.Width, area.Height, Bricks = bricks, BlockedInterior = blockedInterior, EntrancesOpen = entrances, Dry = dry, SwordTablets = tablets });
+            var hallChests = new List<object>();
+            foreach (Chest chest in Main.chest) {
+                if (chest == null || chest.x != area.X + 19 || chest.y != area.Bottom - 5) continue;
+                bool intact = true;
+                for (int dx = 0; dx < 2; dx++) for (int dy = 0; dy < 2; dy++) {
+                    Tile tile = Main.tile[chest.x + dx,chest.y + dy];
+                    intact &= tile.HasTile && tile.TileType == Terraria.ID.TileID.Containers && tile.TileFrameX == dx * 18 && tile.TileFrameY == dy * 18;
+                }
+                hallChests.Add(new { chest.x, chest.y, Intact = intact, Items = chest.item.Where(item => item != null && !item.IsAir)
+                    .Select(item => new { Name = item.ModItem?.Name ?? Terraria.ID.ItemID.Search.GetName(item.type), Stack = item.stack }).ToArray() });
+            }
+            hallReports.Add(new { area.X, area.Y, area.Width, area.Height, Bricks = bricks, BlockedInterior = blockedInterior, EntrancesOpen = entrances, Dry = dry, SwordTablets = tablets, SupplyChests = hallChests });
         }
         string report = JsonSerializer.Serialize(new { Width = Main.maxTilesX, Height = Main.maxTilesY, Objects = objects.Values,
             SectRuinHalls = hallReports, ChestsWithSpiritStones = supplyChests, ChestSpiritStoneTotal = spiritStones });

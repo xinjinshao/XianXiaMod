@@ -7,6 +7,7 @@ import re
 parser = argparse.ArgumentParser()
 parser.add_argument("run", type=Path)
 parser.add_argument("--require-sect-halls", action="store_true", help="Require persisted open sect halls in the final read-only world audit")
+parser.add_argument("--require-sect-supplies", action="store_true", help="Also require intact fresh hall supply chests and advertised loot")
 args = parser.parse_args()
 log = (args.run / "runtime.log").read_text(encoding="utf-8-sig")
 records = re.findall(r"\[XianXia\]: Cultivation object (\d+): (\d+)/(\d+) placed in (\d+) matching regions", log)
@@ -22,7 +23,7 @@ worlds = args.run / "save" / "Worlds"
 for suffix in ("wld", "twld"):
     assert (worlds / f"GenerationProbe.{suffix}").stat().st_size > 0, f"Missing saved {suffix}"
 hall_reports = []
-if args.require_sect_halls:
+if args.require_sect_halls or args.require_sect_supplies:
     audits = re.findall(r"SavedWorldAudit: (\{[^\r\n]+\})", log)
     assert audits, "Run xianxia-world-audit before saving"
     hall_reports = json.loads(audits[-1]).get("SectRuinHalls", [])
@@ -32,6 +33,14 @@ if args.require_sect_halls:
         assert hall["Bricks"] >= 180 and hall["BlockedInterior"] == 0, "Hall shell or interior invalid"
         assert hall["EntrancesOpen"] is True and hall["Dry"] is True, "Hall entrance or liquid obstruction"
         assert hall["SwordTablets"] >= 2, "Hall lacks its two exploration sword tablets"
+        if args.require_sect_supplies:
+            chests = hall.get("SupplyChests", [])
+            assert len(chests) == 1 and chests[0]["Intact"] is True, "Hall supply chest missing or damaged"
+            items = chests[0]["Items"]
+            assert len(items) == 4, "Unexpected hall supply loot"
+            loot = {item["Name"]: item["Stack"] for item in items}
+            assert 6 <= loot.get("LowGradeSpiritStone", 0) <= 10 and 2 <= loot.get("ArtifactBlankShard", 0) <= 4, "Invalid hall material supplies"
+            assert 1 <= loot.get("RecallPotion", 0) <= 2 and loot.get("Torch") == 10, "Invalid hall exploration supplies"
 report = {
     "scope": "generation-stage object placement, server startup, and saved files",
     "sect_halls": hall_reports,
