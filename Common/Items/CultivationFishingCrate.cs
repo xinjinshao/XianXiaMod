@@ -29,6 +29,13 @@ public abstract class CultivationFishingCrate : ModItem
     // Recheck the current world on opening, including crates brought from another world.
     public override bool CanRightClick() => CultivationFishingRules.Allows(ProgressionTier,
         Main.hardMode, NPC.downedPlantBoss, NPC.downedGolemBoss, NPC.downedMoonlord);
+    public override void ModifyTooltips(System.Collections.Generic.List<TooltipLine> tooltips)
+    {
+        string failure = CultivationFishingRules.OpeningFailure(ProgressionTier,
+            Main.hardMode, NPC.downedPlantBoss, NPC.downedGolemBoss, NPC.downedMoonlord);
+        tooltips.Add(new TooltipLine(Mod, "WorldOpeningStatus", Terraria.Localization.Language.GetTextValue(
+            "Mods.XianXia.FishingGuide." + (failure.Length == 0 ? "Ready" : failure))));
+    }
     public override void ModifyItemLoot(ItemLoot itemLoot)
     {
         itemLoot.Add(ItemDropRule.Common(ModContent.ItemType<LowGradeSpiritStone>(), 1, StoneMin, StoneMax));

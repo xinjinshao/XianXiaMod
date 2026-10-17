@@ -12,7 +12,8 @@ namespace Terraria.ID {public static class ItemID {public const int WoodenCrate=
 namespace Terraria.GameContent.ItemDropRules {public record Rule(int Item,int Denominator,int Min,int Max);public static class ItemDropRule {public static Rule Common(int item,int chance=1,int min=1,int max=1)=>new(item,chance,min,max);}}
 namespace Terraria.ModLoader {
 public class ModPlayer {public Terraria.Player Player=new();public virtual void CatchFish(Terraria.DataStructures.FishingAttempt a,ref int item,ref int npc,ref Terraria.AdvancedPopupRequest sonar,ref Microsoft.Xna.Framework.Vector2 pos){}}
-public class ModItem {public Terraria.Item Item=new();public int Type=>ModContent.Id(GetType());public virtual string Texture=>"";public virtual void SetStaticDefaults(){}public virtual void SetDefaults(){}public virtual bool CanRightClick()=>false;public virtual void ModifyItemLoot(ItemLoot l){}}
+public class TooltipLine {public string Text; public TooltipLine(object mod,string name,string text){Text=text;}}
+public class ModItem {public object Mod; public virtual void ModifyTooltips(List<TooltipLine> tooltips){} public Terraria.Item Item=new();public int Type=>ModContent.Id(GetType());public virtual string Texture=>"";public virtual void SetStaticDefaults(){}public virtual void SetDefaults(){}public virtual bool CanRightClick()=>false;public virtual void ModifyItemLoot(ItemLoot l){}}
 public class ItemLoot {public List<Terraria.GameContent.ItemDropRules.Rule> Rules=new();public void Add(Terraria.GameContent.ItemDropRules.Rule r)=>Rules.Add(r);}
 public static class ModContent {private static Dictionary<Type,int> ids=new();public static int Id(Type t){if(!ids.ContainsKey(t))ids[t]=100+ids.Count;return ids[t];}public static int ItemType<T>()=>Id(typeof(T));}
 }

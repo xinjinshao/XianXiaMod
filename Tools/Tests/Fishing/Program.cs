@@ -55,5 +55,15 @@ foreach(string culture in new[]{"en-US","zh-Hans"}) {
   Check(text.Contains(Terraria.Localization.Language.Text["Mods.XianXia.FishingGuide.Tier"+tier])&&text.Contains("4–8")&&text.Contains("2–4")&&!text.Contains("{0}")&&!text.Contains("Mods.XianXia."),"Bilingual fishing guide reports the unlocked tier and shared crate quantities");
   Check(before==(Main.hardMode,NPC.downedPlantBoss,NPC.downedGolemBoss,NPC.downedMoonlord),"Reading fishing guide cannot change world progression");
  }
+ for(int flags=0;flags<16;flags++) {
+  Main.hardMode=(flags&1)!=0;NPC.downedPlantBoss=(flags&2)!=0;NPC.downedGolemBoss=(flags&4)!=0;NPC.downedMoonlord=(flags&8)!=0;
+  foreach(var entry in entries) {
+   int tier=entry.Crate.ProgressionTier;
+   string expected=tier>=1&&!Main.hardMode?"RequiresHardmode":tier>=2&&!NPC.downedPlantBoss?"RequiresPlantera":tier>=3&&!NPC.downedGolemBoss?"RequiresGolem":tier>=4&&!NPC.downedMoonlord?"RequiresMoonLord":"Ready";
+   var lines=new List<TooltipLine>();entry.Crate.ModifyTooltips(lines);
+   Check(lines.Count==1&&lines[0].Text==Terraria.Localization.Language.Text["Mods.XianXia.FishingGuide."+expected]
+    &&entry.Crate.CanRightClick()==(expected=="Ready"),"Actual crate tooltip reports the first unmet world condition and agrees with opening across all world combinations");
+  }
+ }
 }
 Console.WriteLine($"Fishing actual catch/crate source hooks passed: {count} assertions; biome scan, native fishing, crate consumption and loot engine mocked.");
