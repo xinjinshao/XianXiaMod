@@ -1,0 +1,21 @@
+{
+  "Mods": {
+    "XianXia": {
+      "Items": {
+        "StormstrideHood": {
+          "DisplayName": "Stormstride Hood",
+          "Tooltip": "Hardmode cultivation armor; equip all three pieces for the set bonus",
+          "SetBonus": "Movement speed increased by {0}%, spiritual energy costs reduced by {1}%\nDefense reduced by {2}"
+        },
+        "StormstrideRobe": {
+          "DisplayName": "Stormstride Robe",
+          "Tooltip": "Hardmode cultivation armor; equip all three pieces for the set bonus"
+        },
+        "StormstrideLeggings": {
+          "DisplayName": "Stormstride Leggings",
+          "Tooltip": "Hardmode cultivation armor; equip all three pieces for the set bonus"
+        }
+      }
+    }
+  }
+}

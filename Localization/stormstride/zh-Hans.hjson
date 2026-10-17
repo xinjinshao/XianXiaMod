@@ -1,0 +1,21 @@
+{
+  "Mods": {
+    "XianXia": {
+      "Items": {
+        "StormstrideHood": {
+          "DisplayName": "雷纹行云兜帽",
+          "Tooltip": "困难模式机动型修行护甲；穿齐三件获得套装效果",
+          "SetBonus": "移动速度提高{0}%，灵气消耗降低{1}%\n防御减少{2}"
+        },
+        "StormstrideRobe": {
+          "DisplayName": "雷纹行云袍",
+          "Tooltip": "困难模式机动型修行护甲；穿齐三件获得套装效果"
+        },
+        "StormstrideLeggings": {
+          "DisplayName": "雷纹行云护腿",
+          "Tooltip": "困难模式机动型修行护甲；穿齐三件获得套装效果"
+        }
+      }
+    }
+  }
+}
