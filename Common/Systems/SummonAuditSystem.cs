@@ -950,6 +950,7 @@ public partial class SummonAuditSystem : ModSystem
             AuditArmorDamageBaseline(Check);
             AuditArmorPreview(Check);
             AuditWeaponCostTooltips(Check);
+            AuditSkillTooltips(Check);
         }
         catch (Exception exception) { error = exception.ToString(); }
         finally {

@@ -1,6 +1,7 @@
 Mods: {
  XianXia: {
   DamageClasses: {
+   CurrentSkillCost: "Current active skill {0}: {1} energy; {2}s shared cooldown after casting\nCurrent cooldown remaining: {3}s. Hold this item and meet its requirements to right-click cast; costs use current equipment/held effects."
    CurrentCastCost: "Current normal cast energy cost: {0}\nBased on current equipment/held effects, rounded up; excludes active skills"
    CurrentArrayCost: "Current array deployment energy cost: {0}\nBased on current equipment/held effects, rounded up; excludes active skills"
    SpiritMagic: Magic-class spiritual weapon: benefits from vanilla magic damage/crit bonuses and uses spiritual energy; mana cost reductions do not reduce spiritual energy costs

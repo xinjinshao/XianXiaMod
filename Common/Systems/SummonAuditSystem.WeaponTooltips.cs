@@ -12,6 +12,45 @@ namespace XianXia.Common.Systems;
 
 public partial class SummonAuditSystem
 {
+    private static void AuditSkillTooltips(Action<bool, string> check)
+    {
+        Player previous = Main.player[0]; int local = Main.myPlayer;
+        var world = ModContent.GetInstance<DownedBossSystem>(); var saved = new Terraria.ModLoader.IO.TagCompound(); world.SaveWorldData(saved);
+        try {
+            Main.myPlayer = 0;
+            var actor = new Player { whoAmI = 0, active = true }; Main.player[0] = actor;
+            var state = actor.GetModPlayer<XianXiaPlayer>();
+            foreach (var sample in ModLoader.GetMod("XianXia").GetContent<ModItem>().OfType<CultivationWeaponItem>()) {
+                var dormant = new Item(); dormant.SetDefaults(sample.Type);
+                var dormantLines = new List<TooltipLine>(); dormant.GetGlobalItem<CultivationDamageClassHelp>().ModifyTooltips(dormant, dormantLines);
+                check(dormantLines.All(line => line.Name != "CurrentArtifactSkill"), "native dormant and non-awakenable weapons do not advertise a usable active skill");
+                if (!RefinedArtifact.SupportsAwakening(dormant)) continue;
+                foreach (int route in new[] { 0, 1, 2, 3 }) {
+                    if (route != 0 && !RefinedArtifact.SupportsDaoTransformation(dormant)) continue;
+                    var routeTag = new Terraria.ModLoader.IO.TagCompound(); world.SaveWorldData(routeTag); routeTag["chosenRoute"] = route; world.LoadWorldData(routeTag);
+                    DownedBossSystem.DownedBosses.Add("old_heaven_dao_core");
+                    var item = new Item(); item.SetDefaults(sample.Type); actor.inventory[0] = item; actor.selectedItem = 0;
+                    var refined = item.GetGlobalItem<RefinedArtifact>(); refined.SetLevel(3); check(refined.TryAwaken(), "native skill tooltip fixture uses actual awakening state");
+                    if (route != 0) check(refined.TryTransform((DownedBossSystem.EndgameRoute)route), "native skill tooltip fixture uses actual matching-world Dao state");
+                    var skill = ArtifactSkillTransactions.HeldSkill(item).Value;
+                    foreach (float multiplier in new[] { 0.92f, 1f, 1.1f }) foreach (int cooldown in new[] { 0, 61 }) {
+                        state.spiritualEnergyCostMultiplier = multiplier; state.activeSkillCooldown = cooldown; var before = state.CaptureSnapshot();
+                        var lines = new List<TooltipLine>(); item.GetGlobalItem<CultivationDamageClassHelp>().ModifyTooltips(item, lines);
+                        string preview = lines.Single(line => line.Name == "CurrentArtifactSkill").Text;
+                        int cost = state.GetSpiritualEnergyCost(DaoArtifactRules.SkillCost(skill, RefinedArtifact.ActiveDaoRoute(item)));
+                        string name = skill switch { ArtifactSkill.SwordBurst => "Sword", ArtifactSkill.ArrayPulse => "Array", ArtifactSkill.MoonCrescent => "Moon",
+                            ArtifactSkill.WheelFormation => "Wheel", ArtifactSkill.HammerVolley => "Hammer", _ => "Ward" };
+                        string expected = Terraria.Localization.Language.GetTextValue("Mods.XianXia.DamageClasses.CurrentSkillCost",
+                            Terraria.Localization.Language.GetTextValue("Mods.XianXia.Skills." + name), cost, ArtifactSkillRules.Cooldown(skill) / 60, cooldown == 0 ? 0 : 2);
+                        check(preview == expected && !preview.Contains("{0}") && !preview.Contains("Mods.XianXia."), "native active skill preview resolves matching route costs and rounded remaining shared cooldown");
+                        check(state.CaptureSnapshot() == before && actor.HeldItem == item, "native skill preview does not activate a skill spend energy or change inventory");
+                    }
+                }
+            }
+        } finally { world.LoadWorldData(saved); Main.player[0] = previous; Main.myPlayer = local; }
+        check(Main.player[0] == previous && Main.myPlayer == local, "native skill tooltip audit restores world and local occupant contexts");
+    }
+
     private static void AuditWeaponCostTooltips(Action<bool, string> check)
     {
         Player previous = Main.player[0]; int local = Main.myPlayer;

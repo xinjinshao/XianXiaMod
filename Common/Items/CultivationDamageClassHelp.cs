@@ -3,6 +3,7 @@ using Terraria;
 using Terraria.Localization;
 using Terraria.ModLoader;
 using XianXia.Common.Players;
+using XianXia.Common.Systems;
 
 namespace XianXia.Common.Items;
 
@@ -20,5 +21,13 @@ public class CultivationDamageClassHelp : GlobalItem
         int cost = state.GetSpiritualEnergyCost(weapon.GetSpiritCost(player));
         tooltips.Add(new TooltipLine(Mod, "CurrentSpiritCost", Language.GetTextValue(
             "Mods.XianXia.DamageClasses." + (weapon.DeploysArray ? "CurrentArrayCost" : "CurrentCastCost"), cost)));
+        if (RefinedArtifact.IsAwakened(item) && ArtifactSkillTransactions.HeldSkill(item) is ArtifactSkill skill) {
+            string name = skill switch { ArtifactSkill.SwordBurst => "Sword", ArtifactSkill.ArrayPulse => "Array", ArtifactSkill.MoonCrescent => "Moon",
+                ArtifactSkill.WheelFormation => "Wheel", ArtifactSkill.HammerVolley => "Hammer", _ => "Ward" };
+            int skillCost = state.GetSpiritualEnergyCost(DaoArtifactRules.SkillCost(skill, RefinedArtifact.ActiveDaoRoute(item)));
+            int remaining = (int)System.Math.Ceiling(System.Math.Max(0, state.activeSkillCooldown) / 60d);
+            tooltips.Add(new TooltipLine(Mod, "CurrentArtifactSkill", Language.GetTextValue("Mods.XianXia.DamageClasses.CurrentSkillCost",
+                Language.GetTextValue("Mods.XianXia.Skills." + name), skillCost, ArtifactSkillRules.Cooldown(skill) / 60, remaining)));
+        }
     }
 }
