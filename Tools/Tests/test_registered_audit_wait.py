@@ -20,7 +20,14 @@ class AuditWaitTests(unittest.TestCase):
         self.root = Path(self.directory.name)
         self.report = self.root / "report.json"
         self.output = self.root / "server.log"
-        self.valid = {"schema": 1, "passed": True, "checks": ["actual assertion"], "limitations": "fixture only"}
+        self.valid = {"schema": 1, "scope": "full", "passed": True, "checks": ["actual assertion"], "limitations": "fixture only"}
+
+    def test_scope_must_match_explicit_request(self):
+        for scope in ("full", "calamity-recipes"):
+            runner.validate_scope({**self.valid, "scope": scope}, scope)
+            for wrong in (None, "unknown", "calamity-recipes" if scope == "full" else "full"):
+                with self.assertRaisesRegex(RuntimeError, "scope mismatch"):
+                    runner.validate_scope({**self.valid, "scope": wrong}, scope)
 
     def write(self, result):
         self.report.write_text(json.dumps(result), encoding="utf-8")
@@ -75,10 +82,11 @@ class AuditWaitTests(unittest.TestCase):
         dependency = self.root / "optional.tmod"; dependency.write_bytes(b"optional package")
         real_popen = subprocess.Popen; children = []
         def launch(*args, **kwargs):
+            self.assertEqual(kwargs["env"]["XIANXIA_AUDIT_SCOPE"], "calamity-recipes")
             process = real_popen(*args, **kwargs); children.append(process)
             return process
         args = ["verify", "--dotnet", sys.executable, "--tml", str(engine), "--package", str(package), "--world", str(world), "--timeout", "5"]
-        args += ["--extra-mod", "Helper=" + str(dependency)]
+        args += ["--extra-mod", "Helper=" + str(dependency), "--scope", "calamity-recipes"]
         with patch.object(sys, "argv", args), patch.object(runner, "__file__", str(self.root / "Tools" / "verify.py")), patch.object(runner.subprocess, "Popen", side_effect=launch), patch("builtins.print"):
             with self.assertRaisesRegex(RuntimeError, "Server failed"):
                 runner.main()

@@ -79,6 +79,11 @@ def extra_mods(entries):
     return result
 
 
+def validate_scope(result, scope):
+    if result.get("scope") != scope:
+        raise RuntimeError(f"Audit scope mismatch: requested {scope}, received {result.get('scope')}")
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--dotnet", required=True)
@@ -87,6 +92,7 @@ def main():
     parser.add_argument("--world", required=True, type=Path)
     parser.add_argument("--timeout", type=int, default=180)
     parser.add_argument("--extra-mod", action="append", default=[], metavar="NAME=PATH", help="Copy and enable an explicit optional dependency in the disposable mod directory; repeat for dependencies")
+    parser.add_argument("--scope", choices=("full", "calamity-recipes"), default="full")
     args = parser.parse_args()
     dependencies = extra_mods(args.extra_mod)
     tml = args.tml.resolve(strict=True)
@@ -123,6 +129,7 @@ def main():
     ]), encoding="utf-8")
     environment = os.environ.copy()
     environment["XIANXIA_AUDIT_SUMMONS"] = "1"
+    environment["XIANXIA_AUDIT_SCOPE"] = args.scope
     report = save / "XianXia" / "summon-audit.json"
     print(f"Isolated summon run: {root}", flush=True)
     with (root / "server.log").open("w", encoding="utf-8") as output, \
@@ -134,6 +141,7 @@ def main():
             stderr=errors, text=True)
         try:
             result = wait_for_report(process, report, root / "server.log", args.timeout)
+            validate_scope(result, args.scope)
             # Redirected Windows servers cannot reliably consume console shutdown.
             # This disposable world is deliberately never saved back to its source.
             if process.poll() is None:
@@ -150,7 +158,7 @@ def main():
         raise RuntimeError(f"Server wrote stderr; inspect {root}")
     if any(hashlib.sha256(path.read_bytes()).hexdigest() != digest for path, digest in original_hashes.items()):
         raise RuntimeError("Source world or dependency package changed during the isolated audit")
-    print(f"Registered summon integration passed: {len(result['checks'])} checks. Report: {report}")
+    print(f"Registered {args.scope} integration passed: {len(result['checks'])} checks. Report: {report}")
     print(result["limitations"])
 
 
