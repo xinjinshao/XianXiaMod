@@ -12,6 +12,49 @@ namespace XianXia.Common.Systems;
 
 public partial class SummonAuditSystem
 {
+    private static void AuditArmorDamageBaseline(Action<bool, string> check)
+    {
+        Player previous = Main.player[0]; var text = Main.combatText; var random = Main.rand;
+        int oldMode = Main.netMode, oldLocal = Main.myPlayer, oldDifficulty = Main.GameMode;
+        var rows = new System.Collections.Generic.List<object>();
+        int[][] sets = {
+            new[] { 0, 0, 0 }, new int[] { ItemID.IronHelmet, ItemID.IronChainmail, ItemID.IronGreaves },
+            new[] { ModContent.ItemType<SpiritweaveHood>(), ModContent.ItemType<SpiritweaveRobe>(), ModContent.ItemType<SpiritweaveLeggings>() },
+            new[] { ModContent.ItemType<FurnaceguardHelmet>(), ModContent.ItemType<FurnaceguardBreastplate>(), ModContent.ItemType<FurnaceguardGreaves>() }
+        };
+        string[] names = { "none", "vanilla iron", "Spiritweave", "Furnaceguard" };
+        try {
+            Main.netMode = NetmodeID.SinglePlayer; Main.myPlayer = 0;
+            Main.combatText = Enumerable.Range(0, 100).Select(_ => new CombatText { active = true }).ToArray();
+            foreach (int difficulty in new[] { 0, 1, 2 }) foreach (int incoming in new[] { 50, 200 }) {
+                Main.GameMode = difficulty; int naked = 0, iron = 0;
+                for (int set = 0; set < sets.Length; set++) {
+                    Main.rand = new Terraria.Utilities.UnifiedRandom(20261017);
+                    var actor = new Player { whoAmI = 0, active = true }; Main.player[0] = actor;
+                    for (int i = 0; i < 3; i++) actor.armor[i].SetDefaults(sets[set][i]);
+                    actor.ResetEffects(); actor.UpdateEquips(0);
+                    actor.head = actor.armor[0].headSlot; actor.body = actor.armor[1].bodySlot; actor.legs = actor.armor[2].legSlot;
+                    actor.UpdateArmorSets(0);
+                    actor.statLife = actor.statLifeMax2 = 10000; actor.immune = false; actor.immuneTime = 0; Array.Clear(actor.hurtCooldowns);
+                    actor.Hurt(Terraria.DataStructures.PlayerDeathReason.ByCustomReason(Terraria.Localization.NetworkText.FromLiteral("XianXia armor damage audit")), incoming, 0, quiet: true, dodgeable: false);
+                    int lost = 10000 - actor.statLife;
+                    check(lost > 0 && lost <= incoming && !actor.dead, "native armor baseline uses a surviving player and bounded actual health loss");
+                    if (set == 0) naked = lost;
+                    else check(lost < naked, "native functional armor reduces actual health loss against identical incoming damage");
+                    if (set == 1) { iron = lost; check(actor.statDefense == 9, "native vanilla iron baseline includes its two-defense armor set bonus"); }
+                    if (set == 3) check(lost < iron, "native Furnaceguard protection exceeds vanilla iron in this controlled incoming-hit baseline");
+                    rows.Add(new { difficulty, incoming, armor = names[set], defense = (int)actor.statDefense, endurance = actor.endurance, healthLost = lost });
+                }
+            }
+            string directory = System.IO.Path.Combine(Main.SavePath, "XianXia"); System.IO.Directory.CreateDirectory(directory);
+            System.IO.File.WriteAllText(System.IO.Path.Combine(directory, "armor-damage-baseline.json"), System.Text.Json.JsonSerializer.Serialize(new {
+                schema = 1, rows, limitations = "Native reset/equip/armor-set and Hurt calls with fixed RNG and occupied hit-text slots; no world/player update, live clients, DPS, mobility or balance acceptance."
+            }, new System.Text.Json.JsonSerializerOptions { WriteIndented = true }));
+        } finally { Main.player[0] = previous; Main.combatText = text; Main.rand = random; Main.netMode = oldMode; Main.myPlayer = oldLocal; Main.GameMode = oldDifficulty; }
+        check(Main.player[0] == previous && Main.combatText == text && Main.rand == random && Main.netMode == oldMode && Main.myPlayer == oldLocal && Main.GameMode == oldDifficulty,
+            "native armor damage baseline restores player random text and difficulty contexts");
+    }
+
     private static void AuditFurnaceguardArmor(Action<bool, string> check)
     {
         int[] types = { ModContent.ItemType<FurnaceguardHelmet>(), ModContent.ItemType<FurnaceguardBreastplate>(), ModContent.ItemType<FurnaceguardGreaves>() };
