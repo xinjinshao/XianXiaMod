@@ -4,22 +4,25 @@ using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
+using XianXia.Common.Projectiles;
 
 namespace XianXia.Content.Projectiles;
 
 public class FormlessSwordWheelProjectile : ModProjectile
 {
     private bool cancelled;
+    private ArtifactProjectileOwnerBinding ownerBinding;
+    public override void OnSpawn(Terraria.DataStructures.IEntitySource source) => ownerBinding = ArtifactProjectileOwnerBinding.Capture(Projectile);
     private static bool Finite(Vector2 value) => float.IsFinite(value.X) && float.IsFinite(value.Y);
     private bool ValidGeometry => Projectile.width == 80 && Projectile.height == 80 && Projectile.timeLeft > 0 && Projectile.timeLeft <= 150
         && Finite(Projectile.Center) && Finite(Projectile.velocity) && float.IsFinite(Projectile.rotation);
     private Player LivingOwner
     {
         get {
-            if (!ValidGeometry || Projectile.owner < 0 || Projectile.owner >= Main.maxPlayers
+            if (!ValidGeometry || Main.player == null || Projectile.owner < 0 || Projectile.owner >= Main.maxPlayers
                 || Projectile.owner >= Main.player.Length) return null;
             Player owner = Main.player[Projectile.owner];
-            return owner != null && owner.active && !owner.dead && Finite(owner.Center) && Finite(owner.velocity) ? owner : null;
+            return owner != null && owner.active && !owner.dead && Finite(owner.Center) && Finite(owner.velocity) && ownerBinding.Matches(Projectile,owner) ? owner : null;
         }
     }
     public override void SetDefaults()

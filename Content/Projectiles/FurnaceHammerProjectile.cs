@@ -4,6 +4,7 @@ using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
+using XianXia.Common.Projectiles;
 
 namespace XianXia.Content.Projectiles;
 
@@ -15,7 +16,7 @@ internal static class FurnaceProjectileOwner
         && Finite(projectile.Center) && Finite(projectile.velocity) && float.IsFinite(projectile.rotation);
     internal static Player Find(Projectile projectile, int size, int lifetime, bool expired = false)
     {
-        if (!ValidState(projectile, size, lifetime, expired) || projectile.owner < 0 || projectile.owner >= Main.maxPlayers || projectile.owner >= Main.player.Length) return null;
+        if (!ValidState(projectile, size, lifetime, expired) || Main.player == null || projectile.owner < 0 || projectile.owner >= Main.maxPlayers || projectile.owner >= Main.player.Length) return null;
         Player owner = Main.player[projectile.owner];
         return owner != null && owner.active && !owner.dead && Finite(owner.Center) && Finite(owner.velocity) ? owner : null;
     }
@@ -33,6 +34,12 @@ internal static class FurnaceProjectileOwner
 public class FurnaceHammerProjectile : ModProjectile
 {
     private bool impactReleased, cancelled;
+    private ArtifactProjectileOwnerBinding ownerBinding;
+    public override void OnSpawn(Terraria.DataStructures.IEntitySource source) => ownerBinding = ArtifactProjectileOwnerBinding.Capture(Projectile);
+    private Player LivingOwner(bool expired = false) {
+        Player owner = FurnaceProjectileOwner.Find(Projectile,32,90,expired);
+        return owner != null && ownerBinding.Matches(Projectile,owner) ? owner : null;
+    }
     public override string Texture => "XianXia/Content/Items/Weapons/ThunderPatternSwordCase";
     public override void SetDefaults()
     {
@@ -42,7 +49,7 @@ public class FurnaceHammerProjectile : ModProjectile
         Projectile.penetrate = 1; Projectile.timeLeft = 90;
         Projectile.tileCollide = true; Projectile.ignoreWater = true;
     }
-    public override bool? CanDamage() => cancelled || impactReleased || FurnaceProjectileOwner.Find(Projectile, 32, 90) == null ? false : null;
+    public override bool? CanDamage() => cancelled || impactReleased || LivingOwner() == null ? false : null;
     public override bool? CanHitNPC(NPC target) => CanDamage() == false || !FurnaceProjectileOwner.ValidTarget(target) ? false : null;
     public override void SendExtraAI(BinaryWriter writer) => writer.Write((byte)((cancelled ? 1 : 0) | (impactReleased ? 2 : 0)));
     public override void ReceiveExtraAI(BinaryReader reader)
@@ -60,7 +67,7 @@ public class FurnaceHammerProjectile : ModProjectile
     public override void AI()
     {
         if (cancelled || impactReleased || !FurnaceProjectileOwner.ValidState(Projectile, 32, 90)) { Cancel(); return; }
-        if (FurnaceProjectileOwner.Find(Projectile, 32, 90) == null) {
+        if (LivingOwner() == null) {
             if (Main.netMode != NetmodeID.MultiplayerClient) Cancel();
             return;
         }
@@ -73,7 +80,7 @@ public class FurnaceHammerProjectile : ModProjectile
         if (Main.netMode == NetmodeID.MultiplayerClient || impactReleased || cancelled) return;
         impactReleased = true;
         // Natural expiry has timeLeft=0 and must still release its one ordinary impact.
-        if (FurnaceProjectileOwner.Find(Projectile, 32, 90, expired: true) == null) return;
+        if (LivingOwner(expired: true) == null) return;
         Projectile.NewProjectile(Projectile.GetSource_FromAI(), Projectile.Center, Vector2.Zero,
             ModContent.ProjectileType<FurnaceImpactBurst>(), Math.Max(1, Projectile.damage / 2), Projectile.knockBack / 2f, Projectile.owner);
     }
@@ -82,6 +89,12 @@ public class FurnaceHammerProjectile : ModProjectile
 public class FurnaceImpactBurst : ModProjectile
 {
     private bool cancelled;
+    private ArtifactProjectileOwnerBinding ownerBinding;
+    public override void OnSpawn(Terraria.DataStructures.IEntitySource source) => ownerBinding = ArtifactProjectileOwnerBinding.Capture(Projectile);
+    private Player LivingOwner(bool expired = false) {
+        Player owner = FurnaceProjectileOwner.Find(Projectile,96,10,expired);
+        return owner != null && ownerBinding.Matches(Projectile,owner) ? owner : null;
+    }
     public override string Texture => "XianXia/Content/Projectiles/GreenwoodArrayField";
     public override void SetDefaults()
     {
@@ -92,8 +105,8 @@ public class FurnaceImpactBurst : ModProjectile
         Projectile.tileCollide = false; Projectile.ignoreWater = true;
         Projectile.usesLocalNPCImmunity = true; Projectile.localNPCHitCooldown = -1;
     }
-    public override bool? CanDamage() => cancelled || FurnaceProjectileOwner.Find(Projectile, 96, 10) == null || Projectile.timeLeft <= 8 ? false : null;
-    public override bool? CanHitNPC(NPC target) => cancelled || FurnaceProjectileOwner.Find(Projectile, 96, 10) == null || !FurnaceProjectileOwner.ValidTarget(target)
+    public override bool? CanDamage() => cancelled || LivingOwner() == null || Projectile.timeLeft <= 8 ? false : null;
+    public override bool? CanHitNPC(NPC target) => cancelled || LivingOwner() == null || !FurnaceProjectileOwner.ValidTarget(target)
         || !Collision.CanHitLine(Projectile.Center, 1, 1, target.Center, 1, 1) ? false : null;
     public override void SendExtraAI(BinaryWriter writer) => writer.Write(cancelled);
     public override void ReceiveExtraAI(BinaryReader reader) => cancelled |= reader.ReadBoolean();
@@ -106,7 +119,7 @@ public class FurnaceImpactBurst : ModProjectile
     public override void AI()
     {
         if (cancelled || !FurnaceProjectileOwner.ValidState(Projectile, 96, 10)) { Cancel(); return; }
-        if (FurnaceProjectileOwner.Find(Projectile, 96, 10) == null) {
+        if (LivingOwner() == null) {
             if (Main.netMode != NetmodeID.MultiplayerClient) Cancel();
             return;
         }
