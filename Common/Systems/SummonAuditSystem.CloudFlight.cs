@@ -16,10 +16,10 @@ public partial class SummonAuditSystem
     {
         Player original = Main.player[0]; int mode = Main.netMode, local = Main.myPlayer; var clients = (RemoteClient[])Netplay.Clients.Clone();
         var text = Main.combatText; var random = Main.rand; var before = Main.projectile.Where(p => p.active).ToHashSet(); NPC target = null;
-        bool parentFlight = variant == 0, moonbone = variant == 2, thunder = variant == 3, split = variant == 7, flame = variant == 8;
+        bool parentFlight = variant == 0, moonbone = variant == 2, thunder = variant == 3, split = variant == 7, flame = variant == 8, arrow = variant == 12;
         DamageClass expectedClass = flame ? DamageClass.Magic : variant == 6 ? DamageClass.Summon : variant >= 4 ? DamageClass.Ranged : DamageClass.Melee;
-        int type = variant == 9 ? ModContent.ProjectileType<SectMechanismBolt>() : variant == 10 ? ModContent.ProjectileType<HeavenLawBolt>() : variant == 11 ? ModContent.ProjectileType<StarCalamityMechanismBolt>() : flame ? ModContent.ProjectileType<CinnabarTalismanFlame>() : split ? ModContent.ProjectileType<StarEclipseSplitBolt>() : variant == 4 ? ModContent.ProjectileType<SpiritBolt>() : variant == 5 ? ModContent.ProjectileType<SpiritBoltProjectile>() : variant == 6 ? ModContent.ProjectileType<ContractSpiritBolt>() : thunder ? ModContent.ProjectileType<ThunderSwordProjectile>() : moonbone ? ModContent.ProjectileType<MoonboneShardProjectile>() : parentFlight ? ModContent.ProjectileType<CloudpiercerSwordProjectile>() : ModContent.ProjectileType<CloudWispProjectile>();
-        int lifetime = variant >= 9 ? 150 : split ? 160 : thunder ? 110 : moonbone ? 80 : parentFlight ? 105 : 180, childType = ModContent.ProjectileType<CloudWispProjectile>();
+        int type = arrow ? ModContent.ProjectileType<CinnabarArrowProjectile>() : variant == 9 ? ModContent.ProjectileType<SectMechanismBolt>() : variant == 10 ? ModContent.ProjectileType<HeavenLawBolt>() : variant == 11 ? ModContent.ProjectileType<StarCalamityMechanismBolt>() : flame ? ModContent.ProjectileType<CinnabarTalismanFlame>() : split ? ModContent.ProjectileType<StarEclipseSplitBolt>() : variant == 4 ? ModContent.ProjectileType<SpiritBolt>() : variant == 5 ? ModContent.ProjectileType<SpiritBoltProjectile>() : variant == 6 ? ModContent.ProjectileType<ContractSpiritBolt>() : thunder ? ModContent.ProjectileType<ThunderSwordProjectile>() : moonbone ? ModContent.ProjectileType<MoonboneShardProjectile>() : parentFlight ? ModContent.ProjectileType<CloudpiercerSwordProjectile>() : ModContent.ProjectileType<CloudWispProjectile>();
+        int lifetime = arrow ? 180 : variant >= 9 ? 150 : split ? 160 : thunder ? 110 : moonbone ? 80 : parentFlight ? 105 : 180, childType = ModContent.ProjectileType<CloudWispProjectile>();
         void Clear() { foreach (var p in Main.projectile.Where(p => p.active && !before.Contains(p))) { p.damage = 0; p.active = false; } }
         Player Fixture(int netMode) {
             Clear(); Main.netMode = netMode; Main.myPlayer = netMode == NetmodeID.Server ? Main.maxPlayers : 0;
@@ -56,7 +56,7 @@ public partial class SummonAuditSystem
                 actor.active = true; check(logic.CanDamage() == null,"client cloud owner arrival resumes an uncancelled projectile");
                 logic.ReceiveExtraAI(new BinaryReader(new MemoryStream(new byte[] { 1 }))); check(logic.CanDamage() == false,"client cloud received cancellation immediately stops damage");
                 logic.ReceiveExtraAI(new BinaryReader(new MemoryStream(new byte[] { 0 }))); logic.AI(); check(!p.friendly && p.hide && p.timeLeft <= 6,"client cloud stale metadata cannot undo cancellation");
-                if (flame) {
+                if (flame || arrow) {
                     var victim = new NPC { active = true, life = 100, Center = actor.Center };
                     logic.OnHitNPC(victim,default,1); check(victim.FindBuffIndex(BuffID.OnFire3) < 0,"native cancelled client flame cannot apply delayed debuff");
                 }
@@ -78,7 +78,7 @@ public partial class SummonAuditSystem
                     logic.OnHitNPC(new NPC { Center = actor.Center },default,1);
                     check(Main.projectile.Count(child => child.active && !before.Contains(child)) == count && Main.rand.Next() == new Terraria.Utilities.UnifiedRandom(276).Next(),"native old-session derived shot cannot roll or create a lightning child before cancellation AI"); Main.rand = rng;
                 }
-                if (flame) {
+                if (flame || arrow) {
                     var victim = new NPC { active = true, life = 100, Center = actor.Center };
                     logic.OnHitNPC(victim,default,1); check(victim.FindBuffIndex(BuffID.OnFire3) < 0,"native old-session flame cannot apply a debuff before cancellation AI");
                 }
@@ -93,7 +93,7 @@ public partial class SummonAuditSystem
             foreach (int netMode in new[] { NetmodeID.SinglePlayer,NetmodeID.Server }) foreach (var damageClass in new[] { expectedClass }) {
                 var actor = Fixture(netMode); Vector2 corridor = Vector2.Zero; bool found = false;
                 for (int offset = 2000; offset <= 6000; offset += 800) {
-                    Vector2 candidate = actor.Center + new Vector2(offset,0); var bounds = new Rectangle((int)candidate.X - 12,(int)candidate.Y - 40,900,80);
+                    Vector2 candidate = actor.Center + new Vector2(offset,0); var bounds = new Rectangle((int)candidate.X - 12,(int)candidate.Y - 40,900,arrow ? 1700 : 80);
                     if (bounds.Right >= Main.maxTilesX * 16 - 200 || Collision.SolidCollision(new Vector2(bounds.X,bounds.Y),bounds.Width,bounds.Height)
                         || Main.npc.Any(npc => npc != null && npc.active && npc.Hitbox.Intersects(bounds))) continue;
                     corridor = candidate; found = true; break;
@@ -123,19 +123,28 @@ public partial class SummonAuditSystem
                 check(p.ModProjectile.OnTileCollide(p.velocity) && p.ai[0] == 2,"native star mechanism third collision requests ordinary destruction");
                 p.ai[0] = float.NaN; check(p.ModProjectile.CanDamage() == false,"native nonfinite bounce counter is harmless before AI"); p.ModProjectile.AI(); check(!p.friendly && p.hide && p.timeLeft <= 6,"native invalid bounce counter latches cleanup on every mode");
             }
+            if (arrow) foreach (int netMode in new[] { NetmodeID.SinglePlayer,NetmodeID.MultiplayerClient,NetmodeID.Server }) {
+                var actor = Fixture(NetmodeID.SinglePlayer); var p = Spawn(actor,expectedClass,actor.Center,Vector2.UnitX * 10); Main.netMode = netMode;
+                for (int tick = 0; tick < 19; tick++) p.ModProjectile.AI();
+                check(p.ai[0] == 19 && p.velocity.Y == 0,"native cinnabar arrow first nineteen AI ticks retain straight flight"); p.ModProjectile.AI();
+                check(p.ai[0] == 20 && Math.Abs(p.velocity.Y - .1f) < .001f,"native cinnabar arrow gravity starts at twentieth AI tick");
+                for (int tick = 0; tick < 200; tick++) p.ModProjectile.AI();
+                check(p.ai[0] == 20 && p.velocity.Y == 12,"native cinnabar arrow age and downward speed remain bounded");
+                p.ai[0] = float.NaN; check(p.ModProjectile.CanDamage() == false,"native invalid arrow age is harmless before AI"); p.ModProjectile.AI(); check(!p.friendly && p.hide && p.ai[0] == 0 && p.timeLeft <= 6,"native invalid arrow age normalizes and latches cancellation");
+            }
             var caster = Fixture(NetmodeID.SinglePlayer);
             int npc = NPC.NewNPC(new EntitySource_Misc("CloudFlightTarget"),(int)caster.Center.X + 100,400,NPCID.BlueSlime);
             check(npc >= 0 && npc < Main.maxNPCs,"native bound friendly flight creates living vanilla contact target"); target = Main.npc[npc]; target.Center = caster.Center + new Vector2(100,0); target.lifeMax = 1000; target.damage = target.defense = 0; target.noGravity = true;
             foreach (var damageClass in new[] { expectedClass }) {
                 Clear(); target.life = 1000; target.velocity = Vector2.Zero; Array.Clear(target.immune); var p = Spawn(caster,damageClass,target.Center,moonbone ? Vector2.UnitX * 4 : Vector2.Zero); p.Update(p.whoAmI);
-                check(target.life < 1000 && (variant >= 9 ? p.active && p.penetrate == (variant == 9 ? 2 : variant == 10 ? 1 : 3) : thunder ? p.active && p.penetrate == 2 : parentFlight || moonbone || split ? p.active && p.penetrate == 1 : !p.active) && p.DamageType == damageClass,"native friendly flight contact damages NPC and consumes one penetration");
+                check(target.life < 1000 && (arrow ? p.active && p.penetrate == 1 : variant >= 9 ? p.active && p.penetrate == (variant == 9 ? 2 : variant == 10 ? 1 : 3) : thunder ? p.active && p.penetrate == 2 : parentFlight || moonbone || split ? p.active && p.penetrate == 1 : !p.active) && p.DamageType == damageClass,"native friendly flight contact damages NPC and consumes one penetration");
                 if (variant == 10) {
                     int ichor = target.FindBuffIndex(BuffID.Ichor);
                     check(ichor >= 0 && target.buffTime[ichor] == 120,"native law bolt actual collision applies 120-frame Ichor");
                 }
-                if (flame) {
+                if (flame || arrow) {
                     int buff = target.FindBuffIndex(BuffID.OnFire3);
-                    check(buff >= 0 && target.buffTime[buff] == 180,"native actual flame collision applies three seconds of OnFire3 before expiry");
+                    check(buff >= 0 && target.buffTime[buff] == (arrow ? 120 : 180),"native actual flame collision applies configured OnFire3 duration before expiry");
                 }
                 if (moonbone) check(Math.Abs(p.velocity.X - .8f) < .001f && p.timeLeft == 23,"native moonbone actual NPC collision applies slow and 24-frame cap before update decrement");
                 if (moonbone) {
