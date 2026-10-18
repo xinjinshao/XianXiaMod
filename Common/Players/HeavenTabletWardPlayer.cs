@@ -15,12 +15,11 @@ public class HeavenTabletWardPlayer : ModPlayer
         int type = ModContent.ProjectileType<HeavenTabletWardProjectile>();
         if (Player.ownedProjectileCounts[type] == 0) return;
         // Recomputed with normal equipment stats on every peer; no persistent resource or buff packet.
-        for (int i = 0; i < Main.maxProjectiles; i++)
+        for (int i = 0; Main.projectile != null && i < System.Math.Min(Main.maxProjectiles,Main.projectile.Length); i++)
         {
             Projectile ward = Main.projectile[i];
-            if (!ward.active || ward.type != type || ward.owner != Player.whoAmI
-                || Vector2.DistanceSquared(Player.Center, ward.Center) > 160f * 160f
-                || !Collision.CanHitLine(Player.Center, 1, 1, ward.Center, 1, 1)) continue;
+            if (ward == null || !ward.active || ward.type != type || ward.owner != Player.whoAmI
+                || ward.ModProjectile is not HeavenTabletWardProjectile logic || !logic.CanProvideWard(Player)) continue;
             Player.statDefense += DefenseBonus;
             return; // More projectiles cannot multiply the bonus.
         }
