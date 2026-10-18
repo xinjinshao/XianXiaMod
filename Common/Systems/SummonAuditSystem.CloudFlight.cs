@@ -12,23 +12,24 @@ using XianXia.Content.Projectiles;
 namespace XianXia.Common.Systems;
 public partial class SummonAuditSystem
 {
-    private static void AuditCloudFlight(Action<bool,string> check,bool parentFlight)
+    private static void AuditBoundMeleeFlights(Action<bool,string> check,int variant)
     {
         Player original = Main.player[0]; int mode = Main.netMode, local = Main.myPlayer; var clients = (RemoteClient[])Netplay.Clients.Clone();
         var text = Main.combatText; var random = Main.rand; var before = Main.projectile.Where(p => p.active).ToHashSet(); NPC target = null;
-        int type = parentFlight ? ModContent.ProjectileType<CloudpiercerSwordProjectile>() : ModContent.ProjectileType<CloudWispProjectile>();
-        int lifetime = parentFlight ? 105 : 180, childType = ModContent.ProjectileType<CloudWispProjectile>();
+        bool parentFlight = variant == 0, moonbone = variant == 2;
+        int type = moonbone ? ModContent.ProjectileType<MoonboneShardProjectile>() : parentFlight ? ModContent.ProjectileType<CloudpiercerSwordProjectile>() : ModContent.ProjectileType<CloudWispProjectile>();
+        int lifetime = moonbone ? 80 : parentFlight ? 105 : 180, childType = ModContent.ProjectileType<CloudWispProjectile>();
         void Clear() { foreach (var p in Main.projectile.Where(p => p.active && !before.Contains(p))) { p.damage = 0; p.active = false; } }
         Player Fixture(int netMode) {
             Clear(); Main.netMode = netMode; Main.myPlayer = netMode == NetmodeID.Server ? Main.maxPlayers : 0;
             var actor = new Player { whoAmI = 0, active = true, statLife = 100, statLifeMax2 = 100 }; actor.Center = new Vector2(Main.maxTilesX * 8,400); Main.player[0] = actor;
             var state = actor.GetModPlayer<XianXiaPlayer>(); state.discoveredSpiritualEnergy = true; state.cultivationStage = CultivationStage.NascentSoul;
-            check(state.TryInitializeNetwork(state.CaptureSnapshot()),"native cloud flight fixture imports owner session"); return actor;
+            check(state.TryInitializeNetwork(state.CaptureSnapshot()),"native bound melee flight fixture imports owner session"); return actor;
         }
         Projectile Spawn(Player actor,DamageClass damageClass,Vector2 center,Vector2 velocity) {
             var parent = new Projectile { owner = 0, DamageType = damageClass, active = false };
             int index = Projectile.NewProjectile(new EntitySource_Parent(parent),center,velocity,type,60,3,0);
-            check(index >= 0 && index < Main.maxProjectiles,"native cloud flight registered parent-source creation succeeds"); return Main.projectile[index];
+            check(index >= 0 && index < Main.maxProjectiles,"native bound melee flight registered parent-source creation succeeds"); return Main.projectile[index];
         }
         try {
             Main.rand = new Terraria.Utilities.UnifiedRandom(274); Main.combatText = Enumerable.Range(0,100).Select(_ => new CombatText { active = true }).ToArray();
@@ -41,7 +42,7 @@ public partial class SummonAuditSystem
                     case 6: p.velocity = new Vector2(float.MaxValue,0); break; case 7: p.rotation = float.NaN; break;
                     case 8: p.width++; break; case 9: p.timeLeft = lifetime + 1; break; case 10: p.timeLeft = 0; break; case 11: actor.velocity = new Vector2(float.NaN,0); break;
                 }
-                check(p.ModProjectile.CanDamage() == false,"native invalid cloud flight is harmless before AI"); p.ModProjectile.AI();
+                check(p.ModProjectile.CanDamage() == false,"native invalid bound melee flight is harmless before AI"); p.ModProjectile.AI();
                 if (netMode != NetmodeID.MultiplayerClient || bad >= 5 && bad <= 10)
                     check(!p.friendly && p.hide && p.timeLeft <= 6,"native invalid cloud geometry or authority owner latches bounded cancellation");
                 if (parentFlight) { p.ModProjectile.OnKill(p.timeLeft); check(!Main.projectile.Any(child => child.active && !before.Contains(child) && child.type == childType),"native invalid cloud parent never releases wisp"); }
@@ -58,22 +59,22 @@ public partial class SummonAuditSystem
             }
             foreach (int netMode in new[] { NetmodeID.SinglePlayer,NetmodeID.Server }) foreach (var damageClass in new[] { DamageClass.Melee }) foreach (int lifecycle in Enumerable.Range(0,6)) {
                 var actor = Fixture(netMode); var state = actor.GetModPlayer<XianXiaPlayer>(); var snapshot = state.CaptureSnapshot(); var p = Spawn(actor,damageClass,actor.Center,Vector2.UnitY * 12); var logic = p.ModProjectile;
-                check(logic.CanDamage() == null && p.DamageType == damageClass,"native cloud flight retains fixed melee class with parent-source creation");
+                check(logic.CanDamage() == null && p.DamageType == damageClass,"native bound melee flight retains fixed melee class with parent-source creation");
                 switch (lifecycle) {
-                    case 0: state.ResetNetworkSession(); check(state.TryInitializeNetwork(snapshot),"native cloud flight owner reconnects using same Player"); break;
+                    case 0: state.ResetNetworkSession(); check(state.TryInitializeNetwork(snapshot),"native bound melee flight owner reconnects using same Player"); break;
                     case 1: actor.dead = true; state.UpdateDead(); actor.dead = false; break;
                     case 2: state.OnEnterWorld(); break;
                     case 3: var tag = new TagCompound(); state.SaveData(tag); state.LoadData(tag); break;
                     case 4: state.Initialize(); break;
                     case 5: Main.player[0] = new Player { whoAmI = 0, active = true }; break;
                 }
-                check(logic.CanDamage() == false,"native released cloud flight stops damage before invalid-session AI"); logic.AI();
+                check(logic.CanDamage() == false,"native released bound melee flight stops damage before invalid-session AI"); logic.AI();
                 using var bytes = new MemoryStream(); logic.SendExtraAI(new BinaryWriter(bytes));
-                check(bytes.ToArray().AsSpan().SequenceEqual(new byte[] { (byte)(parentFlight ? 3 : 1) }) && !p.friendly && p.timeLeft <= 6,"native cloud flight encodes sticky cancellation and parent release guard");
+                check(bytes.ToArray().AsSpan().SequenceEqual(new byte[] { (byte)(parentFlight ? 3 : 1) }) && !p.friendly && p.timeLeft <= 6,"native bound melee flight encodes sticky cancellation and parent release guard");
                 logic.ReceiveExtraAI(new BinaryReader(new MemoryStream(new byte[] { 0 })));
-                check(logic.CanDamage() == false && p.DamageType == damageClass,"native old cloud flight metadata cannot revive cancelled damage");
+                check(logic.CanDamage() == false && p.DamageType == damageClass,"native old bound melee flight metadata cannot revive cancelled damage");
                 for (int tick = 0; tick < 6 && p.active; tick++) p.Update(p.whoAmI);
-                check(!p.active && !Main.projectile.Any(child => child.active && !before.Contains(child) && child.type == childType),"native cloud flight cancels within six real updates without releasing children");
+                check(!p.active && !Main.projectile.Any(child => child.active && !before.Contains(child) && child.type == childType),"native bound melee flight cancels within six real updates without releasing children");
             }
             foreach (int netMode in new[] { NetmodeID.SinglePlayer,NetmodeID.Server }) foreach (var damageClass in new[] { DamageClass.Melee }) {
                 var actor = Fixture(netMode); Vector2 corridor = Vector2.Zero; bool found = false;
@@ -83,8 +84,8 @@ public partial class SummonAuditSystem
                         || Main.npc.Any(npc => npc != null && npc.active && npc.Hitbox.Intersects(bounds))) continue;
                     corridor = candidate; found = true; break;
                 }
-                check(found,"native cloud flight full-life fixture finds clear real corridor"); var p = Spawn(actor,damageClass,corridor,Vector2.UnitX * 4);
-                for (int tick = 1; tick <= lifetime; tick++) { p.Update(p.whoAmI); check(p.active == (tick < lifetime) && p.timeLeft == lifetime - tick,"native cloud flight keeps full natural flight and expiry"); }
+                check(found,"native bound melee flight full-life fixture finds clear real corridor"); var p = Spawn(actor,damageClass,corridor,Vector2.UnitX * 4);
+                for (int tick = 1; tick <= lifetime; tick++) { p.Update(p.whoAmI); check(p.active == (tick < lifetime) && p.timeLeft == lifetime - tick,"native bound melee flight keeps full natural flight and expiry"); }
                 if (parentFlight) {
                     var children = Main.projectile.Where(child => child.active && !before.Contains(child) && child.type == childType).ToArray();
                     check(children.Length == 1 && children[0].damage == 20 && children[0].owner == 0 && children[0].DamageType == DamageClass.Melee && Math.Abs(children[0].velocity.Length() - 6) < .01f,"native cloud sword natural expiry releases one third-damage melee wisp at speed six");
@@ -93,14 +94,27 @@ public partial class SummonAuditSystem
                     check(children[0].ModProjectile.CanDamage() == null,"native cloud wisp remains valid after parent expires");
                 }
             }
+            if (moonbone) foreach (int netMode in new[] { NetmodeID.SinglePlayer,NetmodeID.MultiplayerClient,NetmodeID.Server }) {
+                var actor = Fixture(NetmodeID.SinglePlayer); var p = Spawn(actor,DamageClass.Melee,actor.Center,Vector2.UnitX * 5); Main.netMode = netMode;
+                p.ModProjectile.OnHitNPC(new NPC(),default,1);
+                check(p.velocity == Vector2.UnitX && p.timeLeft == 24 && p.penetrate == 2,"native moonbone hit callback preserves one-fifth speed and 24-frame cap without consuming penetration itself");
+                p.ModProjectile.ReceiveExtraAI(new BinaryReader(new MemoryStream(new byte[] { 1 }))); var velocity = p.velocity; int remaining = p.timeLeft;
+                p.ModProjectile.OnHitNPC(new NPC(),default,1);
+                check(p.velocity == velocity && p.timeLeft == remaining,"native cancelled moonbone ignores stale hit callback");
+            }
             var caster = Fixture(NetmodeID.SinglePlayer);
             int npc = NPC.NewNPC(new EntitySource_Misc("CloudFlightTarget"),(int)caster.Center.X + 100,400,NPCID.BlueSlime);
-            check(npc >= 0 && npc < Main.maxNPCs,"native cloud flight creates living vanilla contact target"); target = Main.npc[npc]; target.Center = caster.Center + new Vector2(100,0); target.lifeMax = 1000; target.damage = target.defense = 0; target.noGravity = true;
+            check(npc >= 0 && npc < Main.maxNPCs,"native bound melee flight creates living vanilla contact target"); target = Main.npc[npc]; target.Center = caster.Center + new Vector2(100,0); target.lifeMax = 1000; target.damage = target.defense = 0; target.noGravity = true;
             foreach (var damageClass in new[] { DamageClass.Melee }) {
-                Clear(); target.life = 1000; target.velocity = Vector2.Zero; Array.Clear(target.immune); var p = Spawn(caster,damageClass,target.Center,Vector2.Zero); p.Update(p.whoAmI);
-                check(target.life < 1000 && (parentFlight ? p.active && p.penetrate == 1 : !p.active) && p.DamageType == damageClass,"native melee cloud flight contact damages NPC and consumes one penetration");
+                Clear(); target.life = 1000; target.velocity = Vector2.Zero; Array.Clear(target.immune); var p = Spawn(caster,damageClass,target.Center,moonbone ? Vector2.UnitX * 4 : Vector2.Zero); p.Update(p.whoAmI);
+                check(target.life < 1000 && (parentFlight || moonbone ? p.active && p.penetrate == 1 : !p.active) && p.DamageType == damageClass,"native melee flight contact damages NPC and consumes one penetration");
+                if (moonbone) check(Math.Abs(p.velocity.X - .8f) < .001f && p.timeLeft == 23,"native moonbone actual NPC collision applies slow and 24-frame cap before update decrement");
+                if (moonbone) {
+                    int health = target.life; Array.Clear(target.immune); p.Center = target.Center; p.Update(p.whoAmI);
+                    check(target.life < health && !p.active,"native moonbone second NPC collision consumes final penetration and removes shard");
+                }
             }
         } finally { Clear(); if (target != null) { target.damage = 0; target.active = false; } Main.player[0] = original; Main.netMode = mode; Main.myPlayer = local; Main.combatText = text; Main.rand = random; clients.CopyTo(Netplay.Clients,0); }
-        check(ReferenceEquals(Main.player[0],original) && Main.combatText == text && Main.rand == random,"native cloud flight fixture restores authority rendering and random context");
+        check(ReferenceEquals(Main.player[0],original) && Main.combatText == text && Main.rand == random,"native bound melee flight fixture restores authority rendering and random context");
     }
 }
