@@ -21,6 +21,7 @@ public class StarAbyssSpirit : SmallArtifactSpirit
     public override string Texture => "XianXia/Content/Items/HandGenerated/StarAbyssLarvaContract";
     protected override int SpiritBuff => ModContent.BuffType<StarAbyssSpiritBuff>();
     protected override float AttackRange => 800f;
+    protected override bool ValidAttackState => Counter(Projectile.ai[0],59) && Projectile.ai[1] == 0;
     public override bool MinionContactDamage() => false;
     protected override Vector2 AimPosition(Player owner, NPC target) =>
         target.Center + (owner.Center - target.Center).SafeNormalize(Vector2.UnitY) * 240f;
@@ -31,8 +32,7 @@ public class StarAbyssSpirit : SmallArtifactSpirit
         if (++Projectile.ai[0] < 60) return;
         Projectile.ai[0] = 0;
         Vector2 velocity = (target.Center - Projectile.Center).SafeNormalize(Vector2.UnitY) * 9f;
-        Projectile.NewProjectile(Projectile.GetSource_FromAI(), Projectile.Center, velocity,
-            ModContent.ProjectileType<ContractSpiritBolt>(), Projectile.damage, 1f, Projectile.owner);
+        TryFireSpiritBolt(velocity,Projectile.damage);
     }
 }
 
@@ -52,6 +52,7 @@ public abstract class FanContractSpirit : SmallArtifactSpirit
 {
     protected abstract int ShotCount { get; }
     protected abstract int ShotInterval { get; }
+    protected override bool ValidAttackState => Counter(Projectile.ai[0],ShotInterval - 1) && Projectile.ai[1] == 0;
     protected override float AttackRange => 1000f;
     public override bool MinionContactDamage() => false;
     protected override Vector2 AimPosition(Player owner, NPC target) =>
@@ -63,12 +64,11 @@ public abstract class FanContractSpirit : SmallArtifactSpirit
         if (++Projectile.ai[0] < ShotInterval) return;
         Projectile.ai[0] = 0;
         Vector2 velocity = (target.Center - Projectile.Center).SafeNormalize(Vector2.UnitY) * 11f;
-        int damage = System.Math.Max(1, Projectile.damage * 3 / 4);
+        int damage = (int)System.Math.Max(1L,(long)Projectile.damage * 3 / 4);
         for (int i = 0; i < ShotCount; i++)
         {
             double angle = (i - (ShotCount - 1) / 2f) * 0.18;
-            Projectile.NewProjectile(Projectile.GetSource_FromAI(), Projectile.Center, velocity.RotatedBy(angle),
-                ModContent.ProjectileType<ContractSpiritBolt>(), damage, 1f, Projectile.owner);
+            if (!TryFireSpiritBolt(velocity.RotatedBy(angle),damage)) break;
         }
     }
 }
@@ -95,6 +95,7 @@ public class CelestialPuppetSpirit : SmallArtifactSpirit
     public override string Texture => "XianXia/Content/Items/HandGenerated/CelestialPuppetToken";
     protected override int SpiritBuff => ModContent.BuffType<CelestialPuppetSpiritBuff>();
     protected override float AttackRange => 900f;
+    protected override bool ValidAttackState => Counter(Projectile.ai[0],89) && Counter(Projectile.ai[1],18);
     protected override float CombatSpeed => Projectile.ai[1] > 0 ? 24f : 7f;
     public override bool MinionContactDamage() => Projectile.ai[1] > 0;
     public override void AI()

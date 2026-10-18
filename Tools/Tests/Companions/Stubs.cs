@@ -51,8 +51,9 @@ namespace Terraria {
   public object DamageType;
   public Vector2 Center,position,velocity;
   public void Kill()=>active=false;
-  public static bool AllowSpawn=true;
+  public static bool AllowSpawn=true; public static int SpawnCalls,SpawnBudget=-1;
   public static int NewProjectile(object source,Vector2 position,Vector2 velocity,int type,int damage,float knockback,int owner){
+   SpawnCalls++; if(SpawnBudget==0)return Main.maxProjectiles; if(SpawnBudget>0)SpawnBudget--;
    int index=Array.FindIndex(Main.projectile,p=>!p.active);if(!AllowSpawn||index<0)return Main.maxProjectiles;
    Main.projectile[index]=new Projectile {active=true,Center=position,velocity=velocity,type=type,damage=damage,owner=owner};return index;
   }

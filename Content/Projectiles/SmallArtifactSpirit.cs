@@ -11,6 +11,17 @@ namespace XianXia.Content.Projectiles;
 
 public class SmallArtifactSpirit : ModProjectile
 {
+    protected static bool Counter(float value,int maximum) => float.IsFinite(value) && value >= 0 && value <= maximum && value == MathF.Truncate(value);
+    protected virtual bool ValidAttackState => float.IsFinite(Projectile.ai[0]) && float.IsFinite(Projectile.ai[1]);
+    protected bool TryFireSpiritBolt(Vector2 velocity,int damage) {
+        if (!CanAct || !Finite(velocity) || Main.projectile == null) return false;
+        bool available = false;
+        for (int slot = 0; slot < Math.Min(Main.maxProjectiles,Main.projectile.Length); slot++)
+            if (Main.projectile[slot] != null && !Main.projectile[slot].active) { available = true; break; }
+        if (!available) return false;
+        int index = Projectile.NewProjectile(Projectile.GetSource_FromAI(),Projectile.Center,velocity,ModContent.ProjectileType<ContractSpiritBolt>(),Math.Max(1,damage),1f,Projectile.owner);
+        return index >= 0 && index < Main.maxProjectiles;
+    }
     private ArtifactProjectileOwnerBinding ownerBinding;
     private bool cancelled;
     public override void OnSpawn(Terraria.DataStructures.IEntitySource source) => ownerBinding = ArtifactProjectileOwnerBinding.Capture(Projectile);
@@ -47,7 +58,7 @@ public class SmallArtifactSpirit : ModProjectile
         owner = null;
         if (Main.player == null || Projectile.owner < 0 || Projectile.owner >= Main.maxPlayers || Projectile.owner >= Main.player.Length) return false;
         owner = Main.player[Projectile.owner];
-        return !cancelled && Projectile.width == 24 && Projectile.height == 24 && Projectile.timeLeft > 0 && Projectile.timeLeft <= 180
+        return !cancelled && ValidAttackState && Projectile.width == 24 && Projectile.height == 24 && Projectile.timeLeft > 0 && Projectile.timeLeft <= 180
             && float.IsFinite(Projectile.rotation) && owner != null && owner.active && !owner.dead && Finite(owner.Center)
             && Finite(owner.velocity) && Finite(Projectile.Center) && Finite(Projectile.velocity) && ownerBinding.Matches(Projectile,owner);
     }
@@ -69,7 +80,7 @@ public class SmallArtifactSpirit : ModProjectile
     }
     public override void AI()
     {
-        if (cancelled || Projectile.width != 24 || Projectile.height != 24 || Projectile.timeLeft <= 0 || Projectile.timeLeft > 180
+        if (cancelled || !ValidAttackState || Projectile.width != 24 || Projectile.height != 24 || Projectile.timeLeft <= 0 || Projectile.timeLeft > 180
             || !Finite(Projectile.Center) || !Finite(Projectile.velocity) || !float.IsFinite(Projectile.rotation)) { Cancel(); return; }
         if (!TryOwner(out Player owner)) { Projectile.friendly = false; if (Main.netMode != NetmodeID.MultiplayerClient) Cancel(); return; }
         if (owner.HasBuff(SpiritBuff)) Projectile.timeLeft = 2;

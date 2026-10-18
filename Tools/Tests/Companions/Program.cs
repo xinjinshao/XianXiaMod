@@ -10,7 +10,7 @@ void Check(bool condition,string message){assertions++;if(!condition)throw new E
 SmallArtifactSpirit Setup(){
  Game.myPlayer=0;Game.netMode=0;Game.dedServ=false;Game.player[0]=new Player {Buff=true};Game.player[1]=new Player {whoAmI=1,Buff=true};
  foreach(var npc in Game.npc)npc.active=false;foreach(var p in Game.projectile)p.active=false;
- Collision.Visible=true;Projectile.AllowSpawn=true;var spirit=new SmallArtifactSpirit();spirit.SetDefaults();spirit.OnSpawn(new Terraria.DataStructures.EntitySource_Misc());return spirit;
+ Collision.Visible=true;Projectile.AllowSpawn=true;Projectile.SpawnBudget=-1;Projectile.SpawnCalls=0;var spirit=new SmallArtifactSpirit();spirit.SetDefaults();spirit.OnSpawn(new Terraria.DataStructures.EntitySource_Misc());return spirit;
 }
 var spirit=Setup();spirit.SetStaticDefaults();
 Check(spirit.Projectile.minionSlots==1&&ReferenceEquals(spirit.Projectile.DamageType,DamageClass.Summon)&&Game.projPet[1],"A real minion occupies one slot and uses summon damage.");
@@ -185,3 +185,17 @@ foreach(int mode in new[]{1,2}) {
  Check(lateSpirit.Projectile.active&&!lateSpirit.CanAct&&lateSpirit.Projectile.timeLeft==180,"Observer/server missing first buff waits harmlessly without latching cancellation");Game.player[0].Buff=true;lateSpirit.AI();Check(lateSpirit.Projectile.active&&lateSpirit.CanAct&&lateSpirit.Projectile.timeLeft==2,"Late buff resumes same-session spirit on server and observer");
 }
 Console.WriteLine($"Including delayed spirit buffs: {assertions} assertions.");
+
+foreach(int kind in new[]{0,1,2,3})foreach(int mode in new[]{0,1,2})foreach(float bad in new[]{-1f,.5f,100f,float.NaN,float.PositiveInfinity}) {
+ Setup();Game.netMode=mode;SmallArtifactSpirit timed=kind switch{0=>new StarAbyssSpirit(),1=>new NascentSoulSpirit(),2=>new ArchivedSoulSpirit(),_=>new CelestialPuppetSpirit()};timed.SetDefaults();timed.OnSpawn(new Terraria.DataStructures.EntitySource_Misc());timed.Projectile.ai[0]=bad;
+ Check(!timed.CanAct&&timed.CanDamage()==false,"Invalid attack timer suppresses action before AI");timed.AI();Check(!timed.Projectile.friendly&&timed.Projectile.hide&&timed.Projectile.timeLeft<=6&&Projectile.SpawnCalls==0,"Invalid spirit attack timer cancels without spawning");
+}
+foreach(int kind in new[]{0,1,2})foreach(int budget in new[]{0,1}) {
+ Setup();SmallArtifactSpirit firing=kind switch{0=>new StarAbyssSpirit(),1=>new NascentSoulSpirit(),_=>new ArchivedSoulSpirit()};firing.SetDefaults();firing.OnSpawn(new Terraria.DataStructures.EntitySource_Misc());firing.Projectile.damage=120;firing.Projectile.ai[0]=kind==0?59:kind==1?74:89;Game.npc[0].active=true;Game.npc[0].Center=new(300,0);Projectile.SpawnBudget=budget;firing.AI();
+ Check(Projectile.SpawnCalls==(kind==0?1:budget==0?1:2),"Creation failure stops remaining engine calls in a volley");Check(Game.ActiveProjectiles.Count()==budget&&firing.Projectile.ai[0]==0,"Failed or partial spirit volley keeps successful children and consumes this firing opportunity");int calls=Projectile.SpawnCalls;Projectile.SpawnBudget=-1;firing.AI();Check(Projectile.SpawnCalls==calls&&firing.Projectile.ai[0]==1,"Later free capacity never triggers immediate makeup shots");
+}
+Setup();var fullSpirit=new ArchivedSoulSpirit();fullSpirit.SetDefaults();fullSpirit.OnSpawn(new Terraria.DataStructures.EntitySource_Misc());fullSpirit.Projectile.ai[0]=89;Game.npc[0].active=true;Game.npc[0].Center=new(300,0);foreach(var p in Game.projectile)p.active=true;fullSpirit.AI();Check(Projectile.SpawnCalls==0&&fullSpirit.Projectile.ai[0]==0,"Full pool performs no engine creation and consumes firing opportunity");
+Console.WriteLine($"Including attack timers and partial capacity: {assertions} assertions.");
+
+Setup();var largeDamageSpirit=new ArchivedSoulSpirit();largeDamageSpirit.SetDefaults();largeDamageSpirit.OnSpawn(new Terraria.DataStructures.EntitySource_Misc());largeDamageSpirit.Projectile.damage=int.MaxValue;largeDamageSpirit.Projectile.ai[0]=89;Game.npc[0].active=true;Game.npc[0].Center=new(300,0);largeDamageSpirit.AI();Check(Game.ActiveProjectiles.Count()==3&&Game.ActiveProjectiles.All(p=>p.damage==(int)((long)int.MaxValue*3/4)),"Fan damage scaling uses wide arithmetic without positive overflow");
+Console.WriteLine($"Including exact failed-call count and wide damage: {assertions} assertions.");
