@@ -17,7 +17,7 @@ public class DecreeJudgementBeam : ModProjectile
     public override void ReceiveExtraAI(BinaryReader reader) { bool stop = reader.ReadBoolean(); cancelled |= stop; }
     private static bool Finite(Vector2 value) => float.IsFinite(value.X) && float.IsFinite(value.Y) && float.IsFinite(value.LengthSquared());
     private bool ValidGeometry => ValidState(false);
-    private bool ValidState(bool expired) => Projectile.width == 160 && Projectile.height == 160 && Projectile.timeLeft >= (expired ? 0 : 1) && Projectile.timeLeft <= 36
+    private bool ValidState(bool expired) => Projectile.width == 40 && Projectile.height == 160 && Projectile.timeLeft >= (expired ? 0 : 1) && Projectile.timeLeft <= 36
         && Finite(Projectile.Center) && Finite(Projectile.velocity) && float.IsFinite(Projectile.rotation);
     private Player LivingOwner => FindOwner(false);
     private Player FindOwner(bool expired) {
@@ -33,11 +33,11 @@ public class DecreeJudgementBeam : ModProjectile
         cancelled = true; Projectile.friendly = false; Projectile.hide = true; Projectile.velocity = Vector2.Zero;
         if (!Finite(Projectile.Center)) Projectile.Center = Vector2.Zero;
         if (!float.IsFinite(Projectile.rotation)) Projectile.rotation = 0;
-        Projectile.width = 160; Projectile.height = 160; Projectile.timeLeft = Math.Min(6,Math.Max(0,Projectile.timeLeft));
+        Projectile.width = 40; Projectile.height = 160; Projectile.timeLeft = Math.Min(6,Math.Max(0,Projectile.timeLeft));
     }
     public override void SetDefaults()
     {
-        Projectile.width = 160;
+        Projectile.width = 40;
         Projectile.height = 160;
         Projectile.friendly = true; Projectile.hostile = false;
         Projectile.DamageType = DamageClass.Magic;

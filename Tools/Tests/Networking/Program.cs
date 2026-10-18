@@ -1864,6 +1864,7 @@ foreach(int mode in new[]{0,1,2}) {
 foreach(int mode in new[]{0,1,2})foreach(float age in new[]{-1f,.5f,19f,float.NaN,float.PositiveInfinity}) {
  SetupSkill();Game.netMode=mode;var badOrb=new XianXia.Content.Projectiles.ArchiveStarOrb();badOrb.SetDefaults();badOrb.Projectile.owner=0;badOrb.OnSpawn(new Terraria.DataStructures.EntitySource_Parent(new Terraria.Projectile()));badOrb.Projectile.ai[0]=age;Check(badOrb.CanDamage()==false,"Malformed charge cannot activate archive orb");badOrb.AI();Check(!badOrb.Projectile.friendly&&badOrb.Projectile.hide&&badOrb.Projectile.ai[0]==0&&badOrb.Projectile.timeLeft<=6,"Malformed charge normalizes and latches cancellation");badOrb.ReceiveExtraAI(new BinaryReader(new MemoryStream(new byte[]{0})));Check(badOrb.CanDamage()==false,"Old archive active flag cannot restore invalid charge");
 }
+{var sizedDecree=new XianXia.Content.Projectiles.DecreeJudgementBeam();sizedDecree.SetDefaults();Check(sizedDecree.Projectile.width==40&&sizedDecree.Projectile.height==160,"Decree beam preserves original narrow forty by one-sixty hitbox");}
 // Woodgrain return must never dereference a departed owner or revive after cancellation.
 XianXia.Content.Projectiles.WoodgrainSwordProjectile WoodgrainFixture(int mode) {
  SetupSkill();Game.netMode=mode;Game.dedServ=true;Terraria.Collision.Visible=true;

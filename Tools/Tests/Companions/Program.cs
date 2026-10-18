@@ -199,3 +199,6 @@ Console.WriteLine($"Including attack timers and partial capacity: {assertions} a
 
 Setup();var largeDamageSpirit=new ArchivedSoulSpirit();largeDamageSpirit.SetDefaults();largeDamageSpirit.OnSpawn(new Terraria.DataStructures.EntitySource_Misc());largeDamageSpirit.Projectile.damage=int.MaxValue;largeDamageSpirit.Projectile.ai[0]=89;Game.npc[0].active=true;Game.npc[0].Center=new(300,0);largeDamageSpirit.AI();Check(Game.ActiveProjectiles.Count()==3&&Game.ActiveProjectiles.All(p=>p.damage==(int)((long)int.MaxValue*3/4)),"Fan damage scaling uses wide arithmetic without positive overflow");
 Console.WriteLine($"Including exact failed-call count and wide damage: {assertions} assertions.");
+
+var sizedSpiritBolt=new SpiritBolt();sizedSpiritBolt.SetDefaults();Check(sizedSpiritBolt.Projectile.width==20&&sizedSpiritBolt.Projectile.height==12,"Generic ranged spirit bolt preserves original 20 by 12 hitbox");
+Console.WriteLine($"Including spirit bolt dimension contract: {assertions} assertions.");

@@ -20,6 +20,12 @@ public partial class SummonAuditSystem
         DamageClass expectedClass = orb || decree ? DamageClass.Magic : ward ? DamageClass.Melee : flame ? DamageClass.Magic : variant == 6 ? DamageClass.Summon : variant >= 4 ? DamageClass.Ranged : DamageClass.Melee;
         int type = orb ? ModContent.ProjectileType<ArchiveStarOrb>() : decree ? ModContent.ProjectileType<DecreeJudgementBeam>() : ward ? ModContent.ProjectileType<HeavenTabletWardProjectile>() : arrow ? ModContent.ProjectileType<CinnabarArrowProjectile>() : variant == 9 ? ModContent.ProjectileType<SectMechanismBolt>() : variant == 10 ? ModContent.ProjectileType<HeavenLawBolt>() : variant == 11 ? ModContent.ProjectileType<StarCalamityMechanismBolt>() : flame ? ModContent.ProjectileType<CinnabarTalismanFlame>() : split ? ModContent.ProjectileType<StarEclipseSplitBolt>() : variant == 4 ? ModContent.ProjectileType<SpiritBolt>() : variant == 5 ? ModContent.ProjectileType<SpiritBoltProjectile>() : variant == 6 ? ModContent.ProjectileType<ContractSpiritBolt>() : thunder ? ModContent.ProjectileType<ThunderSwordProjectile>() : moonbone ? ModContent.ProjectileType<MoonboneShardProjectile>() : parentFlight ? ModContent.ProjectileType<CloudpiercerSwordProjectile>() : ModContent.ProjectileType<CloudWispProjectile>();
         int lifetime = orb ? 150 : decree ? 36 : ward ? 120 : arrow ? 180 : variant >= 9 ? 150 : split ? 160 : thunder ? 110 : moonbone ? 80 : parentFlight ? 105 : 180, childType = ModContent.ProjectileType<CloudWispProjectile>();
+        (int Width,int Height) expectedSize = variant switch {
+            0 => (56,24), 1 => (28,20), 2 => (28,20), 3 => (56,24), 4 => (20,12),
+            5 => (16,8), 6 => (16,8), 7 => (32,32), 8 => (32,32), 9 => (16,8), 10 => (16,8),
+            11 => (16,8), 12 => (10,10), 13 => (40,40), 14 => (32,32), 15 => (40,160),
+            _ => throw new ArgumentOutOfRangeException(nameof(variant)) };
+        bool checkedDefaults = false;
         void Clear() { foreach (var p in Main.projectile.Where(p => p.active && !before.Contains(p))) { p.damage = 0; p.active = false; } }
         Player Fixture(int netMode) {
             Clear(); Main.netMode = netMode; Main.myPlayer = netMode == NetmodeID.Server ? Main.maxPlayers : 0;
@@ -30,7 +36,11 @@ public partial class SummonAuditSystem
         Projectile Spawn(Player actor,DamageClass damageClass,Vector2 center,Vector2 velocity) {
             var parent = new Projectile { owner = 0, DamageType = damageClass, active = false };
             int index = Projectile.NewProjectile(new EntitySource_Parent(parent),center,velocity,type,60,3,0);
-            check(index >= 0 && index < Main.maxProjectiles,"native bound friendly flight registered parent-source creation succeeds"); return Main.projectile[index];
+            check(index >= 0 && index < Main.maxProjectiles,"native bound friendly flight registered parent-source creation succeeds"); var created = Main.projectile[index];
+            if (!checkedDefaults) {
+                check(created.width == expectedSize.Width && created.height == expectedSize.Height,"native registered friendly projectile dimensions match independent pre-lifecycle specification"); checkedDefaults = true;
+            }
+            return created;
         }
         try {
             Main.rand = new Terraria.Utilities.UnifiedRandom(274); Main.combatText = Enumerable.Range(0,100).Select(_ => new CombatText { active = true }).ToArray();
@@ -94,7 +104,7 @@ public partial class SummonAuditSystem
             if (!ward) foreach (int netMode in new[] { NetmodeID.SinglePlayer,NetmodeID.Server }) foreach (var damageClass in new[] { expectedClass }) {
                 var actor = Fixture(netMode); Vector2 corridor = Vector2.Zero; bool found = false;
                 for (int offset = 2000; offset <= 6000; offset += 800) {
-                    Vector2 candidate = actor.Center + new Vector2(offset,0); var bounds = new Rectangle((int)candidate.X - 12,(int)candidate.Y - 40,900,arrow ? 1700 : 80);
+                    Vector2 candidate = actor.Center + new Vector2(offset,0); var bounds = new Rectangle((int)candidate.X - expectedSize.Width / 2,(int)candidate.Y - expectedSize.Height / 2,900,arrow ? 1700 : Math.Max(80,expectedSize.Height));
                     if (bounds.Right >= Main.maxTilesX * 16 - 200 || Collision.SolidCollision(new Vector2(bounds.X,bounds.Y),bounds.Width,bounds.Height)
                         || Main.npc.Any(npc => npc != null && npc.active && npc.Hitbox.Intersects(bounds))) continue;
                     corridor = candidate; found = true; break;
@@ -166,6 +176,14 @@ public partial class SummonAuditSystem
                     int health = target.life; Array.Clear(target.immune); p.Center = target.Center; p.Update(p.whoAmI);
                     check(target.life < health && !p.active,"native moonbone second NPC collision consumes final penetration and removes shard");
                 }
+            }
+            if (variant == 4 || decree) {
+                Clear(); target.life = 1000; Array.Clear(target.immune);
+                target.Center = caster.Center + new Vector2(decree ? 60 : target.width / 2f + 8,0);
+                var boundary = Spawn(caster,expectedClass,caster.Center,Vector2.Zero); if (decree) boundary.timeLeft = 17;
+                boundary.Update(boundary.whoAmI);
+                check(decree ? target.life == 1000 && boundary.active && boundary.penetrate == 8 : target.life < 1000 && !boundary.active,
+                    decree ? "native narrow decree beam does not hit NPC outside forty-pixel width" : "native twenty-pixel spirit bolt still hits NPC at original lateral edge");
             }
         } finally { Clear(); if (target != null) { target.damage = 0; target.active = false; } Main.player[0] = original; Main.netMode = mode; Main.myPlayer = local; Main.combatText = text; Main.rand = random; clients.CopyTo(Netplay.Clients,0); }
         check(ReferenceEquals(Main.player[0],original) && Main.combatText == text && Main.rand == random,"native bound friendly flight fixture restores authority rendering and random context");
