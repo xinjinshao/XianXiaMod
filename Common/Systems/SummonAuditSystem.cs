@@ -994,6 +994,7 @@ public partial class SummonAuditSystem : ModSystem
             AuditBoundFriendlyFlights(Check,15);
             AuditSpiritOwners(Check);
             AuditPetOwners(Check);
+            AuditMalformedProjectileOwners(Check);
             AuditStarSplitHits(Check);
             AuditCalamityRecipes(Check);
             }

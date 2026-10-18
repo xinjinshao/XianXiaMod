@@ -121,7 +121,7 @@ namespace Terraria
     public class Tile { public bool HasTile; public ushort TileType; }
     public class Projectile
     {
-        public bool active,friendly,hostile,tileCollide,ignoreWater,usesLocalNPCImmunity,netUpdate,arrow,netImportant,hide;
+        public bool active,friendly,hostile,minion,tileCollide,ignoreWater,usesLocalNPCImmunity,netUpdate,arrow,netImportant,hide;
         public int width,height,penetrate,timeLeft,localNPCHitCooldown; public float rotation; public float[] ai=new float[2]; public object DamageType;
         public Terraria.ModLoader.ModProjectile ModProjectile;public int whoAmI;
         public int owner, type, damage, identity; public float knockBack;
@@ -253,7 +253,7 @@ namespace Terraria.ModLoader
         public virtual bool? UseItem(Terraria.Item item, Terraria.Player player) => null;
     }
     public struct StatModifier { public float Bonus,Base; public static StatModifier operator +(StatModifier value,float amount) { value.Bonus+=amount; return value; } }
-    public class DamageClass { public static DamageClass Generic=new(),Magic=new(),Ranged=new(),Melee=new(); }
+    public class DamageClass {public static object Default=new(); public static DamageClass Generic=new(),Magic=new(),Ranged=new(),Melee=new(); }
     public class ModPlayer {
         public virtual void ProcessTriggers(Terraria.GameInput.TriggersSet triggersSet) { }
         public virtual void OnEnterWorld() { }
@@ -454,7 +454,7 @@ namespace XianXia.Content.Tiles.Stations {public class SimpleTalismanTableTile{}
 
 namespace XianXia.Content.Items.Materials {public class HeavenDaoFragment{}}
 
-namespace Terraria.ModLoader {public class GlobalProjectile {public virtual void OnSpawn(Terraria.Projectile p,Terraria.DataStructures.IEntitySource source){} public virtual void PostAI(Terraria.Projectile p){} public virtual void OnKill(Terraria.Projectile p,int timeLeft){}}}
+namespace Terraria.ModLoader {public class GlobalProjectile {public virtual bool InstancePerEntity=>false;public virtual bool PreAI(Terraria.Projectile p)=>true;public virtual bool? CanDamage(Terraria.Projectile p)=>null;public virtual void OnSpawn(Terraria.Projectile p,Terraria.DataStructures.IEntitySource source){} public virtual void PostAI(Terraria.Projectile p){} public virtual void OnKill(Terraria.Projectile p,int timeLeft){}}}
 
 namespace Microsoft.Xna.Framework {public record struct Rectangle(int X,int Y,int Width,int Height) {public bool Intersects(Rectangle r)=>X<r.X+r.Width&&X+Width>r.X&&Y<r.Y+r.Height&&Y+Height>r.Y;}}
 namespace Terraria.DataStructures {public class EntitySource_Parent : IEntitySource {public object Entity;public EntitySource_Parent(object entity){Entity=entity;}}}

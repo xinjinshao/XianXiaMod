@@ -1865,6 +1865,16 @@ foreach(int mode in new[]{0,1,2})foreach(float age in new[]{-1f,.5f,19f,float.Na
  SetupSkill();Game.netMode=mode;var badOrb=new XianXia.Content.Projectiles.ArchiveStarOrb();badOrb.SetDefaults();badOrb.Projectile.owner=0;badOrb.OnSpawn(new Terraria.DataStructures.EntitySource_Parent(new Terraria.Projectile()));badOrb.Projectile.ai[0]=age;Check(badOrb.CanDamage()==false,"Malformed charge cannot activate archive orb");badOrb.AI();Check(!badOrb.Projectile.friendly&&badOrb.Projectile.hide&&badOrb.Projectile.ai[0]==0&&badOrb.Projectile.timeLeft<=6,"Malformed charge normalizes and latches cancellation");badOrb.ReceiveExtraAI(new BinaryReader(new MemoryStream(new byte[]{0})));Check(badOrb.CanDamage()==false,"Old archive active flag cannot restore invalid charge");
 }
 {var sizedDecree=new XianXia.Content.Projectiles.DecreeJudgementBeam();sizedDecree.SetDefaults();Check(sizedDecree.Projectile.width==40&&sizedDecree.Projectile.height==160,"Decree beam preserves original narrow forty by one-sixty hitbox");}
+foreach(int mode in new[]{0,1,2})foreach(int corruption in new[]{0,1,2,3}) {
+ SetupSkill();Game.netMode=mode;var guardedOwner=Game.player[0];var lifecycleGuard=new XianXia.Common.Systems.ServerPlayerProjectileSync();
+ var guardedShot=new Terraria.Projectile{active=true,friendly=true,owner=0,damage=60,timeLeft=1,tileCollide=true,ModProjectile=new XianXia.Content.Projectiles.MinorThunderboltProjectile{Mod=mod}};lifecycleGuard.OnSpawn(guardedShot,null);
+ if(corruption==0)guardedShot.owner=-1;else if(corruption==1)guardedShot.owner=999;else if(corruption==2)guardedShot.owner=Game.maxPlayers;else Game.player[0]=null!;int brokenOwner=guardedShot.owner;int messages=Terraria.NetMessage.Sent.Count;
+ Check(!lifecycleGuard.ValidateOwnerBeforeUpdate(guardedShot)&&!guardedShot.active&&!guardedShot.friendly&&!guardedShot.hostile&&guardedShot.hide&&guardedShot.damage==0&&!guardedShot.tileCollide,"Malformed owner retires before native projectile update and clears collision/damage");Check(guardedShot.owner==brokenOwner&&Terraria.NetMessage.Sent.Count==messages,"Corrupt owner cleanup preserves identity owner and sends no malformed packet");
+ Game.player[0]=guardedOwner;guardedShot.owner=0;guardedShot.active=true;guardedShot.friendly=true;Check(!lifecycleGuard.PreAI(guardedShot)&&!guardedShot.active&&lifecycleGuard.CanDamage(guardedShot)==false,"Repair and forced activation cannot revive the same retired projectile");
+}
+foreach(int excluded in new[]{0,1,2}) {
+ SetupSkill();var lifecycleGuard=new XianXia.Common.Systems.ServerPlayerProjectileSync();var excludedShot=new Terraria.Projectile{active=true,owner=999,damage=60,friendly=excluded!=1,hostile=excluded==1};if(excluded!=0)excludedShot.ModProjectile=new XianXia.Content.Projectiles.MinorThunderboltProjectile{Mod=excluded==1?mod:new Terraria.ModLoader.Mod()};lifecycleGuard.OnSpawn(excludedShot,null);Check(lifecycleGuard.ValidateOwnerBeforeUpdate(excludedShot)&&excludedShot.active&&excludedShot.damage==60,"Vanilla, hostile and other-mod projectiles retain their own lifecycle");
+}
 // Woodgrain return must never dereference a departed owner or revive after cancellation.
 XianXia.Content.Projectiles.WoodgrainSwordProjectile WoodgrainFixture(int mode) {
  SetupSkill();Game.netMode=mode;Game.dedServ=true;Terraria.Collision.Visible=true;
