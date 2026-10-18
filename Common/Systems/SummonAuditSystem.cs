@@ -976,10 +976,13 @@ public partial class SummonAuditSystem : ModSystem
             AuditMedicineSessions(Check);
             AuditSharedLightning(Check);
             AuditWoodgrainLifecycle(Check);
-            AuditBoundMeleeFlights(Check,0);
-            AuditBoundMeleeFlights(Check,1);
-            AuditBoundMeleeFlights(Check,2);
-            AuditBoundMeleeFlights(Check,3);
+            AuditBoundFriendlyFlights(Check,0);
+            AuditBoundFriendlyFlights(Check,1);
+            AuditBoundFriendlyFlights(Check,2);
+            AuditBoundFriendlyFlights(Check,3);
+            AuditBoundFriendlyFlights(Check,4);
+            AuditBoundFriendlyFlights(Check,5);
+            AuditBoundFriendlyFlights(Check,6);
             AuditCalamityRecipes(Check);
             }
         }

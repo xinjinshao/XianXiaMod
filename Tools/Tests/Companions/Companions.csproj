@@ -8,5 +8,7 @@
   <Compile Include="../../../Content/Buffs/ContractSpiritBuffs.cs" Link="ContractSpiritBuffs.cs" />
   <Compile Include="../../../Content/Projectiles/ContractSpirits.cs" Link="ContractSpirits.cs" />
   <Compile Include="../../../Content/Projectiles/SpiritBoltProjectile.cs" Link="SpiritBoltProjectile.cs" />
+  <Compile Include="../../../Common/Projectiles/ArtifactProjectileOwnerBinding.cs" />
+  <Compile Include="../../../Content/Projectiles/SpiritBolt.cs" />
  </ItemGroup>
 </Project>

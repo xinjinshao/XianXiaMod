@@ -42,11 +42,6 @@ public class ContractSpiritBolt : SpiritBoltProjectile
         base.SetDefaults();
         Projectile.DamageType = DamageClass.Summon;
     }
-    public override void AI()
-    {
-        Projectile.rotation = Projectile.velocity.ToRotation();
-        if (!Main.dedServ) base.AI();
-    }
 }
 
 

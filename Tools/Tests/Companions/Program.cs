@@ -155,3 +155,14 @@ foreach(var entry in new (XianXia.Content.Items.HandGenerated.SpiritContractItem
  entry.Item.SetStaticDefaults();Check(Terraria.ID.ItemID.Sets.StaffMinionSlotsRequired[entry.Item.Type]==entry.Slots,"Native summon metadata agrees with contract slot requirement");
 }
 Console.WriteLine($"Including high buff and equipment lifecycle: {assertions} assertions.");
+
+foreach(int kind in new[]{0,1,2})foreach(int mode in new[]{0,1,2}) {
+ Setup();Game.netMode=mode;Game.dedServ=true;
+ ModProjectile boltUnderTest=kind==0?new SpiritBolt():kind==1?new SpiritBoltProjectile():new ContractSpiritBolt();boltUnderTest.SetDefaults();boltUnderTest.Projectile.owner=0;boltUnderTest.Projectile.Center=new Vector2(100,100);boltUnderTest.Projectile.velocity=new Vector2(4,0);boltUnderTest.OnSpawn(new Terraria.DataStructures.EntitySource_Misc());
+ object damageClass=kind==2?DamageClass.Summon:DamageClass.Ranged;int light=Terraria.Lighting.Calls,random=Game.rand.Calls;
+ boltUnderTest.AI();Check(boltUnderTest.CanDamage()==null&&boltUnderTest.Projectile.DamageType==damageClass,"Healthy spirit boltUnderTest retains ranged or summon class on every mode");Check(Terraria.Lighting.Calls==light&&Game.rand.Calls==random,"Dedicated spirit boltUnderTests skip graphical light, dust and visual RNG");
+ if(mode!=1){Game.player[0].State.ArtifactOwnerSession++;Check(boltUnderTest.CanDamage()==false,"Spirit boltUnderTest owner session change is immediately harmless");boltUnderTest.AI();Check(!boltUnderTest.Projectile.friendly&&boltUnderTest.Projectile.hide&&boltUnderTest.Projectile.timeLeft<=6,"Contract boltUnderTest runs authority cleanup on dedicated server");}
+ else {Game.player[0].active=false;boltUnderTest.AI();Check(boltUnderTest.CanDamage()==false&&boltUnderTest.Projectile.friendly&&boltUnderTest.Projectile.timeLeft==180,"Client waits harmlessly for owner state");Game.player[0].active=true;Check(boltUnderTest.CanDamage()==null,"Uncancelled client boltUnderTest resumes when owner arrives");}
+ boltUnderTest.ReceiveExtraAI(new System.IO.BinaryReader(new System.IO.MemoryStream(new byte[]{1})));boltUnderTest.ReceiveExtraAI(new System.IO.BinaryReader(new System.IO.MemoryStream(new byte[]{0})));boltUnderTest.AI();Check(boltUnderTest.CanDamage()==false&&!boltUnderTest.Projectile.friendly&&boltUnderTest.Projectile.DamageType==damageClass,"Spirit boltUnderTest stale active packet cannot revive or change class");
+}
+Console.WriteLine($"Including spirit bolt lifecycle: {assertions} assertions; engine and visual boundaries mocked.");
