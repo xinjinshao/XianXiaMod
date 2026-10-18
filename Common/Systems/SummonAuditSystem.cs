@@ -973,6 +973,7 @@ public partial class SummonAuditSystem : ModSystem
             AuditPanelFocus(Check);
             AuditArtifactSessions(Check);
             AuditFieldSessions(Check);
+            AuditMedicineSessions(Check);
             AuditCalamityRecipes(Check);
             }
         }
