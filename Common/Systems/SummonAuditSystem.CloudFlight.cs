@@ -16,10 +16,10 @@ public partial class SummonAuditSystem
     {
         Player original = Main.player[0]; int mode = Main.netMode, local = Main.myPlayer; var clients = (RemoteClient[])Netplay.Clients.Clone();
         var text = Main.combatText; var random = Main.rand; var before = Main.projectile.Where(p => p.active).ToHashSet(); NPC target = null;
-        bool parentFlight = variant == 0, moonbone = variant == 2, thunder = variant == 3;
+        bool parentFlight = variant == 0, moonbone = variant == 2, thunder = variant == 3, split = variant == 7;
         DamageClass expectedClass = variant == 6 ? DamageClass.Summon : variant >= 4 ? DamageClass.Ranged : DamageClass.Melee;
-        int type = variant == 4 ? ModContent.ProjectileType<SpiritBolt>() : variant == 5 ? ModContent.ProjectileType<SpiritBoltProjectile>() : variant == 6 ? ModContent.ProjectileType<ContractSpiritBolt>() : thunder ? ModContent.ProjectileType<ThunderSwordProjectile>() : moonbone ? ModContent.ProjectileType<MoonboneShardProjectile>() : parentFlight ? ModContent.ProjectileType<CloudpiercerSwordProjectile>() : ModContent.ProjectileType<CloudWispProjectile>();
-        int lifetime = thunder ? 110 : moonbone ? 80 : parentFlight ? 105 : 180, childType = ModContent.ProjectileType<CloudWispProjectile>();
+        int type = split ? ModContent.ProjectileType<StarEclipseSplitBolt>() : variant == 4 ? ModContent.ProjectileType<SpiritBolt>() : variant == 5 ? ModContent.ProjectileType<SpiritBoltProjectile>() : variant == 6 ? ModContent.ProjectileType<ContractSpiritBolt>() : thunder ? ModContent.ProjectileType<ThunderSwordProjectile>() : moonbone ? ModContent.ProjectileType<MoonboneShardProjectile>() : parentFlight ? ModContent.ProjectileType<CloudpiercerSwordProjectile>() : ModContent.ProjectileType<CloudWispProjectile>();
+        int lifetime = split ? 160 : thunder ? 110 : moonbone ? 80 : parentFlight ? 105 : 180, childType = ModContent.ProjectileType<CloudWispProjectile>();
         void Clear() { foreach (var p in Main.projectile.Where(p => p.active && !before.Contains(p))) { p.damage = 0; p.active = false; } }
         Player Fixture(int netMode) {
             Clear(); Main.netMode = netMode; Main.myPlayer = netMode == NetmodeID.Server ? Main.maxPlayers : 0;
@@ -69,10 +69,10 @@ public partial class SummonAuditSystem
                     case 4: state.Initialize(); break;
                     case 5: Main.player[0] = new Player { whoAmI = 0, active = true }; break;
                 }
-                if (thunder) {
+                if (thunder || split) {
                     int count = Main.projectile.Count(child => child.active && !before.Contains(child)); var rng = Main.rand; Main.rand = new Terraria.Utilities.UnifiedRandom(276);
                     logic.OnHitNPC(new NPC { Center = actor.Center },default,1);
-                    check(Main.projectile.Count(child => child.active && !before.Contains(child)) == count && Main.rand.Next() == new Terraria.Utilities.UnifiedRandom(276).Next(),"native old-session thunder sword cannot roll or create a lightning child before cancellation AI"); Main.rand = rng;
+                    check(Main.projectile.Count(child => child.active && !before.Contains(child)) == count && Main.rand.Next() == new Terraria.Utilities.UnifiedRandom(276).Next(),"native old-session derived shot cannot roll or create a lightning child before cancellation AI"); Main.rand = rng;
                 }
                 check(logic.CanDamage() == false,"native released bound friendly flight stops damage before invalid-session AI"); logic.AI();
                 using var bytes = new MemoryStream(); logic.SendExtraAI(new BinaryWriter(bytes));
@@ -113,7 +113,7 @@ public partial class SummonAuditSystem
             check(npc >= 0 && npc < Main.maxNPCs,"native bound friendly flight creates living vanilla contact target"); target = Main.npc[npc]; target.Center = caster.Center + new Vector2(100,0); target.lifeMax = 1000; target.damage = target.defense = 0; target.noGravity = true;
             foreach (var damageClass in new[] { expectedClass }) {
                 Clear(); target.life = 1000; target.velocity = Vector2.Zero; Array.Clear(target.immune); var p = Spawn(caster,damageClass,target.Center,moonbone ? Vector2.UnitX * 4 : Vector2.Zero); p.Update(p.whoAmI);
-                check(target.life < 1000 && (thunder ? p.active && p.penetrate == 2 : parentFlight || moonbone ? p.active && p.penetrate == 1 : !p.active) && p.DamageType == damageClass,"native friendly flight contact damages NPC and consumes one penetration");
+                check(target.life < 1000 && (thunder ? p.active && p.penetrate == 2 : parentFlight || moonbone || split ? p.active && p.penetrate == 1 : !p.active) && p.DamageType == damageClass,"native friendly flight contact damages NPC and consumes one penetration");
                 if (moonbone) check(Math.Abs(p.velocity.X - .8f) < .001f && p.timeLeft == 23,"native moonbone actual NPC collision applies slow and 24-frame cap before update decrement");
                 if (moonbone) {
                     int health = target.life; Array.Clear(target.immune); p.Center = target.Center; p.Update(p.whoAmI);

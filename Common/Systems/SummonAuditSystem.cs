@@ -983,6 +983,8 @@ public partial class SummonAuditSystem : ModSystem
             AuditBoundFriendlyFlights(Check,4);
             AuditBoundFriendlyFlights(Check,5);
             AuditBoundFriendlyFlights(Check,6);
+            AuditBoundFriendlyFlights(Check,7);
+            AuditStarSplitHits(Check);
             AuditCalamityRecipes(Check);
             }
         }
