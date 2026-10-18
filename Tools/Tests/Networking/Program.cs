@@ -1802,7 +1802,7 @@ Check(ArtifactKeybindSystem.ForgeScrollUpKey==null&&ArtifactKeybindSystem.ForgeS
 XianXia.Content.Projectiles.ThunderSwordProjectile ThunderProcFixture(int mode,int local=0,int damage=201) {
  Game.myPlayer=0;SetupSkill("ThunderPatternSwordCase");Game.netMode=mode;Game.myPlayer=local;Game.rand=new Terraria.RandomStub{Roll=0};
  var sword=new XianXia.Content.Projectiles.ThunderSwordProjectile{Mod=mod};sword.SetDefaults();sword.Projectile.owner=0;sword.Projectile.damage=damage;
- sword.Projectile.Center=new Microsoft.Xna.Framework.Vector2(100,300);sword.Projectile.velocity=new Microsoft.Xna.Framework.Vector2(13,0);return sword;
+ sword.Projectile.Center=new Microsoft.Xna.Framework.Vector2(100,300);sword.Projectile.velocity=new Microsoft.Xna.Framework.Vector2(13,0);sword.OnSpawn(new Terraria.DataStructures.EntitySource_Parent(new Terraria.Projectile()));return sword;
 }
 foreach(int mode in new[]{NetmodeID.SinglePlayer,NetmodeID.MultiplayerClient}) foreach(int damage in new[]{1,2,201}) {
  var sword=ThunderProcFixture(mode,0,damage);var target=new Terraria.NPC{Center=new Microsoft.Xna.Framework.Vector2(200,300)};
@@ -1824,6 +1824,15 @@ foreach(int invalid in Enumerable.Range(0,8)) {
 {var sword=ThunderProcFixture(NetmodeID.MultiplayerClient,0);foreach(var projectile in Game.projectile)projectile.active=true;int before=Terraria.Projectile.SpawnCalls;sword.OnHitNPC(new Terraria.NPC(),default,1);Check(Terraria.Projectile.SpawnCalls==before&&Game.rand.BoolCalls==0,"Full projectile pool suppresses optional proc without replacing another projectile");}
 {var sword=ThunderProcFixture(NetmodeID.MultiplayerClient,0);int before=Terraria.Projectile.SpawnCalls;sword.OnHitNPC(new Terraria.NPC{active=false,life=0},default,1);Check(Terraria.Projectile.SpawnCalls==before+1,"A legitimate killing hit still gets its authority proc");}
 {var sword=ThunderProcFixture(NetmodeID.Server,255);Game.dedServ=true;int light=Terraria.Lighting.Calls;sword.AI();Check(Terraria.Lighting.Calls==light,"Dedicated thunder sword AI avoids graphical lighting dependency");Game.dedServ=false;sword.AI();Check(Terraria.Lighting.Calls==light+1,"Client/singleplayer thunder sword light remains");}
+foreach(int mode in new[]{NetmodeID.SinglePlayer,NetmodeID.MultiplayerClient}) {
+ var sword=ThunderProcFixture(mode);int count=Terraria.Projectile.SpawnCalls;
+ try{sword.ReceiveExtraAI(new BinaryReader(new MemoryStream()));Check(false,"Empty thunder sword metadata must fail");}catch(EndOfStreamException){Check(sword.CanDamage()==null,"Empty thunder sword packet preserves healthy state");}
+ sword.ReceiveExtraAI(new BinaryReader(new MemoryStream(new byte[]{1})));sword.OnHitNPC(new Terraria.NPC(),default,1);
+ Check(Terraria.Projectile.SpawnCalls==count&&Game.rand.BoolCalls==0,"Received sword cancellation prevents owner-client lightning proc without rolling");
+ sword.ReceiveExtraAI(new BinaryReader(new MemoryStream(new byte[]{0})));sword.AI();sword.OnHitNPC(new Terraria.NPC(),default,1);
+ Check(!sword.Projectile.friendly&&sword.Projectile.hide&&sword.Projectile.timeLeft<=6&&Terraria.Projectile.SpawnCalls==count&&Game.rand.BoolCalls==0,"Stale sword active packet never restores hit proc");
+}
+{var sword=ThunderProcFixture(NetmodeID.SinglePlayer);Game.player[0].State.ResetNetworkSession();int count=Terraria.Projectile.SpawnCalls;sword.OnHitNPC(new Terraria.NPC(),default,1);Check(sword.CanDamage()==false&&Terraria.Projectile.SpawnCalls==count&&Game.rand.BoolCalls==0,"Same-player authority session reset blocks thunder sword proc before AI");}
 // Woodgrain return must never dereference a departed owner or revive after cancellation.
 XianXia.Content.Projectiles.WoodgrainSwordProjectile WoodgrainFixture(int mode) {
  SetupSkill();Game.netMode=mode;Game.dedServ=true;Terraria.Collision.Visible=true;

@@ -979,6 +979,7 @@ public partial class SummonAuditSystem : ModSystem
             AuditBoundMeleeFlights(Check,0);
             AuditBoundMeleeFlights(Check,1);
             AuditBoundMeleeFlights(Check,2);
+            AuditBoundMeleeFlights(Check,3);
             AuditCalamityRecipes(Check);
             }
         }
