@@ -16,9 +16,9 @@ public partial class SummonAuditSystem
     {
         Player original = Main.player[0]; int mode = Main.netMode, local = Main.myPlayer; var clients = (RemoteClient[])Netplay.Clients.Clone();
         var text = Main.combatText; var random = Main.rand; var before = Main.projectile.Where(p => p.active).ToHashSet(); NPC target = null;
-        bool parentFlight = variant == 0, moonbone = variant == 2, thunder = variant == 3, split = variant == 7;
-        DamageClass expectedClass = variant == 6 ? DamageClass.Summon : variant >= 4 ? DamageClass.Ranged : DamageClass.Melee;
-        int type = split ? ModContent.ProjectileType<StarEclipseSplitBolt>() : variant == 4 ? ModContent.ProjectileType<SpiritBolt>() : variant == 5 ? ModContent.ProjectileType<SpiritBoltProjectile>() : variant == 6 ? ModContent.ProjectileType<ContractSpiritBolt>() : thunder ? ModContent.ProjectileType<ThunderSwordProjectile>() : moonbone ? ModContent.ProjectileType<MoonboneShardProjectile>() : parentFlight ? ModContent.ProjectileType<CloudpiercerSwordProjectile>() : ModContent.ProjectileType<CloudWispProjectile>();
+        bool parentFlight = variant == 0, moonbone = variant == 2, thunder = variant == 3, split = variant == 7, flame = variant == 8;
+        DamageClass expectedClass = flame ? DamageClass.Magic : variant == 6 ? DamageClass.Summon : variant >= 4 ? DamageClass.Ranged : DamageClass.Melee;
+        int type = flame ? ModContent.ProjectileType<CinnabarTalismanFlame>() : split ? ModContent.ProjectileType<StarEclipseSplitBolt>() : variant == 4 ? ModContent.ProjectileType<SpiritBolt>() : variant == 5 ? ModContent.ProjectileType<SpiritBoltProjectile>() : variant == 6 ? ModContent.ProjectileType<ContractSpiritBolt>() : thunder ? ModContent.ProjectileType<ThunderSwordProjectile>() : moonbone ? ModContent.ProjectileType<MoonboneShardProjectile>() : parentFlight ? ModContent.ProjectileType<CloudpiercerSwordProjectile>() : ModContent.ProjectileType<CloudWispProjectile>();
         int lifetime = split ? 160 : thunder ? 110 : moonbone ? 80 : parentFlight ? 105 : 180, childType = ModContent.ProjectileType<CloudWispProjectile>();
         void Clear() { foreach (var p in Main.projectile.Where(p => p.active && !before.Contains(p))) { p.damage = 0; p.active = false; } }
         Player Fixture(int netMode) {
@@ -56,6 +56,10 @@ public partial class SummonAuditSystem
                 actor.active = true; check(logic.CanDamage() == null,"client cloud owner arrival resumes an uncancelled projectile");
                 logic.ReceiveExtraAI(new BinaryReader(new MemoryStream(new byte[] { 1 }))); check(logic.CanDamage() == false,"client cloud received cancellation immediately stops damage");
                 logic.ReceiveExtraAI(new BinaryReader(new MemoryStream(new byte[] { 0 }))); logic.AI(); check(!p.friendly && p.hide && p.timeLeft <= 6,"client cloud stale metadata cannot undo cancellation");
+                if (flame) {
+                    var victim = new NPC { active = true, life = 100, Center = actor.Center };
+                    logic.OnHitNPC(victim,default,1); check(victim.FindBuffIndex(BuffID.OnFire3) < 0,"native cancelled client flame cannot apply delayed debuff");
+                }
                 if (parentFlight) { Main.netMode = NetmodeID.SinglePlayer; logic.OnKill(0); check(!Main.projectile.Any(child => child.active && !before.Contains(child) && child.type == childType),"received parent cancellation prevents later child release"); }
             }
             foreach (int netMode in new[] { NetmodeID.SinglePlayer,NetmodeID.Server }) foreach (var damageClass in new[] { expectedClass }) foreach (int lifecycle in Enumerable.Range(0,6)) {
@@ -73,6 +77,10 @@ public partial class SummonAuditSystem
                     int count = Main.projectile.Count(child => child.active && !before.Contains(child)); var rng = Main.rand; Main.rand = new Terraria.Utilities.UnifiedRandom(276);
                     logic.OnHitNPC(new NPC { Center = actor.Center },default,1);
                     check(Main.projectile.Count(child => child.active && !before.Contains(child)) == count && Main.rand.Next() == new Terraria.Utilities.UnifiedRandom(276).Next(),"native old-session derived shot cannot roll or create a lightning child before cancellation AI"); Main.rand = rng;
+                }
+                if (flame) {
+                    var victim = new NPC { active = true, life = 100, Center = actor.Center };
+                    logic.OnHitNPC(victim,default,1); check(victim.FindBuffIndex(BuffID.OnFire3) < 0,"native old-session flame cannot apply a debuff before cancellation AI");
                 }
                 check(logic.CanDamage() == false,"native released bound friendly flight stops damage before invalid-session AI"); logic.AI();
                 using var bytes = new MemoryStream(); logic.SendExtraAI(new BinaryWriter(bytes));
@@ -114,6 +122,10 @@ public partial class SummonAuditSystem
             foreach (var damageClass in new[] { expectedClass }) {
                 Clear(); target.life = 1000; target.velocity = Vector2.Zero; Array.Clear(target.immune); var p = Spawn(caster,damageClass,target.Center,moonbone ? Vector2.UnitX * 4 : Vector2.Zero); p.Update(p.whoAmI);
                 check(target.life < 1000 && (thunder ? p.active && p.penetrate == 2 : parentFlight || moonbone || split ? p.active && p.penetrate == 1 : !p.active) && p.DamageType == damageClass,"native friendly flight contact damages NPC and consumes one penetration");
+                if (flame) {
+                    int buff = target.FindBuffIndex(BuffID.OnFire3);
+                    check(buff >= 0 && target.buffTime[buff] == 180,"native actual flame collision applies three seconds of OnFire3 before expiry");
+                }
                 if (moonbone) check(Math.Abs(p.velocity.X - .8f) < .001f && p.timeLeft == 23,"native moonbone actual NPC collision applies slow and 24-frame cap before update decrement");
                 if (moonbone) {
                     int health = target.life; Array.Clear(target.immune); p.Center = target.Center; p.Update(p.whoAmI);
