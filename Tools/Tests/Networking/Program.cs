@@ -846,7 +846,7 @@ Check(Game.projectile.Single(p=>p.active).damage==caster.GetWeaponDamage(codex.I
 foreach(var shot in Game.projectile)shot.active=false;caster.State.WeaponShotCooldown=0;caster.State.spiritualEnergy=100;Terraria.Projectile.AllowSpawn=false;CodexShot();Check(caster.State.spiritualEnergy==100&&!Game.projectile.Any(p=>p.active),"Actual codex spawn failure restores energy");
 Terraria.Projectile.AllowSpawn=true;caster.State.WeaponShotCooldown=0;CodexShot(float.NaN);Check(caster.State.spiritualEnergy==100&&!Game.projectile.Any(p=>p.active),"Actual codex rejects nonfinite aim");
 Game.netMode=NetmodeID.MultiplayerClient;codex.Shoot(caster,null,default,default,2,999,99);Check(caster.State.spiritualEnergy==100&&!Game.projectile.Any(p=>p.active),"Actual codex client cannot spend energy or create its own cast");
-var orb=new XianXia.Content.Projectiles.ArchiveStarOrb();orb.SetDefaults();Check(orb.Projectile.DamageType==Terraria.ModLoader.DamageClass.Magic&&orb.Projectile.friendly&&!orb.Projectile.hostile,"Codex orb belongs to magic and damages enemies");
+var orb=new XianXia.Content.Projectiles.ArchiveStarOrb();orb.SetDefaults();orb.Projectile.owner=0;orb.OnSpawn(new Terraria.DataStructures.EntitySource_Parent(caster));Check(orb.Projectile.DamageType==Terraria.ModLoader.DamageClass.Magic&&orb.Projectile.friendly&&!orb.Projectile.hostile,"Codex orb belongs to magic and damages enemies");
 Check(orb.Projectile.tileCollide&&orb.Projectile.penetrate==4&&orb.Projectile.localNPCHitCooldown==20,"Codex orb preserves bounded penetration and terrain collision");
 Game.dedServ=true;int lightBefore=Terraria.Lighting.Calls;Check(orb.CanDamage()==false,"Codex orb is harmless at cast start");
 for(int i=0;i<17;i++)orb.AI();Check(orb.CanDamage()==false,"Codex orb cannot damage during its 18-tick charge");
@@ -1854,6 +1854,15 @@ foreach(int mode in new[]{0,1,2}) {
  var guardHook=new XianXia.Common.Players.HeavenTabletWardPlayer{Player=guardActor};guardActor.statDefense=10;guardHook.PostUpdateEquips();Check(guardActor.statDefense==16,"Valid session ward provides its defense through equipment hook");
  if(mode!=1){guardActor.State.ResetNetworkSession();guardActor.statDefense=10;guardHook.PostUpdateEquips();Check(guardActor.statDefense==10&&sessionWard.CanDamage()==false,"Same Player session reset removes defense before ward AI");}
  sessionWard.ReceiveExtraAI(new BinaryReader(new MemoryStream(new byte[]{1})));sessionWard.ReceiveExtraAI(new BinaryReader(new MemoryStream(new byte[]{0})));guardActor.statDefense=10;guardHook.PostUpdateEquips();Check(guardActor.statDefense==10&&sessionWard.CanDamage()==false,"Received cancellation and stale packet cannot restore ward defense");
+}
+foreach(int mode in new[]{0,1,2}) {
+ SetupSkill();Game.netMode=mode;var delayedBeam=new XianXia.Content.Projectiles.DecreeJudgementBeam();delayedBeam.SetDefaults();delayedBeam.Projectile.owner=0;delayedBeam.OnSpawn(new Terraria.DataStructures.EntitySource_Parent(new Terraria.Projectile()));
+ for(int remaining=36;remaining>=1;remaining--){delayedBeam.Projectile.timeLeft=remaining;Check(delayedBeam.CanDamage()==(remaining<18),"Decree beam preserves exact last-seventeen-frame damage window");}
+ delayedBeam.ReceiveExtraAI(new BinaryReader(new MemoryStream(new byte[]{1})));delayedBeam.ReceiveExtraAI(new BinaryReader(new MemoryStream(new byte[]{0})));delayedBeam.AI();Check(delayedBeam.CanDamage()==false&&!delayedBeam.Projectile.friendly&&delayedBeam.Projectile.hide,"Cancelled decree beam cannot regain late damage window");
+ delayedBeam.Projectile.timeLeft=0;Check(delayedBeam.CanDamage()==false,"Expired decree beam is harmless despite low lifetime");
+}
+foreach(int mode in new[]{0,1,2})foreach(float age in new[]{-1f,.5f,19f,float.NaN,float.PositiveInfinity}) {
+ SetupSkill();Game.netMode=mode;var badOrb=new XianXia.Content.Projectiles.ArchiveStarOrb();badOrb.SetDefaults();badOrb.Projectile.owner=0;badOrb.OnSpawn(new Terraria.DataStructures.EntitySource_Parent(new Terraria.Projectile()));badOrb.Projectile.ai[0]=age;Check(badOrb.CanDamage()==false,"Malformed charge cannot activate archive orb");badOrb.AI();Check(!badOrb.Projectile.friendly&&badOrb.Projectile.hide&&badOrb.Projectile.ai[0]==0&&badOrb.Projectile.timeLeft<=6,"Malformed charge normalizes and latches cancellation");badOrb.ReceiveExtraAI(new BinaryReader(new MemoryStream(new byte[]{0})));Check(badOrb.CanDamage()==false,"Old archive active flag cannot restore invalid charge");
 }
 // Woodgrain return must never dereference a departed owner or revive after cancellation.
 XianXia.Content.Projectiles.WoodgrainSwordProjectile WoodgrainFixture(int mode) {

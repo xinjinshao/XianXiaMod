@@ -55,4 +55,5 @@
   <Compile Include="../../../Content/Projectiles/ThunderSwordProjectile.cs" Link="ThunderSwordProjectile.cs" />
   <Compile Include="../../../Content/Projectiles/MinorThunderboltProjectile.cs" Link="MinorThunderboltProjectile.cs" />
 <Compile Include="../../../Content/Items/Materials/QiRecoveryPill.cs" /><Compile Include="../../../Common/Systems/QiRecoveryRules.cs" /><Compile Include="../../../Content/Items/Materials/FurnaceGuardPill.cs" /><Compile Include="../../../Content/Buffs/FurnaceGuardBuff.cs" /><Compile Include="../../../Content/Items/Materials/WindStepPill.cs" /><Compile Include="../../../Content/Buffs/WindStepBuff.cs" /><Compile Include="../../../Content/Items/Materials/ThunderBurstPill.cs" /><Compile Include="../../../Content/Buffs/ThunderBurstBuff.cs" /><Compile Include="../../../Content/Projectiles/WoodgrainSwordProjectile.cs" Link="WoodgrainSwordProjectile.cs" /></ItemGroup>
+<ItemGroup><Compile Include="../../../Content/Projectiles/DecreeJudgementBeam.cs" /></ItemGroup>
 </Project>

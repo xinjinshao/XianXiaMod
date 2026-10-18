@@ -382,9 +382,16 @@ Check((int)itemType.GetField("damage").GetValue(nativeCodex)==230&&(int)itemType
 var orbType=type.Assembly.GetType("XianXia.Content.Projectiles.ArchiveStarOrb",true);object actualOrb=Activator.CreateInstance(orbType);object nativeOrb=Activator.CreateInstance(projectileType);
 orbType.GetProperty("Entity",BindingFlags.Instance|BindingFlags.Public|BindingFlags.NonPublic).SetValue(actualOrb,nativeOrb);orbType.GetMethod("SetDefaults").Invoke(actualOrb,null);
 Check(ReferenceEquals(projectileType.GetProperty("DamageType").GetValue(nativeOrb),magicClass)&&(bool)projectileType.GetField("tileCollide").GetValue(nativeOrb)&&(int)projectileType.GetField("penetrate").GetValue(nativeOrb)==4,"Real orb has magic collision and bounded penetration defaults");
+var orbProgram=projectileType.Assembly.GetType("Terraria.Program",true);orbProgram.GetField("SavePath",BindingFlags.Static|BindingFlags.Public|BindingFlags.NonPublic).SetValue(null,Path.Combine(Path.GetTempPath(),"XianXia-native-hook-tests"));
+var orbMain=projectileType.Assembly.GetType("Terraria.Main",true);object orbPlayers=orbMain.GetField("player").GetValue(null),orbMode=orbMain.GetField("netMode").GetValue(null);
+// Standalone copies have no installed ModPlayers: client window semantics, authority rejection separately.
+try {
+ orbMain.GetField("netMode").SetValue(null,1);var owners=Array.CreateInstance(nativePlayerType,((Array)orbPlayers).Length);var orbOwner=Activator.CreateInstance(nativePlayerType);nativePlayerType.GetField("active").SetValue(orbOwner,true);owners.SetValue(orbOwner,0);orbMain.GetField("player").SetValue(null,owners);projectileType.GetField("owner").SetValue(nativeOrb,0);
 Check((bool)orbType.GetMethod("CanDamage").Invoke(actualOrb,null)==false,"Real orb denies damage before charge");
 ((float[])projectileType.GetField("ai").GetValue(nativeOrb))[0]=18;
 Check(orbType.GetMethod("CanDamage").Invoke(actualOrb,null)==null,"Real orb defers to native damage rules after charge");
+ orbMain.GetField("netMode").SetValue(null,2);Check((bool)orbType.GetMethod("CanDamage").Invoke(actualOrb,null)==false,"Unbound standalone authority orb cannot damage without a captured owner session");
+} finally {orbMain.GetField("player").SetValue(null,orbPlayers);orbMain.GetField("netMode").SetValue(null,orbMode);}
 Console.WriteLine($"Actual engine gameplay assertions including final magic codex: {assertions}.");
 
 var rangedClass=tagType.Assembly.GetType("Terraria.ModLoader.DamageClass",true).GetProperty("Ranged").GetValue(null);
