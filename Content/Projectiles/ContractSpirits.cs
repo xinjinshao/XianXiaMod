@@ -10,7 +10,10 @@ public class FurnaceAshSpirit : SmallArtifactSpirit
 {
     public override string Texture => "XianXia/Content/Items/HandGenerated/FurnaceAshSpiritContract";
     protected override int SpiritBuff => ModContent.BuffType<FurnaceAshSpiritBuff>();
-    public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone) => target.AddBuff(BuffID.OnFire3, 120);
+    public override void OnHitNPC(NPC target,NPC.HitInfo hit,int damageDone) {
+        if (!CanAct || target == null || !target.active || target.life <= 0 || !float.IsFinite(target.Center.X) || !float.IsFinite(target.Center.Y)) return;
+        target.AddBuff(BuffID.OnFire3,120);
+    }
 }
 
 public class StarAbyssSpirit : SmallArtifactSpirit

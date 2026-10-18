@@ -8,9 +8,9 @@ using Game=Terraria.Main;
 int assertions=0;
 void Check(bool condition,string message){assertions++;if(!condition)throw new Exception(message);}
 SmallArtifactSpirit Setup(){
- Game.myPlayer=0;Game.dedServ=false;Game.player[0]=new Player {Buff=true};Game.player[1]=new Player {whoAmI=1,Buff=true};
+ Game.myPlayer=0;Game.netMode=0;Game.dedServ=false;Game.player[0]=new Player {Buff=true};Game.player[1]=new Player {whoAmI=1,Buff=true};
  foreach(var npc in Game.npc)npc.active=false;foreach(var p in Game.projectile)p.active=false;
- Collision.Visible=true;Projectile.AllowSpawn=true;var spirit=new SmallArtifactSpirit();spirit.SetDefaults();return spirit;
+ Collision.Visible=true;Projectile.AllowSpawn=true;var spirit=new SmallArtifactSpirit();spirit.SetDefaults();spirit.OnSpawn(new Terraria.DataStructures.EntitySource_Misc());return spirit;
 }
 var spirit=Setup();spirit.SetStaticDefaults();
 Check(spirit.Projectile.minionSlots==1&&ReferenceEquals(spirit.Projectile.DamageType,DamageClass.Summon)&&Game.projPet[1],"A real minion occupies one slot and uses summon damage.");
@@ -46,10 +46,10 @@ Setup();Check(pendant.CanUseItem(Game.player[0]),"Preflight initially succeeds."
 Check(!Game.ActiveProjectiles.Any(),"A slot consumed after preflight blocks the final summon.");
 Setup();Game.player[0].dead=true;pendant.Shoot(Game.player[0],null,Vector2.Zero,Vector2.Zero,1,18,0);
 Check(!Game.ActiveProjectiles.Any(),"Death between preflight and shooting cannot create a minion.");
-Setup();Game.player[0].Buff=false;spirit= new SmallArtifactSpirit();spirit.SetDefaults();Game.myPlayer=255;Game.dedServ=true;spirit.AI();
+Setup();Game.player[0].Buff=false;spirit= new SmallArtifactSpirit();spirit.SetDefaults();spirit.OnSpawn(new Terraria.DataStructures.EntitySource_Misc());Game.myPlayer=255;Game.dedServ=true;spirit.AI();
 Check(spirit.Projectile.active&&!spirit.Projectile.friendly&&spirit.Projectile.timeLeft==180,"The dedicated server waits for the initial owner buff sync without killing or attacking.");
 foreach (var contact in new SmallArtifactSpirit[] { new SmallArtifactSpirit(), new XianXia.Content.Projectiles.FurnaceAshSpirit(), new XianXia.Content.Projectiles.CelestialPuppetSpirit() }) {
- Setup(); contact.SetDefaults(); contact.Projectile.owner=0; contact.Projectile.ai[1]=18;
+ Setup(); contact.SetDefaults();contact.OnSpawn(new Terraria.DataStructures.EntitySource_Misc()); contact.Projectile.owner=0; contact.Projectile.ai[1]=18;
  var victim=Game.npc[0]; victim.active=true; victim.Center=new(100,0);
  contact.AI(); Check(contact.CanHitNPC(victim) is null,"Valid maintained contact spirit retains native hit eligibility");
  Game.player[0].Buff=false; Check(contact.CanHitNPC(victim) is false,"Buff cancellation blocks contact before another AI update");
@@ -86,14 +86,14 @@ foreach(var contract in new XianXia.Content.Items.HandGenerated.SpiritContractIt
  Check(!Game.player[0].Buff&&!Game.ActiveProjectiles.Any(),"Failed contract spawning never grants phantom buff");
 }
 Setup();Game.hardMode=false;var starContract=new XianXia.Content.Items.HandGenerated.StarAbyssLarvaContract();starContract.SetDefaults();Check(!starContract.CanUseItem(Game.player[0]),"Star contract cannot summon in a pre-Hardmode world");
-var furnace=new XianXia.Content.Projectiles.FurnaceAshSpirit();furnace.SetDefaults();var burnt=new NPC();furnace.OnHitNPC(burnt,default,28);Check(burnt.LastBuff==Terraria.ID.BuffID.OnFire3&&burnt.BuffDuration==120,"Furnace contact inflicts exactly two seconds of fire");
-Setup();var larva=new XianXia.Content.Projectiles.StarAbyssSpirit();larva.SetDefaults();Game.npc[0].active=true;Game.npc[0].Center=new(300,0);
+var furnace=new XianXia.Content.Projectiles.FurnaceAshSpirit();furnace.SetDefaults();furnace.OnSpawn(new Terraria.DataStructures.EntitySource_Misc());var burnt=new NPC{active=true};furnace.OnHitNPC(burnt,default,28);Check(burnt.LastBuff==Terraria.ID.BuffID.OnFire3&&burnt.BuffDuration==120,"Furnace contact inflicts exactly two seconds of fire");
+Setup();var larva=new XianXia.Content.Projectiles.StarAbyssSpirit();larva.SetDefaults();larva.OnSpawn(new Terraria.DataStructures.EntitySource_Misc());Game.npc[0].active=true;Game.npc[0].Center=new(300,0);
 for(int i=0;i<59;i++)larva.AI();Check(!Game.ActiveProjectiles.Any()&&!larva.Projectile.friendly,"Star spirit waits one second and never deals contact damage");
 larva.Projectile.damage=72;larva.AI();Check(Game.ActiveProjectiles.Count()==1&&Game.projectile[0].type==5&&Game.projectile[0].damage==72,"Star spirit fires one owner-authoritative summon bolt using scaled damage");
 Check(larva.Projectile.velocity.X>0,"Ranged spirit approaches a position offset from its target");
-Setup();Game.myPlayer=255;larva=new();larva.SetDefaults();Game.npc[0].active=true;Game.npc[0].Center=new(300,0);for(int i=0;i<120;i++)larva.AI();Check(!Game.ActiveProjectiles.Any(),"Server never repeats star spirit shots");
-Setup();larva=new();larva.SetDefaults();Game.npc[0].active=true;Collision.Visible=false;for(int i=0;i<120;i++)larva.AI();Check(!Game.ActiveProjectiles.Any(),"Star spirit cannot fire through walls");
-Setup();larva=new();larva.SetDefaults();Game.player[0].Buff=false;larva.AI();Check(!larva.Projectile.active,"Canceling star buff ends its minion");
+Setup();Game.myPlayer=255;larva=new();larva.SetDefaults();larva.OnSpawn(new Terraria.DataStructures.EntitySource_Misc());Game.npc[0].active=true;Game.npc[0].Center=new(300,0);for(int i=0;i<120;i++)larva.AI();Check(!Game.ActiveProjectiles.Any(),"Server never repeats star spirit shots");
+Setup();larva=new();larva.SetDefaults();larva.OnSpawn(new Terraria.DataStructures.EntitySource_Misc());Game.npc[0].active=true;Collision.Visible=false;for(int i=0;i<120;i++)larva.AI();Check(!Game.ActiveProjectiles.Any(),"Star spirit cannot fire through walls");
+Setup();larva=new();larva.SetDefaults();larva.OnSpawn(new Terraria.DataStructures.EntitySource_Misc());Game.player[0].Buff=false;larva.AI();Check(!larva.Projectile.active,"Canceling star buff ends its minion");
 Setup();spirit=Setup();spirit.Projectile.owner=999;spirit.AI();Check(!spirit.Projectile.active,"Invalid projectile owners cannot index player array");
 var shot=new XianXia.Content.Projectiles.ContractSpiritBolt();shot.SetStaticDefaults();shot.SetDefaults();Check(shot.Projectile.DamageType==Terraria.ModLoader.DamageClass.Summon&&shot.Projectile.friendly&&shot.Projectile.tileCollide,"Contract bolt is a terrain-colliding native summon shot");
 Console.WriteLine($"Companion regression including contracts: {assertions} assertions.");
@@ -126,7 +126,7 @@ foreach(var contract in new XianXia.Content.Items.HandGenerated.SpiritContractIt
  }
 }
 foreach(var fan in new XianXia.Content.Projectiles.FanContractSpirit[]{new XianXia.Content.Projectiles.NascentSoulSpirit(),new XianXia.Content.Projectiles.ArchivedSoulSpirit()}){
- Setup();fan.SetDefaults();fan.Projectile.damage=120;Game.npc[0].active=true;Game.npc[0].Center=new(300,0);
+ Setup();fan.SetDefaults();fan.OnSpawn(new Terraria.DataStructures.EntitySource_Misc());fan.Projectile.damage=120;Game.npc[0].active=true;Game.npc[0].Center=new(300,0);
  bool soul=fan is XianXia.Content.Projectiles.ArchivedSoulSpirit;int period=soul?90:75;
  for(int i=0;i<period-1;i++)fan.AI();Check(!Game.ActiveProjectiles.Any(),"High spirit waits through windup before volley");
  fan.AI();Check(Game.ActiveProjectiles.Count()==(soul?3:2)&&Game.ActiveProjectiles.All(p=>p.damage==90&&p.type==5),"High spirit fires correct fan count and bounded per-bolt damage");
@@ -134,13 +134,13 @@ foreach(var fan in new XianXia.Content.Projectiles.FanContractSpirit[]{new XianX
  Check(Game.projectile[0].velocity.Y<0&&Game.ActiveProjectiles.Last().velocity.Y>0,"High spirit fan spreads to both sides of aim");
  Setup();Game.myPlayer=255;fan.Projectile.ai[0]=0;for(int i=0;i<period+1;i++)fan.AI();Check(!Game.ActiveProjectiles.Any(),"Server cannot repeat owner high-spirit volleys");
 }
-Setup();var puppet=new XianXia.Content.Projectiles.CelestialPuppetSpirit();puppet.SetDefaults();Game.npc[0].active=true;Game.npc[0].Center=new(300,0);
+Setup();var puppet=new XianXia.Content.Projectiles.CelestialPuppetSpirit();puppet.SetDefaults();puppet.OnSpawn(new Terraria.DataStructures.EntitySource_Misc());Game.npc[0].active=true;Game.npc[0].Center=new(300,0);
 for(int i=0;i<89;i++)puppet.AI();Check(!puppet.Projectile.friendly&&puppet.Projectile.ai[1]==0,"Puppet has no contact damage during windup");
 puppet.AI();Check(puppet.Projectile.ai[1]==18&&puppet.Projectile.netUpdate&&puppet.Projectile.velocity.X>20,"Owner starts a synchronized bounded dash");
 puppet.AI();Check(puppet.Projectile.friendly&&puppet.Projectile.ai[1]==17,"Puppet enables contact only during dash");
 for(int i=0;i<17;i++)puppet.AI();Check(!puppet.Projectile.friendly&&puppet.Projectile.ai[1]==0,"Puppet restores harmless state at dash expiration");
 puppet.Projectile.ai[1]=10;Game.npc[0].active=false;puppet.AI();Check(!puppet.Projectile.friendly&&puppet.Projectile.ai[1]==0,"Puppet abandons a dash when its target disappears");
-Setup();Game.myPlayer=255;puppet=new();puppet.SetDefaults();Game.npc[0].active=true;Game.npc[0].Center=new(300,0);for(int i=0;i<100;i++)puppet.AI();Check(puppet.Projectile.ai[1]==0,"Server never starts a competing puppet dash");
+Setup();Game.myPlayer=255;puppet=new();puppet.SetDefaults();puppet.OnSpawn(new Terraria.DataStructures.EntitySource_Misc());Game.npc[0].active=true;Game.npc[0].Center=new(300,0);for(int i=0;i<100;i++)puppet.AI();Check(puppet.Projectile.ai[1]==0,"Server never starts a competing puppet dash");
 puppet.Projectile.ai[1]=1;puppet.AI();Check(puppet.Projectile.ai[1]==0&&!puppet.Projectile.friendly,"Remote prediction expires synchronized dash safely");
 Console.WriteLine($"Including high contract spirits: {assertions} assertions.");
 
@@ -166,3 +166,22 @@ foreach(int kind in new[]{0,1,2})foreach(int mode in new[]{0,1,2}) {
  boltUnderTest.ReceiveExtraAI(new System.IO.BinaryReader(new System.IO.MemoryStream(new byte[]{1})));boltUnderTest.ReceiveExtraAI(new System.IO.BinaryReader(new System.IO.MemoryStream(new byte[]{0})));boltUnderTest.AI();Check(boltUnderTest.CanDamage()==false&&!boltUnderTest.Projectile.friendly&&boltUnderTest.Projectile.DamageType==damageClass,"Spirit boltUnderTest stale active packet cannot revive or change class");
 }
 Console.WriteLine($"Including spirit bolt lifecycle: {assertions} assertions; engine and visual boundaries mocked.");
+
+foreach(int kind in Enumerable.Range(0,6))foreach(int mode in new[]{0,1,2}) {
+ Setup();Game.netMode=mode;Game.dedServ=true;
+ SmallArtifactSpirit boundSpirit=kind switch{0=>new SmallArtifactSpirit(),1=>new FurnaceAshSpirit(),2=>new StarAbyssSpirit(),3=>new NascentSoulSpirit(),4=>new CelestialPuppetSpirit(),_=>new ArchivedSoulSpirit()};
+ boundSpirit.SetDefaults();boundSpirit.Projectile.owner=0;boundSpirit.OnSpawn(new Terraria.DataStructures.EntitySource_Misc());Check(boundSpirit.CanAct,"Every fresh spirit has current owner and buff");
+ if(mode!=1){Game.player[0].State.ArtifactOwnerSession++;Check(!boundSpirit.CanAct&&boundSpirit.CanDamage()==false,"Spirit session reset immediately blocks action before AI");}
+ else {boundSpirit.ReceiveExtraAI(new System.IO.BinaryReader(new System.IO.MemoryStream(new byte[]{1})));Check(!boundSpirit.CanAct,"Received spirit cancellation immediately blocks action");}
+ boundSpirit.Projectile.ai[0]=89;boundSpirit.Projectile.ai[1]=18;int count=Game.ActiveProjectiles.Count();boundSpirit.AI();
+ Check(!boundSpirit.Projectile.friendly&&boundSpirit.Projectile.hide&&boundSpirit.Projectile.ai[0]==0&&boundSpirit.Projectile.ai[1]==0&&Game.ActiveProjectiles.Count()==count,"Cancelled spirits reset pending shots and dash without spawning");
+ boundSpirit.ReceiveExtraAI(new System.IO.BinaryReader(new System.IO.MemoryStream(new byte[]{0})));boundSpirit.Projectile.active=true;boundSpirit.AI();Check(!boundSpirit.CanAct&&!boundSpirit.Projectile.friendly&&boundSpirit.Projectile.timeLeft<=6,"Old active metadata and forced reactivation cannot revive spirit");
+ if(boundSpirit is FurnaceAshSpirit ash){var oldVictim=new NPC{active=true};ash.OnHitNPC(oldVictim,default,1);Check(oldVictim.BuffDuration==0,"Old furnace spirit cannot apply burn on delayed callback");}
+}
+Console.WriteLine($"Including spirit owner sessions: {assertions} assertions; native transport mocked.");
+
+foreach(int mode in new[]{1,2}) {
+ Setup();Game.netMode=mode;Game.myPlayer=mode==2?255:1;var lateSpirit=new StarAbyssSpirit();lateSpirit.SetDefaults();lateSpirit.OnSpawn(new Terraria.DataStructures.EntitySource_Misc());Game.player[0].Buff=false;lateSpirit.AI();
+ Check(lateSpirit.Projectile.active&&!lateSpirit.CanAct&&lateSpirit.Projectile.timeLeft==180,"Observer/server missing first buff waits harmlessly without latching cancellation");Game.player[0].Buff=true;lateSpirit.AI();Check(lateSpirit.Projectile.active&&lateSpirit.CanAct&&lateSpirit.Projectile.timeLeft==2,"Late buff resumes same-session spirit on server and observer");
+}
+Console.WriteLine($"Including delayed spirit buffs: {assertions} assertions.");

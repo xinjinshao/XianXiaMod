@@ -26,7 +26,7 @@ public partial class SummonAuditSystem
                 owner.AddBuff(buff, 18000);
                 var projectile = new Projectile(); projectile.SetDefaults(Mod.Find<ModProjectile>(name).Type);
                 projectile.owner = 0; projectile.Center = owner.Center; projectile.ai[1] = 18;
-                var spirit = (SmallArtifactSpirit)projectile.ModProjectile;
+                var spirit = (SmallArtifactSpirit)projectile.ModProjectile; spirit.OnSpawn(new Terraria.DataStructures.EntitySource_Misc("CompanionContactAudit"));
                 var target = new NPC(); target.SetDefaults(NPCID.Zombie); target.active = true; target.Center = owner.Center + new Vector2(80, 0);
                 bool contact = name is "SmallArtifactSpirit" or "FurnaceAshSpirit" or "CelestialPuppetSpirit";
                 check(spirit.CanHitNPC(target) == (contact ? (bool?)null : false), "native registered spirit preserves contact versus ranged role");

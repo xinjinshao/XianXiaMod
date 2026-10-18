@@ -1,3 +1,6 @@
+using System;
+using System.IO;
+using XianXia.Common.Projectiles;
 using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.ID;
@@ -8,6 +11,13 @@ namespace XianXia.Content.Projectiles;
 
 public class SmallArtifactSpirit : ModProjectile
 {
+    private ArtifactProjectileOwnerBinding ownerBinding;
+    private bool cancelled;
+    public override void OnSpawn(Terraria.DataStructures.IEntitySource source) => ownerBinding = ArtifactProjectileOwnerBinding.Capture(Projectile);
+    public override void SendExtraAI(BinaryWriter writer) => writer.Write(cancelled);
+    public override void ReceiveExtraAI(BinaryReader reader) { bool stop = reader.ReadBoolean(); cancelled |= stop; }
+    internal bool CanAct => !cancelled && TryOwner(out var owner) && owner.HasBuff(SpiritBuff);
+    public override bool? CanDamage() => CanAct && MinionContactDamage() ? null : false;
     protected virtual int SpiritBuff => ModContent.BuffType<SmallArtifactSpiritBuff>();
     protected virtual float AttackRange => 700f;
     protected virtual float CombatSpeed => 10f;
@@ -35,10 +45,11 @@ public class SmallArtifactSpirit : ModProjectile
     private bool TryOwner(out Player owner)
     {
         owner = null;
-        if (Main.player == null || Projectile.owner < 0 || Projectile.owner >= Main.player.Length) return false;
+        if (Main.player == null || Projectile.owner < 0 || Projectile.owner >= Main.maxPlayers || Projectile.owner >= Main.player.Length) return false;
         owner = Main.player[Projectile.owner];
-        return owner != null && owner.active && !owner.dead && Finite(owner.Center)
-            && Finite(Projectile.Center) && Finite(Projectile.velocity);
+        return !cancelled && Projectile.width == 24 && Projectile.height == 24 && Projectile.timeLeft > 0 && Projectile.timeLeft <= 180
+            && float.IsFinite(Projectile.rotation) && owner != null && owner.active && !owner.dead && Finite(owner.Center)
+            && Finite(owner.velocity) && Finite(Projectile.Center) && Finite(Projectile.velocity) && ownerBinding.Matches(Projectile,owner);
     }
     private bool Reachable(Player owner, NPC npc) => npc != null && Finite(npc.Center) && Finite(npc.position)
         && npc.width > 0 && npc.height > 0 && npc.CanBeChasedBy(Projectile)
@@ -46,11 +57,23 @@ public class SmallArtifactSpirit : ModProjectile
         && Collision.CanHitLine(Projectile.position, Projectile.width, Projectile.height, npc.position, npc.width, npc.height);
     public override bool? CanHitNPC(NPC target) => TryOwner(out var owner) && owner.HasBuff(SpiritBuff)
         && MinionContactDamage() && Reachable(owner, target) ? null : false;
+    private void Cancel() {
+        cancelled = true; Projectile.friendly = false; Projectile.hide = true; Projectile.velocity = Vector2.Zero; Projectile.ai[0] = Projectile.ai[1] = 0;
+        Projectile.width = Projectile.height = 24; Projectile.timeLeft = Math.Min(6,Math.Max(0,Projectile.timeLeft));
+        if (!Finite(Projectile.Center)) Projectile.Center = Vector2.Zero;
+        if (!float.IsFinite(Projectile.rotation)) Projectile.rotation = 0;
+        if (Main.netMode == NetmodeID.MultiplayerClient) return;
+        if (!Projectile.active) return;
+        if (Main.player != null && Projectile.owner >= 0 && Projectile.owner < Main.maxPlayers && Projectile.owner < Main.player.Length && Main.player[Projectile.owner] != null) Projectile.Kill();
+        else Projectile.active = false;
+    }
     public override void AI()
     {
-        if (!TryOwner(out Player owner)) { Projectile.friendly = false; Projectile.Kill(); return; }
+        if (cancelled || Projectile.width != 24 || Projectile.height != 24 || Projectile.timeLeft <= 0 || Projectile.timeLeft > 180
+            || !Finite(Projectile.Center) || !Finite(Projectile.velocity) || !float.IsFinite(Projectile.rotation)) { Cancel(); return; }
+        if (!TryOwner(out Player owner)) { Projectile.friendly = false; if (Main.netMode != NetmodeID.MultiplayerClient) Cancel(); return; }
         if (owner.HasBuff(SpiritBuff)) Projectile.timeLeft = 2;
-        else { Projectile.friendly = false; if (Main.myPlayer == Projectile.owner) Projectile.Kill(); return; }
+        else { Projectile.friendly = false; if (Main.myPlayer == Projectile.owner) Cancel(); return; }
         Vector2 idle = owner.Center + new Vector2(-40 * owner.direction,-48);
         if (Vector2.DistanceSquared(Projectile.Center,owner.Center) > 1600*1600 && Main.myPlayer == Projectile.owner) {
             Projectile.Center = idle; Projectile.velocity = Vector2.Zero; Projectile.netUpdate = true;
@@ -69,6 +92,7 @@ public class SmallArtifactSpirit : ModProjectile
         }
         Projectile.friendly = target != null && MinionContactDamage();
         Vector2 delta = (target != null ? AimPosition(owner, target) : idle) - Projectile.Center;
+        if (!Finite(delta)) { Cancel(); return; }
         AttackTarget(owner, target);
         float speed = target != null ? CombatSpeed : delta.LengthSquared() > 400*400 ? 14 : 6;
         Vector2 desired = delta.LengthSquared() > 16*16 ? delta.SafeNormalize(Vector2.Zero)*speed : Vector2.Zero;
