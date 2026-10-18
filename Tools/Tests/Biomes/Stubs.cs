@@ -112,6 +112,9 @@ namespace XianXia.Common.Players
 {
     public class XianXiaPlayer
     {
+        private static long nextArtifactOwnerSession; private long artifactOwnerSession;
+        internal long ArtifactOwnerSession => Terraria.Main.netMode == Terraria.ID.NetmodeID.MultiplayerClient ? 0 : artifactOwnerSession == 0 ? artifactOwnerSession = System.Threading.Interlocked.Increment(ref nextArtifactOwnerSession) : artifactOwnerSession;
+
         public int spiritualEnergyRegenBonus;
         public int spiritPressure, spiritualEnergy;
         private ulong lastRecovery = ulong.MaxValue;

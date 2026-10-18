@@ -3,11 +3,14 @@ using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
+using XianXia.Common.Projectiles;
 
 namespace XianXia.Content.Projectiles;
 
 public class ThunderTalismanArray : ModProjectile
 {
+    private ArtifactProjectileOwnerBinding ownerBinding;
+    public override void OnSpawn(Terraria.DataStructures.IEntitySource source) => ownerBinding = ArtifactProjectileOwnerBinding.Capture(Projectile);
     public override void SetDefaults()
     {
         Projectile.width = Projectile.height = 96;
@@ -19,7 +22,7 @@ public class ThunderTalismanArray : ModProjectile
     }
     private bool invalidState;
     private byte attemptedWaves;
-    private Player LivingOwner => global::XianXia.Common.Projectiles.FriendlyFieldOwner.Find(Projectile, 240);
+    private Player LivingOwner => global::XianXia.Common.Projectiles.FriendlyFieldOwner.Find(Projectile, 240,ownerBinding);
     public override bool? CanDamage() => invalidState || LivingOwner == null ? false : null;
     public override void AI()
     {
@@ -28,7 +31,7 @@ public class ThunderTalismanArray : ModProjectile
         Projectile.velocity = Vector2.Zero;
         if (owner == null)
         {
-            if (Main.netMode != NetmodeID.MultiplayerClient) Projectile.Kill();
+            if (Main.netMode != NetmodeID.MultiplayerClient) { invalidState = true; Projectile.friendly = false; if (Projectile.active) Projectile.Kill(); }
             return;
         }
         Projectile.rotation += 0.035f;

@@ -80,6 +80,7 @@ var green = new XianXia.Content.Projectiles.GreenwoodArrayField();
 var overlap = new XianXia.Content.Projectiles.GreenwoodArrayField();
 green.SetDefaults(); overlap.SetDefaults();
 green.Projectile.owner = overlap.Projectile.owner = 0;
+green.OnSpawn(new Terraria.DataStructures.EntitySource_Parent { Entity=first }); overlap.OnSpawn(new Terraria.DataStructures.EntitySource_Parent { Entity=first });
 Game.GameUpdateCount = 60;
 green.AI(); overlap.AI();
 Check(first.statLife == 51 && first.State.spiritualEnergy == 1 && NetMessage.HealMessages == 1,
@@ -93,13 +94,13 @@ green.AI();
 Check(first.statLife == 52 && first.State.spiritualEnergy == 2, "Later server recovery interval remains available.");
 first.dead = true; Game.GameUpdateCount = 180; green.AI();
 Check(first.statLife == 52 && first.State.spiritualEnergy == 2, "Dead array owner does not recover.");
-first.dead = false; first.position = new(500,500); Game.GameUpdateCount = 240; green.AI();
+first.dead = false; green = new XianXia.Content.Projectiles.GreenwoodArrayField(); green.SetDefaults(); green.Projectile.owner=0; green.Projectile.active=true; green.OnSpawn(new Terraria.DataStructures.EntitySource_Parent {Entity=first}); first.position = new(500,500); Game.GameUpdateCount = 240; green.AI();
 Check(first.statLife == 52, "Array does not heal an owner outside its hitbox.");
 first.position = Vector2.Zero; first.statLife = 100; Game.GameUpdateCount = 300; green.AI();
 Check(first.statLife == 100 && first.State.spiritualEnergy == 3 && NetMessage.HealMessages == 2,
     "Full health clamps healing and sends no extra heal packet while energy recovery continues.");
 var thunder = new XianXia.Content.Projectiles.ThunderTalismanArray();
-thunder.SetDefaults(); thunder.Projectile.owner = 0; thunder.Projectile.timeLeft = 45; thunder.Projectile.damage = 20;
+thunder.SetDefaults(); thunder.Projectile.owner = 0; thunder.OnSpawn(new Terraria.DataStructures.EntitySource_Parent {Entity=first}); thunder.Projectile.timeLeft = 45; thunder.Projectile.damage = 20;
 int strikes = Projectile.Spawns;
 thunder.AI();
 Check(Projectile.Spawns == strikes + 1, "Server thunder array generates its periodic bolt without an owner-client condition.");

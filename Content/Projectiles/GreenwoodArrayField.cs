@@ -3,11 +3,14 @@ using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
+using XianXia.Common.Projectiles;
 
 namespace XianXia.Content.Projectiles;
 
 public class GreenwoodArrayField : ModProjectile
 {
+    private ArtifactProjectileOwnerBinding ownerBinding;
+    public override void OnSpawn(Terraria.DataStructures.IEntitySource source) => ownerBinding = ArtifactProjectileOwnerBinding.Capture(Projectile);
     public override void SetDefaults()
     {
         Projectile.width = Projectile.height = 96;
@@ -18,7 +21,7 @@ public class GreenwoodArrayField : ModProjectile
         Projectile.usesLocalNPCImmunity = true; Projectile.localNPCHitCooldown = 30;
     }
     private bool invalidState;
-    private Player LivingOwner => global::XianXia.Common.Projectiles.FriendlyFieldOwner.Find(Projectile, 300);
+    private Player LivingOwner => global::XianXia.Common.Projectiles.FriendlyFieldOwner.Find(Projectile, 300,ownerBinding);
     internal bool CanPulse(Player player) => Projectile.active && !invalidState
         && ReferenceEquals(LivingOwner, player) && player != null
         && Vector2.DistanceSquared(player.Center, Projectile.Center) <= 160f * 160f;
@@ -30,7 +33,7 @@ public class GreenwoodArrayField : ModProjectile
         Projectile.velocity = Vector2.Zero;
         if (owner == null)
         {
-            if (Main.netMode != NetmodeID.MultiplayerClient) Projectile.Kill();
+            if (Main.netMode != NetmodeID.MultiplayerClient) { invalidState = true; Projectile.friendly = false; if (Projectile.active) Projectile.Kill(); }
             return;
         }
         Projectile.rotation += 0.02f;

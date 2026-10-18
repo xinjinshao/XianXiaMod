@@ -2,11 +2,14 @@ using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
+using XianXia.Common.Projectiles;
 
 namespace XianXia.Content.Projectiles;
 
 public class MedicineCauldronField : ModProjectile
 {
+    private ArtifactProjectileOwnerBinding ownerBinding;
+    public override void OnSpawn(Terraria.DataStructures.IEntitySource source) => ownerBinding = ArtifactProjectileOwnerBinding.Capture(Projectile);
     public override string Texture => "XianXia/Content/Projectiles/GreenwoodArrayField";
     public override void SetDefaults()
     {
@@ -21,14 +24,14 @@ public class MedicineCauldronField : ModProjectile
     public override bool? CanDamage() => false;
     public override void AI()
     {
-        Player owner = global::XianXia.Common.Projectiles.FriendlyFieldOwner.Find(Projectile, 300);
+        Player owner = global::XianXia.Common.Projectiles.FriendlyFieldOwner.Find(Projectile, 300,ownerBinding);
         bool validClock = float.IsFinite(Projectile.ai[0]) && Projectile.ai[0] >= 0f
             && Projectile.ai[0] < 60f && Projectile.ai[0] == System.MathF.Truncate(Projectile.ai[0]);
         invalidState |= !global::XianXia.Common.Projectiles.FriendlyFieldOwner.HasValidState(Projectile, 300) || !validClock;
         Projectile.velocity = Vector2.Zero;
         if (owner == null || invalidState)
         {
-            if (Main.netMode != NetmodeID.MultiplayerClient) Projectile.Kill();
+            if (Main.netMode != NetmodeID.MultiplayerClient) { invalidState = true; Projectile.friendly = false; if (Projectile.active) Projectile.Kill(); }
             return;
         }
         Projectile.rotation += 0.02f;

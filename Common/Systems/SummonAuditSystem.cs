@@ -972,6 +972,7 @@ public partial class SummonAuditSystem : ModSystem
             AuditRouteNavigation(Check);
             AuditPanelFocus(Check);
             AuditArtifactSessions(Check);
+            AuditFieldSessions(Check);
             AuditCalamityRecipes(Check);
             }
         }

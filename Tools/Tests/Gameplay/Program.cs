@@ -931,6 +931,7 @@ try {
  // Compiled persistent fields reject bad geometry before client prediction or contact.
  nativeTargetMain.GetField("netMode").SetValue(null,1);
  var nativeFieldOwnerRules=type.Assembly.GetType("XianXia.Common.Projectiles.FriendlyFieldOwner",true).GetMethod("Find",BindingFlags.Static|BindingFlags.NonPublic);
+ object unboundFieldIdentity=Activator.CreateInstance(type.Assembly.GetType("XianXia.Common.Projectiles.ArtifactProjectileOwnerBinding",true));
  foreach(string fieldName in new[]{"GreenwoodArrayField","ThunderTalismanArray","MedicineCauldronField"})foreach(int invalidField in Enumerable.Range(0,8)) {
   object safeOwner=Activator.CreateInstance(nativeTargetPlayerType);nativeTargetPlayerType.GetField("active").SetValue(safeOwner,true);nativeTargetPlayers.SetValue(safeOwner,0);
   var realFieldType=type.Assembly.GetType("XianXia.Content.Projectiles."+fieldName,true);object realField=Activator.CreateInstance(realFieldType),realFieldProjectile=Activator.CreateInstance(projectileType);realFieldType.GetProperty("Entity",BindingFlags.Instance|BindingFlags.Public|BindingFlags.NonPublic).SetValue(realField,realFieldProjectile);realFieldType.GetMethod("SetDefaults").Invoke(realField,null);
@@ -944,7 +945,8 @@ try {
  foreach(string fieldName in new[]{"GreenwoodArrayField","ThunderTalismanArray","MedicineCauldronField"})foreach(float fieldDistance in new[]{1599f,1600f,1601f}) {
   object safeOwner=Activator.CreateInstance(nativeTargetPlayerType);nativeTargetPlayerType.GetField("active").SetValue(safeOwner,true);nativeTargetPlayerType.GetProperty("Center").SetValue(safeOwner,Activator.CreateInstance(nativeTargetVectorType));nativeTargetPlayers.SetValue(safeOwner,0);
   var realFieldType=type.Assembly.GetType("XianXia.Content.Projectiles."+fieldName,true);object realField=Activator.CreateInstance(realFieldType),realFieldProjectile=Activator.CreateInstance(projectileType);realFieldType.GetProperty("Entity",BindingFlags.Instance|BindingFlags.Public|BindingFlags.NonPublic).SetValue(realField,realFieldProjectile);realFieldType.GetMethod("SetDefaults").Invoke(realField,null);projectileType.GetField("owner").SetValue(realFieldProjectile,0);projectileType.GetProperty("Center").SetValue(realFieldProjectile,Activator.CreateInstance(nativeTargetVectorType,new object[]{fieldDistance,0f}));
-  Check(ReferenceEquals(nativeFieldOwnerRules.Invoke(null,new[]{realFieldProjectile,(object)(fieldName=="ThunderTalismanArray"?240:300)}),safeOwner)==(fieldDistance<=1600),"Actual persistent field owner guard includes exact leash boundary");
+  nativeTargetMain.GetField("netMode").SetValue(null,2);Check(nativeFieldOwnerRules.Invoke(null,new[]{realFieldProjectile,(object)(fieldName=="ThunderTalismanArray"?240:300),unboundFieldIdentity})==null,"Unbound standalone authority field cannot acquire owner benefits");nativeTargetMain.GetField("netMode").SetValue(null,1);
+  Check(ReferenceEquals(nativeFieldOwnerRules.Invoke(null,new[]{realFieldProjectile,(object)(fieldName=="ThunderTalismanArray"?240:300),unboundFieldIdentity}),safeOwner)==(fieldDistance<=1600),"Actual persistent field owner guard includes exact leash boundary");
  }
  foreach(float pulseDistance in new[]{159f,160f,161f}) {
   object pulseOwner=Activator.CreateInstance(nativeTargetPlayerType);nativeTargetPlayerType.GetField("active").SetValue(pulseOwner,true);nativeTargetPlayerType.GetProperty("Center").SetValue(pulseOwner,Activator.CreateInstance(nativeTargetVectorType));nativeTargetPlayers.SetValue(pulseOwner,0);
