@@ -1824,6 +1824,24 @@ foreach(int invalid in Enumerable.Range(0,8)) {
 {var sword=ThunderProcFixture(NetmodeID.MultiplayerClient,0);foreach(var projectile in Game.projectile)projectile.active=true;int before=Terraria.Projectile.SpawnCalls;sword.OnHitNPC(new Terraria.NPC(),default,1);Check(Terraria.Projectile.SpawnCalls==before&&Game.rand.BoolCalls==0,"Full projectile pool suppresses optional proc without replacing another projectile");}
 {var sword=ThunderProcFixture(NetmodeID.MultiplayerClient,0);int before=Terraria.Projectile.SpawnCalls;sword.OnHitNPC(new Terraria.NPC{active=false,life=0},default,1);Check(Terraria.Projectile.SpawnCalls==before+1,"A legitimate killing hit still gets its authority proc");}
 {var sword=ThunderProcFixture(NetmodeID.Server,255);Game.dedServ=true;int light=Terraria.Lighting.Calls;sword.AI();Check(Terraria.Lighting.Calls==light,"Dedicated thunder sword AI avoids graphical lighting dependency");Game.dedServ=false;sword.AI();Check(Terraria.Lighting.Calls==light+1,"Client/singleplayer thunder sword light remains");}
+// Woodgrain return must never dereference a departed owner or revive after cancellation.
+XianXia.Content.Projectiles.WoodgrainSwordProjectile WoodgrainFixture(int mode) {
+ SetupSkill();Game.netMode=mode;Game.dedServ=true;Terraria.Collision.Visible=true;
+ var sword=new XianXia.Content.Projectiles.WoodgrainSwordProjectile();sword.SetDefaults();sword.Projectile.owner=0;sword.Projectile.active=true;sword.Projectile.Center=Game.player[0].Center+new Microsoft.Xna.Framework.Vector2(100,0);sword.Projectile.velocity=new Microsoft.Xna.Framework.Vector2(4,0);sword.OnSpawn(new Terraria.DataStructures.EntitySource_Parent(new Terraria.Projectile()));return sword;
+}
+foreach(int mode in new[]{0,1,2})foreach(int bad in Enumerable.Range(0,13)) {
+ var sword=WoodgrainFixture(mode);var p=sword.Projectile;
+ switch(bad){case 0:p.owner=-1;break;case 1:p.owner=Game.maxPlayers;break;case 2:Game.player[0]=null!;break;case 3:Game.player[0].active=false;break;case 4:Game.player[0].dead=true;break;case 5:p.Center=new Microsoft.Xna.Framework.Vector2(float.NaN,0);break;case 6:p.velocity=new Microsoft.Xna.Framework.Vector2(float.MaxValue,0);break;case 7:p.rotation=float.NaN;break;case 8:p.width=41;break;case 9:p.timeLeft=91;break;case 10:p.timeLeft=0;break;case 11:Game.player[0].Center=new Microsoft.Xna.Framework.Vector2(float.NaN,0);break;case 12:Game.player[0].velocity=new Microsoft.Xna.Framework.Vector2(float.PositiveInfinity,0);break;}
+ Check(sword.CanDamage()==false,"Bad woodgrain owner or geometry suppresses damage before AI");int light=Terraria.Lighting.Calls;sword.AI();Check(Terraria.Lighting.Calls==light,"Invalid woodgrain never lights or dereferences missing owner");
+ if(mode!=1||bad>=5&&bad<=10){Check(!p.friendly&&p.hide&&p.timeLeft<=6,"Invalid woodgrain locks safe bounded cleanup");sword.ReceiveExtraAI(new BinaryReader(new MemoryStream(new byte[]{0})));Check(sword.CanDamage()==false,"Stale woodgrain active flag cannot restore damage");}
+}
+foreach(int mode in new[]{0,1,2}) {
+ var sword=WoodgrainFixture(mode);var p=sword.Projectile;p.timeLeft=44;sword.AI();Check(p.velocity.X<4&&sword.CanDamage()==null,"Healthy woodgrain retains return steering");
+ p.timeLeft=90;Check(!sword.OnTileCollide(p.velocity)&&p.timeLeft==35&&!p.tileCollide,"Woodgrain wall transition preserves 35 frame return");
+ sword.ReceiveExtraAI(new BinaryReader(new MemoryStream(new byte[]{1})));Check(sword.CanDamage()==false,"Remote cancellation immediately stops woodgrain damage");
+ sword.ReceiveExtraAI(new BinaryReader(new MemoryStream(new byte[]{0})));sword.AI();Check(!p.friendly&&p.hide&&p.timeLeft<=6,"Woodgrain cancellation remains sticky on each mode");
+}
+foreach(int mode in new[]{0,2}) {var sword=WoodgrainFixture(mode);Game.player[0].State.ResetNetworkSession();Check(sword.CanDamage()==false,"Same-object woodgrain owner session reset immediately blocks damage");sword.AI();Check(!sword.Projectile.friendly,"Old woodgrain cannot home toward new session");}
 Console.WriteLine($"Networking including actual recovery pill hooks: {assertions} assertions; buff/inventory engine boundaries mocked.");
 
 sealed class TestBossSummon : XianXia.Common.Items.CultivationBossSummonItem
