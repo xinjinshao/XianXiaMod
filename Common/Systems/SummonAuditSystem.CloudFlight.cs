@@ -18,8 +18,8 @@ public partial class SummonAuditSystem
         var text = Main.combatText; var random = Main.rand; var before = Main.projectile.Where(p => p.active).ToHashSet(); NPC target = null;
         bool parentFlight = variant == 0, moonbone = variant == 2, thunder = variant == 3, split = variant == 7, flame = variant == 8;
         DamageClass expectedClass = flame ? DamageClass.Magic : variant == 6 ? DamageClass.Summon : variant >= 4 ? DamageClass.Ranged : DamageClass.Melee;
-        int type = flame ? ModContent.ProjectileType<CinnabarTalismanFlame>() : split ? ModContent.ProjectileType<StarEclipseSplitBolt>() : variant == 4 ? ModContent.ProjectileType<SpiritBolt>() : variant == 5 ? ModContent.ProjectileType<SpiritBoltProjectile>() : variant == 6 ? ModContent.ProjectileType<ContractSpiritBolt>() : thunder ? ModContent.ProjectileType<ThunderSwordProjectile>() : moonbone ? ModContent.ProjectileType<MoonboneShardProjectile>() : parentFlight ? ModContent.ProjectileType<CloudpiercerSwordProjectile>() : ModContent.ProjectileType<CloudWispProjectile>();
-        int lifetime = split ? 160 : thunder ? 110 : moonbone ? 80 : parentFlight ? 105 : 180, childType = ModContent.ProjectileType<CloudWispProjectile>();
+        int type = variant == 9 ? ModContent.ProjectileType<SectMechanismBolt>() : variant == 10 ? ModContent.ProjectileType<HeavenLawBolt>() : variant == 11 ? ModContent.ProjectileType<StarCalamityMechanismBolt>() : flame ? ModContent.ProjectileType<CinnabarTalismanFlame>() : split ? ModContent.ProjectileType<StarEclipseSplitBolt>() : variant == 4 ? ModContent.ProjectileType<SpiritBolt>() : variant == 5 ? ModContent.ProjectileType<SpiritBoltProjectile>() : variant == 6 ? ModContent.ProjectileType<ContractSpiritBolt>() : thunder ? ModContent.ProjectileType<ThunderSwordProjectile>() : moonbone ? ModContent.ProjectileType<MoonboneShardProjectile>() : parentFlight ? ModContent.ProjectileType<CloudpiercerSwordProjectile>() : ModContent.ProjectileType<CloudWispProjectile>();
+        int lifetime = variant >= 9 ? 150 : split ? 160 : thunder ? 110 : moonbone ? 80 : parentFlight ? 105 : 180, childType = ModContent.ProjectileType<CloudWispProjectile>();
         void Clear() { foreach (var p in Main.projectile.Where(p => p.active && !before.Contains(p))) { p.damage = 0; p.active = false; } }
         Player Fixture(int netMode) {
             Clear(); Main.netMode = netMode; Main.myPlayer = netMode == NetmodeID.Server ? Main.maxPlayers : 0;
@@ -116,12 +116,23 @@ public partial class SummonAuditSystem
                 p.ModProjectile.OnHitNPC(new NPC(),default,1);
                 check(p.velocity == velocity && p.timeLeft == remaining,"native cancelled moonbone ignores stale hit callback");
             }
+            if (variant == 11) foreach (int netMode in new[] { NetmodeID.SinglePlayer,NetmodeID.MultiplayerClient,NetmodeID.Server }) {
+                var actor = Fixture(NetmodeID.SinglePlayer); var p = Spawn(actor,expectedClass,actor.Center,new Vector2(0,3)); Main.netMode = netMode;
+                check(!p.ModProjectile.OnTileCollide(new Vector2(4,3)) && p.velocity == new Vector2(-4,3) && p.ai[0] == 1 && p.netUpdate,"native star mechanism first wall bounce reflects blocked axis");
+                p.velocity = new Vector2(-4,0); check(!p.ModProjectile.OnTileCollide(new Vector2(-4,3)) && p.velocity == new Vector2(-4,-3) && p.ai[0] == 2,"native star mechanism second floor bounce");
+                check(p.ModProjectile.OnTileCollide(p.velocity) && p.ai[0] == 2,"native star mechanism third collision requests ordinary destruction");
+                p.ai[0] = float.NaN; check(p.ModProjectile.CanDamage() == false,"native nonfinite bounce counter is harmless before AI"); p.ModProjectile.AI(); check(!p.friendly && p.hide && p.timeLeft <= 6,"native invalid bounce counter latches cleanup on every mode");
+            }
             var caster = Fixture(NetmodeID.SinglePlayer);
             int npc = NPC.NewNPC(new EntitySource_Misc("CloudFlightTarget"),(int)caster.Center.X + 100,400,NPCID.BlueSlime);
             check(npc >= 0 && npc < Main.maxNPCs,"native bound friendly flight creates living vanilla contact target"); target = Main.npc[npc]; target.Center = caster.Center + new Vector2(100,0); target.lifeMax = 1000; target.damage = target.defense = 0; target.noGravity = true;
             foreach (var damageClass in new[] { expectedClass }) {
                 Clear(); target.life = 1000; target.velocity = Vector2.Zero; Array.Clear(target.immune); var p = Spawn(caster,damageClass,target.Center,moonbone ? Vector2.UnitX * 4 : Vector2.Zero); p.Update(p.whoAmI);
-                check(target.life < 1000 && (thunder ? p.active && p.penetrate == 2 : parentFlight || moonbone || split ? p.active && p.penetrate == 1 : !p.active) && p.DamageType == damageClass,"native friendly flight contact damages NPC and consumes one penetration");
+                check(target.life < 1000 && (variant >= 9 ? p.active && p.penetrate == (variant == 9 ? 2 : variant == 10 ? 1 : 3) : thunder ? p.active && p.penetrate == 2 : parentFlight || moonbone || split ? p.active && p.penetrate == 1 : !p.active) && p.DamageType == damageClass,"native friendly flight contact damages NPC and consumes one penetration");
+                if (variant == 10) {
+                    int ichor = target.FindBuffIndex(BuffID.Ichor);
+                    check(ichor >= 0 && target.buffTime[ichor] == 120,"native law bolt actual collision applies 120-frame Ichor");
+                }
                 if (flame) {
                     int buff = target.FindBuffIndex(BuffID.OnFire3);
                     check(buff >= 0 && target.buffTime[buff] == 180,"native actual flame collision applies three seconds of OnFire3 before expiry");

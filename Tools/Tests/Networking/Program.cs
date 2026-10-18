@@ -877,8 +877,8 @@ foreach(var bolt in new XianXia.Content.Projectiles.MechanismBolt[]{new XianXia.
  bolt.SetDefaults();Check(bolt.Projectile.DamageType==Terraria.ModLoader.DamageClass.Ranged&&bolt.Projectile.friendly&&!bolt.Projectile.hostile&&bolt.Projectile.tileCollide&&bolt.Projectile.timeLeft==150&&bolt.Projectile.localNPCHitCooldown==20,"Mechanism projectile native collision and ranged defaults");
  Game.dedServ=true;int lights=Terraria.Lighting.Calls;bolt.AI();Check(Terraria.Lighting.Calls==lights,"Mechanism server skips lighting");
 }
-var lawBolt=new XianXia.Content.Projectiles.HeavenLawBolt();var victim=new Terraria.NPC();lawBolt.OnHitNPC(victim,default,10);Check(victim.LastBuff==Terraria.ID.BuffID.Ichor&&victim.BuffDuration==120,"Heaven law applies bounded native Ichor");
-var bouncing=new XianXia.Content.Projectiles.StarCalamityMechanismBolt();bouncing.SetDefaults();
+var lawBolt=new XianXia.Content.Projectiles.HeavenLawBolt();lawBolt.SetDefaults();lawBolt.Projectile.owner=0;lawBolt.OnSpawn(new Terraria.DataStructures.EntitySource_Parent(new Terraria.Projectile()));var victim=new Terraria.NPC();lawBolt.OnHitNPC(victim,default,10);Check(victim.LastBuff==Terraria.ID.BuffID.Ichor&&victim.BuffDuration==120,"Heaven law applies bounded native Ichor");
+var bouncing=new XianXia.Content.Projectiles.StarCalamityMechanismBolt();bouncing.SetDefaults();bouncing.Projectile.owner=0;bouncing.OnSpawn(new Terraria.DataStructures.EntitySource_Parent(new Terraria.Projectile()));
 bouncing.Projectile.velocity=new Microsoft.Xna.Framework.Vector2(0,3);Check(!bouncing.OnTileCollide(new Microsoft.Xna.Framework.Vector2(4,3))&&bouncing.Projectile.velocity.X==-4&&bouncing.Projectile.velocity.Y==3&&bouncing.Projectile.netUpdate,"First wall bounce reflects only blocked axis and syncs");
 bouncing.Projectile.velocity=new Microsoft.Xna.Framework.Vector2(-4,0);Check(!bouncing.OnTileCollide(new Microsoft.Xna.Framework.Vector2(-4,3))&&bouncing.Projectile.velocity.Y==-3,"Second floor bounce");
 Check(bouncing.OnTileCollide(new Microsoft.Xna.Framework.Vector2(-4,-3))&&bouncing.Projectile.ai[0]==2,"Third collision destroys through native hook without increasing bounce counter");
@@ -1833,6 +1833,15 @@ foreach(int mode in new[]{NetmodeID.SinglePlayer,NetmodeID.MultiplayerClient}) {
  Check(!sword.Projectile.friendly&&sword.Projectile.hide&&sword.Projectile.timeLeft<=6&&Terraria.Projectile.SpawnCalls==count&&Game.rand.BoolCalls==0,"Stale sword active packet never restores hit proc");
 }
 {var sword=ThunderProcFixture(NetmodeID.SinglePlayer);Game.player[0].State.ResetNetworkSession();int count=Terraria.Projectile.SpawnCalls;sword.OnHitNPC(new Terraria.NPC(),default,1);Check(sword.CanDamage()==false&&Terraria.Projectile.SpawnCalls==count&&Game.rand.BoolCalls==0,"Same-player authority session reset blocks thunder sword proc before AI");}
+foreach(int mode in new[]{0,1,2}) foreach(float counter in new[]{-1f,.5f,3f,float.NaN,float.PositiveInfinity}) {
+ SetupSkill();Game.netMode=mode;var bolt=new XianXia.Content.Projectiles.StarCalamityMechanismBolt();bolt.SetDefaults();bolt.Projectile.owner=0;bolt.OnSpawn(new Terraria.DataStructures.EntitySource_Parent(new Terraria.Projectile()));bolt.Projectile.ai[0]=counter;
+ Check(bolt.CanDamage()==false,"Invalid mechanism bounce counter is harmless before update");bolt.AI();Check(!bolt.Projectile.friendly&&bolt.Projectile.hide&&bolt.Projectile.timeLeft<=6,"Invalid mechanism bounce counter cancels in all modes");
+}
+foreach(int mode in new[]{0,1,2}) {
+ SetupSkill();Game.netMode=mode;var bolt=new XianXia.Content.Projectiles.StarCalamityMechanismBolt();bolt.SetDefaults();bolt.Projectile.owner=0;bolt.OnSpawn(new Terraria.DataStructures.EntitySource_Parent(new Terraria.Projectile()));
+ Check(!bolt.OnTileCollide(new Microsoft.Xna.Framework.Vector2(float.NaN,0))&&!bolt.Projectile.friendly&&bolt.Projectile.timeLeft<=6,"Nonfinite old collision velocity cannot inject a reflected invalid vector");
+ var law=new XianXia.Content.Projectiles.HeavenLawBolt();law.SetDefaults();law.Projectile.owner=0;law.OnSpawn(new Terraria.DataStructures.EntitySource_Parent(new Terraria.Projectile()));var cancelledLawTarget=new Terraria.NPC();law.ReceiveExtraAI(new BinaryReader(new MemoryStream(new byte[]{1})));law.ReceiveExtraAI(new BinaryReader(new MemoryStream(new byte[]{0})));law.OnHitNPC(cancelledLawTarget,default,1);Check(cancelledLawTarget.BuffDuration==0&&law.CanDamage()==false,"Cancelled law bolt never reapplies Ichor after stale active packet");
+}
 // Woodgrain return must never dereference a departed owner or revive after cancellation.
 XianXia.Content.Projectiles.WoodgrainSwordProjectile WoodgrainFixture(int mode) {
  SetupSkill();Game.netMode=mode;Game.dedServ=true;Terraria.Collision.Visible=true;
