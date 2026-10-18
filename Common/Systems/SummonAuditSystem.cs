@@ -974,6 +974,7 @@ public partial class SummonAuditSystem : ModSystem
             AuditArtifactSessions(Check);
             AuditFieldSessions(Check);
             AuditMedicineSessions(Check);
+            AuditSharedLightning(Check);
             AuditCalamityRecipes(Check);
             }
         }

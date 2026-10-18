@@ -113,7 +113,7 @@ foreach(object damageClass in new[]{Terraria.ModLoader.DamageClass.Melee,Terrari
  Check(ReferenceEquals(bolt.Projectile.DamageType,damageClass),"Shared lightning inherits its actual parent weapon class.");
  using var data=new MemoryStream();using(var writer=new BinaryWriter(data,System.Text.Encoding.UTF8,true))bolt.SendExtraAI(writer);
  var remote=new XianXia.Content.Projectiles.MinorThunderboltProjectile();remote.SetDefaults();data.Position=0;using var reader=new BinaryReader(data);remote.ReceiveExtraAI(reader);
- Check(data.Length==1 && ReferenceEquals(remote.Projectile.DamageType,damageClass),"Shared lightning damage class survives projectile synchronization.");
+ Check(data.Length==2 && ReferenceEquals(remote.Projectile.DamageType,damageClass),"Shared lightning damage class survives projectile synchronization.");
 }
 Console.WriteLine($"Biome/environment/array/class regression passed: {assertions} assertions against actual source with engine boundary stubs.");
 

@@ -49,7 +49,7 @@ namespace Terraria
         public int whoAmI, width = 20, height = 42, statLife, statLifeMax2 = 100;
         public Microsoft.Xna.Framework.Rectangle Hitbox => new((int)position.X,(int)position.Y,width,height);
         public void Heal(int amount) => statLife = Math.Min(statLifeMax2, statLife + amount);
-        public Microsoft.Xna.Framework.Vector2 Center, position;
+        public Microsoft.Xna.Framework.Vector2 Center, position, velocity;
         public XianXia.Common.Players.ServerBiomePlayer Biome;
         public XianXia.Common.Players.XianXiaPlayer State = new();
         public XianXia.Common.Players.BiomeObjectEffectsPlayer Objects;
@@ -74,12 +74,12 @@ namespace Terraria
     public class Projectile
     {
         public int width, height, penetrate, timeLeft, localNPCHitCooldown, owner, damage;
-        public bool friendly, hostile, tileCollide, ignoreWater, usesLocalNPCImmunity, netImportant;
+        public bool friendly, hostile, tileCollide, ignoreWater, usesLocalNPCImmunity, netImportant, netUpdate, hide;
         public bool active=true; public void Kill()=>active=false;
         public object DamageType;
         public float rotation;
         public Microsoft.Xna.Framework.Vector2 velocity, position;
-        public Microsoft.Xna.Framework.Vector2 Center => position;
+        public Microsoft.Xna.Framework.Vector2 Center {get=>position;set=>position=value;}
         public Microsoft.Xna.Framework.Rectangle Hitbox => new((int)position.X,(int)position.Y,width,height);
         public object GetSource_FromAI() => null;
         public static int Spawns;
@@ -101,7 +101,7 @@ namespace Terraria.ID
 }
 namespace Terraria.ModLoader
 {
-    public class ModProjectile { public Terraria.Projectile Projectile = new(); public virtual bool? CanDamage()=>null; public virtual void SetDefaults() { } public virtual void AI() { } public virtual void OnSpawn(Terraria.DataStructures.IEntitySource source) { } public virtual void SendExtraAI(System.IO.BinaryWriter writer) { } public virtual void ReceiveExtraAI(System.IO.BinaryReader reader) { } }
+    public class ModProjectile { public Terraria.Projectile Projectile = new(); public virtual bool? CanDamage()=>null; public virtual bool? CanHitNPC(Terraria.NPC target)=>null; public virtual void SetDefaults() { } public virtual void AI() { } public virtual void OnSpawn(Terraria.DataStructures.IEntitySource source) { } public virtual void SendExtraAI(System.IO.BinaryWriter writer) { } public virtual void ReceiveExtraAI(System.IO.BinaryReader reader) { } }
     public static class DamageClass { public static object Generic = new(), Magic = new(), Melee = new(); }
     public class ModPlayer { public virtual void Initialize() { } public virtual void OnEnterWorld() { } public Terraria.Player Player; public virtual void PostUpdateEquips() { } public virtual void ResetEffects() { } public virtual void PostUpdate() { } }
     public class ModSystem { public virtual void OnWorldLoad() { } public virtual void OnWorldUnload() { } public virtual void PostUpdatePlayers() { } public virtual void ClearWorld() { } }
@@ -136,3 +136,5 @@ namespace XianXia.Content.Buffs { public class TribulationResistanceBuff {} }
 
 namespace XianXia.Content.Tiles.Stations { public class AlchemyCauldronTile {} public class ArtifactForgeTile {} }
 namespace XianXia.Content.Buffs { public class AlchemyInsightBuff {} public class ArtifactResonanceBuff {} }
+
+namespace Terraria { public class NPC { public bool active; public int life; public Microsoft.Xna.Framework.Vector2 Center,velocity; } public static class Collision {public static bool CanHitLine(Microsoft.Xna.Framework.Vector2 a,int w,int h,Microsoft.Xna.Framework.Vector2 b,int bw,int bh)=>true;} }

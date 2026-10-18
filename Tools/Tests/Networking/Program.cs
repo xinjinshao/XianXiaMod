@@ -1698,6 +1698,18 @@ foreach(int length in new[]{0,1,6,7,12,57}) {
  Check(slots.SequenceEqual(unchanged),"Forging target navigation does not mutate eligible inventory list");
 }
 Check(InscriptionRules.AdjacentTarget(null,0,false)==-1,"Absent forging target list has no selection");
+// Shared lightning inherits parent class, reads both flags atomically and cannot revive cancelled state.
+XianXia.Content.Projectiles.MinorThunderboltProjectile SharedBoltFixture(int mode,bool melee){SetupSkill();Game.netMode=mode;Game.dedServ=true;Terraria.Collision.Visible=true;var bolt=new XianXia.Content.Projectiles.MinorThunderboltProjectile();bolt.SetDefaults();bolt.Projectile.owner=0;bolt.Projectile.active=true;bolt.Projectile.Center=Game.player[0].Center;bolt.Projectile.velocity=new(0,12);bolt.OnSpawn(new Terraria.DataStructures.EntitySource_Parent(new Terraria.Projectile{DamageType=melee?DamageClass.Melee:DamageClass.Magic,active=false}));return bolt;}
+foreach(int mode in new[]{0,1,2})foreach(bool melee in new[]{false,true}){
+ var bolt=SharedBoltFixture(mode,melee);object expected=melee?DamageClass.Melee:DamageClass.Magic;Check(bolt.CanDamage()==null&&bolt.Projectile.DamageType==expected,"Shared lightning remains valid after parent removal and inherits intended weapon class");
+ using(var bytes=new MemoryStream()){bolt.SendExtraAI(new BinaryWriter(bytes));Check(bytes.ToArray().SequenceEqual(new byte[]{(byte)(melee?1:0),0}),"Shared lightning appends cancellation after existing class flag");}
+ bool truncated=false;try{bolt.ReceiveExtraAI(new BinaryReader(new MemoryStream(new byte[]{(byte)(melee?0:1)})));}catch(EndOfStreamException){truncated=true;}Check(truncated&&bolt.CanDamage()==null&&bolt.Projectile.DamageType==expected,"Truncated shared lightning metadata cannot partially change class or damage state");
+ bolt.ReceiveExtraAI(new BinaryReader(new MemoryStream(new byte[]{(byte)(melee?1:0),1})));Check(bolt.CanDamage()==false,"Shared lightning received cancellation suppresses damage immediately");bolt.ReceiveExtraAI(new BinaryReader(new MemoryStream(new byte[]{(byte)(melee?1:0),0})));bolt.AI();Check(bolt.CanDamage()==false&&!bolt.Projectile.friendly&&bolt.Projectile.timeLeft<=6&&bolt.Projectile.DamageType==expected,"Old shared lightning packet cannot restore damage and preserves class");
+}
+foreach(int mode in new[]{0,2})foreach(bool melee in new[]{false,true}){
+ var bolt=SharedBoltFixture(mode,melee);Game.player[0].State.ResetNetworkSession();Check(bolt.CanDamage()==false,"Released shared lightning rejects reused owner session before AI");bolt.AI();Check(!bolt.Projectile.friendly&&bolt.Projectile.timeLeft<=6,"Old shared lightning enters bounded owner-session cleanup");
+}
+{var bolt=SharedBoltFixture(0,false);var target=new Terraria.NPC{active=true,life=100};Check(bolt.CanHitNPC(target)==null,"Healthy shared lightning permits native contact");Terraria.Collision.Visible=false;Check(bolt.CanHitNPC(target)==false,"Shared lightning contact refuses blocked wall path");Terraria.Collision.Visible=true;Check(bolt.CanHitNPC(null)==false,"Shared lightning contact refuses absent NPC");}
 // Medicine spirits have an independent flight lifetime, owner lease and sticky one-byte cancellation.
 XianXia.Content.Projectiles.MedicineSpiritBolt MedicineBoltFixture(int mode){SetupSkill();Game.netMode=mode;Game.dedServ=true;Terraria.Collision.Visible=true;var bolt=new XianXia.Content.Projectiles.MedicineSpiritBolt();bolt.SetDefaults();bolt.Projectile.owner=0;bolt.Projectile.active=true;bolt.Projectile.Center=Game.player[0].Center;bolt.Projectile.velocity=new(10,0);bolt.OnSpawn(new Terraria.DataStructures.EntitySource_Parent(Game.player[0]));return bolt;}
 foreach(int mode in new[]{0,1,2})foreach(int failure in Enumerable.Range(0,13)){

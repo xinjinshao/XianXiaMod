@@ -46,7 +46,7 @@ public partial class SummonAuditSystem
                     check(bolt.owner == 0 && bolt.damage == 100 && bolt.DamageType == DamageClass.Melee && bolt.knockBack == .5f,"native thunder proc retains half damage player owner melee class and knockback");
                     check(bolt.Center.X >= target.Center.X - 32 && bolt.Center.X < target.Center.X + 32 && bolt.Center.Y == target.Center.Y - 240
                         && bolt.velocity == Vector2.UnitY * 12 && bolt.tileCollide,"native thunder proc actual fall geometry and tile collision");
-                    using (var extra = new MemoryStream()) { bolt.ModProjectile.SendExtraAI(new BinaryWriter(extra)); check(extra.ToArray().SequenceEqual(new byte[] { 1 }),"native hit-parent source sets melee extra AI on spawned lightning"); }
+                    using (var extra = new MemoryStream()) { bolt.ModProjectile.SendExtraAI(new BinaryWriter(extra)); check(extra.ToArray().SequenceEqual(new byte[] { 1,0 }),"native hit-parent source sets melee and active extra AI on spawned lightning"); }
                     if (netMode == NetmodeID.MultiplayerClient) {
                         if (!output.Sent.Any(packet => packet.Length > 2 && packet[2] == MessageID.SyncProjectile)) bolt.Update(bolt.whoAmI);
                         byte[] packet = output.Sent.LastOrDefault(bytes => bytes.Length > 2 && bytes[2] == MessageID.SyncProjectile);
