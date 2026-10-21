@@ -15,7 +15,7 @@ namespace XianXia.Common.Systems;
 
 public class GeneratedBiomeWorldGenSystem : ModSystem
 {
-    private List<Rectangle> greenwood = new(), thunder = new(), star = new(), sect = new(), heaven = new();
+    private List<Rectangle> furnace = new(), greenwood = new(), thunder = new(), star = new(), sect = new(), heaven = new();
     public override void ModifyWorldGenTasks(List<GenPass> tasks, ref double totalWeight)
     {
         if (!ModContent.GetInstance<XianXiaConfig>().EnableWorldGeneration)
@@ -39,7 +39,7 @@ public class GeneratedBiomeWorldGenSystem : ModSystem
         progress.Message = Language.GetTextValue("Mods.XianXia.WorldGeneration.CultivationDomains");
 
         greenwood = GenerateGroundPatches(ModContent.TileType<GreenwoodSoilTile>(), ModContent.TileType<SpiritHerbTile>(), 3, (int)Main.worldSurface - 80, (int)Main.worldSurface + 40, 34, 16);
-        GenerateGroundPatches(ModContent.TileType<FurnaceSlagTile>(), ModContent.TileType<FurnaceSlagTile>(), 3, (int)Main.rockLayer, Main.maxTilesY - 260, 42, 22, ModContent.WallType<BlackFurnaceWall>());
+        furnace = GenerateGroundPatches(ModContent.TileType<FurnaceSlagTile>(), ModContent.TileType<FurnaceSlagTile>(), 3, (int)Main.rockLayer, Main.maxTilesY - 260, 42, 22, ModContent.WallType<BlackFurnaceWall>());
         thunder = GenerateCloudFields(ModContent.TileType<ThunderCloudTile>(), 4, 160, (int)Main.worldSurface - 160, 46, 12);
         star = GenerateGroundPatches(ModContent.TileType<StarAbyssCrystalTile>(), ModContent.TileType<StarAbyssCrystalTile>(), 3, Main.maxTilesY - 420, Main.maxTilesY - 180, 38, 24);
         sect = GenerateGroundPatches(ModContent.TileType<SectRuinBrickTile>(), ModContent.TileType<SectRuinBrickTile>(), 2, (int)Main.rockLayer - 80, Main.maxTilesY - 360, 50, 18);
@@ -57,6 +57,7 @@ public class GeneratedBiomeWorldGenSystem : ModSystem
         PlaceObjects(ModContent.TileType<BrokenHeavenTabletTile>(), 2, heaven, ModContent.TileType<FallenHeavenJadeTile>(), 4);
         PlaceObjects(ModContent.TileType<ArchiveLightPillarTile>(), 2, heaven, ModContent.TileType<FallenHeavenJadeTile>(), 6);
         ModContent.GetInstance<GreenwoodGardenSystem>().Generate(greenwood);
+        ModContent.GetInstance<FurnaceWorkshopSystem>().Generate(furnace);
     }
 
     private void PlaceObjects(int tileType, int count, List<Rectangle> regions, int groundType, int height)

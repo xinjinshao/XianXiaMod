@@ -1,13 +1,28 @@
 """Verify explicit console tile audits; generation counts alone are insufficient."""
+import argparse
 import json
-import sys
 from pathlib import Path
 
 EXPECTED = {"SwordTabletTile": (3, 4), "SingingThunderStoneTile": (2, 3),
             "RiftMembraneTile": (2, 3), "BrokenHeavenTabletTile": (4, 2),
             "ArchiveLightPillarTile": (6, 2)}
 
-def verify(run):
+def verify_workshops(report):
+    rooms = report.get("FurnaceWorkshops")
+    assert isinstance(rooms, list) and 0 < len(rooms) <= 3, "Missing or excessive furnace workshops"
+    positions = set()
+    for room in rooms:
+        assert (room["Width"], room["Height"]) == (35, 17), f"Workshop dimensions: {room}"
+        assert room["SlagTiles"] == 238 and room["ShellIntact"] is True, f"Workshop shell: {room}"
+        assert room["FurnaceCells"] == 6 and room["AnvilCells"] == 2, f"Workshop stations: {room}"
+        assert room["BlockedInterior"] == 0 and room["Dry"] is True, f"Workshop interior: {room}"
+        point = (room["X"], room["Y"])
+        assert point not in positions, "Duplicate workshop bounds"
+        assert 12 <= point[0] <= report["Width"] - 47 and 12 <= point[1] <= report["Height"] - 29
+        positions.add(point)
+
+
+def verify(run, require_workshops=False):
     root = Path(run)
     log = (root / "runtime.log").read_text(encoding="utf-8-sig")
     reports = [json.loads(line.split("SavedWorldAudit: ", 1)[1])
@@ -22,6 +37,8 @@ def verify(run):
         assert entry["Height"] == height
         assert entry["Origins"] == entry["Complete"] == count, f"Missing/incomplete: {entry}"
         assert entry["Cells"] == count * height * 2, f"Orphan tiles: {entry}"
+    if require_workshops:
+        verify_workshops(report)
     for extension in ("wld", "twld"):
         assert (root / "save/Worlds" / f"GenerationProbe.{extension}").stat().st_size > 0
     report["Scope"] = "Final loaded tile counts and frames; accessibility/biome activation unverified"
@@ -29,5 +46,9 @@ def verify(run):
     print(f"Saved tile audit passed: {report['Width']}x{report['Height']}; {root}")
 
 if __name__ == "__main__":
-    for run in sys.argv[1:]:
-        verify(run)
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("runs", nargs="+")
+    parser.add_argument("--require-workshops", action="store_true", help="Require saved furnace room shells and both vanilla station footprints")
+    args = parser.parse_args()
+    for run in args.runs:
+        verify(run, args.require_workshops)

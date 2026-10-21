@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text.Json;
 using Terraria;
+using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader;
 using XianXia.Content.Tiles;
@@ -102,8 +103,20 @@ public class WorldAuditCommand : ModCommand
             }
             gardenReports.Add(new { garden.X, garden.Y, garden.Width, garden.Height, SoilTiles = soils, Crops = crops, CropFrames = frames, BedIntact = bed, WalkwayClear = clear, Dry = dry });
         }
+        var workshopReports = new List<object>();
+        foreach (var room in ModContent.GetInstance<global::XianXia.Common.Systems.FurnaceWorkshopSystem>().Workshops) {
+            int slag = 0, furnaces = 0, anvils = 0, blocked = 0; bool dry = true, shell = true;
+            for (int x = 0; x < room.Width; x++) for (int y = 0; y < room.Height; y++) {
+                Tile tile = Main.tile[room.X + x,room.Y + y]; dry &= tile.LiquidAmount == 0;
+                bool expected = global::XianXia.Common.Systems.FurnaceWorkshopSystem.IsSlag(x,y);
+                bool isSlag = tile.HasTile && tile.TileType == ModContent.TileType<FurnaceSlagTile>();
+                if (isSlag) slag++; if (expected) shell &= isSlag && tile.Slope == 0 && !tile.IsHalfBlock;
+                else if (tile.HasTile) { if (tile.TileType == TileID.Furnaces) furnaces++; else if (tile.TileType == TileID.Anvils) anvils++; else blocked++; }
+            }
+            workshopReports.Add(new { room.X,room.Y,room.Width,room.Height,SlagTiles = slag,FurnaceCells = furnaces,AnvilCells = anvils,BlockedInterior = blocked,ShellIntact = shell,Dry = dry });
+        }
         string report = JsonSerializer.Serialize(new { Width = Main.maxTilesX, Height = Main.maxTilesY, Objects = objects.Values,
-            SectRuinHalls = hallReports, SectRuinPaths = pathReports, GreenwoodGardens = gardenReports, ChestsWithSpiritStones = supplyChests, ChestSpiritStoneTotal = spiritStones });
+            FurnaceWorkshops = workshopReports, SectRuinHalls = hallReports, SectRuinPaths = pathReports, GreenwoodGardens = gardenReports, ChestsWithSpiritStones = supplyChests, ChestSpiritStoneTotal = spiritStones });
         Mod.Logger.Info("SavedWorldAudit: " + report);
         caller.Reply(report);
     }

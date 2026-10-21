@@ -16,3 +16,5 @@ namespace XianXia.Common.Systems { public class SectRuinHallSystem { public stat
 namespace XianXia.Common.Systems { public class GreenwoodGardenSystem { public void Generate(List<Microsoft.Xna.Framework.Rectangle> regions) {} } }
 
 namespace Terraria.ObjectData { public class TileObjectData {public int Width=2,Height=3,CoordinateWidth=16,CoordinatePadding=0;public (int X,int Y) Origin=(0,2);public static TileObjectData GetTileData(int type,int style)=>new();} }
+
+namespace XianXia.Common.Systems {public class FurnaceWorkshopSystem {public void Generate(List<Microsoft.Xna.Framework.Rectangle> regions) {}}}
