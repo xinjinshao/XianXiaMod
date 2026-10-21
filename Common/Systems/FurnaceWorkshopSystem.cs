@@ -21,7 +21,7 @@ public class FurnaceWorkshopSystem : ModSystem {
         }
     }
     internal void Generate(List<Rectangle> regions) {
-        Workshops.Clear();
+        Workshops.Clear(); ModContent.GetInstance<FurnaceWorkshopPathSystem>().Paths.Clear();
         if (Main.netMode == NetmodeID.MultiplayerClient || !ModContent.GetInstance<XianXiaConfig>().EnableWorldGeneration) return;
         foreach (var source in regions) {
             if (Workshops.Count == 3) break;
@@ -31,7 +31,11 @@ public class FurnaceWorkshopSystem : ModSystem {
             for (int y = region.Top; y <= region.Bottom - Height && !built; y += 3)
                 for (int x = region.Left; x <= region.Right - Width && !built; x += 3) {
                     var area = new Rectangle(x,y,Width,Height);
-                    if (TryBuild(area,GenVars.structures)) { Workshops.Add(area); built = true; }
+                    if (TryBuild(area,GenVars.structures,registerProtection:false)) {
+                        Workshops.Add(area); built = true;
+                        if (FurnaceWorkshopPathSystem.TryConnect(area,GenVars.structures,out Rectangle path)) ModContent.GetInstance<FurnaceWorkshopPathSystem>().Paths.Add(path);
+                        GenVars.structures.AddProtectedStructure(area,2);
+                    }
                 }
         }
         Mod.Logger.Info($"Furnace workshops: {Workshops.Count}/{regions.Count} safely placed.");
@@ -49,7 +53,7 @@ public class FurnaceWorkshopSystem : ModSystem {
         return true;
     }
     internal static bool IsSlag(int x,int y) => y < 2 || y >= Height - 4 || ((x < 2 || x >= Width - 2) && y < Height - 8);
-    internal static bool TryBuild(Rectangle area,StructureMap structures) {
+    internal static bool TryBuild(Rectangle area,StructureMap structures,bool registerProtection = true) {
         if (structures == null || Main.netMode == NetmodeID.MultiplayerClient || !ModContent.GetInstance<XianXiaConfig>().EnableWorldGeneration
             || area.Width != Width || area.Height != Height || !WorldGen.InWorld(area.X,area.Y,12)
             || area.X > Main.maxTilesX - Width - 12 || area.Y > Main.maxTilesY - Height - 12) return false;
@@ -70,7 +74,7 @@ public class FurnaceWorkshopSystem : ModSystem {
         int floor = area.Bottom - 4;
         WorldGen.PlaceObject(area.Left + 9,floor - 1,TileID.Furnaces,mute:true);
         WorldGen.PlaceObject(area.Left + 24,floor - 1,TileID.Anvils,mute:true);
-        structures.AddProtectedStructure(area,2);
+        if (registerProtection) structures.AddProtectedStructure(area,2);
         return true;
     }
 }

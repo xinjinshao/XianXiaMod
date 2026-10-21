@@ -996,6 +996,7 @@ public partial class SummonAuditSystem : ModSystem
             AuditPetOwners(Check);
             AuditMalformedProjectileOwners(Check);
             AuditFurnaceWorkshops(Check);
+            AuditWorkshopPaths(Check);
             AuditStarSplitHits(Check);
             AuditCalamityRecipes(Check);
             }

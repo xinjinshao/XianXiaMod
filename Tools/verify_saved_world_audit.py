@@ -23,7 +23,15 @@ def verify_workshops(report):
         positions.add(point)
 
 
-def verify(run, require_workshops=False):
+def verify_workshop_paths(report):
+    paths = report.get("FurnaceWorkshopPaths")
+    assert isinstance(paths, list) and 0 < len(paths) <= 3, "No saved workshop access paths"
+    for path in paths:
+        assert path["Height"] == 6 and 5 <= path["Width"] <= 40
+        assert all(path.get(flag) is True for flag in ("InteriorClear", "ShellIntact", "Dry", "OpenCavityExit")), path
+
+
+def verify(run, require_workshops=False, require_paths=False):
     root = Path(run)
     log = (root / "runtime.log").read_text(encoding="utf-8-sig")
     reports = [json.loads(line.split("SavedWorldAudit: ", 1)[1])
@@ -40,6 +48,8 @@ def verify(run, require_workshops=False):
         assert entry["Cells"] == count * height * 2, f"Orphan tiles: {entry}"
     if require_workshops:
         verify_workshops(report)
+    if require_paths:
+        verify_workshop_paths(report)
     for extension in ("wld", "twld"):
         assert (root / "save/Worlds" / f"GenerationProbe.{extension}").stat().st_size > 0
     report["Scope"] = "Final loaded tile counts and frames; accessibility/biome activation unverified"
@@ -50,6 +60,7 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("runs", nargs="+")
     parser.add_argument("--require-workshops", action="store_true", help="Require saved furnace room shells and both vanilla station footprints")
+    parser.add_argument("--require-workshop-paths", action="store_true")
     args = parser.parse_args()
     for run in args.runs:
-        verify(run, args.require_workshops)
+        verify(run, args.require_workshops, args.require_workshop_paths)

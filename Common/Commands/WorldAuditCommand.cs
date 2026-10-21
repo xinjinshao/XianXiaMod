@@ -115,8 +115,19 @@ public class WorldAuditCommand : ModCommand
             }
             workshopReports.Add(new { room.X,room.Y,room.Width,room.Height,SlagTiles = slag,FurnaceCells = furnaces,AnvilCells = anvils,BlockedInterior = blocked,ShellIntact = shell,Dry = dry,StationsIntact = global::XianXia.Common.Systems.FurnaceWorkshopSystem.StationsIntact(room) });
         }
+        var workshopPaths = new List<object>();
+        foreach (var path in ModContent.GetInstance<global::XianXia.Common.Systems.FurnaceWorkshopPathSystem>().Paths) {
+            bool clear = true,shell = true,dry = true;
+            for (int x = path.Left; x < path.Right; x++) for (int y = path.Top; y < path.Bottom; y++) {
+                Tile tile = Main.tile[x,y]; dry &= tile.LiquidAmount == 0;
+                if (y == path.Top || y == path.Bottom - 1) shell &= tile.HasTile && tile.TileType == ModContent.TileType<FurnaceSlagTile>() && tile.Slope == 0 && !tile.IsHalfBlock;
+                else clear &= !tile.HasTile;
+            }
+            bool exit = ModContent.GetInstance<global::XianXia.Common.Systems.FurnaceWorkshopSystem>().Workshops.Any(room => global::XianXia.Common.Systems.FurnaceWorkshopPathSystem.HasOpenExit(path,room));
+            workshopPaths.Add(new { path.X,path.Y,path.Width,path.Height,InteriorClear = clear,ShellIntact = shell,Dry = dry,OpenCavityExit = exit });
+        }
         string report = JsonSerializer.Serialize(new { Width = Main.maxTilesX, Height = Main.maxTilesY, Objects = objects.Values,
-            FurnaceWorkshops = workshopReports, SectRuinHalls = hallReports, SectRuinPaths = pathReports, GreenwoodGardens = gardenReports, ChestsWithSpiritStones = supplyChests, ChestSpiritStoneTotal = spiritStones });
+            FurnaceWorkshops = workshopReports,FurnaceWorkshopPaths = workshopPaths, SectRuinHalls = hallReports, SectRuinPaths = pathReports, GreenwoodGardens = gardenReports, ChestsWithSpiritStones = supplyChests, ChestSpiritStoneTotal = spiritStones });
         Mod.Logger.Info("SavedWorldAudit: " + report);
         caller.Reply(report);
     }
