@@ -36,11 +36,19 @@ public partial class SummonAuditSystem {
                 else if(t.HasTile) { if(t.TileType == TileID.Furnaces) furnace++; else if(t.TileType == TileID.Anvils) anvil++; else clear = false; }
             }
             check(clear && slag == 238 && furnace == 6 && anvil == 2,"native workshop keeps two entrances and complete furnace/anvil footprints");
+            check(FurnaceWorkshopSystem.StationsIntact(area),"native furnace and anvil exact vanilla multi-tile frames intact");
+            Tile badFrame = Main.tile[area.X + 8,area.Bottom - 6]; short frame = badFrame.TileFrameX; badFrame.TileFrameX += 18;
+            try { check(!FurnaceWorkshopSystem.StationsIntact(area),"native station audit rejects corrupt frame despite unchanged cell counts"); } finally { badFrame.TileFrameX = frame; }
             var visitor = new Player { active = true }; visitor.Center = new Vector2((area.X + area.Width / 2) * 16,(area.Y + area.Height / 2) * 16);
             check(ModContent.GetInstance<global::XianXia.Content.Biomes.SunkenFurnaceVeinBiome>().IsBiomeActive(visitor),"native workshop alone activates real furnace biome threshold");
             check(!map.CanPlace(area,2),"native workshop reserves built footprint");
             rooms.Workshops.Clear(); rooms.Workshops.Add(area); var tag = new TagCompound(); rooms.SaveWorldData(tag); rooms.ClearWorld(); rooms.LoadWorldData(tag);
             check(rooms.Workshops.Count == 1 && rooms.Workshops[0] == area,"native workshop bounds persist through actual TagCompound");
+            var invalid = new TagCompound { ["furnaceWorkshops"] = new List<TagCompound> {
+                new() { ["x"] = area.X,["y"] = area.Y }, new() { ["x"] = area.X,["y"] = area.Y }, new() { ["x"] = area.X + 1,["y"] = area.Y },
+                new() { ["x"] = -1,["y"] = area.Y }, new() { ["x"] = Main.maxTilesX - 10,["y"] = area.Y },
+                new() { ["x"] = area.X + 100,["y"] = area.Y }, new() { ["x"] = area.X + 200,["y"] = area.Y }, new() { ["x"] = area.X + 300,["y"] = area.Y } } };
+            rooms.LoadWorldData(invalid); check(rooms.Workshops.Count == 3 && rooms.Workshops[0] == area && rooms.Workshops[1].X == area.X + 100 && rooms.Workshops[2].X == area.X + 200,"native workshop load rejects overlap duplicates bad bounds and excess records");
             Tile removed = Main.tile[area.X + 8,area.Bottom - 6]; removed.HasTile = false; rooms.LoadWorldData(tag); check(!removed.HasTile,"native workshop load never repairs removed station tiles");
         } finally {
             foreach(var c in saved) { Tile t = Main.tile[c.X,c.Y]; t.HasTile = c.Has; t.TileType = c.Type; t.TileFrameX = c.FX; t.TileFrameY = c.FY; t.Slope = c.Slope; t.IsHalfBlock = c.Half; }

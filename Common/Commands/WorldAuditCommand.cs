@@ -113,7 +113,7 @@ public class WorldAuditCommand : ModCommand
                 if (isSlag) slag++; if (expected) shell &= isSlag && tile.Slope == 0 && !tile.IsHalfBlock;
                 else if (tile.HasTile) { if (tile.TileType == TileID.Furnaces) furnaces++; else if (tile.TileType == TileID.Anvils) anvils++; else blocked++; }
             }
-            workshopReports.Add(new { room.X,room.Y,room.Width,room.Height,SlagTiles = slag,FurnaceCells = furnaces,AnvilCells = anvils,BlockedInterior = blocked,ShellIntact = shell,Dry = dry });
+            workshopReports.Add(new { room.X,room.Y,room.Width,room.Height,SlagTiles = slag,FurnaceCells = furnaces,AnvilCells = anvils,BlockedInterior = blocked,ShellIntact = shell,Dry = dry,StationsIntact = global::XianXia.Common.Systems.FurnaceWorkshopSystem.StationsIntact(room) });
         }
         string report = JsonSerializer.Serialize(new { Width = Main.maxTilesX, Height = Main.maxTilesY, Objects = objects.Values,
             FurnaceWorkshops = workshopReports, SectRuinHalls = hallReports, SectRuinPaths = pathReports, GreenwoodGardens = gardenReports, ChestsWithSpiritStones = supplyChests, ChestSpiritStoneTotal = spiritStones });

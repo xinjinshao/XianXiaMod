@@ -17,7 +17,7 @@ public class FurnaceWorkshopSystem : ModSystem {
         Workshops.Clear();
         foreach (var entry in tag.GetList<TagCompound>("furnaceWorkshops")) {
             var area = new Rectangle(entry.GetInt("x"),entry.GetInt("y"),Width,Height);
-            if (Workshops.Count < 3 && WorldGen.InWorld(area.X,area.Y,12) && area.X <= Main.maxTilesX - Width - 12 && area.Y <= Main.maxTilesY - Height - 12 && !Workshops.Contains(area)) Workshops.Add(area);
+            if (Workshops.Count < 3 && WorldGen.InWorld(area.X,area.Y,12) && area.X <= Main.maxTilesX - Width - 12 && area.Y <= Main.maxTilesY - Height - 12 && !Workshops.Exists(existing => existing.Intersects(area))) Workshops.Add(area);
         }
     }
     internal void Generate(List<Rectangle> regions) {
@@ -35,6 +35,18 @@ public class FurnaceWorkshopSystem : ModSystem {
                 }
         }
         Mod.Logger.Info($"Furnace workshops: {Workshops.Count}/{regions.Count} safely placed.");
+    }
+    internal static bool StationsIntact(Rectangle area) {
+        int floor = area.Bottom - 4;
+        for (int dx = 0; dx < 3; dx++) for (int dy = 0; dy < 2; dy++) {
+            Tile tile = Main.tile[area.Left + 8 + dx,floor - 2 + dy];
+            if (!tile.HasTile || tile.TileType != TileID.Furnaces || tile.TileFrameX != dx * 18 || tile.TileFrameY != dy * 18) return false;
+        }
+        for (int dx = 0; dx < 2; dx++) {
+            Tile tile = Main.tile[area.Left + 24 + dx,floor - 1];
+            if (!tile.HasTile || tile.TileType != TileID.Anvils || tile.TileFrameX != dx * 18 || tile.TileFrameY != 0) return false;
+        }
+        return true;
     }
     internal static bool IsSlag(int x,int y) => y < 2 || y >= Height - 4 || ((x < 2 || x >= Width - 2) && y < Height - 8);
     internal static bool TryBuild(Rectangle area,StructureMap structures) {

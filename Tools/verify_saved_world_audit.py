@@ -15,6 +15,7 @@ def verify_workshops(report):
         assert (room["Width"], room["Height"]) == (35, 17), f"Workshop dimensions: {room}"
         assert room["SlagTiles"] == 238 and room["ShellIntact"] is True, f"Workshop shell: {room}"
         assert room["FurnaceCells"] == 6 and room["AnvilCells"] == 2, f"Workshop stations: {room}"
+        assert room.get("StationsIntact") is True, f"Workshop station frames: {room}"
         assert room["BlockedInterior"] == 0 and room["Dry"] is True, f"Workshop interior: {room}"
         point = (room["X"], room["Y"])
         assert point not in positions, "Duplicate workshop bounds"
