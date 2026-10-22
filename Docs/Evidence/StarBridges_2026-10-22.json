@@ -1,0 +1,541 @@
+{
+  "date": "2026-10-22",
+  "tml_version": "2026.08.3.0",
+  "package_sha256": "f308beec062cfdfa058088e7f5b47166e2d4cc29a87c614f86da405c29068066",
+  "native_report": ".tml-test\\summons-d9e8488366b54a56a1907f3d720c92ad\\save\\XianXia\\summon-audit.json",
+  "native_checks_total": 32569,
+  "bridge_native_checks": [
+    "native star bridge fixture dry unwired sky context",
+    "native disabled generation skips star bridges",
+    "native client cannot build star bridges",
+    "native star bridge preserves protected terrain",
+    "native star bridge preserves existing objects",
+    "native star bridge refuses liquid",
+    "native star bridge refuses wiring",
+    "native star bridge refuses actuators",
+    "native star bridge preserves housing walls",
+    "native star bridge rejects invalid bounds",
+    "native star bridge rejects incorrect dimensions",
+    "native star bridge builds in approved natural terrain",
+    "native star bridge has 252 crystals broken upper crossing and complete lower landing",
+    "native engine confirms three-column bridge gap through both deck rows",
+    "native engine confirms three-column bridge gap through both deck rows",
+    "native engine fits a player-sized body through each upper and lower side entrance",
+    "native engine fits a player-sized body through each upper and lower side entrance",
+    "native engine fits a player-sized body through each upper and lower side entrance",
+    "native engine fits a player-sized body through each upper and lower side entrance",
+    "native engine confirms center bridge support and lower crystal landing",
+    "native star bridge reserves protected footprint",
+    "native star bridge alone activates actual server rift biome scan",
+    "native bridge membrane requires registered ownership",
+    "native bridge exception rejects a different protected position",
+    "native bridge places actual two-by-two rift membrane with complete frames",
+    "native membrane audit rejects wrong frames without relying on counts",
+    "native bridge bounds survive world data roundtrip",
+    "native bridge loading does not restore removed membrane or landing",
+    "native bridge load rejects overlapping duplicate and invalid records"
+  ],
+  "medium_seed": 20261023,
+  "generated_run": ".tml-test\\world-eca691431c9c488bbe3782ca64285d5f",
+  "reloaded_run": ".tml-test\\world-5ad4372bff794ba280729bc22d1023b4",
+  "full_saved_scan_equal": true,
+  "medium_audit": {
+    "Width": 6400,
+    "Height": 1800,
+    "Objects": [
+      {
+        "Name": "SwordTabletTile",
+        "Height": 3,
+        "Cells": 24,
+        "Origins": 4,
+        "Complete": 4
+      },
+      {
+        "Name": "SingingThunderStoneTile",
+        "Height": 2,
+        "Cells": 12,
+        "Origins": 3,
+        "Complete": 3
+      },
+      {
+        "Name": "RiftMembraneTile",
+        "Height": 2,
+        "Cells": 12,
+        "Origins": 3,
+        "Complete": 3
+      },
+      {
+        "Name": "BrokenHeavenTabletTile",
+        "Height": 4,
+        "Cells": 16,
+        "Origins": 2,
+        "Complete": 2
+      },
+      {
+        "Name": "ArchiveLightPillarTile",
+        "Height": 6,
+        "Cells": 24,
+        "Origins": 2,
+        "Complete": 2
+      }
+    ],
+    "StarAbyssBridges": [
+      {
+        "X": 6130,
+        "Y": 1376,
+        "Width": 45,
+        "Height": 27,
+        "CrystalTiles": 252,
+        "GeometryIntact": true,
+        "InteriorClear": true,
+        "Dry": true,
+        "MembraneIntact": true
+      }
+    ],
+    "FallenHeavenCourts": [
+      {
+        "X": 3862,
+        "Y": 1384,
+        "Width": 49,
+        "Height": 23,
+        "JadeTiles": 247,
+        "ShellIntact": true,
+        "InteriorClear": true,
+        "EntrancesOpen": true,
+        "Dry": true,
+        "TabletIntact": true,
+        "PillarIntact": true
+      },
+      {
+        "X": 3764,
+        "Y": 1385,
+        "Width": 49,
+        "Height": 23,
+        "JadeTiles": 247,
+        "ShellIntact": true,
+        "InteriorClear": true,
+        "EntrancesOpen": true,
+        "Dry": true,
+        "TabletIntact": true,
+        "PillarIntact": true
+      }
+    ],
+    "ThunderCloudShrines": [
+      {
+        "X": 4737,
+        "Y": 231,
+        "Width": 51,
+        "Height": 13,
+        "CloudTiles": 153,
+        "PlatformIntact": true,
+        "AirspaceClear": true,
+        "Dry": true,
+        "StoneIntact": true
+      },
+      {
+        "X": 1278,
+        "Y": 167,
+        "Width": 51,
+        "Height": 13,
+        "CloudTiles": 153,
+        "PlatformIntact": true,
+        "AirspaceClear": true,
+        "Dry": true,
+        "StoneIntact": true
+      },
+      {
+        "X": 6088,
+        "Y": 281,
+        "Width": 51,
+        "Height": 13,
+        "CloudTiles": 153,
+        "PlatformIntact": true,
+        "AirspaceClear": true,
+        "Dry": true,
+        "StoneIntact": true
+      }
+    ],
+    "FurnaceWorkshops": [
+      {
+        "X": 2364,
+        "Y": 715,
+        "Width": 35,
+        "Height": 17,
+        "SlagTiles": 238,
+        "FurnaceCells": 6,
+        "AnvilCells": 2,
+        "BlockedInterior": 0,
+        "ShellIntact": true,
+        "Dry": true,
+        "StationsIntact": true
+      },
+      {
+        "X": 4974,
+        "Y": 958,
+        "Width": 35,
+        "Height": 17,
+        "SlagTiles": 238,
+        "FurnaceCells": 6,
+        "AnvilCells": 2,
+        "BlockedInterior": 0,
+        "ShellIntact": true,
+        "Dry": true,
+        "StationsIntact": true
+      }
+    ],
+    "FurnaceWorkshopPaths": [
+      {
+        "X": 5009,
+        "Y": 966,
+        "Width": 5,
+        "Height": 6,
+        "InteriorClear": true,
+        "ShellIntact": true,
+        "Dry": true,
+        "OpenCavityExit": true
+      }
+    ],
+    "SectRuinHalls": [
+      {
+        "X": 5042,
+        "Y": 1260,
+        "Width": 41,
+        "Height": 19,
+        "Bricks": 278,
+        "BlockedInterior": 0,
+        "EntrancesOpen": true,
+        "Dry": true,
+        "SwordTablets": 2,
+        "SupplyChests": [
+          {
+            "x": 5061,
+            "y": 1274,
+            "Intact": true,
+            "Items": [
+              {
+                "Name": "LowGradeSpiritStone",
+                "Stack": 7
+              },
+              {
+                "Name": "ArtifactBlankShard",
+                "Stack": 3
+              },
+              {
+                "Name": "RecallPotion",
+                "Stack": 2
+              },
+              {
+                "Name": "Torch",
+                "Stack": 10
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "X": 3770,
+        "Y": 799,
+        "Width": 41,
+        "Height": 19,
+        "Bricks": 278,
+        "BlockedInterior": 0,
+        "EntrancesOpen": true,
+        "Dry": true,
+        "SwordTablets": 2,
+        "SupplyChests": [
+          {
+            "x": 3789,
+            "y": 813,
+            "Intact": true,
+            "Items": [
+              {
+                "Name": "LowGradeSpiritStone",
+                "Stack": 7
+              },
+              {
+                "Name": "ArtifactBlankShard",
+                "Stack": 4
+              },
+              {
+                "Name": "RecallPotion",
+                "Stack": 2
+              },
+              {
+                "Name": "Torch",
+                "Stack": 10
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "SectRuinPaths": [],
+    "GreenwoodGardens": [
+      {
+        "X": 2217,
+        "Y": 369,
+        "Width": 31,
+        "Height": 13,
+        "SoilTiles": 124,
+        "Crops": 6,
+        "CropFrames": [
+          0,
+          18,
+          36,
+          0,
+          18,
+          36
+        ],
+        "BedIntact": true,
+        "WalkwayClear": true,
+        "Dry": true,
+        "ShelterIntact": true
+      }
+    ],
+    "ChestsWithSpiritStones": 17,
+    "ChestSpiritStoneTotal": 110,
+    "VerifiedStructureCounts": {
+      "SectRuinHalls": 2,
+      "SectRuinPaths": 0,
+      "GreenwoodGardens": 1,
+      "FurnaceWorkshops": 2,
+      "FurnaceWorkshopPaths": 1,
+      "ThunderCloudShrines": 3,
+      "FallenHeavenCourts": 2,
+      "StarAbyssBridges": 1
+    },
+    "Scope": "Final loaded counts/frames and all registered fresh structure geometry/bounds; unregistered structures, global accessibility and full biome activation unverified"
+  },
+  "small_seed_20261022_audit": {
+    "Width": 4200,
+    "Height": 1200,
+    "Objects": [
+      {
+        "Name": "SwordTabletTile",
+        "Height": 3,
+        "Cells": 24,
+        "Origins": 4,
+        "Complete": 4
+      },
+      {
+        "Name": "SingingThunderStoneTile",
+        "Height": 2,
+        "Cells": 12,
+        "Origins": 3,
+        "Complete": 3
+      },
+      {
+        "Name": "RiftMembraneTile",
+        "Height": 2,
+        "Cells": 12,
+        "Origins": 3,
+        "Complete": 3
+      },
+      {
+        "Name": "BrokenHeavenTabletTile",
+        "Height": 4,
+        "Cells": 16,
+        "Origins": 2,
+        "Complete": 2
+      },
+      {
+        "Name": "ArchiveLightPillarTile",
+        "Height": 6,
+        "Cells": 24,
+        "Origins": 2,
+        "Complete": 2
+      }
+    ],
+    "StarAbyssBridges": [],
+    "FallenHeavenCourts": [
+      {
+        "X": 3455,
+        "Y": 923,
+        "Width": 49,
+        "Height": 23,
+        "JadeTiles": 247,
+        "ShellIntact": true,
+        "InteriorClear": true,
+        "EntrancesOpen": true,
+        "Dry": true,
+        "TabletIntact": true,
+        "PillarIntact": true
+      },
+      {
+        "X": 305,
+        "Y": 768,
+        "Width": 49,
+        "Height": 23,
+        "JadeTiles": 247,
+        "ShellIntact": true,
+        "InteriorClear": true,
+        "EntrancesOpen": true,
+        "Dry": true,
+        "TabletIntact": true,
+        "PillarIntact": true
+      }
+    ],
+    "ThunderCloudShrines": [
+      {
+        "X": 800,
+        "Y": 119,
+        "Width": 51,
+        "Height": 13,
+        "CloudTiles": 153,
+        "PlatformIntact": true,
+        "AirspaceClear": true,
+        "Dry": true,
+        "StoneIntact": true
+      },
+      {
+        "X": 1401,
+        "Y": 102,
+        "Width": 51,
+        "Height": 13,
+        "CloudTiles": 153,
+        "PlatformIntact": true,
+        "AirspaceClear": true,
+        "Dry": true,
+        "StoneIntact": true
+      },
+      {
+        "X": 996,
+        "Y": 132,
+        "Width": 51,
+        "Height": 13,
+        "CloudTiles": 153,
+        "PlatformIntact": true,
+        "AirspaceClear": true,
+        "Dry": true,
+        "StoneIntact": true
+      }
+    ],
+    "FurnaceWorkshops": [
+      {
+        "X": 165,
+        "Y": 691,
+        "Width": 35,
+        "Height": 17,
+        "SlagTiles": 238,
+        "FurnaceCells": 6,
+        "AnvilCells": 2,
+        "BlockedInterior": 0,
+        "ShellIntact": true,
+        "Dry": true,
+        "StationsIntact": true
+      },
+      {
+        "X": 3306,
+        "Y": 881,
+        "Width": 35,
+        "Height": 17,
+        "SlagTiles": 238,
+        "FurnaceCells": 6,
+        "AnvilCells": 2,
+        "BlockedInterior": 0,
+        "ShellIntact": true,
+        "Dry": true,
+        "StationsIntact": true
+      },
+      {
+        "X": 1965,
+        "Y": 696,
+        "Width": 35,
+        "Height": 17,
+        "SlagTiles": 238,
+        "FurnaceCells": 6,
+        "AnvilCells": 2,
+        "BlockedInterior": 0,
+        "ShellIntact": true,
+        "Dry": true,
+        "StationsIntact": true
+      }
+    ],
+    "FurnaceWorkshopPaths": [
+      {
+        "X": 3341,
+        "Y": 889,
+        "Width": 5,
+        "Height": 6,
+        "InteriorClear": true,
+        "ShellIntact": true,
+        "Dry": true,
+        "OpenCavityExit": true
+      }
+    ],
+    "SectRuinHalls": [
+      {
+        "X": 2043,
+        "Y": 718,
+        "Width": 41,
+        "Height": 19,
+        "Bricks": 278,
+        "BlockedInterior": 0,
+        "EntrancesOpen": true,
+        "Dry": true,
+        "SwordTablets": 4,
+        "SupplyChests": [
+          {
+            "x": 2062,
+            "y": 732,
+            "Intact": true,
+            "Items": [
+              {
+                "Name": "LowGradeSpiritStone",
+                "Stack": 7
+              },
+              {
+                "Name": "ArtifactBlankShard",
+                "Stack": 3
+              },
+              {
+                "Name": "RecallPotion",
+                "Stack": 2
+              },
+              {
+                "Name": "Torch",
+                "Stack": 10
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "SectRuinPaths": [],
+    "GreenwoodGardens": [
+      {
+        "X": 2309,
+        "Y": 218,
+        "Width": 31,
+        "Height": 13,
+        "SoilTiles": 124,
+        "Crops": 6,
+        "CropFrames": [
+          0,
+          18,
+          36,
+          0,
+          18,
+          36
+        ],
+        "BedIntact": true,
+        "WalkwayClear": true,
+        "Dry": true,
+        "ShelterIntact": true
+      }
+    ],
+    "ChestsWithSpiritStones": 11,
+    "ChestSpiritStoneTotal": 69,
+    "VerifiedStructureCounts": {
+      "SectRuinHalls": 1,
+      "SectRuinPaths": 0,
+      "GreenwoodGardens": 1,
+      "FurnaceWorkshops": 3,
+      "FurnaceWorkshopPaths": 1,
+      "ThunderCloudShrines": 3,
+      "FallenHeavenCourts": 2,
+      "StarAbyssBridges": 0
+    },
+    "Scope": "Final loaded counts/frames and all registered fresh structure geometry/bounds; unregistered structures, global accessibility and full biome activation unverified"
+  }
+}

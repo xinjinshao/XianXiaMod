@@ -54,6 +54,7 @@ public class GeneratedBiomeWorldGenSystem : ModSystem
         PlaceObjects(ModContent.TileType<SwordTabletTile>(), 4, sect, ModContent.TileType<SectRuinBrickTile>(), 3);
         ModContent.GetInstance<ThunderCloudShrineSystem>().Generate(thunder);
         PlaceObjects(ModContent.TileType<SingingThunderStoneTile>(), 3, thunder, ModContent.TileType<ThunderCloudTile>(), 2);
+        ModContent.GetInstance<StarAbyssBridgeSystem>().Generate(star);
         PlaceObjects(ModContent.TileType<RiftMembraneTile>(), 3, star, ModContent.TileType<StarAbyssCrystalTile>(), 2);
         ModContent.GetInstance<FallenHeavenCourtSystem>().Generate(heaven);
         PlaceObjects(ModContent.TileType<BrokenHeavenTabletTile>(), 2, heaven, ModContent.TileType<FallenHeavenJadeTile>(), 4);
@@ -73,6 +74,10 @@ public class GeneratedBiomeWorldGenSystem : ModSystem
             foreach (Rectangle shrine in ModContent.GetInstance<ThunderCloudShrineSystem>().Shrines)
                 if (placed < count && TryPlaceObject(tileType, groundType, height, shrine.Left + ThunderCloudShrineSystem.StoneOffset,
                     shrine.Bottom - ThunderCloudShrineSystem.FloorDepth)) placed++;
+        if (tileType == ModContent.TileType<RiftMembraneTile>())
+            foreach (Rectangle bridge in ModContent.GetInstance<StarAbyssBridgeSystem>().Bridges)
+                if (placed < count && TryPlaceObject(tileType,groundType,height,bridge.X + StarAbyssBridgeSystem.MembraneOffset,
+                    bridge.Y + StarAbyssBridgeSystem.BridgeRow)) placed++;
         if (tileType == ModContent.TileType<BrokenHeavenTabletTile>() || tileType == ModContent.TileType<ArchiveLightPillarTile>())
             foreach (Rectangle court in ModContent.GetInstance<FallenHeavenCourtSystem>().Courts)
                 if (placed < count && TryPlaceObject(tileType,groundType,height,
@@ -168,6 +173,8 @@ public class GeneratedBiomeWorldGenSystem : ModSystem
             ownedHall |= ThunderCloudShrineSystem.IsPlannedStone(x, groundY);
         if (groundType == ModContent.TileType<FallenHeavenJadeTile>())
             ownedHall |= FallenHeavenCourtSystem.IsPlannedObject(tileType,height,x,groundY);
+        if (tileType == ModContent.TileType<RiftMembraneTile>() && groundType == ModContent.TileType<StarAbyssCrystalTile>() && height == 2)
+            ownedHall |= StarAbyssBridgeSystem.IsPlannedMembrane(x,groundY);
         for (int column = 0; column < 2; column++) for (int row = 0; row <= height; row++) {
             int tx = x + column, ty = groundY - row; Tile tile = Main.tile[tx,ty];
             if (Main.wallHouse[tile.WallType] || tile.HasActuator || tile.RedWire || tile.BlueWire || tile.GreenWire || tile.YellowWire

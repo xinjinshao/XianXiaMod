@@ -162,8 +162,21 @@ public class WorldAuditCommand : ModCommand
                 TabletIntact = global::XianXia.Common.Systems.FallenHeavenCourtSystem.ObjectIntact(area,false),
                 PillarIntact = global::XianXia.Common.Systems.FallenHeavenCourtSystem.ObjectIntact(area,true) });
         }
+        var bridgeReports = new List<object>();
+        foreach (var area in ModContent.GetInstance<global::XianXia.Common.Systems.StarAbyssBridgeSystem>().Bridges) {
+            int crystals = 0; bool geometry = true, clear = true, dry = true;
+            for (int x = 0; x < area.Width; x++) for (int y = 0; y < area.Height; y++) {
+                Tile tile = Main.tile[area.X + x,area.Y + y]; dry &= tile.LiquidAmount == 0;
+                bool crystal = tile.HasTile && tile.TileType == ModContent.TileType<StarAbyssCrystalTile>();
+                if (crystal) crystals++;
+                if (global::XianXia.Common.Systems.StarAbyssBridgeSystem.IsCrystal(x,y)) geometry &= crystal && tile.Slope == 0 && !tile.IsHalfBlock;
+                else clear &= !tile.HasTile || (x >= 21 && x < 23 && y >= 13 && y < 15 && tile.TileType == ModContent.TileType<RiftMembraneTile>());
+            }
+            bridgeReports.Add(new { area.X,area.Y,area.Width,area.Height,CrystalTiles = crystals,GeometryIntact = geometry,InteriorClear = clear,Dry = dry,
+                MembraneIntact = global::XianXia.Common.Systems.StarAbyssBridgeSystem.MembraneIntact(area) });
+        }
         string report = JsonSerializer.Serialize(new { Width = Main.maxTilesX, Height = Main.maxTilesY, Objects = objects.Values,
-            FallenHeavenCourts = courtReports,ThunderCloudShrines = shrineReports,FurnaceWorkshops = workshopReports,FurnaceWorkshopPaths = workshopPaths, SectRuinHalls = hallReports, SectRuinPaths = pathReports, GreenwoodGardens = gardenReports, ChestsWithSpiritStones = supplyChests, ChestSpiritStoneTotal = spiritStones });
+            StarAbyssBridges = bridgeReports,FallenHeavenCourts = courtReports,ThunderCloudShrines = shrineReports,FurnaceWorkshops = workshopReports,FurnaceWorkshopPaths = workshopPaths, SectRuinHalls = hallReports, SectRuinPaths = pathReports, GreenwoodGardens = gardenReports, ChestsWithSpiritStones = supplyChests, ChestSpiritStoneTotal = spiritStones });
         Mod.Logger.Info("SavedWorldAudit: " + report);
         caller.Reply(report);
     }
