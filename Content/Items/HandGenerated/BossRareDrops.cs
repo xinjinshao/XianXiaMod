@@ -6,6 +6,8 @@ namespace XianXia.Content.Items.HandGenerated;
 
 public abstract class BossMaskReward : ModItem
 {
+    // Equip slots are assigned to the loading template, then copied to new items.
+    protected override bool CloneNewInstances => true;
     private int headSlot;
     protected abstract int VisualHead { get; }
     protected abstract int Price { get; }
@@ -47,6 +49,8 @@ public class InspectorMask : BossMaskReward
 
 public class FormlessSwordSoulCostume : ModItem
 {
+    // Equip slots are assigned to the loading template, then copied to new items.
+    protected override bool CloneNewInstances => true;
     private int bodySlot;
     private int robeSlot;
 

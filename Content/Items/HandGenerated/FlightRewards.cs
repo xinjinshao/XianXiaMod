@@ -9,6 +9,8 @@ namespace XianXia.Content.Items.HandGenerated;
 // Independent equip slots keep these rewards from changing vanilla wing stats.
 public abstract class FlightReward : ModItem
 {
+    // Equip slots are assigned to the loading template, then copied to new items.
+    protected override bool CloneNewInstances => true;
     private int wingSlot;
     protected abstract int FlightTime { get; }
     protected abstract float FlightSpeed { get; }
