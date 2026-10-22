@@ -14,7 +14,8 @@ internal sealed class HostileSourceBinding
     private int sourceType;
     private NPC sourceNpc;
     private ModNPC sourceModNpc;
-    private bool sourceCancelled, invalidLifetime;
+    private long sourceNpcIdentity;
+    private bool sourceCancelled, invalidLifetime, hasSourceMetadata;
     private short sourcePlayerSlot = -1;
     private long sourcePlayerSession;
     private Player sourcePlayer;
@@ -24,21 +25,27 @@ internal sealed class HostileSourceBinding
     public void Capture(IEntitySource source)
     {
         if (source is EntitySource_Parent { Entity: Player player }) {
+            hasSourceMetadata = true;
             sourcePlayer = player;
             sourcePlayerSlot = player.whoAmI >= 0 && player.whoAmI < Main.maxPlayers ? (short)player.whoAmI : (short)-2;
             sourcePlayerSession = player.GetModPlayer<XianXiaPlayer>().TribulationSession;
             return;
         }
         if (source is not EntitySource_Parent { Entity: NPC parent }) return;
+        hasSourceMetadata = true;
         sourceNpc = parent;
         sourceModNpc = parent.ModNPC;
         sourceSlot = parent.whoAmI >= 0 && parent.whoAmI < Main.maxNPCs ? (short)parent.whoAmI : (short)-2;
         sourceType = parent.type;
+        sourceNpcIdentity = GetNpcIdentity(parent);
     }
+
+    private static long GetNpcIdentity(NPC npc) => ModContent.GetInstance<NpcEncounterIdentity>() != null
+        && npc.TryGetGlobalNPC<NpcEncounterIdentity>(out var identity) ? identity.GetIdentity(npc) : 0;
 
     public bool IsValid()
     {
-        if (IsCancelled) return false;
+        if (IsCancelled || (Main.netMode == NetmodeID.MultiplayerClient && !hasSourceMetadata)) return false;
         if (sourcePlayerSlot != -1) {
             if (sourcePlayerSlot < 0 || sourcePlayerSlot >= Main.maxPlayers || sourcePlayerSession <= 0) return false;
             Player player = Main.player[sourcePlayerSlot];
@@ -52,10 +59,11 @@ internal sealed class HostileSourceBinding
         if (sourceSlot == -1) return sourceType == 0;
         if (sourceSlot < 0 || sourceSlot >= Main.maxNPCs) return false;
         NPC parent = Main.npc[sourceSlot];
-        if (parent == null || parent.type != sourceType || !BossTargeting.HasLivingTarget(parent)) return false;
-        // Authority distinguishes a new ModNPC even when the engine reuses the NPC object and slot.
-        return Main.netMode == NetmodeID.MultiplayerClient
-            || (ReferenceEquals(parent, sourceNpc) && ReferenceEquals(parent.ModNPC, sourceModNpc));
+        if (parent == null || parent.type != sourceType || sourceNpcIdentity <= 0 || !BossTargeting.HasLivingTarget(parent)
+            || GetNpcIdentity(parent) != sourceNpcIdentity) return false;
+        // Network-spawned client shots have no local source reference; the server identity is decisive.
+        bool sameReferences = ReferenceEquals(parent,sourceNpc) && ReferenceEquals(parent.ModNPC,sourceModNpc);
+        return sameReferences || (Main.netMode == NetmodeID.MultiplayerClient && sourceNpc == null);
     }
 
     public void CancelIfInvalid(Projectile projectile, int fadeTicks, int lifetime)
@@ -91,6 +99,7 @@ internal sealed class HostileSourceBinding
         writer.Write(sourceType);
         writer.Write(sourcePlayerSlot);
         writer.Write(sourcePlayerSession);
+        writer.Write(sourceNpcIdentity);
     }
 
     public bool Read(BinaryReader reader, Projectile projectile, int lifetime)
@@ -101,6 +110,7 @@ internal sealed class HostileSourceBinding
         int type = reader.ReadInt32();
         short playerSlot = reader.ReadInt16();
         long session = reader.ReadInt64();
+        long npcIdentity = reader.ReadInt64();
         projectile.timeLeft = remaining >= 0 && remaining <= lifetime ? remaining : 0;
         sourceCancelled |= cancelled;
         invalidLifetime |= remaining < 0 || remaining > lifetime;
@@ -108,6 +118,8 @@ internal sealed class HostileSourceBinding
         sourceType = type;
         sourcePlayerSlot = playerSlot;
         sourcePlayerSession = session > 0 ? session : 0;
+        sourceNpcIdentity = npcIdentity > 0 ? npcIdentity : 0;
+        hasSourceMetadata = true;
         return remaining >= 0 && remaining <= lifetime;
     }
 }

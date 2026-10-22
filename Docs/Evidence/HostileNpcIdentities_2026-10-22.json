@@ -1,0 +1,420 @@
+{
+  "date": "2026-10-22",
+  "mod_version": "0.1.1",
+  "tml_version": "2026.08.3.0",
+  "package_sha256": "0e2235d31df7850bf12a2873b62b8350ac63e74ccc800bec681f00d691c52b40",
+  "native_report": ".tml-test\\summons-a223c9a3427b4233b8588a796e4788cd\\save\\XianXia\\summon-audit.json",
+  "native_report_sha256": "f5a25fd9cb67b170a644f8914705bdcb2168cad72cd7c837c43da7bd25f85b3f",
+  "native_checks_total": 32980,
+  "new_native_checks_total": 335,
+  "grouped_native_checks": [
+    {
+      "name": "native registered hostile shot carries positive source identity in complete 27-byte payload: BossArrayFieldProjectile",
+      "passed_instances": 1
+    },
+    {
+      "name": "native authority old hostile source fails on same-object same-type identity rotation: BossArrayFieldProjectile",
+      "passed_instances": 1
+    },
+    {
+      "name": "native client hostile waits for complete source metadata: BossArrayFieldProjectile",
+      "passed_instances": 1
+    },
+    {
+      "name": "native all hostile source prefixes preserve waiting state and complete packet atomically: BossArrayFieldProjectile",
+      "passed_instances": 27
+    },
+    {
+      "name": "native registered client projectile waits for its parent identity packet: BossArrayFieldProjectile",
+      "passed_instances": 1
+    },
+    {
+      "name": "native registered client accepts matching parent identity after projectile-first ordering: BossArrayFieldProjectile",
+      "passed_instances": 1
+    },
+    {
+      "name": "native future hostile packet does not attach to the preceding NPC instance: BossArrayFieldProjectile",
+      "passed_instances": 1
+    },
+    {
+      "name": "native client old shot loses damage before cancellation AI when live same-type source identity changes: BossArrayFieldProjectile",
+      "passed_instances": 1
+    },
+    {
+      "name": "native current-source shot remains valid after identity synchronization: BossArrayFieldProjectile",
+      "passed_instances": 1
+    },
+    {
+      "name": "native replayed NPC and projectile packets cannot restore old hostile damage: BossArrayFieldProjectile",
+      "passed_instances": 1
+    },
+    {
+      "name": "native zero NPC identity cannot grant damage to a bound hostile shot: BossArrayFieldProjectile",
+      "passed_instances": 1
+    },
+    {
+      "name": "native registered hostile shot carries positive source identity in complete 27-byte payload: BossSpiritBoltProjectile",
+      "passed_instances": 1
+    },
+    {
+      "name": "native authority old hostile source fails on same-object same-type identity rotation: BossSpiritBoltProjectile",
+      "passed_instances": 1
+    },
+    {
+      "name": "native client hostile waits for complete source metadata: BossSpiritBoltProjectile",
+      "passed_instances": 1
+    },
+    {
+      "name": "native all hostile source prefixes preserve waiting state and complete packet atomically: BossSpiritBoltProjectile",
+      "passed_instances": 27
+    },
+    {
+      "name": "native registered client projectile waits for its parent identity packet: BossSpiritBoltProjectile",
+      "passed_instances": 1
+    },
+    {
+      "name": "native registered client accepts matching parent identity after projectile-first ordering: BossSpiritBoltProjectile",
+      "passed_instances": 1
+    },
+    {
+      "name": "native future hostile packet does not attach to the preceding NPC instance: BossSpiritBoltProjectile",
+      "passed_instances": 1
+    },
+    {
+      "name": "native client old shot loses damage before cancellation AI when live same-type source identity changes: BossSpiritBoltProjectile",
+      "passed_instances": 1
+    },
+    {
+      "name": "native current-source shot remains valid after identity synchronization: BossSpiritBoltProjectile",
+      "passed_instances": 1
+    },
+    {
+      "name": "native replayed NPC and projectile packets cannot restore old hostile damage: BossSpiritBoltProjectile",
+      "passed_instances": 1
+    },
+    {
+      "name": "native zero NPC identity cannot grant damage to a bound hostile shot: BossSpiritBoltProjectile",
+      "passed_instances": 1
+    },
+    {
+      "name": "native registered hostile shot carries positive source identity in complete 27-byte payload: EnemySpiritBoltProjectile",
+      "passed_instances": 1
+    },
+    {
+      "name": "native authority old hostile source fails on same-object same-type identity rotation: EnemySpiritBoltProjectile",
+      "passed_instances": 1
+    },
+    {
+      "name": "native client hostile waits for complete source metadata: EnemySpiritBoltProjectile",
+      "passed_instances": 1
+    },
+    {
+      "name": "native all hostile source prefixes preserve waiting state and complete packet atomically: EnemySpiritBoltProjectile",
+      "passed_instances": 27
+    },
+    {
+      "name": "native registered client projectile waits for its parent identity packet: EnemySpiritBoltProjectile",
+      "passed_instances": 1
+    },
+    {
+      "name": "native registered client accepts matching parent identity after projectile-first ordering: EnemySpiritBoltProjectile",
+      "passed_instances": 1
+    },
+    {
+      "name": "native future hostile packet does not attach to the preceding NPC instance: EnemySpiritBoltProjectile",
+      "passed_instances": 1
+    },
+    {
+      "name": "native client old shot loses damage before cancellation AI when live same-type source identity changes: EnemySpiritBoltProjectile",
+      "passed_instances": 1
+    },
+    {
+      "name": "native current-source shot remains valid after identity synchronization: EnemySpiritBoltProjectile",
+      "passed_instances": 1
+    },
+    {
+      "name": "native replayed NPC and projectile packets cannot restore old hostile damage: EnemySpiritBoltProjectile",
+      "passed_instances": 1
+    },
+    {
+      "name": "native zero NPC identity cannot grant damage to a bound hostile shot: EnemySpiritBoltProjectile",
+      "passed_instances": 1
+    },
+    {
+      "name": "native registered hostile shot carries positive source identity in complete 27-byte payload: TribulationLightningProjectile",
+      "passed_instances": 1
+    },
+    {
+      "name": "native authority old hostile source fails on same-object same-type identity rotation: TribulationLightningProjectile",
+      "passed_instances": 1
+    },
+    {
+      "name": "native client hostile waits for complete source metadata: TribulationLightningProjectile",
+      "passed_instances": 1
+    },
+    {
+      "name": "native all hostile source prefixes preserve waiting state and complete packet atomically: TribulationLightningProjectile",
+      "passed_instances": 27
+    },
+    {
+      "name": "native registered client projectile waits for its parent identity packet: TribulationLightningProjectile",
+      "passed_instances": 1
+    },
+    {
+      "name": "native registered client accepts matching parent identity after projectile-first ordering: TribulationLightningProjectile",
+      "passed_instances": 1
+    },
+    {
+      "name": "native future hostile packet does not attach to the preceding NPC instance: TribulationLightningProjectile",
+      "passed_instances": 1
+    },
+    {
+      "name": "native client old shot loses damage before cancellation AI when live same-type source identity changes: TribulationLightningProjectile",
+      "passed_instances": 1
+    },
+    {
+      "name": "native current-source shot remains valid after identity synchronization: TribulationLightningProjectile",
+      "passed_instances": 1
+    },
+    {
+      "name": "native replayed NPC and projectile packets cannot restore old hostile damage: TribulationLightningProjectile",
+      "passed_instances": 1
+    },
+    {
+      "name": "native zero NPC identity cannot grant damage to a bound hostile shot: TribulationLightningProjectile",
+      "passed_instances": 1
+    },
+    {
+      "name": "native registered hostile shot carries positive source identity in complete 27-byte payload: TabletJudgmentBeamProjectile",
+      "passed_instances": 1
+    },
+    {
+      "name": "native authority old hostile source fails on same-object same-type identity rotation: TabletJudgmentBeamProjectile",
+      "passed_instances": 1
+    },
+    {
+      "name": "native client hostile waits for complete source metadata: TabletJudgmentBeamProjectile",
+      "passed_instances": 1
+    },
+    {
+      "name": "native all hostile source prefixes preserve waiting state and complete packet atomically: TabletJudgmentBeamProjectile",
+      "passed_instances": 27
+    },
+    {
+      "name": "native registered client projectile waits for its parent identity packet: TabletJudgmentBeamProjectile",
+      "passed_instances": 1
+    },
+    {
+      "name": "native registered client accepts matching parent identity after projectile-first ordering: TabletJudgmentBeamProjectile",
+      "passed_instances": 1
+    },
+    {
+      "name": "native future hostile packet does not attach to the preceding NPC instance: TabletJudgmentBeamProjectile",
+      "passed_instances": 1
+    },
+    {
+      "name": "native client old shot loses damage before cancellation AI when live same-type source identity changes: TabletJudgmentBeamProjectile",
+      "passed_instances": 1
+    },
+    {
+      "name": "native current-source shot remains valid after identity synchronization: TabletJudgmentBeamProjectile",
+      "passed_instances": 1
+    },
+    {
+      "name": "native replayed NPC and projectile packets cannot restore old hostile damage: TabletJudgmentBeamProjectile",
+      "passed_instances": 1
+    },
+    {
+      "name": "native zero NPC identity cannot grant damage to a bound hostile shot: TabletJudgmentBeamProjectile",
+      "passed_instances": 1
+    },
+    {
+      "name": "native registered hostile shot carries positive source identity in complete 27-byte payload: InspectorDecreeBeamProjectile",
+      "passed_instances": 1
+    },
+    {
+      "name": "native authority old hostile source fails on same-object same-type identity rotation: InspectorDecreeBeamProjectile",
+      "passed_instances": 1
+    },
+    {
+      "name": "native client hostile waits for complete source metadata: InspectorDecreeBeamProjectile",
+      "passed_instances": 1
+    },
+    {
+      "name": "native all hostile source prefixes preserve waiting state and complete packet atomically: InspectorDecreeBeamProjectile",
+      "passed_instances": 27
+    },
+    {
+      "name": "native registered client projectile waits for its parent identity packet: InspectorDecreeBeamProjectile",
+      "passed_instances": 1
+    },
+    {
+      "name": "native registered client accepts matching parent identity after projectile-first ordering: InspectorDecreeBeamProjectile",
+      "passed_instances": 1
+    },
+    {
+      "name": "native future hostile packet does not attach to the preceding NPC instance: InspectorDecreeBeamProjectile",
+      "passed_instances": 1
+    },
+    {
+      "name": "native client old shot loses damage before cancellation AI when live same-type source identity changes: InspectorDecreeBeamProjectile",
+      "passed_instances": 1
+    },
+    {
+      "name": "native current-source shot remains valid after identity synchronization: InspectorDecreeBeamProjectile",
+      "passed_instances": 1
+    },
+    {
+      "name": "native replayed NPC and projectile packets cannot restore old hostile damage: InspectorDecreeBeamProjectile",
+      "passed_instances": 1
+    },
+    {
+      "name": "native zero NPC identity cannot grant damage to a bound hostile shot: InspectorDecreeBeamProjectile",
+      "passed_instances": 1
+    },
+    {
+      "name": "native registered hostile shot carries positive source identity in complete 27-byte payload: InspectorVerdictBladeProjectile",
+      "passed_instances": 1
+    },
+    {
+      "name": "native authority old hostile source fails on same-object same-type identity rotation: InspectorVerdictBladeProjectile",
+      "passed_instances": 1
+    },
+    {
+      "name": "native client hostile waits for complete source metadata: InspectorVerdictBladeProjectile",
+      "passed_instances": 1
+    },
+    {
+      "name": "native all hostile source prefixes preserve waiting state and complete packet atomically: InspectorVerdictBladeProjectile",
+      "passed_instances": 27
+    },
+    {
+      "name": "native registered client projectile waits for its parent identity packet: InspectorVerdictBladeProjectile",
+      "passed_instances": 1
+    },
+    {
+      "name": "native registered client accepts matching parent identity after projectile-first ordering: InspectorVerdictBladeProjectile",
+      "passed_instances": 1
+    },
+    {
+      "name": "native future hostile packet does not attach to the preceding NPC instance: InspectorVerdictBladeProjectile",
+      "passed_instances": 1
+    },
+    {
+      "name": "native client old shot loses damage before cancellation AI when live same-type source identity changes: InspectorVerdictBladeProjectile",
+      "passed_instances": 1
+    },
+    {
+      "name": "native current-source shot remains valid after identity synchronization: InspectorVerdictBladeProjectile",
+      "passed_instances": 1
+    },
+    {
+      "name": "native replayed NPC and projectile packets cannot restore old hostile damage: InspectorVerdictBladeProjectile",
+      "passed_instances": 1
+    },
+    {
+      "name": "native zero NPC identity cannot grant damage to a bound hostile shot: InspectorVerdictBladeProjectile",
+      "passed_instances": 1
+    },
+    {
+      "name": "native registered hostile shot carries positive source identity in complete 27-byte payload: CoreSeveranceBladeProjectile",
+      "passed_instances": 1
+    },
+    {
+      "name": "native authority old hostile source fails on same-object same-type identity rotation: CoreSeveranceBladeProjectile",
+      "passed_instances": 1
+    },
+    {
+      "name": "native client hostile waits for complete source metadata: CoreSeveranceBladeProjectile",
+      "passed_instances": 1
+    },
+    {
+      "name": "native all hostile source prefixes preserve waiting state and complete packet atomically: CoreSeveranceBladeProjectile",
+      "passed_instances": 27
+    },
+    {
+      "name": "native registered client projectile waits for its parent identity packet: CoreSeveranceBladeProjectile",
+      "passed_instances": 1
+    },
+    {
+      "name": "native registered client accepts matching parent identity after projectile-first ordering: CoreSeveranceBladeProjectile",
+      "passed_instances": 1
+    },
+    {
+      "name": "native future hostile packet does not attach to the preceding NPC instance: CoreSeveranceBladeProjectile",
+      "passed_instances": 1
+    },
+    {
+      "name": "native client old shot loses damage before cancellation AI when live same-type source identity changes: CoreSeveranceBladeProjectile",
+      "passed_instances": 1
+    },
+    {
+      "name": "native current-source shot remains valid after identity synchronization: CoreSeveranceBladeProjectile",
+      "passed_instances": 1
+    },
+    {
+      "name": "native replayed NPC and projectile packets cannot restore old hostile damage: CoreSeveranceBladeProjectile",
+      "passed_instances": 1
+    },
+    {
+      "name": "native zero NPC identity cannot grant damage to a bound hostile shot: CoreSeveranceBladeProjectile",
+      "passed_instances": 1
+    },
+    {
+      "name": "native registered hostile shot carries positive source identity in complete 27-byte payload: FurnaceSlamWaveProjectile",
+      "passed_instances": 1
+    },
+    {
+      "name": "native authority old hostile source fails on same-object same-type identity rotation: FurnaceSlamWaveProjectile",
+      "passed_instances": 1
+    },
+    {
+      "name": "native client hostile waits for complete source metadata: FurnaceSlamWaveProjectile",
+      "passed_instances": 1
+    },
+    {
+      "name": "native all hostile source prefixes preserve waiting state and complete packet atomically: FurnaceSlamWaveProjectile",
+      "passed_instances": 27
+    },
+    {
+      "name": "native registered client projectile waits for its parent identity packet: FurnaceSlamWaveProjectile",
+      "passed_instances": 1
+    },
+    {
+      "name": "native registered client accepts matching parent identity after projectile-first ordering: FurnaceSlamWaveProjectile",
+      "passed_instances": 1
+    },
+    {
+      "name": "native future hostile packet does not attach to the preceding NPC instance: FurnaceSlamWaveProjectile",
+      "passed_instances": 1
+    },
+    {
+      "name": "native client old shot loses damage before cancellation AI when live same-type source identity changes: FurnaceSlamWaveProjectile",
+      "passed_instances": 1
+    },
+    {
+      "name": "native current-source shot remains valid after identity synchronization: FurnaceSlamWaveProjectile",
+      "passed_instances": 1
+    },
+    {
+      "name": "native replayed NPC and projectile packets cannot restore old hostile damage: FurnaceSlamWaveProjectile",
+      "passed_instances": 1
+    },
+    {
+      "name": "native zero NPC identity cannot grant damage to a bound hostile shot: FurnaceSlamWaveProjectile",
+      "passed_instances": 1
+    },
+    {
+      "name": "native warning from retired NPC identity cannot release a new lightning strike",
+      "passed_instances": 1
+    },
+    {
+      "name": "native hostile identity audit restores entity slots replay history and projectile pool",
+      "passed_instances": 1
+    }
+  ],
+  "source_checks": 38,
+  "telegraph_source_assertions": 2068,
+  "compiled_gameplay_assertions": 7720,
+  "scope": "Registered entity/global/projectile hooks and exact serialization; simulated transport and isolated player/NPC copies. No live peers, full message 23/27 receiver flow, measured network/frame cost or full battle."
+}
