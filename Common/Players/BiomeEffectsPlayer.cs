@@ -15,6 +15,7 @@ public class BiomeEffectsPlayer : ModPlayer
     internal void ResetExposure() { starAbyssCorruption = 0; thunderCloudTimer = 0; }
     public override void Initialize() => ResetExposure();
     public override void OnEnterWorld() => ResetExposure();
+    public override void UpdateDead() => ResetExposure();
 
     public override void ResetEffects()
     {
@@ -22,8 +23,7 @@ public class BiomeEffectsPlayer : ModPlayer
 
     public override void PostUpdate()
     {
-        if (Player == null || !Player.active) { ResetExposure(); return; }
-        if (Player.dead) return;
+        if (Player == null || !Player.active || Player.dead) { ResetExposure(); return; }
         bool authority = Main.netMode != NetmodeID.MultiplayerClient;
         bool visuals = !Main.dedServ && Main.myPlayer == Player.whoAmI;
 

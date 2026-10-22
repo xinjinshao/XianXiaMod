@@ -103,7 +103,7 @@ namespace Terraria.ModLoader
 {
     public class ModProjectile { public Terraria.Projectile Projectile = new(); public virtual bool? CanDamage()=>null; public virtual bool? CanHitNPC(Terraria.NPC target)=>null; public virtual void SetDefaults() { } public virtual void AI() { } public virtual void OnSpawn(Terraria.DataStructures.IEntitySource source) { } public virtual void SendExtraAI(System.IO.BinaryWriter writer) { } public virtual void ReceiveExtraAI(System.IO.BinaryReader reader) { } }
     public static class DamageClass { public static object Generic = new(), Magic = new(), Melee = new(); }
-    public class ModPlayer { public virtual void Initialize() { } public virtual void OnEnterWorld() { } public Terraria.Player Player; public virtual void PostUpdateEquips() { } public virtual void ResetEffects() { } public virtual void PostUpdate() { } }
+    public class ModPlayer { public virtual void Initialize() { } public virtual void OnEnterWorld() { } public virtual void UpdateDead() { } public Terraria.Player Player; public virtual void PostUpdateEquips() { } public virtual void ResetEffects() { } public virtual void PostUpdate() { } }
     public class ModSystem { public virtual void OnWorldLoad() { } public virtual void OnWorldUnload() { } public virtual void PostUpdatePlayers() { } public virtual void ClearWorld() { } }
     public static class TileLoader { public const int TileCount = 16; }
     public static class ModContent { public static int ProjectileType<T>() => 1; public static int BuffType<T>() => 1; public static int TileType<T>() => typeof(T).Name switch { "SwordTabletTile"=>11, "SingingThunderStoneTile"=>12, "RiftMembraneTile"=>13, "AlchemyCauldronTile"=>15, "ArtifactForgeTile"=>16, _=>14 }; }

@@ -221,3 +221,26 @@ Game.netMode=NetmodeID.SinglePlayer;swordOwner.Center=new(800,800);Game.tile[50,
 swordEffects.PostUpdateEquips();
 Check(swordOwner.buffTime[0]==2&&swordOwner.LastBuffQuiet,"Single player retains two-frame local buff refresh without sync");
 Console.WriteLine($"Including sword tablet buff sync lease: {assertions} assertions; transport mocked.");
+
+foreach (int mode in new[] { NetmodeID.SinglePlayer, NetmodeID.Server, NetmodeID.MultiplayerClient })
+foreach (bool useDeathHook in new[] { true, false }) {
+    Game.netMode = mode; Game.dedServ = mode == NetmodeID.Server; Game.myPlayer = mode == NetmodeID.Server ? 255 : 0;
+    var actor = MakePlayer(50,50,0); Game.player[0] = actor; actor.Thunder = true; actor.dead = true;
+    var exposure = actor.GetModPlayer<BiomeEffectsPlayer>(); exposure.starAbyssCorruption = 3600; exposure.thunderCloudTimer = 419;
+    actor.State.spiritPressure = 25; int spawned = Projectile.Spawns; lightning.ClearWorld();
+    if (useDeathHook) exposure.UpdateDead(); else exposure.PostUpdate();
+    Check(exposure.starAbyssCorruption == 0 && exposure.thunderCloudTimer == 0,
+        "Death hook and dead-update guard clear environmental exposure in all three modes");
+    Check(Projectile.Spawns == spawned && actor.State.spiritPressure == 25,"Clearing death exposure neither casts a hazard nor changes pressure");
+    actor.dead = false;
+    bool freshInterval = true;
+    for (int frame = 1; frame < 420; frame++) {
+        exposure.PostUpdate();
+        freshInterval &= Projectile.Spawns == spawned && exposure.thunderCloudTimer == (mode == NetmodeID.MultiplayerClient ? 0 : frame);
+    }
+    Check(freshInterval,"Revived player receives all 419 preceding hazard-free updates; clients never advance authority timers");
+    exposure.PostUpdate();
+    Check(Projectile.Spawns == spawned + (mode == NetmodeID.MultiplayerClient ? 0 : 1) && exposure.thunderCloudTimer == 0,
+        "Authority lightning resumes exactly at the fresh 420-update boundary after death");
+}
+Console.WriteLine($"Including death/respawn environmental exposure: {assertions} assertions; engine and projectile transport mocked.");
