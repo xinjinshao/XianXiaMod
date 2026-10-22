@@ -962,6 +962,7 @@ public partial class SummonAuditSystem : ModSystem
             AuditFishingCrates(Check);
             AuditCrateInventory(Check);
             AuditBossBagInventory(Check);
+            AuditNeedleShops(Check);
             AuditSectRuinHalls(Check);
             AuditSectRuinPaths(Check);
             AuditThunderShrines(Check);

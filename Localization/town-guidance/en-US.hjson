@@ -50,9 +50,9 @@
         "Services": {
           "HerbSectApprentice": "Alchemy and gardening: the shop stocks pills and spirit-herb seeds. Craft pills at a cauldron; quality is fixed when crafted. Use the Sect Ledger for your next breakthrough. Shop prices and use requirements are shown on each item.",
           "WanderingArtificer": "Inscriptions and artificing: buy a needle or removal stone, use it near an Artifact Forge, then select an inventory target. Quenching crystals, awakening seals and Dao seals use the same interface. The interface lists costs; invalid requests report the reason. Needles are tools, not accessories.",
-          "TribulationObserver": "Trials and retries: the shop stocks the Tribulation Gauge and Training Token. Use the Sect Ledger to check preparation. After a failed trial, the token only works when a retry is available. Recover and watch lightning markers before trying again.",
+          "TribulationObserver": "Trials and retries: the shop stocks the Tribulation Gauge and Training Token. Use the Sect Ledger to check preparation. After a failed trial, the token only works when a retry is available. Recover and watch lightning markers before trying again. Thunder Inscription Needles are sold after defeating the Thunder Marsh Jiao.",
           "ArchiveScrollSpirit": "Archives and spirits: buy a Sect Ledger for progress and commissions. Hold and use the Small Artifact Pendant or a spirit contract to summon; accessory bonuses are separate. Check mana, minion slots and world requirements. Remove the matching buff to dismiss its spirit.",
-          "FallenHeavenMessenger": "Endgame routes: the shop sells a route hint. Defeat the Old Heaven Dao Core for route material, then use it near a Dao Severing Altar to open the route interface. Review effects and costs first; the world route cannot be changed after confirmation."
+          "FallenHeavenMessenger": "Endgame routes: the shop sells a route hint. Defeat the Old Heaven Dao Core for route material, then use it near a Dao Severing Altar to open the route interface. Review effects and costs first; the world route cannot be changed after confirmation. Broken Heaven Inscription Needles require defeating the Heaven Tablet Guardian and reaching Spirit Severing."
         }
       }
     }

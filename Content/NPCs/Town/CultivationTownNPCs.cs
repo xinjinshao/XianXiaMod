@@ -365,14 +365,6 @@ public class WanderingArtificer : CultivationTownNPC
         {
             HideShopItem<FurnaceHeartRing>(items);
         }
-        if (!Downed("thunder_marsh_jiao"))
-        {
-            HideShopItem<ThunderInscriptionNeedle>(items);
-        }
-        if (!Downed("heaven_tablet_guardian"))
-        {
-            HideShopItem<BrokenHeavenInscriptionNeedle>(items);
-        }
     }
 
     protected override bool TryClaimCommission(Player player, out string text)
@@ -460,6 +452,10 @@ public class TribulationObserver : CultivationTownNPC
         {
             HideShopItem<ThunderTalismanArrayPlate>(items);
             HideShopItem<SummonThunderCallingJade>(items);
+        }
+        if (!Downed("thunder_marsh_jiao"))
+        {
+            HideShopItem<ThunderInscriptionNeedle>(items);
         }
         if (!Downed("tribulation_cloud_avatar"))
         {
@@ -658,7 +654,7 @@ public class FallenHeavenMessenger : CultivationTownNPC
             HideShopItem<BrokenHeavenDecree>(items);
             HideShopItem<BrokenHeavenCrownSeal>(items);
         }
-        if (!LocalAtStage(CultivationStage.SpiritSevering))
+        if (!Downed("heaven_tablet_guardian") || !LocalAtStage(CultivationStage.SpiritSevering))
         {
             HideShopItem<BrokenHeavenInscriptionNeedle>(items);
         }
