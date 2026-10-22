@@ -1,4 +1,4 @@
-"""Run opt-in NewNPC integration checks in a disposable copy of a saved world."""
+"""Run registered integration checks in an isolated generated world or copied save."""
 import argparse
 import re
 import hashlib
@@ -89,7 +89,10 @@ def main():
     parser.add_argument("--dotnet", required=True)
     parser.add_argument("--tml", required=True, type=Path)
     parser.add_argument("--package", required=True, type=Path)
-    parser.add_argument("--world", required=True, type=Path)
+    world_choice = parser.add_mutually_exclusive_group(required=True)
+    world_choice.add_argument("--world", type=Path)
+    world_choice.add_argument("--generate-world", action="store_true", help="Generate an isolated small world instead of copying an existing save")
+    parser.add_argument("--seed", default="20261020")
     parser.add_argument("--timeout", type=int, default=180)
     parser.add_argument("--extra-mod", action="append", default=[], metavar="NAME=PATH", help="Copy and enable an explicit optional dependency in the disposable mod directory; repeat for dependencies")
     parser.add_argument("--scope", choices=("full", "calamity-recipes"), default="full")
@@ -97,14 +100,19 @@ def main():
     dependencies = extra_mods(args.extra_mod)
     tml = args.tml.resolve(strict=True)
     package = args.package.resolve(strict=True)
-    source = args.world.resolve(strict=True)
-    companion = source.with_suffix(".twld").resolve(strict=True)
-    original_hashes = {path: hashlib.sha256(path.read_bytes()).hexdigest() for path in (source, companion)}
-    original_hashes.update({path: hashlib.sha256(path.read_bytes()).hexdigest() for path in dependencies.values()})
-    if source.suffix.lower() != ".wld" or package.suffix.lower() != ".tmod":
-        parser.error("Expected a .wld world with its .twld companion and a .tmod package")
     if args.timeout <= 0:
         parser.error("timeout must be positive")
+    if not args.seed or any(c in args.seed for c in "\r\n"):
+        parser.error("seed must be a nonempty single line")
+    original_hashes = {path: hashlib.sha256(path.read_bytes()).hexdigest() for path in dependencies.values()}
+    source = args.world.resolve(strict=True) if args.world else None
+    if source:
+        companion = source.with_suffix(".twld").resolve(strict=True)
+        if source.suffix.lower() != ".wld":
+            parser.error("Expected a .wld world with its .twld companion")
+        original_hashes.update({path: hashlib.sha256(path.read_bytes()).hexdigest() for path in (source, companion)})
+    if package.suffix.lower() != ".tmod":
+        parser.error("Expected a .tmod package")
     root = Path(__file__).resolve().parents[1] / ".tml-test" / ("summons-" + uuid.uuid4().hex)
     save = root / "save"
     mods = save / "Mods"
@@ -112,8 +120,9 @@ def main():
     mods.mkdir(parents=True)
     worlds.mkdir()
     world = worlds / "SummonProbe.wld"
-    shutil.copy2(source, world)
-    shutil.copy2(companion, world.with_suffix(".twld"))
+    if source:
+        shutil.copy2(source, world)
+        shutil.copy2(companion, world.with_suffix(".twld"))
     shutil.copy2(package, mods / "XianXia.tmod")
     for name, dependency in dependencies.items():
         shutil.copy2(dependency, mods / (name + ".tmod"))
@@ -123,7 +132,7 @@ def main():
         port = listener.getsockname()[1]
     config = root / "serverconfig.txt"
     config.write_text("\n".join([
-        f"world={world}", "maxplayers=1", "ip=127.0.0.1", f"port={port}",
+        f"world={world}", *([] if source else ["autocreate=1", f"seed={args.seed}", "worldname=SummonProbe", "difficulty=0"]), "maxplayers=1", "ip=127.0.0.1", f"port={port}",
         f"password={uuid.uuid4().hex}", "upnp=0", "language=en-US",
         f"banlist={root / 'banlist.txt'}", "priority=3",
     ]), encoding="utf-8")

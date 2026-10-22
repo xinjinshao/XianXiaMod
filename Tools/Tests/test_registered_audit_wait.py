@@ -22,6 +22,15 @@ class AuditWaitTests(unittest.TestCase):
         self.output = self.root / "server.log"
         self.valid = {"schema": 1, "scope": "full", "passed": True, "checks": ["actual assertion"], "limitations": "fixture only"}
 
+    def test_world_selection_is_required_and_exclusive(self):
+        script = str(Path(__file__).parents[1] / "verify_registered_summons.py")
+        base = [sys.executable, script, "--dotnet", "unused", "--tml", "unused", "--package", "unused.tmod"]
+        for options in ([], ["--world", "unused.wld", "--generate-world"]):
+            result = subprocess.run(base + options, capture_output=True, text=True)
+            self.assertEqual(result.returncode, 2)
+            self.assertIn("--generate-world", result.stderr)
+            self.assertNotIn("Traceback", result.stderr)
+
     def test_scope_must_match_explicit_request(self):
         for scope in ("full", "calamity-recipes"):
             runner.validate_scope({**self.valid, "scope": scope}, scope)

@@ -1601,3 +1601,13 @@ BossAdds16894→22188新增5294项三阶段双法旨60/45窗口、移动锁点�
 - 先增加同对象/槽位/类型仅换号的反例，旧生产代码telegraphs302-before.log明确失败；最终Telegraphs源码2,068项、完整38项源码检查、编译产物Gameplay7,720项通过。旧手写19字节夹具全部更新，截断覆盖扩至27；已知完成NPC同步的客户端正向夹具显式准备权威编号，不允许客户端自行生成。独立Gameplay未加载Global注册表，两处旧NPC正向夹具改为验证缺少实例组件时安全无伤；真正注册来源的正向控制交由完整原生覆盖。
 - 最终0.1.1构建/打包/专服run-57bd7a0aeba348e68188e7065550a93b、原生32,980项（新增335）通过，报告summons-a223c9a3427b4233b8588a796e4788cd。九种实际注册弹体各验证来源正向/同对象重置、27个截断前缀、元数据及NPC乱序等待、匹配生效、换号即停、下一实例生效、旧包重放与零编号；另旧来源预警自然到期不释放落雷，并恢复NPC/玩家/弹体池/重放历史。
 - 可复核[按用例分组的335项原生证据与包哈希](../Docs/Evidence/HostileNpcIdentities_2026-10-22.json)。直接使用注册Global/ModProjectile序列化和伤害资格钩子，不证明真实消息23/27完整收包、双客户端伤害/迟加入/显示或性能。本轮未改世界生成，未重复生成矩阵。R01/R04/R31保持未完成。
+
+### 第306轮：注册原生集成接入CI
+
+Native checks在既有构建、包检查、Gameplay、本地化和经济检查之后，使用同一个包自动生成隔离小世界（种子20261020）并运行完整注册集成。错误报告、缺失报告、超时或范围不符会使步骤失败。上传产物新增summon-audit.json、runtime.log和serverconfig.txt，保留既有引擎日志。该步骤没有连接真实玩家。
+
+```powershell
+python Tools/verify_registered_summons.py --dotnet <dotnet.exe> --tml <引擎目录> --package <XianXia.tmod> --generate-world --seed 20261020 --timeout 600
+```
+
+`--generate-world`与`--world <既有WLD>`必须二选一；后者仍复制WLD/TWLD并验证原文件哈希未变，前者不依赖用户存档。新生成世界只作为注册钩子的临时运行环境，不执行保存重载结构验收，也不证明主线可通关。两条实际本地路径各通过33,075项；运行器13项回归通过，详情见[证据](../Docs/Evidence/RegisteredCi_2026-10-22.json)。GitHub托管运行结果需另行查看，不能将本地通过视为远端成功。

@@ -1,0 +1,32 @@
+{
+  "date": "2026-10-22",
+  "round": 306,
+  "mod_version": "0.1.2",
+  "seed": "20261020",
+  "world_size": "small",
+  "scope": "full",
+  "checks_per_run": 33075,
+  "runs": [
+    {
+      "mode": "fresh",
+      "report": ".tml-test\\summons-d65071f7d7fd420a9d2f85d1fe90ccc6\\save\\XianXia\\summon-audit.json",
+      "sha256": "992a834dbb67cb75778825e130f6b47ca014bafb37827878aa30dcfd21da60f5",
+      "passed": true,
+      "checks": 33075
+    },
+    {
+      "mode": "copy",
+      "report": ".tml-test\\summons-cc1413dccf6b47c89d45bf620a409493\\save\\XianXia\\summon-audit.json",
+      "sha256": "c35198f7e2854698dcd8145200a0dda5450ab1ea74a9252af0e1f13ce874cb97",
+      "passed": true,
+      "checks": 33075
+    }
+  ],
+  "limits": [
+    "Local execution of the CI command; hosted workflow result not yet verified.",
+    "Generated world is a disposable audit fixture, not a playthrough or player connectivity test."
+  ],
+  "source_checks": 39,
+  "runner_tests": 13,
+  "package_sha256": "9bf50ebc290ce37d57e23fe152d7876cab8603b497524fee81acab50d13181cf"
+}
