@@ -9,6 +9,8 @@ namespace XianXia.Content.Items.Armor;
 // Vanilla armor visuals are temporary; each piece owns its equip slot.
 public abstract class CultivationArmorItem : ModItem
 {
+    // Carry the equip slot registered on the loading template into each item.
+    protected override bool CloneNewInstances => true;
     private int slot;
     protected abstract EquipType Kind { get; }
     protected abstract int Visual { get; }
