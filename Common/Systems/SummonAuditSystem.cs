@@ -957,6 +957,7 @@ public partial class SummonAuditSystem : ModSystem
             AuditMasterMonuments(Check);
             AuditRareEquipment(Check);
             AuditArmorInstances(Check);
+            AuditSpiritTidePackets(Check);
             AuditSectRuinHalls(Check);
             AuditSectRuinPaths(Check);
             AuditThunderShrines(Check);

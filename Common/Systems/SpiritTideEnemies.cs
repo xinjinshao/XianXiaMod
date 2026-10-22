@@ -38,7 +38,7 @@ public class SpiritTideEnemies : GlobalNPC
     {
         writer.Write(tideEnemy);
         if(!tideEnemy)return;
-        writer.Write(tideRun);writer.Write(npc.lifeMax);writer.Write(npc.damage);writer.Write(npc.defense);
+        writer.Write(tideRun);writer.Write(npc.lifeMax);writer.Write(npc.damage);writer.Write(npc.defense);writer.Write(npc.life);
     }
     public override void ReceiveExtraAI(NPC npc,BitReader bitReader,BinaryReader reader)
     {
@@ -46,8 +46,11 @@ public class SpiritTideEnemies : GlobalNPC
         if (!incoming) { tideEnemy = false; tideRun = 0; return; }
         uint run = reader.ReadUInt32();
         int life = reader.ReadInt32(), damage = reader.ReadInt32(), defense = reader.ReadInt32();
-        if (life <= 0 || damage < 0 || defense < 0) return;
+        int current = reader.ReadInt32();
+        if (life <= 0 || damage < 0 || defense < 0 || current < 0 || current > life) return;
         tideEnemy = true; tideRun = run;
         npc.lifeMax = life; npc.damage = damage; npc.defense = defense;
+        // Native SyncNPC can encode full life relative to the unboosted local maximum.
+        npc.life = current;
     }
 }
