@@ -953,6 +953,7 @@ public partial class SummonAuditSystem : ModSystem
             AuditThunderShrines(Check);
             AuditHeavenCourts(Check);
             AuditStarBridges(Check);
+            AuditMoonboneTerraces(Check);
             AuditGreenwoodGardens(Check);
             AuditGenerationProtection(Check);
             AuditProtectedObjectPlacement(Check);

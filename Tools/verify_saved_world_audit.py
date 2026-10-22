@@ -72,6 +72,14 @@ def verify_star_bridges(report):
         assert all(bridge.get(flag) is True for flag in ("GeometryIntact", "InteriorClear", "Dry", "MembraneIntact")), bridge
 
 
+def verify_moonbone_terraces(report):
+    terraces = report.get("MoonboneTerraces")
+    assert isinstance(terraces, list) and 0 < len(terraces) <= 2, "No saved moonbone terraces"
+    for terrace in terraces:
+        assert (terrace["Width"], terrace["Height"], terrace["BoneTiles"]) == (47, 23, 316)
+        assert all(terrace.get(flag) is True for flag in ("GeometryIntact", "InteriorClear", "Dry")), terrace
+
+
 def verify_sect_halls(report):
     for hall in report["SectRuinHalls"]:
         assert hall["Bricks"] == 278 and hall["BlockedInterior"] == 0 and hall["SwordTablets"] >= 2, hall
@@ -97,6 +105,7 @@ def verify_all_structures(report):
         "ThunderCloudShrines": (3, 51, 51, 13, verify_thunder_shrines),
         "FallenHeavenCourts": (2, 49, 49, 23, verify_heaven_courts),
         "StarAbyssBridges": (3, 45, 45, 27, verify_star_bridges),
+        "MoonboneTerraces": (2, 47, 47, 23, verify_moonbone_terraces),
     }
     rectangles = []
     counts = {}
@@ -117,7 +126,7 @@ def verify_all_structures(report):
     return counts
 
 
-def verify(run, require_workshops=False, require_paths=False, require_sect_paths=False, require_gardens=False, require_shrines=False, require_courts=False, all_structures=False, require_bridges=False):
+def verify(run, require_workshops=False, require_paths=False, require_sect_paths=False, require_gardens=False, require_shrines=False, require_courts=False, all_structures=False, require_bridges=False, require_terraces=False):
     root = Path(run)
     log = (root / "runtime.log").read_text(encoding="utf-8-sig")
     reports = [json.loads(line.split("SavedWorldAudit: ", 1)[1])
@@ -146,6 +155,8 @@ def verify(run, require_workshops=False, require_paths=False, require_sect_paths
         verify_heaven_courts(report)
     if require_bridges:
         verify_star_bridges(report)
+    if require_terraces:
+        verify_moonbone_terraces(report)
     if all_structures:
         report["VerifiedStructureCounts"] = verify_all_structures(report)
     for extension in ("wld", "twld"):
@@ -165,7 +176,8 @@ if __name__ == "__main__":
     parser.add_argument("--require-thunder-shrines", action="store_true", help="Require flat thunder cloud platforms and complete singing stones")
     parser.add_argument("--require-heaven-courts", action="store_true", help="Require open jade courts with complete tablets and archive pillars")
     parser.add_argument("--require-star-bridges", action="store_true", help="Require broken crystal crossings, dry lower landings and complete rift membranes")
+    parser.add_argument("--require-moonbone-terraces", action="store_true", help="Require dry lunar terraces with intact steps, raised center and broken ribs")
     parser.add_argument("--verify-structures", action="store_true", help="Validate every recorded fresh structure, world bounds and cross-system overlaps; report skipped placements as zero")
     args = parser.parse_args()
     for run in args.runs:
-        verify(run, args.require_workshops, args.require_workshop_paths, args.require_sect_paths, args.require_greenwood_gardens, args.require_thunder_shrines, args.require_heaven_courts, args.verify_structures, args.require_star_bridges)
+        verify(run, args.require_workshops, args.require_workshop_paths, args.require_sect_paths, args.require_greenwood_gardens, args.require_thunder_shrines, args.require_heaven_courts, args.verify_structures, args.require_star_bridges, args.require_moonbone_terraces)

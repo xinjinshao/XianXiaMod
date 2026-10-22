@@ -1,0 +1,328 @@
+{
+  "date": "2026-10-22",
+  "tml_version": "2026.08.3.0",
+  "package_sha256": "a0e009d3294ad9caf8f2793f0d6d1fcb93b4156351baa15918b77a425e969629",
+  "native_report": ".tml-test\\summons-2bfc32a65718468994031630cf25e88f\\save\\XianXia\\summon-audit.json",
+  "native_checks_total": 32594,
+  "terrace_checks": [
+    "native moonbone terrace fixture dry unwired sky context",
+    "native disabled generation skips moonbone terraces",
+    "native client cannot build moonbone terraces",
+    "native moonbone terrace preserves protected terrain",
+    "native moonbone terrace preserves existing objects",
+    "native moonbone terrace refuses liquid",
+    "native moonbone terrace refuses wiring",
+    "native moonbone terrace refuses actuators",
+    "native moonbone terrace preserves housing walls",
+    "native moonbone terrace rejects invalid bounds",
+    "native moonbone terrace rejects incorrect dimensions",
+    "native moonbone terrace builds in approved natural terrain",
+    "native moonbone terrace has 316 bone tiles raised center two-step shoulders and broken ribs",
+    "native moonbone terrace fits a standing player with physical support on each level and approach",
+    "native moonbone terrace fits a standing player with physical support on each level and approach",
+    "native moonbone terrace fits a standing player with physical support on each level and approach",
+    "native moonbone terrace fits a standing player with physical support on each level and approach",
+    "native moonbone terrace fits a standing player with physical support on each level and approach",
+    "native moonbone terrace fits a standing player with physical support on each level and approach",
+    "native moonbone terrace fits a standing player with physical support on each level and approach",
+    "native moonbone terrace reserves protected footprint",
+    "native moonbone terrace alone activates actual server lunar biome scan",
+    "native moonbone terrace bounds survive world data roundtrip",
+    "native moonbone terrace load never repairs player-removed platform",
+    "native moonbone terrace load rejects overlapping duplicate and invalid records"
+  ],
+  "medium_seed": 20261023,
+  "generated_run": ".tml-test\\world-ec48ca63689e431d9b9ef8f0cbbca3bb",
+  "reloaded_run": ".tml-test\\world-1a8e17f0fc2046508683d318bbfabd65",
+  "full_final_scan_equal": true,
+  "audit": {
+    "Width": 6400,
+    "Height": 1800,
+    "Objects": [
+      {
+        "Name": "SwordTabletTile",
+        "Height": 3,
+        "Cells": 24,
+        "Origins": 4,
+        "Complete": 4
+      },
+      {
+        "Name": "SingingThunderStoneTile",
+        "Height": 2,
+        "Cells": 12,
+        "Origins": 3,
+        "Complete": 3
+      },
+      {
+        "Name": "RiftMembraneTile",
+        "Height": 2,
+        "Cells": 12,
+        "Origins": 3,
+        "Complete": 3
+      },
+      {
+        "Name": "BrokenHeavenTabletTile",
+        "Height": 4,
+        "Cells": 16,
+        "Origins": 2,
+        "Complete": 2
+      },
+      {
+        "Name": "ArchiveLightPillarTile",
+        "Height": 6,
+        "Cells": 24,
+        "Origins": 2,
+        "Complete": 2
+      }
+    ],
+    "MoonboneTerraces": [
+      {
+        "X": 2002,
+        "Y": 1519,
+        "Width": 47,
+        "Height": 23,
+        "BoneTiles": 316,
+        "GeometryIntact": true,
+        "InteriorClear": true,
+        "Dry": true
+      },
+      {
+        "X": 2003,
+        "Y": 1475,
+        "Width": 47,
+        "Height": 23,
+        "BoneTiles": 316,
+        "GeometryIntact": true,
+        "InteriorClear": true,
+        "Dry": true
+      }
+    ],
+    "StarAbyssBridges": [
+      {
+        "X": 6130,
+        "Y": 1376,
+        "Width": 45,
+        "Height": 27,
+        "CrystalTiles": 252,
+        "GeometryIntact": true,
+        "InteriorClear": true,
+        "Dry": true,
+        "MembraneIntact": true
+      }
+    ],
+    "FallenHeavenCourts": [
+      {
+        "X": 3862,
+        "Y": 1384,
+        "Width": 49,
+        "Height": 23,
+        "JadeTiles": 247,
+        "ShellIntact": true,
+        "InteriorClear": true,
+        "EntrancesOpen": true,
+        "Dry": true,
+        "TabletIntact": true,
+        "PillarIntact": true
+      },
+      {
+        "X": 3764,
+        "Y": 1385,
+        "Width": 49,
+        "Height": 23,
+        "JadeTiles": 247,
+        "ShellIntact": true,
+        "InteriorClear": true,
+        "EntrancesOpen": true,
+        "Dry": true,
+        "TabletIntact": true,
+        "PillarIntact": true
+      }
+    ],
+    "ThunderCloudShrines": [
+      {
+        "X": 4737,
+        "Y": 231,
+        "Width": 51,
+        "Height": 13,
+        "CloudTiles": 153,
+        "PlatformIntact": true,
+        "AirspaceClear": true,
+        "Dry": true,
+        "StoneIntact": true
+      },
+      {
+        "X": 1278,
+        "Y": 167,
+        "Width": 51,
+        "Height": 13,
+        "CloudTiles": 153,
+        "PlatformIntact": true,
+        "AirspaceClear": true,
+        "Dry": true,
+        "StoneIntact": true
+      },
+      {
+        "X": 6088,
+        "Y": 281,
+        "Width": 51,
+        "Height": 13,
+        "CloudTiles": 153,
+        "PlatformIntact": true,
+        "AirspaceClear": true,
+        "Dry": true,
+        "StoneIntact": true
+      }
+    ],
+    "FurnaceWorkshops": [
+      {
+        "X": 2364,
+        "Y": 715,
+        "Width": 35,
+        "Height": 17,
+        "SlagTiles": 238,
+        "FurnaceCells": 6,
+        "AnvilCells": 2,
+        "BlockedInterior": 0,
+        "ShellIntact": true,
+        "Dry": true,
+        "StationsIntact": true
+      },
+      {
+        "X": 4974,
+        "Y": 958,
+        "Width": 35,
+        "Height": 17,
+        "SlagTiles": 238,
+        "FurnaceCells": 6,
+        "AnvilCells": 2,
+        "BlockedInterior": 0,
+        "ShellIntact": true,
+        "Dry": true,
+        "StationsIntact": true
+      }
+    ],
+    "FurnaceWorkshopPaths": [
+      {
+        "X": 5009,
+        "Y": 966,
+        "Width": 5,
+        "Height": 6,
+        "InteriorClear": true,
+        "ShellIntact": true,
+        "Dry": true,
+        "OpenCavityExit": true
+      }
+    ],
+    "SectRuinHalls": [
+      {
+        "X": 5042,
+        "Y": 1260,
+        "Width": 41,
+        "Height": 19,
+        "Bricks": 278,
+        "BlockedInterior": 0,
+        "EntrancesOpen": true,
+        "Dry": true,
+        "SwordTablets": 2,
+        "SupplyChests": [
+          {
+            "x": 5061,
+            "y": 1274,
+            "Intact": true,
+            "Items": [
+              {
+                "Name": "LowGradeSpiritStone",
+                "Stack": 7
+              },
+              {
+                "Name": "ArtifactBlankShard",
+                "Stack": 3
+              },
+              {
+                "Name": "RecallPotion",
+                "Stack": 2
+              },
+              {
+                "Name": "Torch",
+                "Stack": 10
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "X": 3770,
+        "Y": 799,
+        "Width": 41,
+        "Height": 19,
+        "Bricks": 278,
+        "BlockedInterior": 0,
+        "EntrancesOpen": true,
+        "Dry": true,
+        "SwordTablets": 2,
+        "SupplyChests": [
+          {
+            "x": 3789,
+            "y": 813,
+            "Intact": true,
+            "Items": [
+              {
+                "Name": "LowGradeSpiritStone",
+                "Stack": 7
+              },
+              {
+                "Name": "ArtifactBlankShard",
+                "Stack": 4
+              },
+              {
+                "Name": "RecallPotion",
+                "Stack": 2
+              },
+              {
+                "Name": "Torch",
+                "Stack": 10
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "SectRuinPaths": [],
+    "GreenwoodGardens": [
+      {
+        "X": 2217,
+        "Y": 369,
+        "Width": 31,
+        "Height": 13,
+        "SoilTiles": 124,
+        "Crops": 6,
+        "CropFrames": [
+          0,
+          18,
+          36,
+          0,
+          18,
+          36
+        ],
+        "BedIntact": true,
+        "WalkwayClear": true,
+        "Dry": true,
+        "ShelterIntact": true
+      }
+    ],
+    "ChestsWithSpiritStones": 17,
+    "ChestSpiritStoneTotal": 104,
+    "VerifiedStructureCounts": {
+      "SectRuinHalls": 2,
+      "SectRuinPaths": 0,
+      "GreenwoodGardens": 1,
+      "FurnaceWorkshops": 2,
+      "FurnaceWorkshopPaths": 1,
+      "ThunderCloudShrines": 3,
+      "FallenHeavenCourts": 2,
+      "StarAbyssBridges": 1,
+      "MoonboneTerraces": 2
+    },
+    "Scope": "Final loaded counts/frames and all registered fresh structure geometry/bounds; unregistered structures, global accessibility and full biome activation unverified"
+  }
+}

@@ -175,8 +175,20 @@ public class WorldAuditCommand : ModCommand
             bridgeReports.Add(new { area.X,area.Y,area.Width,area.Height,CrystalTiles = crystals,GeometryIntact = geometry,InteriorClear = clear,Dry = dry,
                 MembraneIntact = global::XianXia.Common.Systems.StarAbyssBridgeSystem.MembraneIntact(area) });
         }
+        var terraceReports = new List<object>();
+        foreach (var area in ModContent.GetInstance<global::XianXia.Common.Systems.MoonboneTerraceSystem>().Terraces) {
+            int bones = 0; bool geometry = true, clear = true, dry = true;
+            for (int x = 0; x < area.Width; x++) for (int y = 0; y < area.Height; y++) {
+                Tile tile = Main.tile[area.X + x,area.Y + y]; dry &= tile.LiquidAmount == 0;
+                bool bone = tile.HasTile && tile.TileType == ModContent.TileType<MoonboneTile>();
+                if (bone) bones++;
+                if (global::XianXia.Common.Systems.MoonboneTerraceSystem.IsBone(x,y)) geometry &= bone && tile.Slope == 0 && !tile.IsHalfBlock;
+                else clear &= !tile.HasTile;
+            }
+            terraceReports.Add(new { area.X,area.Y,area.Width,area.Height,BoneTiles = bones,GeometryIntact = geometry,InteriorClear = clear,Dry = dry });
+        }
         string report = JsonSerializer.Serialize(new { Width = Main.maxTilesX, Height = Main.maxTilesY, Objects = objects.Values,
-            StarAbyssBridges = bridgeReports,FallenHeavenCourts = courtReports,ThunderCloudShrines = shrineReports,FurnaceWorkshops = workshopReports,FurnaceWorkshopPaths = workshopPaths, SectRuinHalls = hallReports, SectRuinPaths = pathReports, GreenwoodGardens = gardenReports, ChestsWithSpiritStones = supplyChests, ChestSpiritStoneTotal = spiritStones });
+            MoonboneTerraces = terraceReports,StarAbyssBridges = bridgeReports,FallenHeavenCourts = courtReports,ThunderCloudShrines = shrineReports,FurnaceWorkshops = workshopReports,FurnaceWorkshopPaths = workshopPaths, SectRuinHalls = hallReports, SectRuinPaths = pathReports, GreenwoodGardens = gardenReports, ChestsWithSpiritStones = supplyChests, ChestSpiritStoneTotal = spiritStones });
         Mod.Logger.Info("SavedWorldAudit: " + report);
         caller.Reply(report);
     }
