@@ -62,6 +62,7 @@ public class GeneratedBiomeWorldGenSystem : ModSystem
         ModContent.GetInstance<GreenwoodGardenSystem>().Generate(greenwood);
         ModContent.GetInstance<FurnaceWorkshopSystem>().Generate(furnace);
         ModContent.GetInstance<MoonboneTerraceSystem>().Generate(moonbone);
+        ModContent.GetInstance<ShallowSpiritChamberSystem>().Generate(ModContent.GetInstance<SpiritVeinWorldGenSystem>().Regions);
     }
 
     private void PlaceObjects(int tileType, int count, List<Rectangle> regions, int groundType, int height)

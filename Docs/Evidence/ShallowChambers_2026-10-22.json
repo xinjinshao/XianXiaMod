@@ -1,0 +1,338 @@
+{
+  "date": "2026-10-22",
+  "tml_version": "2026.08.3.0",
+  "package_sha256": "6a75cda6fd10e4691e88c4e17fbce3acfd595822d5864e51277ae306a9255df9",
+  "native_report": ".tml-test\\summons-3005463e819546039f2b889bc2b2e04b\\save\\XianXia\\summon-audit.json",
+  "native_checks_total": 32622,
+  "chamber_native_checks": [
+    "native shallow chamber fixture dry unwired sky context",
+    "native shallow chamber never invents ore in a moss-only vein",
+    "native shallow chamber requires forty existing spirit tiles",
+    "native shallow chamber refuses a vein too rich to preserve all original ore",
+    "native disabled generation skips shallow chambers",
+    "native client cannot build shallow chambers",
+    "native shallow chamber preserves protected terrain",
+    "native shallow chamber preserves existing objects",
+    "native shallow chamber refuses liquid",
+    "native shallow chamber refuses wiring",
+    "native shallow chamber refuses actuators",
+    "native shallow chamber preserves housing walls",
+    "native shallow chamber rejects invalid bounds",
+    "native shallow chamber rejects incorrect dimensions",
+    "native shallow chamber builds in its actual existing spirit vein",
+    "native shallow chamber retains twelve original ore cells with six exposed six buried and 119 total solid cells",
+    "native shallow chamber fits a standing player with support at both entrances and center",
+    "native shallow chamber fits a standing player with support at both entrances and center",
+    "native shallow chamber fits a standing player with support at both entrances and center",
+    "native shallow chamber reserves protected footprint",
+    "native shallow chamber alone activates actual server starter biome scan",
+    "native shallow chamber bounds survive world data roundtrip",
+    "native actual mining of exposed chamber ore drops exactly one low-grade spirit stone",
+    "native mined chamber stone passes official pickup dispatch and awakens spiritual-energy discovery once",
+    "native shallow chamber load does not regenerate mined ore",
+    "native one-ore source exposes exactly one ore cell without minting others",
+    "native maximum-capacity source preserves all sixty-four ore cells",
+    "native shallow chamber load rejects overlapping duplicate and invalid records"
+  ],
+  "small_seed": 20261022,
+  "generated_run": ".tml-test\\world-650c7bafe5d74c30b28bd54ef41344cd",
+  "reloaded_run": ".tml-test\\world-f057ee41aabb4fbbbf4d851932f07764",
+  "full_final_scan_equal": true,
+  "audit": {
+    "Width": 4200,
+    "Height": 1200,
+    "Objects": [
+      {
+        "Name": "SwordTabletTile",
+        "Height": 3,
+        "Cells": 24,
+        "Origins": 4,
+        "Complete": 4
+      },
+      {
+        "Name": "SingingThunderStoneTile",
+        "Height": 2,
+        "Cells": 12,
+        "Origins": 3,
+        "Complete": 3
+      },
+      {
+        "Name": "RiftMembraneTile",
+        "Height": 2,
+        "Cells": 12,
+        "Origins": 3,
+        "Complete": 3
+      },
+      {
+        "Name": "BrokenHeavenTabletTile",
+        "Height": 4,
+        "Cells": 16,
+        "Origins": 2,
+        "Complete": 2
+      },
+      {
+        "Name": "ArchiveLightPillarTile",
+        "Height": 6,
+        "Cells": 24,
+        "Origins": 2,
+        "Complete": 2
+      }
+    ],
+    "ShallowSpiritChambers": [
+      {
+        "X": 2134,
+        "Y": 421,
+        "Width": 29,
+        "Height": 15,
+        "OreTiles": 17,
+        "MossTiles": 102,
+        "ExposedOreTiles": 6,
+        "GeometryIntact": true,
+        "InteriorClear": true,
+        "Dry": true,
+        "OreSeamIntact": true
+      },
+      {
+        "X": 3168,
+        "Y": 303,
+        "Width": 29,
+        "Height": 15,
+        "OreTiles": 49,
+        "MossTiles": 70,
+        "ExposedOreTiles": 6,
+        "GeometryIntact": true,
+        "InteriorClear": true,
+        "Dry": true,
+        "OreSeamIntact": true
+      },
+      {
+        "X": 3189,
+        "Y": 370,
+        "Width": 29,
+        "Height": 15,
+        "OreTiles": 15,
+        "MossTiles": 104,
+        "ExposedOreTiles": 6,
+        "GeometryIntact": true,
+        "InteriorClear": true,
+        "Dry": true,
+        "OreSeamIntact": true
+      }
+    ],
+    "MoonboneTerraces": [
+      {
+        "X": 359,
+        "Y": 779,
+        "Width": 47,
+        "Height": 23,
+        "BoneTiles": 316,
+        "GeometryIntact": true,
+        "InteriorClear": true,
+        "Dry": true
+      },
+      {
+        "X": 319,
+        "Y": 951,
+        "Width": 47,
+        "Height": 23,
+        "BoneTiles": 316,
+        "GeometryIntact": true,
+        "InteriorClear": true,
+        "Dry": true
+      }
+    ],
+    "StarAbyssBridges": [],
+    "FallenHeavenCourts": [
+      {
+        "X": 3455,
+        "Y": 923,
+        "Width": 49,
+        "Height": 23,
+        "JadeTiles": 247,
+        "ShellIntact": true,
+        "InteriorClear": true,
+        "EntrancesOpen": true,
+        "Dry": true,
+        "TabletIntact": true,
+        "PillarIntact": true
+      },
+      {
+        "X": 305,
+        "Y": 768,
+        "Width": 49,
+        "Height": 23,
+        "JadeTiles": 247,
+        "ShellIntact": true,
+        "InteriorClear": true,
+        "EntrancesOpen": true,
+        "Dry": true,
+        "TabletIntact": true,
+        "PillarIntact": true
+      }
+    ],
+    "ThunderCloudShrines": [
+      {
+        "X": 800,
+        "Y": 119,
+        "Width": 51,
+        "Height": 13,
+        "CloudTiles": 153,
+        "PlatformIntact": true,
+        "AirspaceClear": true,
+        "Dry": true,
+        "StoneIntact": true
+      },
+      {
+        "X": 1401,
+        "Y": 102,
+        "Width": 51,
+        "Height": 13,
+        "CloudTiles": 153,
+        "PlatformIntact": true,
+        "AirspaceClear": true,
+        "Dry": true,
+        "StoneIntact": true
+      },
+      {
+        "X": 996,
+        "Y": 132,
+        "Width": 51,
+        "Height": 13,
+        "CloudTiles": 153,
+        "PlatformIntact": true,
+        "AirspaceClear": true,
+        "Dry": true,
+        "StoneIntact": true
+      }
+    ],
+    "FurnaceWorkshops": [
+      {
+        "X": 165,
+        "Y": 691,
+        "Width": 35,
+        "Height": 17,
+        "SlagTiles": 238,
+        "FurnaceCells": 6,
+        "AnvilCells": 2,
+        "BlockedInterior": 0,
+        "ShellIntact": true,
+        "Dry": true,
+        "StationsIntact": true
+      },
+      {
+        "X": 3306,
+        "Y": 881,
+        "Width": 35,
+        "Height": 17,
+        "SlagTiles": 238,
+        "FurnaceCells": 6,
+        "AnvilCells": 2,
+        "BlockedInterior": 0,
+        "ShellIntact": true,
+        "Dry": true,
+        "StationsIntact": true
+      },
+      {
+        "X": 1965,
+        "Y": 696,
+        "Width": 35,
+        "Height": 17,
+        "SlagTiles": 238,
+        "FurnaceCells": 6,
+        "AnvilCells": 2,
+        "BlockedInterior": 0,
+        "ShellIntact": true,
+        "Dry": true,
+        "StationsIntact": true
+      }
+    ],
+    "FurnaceWorkshopPaths": [
+      {
+        "X": 3341,
+        "Y": 889,
+        "Width": 5,
+        "Height": 6,
+        "InteriorClear": true,
+        "ShellIntact": true,
+        "Dry": true,
+        "OpenCavityExit": true
+      }
+    ],
+    "SectRuinHalls": [
+      {
+        "X": 2043,
+        "Y": 718,
+        "Width": 41,
+        "Height": 19,
+        "Bricks": 278,
+        "BlockedInterior": 0,
+        "EntrancesOpen": true,
+        "Dry": true,
+        "SwordTablets": 4,
+        "SupplyChests": [
+          {
+            "x": 2062,
+            "y": 732,
+            "Intact": true,
+            "Items": [
+              {
+                "Name": "LowGradeSpiritStone",
+                "Stack": 7
+              },
+              {
+                "Name": "ArtifactBlankShard",
+                "Stack": 3
+              },
+              {
+                "Name": "RecallPotion",
+                "Stack": 2
+              },
+              {
+                "Name": "Torch",
+                "Stack": 10
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "SectRuinPaths": [],
+    "GreenwoodGardens": [
+      {
+        "X": 2309,
+        "Y": 218,
+        "Width": 31,
+        "Height": 13,
+        "SoilTiles": 124,
+        "Crops": 6,
+        "CropFrames": [
+          0,
+          18,
+          36,
+          0,
+          18,
+          36
+        ],
+        "BedIntact": true,
+        "WalkwayClear": true,
+        "Dry": true,
+        "ShelterIntact": true
+      }
+    ],
+    "ChestsWithSpiritStones": 8,
+    "ChestSpiritStoneTotal": 48,
+    "VerifiedStructureCounts": {
+      "SectRuinHalls": 1,
+      "SectRuinPaths": 0,
+      "GreenwoodGardens": 1,
+      "FurnaceWorkshops": 3,
+      "FurnaceWorkshopPaths": 1,
+      "ThunderCloudShrines": 3,
+      "FallenHeavenCourts": 2,
+      "StarAbyssBridges": 0,
+      "MoonboneTerraces": 2,
+      "ShallowSpiritChambers": 3
+    },
+    "Scope": "Final loaded counts/frames and all registered fresh structure geometry/bounds; unregistered structures, global accessibility and full biome activation unverified"
+  }
+}

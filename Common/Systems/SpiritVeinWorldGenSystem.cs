@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.GameContent.Generation;
 using Terraria.ID;
@@ -11,6 +12,8 @@ namespace XianXia.Common.Systems;
 
 public class SpiritVeinWorldGenSystem : ModSystem
 {
+    internal readonly List<Rectangle> Regions = new();
+    public override void ClearWorld() => Regions.Clear();
     public override void ModifyWorldGenTasks(List<GenPass> tasks, ref double totalWeight)
     {
         if (!ModContent.GetInstance<XianXiaConfig>().EnableWorldGeneration)
@@ -29,6 +32,7 @@ public class SpiritVeinWorldGenSystem : ModSystem
 
     private void GenerateShallowSpiritVeins(GenerationProgress progress, GameConfiguration configuration)
     {
+        Regions.Clear();
         progress.Message = "Waking shallow spirit veins";
         int patches = Main.maxTilesX / 220;
         for (int i = 0; i < patches; i++)
@@ -38,7 +42,8 @@ public class SpiritVeinWorldGenSystem : ModSystem
             int radiusX = WorldGen.genRand.Next(10, 24);
             int radiusY = WorldGen.genRand.Next(7, 16);
 
-            PaintVein(x,y,radiusX,radiusY,GenVars.structures);
+            if (PaintVein(x,y,radiusX,radiusY,GenVars.structures) > 0)
+                Regions.Add(new Rectangle(x - radiusX,y - radiusY,radiusX * 2 + 1,radiusY * 2 + 1));
         }
     }
 

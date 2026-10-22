@@ -954,6 +954,7 @@ public partial class SummonAuditSystem : ModSystem
             AuditHeavenCourts(Check);
             AuditStarBridges(Check);
             AuditMoonboneTerraces(Check);
+            AuditShallowChambers(Check);
             AuditGreenwoodGardens(Check);
             AuditGenerationProtection(Check);
             AuditProtectedObjectPlacement(Check);

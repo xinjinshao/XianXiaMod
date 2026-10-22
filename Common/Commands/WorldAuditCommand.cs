@@ -187,8 +187,24 @@ public class WorldAuditCommand : ModCommand
             }
             terraceReports.Add(new { area.X,area.Y,area.Width,area.Height,BoneTiles = bones,GeometryIntact = geometry,InteriorClear = clear,Dry = dry });
         }
+        var chamberReports = new List<object>();
+        foreach (var area in ModContent.GetInstance<global::XianXia.Common.Systems.ShallowSpiritChamberSystem>().Chambers) {
+            int ores = 0, mosses = 0, exposed = 0; bool geometry = true, clear = true, dry = true;
+            for (int x = 0; x < area.Width; x++) for (int y = 0; y < area.Height; y++) {
+                Tile tile = Main.tile[area.X + x,area.Y + y]; dry &= tile.LiquidAmount == 0;
+                bool ore = tile.HasTile && tile.TileType == ModContent.TileType<SpiritOreTile>();
+                bool moss = tile.HasTile && tile.TileType == ModContent.TileType<SpiritMossTile>();
+                if (ore) { ores++; if (y == 12) exposed++; } if (moss) mosses++;
+                if (global::XianXia.Common.Systems.ShallowSpiritChamberSystem.IsSolid(x,y)) {
+                    bool seam = y > 12 || (y == 12 && System.Array.IndexOf(global::XianXia.Common.Systems.ShallowSpiritChamberSystem.OreOffsets,x) >= 0);
+                    geometry &= (moss || (ore && seam)) && tile.Slope == 0 && !tile.IsHalfBlock;
+                } else clear &= !tile.HasTile;
+            }
+            chamberReports.Add(new { area.X,area.Y,area.Width,area.Height,OreTiles = ores,MossTiles = mosses,ExposedOreTiles = exposed,GeometryIntact = geometry,InteriorClear = clear,Dry = dry,
+                OreSeamIntact = global::XianXia.Common.Systems.ShallowSpiritChamberSystem.OreSeamIntact(area) });
+        }
         string report = JsonSerializer.Serialize(new { Width = Main.maxTilesX, Height = Main.maxTilesY, Objects = objects.Values,
-            MoonboneTerraces = terraceReports,StarAbyssBridges = bridgeReports,FallenHeavenCourts = courtReports,ThunderCloudShrines = shrineReports,FurnaceWorkshops = workshopReports,FurnaceWorkshopPaths = workshopPaths, SectRuinHalls = hallReports, SectRuinPaths = pathReports, GreenwoodGardens = gardenReports, ChestsWithSpiritStones = supplyChests, ChestSpiritStoneTotal = spiritStones });
+            ShallowSpiritChambers = chamberReports,MoonboneTerraces = terraceReports,StarAbyssBridges = bridgeReports,FallenHeavenCourts = courtReports,ThunderCloudShrines = shrineReports,FurnaceWorkshops = workshopReports,FurnaceWorkshopPaths = workshopPaths, SectRuinHalls = hallReports, SectRuinPaths = pathReports, GreenwoodGardens = gardenReports, ChestsWithSpiritStones = supplyChests, ChestSpiritStoneTotal = spiritStones });
         Mod.Logger.Info("SavedWorldAudit: " + report);
         caller.Reply(report);
     }

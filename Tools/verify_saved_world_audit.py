@@ -80,6 +80,16 @@ def verify_moonbone_terraces(report):
         assert all(terrace.get(flag) is True for flag in ("GeometryIntact", "InteriorClear", "Dry")), terrace
 
 
+def verify_shallow_chambers(report):
+    chambers = report.get("ShallowSpiritChambers")
+    assert isinstance(chambers, list) and 0 < len(chambers) <= 3, "No saved shallow spirit chambers"
+    for chamber in chambers:
+        assert (chamber["Width"], chamber["Height"]) == (29, 15)
+        assert 1 <= chamber["OreTiles"] <= 64 and chamber["OreTiles"] + chamber["MossTiles"] == 119
+        assert chamber["ExposedOreTiles"] == min(chamber["OreTiles"], 6)
+        assert all(chamber.get(flag) is True for flag in ("GeometryIntact", "InteriorClear", "Dry", "OreSeamIntact")), chamber
+
+
 def verify_sect_halls(report):
     for hall in report["SectRuinHalls"]:
         assert hall["Bricks"] == 278 and hall["BlockedInterior"] == 0 and hall["SwordTablets"] >= 2, hall
@@ -90,26 +100,29 @@ def verify_sect_halls(report):
             assert chest["Intact"] is True and (chest["x"], chest["y"]) == (hall["X"] + 19, hall["Y"] + 14), chest
 
 
+STRUCTURES = {
+    "SectRuinHalls": (2, 41, 41, 19, verify_sect_halls),
+    "SectRuinPaths": (2, 5, 48, 7, verify_sect_paths),
+    "GreenwoodGardens": (3, 31, 31, 13, verify_gardens),
+    "FurnaceWorkshops": (3, 35, 35, 17, verify_workshops),
+    "FurnaceWorkshopPaths": (3, 5, 40, 6, verify_workshop_paths),
+    "ThunderCloudShrines": (3, 51, 51, 13, verify_thunder_shrines),
+    "FallenHeavenCourts": (2, 49, 49, 23, verify_heaven_courts),
+    "StarAbyssBridges": (3, 45, 45, 27, verify_star_bridges),
+    "MoonboneTerraces": (2, 47, 47, 23, verify_moonbone_terraces),
+    "ShallowSpiritChambers": (3, 29, 29, 15, verify_shallow_chambers),
+}
+
+
 def verify_all_structures(report):
     """Check every recorded fresh structure, including cross-system rectangle conflicts.
 
     A safe placement may be skipped; empty lists are reported rather than treated as coverage.
     This cannot discover structures missing from the saved registry or prove player traversal.
     """
-    specifications = {
-        "SectRuinHalls": (2, 41, 41, 19, verify_sect_halls),
-        "SectRuinPaths": (2, 5, 48, 7, verify_sect_paths),
-        "GreenwoodGardens": (3, 31, 31, 13, verify_gardens),
-        "FurnaceWorkshops": (3, 35, 35, 17, verify_workshops),
-        "FurnaceWorkshopPaths": (3, 5, 40, 6, verify_workshop_paths),
-        "ThunderCloudShrines": (3, 51, 51, 13, verify_thunder_shrines),
-        "FallenHeavenCourts": (2, 49, 49, 23, verify_heaven_courts),
-        "StarAbyssBridges": (3, 45, 45, 27, verify_star_bridges),
-        "MoonboneTerraces": (2, 47, 47, 23, verify_moonbone_terraces),
-    }
     rectangles = []
     counts = {}
-    for name, (limit, min_width, max_width, height, validate) in specifications.items():
+    for name, (limit, min_width, max_width, height, validate) in STRUCTURES.items():
         entries = report.get(name)
         assert isinstance(entries, list) and len(entries) <= limit, f"Missing or excessive registry: {name}"
         counts[name] = len(entries)
@@ -126,7 +139,7 @@ def verify_all_structures(report):
     return counts
 
 
-def verify(run, require_workshops=False, require_paths=False, require_sect_paths=False, require_gardens=False, require_shrines=False, require_courts=False, all_structures=False, require_bridges=False, require_terraces=False):
+def verify(run, *, required=(), all_structures=False):
     root = Path(run)
     log = (root / "runtime.log").read_text(encoding="utf-8-sig")
     reports = [json.loads(line.split("SavedWorldAudit: ", 1)[1])
@@ -141,22 +154,8 @@ def verify(run, require_workshops=False, require_paths=False, require_sect_paths
         assert entry["Height"] == height
         assert entry["Origins"] == entry["Complete"] == count, f"Missing/incomplete: {entry}"
         assert entry["Cells"] == count * height * 2, f"Orphan tiles: {entry}"
-    if require_workshops:
-        verify_workshops(report)
-    if require_paths:
-        verify_workshop_paths(report)
-    if require_sect_paths:
-        verify_sect_paths(report)
-    if require_gardens:
-        verify_gardens(report)
-    if require_shrines:
-        verify_thunder_shrines(report)
-    if require_courts:
-        verify_heaven_courts(report)
-    if require_bridges:
-        verify_star_bridges(report)
-    if require_terraces:
-        verify_moonbone_terraces(report)
+    for name in required:
+        STRUCTURES[name][-1](report)
     if all_structures:
         report["VerifiedStructureCounts"] = verify_all_structures(report)
     for extension in ("wld", "twld"):
@@ -177,7 +176,19 @@ if __name__ == "__main__":
     parser.add_argument("--require-heaven-courts", action="store_true", help="Require open jade courts with complete tablets and archive pillars")
     parser.add_argument("--require-star-bridges", action="store_true", help="Require broken crystal crossings, dry lower landings and complete rift membranes")
     parser.add_argument("--require-moonbone-terraces", action="store_true", help="Require dry lunar terraces with intact steps, raised center and broken ribs")
+    parser.add_argument("--require-shallow-chambers", action="store_true", help="Require dry starter chambers with intact exposed spirit-ore seams")
     parser.add_argument("--verify-structures", action="store_true", help="Validate every recorded fresh structure, world bounds and cross-system overlaps; report skipped placements as zero")
     args = parser.parse_args()
+    required = [name for option, name in (
+        ("require_workshops", "FurnaceWorkshops"),
+        ("require_workshop_paths", "FurnaceWorkshopPaths"),
+        ("require_sect_paths", "SectRuinPaths"),
+        ("require_greenwood_gardens", "GreenwoodGardens"),
+        ("require_thunder_shrines", "ThunderCloudShrines"),
+        ("require_heaven_courts", "FallenHeavenCourts"),
+        ("require_star_bridges", "StarAbyssBridges"),
+        ("require_moonbone_terraces", "MoonboneTerraces"),
+        ("require_shallow_chambers", "ShallowSpiritChambers"),
+    ) if getattr(args, option)]
     for run in args.runs:
-        verify(run, args.require_workshops, args.require_workshop_paths, args.require_sect_paths, args.require_greenwood_gardens, args.require_thunder_shrines, args.require_heaven_courts, args.verify_structures, args.require_star_bridges, args.require_moonbone_terraces)
+        verify(run, required=required, all_structures=args.verify_structures)
