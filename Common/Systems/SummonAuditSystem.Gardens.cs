@@ -49,11 +49,25 @@ public partial class SummonAuditSystem
             for (int x = area.Left; x < area.Right; x++) for (int y = area.Top; y < area.Bottom; y++) {
                 Tile tile = Main.tile[x,y];
                 if (y >= floor) geometry &= tile.HasTile && tile.TileType == soil && tile.Slope == SlopeType.Solid && !tile.IsHalfBlock;
-                else geometry &= !tile.HasTile || tile.TileType == crop;
+                else {
+                    int dx = x - area.X, dy = y - area.Y;
+                    bool roof = dy == 1 && (dx == 13 || dx == 14 || dx == 15 || dx == 17) && tile.TileType == TileID.WoodBlock;
+                    bool post = (dx == 13 || dx == 17) && dy >= 2 && dy <= 8 && tile.TileType == TileID.WoodenBeam;
+                    bool bench = (dx == 14 || dx == 15) && dy == 8 && tile.TileType == TileID.WorkBenches;
+                    bool bottle = dx == 14 && dy == 7 && tile.TileType == TileID.Bottles;
+                    geometry &= !tile.HasTile || tile.TileType == crop || roof || post || bench || bottle;
+                }
                 if (tile.HasTile && tile.TileType == soil) soilCount++;
                 if (tile.HasTile && tile.TileType == crop) plantCount++;
             }
             check(geometry && soilCount == 124 && plantCount == 6,"native garden flat four-row bed clear walking space and six actual crops");
+            check(GreenwoodGardenSystem.ShelterIntact(area),"native garden has a broken wood roof non-solid posts and complete vanilla bench/bottle frames");
+            check(!Main.tileSolid[TileID.WoodenBeam] && !Main.tile[area.X, floor - 2].HasTile && !Main.tile[area.Right - 1, floor - 2].HasTile,
+                "native garden shelter posts do not block either walking approach");
+            Tile bottleTile = Main.tile[area.X + 14,floor - 2]; short bottleFrame = bottleTile.TileFrameX;
+            bottleTile.TileFrameX = 18;
+            try { check(!GreenwoodGardenSystem.ShelterIntact(area),"native garden shelter audit rejects a wrong bottle frame"); }
+            finally { bottleTile.TileFrameX = bottleFrame; }
             for (int i = 0; i < GreenwoodGardenSystem.CropOffsets.Length; i++) {
                 int x = area.X + GreenwoodGardenSystem.CropOffsets[i]; Tile plant = Main.tile[x,floor - 1];
                 check(plant.HasTile && plant.TileType == crop && plant.TileFrameX == (i % 3) * 18 && plant.TileFrameY == 0
@@ -69,6 +83,20 @@ public partial class SummonAuditSystem
             check(system.Gardens.Count == 1 && system.Gardens[0] == area,"native garden bounds persist");
             Tile removed = Main.tile[area.X + 11,floor - 1]; removed.HasTile = false; system.LoadWorldData(tag);
             check(!removed.HasTile,"native garden loading does not replant harvested crops");
+            Player originalVisitor = Main.player[0]; int originalLocal = Main.myPlayer;
+            try {
+                Main.player[0] = new Player { whoAmI = 0, active = true };
+                Main.player[0].Center = new Vector2((area.X + 15) * 16,(floor - 2) * 16);
+                Main.myPlayer = 0; Main.netMode = NetmodeID.SinglePlayer;
+                Main.player[0].AdjTiles();
+                check(Main.player[0].adjTile[TileID.WorkBenches] && Main.player[0].adjTile[TileID.Bottles],
+                    "native player adjacency recognizes both garden workbench and bottle crafting stations");
+                bottleTile.HasTile = false; Main.player[0].AdjTiles();
+                check(Main.player[0].adjTile[TileID.WorkBenches] && !Main.player[0].adjTile[TileID.Bottles],
+                    "native player adjacency loses bottle recipes when the garden bottle is removed");
+            } finally { Main.player[0] = originalVisitor; Main.myPlayer = originalLocal; Main.netMode = NetmodeID.Server; }
+            system.LoadWorldData(tag);
+            check(!bottleTile.HasTile && !GreenwoodGardenSystem.ShelterIntact(area),"native garden load never rebuilds a removed alchemy bottle");
         } finally {
             foreach (var cell in saved) { Tile tile = Main.tile[cell.X,cell.Y]; tile.HasTile = cell.Has; tile.TileType = cell.Type; tile.TileFrameX = cell.FX; tile.TileFrameY = cell.FY; tile.Slope = cell.Slope; tile.IsHalfBlock = cell.Half; }
             system.LoadWorldData(original); Main.netMode = mode; config.EnableWorldGeneration = enabled; Main.rand = random;

@@ -39,7 +39,16 @@ def verify_sect_paths(report):
         assert all(path.get(flag) is True for flag in ("InteriorClear", "ShellIntact", "Dry", "AttachedHall", "OpenCavityExit")), path
 
 
-def verify(run, require_workshops=False, require_paths=False, require_sect_paths=False):
+def verify_gardens(report):
+    gardens = report.get("GreenwoodGardens")
+    assert isinstance(gardens, list) and 0 < len(gardens) <= 3, "No saved Greenwood gardens"
+    for garden in gardens:
+        assert (garden["Width"], garden["Height"], garden["SoilTiles"]) == (31, 13, 124)
+        assert garden["Crops"] == 6 and sorted(garden["CropFrames"]) == [0, 0, 18, 18, 36, 36]
+        assert all(garden.get(flag) is True for flag in ("BedIntact", "WalkwayClear", "Dry", "ShelterIntact")), garden
+
+
+def verify(run, require_workshops=False, require_paths=False, require_sect_paths=False, require_gardens=False):
     root = Path(run)
     log = (root / "runtime.log").read_text(encoding="utf-8-sig")
     reports = [json.loads(line.split("SavedWorldAudit: ", 1)[1])
@@ -60,6 +69,8 @@ def verify(run, require_workshops=False, require_paths=False, require_sect_paths
         verify_workshop_paths(report)
     if require_sect_paths:
         verify_sect_paths(report)
+    if require_gardens:
+        verify_gardens(report)
     for extension in ("wld", "twld"):
         assert (root / "save/Worlds" / f"GenerationProbe.{extension}").stat().st_size > 0
     report["Scope"] = "Final loaded tile counts and frames; accessibility/biome activation unverified"
@@ -72,6 +83,7 @@ if __name__ == "__main__":
     parser.add_argument("--require-workshops", action="store_true", help="Require saved furnace room shells and both vanilla station footprints")
     parser.add_argument("--require-workshop-paths", action="store_true")
     parser.add_argument("--require-sect-paths", action="store_true", help="Require hall connectors with an open dry cave beyond the finished tunnel")
+    parser.add_argument("--require-greenwood-gardens", action="store_true", help="Require planted gardens and intact vanilla alchemy shelters")
     args = parser.parse_args()
     for run in args.runs:
-        verify(run, args.require_workshops, args.require_workshop_paths, args.require_sect_paths)
+        verify(run, args.require_workshops, args.require_workshop_paths, args.require_sect_paths, args.require_greenwood_gardens)

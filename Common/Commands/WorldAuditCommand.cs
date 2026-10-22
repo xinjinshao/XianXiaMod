@@ -100,9 +100,9 @@ public class WorldAuditCommand : ModCommand
                 bool crop = tile.HasTile && tile.TileType == ModContent.TileType<CultivatedSpiritHerbTile>();
                 if (soil) soils++; if (crop) { crops++; frames.Add(tile.TileFrameX); }
                 if (y >= floor) bed &= soil && tile.Slope == 0 && !tile.IsHalfBlock;
-                else clear &= !tile.HasTile || crop;
+                else clear &= !tile.HasTile || crop || tile.TileType == global::XianXia.Common.Systems.GreenwoodGardenSystem.ShelterTile(x - garden.Left,y - garden.Top);
             }
-            gardenReports.Add(new { garden.X, garden.Y, garden.Width, garden.Height, SoilTiles = soils, Crops = crops, CropFrames = frames, BedIntact = bed, WalkwayClear = clear, Dry = dry });
+            gardenReports.Add(new { garden.X, garden.Y, garden.Width, garden.Height, SoilTiles = soils, Crops = crops, CropFrames = frames, BedIntact = bed, WalkwayClear = clear, Dry = dry, ShelterIntact = global::XianXia.Common.Systems.GreenwoodGardenSystem.ShelterIntact(garden) });
         }
         var workshopReports = new List<object>();
         foreach (var room in ModContent.GetInstance<global::XianXia.Common.Systems.FurnaceWorkshopSystem>().Workshops) {

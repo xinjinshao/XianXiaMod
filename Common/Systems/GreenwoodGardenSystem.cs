@@ -15,6 +15,28 @@ public class GreenwoodGardenSystem : ModSystem
     internal const int Width = 31, Height = 13, SoilDepth = 4, CoastBuffer = 360;
     internal static readonly int[] CropOffsets = { 3, 7, 11, 19, 23, 27 };
     internal readonly List<Rectangle> Gardens = new();
+    // A broken five-column roof and non-solid posts leave both approaches and crops open.
+    internal static int ShelterTile(int x, int y)
+    {
+        if (y == 1 && x >= 13 && x <= 17 && x != 16) return TileID.WoodBlock;
+        if ((x == 13 || x == 17) && y >= 2 && y < Height - SoilDepth) return TileID.WoodenBeam;
+        if ((x == 14 || x == 15) && y == Height - SoilDepth - 1) return TileID.WorkBenches;
+        if (x == 14 && y == Height - SoilDepth - 2) return TileID.Bottles;
+        return -1;
+    }
+    internal static bool ShelterIntact(Rectangle area)
+    {
+        if (area.Width != Width || area.Height != Height || !WorldGen.InWorld(area.X,area.Y,12)
+            || !WorldGen.InWorld(area.Right,area.Bottom,12)) return false;
+        for (int x = 13; x <= 17; x++) for (int y = 1; y < Height - SoilDepth; y++) {
+            int type = ShelterTile(x,y); if (type < 0) continue;
+            Tile tile = Main.tile[area.X + x,area.Y + y];
+            if (!tile.HasTile || tile.TileType != type || tile.IsHalfBlock || tile.Slope != SlopeType.Solid) return false;
+            if (type == TileID.WorkBenches && (tile.TileFrameX != (x - 14) * 18 || tile.TileFrameY != 0)) return false;
+            if (type == TileID.Bottles && (tile.TileFrameX != 0 || tile.TileFrameY != 0)) return false;
+        }
+        return !Main.tile[area.X + 16,area.Y + 1].HasTile;
+    }
     public override void ClearWorld() => Gardens.Clear();
     public override void SaveWorldData(TagCompound tag) => tag["greenwoodGardens"] = Gardens.ConvertAll(area => new TagCompound { ["x"] = area.X, ["y"] = area.Y });
     public override void LoadWorldData(TagCompound tag)
@@ -70,7 +92,15 @@ public class GreenwoodGardenSystem : ModSystem
             if (tile.HasTile) tile.TileType = (ushort)soil;
             tile.Slope = SlopeType.Solid; tile.IsHalfBlock = false; tile.TileFrameX = tile.TileFrameY = 0;
         }
+        for (int x = 13; x <= 17; x++) for (int y = 1; y < Height - SoilDepth; y++) {
+            int type = ShelterTile(x,y);
+            if (type != TileID.WoodBlock && type != TileID.WoodenBeam) continue;
+            Tile tile = Main.tile[area.X + x,area.Y + y]; tile.HasTile = true; tile.TileType = (ushort)type;
+        }
         for (int x = area.Left; x < area.Right; x++) for (int y = area.Top; y < area.Bottom; y++) WorldGen.SquareTileFrame(x,y);
+        WorldGen.PlaceObject(area.X + 14,floor - 1,TileID.WorkBenches,mute:true);
+        WorldGen.PlaceObject(area.X + 14,floor - 2,TileID.Bottles,mute:true);
+        if (!ShelterIntact(area)) ModContent.GetInstance<GreenwoodGardenSystem>().Mod.Logger.Warn("Greenwood garden alchemy shelter could not be fully placed; clearing retained.");
         int planted = 0;
         for (int i = 0; i < CropOffsets.Length; i++) {
             int x = area.X + CropOffsets[i]; WorldGen.PlaceObject(x,floor - 1,crop);

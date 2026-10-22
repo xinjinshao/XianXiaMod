@@ -57,7 +57,7 @@ if args.require_greenwood_gardens:
     assert 1 <= len(garden_reports) <= 3, "Expected one to three safe Greenwood clearings"
     for garden in garden_reports:
         assert (garden["Width"], garden["Height"]) == (31, 13) and garden["SoilTiles"] == 124, "Invalid herb bed geometry"
-        assert all(garden.get(flag) is True for flag in ("BedIntact", "WalkwayClear", "Dry")), "Garden obstructed or flooded"
+        assert all(garden.get(flag) is True for flag in ("BedIntact", "WalkwayClear", "Dry", "ShelterIntact")), "Garden obstructed, flooded or missing its shelter"
         assert garden["Crops"] == 6 and len(garden["CropFrames"]) == 6, "Garden crops incomplete"
         assert all(frame in (0, 18, 36) for frame in garden["CropFrames"]), "Invalid herb growth frames"
 report = {
