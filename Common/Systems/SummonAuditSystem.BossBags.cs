@@ -94,6 +94,9 @@ public partial class SummonAuditSystem
                     int material = mod.Find<ModItem>(materialName).Type;
                     bool hasDirectMaterials = Main.item.Any(i => i.active && !items.Contains(i) && i.type == material);
                     check(hasDirectMaterials == (gameMode == 0),"native normal core material drops directly and expert/master does not duplicate bag materials: " + name + "/" + gameMode);
+                    int monument = mod.Find<ModItem>(name + "Monument").Type;
+                    int monuments = Main.item.Where(i => i.active && !items.Contains(i) && i.type == monument).Sum(i => i.stack);
+                    check(monuments == (gameMode == 2 ? 1 : 0),"native boss master monument drops once only in master mode: " + name + "/" + gameMode);
                     foreach (Item item in Main.item.Where(i => i.active && !items.Contains(i))) item.active = false;
                     npc.active = false;
                 }

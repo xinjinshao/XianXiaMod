@@ -954,6 +954,7 @@ public partial class SummonAuditSystem : ModSystem
             AuditAmbientWarning(Check);
             AuditBossBagOpening(Check);
             AuditBossBagDistribution(Check);
+            AuditMasterMonuments(Check);
             AuditSectRuinHalls(Check);
             AuditSectRuinPaths(Check);
             AuditThunderShrines(Check);
