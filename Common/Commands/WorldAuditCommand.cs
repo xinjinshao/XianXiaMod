@@ -127,8 +127,23 @@ public class WorldAuditCommand : ModCommand
             bool exit = ModContent.GetInstance<global::XianXia.Common.Systems.FurnaceWorkshopSystem>().Workshops.Any(room => global::XianXia.Common.Systems.FurnaceWorkshopPathSystem.HasOpenExit(path,room));
             workshopPaths.Add(new { path.X,path.Y,path.Width,path.Height,InteriorClear = clear,ShellIntact = shell,Dry = dry,OpenCavityExit = exit });
         }
+        var shrineReports = new List<object>();
+        foreach (var area in ModContent.GetInstance<global::XianXia.Common.Systems.ThunderCloudShrineSystem>().Shrines) {
+            int floor = area.Bottom - global::XianXia.Common.Systems.ThunderCloudShrineSystem.FloorDepth, clouds = 0;
+            bool platform = true, clear = true, dry = true;
+            for (int x = area.Left; x < area.Right; x++) for (int y = area.Top; y < area.Bottom; y++) {
+                Tile tile = Main.tile[x,y]; dry &= tile.LiquidAmount == 0;
+                bool cloud = tile.HasTile && tile.TileType == ModContent.TileType<ThunderCloudTile>();
+                if (cloud) clouds++;
+                if (y >= floor) platform &= cloud && tile.Slope == 0 && !tile.IsHalfBlock;
+                else clear &= !tile.HasTile || (tile.TileType == ModContent.TileType<SingingThunderStoneTile>()
+                    && x >= area.X + 24 && x < area.X + 26 && y >= floor - 2);
+            }
+            shrineReports.Add(new { area.X,area.Y,area.Width,area.Height,CloudTiles = clouds,PlatformIntact = platform,AirspaceClear = clear,Dry = dry,
+                StoneIntact = global::XianXia.Common.Systems.ThunderCloudShrineSystem.StoneIntact(area) });
+        }
         string report = JsonSerializer.Serialize(new { Width = Main.maxTilesX, Height = Main.maxTilesY, Objects = objects.Values,
-            FurnaceWorkshops = workshopReports,FurnaceWorkshopPaths = workshopPaths, SectRuinHalls = hallReports, SectRuinPaths = pathReports, GreenwoodGardens = gardenReports, ChestsWithSpiritStones = supplyChests, ChestSpiritStoneTotal = spiritStones });
+            ThunderCloudShrines = shrineReports,FurnaceWorkshops = workshopReports,FurnaceWorkshopPaths = workshopPaths, SectRuinHalls = hallReports, SectRuinPaths = pathReports, GreenwoodGardens = gardenReports, ChestsWithSpiritStones = supplyChests, ChestSpiritStoneTotal = spiritStones });
         Mod.Logger.Info("SavedWorldAudit: " + report);
         caller.Reply(report);
     }

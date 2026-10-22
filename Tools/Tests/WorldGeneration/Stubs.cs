@@ -18,3 +18,6 @@ namespace XianXia.Common.Systems { public class GreenwoodGardenSystem { public v
 namespace Terraria.ObjectData { public class TileObjectData {public int Width=2,Height=3,CoordinateWidth=16,CoordinatePadding=0;public (int X,int Y) Origin=(0,2);public static TileObjectData GetTileData(int type,int style)=>new();} }
 
 namespace XianXia.Common.Systems {public class FurnaceWorkshopSystem {public void Generate(List<Microsoft.Xna.Framework.Rectangle> regions) {}}}
+
+// Shrine terrain and actual two-row stone placement are covered by the loaded native audit.
+namespace XianXia.Common.Systems { public class ThunderCloudShrineSystem { public const int StoneOffset=24,FloorDepth=3; public List<Microsoft.Xna.Framework.Rectangle> Shrines=new(); public void Generate(List<Microsoft.Xna.Framework.Rectangle> regions) {} public static bool IsPlannedStone(int x,int y)=>false; } }
