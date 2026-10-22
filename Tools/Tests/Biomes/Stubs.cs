@@ -138,3 +138,5 @@ namespace XianXia.Content.Tiles.Stations { public class AlchemyCauldronTile {} p
 namespace XianXia.Content.Buffs { public class AlchemyInsightBuff {} public class ArtifactResonanceBuff {} }
 
 namespace Terraria { public class NPC { public bool active; public int life; public Microsoft.Xna.Framework.Vector2 Center,velocity; } public static class Collision {public static bool CanHitLine(Microsoft.Xna.Framework.Vector2 a,int w,int h,Microsoft.Xna.Framework.Vector2 b,int bw,int bh)=>true;} }
+
+namespace Terraria.DataStructures { public sealed record EntitySource_Misc(string Context); }

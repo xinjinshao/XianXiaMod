@@ -1,6 +1,7 @@
 using System;
 using Microsoft.Xna.Framework;
 using Terraria;
+using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
 using XianXia.Common.Players;
@@ -53,7 +54,7 @@ public class BiomeEffectsPlayer : ModPlayer
                 {
                     Vector2 strikePos = Player.Center + new Vector2(Main.rand.NextFloat(-200f, 200f), -300f);
                     Projectile.NewProjectile(
-                        Player.GetSource_FromThis(),
+                        new EntitySource_Misc("XianXiaAmbientLightning"),
                         strikePos,
                         Vector2.Zero,
                         ModContent.ProjectileType<Content.Projectiles.TribulationWarningLineProjectile>(),

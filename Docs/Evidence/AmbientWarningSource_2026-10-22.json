@@ -1,0 +1,26 @@
+{
+  "date": "2026-10-22",
+  "mod_version": "0.1.2",
+  "package_sha256": "9bf50ebc290ce37d57e23fe152d7876cab8603b497524fee81acab50d13181cf",
+  "native_report": ".tml-test\\summons-367715a419dd477bbec19bb056584ae0\\save\\XianXia\\summon-audit.json",
+  "native_report_sha256": "7ee174ccbabda42d969b9368e700025000437f802637925c05776501627e2667",
+  "native_checks_total": 33075,
+  "new_native_checks_total": 44,
+  "grouped_native_checks": {
+    "native ambient fixture activates actual cloud biome without personal trial": 1,
+    "native actual environment update creates one registered warning at cadence": 1,
+    "native ambient warning binds neither NPC nor personal trial source": 1,
+    "native ambient warning does not release lightning before full warning duration": 36,
+    "native ambient warning retains complete lifetime without personal trial": 1,
+    "native ambient expiry releases exactly one damaging lightning independently of trigger player death": 1,
+    "native client expiry cannot duplicate environmental lightning": 1,
+    "native existing area cooldown suppresses another environmental warning": 1,
+    "native ambient warning audit restores tiles player and area cooldown context": 1
+  },
+  "source_checks": 39,
+  "gameplay_assertions": 7720,
+  "limits": [
+    "Actual ModBiome loader and environment PostUpdate with 100 temporarily patched cloud tiles.",
+    "Warning AI/lifetime and OnKill advanced directly, no complete projectile engine update or real clients."
+  ]
+}
