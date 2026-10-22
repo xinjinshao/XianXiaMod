@@ -1,0 +1,31 @@
+{
+  "date": "2026-10-22",
+  "round": 313,
+  "mod_version": "0.1.3",
+  "package_sha256": "05e6198f4f7b6bc224410639f93a7ee2609e0dc06c71abc58aef6739fbd30fcf",
+  "native_report": ".tml-test\\summons-3f9d35c51c504e47bdac224ee14745d8\\save\\XianXia\\summon-audit.json",
+  "report_sha256": "6086334e12e40adcf1a882322f8d15994cf95cc1efb77009131ffe8fea02f516",
+  "native_checks": 34753,
+  "new_native_checks": 223,
+  "grouped_checks": {
+    "native actual artificial and underground spawns do not advance tide progress": 2,
+    "native natural spawn factory applies actual tide wave combat enhancement": 54,
+    "native registered tide deaths follow exact 12 18 24 wave boundaries": 54,
+    "native duplicate registered tide death callback cannot credit twice": 54,
+    "native tide does not emit completion loot before final kill": 53,
+    "native final tide death creates exact pearl stones seeds and pill completion reward": 1,
+    "native completion produces only four expected item entities": 1,
+    "native post-completion spawns cannot advance or duplicate event reward": 1,
+    "native actual eligible next dusk starts fresh tide with newer encounter identity": 1,
+    "native previous-run living enemy cannot credit next event or duplicate reward": 1,
+    "native tide completion restores NPC slot item pool event and engine context": 1
+  },
+  "source_checks": 39,
+  "gameplay_assertions": 7720,
+  "limits": [
+    "Actual NPC.NewNPC factory with natural source; no random natural spawn scheduler or combat movement.",
+    "Calls registered SpiritTideEnemies.OnKill directly; does not execute fatal StrikeNPC and ordinary enemy drops.",
+    "Next dusk uses explicit day transitions and a prepared eligible player, no competing bosses/events, deterministic successful chance roll.",
+    "No real clients, HUD rendering or historical saves."
+  ]
+}
