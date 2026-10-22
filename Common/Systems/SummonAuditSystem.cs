@@ -960,6 +960,7 @@ public partial class SummonAuditSystem : ModSystem
             AuditSpiritTidePackets(Check);
             AuditSpiritTideCompletion(Check);
             AuditFishingCrates(Check);
+            AuditCrateInventory(Check);
             AuditSectRuinHalls(Check);
             AuditSectRuinPaths(Check);
             AuditThunderShrines(Check);
