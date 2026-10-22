@@ -40,7 +40,7 @@ XianXiaMod 是一个 Terraria/tModLoader 仙侠主题内容 Mod。项目目标�
 
 ## 安装与升级
 
-当前开发包版本为0.1.0。包下载、默认配置、可选依赖、存档备份和验收限制见[安装与升级说明](Docs/INSTALL_AND_UPGRADE.md)。
+当前开发包版本为0.1.2；联机双方需使用同一构建。[版本变更与验收证据](Docs/CHANGELOG.md)。包下载、默认配置、可选依赖、存档备份和验收限制见[安装与升级说明](Docs/INSTALL_AND_UPGRADE.md)。
 
 ## 设计入口
 
