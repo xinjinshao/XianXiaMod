@@ -355,6 +355,9 @@ namespace XianXia.Common.Players
         public uint ResourceRevision;
         public void AdvanceResourceRevision() => ResourceRevision++;
         public CultivationSnapshot Snapshot;
+        private readonly TribulationEpochState trialEpoch = new();
+        internal long TribulationSession => trialEpoch.ClientSession(Snapshot.Timer > 0);
+        internal bool TryReceiveTribulationEpoch(int slot,long epoch) => trialEpoch.TryReceive(epoch,ref global::XianXia.Common.Systems.TribulationEpochSystem.ClientLastSeen[slot]);
         public CultivationSnapshot CaptureSnapshot() => Snapshot with { Energy = spiritualEnergy, Stage = (byte)cultivationStage, ArrayCooldown = (ushort)arrayDeploymentCooldown, Revision = ResourceRevision,SkillCooldown=(ushort)activeSkillCooldown,WardTimer=(ushort)wardGuardTimer };
         public void NotifySnapshot(CultivationSnapshot state) { }
         public void ApplySnapshot(CultivationSnapshot state)
@@ -471,3 +474,5 @@ namespace XianXia.Content.Items.HandGenerated {public class BrokenSwordIntent{}}
 
 namespace Terraria.GameInput { public class TriggersSet {} }
 namespace Terraria.ModLoader { public class ModKeybind { public bool JustPressed; } public static class KeybindLoader { public static readonly Dictionary<string,ModKeybind> Keys=new(); public static ModKeybind RegisterKeybind(Mod mod,string name,string binding){var key=new ModKeybind();Keys[name]=key;return key;} } }
+
+namespace XianXia.Common.Systems { public static class TribulationEpochSystem { internal static readonly long[] ClientLastSeen=new long[Terraria.Main.maxPlayers]; } }

@@ -950,6 +950,7 @@ public partial class SummonAuditSystem : ModSystem
             AuditExposureLifecycle(Check);
             AuditNpcIdentities(Check);
             AuditHostileIdentities(Check);
+            AuditTrialEpochs(Check);
             AuditSectRuinHalls(Check);
             AuditSectRuinPaths(Check);
             AuditThunderShrines(Check);

@@ -35,6 +35,14 @@ public class XianXia : Mod
         byte message = reader.ReadByte();
         if (Main.netMode == NetmodeID.MultiplayerClient && whoAmI != 256) return;
         if (Main.netMode == NetmodeID.Server && !TryGetPacketPlayer(whoAmI, out _)) return;
+        if (message == 14)
+        {
+            byte index = reader.ReadByte();
+            long epoch = reader.ReadInt64();
+            if (Main.netMode == NetmodeID.MultiplayerClient && TryGetPacketPlayer(index,out Player actor))
+                actor.GetModPlayer<XianXiaPlayer>().TryReceiveTribulationEpoch(index,epoch);
+            return;
+        }
         if (message == 13)
         {
             Common.Systems.AuthoritativeInventorySync.Receive(reader, whoAmI);

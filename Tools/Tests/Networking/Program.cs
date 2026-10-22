@@ -1895,6 +1895,24 @@ foreach(int mode in new[]{0,1,2}) {
 foreach(int mode in new[]{0,2}) {var sword=WoodgrainFixture(mode);Game.player[0].State.ResetNetworkSession();Check(sword.CanDamage()==false,"Same-object woodgrain owner session reset immediately blocks damage");sword.AI();Check(!sword.Projectile.friendly,"Old woodgrain cannot home toward new session");}
 Console.WriteLine($"Networking including actual recovery pill hooks: {assertions} assertions; buff/inventory engine boundaries mocked.");
 
+
+Game.netMode=NetmodeID.MultiplayerClient;Array.Clear(TribulationEpochSystem.ClientLastSeen);
+Game.player[0]=new Terraria.Player {active=true,whoAmI=0};var epochOwner=Game.player[0].State;
+var activeEpochState=new CultivationSnapshot(20,3,true,5,120,2,3,1,0,0,0,0);epochOwner.ApplySnapshot(activeEpochState);
+void EpochPacket(int sender,long epoch)=>Packet(sender,w=>{w.Write((byte)14);w.Write((byte)0);w.Write(epoch);});
+Check(epochOwner.TribulationSession==0,"Active timer alone cannot invent a client trial identity");
+EpochPacket(0,101);Check(epochOwner.TribulationSession==0,"Client-origin trial metadata rejected");
+EpochPacket(256,101);Check(epochOwner.TribulationSession==101&&epochOwner.CaptureSnapshot()==activeEpochState,"Authority trial metadata changes no resource snapshot fields");
+for(int length=0;length<10;length++){using var bytes=new MemoryStream();using(var writer=new BinaryWriter(bytes,System.Text.Encoding.UTF8,true)){writer.Write((byte)14);writer.Write((byte)0);writer.Write(-102L);}Packet(256,w=>w.Write(bytes.ToArray()[..length]));Check(epochOwner.TribulationSession==101,"Every truncated epoch packet leaves current source unchanged");}
+EpochPacket(256,-102);Check(epochOwner.TribulationSession==0&&epochOwner.CaptureSnapshot()==activeEpochState,"Retirement blocks hazards despite an older active resource snapshot");
+EpochPacket(256,101);Check(epochOwner.TribulationSession==0,"Old active epoch cannot revive retired trial");
+EpochPacket(256,103);Check(epochOwner.TribulationSession==103,"New trial epoch accepted");
+foreach(long bad in new[]{0L,long.MinValue,-102,101}){EpochPacket(256,bad);Check(epochOwner.TribulationSession==103,"Invalid and stale epoch packets ignored");}
+Game.player[0]=new Terraria.Player {active=true,whoAmI=0};Game.player[0].State.ApplySnapshot(activeEpochState);EpochPacket(256,103);Check(Game.player[0].State.TribulationSession==0,"Replaced player waits rather than accepting previous occupant epoch");
+EpochPacket(256,104);Check(Game.player[0].State.TribulationSession==104,"Replaced player accepts its newer epoch");
+Game.netMode=NetmodeID.Server;EpochPacket(0,long.MaxValue);Check(Game.player[0].State.TribulationSession==104,"Server never imports client trial identity");
+Console.WriteLine($"Including trial metadata dispatch/replay: {assertions} assertions; runtime player transport mocked.");
+
 sealed class TestBossSummon : XianXia.Common.Items.CultivationBossSummonItem
 {
     public override int BossType => 100;

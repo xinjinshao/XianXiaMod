@@ -32,9 +32,11 @@ public class XianXiaPlayer : ModPlayer
     }
     private static long nextTribulationSession;
     private long tribulationSession;
+    private TribulationEpochState tribulationEpoch = new();
     internal long TribulationSession {
         get {
             if (tribulationTimer <= 0) return 0;
+            if (Main.netMode == NetmodeID.MultiplayerClient) return tribulationEpoch.ClientSession(true);
             if (tribulationSession == 0 && Main.netMode != NetmodeID.MultiplayerClient)
                 tribulationSession = System.Threading.Interlocked.Increment(ref nextTribulationSession);
             return tribulationSession;
@@ -69,6 +71,7 @@ public class XianXiaPlayer : ModPlayer
 
     public override void Initialize()
     {
+        tribulationEpoch = new TribulationEpochState();
         IsResourceAuthority = true;
         tribulationSession = 0;
         artifactOwnerSession = 0;
@@ -101,7 +104,7 @@ public class XianXiaPlayer : ModPlayer
         lastSentSnapshot = default;
     }
 
-    public override void OnEnterWorld() { artifactOwnerSession = 0; IsResourceAuthority = Main.netMode != NetmodeID.MultiplayerClient; }
+    public override void OnEnterWorld() { tribulationSession = 0; tribulationEpoch.Reset(); artifactOwnerSession = 0; IsResourceAuthority = Main.netMode != NetmodeID.MultiplayerClient; }
 
     public override void ResetEffects()
     {
@@ -127,6 +130,8 @@ public class XianXiaPlayer : ModPlayer
 
     public override void UpdateDead()
     {
+        tribulationSession = 0;
+        tribulationEpoch.InvalidateReplica();
         artifactOwnerSession = 0;
         if (activeSkillCooldown > 0) activeSkillCooldown--;
         wardGuardTimer = 0;
@@ -684,6 +689,7 @@ public class XianXiaPlayer : ModPlayer
 
     public override void LoadData(TagCompound tag)
     {
+        tribulationEpoch.Reset();
         tribulationSession = 0;
         artifactOwnerSession = 0;
         activeSkillCooldown = Math.Clamp(tag.GetInt("activeSkillCooldown"), 0, 1200);
@@ -791,6 +797,7 @@ public class XianXiaPlayer : ModPlayer
     public bool TryInitializeNetwork(CultivationSnapshot state)
     {
         if (NetworkInitialized || !state.IsValid()) return false;
+        tribulationEpoch.Reset();
         tribulationSession = 0;
         artifactOwnerSession = 0;
         ApplySnapshot(state with { WardTimer = 0 });
@@ -802,6 +809,7 @@ public class XianXiaPlayer : ModPlayer
 
     public void ResetNetworkSession()
     {
+        tribulationEpoch.Reset();
         tribulationSession = 0;
         artifactOwnerSession = 0;
         NetworkInitialized = NetworkWasActive = false;
@@ -812,6 +820,35 @@ public class XianXiaPlayer : ModPlayer
     }
 
     public void AdvanceResourceRevision() => ResourceRevision++;
+
+    private long CaptureTribulationEpoch()
+    {
+        bool active = tribulationTimer > 0;
+        if (!active) tribulationSession = 0;
+        return tribulationEpoch.Prepare(active,active ? TribulationSession : 0,
+            () => System.Threading.Interlocked.Increment(ref nextTribulationSession));
+    }
+    internal void BroadcastTribulationEpochIfChanged()
+    {
+        if (Main.netMode != NetmodeID.Server || !NetworkInitialized || !Player.active) return;
+        long epoch = CaptureTribulationEpoch();
+        if (epoch != tribulationEpoch.LastBroadcast) SendTribulationEpoch(-1,-1);
+    }
+    internal void SendTribulationEpoch(int toWho,int fromWho)
+    {
+        if (Main.netMode != NetmodeID.Server || !NetworkInitialized || !Player.active) return;
+        long epoch = CaptureTribulationEpoch();
+        if (epoch == 0) return;
+        ModPacket packet = Mod.GetPacket(); packet.Write((byte)14); packet.Write((byte)Player.whoAmI); packet.Write(epoch);
+        packet.Send(toWho,fromWho);
+        if (toWho == -1) tribulationEpoch.MarkBroadcast(epoch);
+    }
+    internal bool TryReceiveTribulationEpoch(int slot,long epoch)
+    {
+        if (Main.netMode != NetmodeID.MultiplayerClient || Main.player == null || slot < 0 || slot >= Main.maxPlayers
+            || slot >= Main.player.Length || !ReferenceEquals(Main.player[slot],Player)) return false;
+        return tribulationEpoch.TryReceive(epoch,ref TribulationEpochSystem.ClientLastSeen[slot]);
+    }
 
     private void SyncServerChanges()
     {

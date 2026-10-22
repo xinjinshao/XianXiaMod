@@ -53,8 +53,8 @@ internal sealed class HostileSourceBinding
                 || !float.IsFinite(player.Center.X) || !float.IsFinite(player.Center.Y)
                 || !float.IsFinite(player.velocity.X) || !float.IsFinite(player.velocity.Y)) return false;
             XianXiaPlayer cultivation = player.GetModPlayer<XianXiaPlayer>();
-            return cultivation.tribulationTimer > 0 && (Main.netMode == NetmodeID.MultiplayerClient
-                || (ReferenceEquals(player, sourcePlayer) && cultivation.TribulationSession == sourcePlayerSession));
+            return cultivation.tribulationTimer > 0 && cultivation.TribulationSession == sourcePlayerSession
+                && (ReferenceEquals(player,sourcePlayer) || (Main.netMode == NetmodeID.MultiplayerClient && sourcePlayer == null));
         }
         if (sourceSlot == -1) return sourceType == 0;
         if (sourceSlot < 0 || sourceSlot >= Main.maxNPCs) return false;
