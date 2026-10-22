@@ -1,0 +1,787 @@
+{
+  "date": "2026-10-22",
+  "game_source_commit": "359164c",
+  "package_sha256": "b78c7041fe459ac86ee835cd25d490ee64fb5a7da0f2568cba94238adf6010e3",
+  "tml_version": "2026.08.3.0",
+  "difficulty": "normal",
+  "other_mods": [],
+  "cases": [
+    {
+      "seed": 20261022,
+      "generated_run": ".tml-test\\world-6301e46e3081420f873165a2ca9a5098",
+      "reloaded_run": ".tml-test\\world-ee8f65ae319d43d1a16fc61f6bdba2dc",
+      "full_final_scan_equal": true,
+      "audit": {
+        "Width": 4200,
+        "Height": 1200,
+        "Objects": [
+          {
+            "Name": "SwordTabletTile",
+            "Height": 3,
+            "Cells": 24,
+            "Origins": 4,
+            "Complete": 4
+          },
+          {
+            "Name": "SingingThunderStoneTile",
+            "Height": 2,
+            "Cells": 12,
+            "Origins": 3,
+            "Complete": 3
+          },
+          {
+            "Name": "RiftMembraneTile",
+            "Height": 2,
+            "Cells": 12,
+            "Origins": 3,
+            "Complete": 3
+          },
+          {
+            "Name": "BrokenHeavenTabletTile",
+            "Height": 4,
+            "Cells": 16,
+            "Origins": 2,
+            "Complete": 2
+          },
+          {
+            "Name": "ArchiveLightPillarTile",
+            "Height": 6,
+            "Cells": 24,
+            "Origins": 2,
+            "Complete": 2
+          }
+        ],
+        "FallenHeavenCourts": [
+          {
+            "X": 3455,
+            "Y": 923,
+            "Width": 49,
+            "Height": 23,
+            "JadeTiles": 247,
+            "ShellIntact": true,
+            "InteriorClear": true,
+            "EntrancesOpen": true,
+            "Dry": true,
+            "TabletIntact": true,
+            "PillarIntact": true
+          },
+          {
+            "X": 305,
+            "Y": 768,
+            "Width": 49,
+            "Height": 23,
+            "JadeTiles": 247,
+            "ShellIntact": true,
+            "InteriorClear": true,
+            "EntrancesOpen": true,
+            "Dry": true,
+            "TabletIntact": true,
+            "PillarIntact": true
+          }
+        ],
+        "ThunderCloudShrines": [
+          {
+            "X": 800,
+            "Y": 119,
+            "Width": 51,
+            "Height": 13,
+            "CloudTiles": 153,
+            "PlatformIntact": true,
+            "AirspaceClear": true,
+            "Dry": true,
+            "StoneIntact": true
+          },
+          {
+            "X": 1401,
+            "Y": 102,
+            "Width": 51,
+            "Height": 13,
+            "CloudTiles": 153,
+            "PlatformIntact": true,
+            "AirspaceClear": true,
+            "Dry": true,
+            "StoneIntact": true
+          },
+          {
+            "X": 996,
+            "Y": 132,
+            "Width": 51,
+            "Height": 13,
+            "CloudTiles": 153,
+            "PlatformIntact": true,
+            "AirspaceClear": true,
+            "Dry": true,
+            "StoneIntact": true
+          }
+        ],
+        "FurnaceWorkshops": [
+          {
+            "X": 165,
+            "Y": 691,
+            "Width": 35,
+            "Height": 17,
+            "SlagTiles": 238,
+            "FurnaceCells": 6,
+            "AnvilCells": 2,
+            "BlockedInterior": 0,
+            "ShellIntact": true,
+            "Dry": true,
+            "StationsIntact": true
+          },
+          {
+            "X": 3306,
+            "Y": 881,
+            "Width": 35,
+            "Height": 17,
+            "SlagTiles": 238,
+            "FurnaceCells": 6,
+            "AnvilCells": 2,
+            "BlockedInterior": 0,
+            "ShellIntact": true,
+            "Dry": true,
+            "StationsIntact": true
+          },
+          {
+            "X": 1965,
+            "Y": 696,
+            "Width": 35,
+            "Height": 17,
+            "SlagTiles": 238,
+            "FurnaceCells": 6,
+            "AnvilCells": 2,
+            "BlockedInterior": 0,
+            "ShellIntact": true,
+            "Dry": true,
+            "StationsIntact": true
+          }
+        ],
+        "FurnaceWorkshopPaths": [
+          {
+            "X": 3341,
+            "Y": 889,
+            "Width": 5,
+            "Height": 6,
+            "InteriorClear": true,
+            "ShellIntact": true,
+            "Dry": true,
+            "OpenCavityExit": true
+          }
+        ],
+        "SectRuinHalls": [
+          {
+            "X": 2043,
+            "Y": 718,
+            "Width": 41,
+            "Height": 19,
+            "Bricks": 278,
+            "BlockedInterior": 0,
+            "EntrancesOpen": true,
+            "Dry": true,
+            "SwordTablets": 4,
+            "SupplyChests": [
+              {
+                "x": 2062,
+                "y": 732,
+                "Intact": true,
+                "Items": [
+                  {
+                    "Name": "LowGradeSpiritStone",
+                    "Stack": 7
+                  },
+                  {
+                    "Name": "ArtifactBlankShard",
+                    "Stack": 3
+                  },
+                  {
+                    "Name": "RecallPotion",
+                    "Stack": 2
+                  },
+                  {
+                    "Name": "Torch",
+                    "Stack": 10
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        "SectRuinPaths": [],
+        "GreenwoodGardens": [
+          {
+            "X": 2309,
+            "Y": 218,
+            "Width": 31,
+            "Height": 13,
+            "SoilTiles": 124,
+            "Crops": 6,
+            "CropFrames": [
+              0,
+              18,
+              36,
+              0,
+              18,
+              36
+            ],
+            "BedIntact": true,
+            "WalkwayClear": true,
+            "Dry": true,
+            "ShelterIntact": true
+          }
+        ],
+        "ChestsWithSpiritStones": 11,
+        "ChestSpiritStoneTotal": 69,
+        "VerifiedStructureCounts": {
+          "SectRuinHalls": 1,
+          "SectRuinPaths": 0,
+          "GreenwoodGardens": 1,
+          "FurnaceWorkshops": 3,
+          "FurnaceWorkshopPaths": 1,
+          "ThunderCloudShrines": 3,
+          "FallenHeavenCourts": 2
+        },
+        "Scope": "Final loaded counts/frames and all registered fresh structure geometry/bounds; unregistered structures, global accessibility and full biome activation unverified"
+      }
+    },
+    {
+      "seed": 20261023,
+      "generated_run": ".tml-test\\world-b3ed580bcee144ffb584c85ddae78a70",
+      "reloaded_run": ".tml-test\\world-6bc2da0a6d5e49be8acebc9ac2a60bce",
+      "full_final_scan_equal": true,
+      "audit": {
+        "Width": 6400,
+        "Height": 1800,
+        "Objects": [
+          {
+            "Name": "SwordTabletTile",
+            "Height": 3,
+            "Cells": 24,
+            "Origins": 4,
+            "Complete": 4
+          },
+          {
+            "Name": "SingingThunderStoneTile",
+            "Height": 2,
+            "Cells": 12,
+            "Origins": 3,
+            "Complete": 3
+          },
+          {
+            "Name": "RiftMembraneTile",
+            "Height": 2,
+            "Cells": 12,
+            "Origins": 3,
+            "Complete": 3
+          },
+          {
+            "Name": "BrokenHeavenTabletTile",
+            "Height": 4,
+            "Cells": 16,
+            "Origins": 2,
+            "Complete": 2
+          },
+          {
+            "Name": "ArchiveLightPillarTile",
+            "Height": 6,
+            "Cells": 24,
+            "Origins": 2,
+            "Complete": 2
+          }
+        ],
+        "FallenHeavenCourts": [
+          {
+            "X": 3862,
+            "Y": 1384,
+            "Width": 49,
+            "Height": 23,
+            "JadeTiles": 247,
+            "ShellIntact": true,
+            "InteriorClear": true,
+            "EntrancesOpen": true,
+            "Dry": true,
+            "TabletIntact": true,
+            "PillarIntact": true
+          },
+          {
+            "X": 3764,
+            "Y": 1385,
+            "Width": 49,
+            "Height": 23,
+            "JadeTiles": 247,
+            "ShellIntact": true,
+            "InteriorClear": true,
+            "EntrancesOpen": true,
+            "Dry": true,
+            "TabletIntact": true,
+            "PillarIntact": true
+          }
+        ],
+        "ThunderCloudShrines": [
+          {
+            "X": 4737,
+            "Y": 231,
+            "Width": 51,
+            "Height": 13,
+            "CloudTiles": 153,
+            "PlatformIntact": true,
+            "AirspaceClear": true,
+            "Dry": true,
+            "StoneIntact": true
+          },
+          {
+            "X": 1278,
+            "Y": 167,
+            "Width": 51,
+            "Height": 13,
+            "CloudTiles": 153,
+            "PlatformIntact": true,
+            "AirspaceClear": true,
+            "Dry": true,
+            "StoneIntact": true
+          },
+          {
+            "X": 6088,
+            "Y": 281,
+            "Width": 51,
+            "Height": 13,
+            "CloudTiles": 153,
+            "PlatformIntact": true,
+            "AirspaceClear": true,
+            "Dry": true,
+            "StoneIntact": true
+          }
+        ],
+        "FurnaceWorkshops": [
+          {
+            "X": 2364,
+            "Y": 715,
+            "Width": 35,
+            "Height": 17,
+            "SlagTiles": 238,
+            "FurnaceCells": 6,
+            "AnvilCells": 2,
+            "BlockedInterior": 0,
+            "ShellIntact": true,
+            "Dry": true,
+            "StationsIntact": true
+          },
+          {
+            "X": 4974,
+            "Y": 958,
+            "Width": 35,
+            "Height": 17,
+            "SlagTiles": 238,
+            "FurnaceCells": 6,
+            "AnvilCells": 2,
+            "BlockedInterior": 0,
+            "ShellIntact": true,
+            "Dry": true,
+            "StationsIntact": true
+          }
+        ],
+        "FurnaceWorkshopPaths": [
+          {
+            "X": 5009,
+            "Y": 966,
+            "Width": 5,
+            "Height": 6,
+            "InteriorClear": true,
+            "ShellIntact": true,
+            "Dry": true,
+            "OpenCavityExit": true
+          }
+        ],
+        "SectRuinHalls": [
+          {
+            "X": 5042,
+            "Y": 1260,
+            "Width": 41,
+            "Height": 19,
+            "Bricks": 278,
+            "BlockedInterior": 0,
+            "EntrancesOpen": true,
+            "Dry": true,
+            "SwordTablets": 2,
+            "SupplyChests": [
+              {
+                "x": 5061,
+                "y": 1274,
+                "Intact": true,
+                "Items": [
+                  {
+                    "Name": "LowGradeSpiritStone",
+                    "Stack": 7
+                  },
+                  {
+                    "Name": "ArtifactBlankShard",
+                    "Stack": 3
+                  },
+                  {
+                    "Name": "RecallPotion",
+                    "Stack": 2
+                  },
+                  {
+                    "Name": "Torch",
+                    "Stack": 10
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "X": 3770,
+            "Y": 799,
+            "Width": 41,
+            "Height": 19,
+            "Bricks": 278,
+            "BlockedInterior": 0,
+            "EntrancesOpen": true,
+            "Dry": true,
+            "SwordTablets": 2,
+            "SupplyChests": [
+              {
+                "x": 3789,
+                "y": 813,
+                "Intact": true,
+                "Items": [
+                  {
+                    "Name": "LowGradeSpiritStone",
+                    "Stack": 7
+                  },
+                  {
+                    "Name": "ArtifactBlankShard",
+                    "Stack": 4
+                  },
+                  {
+                    "Name": "RecallPotion",
+                    "Stack": 2
+                  },
+                  {
+                    "Name": "Torch",
+                    "Stack": 10
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        "SectRuinPaths": [],
+        "GreenwoodGardens": [
+          {
+            "X": 2217,
+            "Y": 369,
+            "Width": 31,
+            "Height": 13,
+            "SoilTiles": 124,
+            "Crops": 6,
+            "CropFrames": [
+              0,
+              18,
+              36,
+              0,
+              18,
+              36
+            ],
+            "BedIntact": true,
+            "WalkwayClear": true,
+            "Dry": true,
+            "ShelterIntact": true
+          }
+        ],
+        "ChestsWithSpiritStones": 17,
+        "ChestSpiritStoneTotal": 99,
+        "VerifiedStructureCounts": {
+          "SectRuinHalls": 2,
+          "SectRuinPaths": 0,
+          "GreenwoodGardens": 1,
+          "FurnaceWorkshops": 2,
+          "FurnaceWorkshopPaths": 1,
+          "ThunderCloudShrines": 3,
+          "FallenHeavenCourts": 2
+        },
+        "Scope": "Final loaded counts/frames and all registered fresh structure geometry/bounds; unregistered structures, global accessibility and full biome activation unverified"
+      }
+    },
+    {
+      "seed": 20261024,
+      "generated_run": ".tml-test\\world-f1f719f8ba464c589406e888be806a0f",
+      "reloaded_run": ".tml-test\\world-e10c3222336b467b8eb173d5095aa015",
+      "full_final_scan_equal": true,
+      "audit": {
+        "Width": 8400,
+        "Height": 2400,
+        "Objects": [
+          {
+            "Name": "SwordTabletTile",
+            "Height": 3,
+            "Cells": 24,
+            "Origins": 4,
+            "Complete": 4
+          },
+          {
+            "Name": "SingingThunderStoneTile",
+            "Height": 2,
+            "Cells": 12,
+            "Origins": 3,
+            "Complete": 3
+          },
+          {
+            "Name": "RiftMembraneTile",
+            "Height": 2,
+            "Cells": 12,
+            "Origins": 3,
+            "Complete": 3
+          },
+          {
+            "Name": "BrokenHeavenTabletTile",
+            "Height": 4,
+            "Cells": 16,
+            "Origins": 2,
+            "Complete": 2
+          },
+          {
+            "Name": "ArchiveLightPillarTile",
+            "Height": 6,
+            "Cells": 24,
+            "Origins": 2,
+            "Complete": 2
+          }
+        ],
+        "FallenHeavenCourts": [
+          {
+            "X": 4900,
+            "Y": 1960,
+            "Width": 49,
+            "Height": 23,
+            "JadeTiles": 247,
+            "ShellIntact": true,
+            "InteriorClear": true,
+            "EntrancesOpen": true,
+            "Dry": true,
+            "TabletIntact": true,
+            "PillarIntact": true
+          },
+          {
+            "X": 5952,
+            "Y": 1912,
+            "Width": 49,
+            "Height": 23,
+            "JadeTiles": 247,
+            "ShellIntact": true,
+            "InteriorClear": true,
+            "EntrancesOpen": true,
+            "Dry": true,
+            "TabletIntact": true,
+            "PillarIntact": true
+          }
+        ],
+        "ThunderCloudShrines": [
+          {
+            "X": 2814,
+            "Y": 360,
+            "Width": 51,
+            "Height": 13,
+            "CloudTiles": 153,
+            "PlatformIntact": true,
+            "AirspaceClear": true,
+            "Dry": true,
+            "StoneIntact": true
+          },
+          {
+            "X": 4446,
+            "Y": 173,
+            "Width": 51,
+            "Height": 13,
+            "CloudTiles": 153,
+            "PlatformIntact": true,
+            "AirspaceClear": true,
+            "Dry": true,
+            "StoneIntact": true
+          },
+          {
+            "X": 5749,
+            "Y": 161,
+            "Width": 51,
+            "Height": 13,
+            "CloudTiles": 153,
+            "PlatformIntact": true,
+            "AirspaceClear": true,
+            "Dry": true,
+            "StoneIntact": true
+          }
+        ],
+        "FurnaceWorkshops": [
+          {
+            "X": 2950,
+            "Y": 2043,
+            "Width": 35,
+            "Height": 17,
+            "SlagTiles": 238,
+            "FurnaceCells": 6,
+            "AnvilCells": 2,
+            "BlockedInterior": 0,
+            "ShellIntact": true,
+            "Dry": true,
+            "StationsIntact": true
+          },
+          {
+            "X": 5126,
+            "Y": 944,
+            "Width": 35,
+            "Height": 17,
+            "SlagTiles": 238,
+            "FurnaceCells": 6,
+            "AnvilCells": 2,
+            "BlockedInterior": 0,
+            "ShellIntact": true,
+            "Dry": true,
+            "StationsIntact": true
+          },
+          {
+            "X": 4617,
+            "Y": 1402,
+            "Width": 35,
+            "Height": 17,
+            "SlagTiles": 238,
+            "FurnaceCells": 6,
+            "AnvilCells": 2,
+            "BlockedInterior": 0,
+            "ShellIntact": true,
+            "Dry": true,
+            "StationsIntact": true
+          }
+        ],
+        "FurnaceWorkshopPaths": [
+          {
+            "X": 2933,
+            "Y": 2051,
+            "Width": 17,
+            "Height": 6,
+            "InteriorClear": true,
+            "ShellIntact": true,
+            "Dry": true,
+            "OpenCavityExit": true
+          },
+          {
+            "X": 4652,
+            "Y": 1410,
+            "Width": 11,
+            "Height": 6,
+            "InteriorClear": true,
+            "ShellIntact": true,
+            "Dry": true,
+            "OpenCavityExit": true
+          }
+        ],
+        "SectRuinHalls": [
+          {
+            "X": 1186,
+            "Y": 949,
+            "Width": 41,
+            "Height": 19,
+            "Bricks": 278,
+            "BlockedInterior": 0,
+            "EntrancesOpen": true,
+            "Dry": true,
+            "SwordTablets": 2,
+            "SupplyChests": [
+              {
+                "x": 1205,
+                "y": 963,
+                "Intact": true,
+                "Items": [
+                  {
+                    "Name": "LowGradeSpiritStone",
+                    "Stack": 8
+                  },
+                  {
+                    "Name": "ArtifactBlankShard",
+                    "Stack": 2
+                  },
+                  {
+                    "Name": "RecallPotion",
+                    "Stack": 1
+                  },
+                  {
+                    "Name": "Torch",
+                    "Stack": 10
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "X": 6056,
+            "Y": 1015,
+            "Width": 41,
+            "Height": 19,
+            "Bricks": 278,
+            "BlockedInterior": 0,
+            "EntrancesOpen": true,
+            "Dry": true,
+            "SwordTablets": 2,
+            "SupplyChests": [
+              {
+                "x": 6075,
+                "y": 1029,
+                "Intact": true,
+                "Items": [
+                  {
+                    "Name": "LowGradeSpiritStone",
+                    "Stack": 6
+                  },
+                  {
+                    "Name": "ArtifactBlankShard",
+                    "Stack": 2
+                  },
+                  {
+                    "Name": "RecallPotion",
+                    "Stack": 1
+                  },
+                  {
+                    "Name": "Torch",
+                    "Stack": 10
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        "SectRuinPaths": [],
+        "GreenwoodGardens": [
+          {
+            "X": 4649,
+            "Y": 585,
+            "Width": 31,
+            "Height": 13,
+            "SoilTiles": 124,
+            "Crops": 6,
+            "CropFrames": [
+              0,
+              18,
+              36,
+              0,
+              18,
+              36
+            ],
+            "BedIntact": true,
+            "WalkwayClear": true,
+            "Dry": true,
+            "ShelterIntact": true
+          }
+        ],
+        "ChestsWithSpiritStones": 22,
+        "ChestSpiritStoneTotal": 131,
+        "VerifiedStructureCounts": {
+          "SectRuinHalls": 2,
+          "SectRuinPaths": 0,
+          "GreenwoodGardens": 1,
+          "FurnaceWorkshops": 3,
+          "FurnaceWorkshopPaths": 2,
+          "ThunderCloudShrines": 3,
+          "FallenHeavenCourts": 2
+        },
+        "Scope": "Final loaded counts/frames and all registered fresh structure geometry/bounds; unregistered structures, global accessibility and full biome activation unverified"
+      }
+    }
+  ]
+}
