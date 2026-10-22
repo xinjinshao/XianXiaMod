@@ -142,8 +142,28 @@ public class WorldAuditCommand : ModCommand
             shrineReports.Add(new { area.X,area.Y,area.Width,area.Height,CloudTiles = clouds,PlatformIntact = platform,AirspaceClear = clear,Dry = dry,
                 StoneIntact = global::XianXia.Common.Systems.ThunderCloudShrineSystem.StoneIntact(area) });
         }
+        var courtReports = new List<object>();
+        foreach (var area in ModContent.GetInstance<global::XianXia.Common.Systems.FallenHeavenCourtSystem>().Courts) {
+            int jade = 0; bool shell = true, clear = true, entrances = true, dry = true;
+            int floor = area.Bottom - global::XianXia.Common.Systems.FallenHeavenCourtSystem.FloorDepth;
+            for (int x = 0; x < area.Width; x++) for (int y = 0; y < area.Height; y++) {
+                Tile tile = Main.tile[area.X + x,area.Y + y]; dry &= tile.LiquidAmount == 0;
+                bool isJade = tile.HasTile && tile.TileType == ModContent.TileType<FallenHeavenJadeTile>();
+                if (isJade) jade++;
+                if (global::XianXia.Common.Systems.FallenHeavenCourtSystem.IsJade(x,y)) shell &= isJade && tile.Slope == 0 && !tile.IsHalfBlock;
+                else {
+                    bool tablet = x >= 10 && x < 12 && area.Y + y >= floor - 4 && tile.TileType == ModContent.TileType<BrokenHeavenTabletTile>();
+                    bool pillar = x >= 35 && x < 37 && area.Y + y >= floor - 6 && tile.TileType == ModContent.TileType<ArchiveLightPillarTile>();
+                    clear &= !tile.HasTile || tablet || pillar;
+                    if (x < 2 || x >= area.Width - 2) entrances &= !tile.HasTile;
+                }
+            }
+            courtReports.Add(new { area.X,area.Y,area.Width,area.Height,JadeTiles = jade,ShellIntact = shell,InteriorClear = clear,EntrancesOpen = entrances,Dry = dry,
+                TabletIntact = global::XianXia.Common.Systems.FallenHeavenCourtSystem.ObjectIntact(area,false),
+                PillarIntact = global::XianXia.Common.Systems.FallenHeavenCourtSystem.ObjectIntact(area,true) });
+        }
         string report = JsonSerializer.Serialize(new { Width = Main.maxTilesX, Height = Main.maxTilesY, Objects = objects.Values,
-            ThunderCloudShrines = shrineReports,FurnaceWorkshops = workshopReports,FurnaceWorkshopPaths = workshopPaths, SectRuinHalls = hallReports, SectRuinPaths = pathReports, GreenwoodGardens = gardenReports, ChestsWithSpiritStones = supplyChests, ChestSpiritStoneTotal = spiritStones });
+            FallenHeavenCourts = courtReports,ThunderCloudShrines = shrineReports,FurnaceWorkshops = workshopReports,FurnaceWorkshopPaths = workshopPaths, SectRuinHalls = hallReports, SectRuinPaths = pathReports, GreenwoodGardens = gardenReports, ChestsWithSpiritStones = supplyChests, ChestSpiritStoneTotal = spiritStones });
         Mod.Logger.Info("SavedWorldAudit: " + report);
         caller.Reply(report);
     }

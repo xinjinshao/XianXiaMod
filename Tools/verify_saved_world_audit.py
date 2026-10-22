@@ -56,7 +56,15 @@ def verify_thunder_shrines(report):
         assert all(shrine.get(flag) is True for flag in ("PlatformIntact", "AirspaceClear", "Dry", "StoneIntact")), shrine
 
 
-def verify(run, require_workshops=False, require_paths=False, require_sect_paths=False, require_gardens=False, require_shrines=False):
+def verify_heaven_courts(report):
+    courts = report.get("FallenHeavenCourts")
+    assert isinstance(courts, list) and 0 < len(courts) <= 2, "No saved fallen heaven courts"
+    for court in courts:
+        assert (court["Width"], court["Height"], court["JadeTiles"]) == (49, 23, 247)
+        assert all(court.get(flag) is True for flag in ("ShellIntact", "InteriorClear", "EntrancesOpen", "Dry", "TabletIntact", "PillarIntact")), court
+
+
+def verify(run, require_workshops=False, require_paths=False, require_sect_paths=False, require_gardens=False, require_shrines=False, require_courts=False):
     root = Path(run)
     log = (root / "runtime.log").read_text(encoding="utf-8-sig")
     reports = [json.loads(line.split("SavedWorldAudit: ", 1)[1])
@@ -81,6 +89,8 @@ def verify(run, require_workshops=False, require_paths=False, require_sect_paths
         verify_gardens(report)
     if require_shrines:
         verify_thunder_shrines(report)
+    if require_courts:
+        verify_heaven_courts(report)
     for extension in ("wld", "twld"):
         assert (root / "save/Worlds" / f"GenerationProbe.{extension}").stat().st_size > 0
     report["Scope"] = "Final loaded tile counts and frames; accessibility/biome activation unverified"
@@ -95,6 +105,7 @@ if __name__ == "__main__":
     parser.add_argument("--require-sect-paths", action="store_true", help="Require hall connectors with an open dry cave beyond the finished tunnel")
     parser.add_argument("--require-greenwood-gardens", action="store_true", help="Require planted gardens and intact vanilla alchemy shelters")
     parser.add_argument("--require-thunder-shrines", action="store_true", help="Require flat thunder cloud platforms and complete singing stones")
+    parser.add_argument("--require-heaven-courts", action="store_true", help="Require open jade courts with complete tablets and archive pillars")
     args = parser.parse_args()
     for run in args.runs:
-        verify(run, args.require_workshops, args.require_workshop_paths, args.require_sect_paths, args.require_greenwood_gardens, args.require_thunder_shrines)
+        verify(run, args.require_workshops, args.require_workshop_paths, args.require_sect_paths, args.require_greenwood_gardens, args.require_thunder_shrines, args.require_heaven_courts)

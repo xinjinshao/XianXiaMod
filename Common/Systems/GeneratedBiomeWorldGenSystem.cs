@@ -55,6 +55,7 @@ public class GeneratedBiomeWorldGenSystem : ModSystem
         ModContent.GetInstance<ThunderCloudShrineSystem>().Generate(thunder);
         PlaceObjects(ModContent.TileType<SingingThunderStoneTile>(), 3, thunder, ModContent.TileType<ThunderCloudTile>(), 2);
         PlaceObjects(ModContent.TileType<RiftMembraneTile>(), 3, star, ModContent.TileType<StarAbyssCrystalTile>(), 2);
+        ModContent.GetInstance<FallenHeavenCourtSystem>().Generate(heaven);
         PlaceObjects(ModContent.TileType<BrokenHeavenTabletTile>(), 2, heaven, ModContent.TileType<FallenHeavenJadeTile>(), 4);
         PlaceObjects(ModContent.TileType<ArchiveLightPillarTile>(), 2, heaven, ModContent.TileType<FallenHeavenJadeTile>(), 6);
         ModContent.GetInstance<GreenwoodGardenSystem>().Generate(greenwood);
@@ -72,6 +73,11 @@ public class GeneratedBiomeWorldGenSystem : ModSystem
             foreach (Rectangle shrine in ModContent.GetInstance<ThunderCloudShrineSystem>().Shrines)
                 if (placed < count && TryPlaceObject(tileType, groundType, height, shrine.Left + ThunderCloudShrineSystem.StoneOffset,
                     shrine.Bottom - ThunderCloudShrineSystem.FloorDepth)) placed++;
+        if (tileType == ModContent.TileType<BrokenHeavenTabletTile>() || tileType == ModContent.TileType<ArchiveLightPillarTile>())
+            foreach (Rectangle court in ModContent.GetInstance<FallenHeavenCourtSystem>().Courts)
+                if (placed < count && TryPlaceObject(tileType,groundType,height,
+                    court.Left + (tileType == ModContent.TileType<BrokenHeavenTabletTile>() ? FallenHeavenCourtSystem.TabletOffset : FallenHeavenCourtSystem.PillarOffset),
+                    court.Bottom - FallenHeavenCourtSystem.FloorDepth)) placed++;
         for (int attempt = 0; attempt < count * 600 && placed < count && regions.Count > 0; attempt++)
         {
             Rectangle region = regions[WorldGen.genRand.Next(regions.Count)];
@@ -160,6 +166,8 @@ public class GeneratedBiomeWorldGenSystem : ModSystem
                 if (x >= hall.Left + 2 && x + 1 < hall.Right - 2 && groundY == hall.Bottom - 3 && groundY - height >= hall.Top) { ownedHall = true; break; }
         if (tileType == ModContent.TileType<SingingThunderStoneTile>() && groundType == ModContent.TileType<ThunderCloudTile>() && height == 2)
             ownedHall |= ThunderCloudShrineSystem.IsPlannedStone(x, groundY);
+        if (groundType == ModContent.TileType<FallenHeavenJadeTile>())
+            ownedHall |= FallenHeavenCourtSystem.IsPlannedObject(tileType,height,x,groundY);
         for (int column = 0; column < 2; column++) for (int row = 0; row <= height; row++) {
             int tx = x + column, ty = groundY - row; Tile tile = Main.tile[tx,ty];
             if (Main.wallHouse[tile.WallType] || tile.HasActuator || tile.RedWire || tile.BlueWire || tile.GreenWire || tile.YellowWire

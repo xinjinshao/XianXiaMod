@@ -21,3 +21,5 @@ namespace XianXia.Common.Systems {public class FurnaceWorkshopSystem {public voi
 
 // Shrine terrain and actual two-row stone placement are covered by the loaded native audit.
 namespace XianXia.Common.Systems { public class ThunderCloudShrineSystem { public const int StoneOffset=24,FloorDepth=3; public List<Microsoft.Xna.Framework.Rectangle> Shrines=new(); public void Generate(List<Microsoft.Xna.Framework.Rectangle> regions) {} public static bool IsPlannedStone(int x,int y)=>false; } }
+
+namespace XianXia.Common.Systems { public class FallenHeavenCourtSystem { public const int TabletOffset=10,PillarOffset=35,FloorDepth=3; public List<Microsoft.Xna.Framework.Rectangle> Courts=new(); public void Generate(List<Microsoft.Xna.Framework.Rectangle> regions) {} public static bool IsPlannedObject(int type,int height,int x,int y)=>false; } }
