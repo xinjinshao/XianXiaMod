@@ -9,7 +9,7 @@ using XianXia.Content.Tiles;
 
 namespace XianXia.Common.Systems;
 
-// Connect one doorway to a pre-existing five-column dry cavity, never to an invented endpoint.
+// Keep a real dry cave reachable beyond the finished tunnel's roof and floor.
 public class SectRuinPathSystem : ModSystem
 {
     internal const int Limit = 48, Height = 7;
@@ -43,7 +43,7 @@ public class SectRuinPathSystem : ModSystem
                 open = clear ? open + 1 : 0;
                 if (open < 5) continue;
                 var candidate = new Rectangle(direction < 0 ? x : hall.Right, floor - 6, length, Height);
-                if (!HasCavity(x, floor - 3, hall) || !Safe(candidate, structures, allowed)) continue;
+                if (!HasOpenExit(candidate, hall) || !Safe(candidate, structures, allowed)) continue;
                 if (best.Width == 0 || candidate.Width < best.Width) best = candidate;
                 break;
             }
@@ -59,12 +59,24 @@ public class SectRuinPathSystem : ModSystem
         structures.AddProtectedStructure(best,2); path = best;
         return true;
     }
-    private static bool HasCavity(int x, int y, Rectangle hall)
+    internal static bool HasOpenExit(Rectangle path, Rectangle hall)
+    {
+        if (path.Width < 5 || path.Width > Limit || path.Height != Height
+            || hall.Width != SectRuinHallSystem.Width || hall.Height != SectRuinHallSystem.Height) return false;
+        int floor = hall.Bottom - 3;
+        int x = path.Right == hall.Left ? path.Left - 1 : path.Left == hall.Right ? path.Right : -1;
+        if (x < 0 || path.Y != floor - 6 || !WorldGen.InWorld(x, floor - 5, 12)
+            || !WorldGen.InWorld(x, floor, 12)) return false;
+        for (int y = floor - 5; y < floor; y++)
+            if (Main.tile[x,y].HasTile || Main.tile[x,y].LiquidAmount > 0) return false;
+        return HasCavity(x, floor - 3, hall, path);
+    }
+    private static bool HasCavity(int x, int y, Rectangle hall, Rectangle path)
     {
         var pending = new Queue<Point>(); var visited = new HashSet<Point>(); pending.Enqueue(new Point(x,y));
         while (pending.Count > 0 && visited.Count < 80) {
             Point point = pending.Dequeue();
-            if (System.Math.Abs(point.X - x) > 24 || System.Math.Abs(point.Y - y) > 24 || hall.Contains(point)
+            if (System.Math.Abs(point.X - x) > 24 || System.Math.Abs(point.Y - y) > 24 || hall.Contains(point) || path.Contains(point)
                 || !WorldGen.InWorld(point.X,point.Y,12) || Main.tile[point.X,point.Y].HasTile || Main.tile[point.X,point.Y].LiquidAmount > 0
                 || !visited.Add(point)) continue;
             pending.Enqueue(new Point(point.X - 1,point.Y)); pending.Enqueue(new Point(point.X + 1,point.Y));

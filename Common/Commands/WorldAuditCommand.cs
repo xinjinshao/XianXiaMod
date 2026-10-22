@@ -87,7 +87,8 @@ public class WorldAuditCommand : ModCommand
                 else clear &= !tile.HasTile;
             }
             bool attached = halls.Any(hall => path.Y == hall.Bottom - 9 && (path.Right == hall.Left || path.Left == hall.Right));
-            pathReports.Add(new { path.X, path.Y, path.Width, path.Height, InteriorClear = clear, ShellIntact = shell, Dry = dry, AttachedHall = attached });
+            bool exit = halls.Any(hall => global::XianXia.Common.Systems.SectRuinPathSystem.HasOpenExit(path,hall));
+            pathReports.Add(new { path.X, path.Y, path.Width, path.Height, InteriorClear = clear, ShellIntact = shell, Dry = dry, AttachedHall = attached, OpenCavityExit = exit });
         }
         var gardenReports = new List<object>();
         foreach (var garden in ModContent.GetInstance<global::XianXia.Common.Systems.GreenwoodGardenSystem>().Gardens) {

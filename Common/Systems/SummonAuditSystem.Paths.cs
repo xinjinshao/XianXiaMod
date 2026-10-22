@@ -37,7 +37,13 @@ public partial class SummonAuditSystem
             Reset(); check(!SectRuinPathSystem.TryConnect(hall,new StructureMap(),out _), "native sealed terrain never creates a path to an invented cave");
             Cavity(1,49,5,10); check(!SectRuinPathSystem.TryConnect(hall,new StructureMap(),out _), "native cave outside bounded search is not excavated");
             Reset(); Cavity(1,6,5,5); check(!SectRuinPathSystem.TryConnect(hall,new StructureMap(),out _), "native tiny void fails minimum connected natural cavity size");
-            Reset(); Cavity(-1,10,8,10); Cavity(1,6,8,10);
+            Reset(); Cavity(1,6,5,16);
+            check(!SectRuinPathSystem.TryConnect(hall,new StructureMap(),out _) && Main.tile[hall.Right,floor - 3].HasTile,
+                "native five-column tall cavity cannot become a roof-sealed dead end");
+            Reset(); Cavity(1,6,8,10);
+            check(!SectRuinPathSystem.TryConnect(hall,new StructureMap(),out _),
+                "native cavity minimum excludes the proposed tunnel footprint");
+            Reset(); Cavity(-1,10,16,10); Cavity(1,6,16,10);
             config.EnableWorldGeneration = false; check(!SectRuinPathSystem.TryConnect(hall,new StructureMap(),out _), "native disabled generation skips paths");
             config.EnableWorldGeneration = true; Main.netMode = NetmodeID.MultiplayerClient;
             check(!SectRuinPathSystem.TryConnect(hall,new StructureMap(),out _), "native client does not excavate paths"); Main.netMode = NetmodeID.Server;
@@ -60,15 +66,25 @@ public partial class SummonAuditSystem
                 geometry &= tile.HasTile == shell && (!shell || (tile.TileType == ModContent.TileType<SectRuinBrickTile>() && tile.Slope == SlopeType.Solid && !tile.IsHalfBlock));
             }
             check(geometry, "native connector has flat floor roof and five clear interior rows");
+            check(SectRuinPathSystem.HasOpenExit(path,hall), "native completed right connector still reaches an existing cave outside its footprint");
+            Tile exit = Main.tile[path.Right,floor - 5];
+            exit.HasTile = true;
+            try { check(!SectRuinPathSystem.HasOpenExit(path,hall), "native read-only connector audit rejects a blocked exit row"); }
+            finally { exit.HasTile = false; }
+            exit.LiquidAmount = 1;
+            try { check(!SectRuinPathSystem.HasOpenExit(path,hall), "native read-only connector audit rejects a wet exit row"); }
+            finally { exit.LiquidAmount = 0; }
             check(!map.CanPlace(path,2), "native connector reserves its protected structure area");
             check(!Main.tile[hall.Right - 1,floor - 3].HasTile && !Main.tile[hall.Right,floor - 3].HasTile, "native connector joins open hall doorway directly");
             system.Paths.Clear(); system.Paths.Add(path); var tag = new TagCompound(); system.SaveWorldData(tag); system.ClearWorld(); system.LoadWorldData(tag);
             check(system.Paths.Count == 1 && system.Paths[0] == path, "native connector bounds survive world data roundtrip");
+            check(SectRuinPathSystem.HasOpenExit(system.Paths[0],hall), "native saved connector retains its open natural cave exit");
             Tile changed = Main.tile[path.X + 1,path.Y + 2]; changed.HasTile = true;
             system.LoadWorldData(tag); check(changed.HasTile, "native connector loading does not repair or excavate player changes");
-            Reset(); Cavity(-1,10,8,10); Cavity(1,6,8,10); Main.tile[hall.Right,floor - 3].TileType = TileID.Containers;
+            Reset(); Cavity(-1,10,16,10); Cavity(1,6,16,10); Main.tile[hall.Right,floor - 3].TileType = TileID.Containers;
             check(SectRuinPathSystem.TryConnect(hall,new StructureMap(),out path) && path.Right == hall.Left && path.Width == 14
                 && Main.tile[hall.Right,floor - 3].TileType == TileID.Containers, "native blocked short approach falls back to safe other-side cave without touching object");
+            check(SectRuinPathSystem.HasOpenExit(path,hall), "native completed left connector retains a cave beyond its endpoint");
         } finally {
             foreach (var cell in saved) {
                 Tile tile = Main.tile[cell.X,cell.Y]; tile.HasTile = cell.Has; tile.TileType = cell.Type;

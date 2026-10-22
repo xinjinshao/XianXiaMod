@@ -50,7 +50,7 @@ if args.require_sect_paths:
     assert 1 <= len(path_reports) <= len(hall_reports), "Expected one connector per connected hall"
     for path in path_reports:
         assert 5 <= path["Width"] <= 48 and path["Height"] == 7, "Invalid connector bounds"
-        assert all(path.get(flag) is True for flag in ("InteriorClear", "ShellIntact", "Dry", "AttachedHall")), "Connector obstructed or detached"
+        assert all(path.get(flag) is True for flag in ("InteriorClear", "ShellIntact", "Dry", "AttachedHall", "OpenCavityExit")), "Connector obstructed, detached or sealed off from its cave"
 garden_reports = []
 if args.require_greenwood_gardens:
     garden_reports = json.loads(audits[-1]).get("GreenwoodGardens", [])

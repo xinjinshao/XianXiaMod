@@ -31,7 +31,15 @@ def verify_workshop_paths(report):
         assert all(path.get(flag) is True for flag in ("InteriorClear", "ShellIntact", "Dry", "OpenCavityExit")), path
 
 
-def verify(run, require_workshops=False, require_paths=False):
+def verify_sect_paths(report):
+    paths = report.get("SectRuinPaths")
+    assert isinstance(paths, list) and 0 < len(paths) <= 2, "No saved sect hall access paths"
+    for path in paths:
+        assert path["Height"] == 7 and 5 <= path["Width"] <= 48
+        assert all(path.get(flag) is True for flag in ("InteriorClear", "ShellIntact", "Dry", "AttachedHall", "OpenCavityExit")), path
+
+
+def verify(run, require_workshops=False, require_paths=False, require_sect_paths=False):
     root = Path(run)
     log = (root / "runtime.log").read_text(encoding="utf-8-sig")
     reports = [json.loads(line.split("SavedWorldAudit: ", 1)[1])
@@ -50,6 +58,8 @@ def verify(run, require_workshops=False, require_paths=False):
         verify_workshops(report)
     if require_paths:
         verify_workshop_paths(report)
+    if require_sect_paths:
+        verify_sect_paths(report)
     for extension in ("wld", "twld"):
         assert (root / "save/Worlds" / f"GenerationProbe.{extension}").stat().st_size > 0
     report["Scope"] = "Final loaded tile counts and frames; accessibility/biome activation unverified"
@@ -61,6 +71,7 @@ if __name__ == "__main__":
     parser.add_argument("runs", nargs="+")
     parser.add_argument("--require-workshops", action="store_true", help="Require saved furnace room shells and both vanilla station footprints")
     parser.add_argument("--require-workshop-paths", action="store_true")
+    parser.add_argument("--require-sect-paths", action="store_true", help="Require hall connectors with an open dry cave beyond the finished tunnel")
     args = parser.parse_args()
     for run in args.runs:
-        verify(run, args.require_workshops, args.require_workshop_paths)
+        verify(run, args.require_workshops, args.require_workshop_paths, args.require_sect_paths)
