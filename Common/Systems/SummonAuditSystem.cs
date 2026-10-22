@@ -948,6 +948,7 @@ public partial class SummonAuditSystem : ModSystem
             AuditStationRecipes(Check);
             AuditStationBuffs(Check);
             AuditExposureLifecycle(Check);
+            AuditNpcIdentities(Check);
             AuditSectRuinHalls(Check);
             AuditSectRuinPaths(Check);
             AuditThunderShrines(Check);

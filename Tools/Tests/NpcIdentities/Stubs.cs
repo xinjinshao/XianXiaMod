@@ -1,0 +1,4 @@
+namespace Terraria { public class NPC { public int whoAmI; public bool netUpdate; } public static class Main {public const int maxNPCs=20;public static NPC[] npc=new NPC[maxNPCs];public static int netMode;} }
+namespace Terraria.ID { public static class NetmodeID {public const int SinglePlayer=0,MultiplayerClient=1,Server=2;} }
+namespace Terraria.ModLoader.IO {public class BitWriter {} public class BitReader {}}
+namespace Terraria.ModLoader {public class GlobalNPC {public virtual bool InstancePerEntity=>false;public virtual void SetDefaults(Terraria.NPC npc){} public virtual void SendExtraAI(Terraria.NPC npc,IO.BitWriter bits,System.IO.BinaryWriter writer){} public virtual void ReceiveExtraAI(Terraria.NPC npc,IO.BitReader bits,System.IO.BinaryReader reader){}} public class ModSystem {public virtual void ClearWorld(){} public virtual void OnWorldLoad(){} public virtual void OnWorldUnload(){}}}
