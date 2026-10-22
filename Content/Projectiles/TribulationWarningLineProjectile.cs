@@ -1,4 +1,5 @@
 using System.IO;
+using Terraria.Audio;
 using Terraria.DataStructures;
 using XianXia.Common.Projectiles;
 using Microsoft.Xna.Framework;
@@ -14,6 +15,8 @@ public class TribulationWarningLineProjectile : ModProjectile
     public const int CancellationFade = 6;
     private readonly HostileSourceBinding sourceBinding = new();
     private bool strikeReleased;
+    private bool cueResolved;
+    public const int CueWindow = 6;
     public override void OnSpawn(IEntitySource source) => sourceBinding.Capture(source);
     public override bool? CanDamage() => false;
     public override bool CanHitPlayer(Player target) => false;
@@ -42,6 +45,15 @@ public class TribulationWarningLineProjectile : ModProjectile
             ? (int)MathHelper.Lerp(255f, 180f, System.Math.Clamp(Projectile.timeLeft / (float)CancellationFade, 0f, 1f))
             : (int)MathHelper.Lerp(40f, 180f, Projectile.timeLeft / (float)Lifetime);
         if (Main.dedServ) return;
+        if (!cueResolved && Main.netMode != NetmodeID.Server) {
+            // Late joins and rewound snapshots must not replay an expired warning cue.
+            if (Projectile.timeLeft > Lifetime || Projectile.timeLeft <= Lifetime - CueWindow)
+                cueResolved = true;
+            else if (sourceBinding.IsValid()) {
+                cueResolved = true;
+                SoundEngine.PlaySound(SoundID.Item15 with { Volume = 0.4f, MaxInstances = 3, Identifier = "XianXia:TribulationWarning" },Projectile.Center);
+            }
+        }
         Lighting.AddLight(Projectile.Center, 0.12f, 0.22f, 0.35f);
 
         if (Main.rand.NextBool(2))

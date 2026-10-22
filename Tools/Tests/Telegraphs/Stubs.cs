@@ -24,3 +24,9 @@ namespace Terraria.Localization{public static class Language{public static strin
 namespace Terraria { public partial class NPC { public XianXia.Common.Systems.NpcEncounterIdentity Identity=new(); public bool TryGetGlobalNPC<T>(out T state) where T:Terraria.ModLoader.GlobalNPC {state=Identity as T;return state!=null;} } }
 namespace Terraria.ModLoader.IO {public class BitWriter {} public class BitReader {}}
 namespace Terraria.ModLoader {public class GlobalNPC {public virtual bool InstancePerEntity=>false;public virtual void SetDefaults(Terraria.NPC npc){} public virtual void SendExtraAI(Terraria.NPC npc,IO.BitWriter bits,System.IO.BinaryWriter writer){} public virtual void ReceiveExtraAI(Terraria.NPC npc,IO.BitReader bits,System.IO.BinaryReader reader){}} public class ModSystem {public virtual void ClearWorld(){} public virtual void OnWorldLoad(){} public virtual void OnWorldUnload(){}}}
+
+namespace Terraria.Audio {
+ public record struct SoundStyle { public string Identifier { get; init; } public float Volume { get; init; } public int MaxInstances { get; init; } }
+ public static class SoundEngine { public static int Calls; public static SoundStyle LastStyle; public static Microsoft.Xna.Framework.Vector2 LastPosition; public static void PlaySound(SoundStyle style,Microsoft.Xna.Framework.Vector2 position) { Calls++; LastStyle=style;LastPosition=position; } }
+}
+namespace Terraria.ID { public static class SoundID { public static Terraria.Audio.SoundStyle Item15 => new(); } }

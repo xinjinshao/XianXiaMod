@@ -250,3 +250,25 @@ using(var stream=new MemoryStream(firstNpcWire.ToArray()))clientParent.Identity.
 var currentShot=new BossArrayFieldProjectile();currentShot.SetDefaults();using(var stream=new MemoryStream(nextShotWire))currentShot.ReceiveExtraAI(new BinaryReader(stream));Check(currentShot.CanDamage()==true,"NPC-first ordering also accepts its current shot");
 var missingIdentity=(byte[])nextShotWire.Clone();Array.Clear(missingIdentity,19,8);using(var stream=new MemoryStream(missingIdentity))currentShot.ReceiveExtraAI(new BinaryReader(stream));Check(currentShot.CanDamage()==false,"A bound NPC source with zero identity fails closed");
 Console.WriteLine($"Including source/NPC packet ordering and replay: {assertions} assertions; transport mocked.");
+
+// Spatial warning audio uses actual projectile AI with a recording audio boundary.
+byte[] CueWire(int left) { var sender = new TribulationWarningLineProjectile(); sender.SetDefaults(); sender.Projectile.timeLeft = left; using var bytes = new MemoryStream(); sender.SendExtraAI(new BinaryWriter(bytes)); return bytes.ToArray(); }
+void CueRead(TribulationWarningLineProjectile cue,int left) { using var bytes = new MemoryStream(CueWire(left)); cue.ReceiveExtraAI(new BinaryReader(bytes)); }
+for (int left = 1; left <= 36; left++) {
+ Main.netMode=NetmodeID.MultiplayerClient; Main.dedServ=false; Terraria.Audio.SoundEngine.Calls=0;
+ var cue=new TribulationWarningLineProjectile(); cue.SetDefaults(); cue.Projectile.Center=new(160,80); CueRead(cue,left); cue.AI(); cue.AI();
+ Check(Terraria.Audio.SoundEngine.Calls==(left>30?1:0),"Warning cue plays only once within initial six frames: "+left);
+ if(left>30) Check(Terraria.Audio.SoundEngine.LastPosition==cue.Projectile.Center&&Terraria.Audio.SoundEngine.LastStyle.Volume==0.4f&&Terraria.Audio.SoundEngine.LastStyle.MaxInstances==3&&Terraria.Audio.SoundEngine.LastStyle.Identifier=="XianXia:TribulationWarning","Warning cue preserves spatial position volume and concurrency limit");
+ CueRead(cue,36); cue.AI(); Check(Terraria.Audio.SoundEngine.Calls==(left>30?1:0),"Late or repeated source packet cannot replay warning cue: "+left);
+}
+foreach(bool late in new[]{false,true}) {
+ Terraria.Audio.SoundEngine.Calls=0;var pending=new TribulationWarningLineProjectile();pending.SetDefaults();pending.Projectile.timeLeft=late?30:36;pending.AI();
+ Check(Terraria.Audio.SoundEngine.Calls==0,"Unknown source cannot trigger warning cue");CueRead(pending,late?30:31);pending.AI();Check(Terraria.Audio.SoundEngine.Calls==(late?0:1),"Metadata arriving in cue window plays once; late metadata stays silent");
+}
+foreach(var context in new[]{(0,true),(NetmodeID.Server,true),(NetmodeID.Server,false)}) {
+ Main.netMode=context.Item1;Main.dedServ=context.Item2;Terraria.Audio.SoundEngine.Calls=0;var silent=new TribulationWarningLineProjectile();silent.SetDefaults();silent.AI();Check(Terraria.Audio.SoundEngine.Calls==0,"Dedicated and server contexts never call warning audio");
+}
+Main.netMode=0;Main.dedServ=false;Terraria.Audio.SoundEngine.Calls=0;
+var normalCue=new TribulationWarningLineProjectile();normalCue.SetDefaults();normalCue.AI();normalCue.AI();Check(Terraria.Audio.SoundEngine.Calls==1,"Single player environmental warning plays once");
+Main.dedServ=true;
+Console.WriteLine($"Including warning audio boundaries: {assertions} assertions; audio engine mocked.");
