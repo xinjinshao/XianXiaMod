@@ -1,0 +1,86 @@
+{
+  "date": "2026-10-23",
+  "round": 324,
+  "mod_version": "0.1.5",
+  "package": ".tml-test\\run-33bcea90aa4b49df91391ff3f0d4cddb\\save\\Mods\\XianXia.tmod",
+  "package_sha256": "76bd9e2feaa01041a41bde6ec1d781d5636d6dc5e96bed9da376b9abedf851f3",
+  "native_report": ".tml-test\\summons-7ee4e31c79724022bb208775d6893ec7\\save\\XianXia\\summon-audit.json",
+  "report_sha256": "a66f17539b42f32cd4b9a93b75f06d961b8192ae985e900551a49bbb7399b59f",
+  "native_checks": 39154,
+  "new_native_checks": 2411,
+  "grouped_checks": {
+    "native initial retry starts through actual player API": 12,
+    "native retry uses actual API and expected insight duration table through ten failures": 132,
+    "native each actual retry rotates authority session while preserving current stage": 132,
+    "native active trial rejects retry without changing resources timer or session": 132,
+    "native retry fixture produces actual hazards before fatal hook": 132,
+    "native retry hazard is damaging before failure": 286,
+    "native death updates preserve a single capped failure and no comprehension": 132,
+    "native dead player cannot retry or reset penalties": 132,
+    "native client cannot authoritatively start retry": 132,
+    "native failed trial hazards become harmless before source AI cleanup": 286,
+    "native living failure can immediately start actual retry with weakness preserved": 132,
+    "native new retry cannot reactivate prior attempt projectile source": 286,
+    "native failed old shot enters harmless bounded fade after immediate retry": 286,
+    "native actual retry preserves failure weakness and replaces retired session": 132,
+    "native retry heart contact is damaging before failure": 22,
+    "native failed heart contact blocks damage before next AI": 22,
+    "native immediate retry does not inherit prior heart NPC": 22,
+    "native retry audit restores all borrowed entity slots": 1
+  },
+  "failure_scenarios": 132,
+  "duration_ticks_by_stage_attempts_0_1_2_3_plus": [
+    [
+      1560,
+      1404,
+      1248,
+      1092
+    ],
+    [
+      1800,
+      1620,
+      1440,
+      1260
+    ],
+    [
+      2520,
+      2268,
+      2016,
+      1764
+    ],
+    [
+      3300,
+      2970,
+      2640,
+      2310
+    ],
+    [
+      4440,
+      3996,
+      3552,
+      3108
+    ],
+    [
+      4680,
+      4212,
+      3744,
+      3276
+    ]
+  ],
+  "unchanged_validation": {
+    "round": 323,
+    "source_checks": 40,
+    "dotnet_source_projects": 30,
+    "gameplay_assertions": 7720,
+    "rerun_this_round": false
+  },
+  "limits": [
+    "Only native audit code and documentation changed.",
+    "Actual TryRetryTribulation API, PreKill and UpdateDead called on registered instances, not full Player.KillMe, resurrection or physical UI input.",
+    "Private update invoked at manually selected hazard interval; no full duration simulation.",
+    "Fresh retry begins before old hazards receive cancellation AI, preserving actual retry state into next iteration.",
+    "Warning Kill releases real lightning; array life manually advanced to damaging window.",
+    "Single-player branch runs in dedicated engine and suppresses local text; server sockets are disconnected fixture sockets.",
+    "No real transport, clients, all frames, balance, historical saves or new world generation."
+  ]
+}
