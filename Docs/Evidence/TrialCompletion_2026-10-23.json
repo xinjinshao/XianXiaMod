@@ -1,0 +1,42 @@
+{
+  "date": "2026-10-23",
+  "round": 323,
+  "mod_version": "0.1.5",
+  "package": ".tml-test\\run-bc0e74b3cd3744cfac9a6eea8d568f10\\save\\Mods\\XianXia.tmod",
+  "package_sha256": "c2b36802648a6aa4786f4ec84fa27e391206bcc8ceb9249d2ca35b0c9a50995b",
+  "native_report": ".tml-test\\summons-b010c66582ca43378d84ee0456fd5340\\save\\XianXia\\summon-audit.json",
+  "report_sha256": "f8aba2f5266584c2ae6bd97bd405746dede749d5899b473f13dd4f766a146e5f",
+  "native_checks": 36743,
+  "new_native_checks": 131,
+  "grouped_checks": {
+    "native actual trial begin selects stage and positive authority session": 8,
+    "native positive trial interval still creates real hazards before terminal tick": 8,
+    "native earlier trial hazards have a genuinely damaging positive control before completion": 18,
+    "native terminal trial tick completes without scheduling a zero-session hazard": 8,
+    "native trial success clears active state and retry attempts": 8,
+    "native trial success grants exactly one comprehension and intended resource recovery": 8,
+    "native completed trial cannot repeat rewards or acquire failure penalty on later callbacks": 8,
+    "native successful trial immediately disables its previously released hazard": 18,
+    "native successful trial hazard enters bounded harmless cancellation": 18,
+    "native trial failure hook preserves actual player death decision": 8,
+    "native fatal trial hook applies intended failure recovery and penalties without success credit": 8,
+    "native repeated death and failure callbacks cannot multiply recovery or attempts": 8,
+    "native earlier heart NPC remains damaging before trial completion": 2,
+    "native successful heart trial invalidates its earlier spawned heart NPC": 2,
+    "native trial terminal audit restores all borrowed entity slots": 1
+  },
+  "before_fix_report": ".tml-test\\summons-85022f1ac0e345869dc3b8d42a61447b\\save\\XianXia\\summon-audit.json",
+  "before_fix_sha256": "f454f52a84f8b8752bbf8465563bd71070920c97d2bf76dd4a17e94dc77747e9",
+  "before_fix_error": "System.InvalidOperationException: native terminal trial tick completes without scheduling a zero-session hazard\r\n   at XianXia.Common.Systems.SummonAuditSystem.<>c__DisplayClass22_0.<RunOnce>g__Check|2(Boolean value, String name) in XianXiaMod\\Common\\Systems\\SummonAuditSystem.cs:line 67\r\n   at XianXia.Common.Systems.SummonAuditSystem.AuditTrialCompletion(Action`2 check) in XianXiaMod\\Common\\Systems\\SummonAuditSystem.TrialCompletion.cs:line 44\r\n   at XianXia.Common.Systems.SummonAuditSystem.RunOnce() in XianXiaMod\\Common\\Systems\\SummonAuditSystem.cs:line 971",
+  "source_checks": 40,
+  "dotnet_source_projects": 30,
+  "gameplay_assertions": 7720,
+  "limits": [
+    "Actual private begin/update methods invoked with reflection; selected timers shortened to scheduling and final-tick boundaries.",
+    "SP and server modes share the dedicated engine; Main.myPlayer set to maxPlayers suppresses graphical local announcements.",
+    "Actual warning Kill creates lightning; array lifetime is manually advanced into damage window.",
+    "Actual PreKill hook called directly; no full Player.KillMe or death frame.",
+    "No full trial duration, physical avoidance, rendered clients, transport or timing proof.",
+    "No world generation or protocol/save layout changes."
+  ]
+}

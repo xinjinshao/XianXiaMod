@@ -436,6 +436,11 @@ public class XianXiaPlayer : ModPlayer
         }
 
         tribulationTimer--;
+        if (tribulationTimer == 0)
+        {
+            CompleteTribulation();
+            return;
+        }
         Player.AddBuff(ModContent.BuffType<global::XianXia.Content.Buffs.TribulationPressureBuff>(), 2);
 
         if (Player.HasBuff(ModContent.BuffType<global::XianXia.Content.Buffs.TribulationResistanceBuff>()) && Main.GameUpdateCount % 30 == 0)
@@ -476,10 +481,6 @@ public class XianXiaPlayer : ModPlayer
             }
         }
 
-        if (tribulationTimer == 0)
-        {
-            CompleteTribulation();
-        }
     }
 
     private void CompleteTribulation()
