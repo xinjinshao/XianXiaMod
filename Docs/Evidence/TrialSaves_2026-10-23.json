@@ -1,0 +1,43 @@
+{
+  "date": "2026-10-23",
+  "round": 325,
+  "mod_version": "0.1.5",
+  "package": ".tml-test\\run-6c277d7a33ac4e50ba71ba51b2296411\\save\\Mods\\XianXia.tmod",
+  "package_sha256": "13a56eeee0a7d4de1416f7b0575010c7e1739fc0d3e9535a32430e1dbcc46731",
+  "native_report": ".tml-test\\summons-923b4e32278640b0addf77884a0fd03a\\save\\XianXia\\summon-audit.json",
+  "report_sha256": "aef8a328bca43196cc2e4fa233b837e4b81190e8f8933fe2ac7641cb99db0b2b",
+  "native_checks": 40355,
+  "new_native_checks": 1201,
+  "grouped_checks": {
+    "native binary save fixture has a damaging active-session field before terminal transition": 144,
+    "native trial save omits transient source identities and guard lease": 144,
+    "native TagIO binary roundtrip preserves trial save payload in both compression modes": 144,
+    "native binary reload preserves canonical trial resources penalties progress and cooldowns": 144,
+    "native binary reload drops temporary protection while retaining cooldowns": 144,
+    "native active binary reload rotates session and preserves remaining trial without retry": 48,
+    "native binary reload cannot revive a field from the previous saved incarnation": 144,
+    "native prior incarnation field cancels through actual AI after binary reload": 144,
+    "native failed binary reload retains weakness attempts and starts a new retry session": 48,
+    "native cleared binary reload retains exactly one comprehension and rejects repeat trial": 48,
+    "native binary save fixture has actual damaging heart NPC before terminal transition": 24,
+    "native prior incarnation heart remains harmless and despawns after binary reload": 24,
+    "native binary trial save audit restores all borrowed entity slots": 1
+  },
+  "roundtrip_scenarios": 144,
+  "unchanged_validation": {
+    "round": 323,
+    "source_checks": 40,
+    "dotnet_source_projects": 30,
+    "gameplay_assertions": 7720,
+    "rerun_this_round": false
+  },
+  "limits": [
+    "Only native audit code and documentation changed.",
+    "Current registered SaveData -> TagIO.ToStream -> TagIO.FromStream -> LoadData; no actual .plr/.tplr files or historical user saves.",
+    "144 combinations: two authority modes, six stages, three terminal states, two compression modes, same/replacement Player object.",
+    "ResourceRevision intentionally excluded from persistence equality; temporary ward timer expected to reset.",
+    "Actual active-session array field at damage age 50; actual generated heart for NascentSoul.",
+    "Private begin/update invoked with selected timer, not whole trial duration or whole Player frame.",
+    "Main.myPlayer maxPlayers suppresses local text; no real clients, transport or world generation."
+  ]
+}
