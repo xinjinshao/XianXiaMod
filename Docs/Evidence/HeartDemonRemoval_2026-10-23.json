@@ -1,0 +1,38 @@
+{
+  "date": "2026-10-23",
+  "round": 322,
+  "mod_version": "0.1.5",
+  "package": ".tml-test\\run-b91a8045be364907a3e76cc1cf7b43a5\\save\\Mods\\XianXia.tmod",
+  "package_sha256": "062f0a78d664b8b4d54546b1061d587c3d7ff7875651f584c189548d6169af0d",
+  "native_report": ".tml-test\\summons-7eb5b6dd572f4c49b44e614f7d281247\\save\\XianXia\\summon-audit.json",
+  "report_sha256": "3fa889b1d866e1916aac439535be0436ffe7ee86fe535f3e17101d2e52733e88",
+  "native_checks": 36612,
+  "new_native_checks": 97,
+  "grouped_checks": {
+    "native active heart NPC sends identical addressed spawn metadata to owner and observer sockets": 6,
+    "native heart cancellation invokes authoritative removal before broadcast validation": 6,
+    "native heart cancellation broadcasts identical removal packet to owner and observer sockets": 6,
+    "native repeated heart cleanup emits exactly one removal per receiver": 6,
+    "official heart removal decoder accepts actual vanilla NPC packet": 36,
+    "official live heart receiver waits harmlessly for matching trial epoch without despawning": 12,
+    "official heart receiver resumes valid damage after matching epoch arrives": 12,
+    "official owner and observer decode removal idempotently even before local trial timer ends": 12,
+    "native heart removal audit restores entity slots and both replay histories": 1
+  },
+  "unchanged_source_validation": {
+    "round": 321,
+    "source_checks": 40,
+    "dotnet_source_projects": 30,
+    "gameplay_assertions": 7720,
+    "rerun_this_round": false
+  },
+  "limits": [
+    "Only native audit code and documentation changed; no production behavior/protocol changes.",
+    "Initial live NPC packets are addressed to both fixture peers; active NPC broadcast relevance and world-section delivery are not covered.",
+    "Removal is the actual production PreAI broadcast captured once per audit ISocket and decoded twice per receiver with official MessageBuffer.",
+    "Separate in-memory receivers, no real clients, transport, frames, rendering or timing.",
+    "Trial epoch acceptance uses actual TryReceiveTribulationEpoch; packet 14 dispatch is separately audited, not in this fixture.",
+    "No projectile synchronization/cancellation packet proof in this fixture.",
+    "Copied world, no generation changes."
+  ]
+}

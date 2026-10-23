@@ -967,6 +967,7 @@ public partial class SummonAuditSystem : ModSystem
             AuditTownPurchases(Check);
             AuditHeartDemonPackets(Check);
             AuditHeartDemonLifecycle(Check);
+            AuditHeartDemonRemoval(Check);
             AuditSectRuinHalls(Check);
             AuditSectRuinPaths(Check);
             AuditThunderShrines(Check);
