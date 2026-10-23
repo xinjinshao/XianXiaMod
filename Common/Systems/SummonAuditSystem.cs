@@ -975,6 +975,7 @@ public partial class SummonAuditSystem : ModSystem
             AuditDaoRequirements(Check);
             AuditRouteChoices(Check);
             AuditCommissionCapacity(Check);
+            AuditCommissionOwners(Check);
             AuditSectRuinHalls(Check);
             AuditSectRuinPaths(Check);
             AuditThunderShrines(Check);

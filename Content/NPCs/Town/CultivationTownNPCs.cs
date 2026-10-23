@@ -203,7 +203,7 @@ public abstract class CultivationTownNPC : ModNPC
 
         foreach ((int type, int stack) in rewards)
         {
-            player.QuickSpawnItem(NPC.GetSource_FromThis(), type, stack);
+            CommissionRewards.Spawn(player, NPC, type, stack);
         }
 
         CommissionText(textKey, reputation, DownedBossSystem.SectReputation);

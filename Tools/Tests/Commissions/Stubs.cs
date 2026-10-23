@@ -1,14 +1,16 @@
 using System.IO;
 namespace Microsoft.Xna.Framework {public record struct Vector2(float X,float Y){public static float DistanceSquared(Vector2 a,Vector2 b)=>(a.X-b.X)*(a.X-b.X)+(a.Y-b.Y)*(a.Y-b.Y);}}
 namespace Terraria {
-public class Player {public bool active=true,dead,CCed,noItems;public int talkNPC=-1;public Microsoft.Xna.Framework.Vector2 Center;public XianXia.Common.Players.XianXiaPlayer State=new();public List<(int Type,int Stack)> Rewards=new();public T GetModPlayer<T>()=>(T)(object)State;public bool HasItem(int type)=>false;public void QuickSpawnItem(object source,int type,int stack)=>Rewards.Add((type,stack));}
+public class Player {public bool active=true,dead,CCed,noItems;public int talkNPC=-1;public Microsoft.Xna.Framework.Vector2 Center;public XianXia.Common.Players.XianXiaPlayer State=new();public List<(int Type,int Stack)> Rewards=new();public T GetModPlayer<T>()=>(T)(object)State;public bool HasItem(int type)=>false;public int whoAmI;public object getRect()=>this;public void QuickSpawnItem(object source,int type,int stack)=>Rewards.Add((type,stack));}
 public class NPC {public static bool downedPlantBoss,downedGolemBoss,downedMoonlord;public bool active=true,townNPC,friendly;public int whoAmI,width,height,aiStyle,damage,defense,lifeMax;public float knockBackResist;public object HitSound,DeathSound;public Terraria.ModLoader.ModNPC ModNPC;public Microsoft.Xna.Framework.Vector2 Center;public HappinessStub Happiness=new();public object GetSource_FromThis()=>this;}
 public class HappinessStub {public void SetBiomeAffection<T>(Terraria.GameContent.Personalities.AffectionLevel level){}}
-public class Item {public bool active;public int type;public void TurnToAir()=>type=0;}
+public class Item {public bool active;public int type,stack,playerIndexTheItemIsReservedFor,timeSinceTheItemHasBeenReservedForSomeone;
+public static int NewItem(object source,object area,int type,int stack,bool noBroadcast) {int index=Array.FindIndex(Main.item,i=>!i.active);if(index>=Main.maxItems)return Main.maxItems;Main.item[index]=new Item{active=true,type=type,stack=stack};((Player)area).Rewards.Add((type,stack));return index;}
+public void TurnToAir()=>type=0;}
 public static class Main {public const int maxItems=400;public static Item[] item=Enumerable.Range(0,401).Select(_=>new Item()).ToArray();public static int[] timeItemSlotCannotBeReusedFor=new int[400];public static int netMode;public static bool hardMode;public static int[] npcFrameCount=new int[5000];public static Player LocalPlayer=new();public static IEnumerable<Player> ActivePlayers=>new[]{LocalPlayer};public static string npcChatText;}
-public static class NetMessage {public static int Broadcasts;public static void SendData(int type)=>Broadcasts++;}
+public static class NetMessage {public static int Broadcasts;public static void SendData(int type,int number=0)=>Broadcasts++;}
 }
-namespace Terraria.ID {public static class NetmodeID {public const int SinglePlayer=0,MultiplayerClient=1,Server=2;}public static class MessageID {public const int WorldData=7;}public static class NPCID {public const int Guide=22;}public static class NPCAIStyleID {public const int Passive=7;}public static class SoundID {public const int NPCHit1=1,NPCDeath1=2;}}
+namespace Terraria.ID {public static class NetmodeID {public const int SinglePlayer=0,MultiplayerClient=1,Server=2;}public static class MessageID {public const int WorldData=7,SyncItem=21,ItemOwner=22;}public static class NPCID {public const int Guide=22;}public static class NPCAIStyleID {public const int Passive=7;}public static class SoundID {public const int NPCHit1=1,NPCDeath1=2;}}
 namespace Terraria.GameContent {public class Dummy {}}
 namespace Terraria.GameContent.Bestiary {public class BestiaryDatabase{}public class BestiaryEntry {public List<object> Info=new();}public class FlavorTextBestiaryInfoElement {public FlavorTextBestiaryInfoElement(string key){}}}
 namespace Terraria.GameContent.Personalities {public enum AffectionLevel {Like,Love,Dislike}public class ForestBiome{}public class JungleBiome{}public class DesertBiome{}public class UndergroundBiome{}public class OceanBiome{}public class HallowBiome{}}

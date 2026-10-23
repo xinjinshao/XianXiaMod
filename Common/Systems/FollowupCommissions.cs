@@ -68,7 +68,7 @@ public static class FollowupCommissions
             response = NetworkText.FromKey("Mods.XianXia.NPCs.Commission.RewardsBusy"); return false;
         }
         if (!DownedBossSystem.TryClaimCommission(entry.Id, entry.Reputation)) return false;
-        foreach (var reward in entry.Rewards) player.QuickSpawnItem(npc.GetSource_FromThis(), reward.Type, reward.Stack);
+        foreach (var reward in entry.Rewards) CommissionRewards.Spawn(player, npc, reward.Type, reward.Stack);
         response = NetworkText.FromKey(key + "Claimed", entry.Reputation, DownedBossSystem.SectReputation);
         return true;
     }

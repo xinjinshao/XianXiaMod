@@ -12,13 +12,7 @@ namespace XianXia.Common.Systems;
 
 public partial class SummonAuditSystem
 {
-    private static void AuditCommissionCapacity(Action<bool,string> check)
-    {
-        Player[] originals=Main.player.Take(2).ToArray();int mode=Main.netMode,local=Main.myPlayer;var random=Main.rand;
-        int slot=Enumerable.Range(0,Main.maxNPCs).First(i=>!Main.npc[i].active);NPC oldNpc=Main.npc[slot];Item[] items=(Item[])Main.item.Clone();int[] reuse=(int[])Main.timeItemSlotCannotBeReusedFor.Clone();
-        bool hard=Main.hardMode,plant=NPC.downedPlantBoss,golem=NPC.downedGolemBoss,moon=NPC.downedMoonlord;
-        var clients=(RemoteClient[])Netplay.Clients.Clone();var world=ModContent.GetInstance<DownedBossSystem>();var saved=new TagCompound();world.SaveWorldData(saved);var mod=ModContent.GetInstance<global::XianXia.XianXia>();
-        var quests=new[]{
+    private static (string Npc,string Id,string Boss,int Reputation,string Reward1,int Stack1,string Reward2,int Stack2,string Prior,int PriorReputation)[] CommissionQuestFixtures() => new[]{
             ("HerbSectApprentice","herb_sect_apprentice_garden","garden_warden",8,"GreenwoodRoot",10,"SpringReturnPill",3,"",0),
             ("WanderingArtificer","wandering_artificer_furnace","black_furnace_iron_golem",8,"FurnaceSlagIron",10,"ArtifactBlankShard",3,"",0),
             ("TribulationObserver","tribulation_observer_thunder","thunder_marsh_jiao",12,"TribulationCloudDew",8,"TribulationResistingPill",3,"",0),
@@ -29,6 +23,14 @@ public partial class SummonAuditSystem
             ("TribulationObserver","tribulation_observer_inspector","broken_heaven_inspector",18,"ThunderBurstPill",3,"TribulationResistingPill",4,"tribulation_observer_thunder",12),
             ("ArchiveScrollSpirit","archive_scroll_spirit_moon","moonbone_immortal",24,"ArchiveRemnantLight",4,"ColdMoonDust",6,"archive_scroll_spirit_trial",16),
             ("FallenHeavenMessenger","fallen_heaven_messenger_core","old_heaven_dao_core",30,"HeavenDaoFragment",8,"QiRecoveryPill",6,"fallen_heaven_messenger_tablet",24)};
+
+    private static void AuditCommissionCapacity(Action<bool,string> check)
+    {
+        Player[] originals=Main.player.Take(2).ToArray();int mode=Main.netMode,local=Main.myPlayer;var random=Main.rand;
+        int slot=Enumerable.Range(0,Main.maxNPCs).First(i=>!Main.npc[i].active);NPC oldNpc=Main.npc[slot];Item[] items=(Item[])Main.item.Clone();int[] reuse=(int[])Main.timeItemSlotCannotBeReusedFor.Clone();
+        bool hard=Main.hardMode,plant=NPC.downedPlantBoss,golem=NPC.downedGolemBoss,moon=NPC.downedMoonlord;
+        var clients=(RemoteClient[])Netplay.Clients.Clone();var world=ModContent.GetInstance<DownedBossSystem>();var saved=new TagCompound();world.SaveWorldData(saved);var mod=ModContent.GetInstance<global::XianXia.XianXia>();
+        var quests=CommissionQuestFixtures();
         int Type(string name)=>mod.Find<ModItem>(name).Type;
         int Count(Player actor,int type)=>actor.inventory.Take(58).Where(i=>i.type==type).Sum(i=>i.stack)+Main.item.Take(Main.maxItems).Where(i=>i.active&&i.type==type).Sum(i=>i.stack);
         try {

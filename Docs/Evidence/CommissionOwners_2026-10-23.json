@@ -1,0 +1,45 @@
+{
+  "date": "2026-10-23",
+  "round": 330,
+  "mod_version": "0.1.5",
+  "package": ".tml-test\\run-15ac8211948e467fa848f8c90083ead8\\save\\Mods\\XianXia.tmod",
+  "package_sha256": "e994669ec356529bbaf34960617adad0da0230873e320f73c838cfd1f09872c3",
+  "native_report": ".tml-test\\summons-a344e54bbff34fb081196cdf953f71c1\\save\\XianXia\\summon-audit.json",
+  "report_sha256": "e25a55eae3735f75bf0b7d55baa578ca6b0670a4e7afdc7c19f6436cfae1f411",
+  "native_checks": 49570,
+  "new_native_checks": 441,
+  "grouped_checks": {
+    "native commission all ten quests reserve both real reward stacks for either claimant slot": 20,
+    "native commission broadcasts one spawn then ownership packet per stack identically to both peers": 20,
+    "official commission receiver decodes actual item spawn and owner packets": 320,
+    "official owner and observer replay preserve exactly two correctly reserved rewards": 40,
+    "native claimant GrabItems actually picks up both decoded reserved rewards": 20,
+    "native bystander GrabItems cannot take decoded rewards reserved for claimant": 20,
+    "native commission ownership audit restores participants drops and reuse timers": 1
+  },
+  "before_fix_report": ".tml-test\\summons-2a5b0b037fbf466b81e5afd927994655\\save\\XianXia\\summon-audit.json",
+  "before_fix_sha256": "e513c0aeec8ece40b647ae7432fda19b9f0fe571b115ff911ce0775088e71e5c",
+  "before_fix_error": "System.InvalidOperationException: native commission reward is reserved for actual claimant: owner=0 reservations=255,255\r\n   at XianXia.Common.Systems.SummonAuditSystem.<>c__DisplayClass24_0.<RunOnce>g__Check|2(Boolean value, String name) in XianXiaMod\\Common\\Systems\\SummonAuditSystem.cs:line 67\r\n   at XianXia.Common.Systems.SummonAuditSystem.AuditCommissionOwners(Action`2 check) in XianXiaMod\\Common\\Systems\\SummonAuditSystem.CommissionOwners.cs:line 30\r\n   at XianXia.Common.Systems.SummonAuditSystem.RunOnce() in XianXiaMod\\Common\\Systems\\SummonAuditSystem.cs:line 978",
+  "pickup_context_failure": {
+    "report": ".tml-test\\summons-d57fc432ba8642e0ab71f2b6441e311e\\save\\XianXia\\summon-audit.json",
+    "sha256": "afa71873a085fc21df3b4d0bfedbd9a91869f53ca5ea949fa29fc318957d490f",
+    "error": "System.Reflection.TargetInvocationException: Exception has been thrown by the target of an invocation.\r\n ---> System.NullReferenceException: Object reference not set to an instance of an object.\r\n   at Terraria.PopupText.NewText(PopupTextContext context, Item newItem, Int32 stack, Boolean noStack, Boolean longText) in tModLoader\\Terraria\\PopupText.cs:line 382\r\n   at Terraria.Player.GetItem_FillEmptyInventorySlot(Int32 plr, Item newItem, GetItemSettings settings, Item returnItem, Int32 i) in tModLoader\\Terraria\\Player.cs:line 32694\r\n   at Terraria.Player.GetItem(Int32 plr, Item newItem, GetItemSettings settings) in tModLoader\\Terraria\\Player.cs:line 32514\r\n   at Terraria.Player.PickupItem(Int32 playerIndex, Int32 worldItemArrayIndex, Item itemToPickUp) in tModLoader\\Terraria\\Player.cs:line 28865\r\n   at Terraria.Player.GrabItems(Int32 i) in tModLoader\\Terraria\\Player.cs:line 28739\r\n   at System.RuntimeMethodHandle.InvokeMethod(Object target, Void** arguments, Signature sig, Boolean isConstructor)\r\n   at System.Reflection.MethodBaseInvoker.InvokeDirectByRefWithFewArgs(Object obj, Span`1 copyOfArgs, BindingFlags invokeAttr)\r\n   --- End of inner exception stack trace ---\r\n   at System.Reflection.MethodBaseInvoker.InvokeDirectByRefWithFewArgs(Object obj, Span`1 copyOfArgs, BindingFlags invokeAttr)\r\n   at System.Reflection.MethodBaseInvoker.InvokeWithOneArg(Object obj, BindingFlags invokeAttr, Binder binder, Object[] parameters, CultureInfo culture)\r\n   at System.Reflection.MethodBase.Invoke(Object obj, Object[] parameters)\r\n   at XianXia.Common.Systems.SummonAuditSystem.AuditCommissionOwners(Action`2 check) in XianXiaMod\\Common\\Systems\\SummonAuditSystem.CommissionOwners.cs:line 49\r\n   at XianXia.Common.Systems.SummonAuditSystem.RunOnce() in XianXiaMod\\Common\\Systems\\SummonAuditSystem.cs:line 978",
+    "accepted_as_validation": false
+  },
+  "claim_scenarios": 20,
+  "receiver_scenarios": 40,
+  "source_checks": 40,
+  "dotnet_source_projects": 30,
+  "commission_source_assertions": 486,
+  "gameplay_assertions": 7720,
+  "limits": [
+    "Server uses noBroadcast Item.NewItem then sets vanilla reservation before explicit SyncItem and ItemOwner broadcasts.",
+    "Both peer copies decode actual packets twice with official MessageBuffer; reflection invokes actual private Player.GrabItems.",
+    "Owner pickup and bystander refusal use overlapping item positions and zero pickup delay; no full movement/world frame.",
+    "Main.showItemText temporarily disabled to avoid headless PopupText font access and restored in finally.",
+    "Vanilla reservation semantics retained; no indefinite private-item policy or disconnected-owner/timeout acceptance.",
+    "No real clients or network transport; no claim of client-owned-inventory anti-cheat.",
+    "Existing capacity audit and ten quest reward expectations reused as independent test fixture metadata, not production definitions.",
+    "No save, protocol layout or generation changes."
+  ]
+}
