@@ -24,6 +24,15 @@ public static class EndgameRouteTransactions
                 if (Main.tile[x, y].HasTile && Main.tile[x, y].TileType == type) return true;
         return false;
     }
+    public static string RequirementFailure(Player player)
+    {
+        const string prefix = "Mods.XianXia.Routes.";
+        if (DownedBossSystem.ChosenRoute != DownedBossSystem.EndgameRoute.None) return prefix + "AlreadyChosen";
+        if (!DownedBossSystem.DownedBosses.Contains("old_heaven_dao_core")) return prefix + "NeedCore";
+        var stage = player.GetModPlayer<XianXiaPlayer>().cultivationStage;
+        if (stage < CultivationStage.Tribulation || stage > CultivationStage.DaoSevering) return prefix + "NeedRealm";
+        return NearAltar(player) ? "" : prefix + "NeedAltar";
+    }
     public static void Request(Player player, int slot, DownedBossSystem.EndgameRoute route)
     {
         if (slot < 0 || slot >= 58 || player.whoAmI != Main.myPlayer) return;
@@ -41,20 +50,15 @@ public static class EndgameRouteTransactions
         if (!player.GetModPlayer<InscriptionPlayer>().BeginTransaction()) return;
         Item item = player.inventory[slot];
         if (item.type != type || type != ModContent.ItemType<RouteMaterial>() || item.stack <= 0) return;
-        string result;
-        if (DownedBossSystem.ChosenRoute != DownedBossSystem.EndgameRoute.None) result = "AlreadyChosen";
-        else if (!DownedBossSystem.DownedBosses.Contains("old_heaven_dao_core")
-            || player.GetModPlayer<XianXiaPlayer>().cultivationStage < CultivationStage.Tribulation
-            || player.GetModPlayer<XianXiaPlayer>().cultivationStage > CultivationStage.DaoSevering) result = "Requirements";
-        else if (!NearAltar(player)) result = "NeedAltar";
-        else if (DownedBossSystem.TryChooseRoute((DownedBossSystem.EndgameRoute)route)) {
+        string result = RequirementFailure(player);
+        if (result.Length == 0 && DownedBossSystem.TryChooseRoute((DownedBossSystem.EndgameRoute)route)) {
             item.stack--; if (item.stack == 0) item.TurnToAir();
             if (Main.netMode == NetmodeID.Server) AuthoritativeInventorySync.Send(player, slot);
             BroadcastChoice((DownedBossSystem.EndgameRoute)route);
             return;
         }
-        else result = "AlreadyChosen";
-        Reply(player.whoAmI, NetworkText.FromKey("Mods.XianXia.Routes." + result));
+        if (result.Length == 0) result = "Mods.XianXia.Routes.AlreadyChosen";
+        Reply(player.whoAmI, NetworkText.FromKey(result));
     }
     private static void BroadcastChoice(DownedBossSystem.EndgameRoute route)
     {

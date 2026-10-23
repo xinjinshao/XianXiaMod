@@ -1,0 +1,41 @@
+{
+  "date": "2026-10-23",
+  "round": 328,
+  "mod_version": "0.1.5",
+  "package": ".tml-test\\run-687d124765a941cb8a4db8bf1155f6b4\\save\\Mods\\XianXia.tmod",
+  "package_sha256": "728b8c7feeda29ec44b150e2f7e0009ec1398f49f4f8373bccecf8d7aaddbe1a",
+  "native_report": ".tml-test\\summons-b61d474c9e084293a7b0de74b635697c\\save\\XianXia\\summon-audit.json",
+  "report_sha256": "1281b0506f9e8f26ac7effff947caf81f132691c233125e407d9dfed1c4cfc4e",
+  "native_checks": 47848,
+  "new_native_checks": 1711,
+  "grouped_checks": {
+    "native route confirmation fixture imports each participant state": 288,
+    "native route shared preview identifies core realm altar or ready condition": 144,
+    "native client route preview matches authority requirement result": 144,
+    "native route browsing requirements neither spend materials nor choose a world route": 144,
+    "native first route request only commits and spends when all requirements are met": 144,
+    "native repeated first route request cannot repeat spending or output": 144,
+    "native second participant sees committed route lock or readiness after first refusal": 144,
+    "native same-tick competing route requests consume exactly one participant material and preserve first valid choice": 144,
+    "native route lock rejects losing participant after cooldown reset without material loss": 144,
+    "native chosen route remains locked after actual world-data save and reload hooks": 144,
+    "native losing participant receives permanent world lock feedback": 72,
+    "native route server refusal uses exact shared preview reason": 54,
+    "native competing route audit restores both participants tile world and connections": 1
+  },
+  "paired_scenarios": 144,
+  "source_checks": 40,
+  "dotnet_source_projects": 30,
+  "gameplay_assertions": 7720,
+  "limits": [
+    "Two sequential same-game-tick Handle calls, not simultaneous threads, real peers or transport.",
+    "Two authority modes, stages 7/8, every ordered pair of three routes, four initial gate states.",
+    "First invalid core condition is fixed in fixture before second valid participant submits.",
+    "Read-only preview runs in authority/client modes; inventories compared by full 58-slot ItemIO serialization.",
+    "After losing cooldown resets, actual permanent world gate still rejects without spending.",
+    "World save/reload uses registered hooks and TagCompound, not whole world file serialization.",
+    "UI code refreshes changed requirement every thirty Update calls; rendering, cadence in full game, scale, input and text wrapping not accepted.",
+    "Altar qualification patches a single tile HasTile/TileType pair only.",
+    "No balance, progression acquisition or complete playthrough; protocol/save layout unchanged."
+  ]
+}

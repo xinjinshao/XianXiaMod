@@ -19,6 +19,8 @@ public class EndgameRouteUIState : UIState
     private ResponsiveTextButton cancel;
     private float lastLayoutWidth = -1;
     private bool worldLocked;
+    private string lastRequirement;
+    private int requirementRefreshTimer;
     private UIList description;
     private UIScrollbar scrollbar;
     private readonly System.Collections.Generic.Dictionary<DownedBossSystem.EndgameRoute,ResponsiveTextButton> routeButtons = new();
@@ -30,9 +32,9 @@ public class EndgameRouteUIState : UIState
     public void SelectMaterial(int inventorySlot)
     {
         slot = inventorySlot; selectedItem = Main.LocalPlayer.inventory[slot]; selected = DownedBossSystem.EndgameRoute.None; worldLocked = false;
-        summary.SetText(Text("Warning") + "\n\n" + Text("NavigationHint")); confirm.SetFullText(Text("ChooseFirst"));
+        requirementRefreshTimer = 0; confirm.SetFullText(Text("ChooseFirst"));
         foreach (var button in routeButtons.Values) button.BorderColor = Color.Black;
-        LayoutContent(); scrollbar.ViewPosition = 0;
+        RefreshSummary(true); scrollbar.ViewPosition = 0;
     }
     public override void OnInitialize()
     {
@@ -60,10 +62,20 @@ public class EndgameRouteUIState : UIState
     private void SelectRoute(DownedBossSystem.EndgameRoute route)
     {
         if (!ValidSelection() || DownedBossSystem.ChosenRoute != DownedBossSystem.EndgameRoute.None || DaoArtifactRules.Normalize((int)route) == DownedBossSystem.EndgameRoute.None) return;
-        selected = route; summary.SetText(Text("Warning") + "\n\n" + Text(route + "Description") + "\n\n" + Text("NavigationHint"));
+        selected = route;
         confirm.SetFullText(Text("Confirm",Text(route.ToString())));
         foreach (var entry in routeButtons) entry.Value.BorderColor = entry.Key == route ? Color.Gold : Color.Black;
-        worldLocked = false; LayoutContent(); scrollbar.ViewPosition = 0;
+        worldLocked = false; RefreshSummary(true); scrollbar.ViewPosition = 0;
+    }
+    private void RefreshSummary(bool force = false)
+    {
+        string failure = EndgameRouteTransactions.RequirementFailure(Main.LocalPlayer);
+        if (!force && failure == lastRequirement) return;
+        lastRequirement = failure;
+        string detail = selected == DownedBossSystem.EndgameRoute.None ? "" : "\n\n" + Text(selected + "Description");
+        summary.SetText(Text("Warning") + detail + "\n\n" + (failure.Length == 0 ? Text("ReadyToConfirm") : Language.GetTextValue(failure))
+            + "\n\n" + Text("NavigationHint"));
+        LayoutContent();
     }
     private void LayoutContent()
     {
@@ -108,6 +120,7 @@ public class EndgameRouteUIState : UIState
             }
             base.Update(gameTime); return;
         }
+        if (++requirementRefreshTimer >= 30) { requirementRefreshTimer = 0; RefreshSummary(); }
         bool next = ArtifactKeybindSystem.RouteNextKey?.JustPressed == true, previous = ArtifactKeybindSystem.RoutePreviousKey?.JustPressed == true;
         if (next && previous) { ModContent.GetInstance<EndgameRouteUISystem>().Close(); return; }
         if (next || previous) { SelectRoute(EndgameRouteTransactions.AdjacentPreview(selected,previous)); return; }

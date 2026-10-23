@@ -1,6 +1,9 @@
 Mods: {
  XianXia: {
   Routes: {
+   NeedCore: 当前世界须先击败旧天道核心；未消耗路线材料
+   NeedRealm: 选择终局路线需要本人达到渡劫境或斩道境；未消耗路线材料
+   ReadyToConfirm: 当前条件已满足；确认消耗1路线材料，所选世界路线永久生效
    NavigationHint: 可在模组控制绑定路线前后项、说明上下滚、确认和取消；路线不可逆，确认前请阅读完整说明
    Title: 终局路线
    None: 尚未选择

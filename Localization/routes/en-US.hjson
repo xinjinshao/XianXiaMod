@@ -1,6 +1,9 @@
 Mods: {
  XianXia: {
   Routes: {
+   NeedCore: Defeat the Old Heaven Dao Core in this world first. No Route Material spent.
+   NeedRealm: Reach Tribulation or Dao Severing to choose an ending route. No Route Material spent.
+   ReadyToConfirm: Requirements met. Confirming spends 1 Route Material and permanently chooses the world route.
    NavigationHint: Bind route previous/next, description up/down, confirm and cancel in Mod Controls; read all details before confirming this irreversible choice
    Title: Endgame Route
    None: Undecided
