@@ -627,6 +627,7 @@ Mods: {
 			ShatteredJadeWyrmMinion.DisplayName: Spirit Vein Segment
 
 			Commission: {
+				RewardsBusy: Rewards cannot spawn right now. Clear nearby dropped items and try again; this commission remains unclaimed and reputation is unchanged.
 				Button: Commission
 				Unavailable: There is no suitable commission for you right now.
 				AlreadyClaimed: This commission has already been settled. The fallen sect records slowly, but accurately.

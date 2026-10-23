@@ -89,4 +89,20 @@ for(int i=0;i<entries.Length;i++) {
  Prepare(i); Main.LocalPlayer.Center=new(601,0);
  Check(!FollowupCommissions.TryClaim(Main.LocalPlayer,entry.Town.NPC,entry.Town.Name,out _),"Followup one pixel past range is refused");
 }
+for(int i=0;i<entries.Length;i++)foreach(int free in new[]{0,1,2})foreach(bool delayed in new[]{false,true}) {
+ Prepare(i);Main.netMode=NetmodeID.Server;
+ foreach(var item in Main.item)item.active=true;Array.Clear(Main.timeItemSlotCannotBeReusedFor);
+ for(int slot=0;slot<free;slot++)Main.item[slot].active=false;
+ if(delayed&&free>0)Main.timeItemSlotCannotBeReusedFor[0]=1;
+ int before=DownedBossSystem.SectReputation;var result=entries[i].Town.ClaimCommissionOnServer(Main.LocalPlayer);
+ bool ready=free==2&&!delayed;
+ Check(DownedBossSystem.ClaimedCommissions.Contains(entries[i].Id)==ready&&Main.LocalPlayer.Rewards.Count==(ready?2:0),"Reward capacity protects followup progress and complete delivery");
+ Check(DownedBossSystem.SectReputation==before+(ready?entries[i].Reputation:0),"Busy reward pool does not add reputation");
+ if(!ready) {
+  Check(result.Key=="Mods.XianXia.NPCs.Commission.RewardsBusy","Capacity rejection explains retry without losing eligibility");
+  Main.item[0].active=Main.item[1].active=false;Array.Clear(Main.timeItemSlotCannotBeReusedFor);
+  Check(entries[i].Town.ClaimCommissionOnServer(Main.LocalPlayer).Key.EndsWith(".Claimed")&&Main.LocalPlayer.Rewards.Count==2,"Freeing capacity allows the unchanged commission to be claimed");
+ }
+ foreach(var item in Main.item)item.active=false;Array.Clear(Main.timeItemSlotCannotBeReusedFor);
+}
 Console.WriteLine($"Actual five-NPC followup hooks passed: {count} assertions; world save and claims linked, engine inventory/packet/UI boundaries mocked.");

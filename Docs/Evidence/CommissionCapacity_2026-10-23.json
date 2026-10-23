@@ -1,0 +1,38 @@
+{
+  "date": "2026-10-23",
+  "round": 329,
+  "mod_version": "0.1.5",
+  "package": ".tml-test\\run-ce8962305bc84f08baeee4302ff994c3\\save\\Mods\\XianXia.tmod",
+  "package_sha256": "af384e00926ce733f59ffa9ed26fad7024456a8a9ef9a6dccb84989c484ef17a",
+  "native_report": ".tml-test\\summons-9b692a70e8f949399833ec57a019f170\\save\\XianXia\\summon-audit.json",
+  "report_sha256": "a099c8fc0b995aa7c8f2ba508885c4cb69d01b323e82589c9e578af072930c25",
+  "native_checks": 49129,
+  "new_native_checks": 1281,
+  "grouped_checks": {
+    "native commission claim and reputation commit only when every reward has reusable capacity": 240,
+    "native actual commission rewards are exact across inventory and world drops without partial delivery": 240,
+    "native commission claim never replaces existing world drops under capacity pressure": 240,
+    "native insufficient reward capacity reports unclaimed retry guidance": 160,
+    "native freeing item capacity lets the same commission deliver fully exactly once": 160,
+    "native repeat and second participant commission claims cannot duplicate rewards or reputation": 240,
+    "native commission audit restores all item slots reuse timers and both participants": 1
+  },
+  "before_fix_report": ".tml-test\\summons-d57ca7a7ceda4cc899e3d6603092e580\\save\\XianXia\\summon-audit.json",
+  "before_fix_sha256": "b38d6a4b2caaf107d101003aa21a0923546d15049e19f36b9dab4ff8edcf78e7",
+  "before_fix_error": "System.InvalidOperationException: native full world item pool defers commission without claiming progress or replacing existing drops: claimed=True reputation=8 changedDrops=0\r\n   at XianXia.Common.Systems.SummonAuditSystem.<>c__DisplayClass23_0.<RunOnce>g__Check|2(Boolean value, String name) in XianXiaMod\\Common\\Systems\\SummonAuditSystem.cs:line 67\r\n   at XianXia.Common.Systems.SummonAuditSystem.AuditCommissionCapacity(Action`2 check) in XianXiaMod\\Common\\Systems\\SummonAuditSystem.CommissionCapacity.cs:line 28\r\n   at XianXia.Common.Systems.SummonAuditSystem.RunOnce() in XianXiaMod\\Common\\Systems\\SummonAuditSystem.cs:line 977",
+  "scenarios": 240,
+  "source_checks": 40,
+  "dotnet_source_projects": 30,
+  "commission_source_assertions": 486,
+  "gameplay_assertions": 7720,
+  "limits": [
+    "All ten current commissions have two reward stacks; preflight counts inactive world slots whose reuse cooldown is zero before marking progress.",
+    "Actual registered NPC claim hooks and QuickSpawnItem, both single-player local actor and dedicated-server authority.",
+    "240 cases: ten quests, two authority modes, empty/full inventories, six capacity/reuse states.",
+    "Counts rewards in both claimant inventory and allocatable world slots; preserves preexisting dropped dirt items.",
+    "Repeat and second eligible participant cannot repeat reward; first-quest repeat may legitimately return locked followup guidance.",
+    "No physical NPC chat input, rendered dialogue, real network transport or pickup journey.",
+    "No other-mod reward spawning side effects or complete server load race proof.",
+    "No schema, protocol or generation changes."
+  ]
+}

@@ -627,6 +627,7 @@ Mods: {
 			ShatteredJadeWyrmMinion.DisplayName: 灵脉幼节
 
 			Commission: {
+				RewardsBusy: 奖励暂时无法生成，请清理附近掉落物后再试；委托尚未领取，进度与声望未改变。
 				Button: 委托
 				Unavailable: 现在还没有适合你的委托。
 				AlreadyClaimed: 这项委托已经结清。旧宗门记账很慢，但不会记错。

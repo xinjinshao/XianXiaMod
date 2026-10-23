@@ -190,6 +190,11 @@ public abstract class CultivationTownNPC : ModNPC
             CommissionText("Mods.XianXia.NPCs.Commission.Unavailable");
             return false;
         }
+        if (!CommissionRewards.HasCapacity(rewards.Length))
+        {
+            CommissionText("Mods.XianXia.NPCs.Commission.RewardsBusy");
+            return false;
+        }
         if (!DownedBossSystem.TryClaimCommission(key, reputation))
         {
             CommissionText("Mods.XianXia.NPCs.Commission.AlreadyClaimed");

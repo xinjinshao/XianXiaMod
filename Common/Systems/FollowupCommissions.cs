@@ -64,6 +64,9 @@ public static class FollowupCommissions
         {
             response = NetworkText.FromKey(key + "Locked"); return false;
         }
+        if (!CommissionRewards.HasCapacity(entry.Rewards.Length)) {
+            response = NetworkText.FromKey("Mods.XianXia.NPCs.Commission.RewardsBusy"); return false;
+        }
         if (!DownedBossSystem.TryClaimCommission(entry.Id, entry.Reputation)) return false;
         foreach (var reward in entry.Rewards) player.QuickSpawnItem(npc.GetSource_FromThis(), reward.Type, reward.Stack);
         response = NetworkText.FromKey(key + "Claimed", entry.Reputation, DownedBossSystem.SectReputation);
