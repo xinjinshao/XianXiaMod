@@ -552,15 +552,9 @@ public class XianXiaPlayer : ModPlayer
         int npcType = tribulationStage >= 5
             ? ModContent.NPCType<global::XianXia.Content.NPCs.Enemies.StarEclipsedCultivator>()
             : ModContent.NPCType<global::XianXia.Content.NPCs.Enemies.TribulationCloudling>();
-        int id = NPC.NewNPC(Player.GetSource_FromThis(), (int)(Player.Center.X + offsetX), (int)(Player.Center.Y + offsetY),
+        NPC.NewNPC(Player.GetSource_FromThis(global::XianXia.Common.Systems.HeartDemonStats.SpawnContext), (int)(Player.Center.X + offsetX), (int)(Player.Center.Y + offsetY),
             npcType);
-        if (id < Main.maxNPCs)
-        {
-            Main.npc[id].lifeMax = (int)(Main.npc[id].lifeMax * 0.5f);
-            Main.npc[id].life = Main.npc[id].lifeMax;
-            Main.npc[id].damage = Math.Max(1, Main.npc[id].damage * 2 / 3);
-            Main.npc[id].netUpdate = true;
-        }
+        // HeartDemonStats applies and synchronizes the reduction during native OnSpawn.
     }
 
     private void SpawnHeavenTabletSeal()
