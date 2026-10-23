@@ -972,6 +972,7 @@ public partial class SummonAuditSystem : ModSystem
             AuditTrialRetries(Check);
             AuditTrialSaves(Check);
             AuditForgeRequirements(Check);
+            AuditDaoRequirements(Check);
             AuditSectRuinHalls(Check);
             AuditSectRuinPaths(Check);
             AuditThunderShrines(Check);

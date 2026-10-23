@@ -1,0 +1,37 @@
+{
+  "date": "2026-10-23",
+  "round": 327,
+  "mod_version": "0.1.5",
+  "package": ".tml-test\\run-48b46f2672064b42b0897e455047b64e\\save\\Mods\\XianXia.tmod",
+  "package_sha256": "48f5d559755bbac3d04e75dbad5869afa76b4f64d14c0a745099581c504aec7a",
+  "native_report": ".tml-test\\summons-e65f189e3b164731a4e8cdd2950599ed\\save\\XianXia\\summon-audit.json",
+  "report_sha256": "a827027f1ca1e7097826daed06defde386f9ca2efde088d986db53033d866bea",
+  "native_checks": 46137,
+  "new_native_checks": 3781,
+  "grouped_checks": {
+    "native Dao readiness fixture imports valid registered player state": 504,
+    "native Dao preview returns precise first unmet condition or ready": 504,
+    "native client Dao preview shares canonical authority gates": 504,
+    "native Dao preview preserves all inventory slots and resource state": 504,
+    "native Dao ready confirmation consumes exact materials and preserves growth inscription and prefix": 42,
+    "native Dao item transaction never changes world route or player resources": 504,
+    "native Dao repeat confirmation cannot spend twice or repeat reply": 504,
+    "native Dao unmet condition or stale world route spends no materials and preserves all slots": 462,
+    "native Dao server reply agrees with precise requirement or stale preview refusal": 252,
+    "native Dao readiness audit restores player tile world and connections": 1
+  },
+  "transaction_scenarios": 504,
+  "source_checks": 40,
+  "dotnet_source_projects": 30,
+  "gameplay_assertions": 7720,
+  "limits": [
+    "Panel uses shared requirement function but full panel rendering/layout/input is not exercised.",
+    "Actual helper evaluated on authority/client copies; actual Handle transaction and server NetworkText reply decoding.",
+    "Full 58 inventory slots compared through ItemIO serialization.",
+    "Altar qualification patches one loaded-world HasTile/TileType pair only; no physical station placement.",
+    "Stale preview case changes chosen route directly through saved world data only inside fixture; not a production route-changing feature.",
+    "Existing owner inventory transport audit retained, not repeated for every new refusal.",
+    "No live clients, transport, gameplay balancing, full walkthrough or new world generation.",
+    "Protocol and saves unchanged; requirement feedback now uses more specific localization keys."
+  ]
+}
