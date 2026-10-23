@@ -1,0 +1,34 @@
+{
+  "date": "2026-10-23",
+  "round": 321,
+  "mod_version": "0.1.5",
+  "package": ".tml-test\\run-c5dbc452d92c487d842a79cdf90543c8\\save\\Mods\\XianXia.tmod",
+  "package_sha256": "b4c1936bea8e377b43fdfbfc5eaa8a5ef3350694a0cda91b64d3e5a7de24d414",
+  "native_report": ".tml-test\\summons-7253091c5f0b47678c8de9199341c6ca\\save\\XianXia\\summon-audit.json",
+  "report_sha256": "1baaa3517f27483c731f123fd28ad8dbb8931ff5ff5bc9b44165483331cd3ee9",
+  "native_checks": 36515,
+  "new_native_checks": 168,
+  "grouped_checks": {
+    "native live heart demon and released bolt retain valid positive damage control": 28,
+    "native ended heart trial blocks remnant contact before next NPC AI": 28,
+    "native ended heart trial blocks already released NPC bolt before cleanup": 28,
+    "native forced fatal strike on invalid heart remnant produces no loot or kill progress": 28,
+    "native cancelled heart remnant cannot revive on forced reactivation": 28,
+    "native orphaned heart bolt enters harmless six-tick fade through actual projectile AI": 28
+  },
+  "before_fix_report": ".tml-test\\summons-5393644191d844058c299922f367cc80\\save\\XianXia\\summon-audit.json",
+  "before_fix_sha256": "a63535ba0903dd65e21fed818006cf7df4fa551087d339edebe9abfb890c4549",
+  "before_fix_error": "System.InvalidOperationException: native ended heart trial blocks remnant contact before next NPC AI\r\n   at XianXia.Common.Systems.SummonAuditSystem.<>c__DisplayClass22_0.<RunOnce>g__Check|2(Boolean value, String name) in XianXiaMod\\Common\\Systems\\SummonAuditSystem.cs:line 67\r\n   at XianXia.Common.Systems.SummonAuditSystem.AuditHeartDemonLifecycle(Action`2 check) in XianXiaMod\\Common\\Systems\\SummonAuditSystem.HeartDemonLifecycle.cs:line 27\r\n   at XianXia.Common.Systems.SummonAuditSystem.RunOnce() in XianXiaMod\\Common\\Systems\\SummonAuditSystem.cs:line 969",
+  "source_checks": 40,
+  "dotnet_source_projects": 30,
+  "heart_demon_source_assertions": 181,
+  "gameplay_assertions": 7720,
+  "limits": [
+    "No full NPC/player frame, rendered client or real network transport.",
+    "Stage 3 explicitly invokes the private fallback generation path; not natural progression coverage.",
+    "Fatal-strike fixture occupies combat text slots to avoid headless font allocation.",
+    "Active trial enemy target selection and ordinary kill rewards unchanged.",
+    "Source tests cover pending client epoch and terminal rejection; current native lifecycle matrix covers authority only.",
+    "Copied existing world; no new world generation changes."
+  ]
+}

@@ -16,7 +16,7 @@ public partial class SummonAuditSystem
     {
         int slot=Enumerable.Range(0,Main.maxNPCs).First(i=>!Main.npc[i].active);NPC oldNpc=Main.npc[slot];Player oldPlayer=Main.player[0];
         int mode=Main.netMode,local=Main.myPlayer,difficulty=Main.GameMode;var clients=(RemoteClient[])Netplay.Clients.Clone();var connection=Netplay.Connection;var random=Main.rand;
-        var history=(long[])NpcEncounterIdentitySystem.ClientLastSeen.Clone();var output=new AuditOutputSocket(true);
+        var history=(long[])NpcEncounterIdentitySystem.ClientLastSeen.Clone();var trialHistory=(long[])TribulationEpochSystem.ClientLastSeen.Clone();Array.Clear(TribulationEpochSystem.ClientLastSeen);var output=new AuditOutputSocket(true);
         try {
             Main.rand=new Terraria.Utilities.UnifiedRandom(320);
             for(int i=0;i<Netplay.Clients.Length;i++)Netplay.Clients[i]=new RemoteClient { Id=i,Socket=i==0?output:new AuditOutputSocket(),State=i==0?10:0,IsActive=i==0 };
@@ -32,8 +32,9 @@ public partial class SummonAuditSystem
                 check(authority.active&&authority.life==authority.lifeMax&&authority.damage==authority.defDamage,"native authoritative heart demon and natural spawn keeps permanent combat stats through actual AI");
                 foreach(bool wounded in new[]{false,true}) {
                     Main.netMode=NetmodeID.Server;Main.myPlayer=Main.maxPlayers;Main.npc[slot]=authority;authority.life=wounded?Math.Max(1,authority.lifeMax/3):authority.lifeMax;output.Sent.Clear();
+                    long session=state.TribulationSession;
                     NetMessage.SendData(MessageID.SyncNPC,0,-1,null,slot);byte[] packet=output.Sent.Last(p=>p.Length>2&&p[2]==MessageID.SyncNPC),payload=packet[2..];
-                    Main.netMode=NetmodeID.MultiplayerClient;Main.myPlayer=0;Netplay.Connection=new RemoteServer();Array.Clear(NpcEncounterIdentitySystem.ClientLastSeen);Main.npc[slot]=new NPC { whoAmI=slot };
+                    Main.netMode=NetmodeID.MultiplayerClient;Main.myPlayer=0;Netplay.Connection=new RemoteServer();Array.Clear(NpcEncounterIdentitySystem.ClientLastSeen);Main.npc[slot]=new NPC { whoAmI=slot };state.TryReceiveTribulationEpoch(0,session);
                     var buffer=new MessageBuffer { whoAmI=256,readBuffer=payload,reader=new BinaryReader(new MemoryStream(payload)) };
                     try { buffer.GetData(0,payload.Length,out int kind);check(kind==MessageID.SyncNPC,"official client decoder accepts native heart demon NPC packet"); } finally { buffer.reader.Dispose(); }
                     NPC receiver=Main.npc[slot];
@@ -44,7 +45,7 @@ public partial class SummonAuditSystem
                 }
             }
         } finally {
-            Main.npc[slot]=oldNpc;Main.player[0]=oldPlayer;clients.CopyTo(Netplay.Clients,0);Netplay.Connection=connection;Main.netMode=mode;Main.myPlayer=local;Main.GameMode=difficulty;Main.rand=random;history.CopyTo(NpcEncounterIdentitySystem.ClientLastSeen,0);
+            Main.npc[slot]=oldNpc;Main.player[0]=oldPlayer;clients.CopyTo(Netplay.Clients,0);Netplay.Connection=connection;Main.netMode=mode;Main.myPlayer=local;Main.GameMode=difficulty;Main.rand=random;history.CopyTo(NpcEncounterIdentitySystem.ClientLastSeen,0);trialHistory.CopyTo(TribulationEpochSystem.ClientLastSeen,0);
         }
         check(ReferenceEquals(Main.npc[slot],oldNpc)&&ReferenceEquals(Main.player[0],oldPlayer)&&NpcEncounterIdentitySystem.ClientLastSeen.SequenceEqual(history),"native heart demon packet audit restores NPC player difficulty and identity history");
     }

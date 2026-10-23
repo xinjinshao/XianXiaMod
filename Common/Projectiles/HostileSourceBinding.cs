@@ -61,6 +61,8 @@ internal sealed class HostileSourceBinding
         NPC parent = Main.npc[sourceSlot];
         if (parent == null || parent.type != sourceType || sourceNpcIdentity <= 0 || !BossTargeting.HasLivingTarget(parent)
             || GetNpcIdentity(parent) != sourceNpcIdentity) return false;
+        if (ModContent.GetInstance<HeartDemonStats>() != null && parent.TryGetGlobalNPC<HeartDemonStats>(out var heart)
+            && !heart.IsSourceValid(parent)) return false;
         // Network-spawned client shots have no local source reference; the server identity is decisive.
         bool sameReferences = ReferenceEquals(parent,sourceNpc) && ReferenceEquals(parent.ModNPC,sourceModNpc);
         return sameReferences || (Main.netMode == NetmodeID.MultiplayerClient && sourceNpc == null);

@@ -30,3 +30,5 @@ namespace Terraria.Audio {
  public static class SoundEngine { public static int Calls; public static SoundStyle LastStyle; public static Microsoft.Xna.Framework.Vector2 LastPosition; public static void PlaySound(SoundStyle style,Microsoft.Xna.Framework.Vector2 position) { Calls++; LastStyle=style;LastPosition=position; } }
 }
 namespace Terraria.ID { public static class SoundID { public static Terraria.Audio.SoundStyle Item15 => new(); } }
+
+namespace XianXia.Common.Systems { public class HeartDemonStats:Terraria.ModLoader.GlobalNPC { public bool IsSourceValid(Terraria.NPC npc)=>true; } }
