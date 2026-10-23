@@ -81,6 +81,10 @@ public class InscriptionUIState : UIState
             : Language.GetTextValue("Mods.XianXia.Refinement.AwakeningSelection", targetName)) + "\n" + cost);
         if (tool.TransformsArtifact) summary.SetText(Language.GetTextValue("Mods.XianXia.DaoArtifacts.Selection",targetSlot < 0 ? Text("ChooseTarget") : targetName,
             Language.GetTextValue(EndgameRouteTransactions.NameKey(DownedBossSystem.ChosenRoute))));
+        if (targetSlot >= 0 && !tool.TransformsArtifact && TargetStillMatches(player)) {
+            string failure = InscriptionTransactions.RequirementFailure(player, tool, player.inventory[targetSlot]);
+            summary.SetText(summary.Text + "\n" + (failure.Length == 0 ? Text("ReadyToConfirm") : Language.GetTextValue(failure)));
+        }
         if (targetChanged) summary.SetText(Text("TargetChanged"));
         eligibleSlots.Clear(); selectTargetActions.Clear();
         for (int slot = 0; slot < Math.Min(58, player.inventory.Length); slot++)

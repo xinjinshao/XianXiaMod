@@ -1,0 +1,43 @@
+{
+  "date": "2026-10-23",
+  "round": 326,
+  "mod_version": "0.1.5",
+  "package": ".tml-test\\run-a382d3b3674142acb89435cb9bbc7091\\save\\Mods\\XianXia.tmod",
+  "package_sha256": "30a6e3cb78526e8e002949d352e7ce0a44b398080f8cca094f4821824591eccf",
+  "native_report": ".tml-test\\summons-58160d223e5944d8bf589bdb08b93f50\\save\\XianXia\\summon-audit.json",
+  "report_sha256": "0d23a576a3ff81b8cfd1ee659377d24c20fa8585fe5ef38769c796e5aa5b44c4",
+  "native_checks": 42356,
+  "new_native_checks": 2001,
+  "grouped_checks": {
+    "native forge fixture imports valid registered player state": 288,
+    "native forge requirement preview matches ready station material and progression gates": 288,
+    "native client forge preview shares authority requirement result": 288,
+    "native forge preview never spends materials or changes equipment resources": 288,
+    "native forge transaction consumes exactly one tool and specified stones across stacks": 128,
+    "native forge success preserves target prefix and intended inscription refinement awakening": 128,
+    "native forge repeated same-frame confirmation neither spends again nor sends duplicate result": 288,
+    "native rejected forge request preserves all fifty-eight inventory slots": 160,
+    "native server forge reply matches preview refusal or actual success result": 144,
+    "native forge requirement audit restores player tile and world context": 1
+  },
+  "transaction_scenarios": 288,
+  "positive_scenarios": 128,
+  "operation_families": {
+    "needles": 5,
+    "removal": 1,
+    "refinement_levels": 3,
+    "awakening_weapons": 7
+  },
+  "source_checks": 40,
+  "dotnet_source_projects": 30,
+  "gameplay_assertions": 7720,
+  "limits": [
+    "UI appends shared read-only requirement result; no rendered panel, mouse input, text wrapping or scale acceptance.",
+    "Native matrix executes actual helper in authority/client modes, real HandleRequest and server NetworkText response decoding.",
+    "Inventory comparison uses ItemIO serialization for all 58 slots, not a fake item struct.",
+    "Station fixture patches only HasTile/TileType of one loaded-world tile, not physical station placement or multi-tile frame validation.",
+    "No new owner inventory receive proof in this fixture; existing owner synchronization audit retained.",
+    "Single-player branch uses dedicated engine; no real clients/network or NPC dialogue flow.",
+    "No balance, world generation, protocol or save changes."
+  ]
+}

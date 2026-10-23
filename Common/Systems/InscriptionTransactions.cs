@@ -26,6 +26,35 @@ public static class InscriptionTransactions
             }
         return false;
     }
+    // Read-only preview shared by the panel and authority transaction; an empty key means ready.
+    public static string RequirementFailure(Player player, InscriptionToolItem material, Item target)
+    {
+        if (material == null || material.TransformsArtifact || target == null || !InscribedEquipment.IsEligible(target) || target.stack != 1)
+            return "Mods.XianXia.Inscriptions.ChangedInventory";
+        byte level = RefinedArtifact.GetLevel(target);
+        bool inscribed = InscribedEquipment.GetKind(target) != InscriptionKind.None;
+        var state = player.GetModPlayer<XianXiaPlayer>();
+        if (!NearForge(player)) return "Mods.XianXia.Inscriptions.NeedForge";
+        if (material.AwakensArtifact && (!RefinedArtifact.SupportsAwakening(target)
+            || !RefinementRules.CanAwaken(level, inscribed, RefinedArtifact.IsAwakened(target), state.cultivationStage,
+                DownedBossSystem.DownedBosses.Contains("greenwood_medicine_king_echo"))))
+            return "Mods.XianXia.Refinement.AwakeningRequirements";
+        if (material.AwakensArtifact && target.ModItem.Name == "MoonboneDharmaSword"
+            && (state.cultivationStage < CultivationStage.Tribulation || !DownedBossSystem.DownedBosses.Contains("moonbone_immortal")))
+            return "Mods.XianXia.Refinement.MoonRequirements";
+        if (material.RefinesArtifact && (!RefinedArtifact.SupportsRefinement(target)
+            || !RefinementRules.CanAdvance(level, inscribed, state.cultivationStage,
+                DownedBossSystem.DownedBosses.Contains(RefinementRules.RequiredBoss(level)))))
+            return "Mods.XianXia.Refinement.Requirements";
+        if (!material.RefinesArtifact && !material.AwakensArtifact && !InscriptionRules.CanChange(InscribedEquipment.GetKind(target), material.TargetKind))
+            return "Mods.XianXia.Inscriptions.NoChange";
+        int required = StoneCost(material, level), count = 0, stoneType = ModContent.ItemType<LowGradeSpiritStone>();
+        for (int slot = 0; slot < Math.Min(58, player.inventory.Length); slot++)
+            if (player.inventory[slot].type == stoneType && player.inventory[slot].stack > 0) count += Math.Min(required, player.inventory[slot].stack);
+        return count < required ? "Mods.XianXia.Inscriptions.NeedStones" : "";
+    }
+    private static int StoneCost(InscriptionToolItem material, byte level) => material.AwakensArtifact ? RefinementRules.AwakeningStoneCost
+        : material.RefinesArtifact ? RefinementRules.StoneCost(level) : material.TargetKind == InscriptionKind.None ? 0 : InscriptionRules.SpiritStoneCost;
     public static void Request(Player player, int toolSlot, int toolType, int targetSlot, int targetType, int prefix, byte previous, byte previousLevel = 0, bool previousAwakened = false)
     {
         if (toolSlot < 0 || toolSlot >= 58 || targetSlot < 0 || targetSlot >= 58) return;
@@ -57,28 +86,9 @@ public static class InscriptionTransactions
         {
             InscriptionKind next = material.TargetKind;
             int stoneType = ModContent.ItemType<LowGradeSpiritStone>();
-            int required = next == InscriptionKind.None ? 0 : InscriptionRules.SpiritStoneCost;
-            if (material.RefinesArtifact) required = RefinementRules.StoneCost(previousLevel);
-            if (material.AwakensArtifact) required = RefinementRules.AwakeningStoneCost;
-            int count = 0;
-            for (int slot = 0; slot < Math.Min(58, player.inventory.Length); slot++)
-                if (player.inventory[slot].type == stoneType && player.inventory[slot].stack > 0) count += Math.Min(required, player.inventory[slot].stack);
-            if (!NearForge(player)) result = "Mods.XianXia.Inscriptions.NeedForge";
-            else if (material.AwakensArtifact && (!RefinedArtifact.SupportsAwakening(target)
-                || !RefinementRules.CanAwaken(previousLevel, previous != 0, previousAwakened,
-                    player.GetModPlayer<XianXiaPlayer>().cultivationStage, DownedBossSystem.DownedBosses.Contains("greenwood_medicine_king_echo"))))
-                result = "Mods.XianXia.Refinement.AwakeningRequirements";
-            else if (material.AwakensArtifact && target.ModItem.Name == "MoonboneDharmaSword"
-                && (player.GetModPlayer<XianXiaPlayer>().cultivationStage < CultivationStage.Tribulation
-                    || !DownedBossSystem.DownedBosses.Contains("moonbone_immortal")))
-                result = "Mods.XianXia.Refinement.MoonRequirements";
-            else if (material.RefinesArtifact && (!RefinedArtifact.SupportsRefinement(target)
-                || !RefinementRules.CanAdvance(previousLevel, previous != 0, player.GetModPlayer<XianXiaPlayer>().cultivationStage,
-                    DownedBossSystem.DownedBosses.Contains(RefinementRules.RequiredBoss(previousLevel)))))
-                result = "Mods.XianXia.Refinement.Requirements";
-            else if (!material.RefinesArtifact && !material.AwakensArtifact && !InscriptionRules.CanChange(InscribedEquipment.GetKind(target), next)) result = "Mods.XianXia.Inscriptions.NoChange";
-            else if (count < required) result = "Mods.XianXia.Inscriptions.NeedStones";
-            else {
+            int required = StoneCost(material, previousLevel);
+            result = RequirementFailure(player, material, target);
+            if (result.Length == 0) {
                 if (material.AwakensArtifact) target.GetGlobalItem<RefinedArtifact>().TryAwaken();
                 else if (material.RefinesArtifact) target.GetGlobalItem<RefinedArtifact>().SetLevel(previousLevel + 1);
                 else target.GetGlobalItem<InscribedEquipment>().SetKind(next);
