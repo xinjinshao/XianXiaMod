@@ -61,13 +61,13 @@ public class StarEclipseArbalest : global::XianXia.Common.Items.CultivationWeapo
 
         return player.GetModPlayer<global::XianXia.Common.Players.XianXiaPlayer>()
 
-            .CanConsumeSpiritualEnergy(HasArtifactAwakening(player) ? 13 : 16);
+            .CanConsumeSpiritualEnergy(GetSpiritCost(player));
 
     }
 
 
 
-    public override int GetSpiritCost(Player player) => HasArtifactAwakening(player) ? 13 : 16;
+    public override int GetSpiritCost(Player player) => global::XianXia.Common.Items.RefinedArtifact.IsAwakened(Item) ? 10 : HasArtifactAwakening(player) ? 13 : 16;
 
 
     private static bool HasArtifactAwakening(Player player)
@@ -88,6 +88,7 @@ public class StarEclipseArbalest : global::XianXia.Common.Items.CultivationWeapo
 
     {
 
+        if (global::XianXia.Common.Items.RefinedArtifact.IsAwakened(Item)) damage += 0.1f;
         if (HasArtifactAwakening(player))
 
             damage += 0.12f;
@@ -104,9 +105,9 @@ public class StarEclipseArbalest : global::XianXia.Common.Items.CultivationWeapo
 
         string key = HasArtifactAwakening(player)
 
-            ? "Mods.XianXia.Progression.ArtifactAwakeningReady"
+            ? "Mods.XianXia.Refinement.ArbalestHeritageReady"
 
-            : "Mods.XianXia.Progression.ArtifactAwakeningLocked";
+            : "Mods.XianXia.Refinement.ArbalestHeritageLocked";
 
         tooltips.Add(new TooltipLine(
 
@@ -114,7 +115,7 @@ public class StarEclipseArbalest : global::XianXia.Common.Items.CultivationWeapo
 
             "XianXiaArtifactAwakening",
 
-            Terraria.Localization.Language.GetTextValue(key, global::XianXia.Common.Players.CultivationStatusText.StageName(global::XianXia.Common.Players.CultivationStage.GoldenCore), 48, 13, 12)));
+            Terraria.Localization.Language.GetTextValue(key, global::XianXia.Common.Players.CultivationStatusText.StageName(global::XianXia.Common.Players.CultivationStage.GoldenCore), 48, GetSpiritCost(player), 12)));
 
     }
 

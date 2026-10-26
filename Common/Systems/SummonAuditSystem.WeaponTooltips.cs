@@ -33,10 +33,10 @@ public partial class SummonAuditSystem
                     var refined = item.GetGlobalItem<RefinedArtifact>(); refined.SetLevel(3); check(refined.TryAwaken(), "native skill tooltip fixture uses actual awakening state");
                     if (route != 0) check(refined.TryTransform((DownedBossSystem.EndgameRoute)route), "native skill tooltip fixture uses actual matching-world Dao state");
                     var selectedSkill = ArtifactSkillTransactions.HeldSkill(item);
-                    if (item.ModItem is CinnabarTalismanFlameItem) {
+                    if (item.ModItem is CinnabarTalismanFlameItem or StarEclipseArbalest) {
                         var flameLines = new List<TooltipLine>(); item.GetGlobalItem<CultivationDamageClassHelp>().ModifyTooltips(item, flameLines);
                         check(!selectedSkill.HasValue && !item.ModItem.AltFunctionUse(actor)
-                            && flameLines.All(line => line.Name != "CurrentArtifactSkill"), "native awakened cinnabar does not advertise an undefined active skill");
+                            && flameLines.All(line => line.Name != "CurrentArtifactSkill"), "native awakened passive-growth weapon does not advertise an undefined active skill");
                         continue;
                     }
                     if (item.ModItem is ThunderPatternSwordCase)

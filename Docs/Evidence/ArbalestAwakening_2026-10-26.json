@@ -1,0 +1,40 @@
+{
+  "round": 347,
+  "date": "2026-10-26",
+  "mod_version": "0.1.5",
+  "native_checks": 59678,
+  "new_native_checks": 495,
+  "effect_matrix": "3 modes x 4 realms x reputation 47/48 x dormant/awakened",
+  "native_groups": {
+    "native star arbalest fixture imports valid authority state": 14,
+    "native star arbalest keeps native combat prefix": 14,
+    "native star arbalest authority spends one seal and exactly twenty-four stones": 2,
+    "native star arbalest awakening retains actual equipment inscription prefix and refinement": 2,
+    "native star arbalest server emits authoritative inventory/reply output to captured socket": 2,
+    "native repeated star arbalest awakening spends nothing": 2,
+    "native star arbalest full save and clone preserve awakening without automatically granting a Dao route": 4,
+    "native star arbalest uses unchanged three-byte growth payload with no Dao route": 2,
+    "native star arbalest invalid realm boss level inscription stones or station preserves resources": 12,
+    "native star arbalest crafted ten-energy cost independent of preserved thirteen/sixteen-energy heritage": 48,
+    "native star arbalest refinement awakening and heritage damage hooks remain additive": 48,
+    "native star arbalest rejects one below current energy cost": 48,
+    "native star arbalest accepts exact current energy cost": 48,
+    "native star arbalest does not expose an undefined active skill or Dao transformation": 48,
+    "native star arbalest heritage and crafted-awakening tooltips resolve independently": 48,
+    "native star arbalest explicit state fixture awakened": 24
+  },
+  "additional_coverage": "Star Eclipse Arbalest included in shared forge requirement/authority matrix and no-skill tooltip checks",
+  "report": ".tml-test\\summons-b6ba72756652494baf9c3b3cb86bd362\\save\\XianXia\\summon-audit.json",
+  "report_sha256": "0ac67edc5372b7922436dda3f00cfca9f15837e6fe7b4899ba27a909ea2df7e7",
+  "package": ".tml-test\\run-2e28f480dbc74cd3a635b5b203492434\\save\\Mods\\XianXia.tmod",
+  "package_sha256": "04031cb2fd6e8e4725ef7c31bf7597332b3e07511ad4c2dda3c57c839ac5d6c3",
+  "gameplay_checks": 7720,
+  "networking_checks": 30455,
+  "limitations": [
+    "No rendered forge UI, actual network or full combat balance",
+    "Actual prepared registered shot and direct damage hooks; no full input frames",
+    "No new active skill or Dao route for this weapon"
+  ],
+  "source_checks": 40,
+  "source_log": ".tml-test/source347.log"
+}

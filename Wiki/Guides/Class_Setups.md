@@ -40,7 +40,7 @@
 | 职业 | 装备选择 | 获得入口与定位 |
 | --- | --- | --- |
 | 近战 | [雷纹剑匣](../../Content/Items/Weapons/ThunderPatternSwordCase.cs) | 雷系灵气近战；普通攻击与后续显式觉醒/技能分别解锁。 |
-| 远程 | [星蚀弩机](../../Content/Items/Weapons/StarEclipseArbalest.cs) | 灵气远程，与符弩弹药路线分开；强化条件不是普通攻击门槛。 |
+| 远程 | [星蚀弩机](../../Content/Items/Weapons/StarEclipseArbalest.cs) | 灵气远程，与符弩弹药路线分开；元婴及药王残影后可材料觉醒（额外10%伤害、基础灵耗10），原金丹/声望传承独立保留。 |
 | 魔法 | [雷符阵盘](../../Content/Items/Weapons/ThunderTalismanArrayPlate.cs) | 区域落雷法阵；受部署限制，需要预留灵气。 |
 | 召唤 | [星渊幼体契](../../Content/Items/HandGenerated/SpiritContracts.cs) | 星纹丹鼎：星灾灵核1、星渊胎膜8、下品灵石16；制作和召唤都要求困难模式，召唤16魔力，占1仆从位。 |
 

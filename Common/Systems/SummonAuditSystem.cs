@@ -937,6 +937,7 @@ public partial class SummonAuditSystem : ModSystem
                 "registered wheel fixture restores inventory resource snapshot owner counts and engine context");
             AuditBiomeScans(Check);
             AuditCinnabarAwakening(Check);
+            AuditArbalestAwakening(Check);
             AuditPillBuffs(Check);
             AuditPillQualityStacks(Check);
             AuditPillQualityPickup(Check);
