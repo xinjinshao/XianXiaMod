@@ -1,0 +1,46 @@
+{
+  "round": 363,
+  "date": "2026-10-26",
+  "weapon": "StarEclipseArbalest",
+  "passed": true,
+  "nativeChecks": 70679,
+  "addedChecks": 1053,
+  "nominalDamage": 180,
+  "baseCosts": {
+    "normal": 18,
+    "starAbyss": 14,
+    "inactiveAwakened": 10
+  },
+  "verification": [
+    "Native SP and server Dao transactions on all three routes, exact material costs and duplicate refusal",
+    "Full ItemIO and clone preserve prefix inscription refinement awakening route",
+    "48 world activation states: damage with independent heritage, eligibility, unaffordable rejection, exact-energy firing and record retention",
+    "24 single-player world combinations directly invoke native OnHitNPC and create two ranged half-damage SpiritBolt children",
+    "Shared requirement and forge confirm matrices include new weapon",
+    "Official build package dedicated server load, source 40 checks, Gameplay 7720 assertions"
+  ],
+  "artifacts": [
+    {
+      "path": "C:\\Users\\Shao\\Desktop\\Coding\\XianXiaMod\\.tml-test\\summons-3a8d27d0f4bb44e48964fd9fdfe83c61\\save\\XianXia\\summon-audit.json",
+      "sha256": "17dfb1ebf4175761f2e8d5de075c29ff02c2711ea44dbbad6b1436e2f8d413a9"
+    },
+    {
+      "path": "C:\\Users\\Shao\\Desktop\\Coding\\XianXiaMod\\.tml-test\\run-eee025fa69b640e983905638aa496a8d\\save\\Mods\\XianXia.tmod",
+      "sha256": "b931b020c6c87dd097710ff9abb1457261d58fda7f686731ffdbec0ce59aea99"
+    },
+    {
+      "path": "C:\\Users\\Shao\\Desktop\\Coding\\XianXiaMod\\.tml-test\\source363.log",
+      "sha256": "98fa1f9527af65fbfb861d3622e234c8be10869b7d8e8cdb5409ff455fad2a68"
+    },
+    {
+      "path": "C:\\Users\\Shao\\Desktop\\Coding\\XianXiaMod\\.tml-test\\gameplay363.log",
+      "sha256": "0fcd04c021a7ba3d42c1615a42eabca84b8e187b90d93ac2d8e377c690367771"
+    }
+  ],
+  "limitations": [
+    "Hit callback invocation is not actual collision or complete engine frames",
+    "No real client transport or rendered UI acceptance",
+    "Damage and energy balance require combat playtesting; no active skill added",
+    "Source suite passed before final audit-only split assertions; final native package and Gameplay checked afterward"
+  ]
+}

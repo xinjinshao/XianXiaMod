@@ -67,7 +67,10 @@ public class StarEclipseArbalest : global::XianXia.Common.Items.CultivationWeapo
 
 
 
-    public override int GetSpiritCost(Player player) => global::XianXia.Common.Items.RefinedArtifact.IsAwakened(Item) ? 10 : HasArtifactAwakening(player) ? 13 : 16;
+    public override int GetSpiritCost(Player player) => global::XianXia.Common.Items.RefinedArtifact.ActiveDaoRoute(Item) is var route
+        && route != global::XianXia.Common.Systems.DownedBossSystem.EndgameRoute.None
+        ? global::XianXia.Common.Systems.DaoArtifactRules.WeaponCost(Name, route)
+        : global::XianXia.Common.Items.RefinedArtifact.IsAwakened(Item) ? 10 : HasArtifactAwakening(player) ? 13 : 16;
 
 
     private static bool HasArtifactAwakening(Player player)

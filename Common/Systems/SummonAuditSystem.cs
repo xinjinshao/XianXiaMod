@@ -952,6 +952,7 @@ public partial class SummonAuditSystem : ModSystem
             AuditFlameDao(Check);
             AuditWoodgrainDao(Check);
             AuditSpiritwoodDao(Check);
+            AuditArbalestDao(Check);
             AuditPillBuffs(Check);
             AuditPillQualityStacks(Check);
             AuditPillQualityPickup(Check);
