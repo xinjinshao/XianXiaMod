@@ -1,0 +1,163 @@
+{
+  "round": 341,
+  "date": "2026-10-26",
+  "scope": "Documentation correction against current production sources; no gameplay changes",
+  "weapon_sources": 19,
+  "local_links_checked": 29,
+  "links": [
+    {
+      "page": "Wiki\\Guides\\Class_Setups.md",
+      "target": "../Home.md"
+    },
+    {
+      "page": "Wiki\\Guides\\Class_Setups.md",
+      "target": "../../Content/Items/Weapons/WoodgrainFlyingSword.cs"
+    },
+    {
+      "page": "Wiki\\Guides\\Class_Setups.md",
+      "target": "../../Content/Items/Weapons/SpiritwoodCrossbow.cs"
+    },
+    {
+      "page": "Wiki\\Guides\\Class_Setups.md",
+      "target": "../../Content/Items/Weapons/CinnabarTalismanFlameItem.cs"
+    },
+    {
+      "page": "Wiki\\Guides\\Class_Setups.md",
+      "target": "../../Content/Items/HandGenerated/SmallArtifactPendant.cs"
+    },
+    {
+      "page": "Wiki\\Guides\\Class_Setups.md",
+      "target": "../../Content/Items/Weapons/CloudpiercerFlyingSword.cs"
+    },
+    {
+      "page": "Wiki\\Guides\\Class_Setups.md",
+      "target": "../Content/Equipment/Entries/Black_Furnace_Warhammer.md"
+    },
+    {
+      "page": "Wiki\\Guides\\Class_Setups.md",
+      "target": "../Content/Equipment/Entries/Talisman_Crossbow.md"
+    },
+    {
+      "page": "Wiki\\Guides\\Class_Setups.md",
+      "target": "../../Content/Items/Weapons/GreenwoodArrayPlate.cs"
+    },
+    {
+      "page": "Wiki\\Guides\\Class_Setups.md",
+      "target": "../../Content/Items/HandGenerated/SpiritContracts.cs"
+    },
+    {
+      "page": "Wiki\\Guides\\Class_Setups.md",
+      "target": "../../Content/Items/Weapons/ThunderPatternSwordCase.cs"
+    },
+    {
+      "page": "Wiki\\Guides\\Class_Setups.md",
+      "target": "../../Content/Items/Weapons/StarEclipseArbalest.cs"
+    },
+    {
+      "page": "Wiki\\Guides\\Class_Setups.md",
+      "target": "../../Content/Items/Weapons/ThunderTalismanArrayPlate.cs"
+    },
+    {
+      "page": "Wiki\\Guides\\Class_Setups.md",
+      "target": "../../Content/Items/HandGenerated/SpiritContracts.cs"
+    },
+    {
+      "page": "Wiki\\Guides\\Class_Setups.md",
+      "target": "../../Content/Items/Weapons/FormlessSwordWheel.cs"
+    },
+    {
+      "page": "Wiki\\Guides\\Class_Setups.md",
+      "target": "../Content/Equipment/Entries/Mechanism_Ranged_Weapons.md"
+    },
+    {
+      "page": "Wiki\\Guides\\Class_Setups.md",
+      "target": "../Content/Equipment/Entries/Greenwood_Medicine_Cauldron.md"
+    },
+    {
+      "page": "Wiki\\Guides\\Class_Setups.md",
+      "target": "../../Content/Items/HandGenerated/SpiritContracts.cs"
+    },
+    {
+      "page": "Wiki\\Guides\\Class_Setups.md",
+      "target": "../Content/Equipment/Entries/Heaven_Tablet_Ward_Seal.md"
+    },
+    {
+      "page": "Wiki\\Guides\\Class_Setups.md",
+      "target": "../Content/Equipment/Entries/Mechanism_Ranged_Weapons.md"
+    },
+    {
+      "page": "Wiki\\Guides\\Class_Setups.md",
+      "target": "../../Content/Items/Weapons/BrokenHeavenDecree.cs"
+    },
+    {
+      "page": "Wiki\\Guides\\Class_Setups.md",
+      "target": "../../Content/Items/HandGenerated/SpiritContracts.cs"
+    },
+    {
+      "page": "Wiki\\Guides\\Class_Setups.md",
+      "target": "../../Content/Items/Weapons/MoonboneDharmaSword.cs"
+    },
+    {
+      "page": "Wiki\\Guides\\Class_Setups.md",
+      "target": "../Content/Equipment/Entries/Mechanism_Ranged_Weapons.md"
+    },
+    {
+      "page": "Wiki\\Guides\\Class_Setups.md",
+      "target": "../Content/Equipment/Entries/Archive_Star_Codex.md"
+    },
+    {
+      "page": "Wiki\\Guides\\Class_Setups.md",
+      "target": "../../Content/Items/HandGenerated/SpiritContracts.cs"
+    },
+    {
+      "page": "Wiki\\Guides\\Class_Setups.md",
+      "target": "../Progression/Overview.md"
+    },
+    {
+      "page": "Wiki\\Guides\\Class_Setups.md",
+      "target": "../Systems/Damage_Classes.md"
+    },
+    {
+      "page": "Wiki\\Guides\\Class_Setups.md",
+      "target": "../Systems/Artifact_Spirits.md"
+    }
+  ],
+  "source_sha256": {
+    "Content\\Items\\Weapons\\ArchiveStarCodex.cs": "6669159720f335c3ed6aa5bafb1101c6c245f6f925e21b5c460d0db899334b6e",
+    "Content\\Items\\Weapons\\BlackFurnaceWarhammer.cs": "06660a0d8503a05ac7a4ad9df98f5e3f7e6f2bee71b19bb157f7043ae9dd5479",
+    "Content\\Items\\Weapons\\BrokenHeavenDecree.cs": "6a60b3ea5b5b54d3d82cdc7be238a900d694207c5100fdd23c9a48c46d85b285",
+    "Content\\Items\\Weapons\\CinnabarTalismanFlameItem.cs": "11ba943500f5e717daca568e95888dbb0f81e5b5bfcf47ac9f49dc50d1c0c8f2",
+    "Content\\Items\\Weapons\\CloudpiercerFlyingSword.cs": "7d7ccd4f6c5ffba6ccb570b8cdaee354e8c106413923be5c34c40070b5e9f513",
+    "Content\\Items\\Weapons\\FormlessSwordWheel.cs": "1ab190286263970fbd4c2b452394245319915d5b62180bfad880871ad748b107",
+    "Content\\Items\\Weapons\\GreenwoodArrayPlate.cs": "2743e97f459216a58b0440b055b026d2661a083f46c8d2fe67cd1febaf415439",
+    "Content\\Items\\Weapons\\GreenwoodMedicineCauldron.cs": "8b1b2ecb7ba73834e9061871fd739b7b3ceabfaa8b2b64896b28ffc825db9125",
+    "Content\\Items\\Weapons\\HeavenLawArbalest.cs": "a2e1b9b53f545eca95dd3e4c58979916978504f0ebb15b478049a44f2075f13e",
+    "Content\\Items\\Weapons\\HeavenTabletWardSeal.cs": "c2670719406704c5888fbc93702d76509720f3303e27135386a3372c712b08c0",
+    "Content\\Items\\Weapons\\MoonboneDharmaSword.cs": "700c8397a7d9d20ca9a26cb23e39270f294242813ae83108af22eeea894eaf8c",
+    "Content\\Items\\Weapons\\SectMechanismCrossbow.cs": "95fe0838a706e1be5483109793b6e291f2ba9d590c5d064859f47ecb4d222783",
+    "Content\\Items\\Weapons\\SpiritwoodCrossbow.cs": "6329f8ecd4ccc166e4bdc7636493ccd89c20d7320d5b349dac0f61a9868918ac",
+    "Content\\Items\\Weapons\\StarCalamityMechanismCase.cs": "2a7fd7b177e2a049d75fcb0e57480be2a6b7c3bdbfed5fd49badf403fc43382a",
+    "Content\\Items\\Weapons\\StarEclipseArbalest.cs": "4eb202635ac12ac208604cf3d463111190f3d538be4d11bbbc01693369e88476",
+    "Content\\Items\\Weapons\\TalismanCrossbow.cs": "06c7ce7db83e2e63c23bcefb2563c47039cd1938536f9f48cab534e5a81920c6",
+    "Content\\Items\\Weapons\\ThunderPatternSwordCase.cs": "05dfb8971b2105095a877db63c5e8f6ff628001bf6dbac9cf2ab3e7c3a2cfa11",
+    "Content\\Items\\Weapons\\ThunderTalismanArrayPlate.cs": "e47615c0d54a35df43dcb61c2d1b0729004d35f03f52447ad6338925365f527c",
+    "Content\\Items\\Weapons\\WoodgrainFlyingSword.cs": "a7ce864936e110e89c50338d3c5c1d34120b535f1b2aaae5928c86ae4db581f0",
+    "Content\\Items\\HandGenerated\\SpiritContracts.cs": "29fcb9349941a1368123dd8f29c5938ef994a813aa534739dc8afa10432b15cb",
+    "Content\\Items\\HandGenerated\\SmallArtifactPendant.cs": "6fafcefb1d95ff9b418be46c04a462dd62f73c44a6d760f20a92128a1fc0473f",
+    "Localization\\generated\\zh-Hans.hjson": "63096f8b6db1a4200162a609c0b3030aad0b365c569fb5200cb00bada86871af",
+    "Localization\\p3-items\\zh-Hans.hjson": "8a30975aefad9f3ffd6d1be658682a995ef7e88cad001d74d1a3c2d2db4b238e",
+    "Localization\\stations\\zh-Hans.hjson": "03ae4b0ba819242a628d0870fb0dfc9f5955e84cc7ad9bc86bd915a7c2391fda",
+    "Localization\\missing-materials\\zh-Hans.hjson": "9a2feb48f74e954a751f6f243a829ae4e9db05655648b6e97ebe14169248671e",
+    "Localization\\boss-unique-drops\\zh-Hans.hjson": "164d3ac0f3712090427e81bb9cbd231fd646c4bbbe3990686fab5775b2514b50"
+  },
+  "checks": [
+    "All local links resolve",
+    "No placeholder accessory or unspecified planned-equipment disclaimer",
+    "Production content contract passes",
+    "Generated localization remains fresh"
+  ],
+  "limitations": [
+    "No new client or server run for documentation-only edits",
+    "No four-class combat balance, acquisition playthrough or real multiplayer acceptance"
+  ]
+}

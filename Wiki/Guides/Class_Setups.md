@@ -2,66 +2,85 @@
 
 [返回首页](../Home.md)
 
-本页参考大型内容 Mod 的 class setups 组织方式，但不列“唯一最优解”。目标是按进度给出可选装备池，让玩家根据 Terraria 原版职业和修行机制搭配。
+按2026-10-26当前实现整理。以下是可选装备池，阶段表示通常获得材料的顺序，不是伤害排名；配方材料齐全与满足使用门槛是两回事。新角色仍可搭配原版武器、防具和机动饰品。
 
-## Pre-Boss
+## 资源与使用方式
 
-| 职业 | 武器 | 饰品 | 说明 |
-| --- | --- | --- | --- |
-| 近战 | 木纹飞剑 | 聚气坠 | 安全远程斩击 |
-| 远程 | 灵木短弩 | 聚气坠 | 使用灵气弹药 |
-| 魔法 | 朱砂符火 | 聚气坠 | 低成本灵气法术；引气符是启灵消耗品 |
-| 召唤 | 小器灵坠 | 灵木护符 | 辅助攻击 |
+| 类型 | 消耗与限制 |
+| --- | --- |
+| 飞剑、灵气弩、符火与法阵 | 使用灵气；Magic职业的这些武器也不消耗魔力。先用引气符启灵，并准备足够灵气。铭刻、觉醒、道化会改变收益或灵耗。 |
+| 符弩、朱砂符箭 | 使用原版箭矢选择与消耗机制，不消耗灵气。朱砂符箭也可供接受箭矢的原版弓使用。 |
+| 小器灵与五类契约 | 手持使用消耗魔力召唤；装备饰品效果与手持召唤分别生效，穿戴本身不会自动召唤。右键对应Buff取消。每种每人最多一只，需要空仆从位。 |
+| 青木阵盘、雷符阵盘、青木药王鼎 | 部署法阵，受共享部署冷却和同类法阵限制；不能当作无冷却的连续射击武器。 |
 
-## Pre-Hardmode
+## 早期：引气至凝气
 
-| 职业 | 武器 | 饰品 | 说明 |
-| --- | --- | --- | --- |
-| 近战 | 破云飞剑、[玄炉重锤](../Content/Equipment/Entries/Black_Furnace_Warhammer.md) | 炉心戒 | 飞剑机动，重器爆发 |
-| 远程 | [符弩、朱砂符箭](../Content/Equipment/Entries/Talisman_Crossbow.md) | 聚气坠 | 原版箭矢弹药，燃烧与两次命中 |
-| 魔法 | 朱砂符火、青木阵盘 | 灵木护符 | 持续伤害 |
-| 召唤 | 炉灰器灵 | 小器灵坠 | 入门召唤线 |
+部分材料仍需探索灵脉、药园或矿脉，并非开局即可取得。朱砂符火的筑基/声望条件是传承强化条件，不是普通施放的最低境界。
 
-## Hardmode
+| 职业 | 装备选择 | 获得入口与定位 |
+| --- | --- | --- |
+| 近战 | [木纹飞剑](../../Content/Items/Weapons/WoodgrainFlyingSword.cs) | 工作台：任意木材12、下品灵石6、灵胶10；灵气飞剑。 |
+| 远程 | [灵木短弩](../../Content/Items/Weapons/SpiritwoodCrossbow.cs) | 器胚炉：任意木材16、下品灵石4；使用灵气，不装箭。 |
+| 魔法 | [朱砂符火](../../Content/Items/Weapons/CinnabarTalismanFlameItem.cs) | 简易符案：器胚碎片2、炉渣铁6、下品灵石12；基础每次5灵气，材料未齐时沿用原版魔法武器。 |
+| 召唤 | [小器灵坠](../../Content/Items/HandGenerated/SmallArtifactPendant.cs) | 器胚炉：下品灵石8、坠落之星3；召唤10魔力，占1仆从位；装备提供额外回气。 |
 
-| 职业 | 武器 | 饰品 | 说明 |
-| --- | --- | --- | --- |
-| 近战 | 雷纹剑匣 | 避雷玉佩 | 高机动雷系飞剑 |
-| 远程 | 星蚀弩机 | 星渊眼 | 高风险高输出 |
-| 魔法 | 雷符阵盘 | 避雷玉佩 | 区域控场 |
-| 召唤 | 星渊幼体契 | 元婴前置饰品 | 污染召唤路线 |
+## 肉山前：试炼材料成长
 
-## Post-Plantera
+| 职业 | 装备选择 | 获得入口与定位 |
+| --- | --- | --- |
+| 近战 | [破云飞剑](../../Content/Items/Weapons/CloudpiercerFlyingSword.cs)、[玄炉重锤](../Content/Equipment/Entries/Black_Furnace_Warhammer.md) | 器胚炉；重锤普通使用要求凝气境，消耗玄炉材料制作，飞行锤与冲击提供不同攻击节奏。 |
+| 远程 | [符弩与朱砂符箭](../Content/Equipment/Entries/Talisman_Crossbow.md) | 按条目配方制作；原版箭矢路线，朱砂符箭有燃烧及有限穿透。 |
+| 魔法 | 朱砂符火、[青木阵盘](../../Content/Items/Weapons/GreenwoodArrayPlate.cs) | 阵盘在器胚炉用器胚碎片2、青木根6、下品灵石12制作；兼顾区域伤害与恢复。 |
+| 召唤 | [炉灰器灵契](../../Content/Items/HandGenerated/SpiritContracts.cs) | 器胚炉：旧炉火种2、炉渣铁8、下品灵石12；召唤12魔力，占1仆从位；装备加召唤伤害。 |
 
-| 职业 | 武器 | 饰品 | 说明 |
-| --- | --- | --- | --- |
-| 近战 | 无相剑轮 | 元婴玉匣 | 移动变招 |
-| 远程 | [宗门机关弩](../Content/Equipment/Entries/Mechanism_Ranged_Weapons.md) | 星渊眼 | 机关弹幕 |
-| 魔法 | [青木药王鼎](../Content/Equipment/Entries/Greenwood_Medicine_Cauldron.md) | 元婴玉匣 | 定时药灵法阵，共用部署冷却 |
-| 召唤 | 元婴分身符 | 元婴玉匣 | 分身体系成型 |
+可选饰品：聚气坠、灵木护符、炉心戒。先保留生存和机动能力，再按资源缺口更换饰品。
 
-## Post-Golem
+## 困难模式
 
-| 职业 | 武器 | 饰品 | 说明 |
-| --- | --- | --- | --- |
-| 近战 | [天碑御印](../Content/Equipment/Entries/Heaven_Tablet_Ward_Seal.md) | 残天冠印 | 附近御印提供防御，高击退回收攻击 |
-| 远程 | [天律弩阵](../Content/Equipment/Entries/Mechanism_Ranged_Weapons.md) | 残天冠印 | 天道弹道 |
-| 魔法 | 残天法旨 | 残天冠印 | 高消耗法术 |
-| 召唤 | 仙傀令 | 残天冠印 | 召唤仙傀 |
+| 职业 | 装备选择 | 获得入口与定位 |
+| --- | --- | --- |
+| 近战 | [雷纹剑匣](../../Content/Items/Weapons/ThunderPatternSwordCase.cs) | 雷系灵气近战；普通攻击与后续显式觉醒/技能分别解锁。 |
+| 远程 | [星蚀弩机](../../Content/Items/Weapons/StarEclipseArbalest.cs) | 灵气远程，与符弩弹药路线分开；强化条件不是普通攻击门槛。 |
+| 魔法 | [雷符阵盘](../../Content/Items/Weapons/ThunderTalismanArrayPlate.cs) | 区域落雷法阵；受部署限制，需要预留灵气。 |
+| 召唤 | [星渊幼体契](../../Content/Items/HandGenerated/SpiritContracts.cs) | 星纹丹鼎：星灾灵核1、星渊胎膜8、下品灵石16；制作和召唤都要求困难模式，召唤16魔力，占1仆从位。 |
 
-当前已实现武器的职业归属见[武器与伤害职业](../Systems/Damage_Classes.md)。本页其余未落地装备仍是设计建议；小器灵与五种契约的实际召唤现已接入，见[器灵召唤](../Systems/Artifact_Spirits.md)；表中其他未实现名字仍属规划。
+可选饰品：避雷玉佩、星渊眼。星渊幼体契装备时还会增加灵气消耗倍率，需要考虑混合职业的代价。
 
-## Post-Moon Lord
+## 世纪之花后
 
-| 职业 | 武器 | 饰品 | 说明 |
-| --- | --- | --- | --- |
-| 近战 | 月骸法剑 | 斩道环 | 终局飞剑 |
-| 远程 | [星灾机关匣](../Content/Equipment/Entries/Mechanism_Ranged_Weapons.md) | 斩道环 | 终局远程 |
-| 魔法 | [归星道典](../Content/Equipment/Entries/Archive_Star_Codex.md) | 斩道环 | 渡劫境灵气法术，短暂蓄能后激活穿透法弹 |
-| 召唤 | 归档仙魂契 | 斩道环 | 终局召唤 |
+| 职业 | 装备选择 | 获得入口与定位 |
+| --- | --- | --- |
+| 近战 | [无相剑轮](../../Content/Items/Weapons/FormlessSwordWheel.cs) | 近战剑轮；普通使用、宗门传承强化和材料觉醒各有独立条件。 |
+| 远程 | [宗门机关弩](../Content/Equipment/Entries/Mechanism_Ranged_Weapons.md) | 宗门试炼台；使用须元婴境并满足困难模式/世纪之花进度，每次基础20灵气。 |
+| 魔法 | [青木药王鼎](../Content/Equipment/Entries/Greenwood_Medicine_Cauldron.md) | 元婴境及世纪之花阶段的持续法阵；共享部署冷却。 |
+| 召唤 | [元婴分身符](../../Content/Items/HandGenerated/SpiritContracts.cs) | 宗门试炼台：断剑残意8、残卷页12、下品灵石20；召唤要求困难模式及世纪之花，20魔力、1仆从位。名称不额外施加角色元婴境门槛。 |
 
-相关页面：
+可选饰品：元婴玉匣、星渊眼。召唤契约装备增益不会替代手持召唤操作。
 
-- [整体进度](../Progression/Overview.md)
-- [武器与饰品](../Content/Equipment/Overview.md)
-- [Boss 总览](../Content/Bosses/Overview.md)
+## 石巨人后
+
+| 职业 | 装备选择 | 获得入口与定位 |
+| --- | --- | --- |
+| 近战 | [天碑御印](../Content/Equipment/Entries/Heaven_Tablet_Ward_Seal.md) | 天火炉；使用须化神境及石巨人世界进度，基础28灵气；手持附近的御印提供非叠加防御。 |
+| 远程 | [天律弩阵](../Content/Equipment/Entries/Mechanism_Ranged_Weapons.md) | 天火炉；化神境及石巨人进度，基础28灵气。 |
+| 魔法 | [残天法令](../../Content/Items/Weapons/BrokenHeavenDecree.cs) | 高消耗灵气法术；不把元婴/声望传承强化条件误作普通使用门槛。 |
+| 召唤 | [仙傀令](../../Content/Items/HandGenerated/SpiritContracts.cs) | 天火炉：天碑印1、天道碎片12、下品灵石24；召唤要求困难模式及石巨人，24魔力、1仆从位。 |
+
+可选饰品：残天冠印；阶段材料及详细配方以向导配方查询为准。
+
+## 月亮领主后
+
+| 职业 | 装备选择 | 获得入口与定位 |
+| --- | --- | --- |
+| 近战 | [月骸法剑](../../Content/Items/Weapons/MoonboneDharmaSword.cs) | 基础攻击、宗门传承、材料觉醒和三路线道化分开；跨世界时需重新核对世界路线。 |
+| 远程 | [星灾机关匣](../Content/Equipment/Entries/Mechanism_Ranged_Weapons.md) | 斩道台；渡劫境及月亮领主世界进度，基础36灵气。 |
+| 魔法 | [归星道典](../Content/Equipment/Entries/Archive_Star_Codex.md) | 斩道台；渡劫境及月亮领主进度，蓄能后激活穿透法弹。旧天道残卷是突破物品。 |
+| 召唤 | [归档仙魂契](../../Content/Items/HandGenerated/SpiritContracts.cs) | 斩道台：月骸20、归档残光8、下品灵石36；召唤要求困难模式及月亮领主，30魔力、**2仆从位**。 |
+
+可选饰品：斩道环；路线饰品及道化收益需符合当前世界路线。主线仍可搭配原版职业防具，现有两套模组防具不是所有阶段的替代品。
+
+## 强化与验收范围
+
+普通施放、声望传承强化、材料觉醒、道化、主动技能分别判断，不能因提示写有高境界强化就认为基础物品不能使用。明确要求境界/世界阶段的武器仍须满足实际门槛。可铭刻武器的三阶淬炼也不代表全部支持觉醒或道化。
+
+以上依据当前配方、使用钩子、显示名称和资源代码整理，不代表已完成四职业实战、DPS排名或首次无调试通关。制作站与材料进度见[整体进度](../Progression/Overview.md)，职业归属见[武器与伤害职业](../Systems/Damage_Classes.md)，召唤生命周期见[器灵召唤](../Systems/Artifact_Spirits.md)。
