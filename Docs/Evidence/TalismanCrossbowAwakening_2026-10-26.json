@@ -1,0 +1,41 @@
+{
+  "round": 356,
+  "date": "2026-10-26",
+  "mod_version": "0.1.5",
+  "native_checks": 65033,
+  "new_native_checks": 292,
+  "effect_matrix": "3 modes x QiAwakening/Foundation/NascentSoul/DaoSevering x dormant/awakened = 24 combinations",
+  "native_groups": {
+    "native all nineteen registered refinable weapons now support explicit crafted awakening": 1,
+    "native talisman crossbow fixture imports valid authority state": 14,
+    "native talisman crossbow keeps native combat prefix": 14,
+    "native talisman crossbow authority spends one seal and exactly twenty-four stones": 2,
+    "native talisman crossbow awakening retains actual equipment inscription prefix and refinement": 2,
+    "native talisman crossbow server emits authoritative inventory/reply output to captured socket": 2,
+    "native repeated talisman crossbow awakening spends nothing": 2,
+    "native talisman crossbow full save and clone preserve awakening without automatically granting a Dao route": 4,
+    "native talisman crossbow uses unchanged three-byte growth payload with no Dao route": 2,
+    "native awakened talisman crossbow picks and consumes native wood or cinnabar arrows without spirit energy": 4,
+    "native talisman crossbow invalid realm boss level inscription stones or station preserves resources": 12,
+    "native talisman crossbow awakening accelerates actual combined use-time without changing base interval": 24,
+    "native talisman crossbow refinement and awakening damage hooks remain additive": 24,
+    "native talisman crossbow preserves native ammo identity with no undefined skill or Dao route": 24,
+    "native talisman crossbow crafted awakening tooltips resolve for each state": 24,
+    "native talisman crossbow explicit state fixture awakened": 12
+  },
+  "additional_coverage": "Actual registered refinable item enumeration: 19/19 awakening support; shared forge authority matrix; CombinedHooks.TotalUseTime; actual Player.PickAmmo for wood/cinnabar arrows in local owner context; ItemIO/clone",
+  "report": ".tml-test\\summons-ff5403664dbf4f03a86e50661b580363\\save\\XianXia\\summon-audit.json",
+  "report_sha256": "c4b12df307341825af2d0a132aff71fabdc10cf4ae2f00e9b9a8be9ebb16888f",
+  "package": ".tml-test\\run-639eb4ef0ef844c3a4dee26ca5c07038\\save\\Mods\\XianXia.tmod",
+  "package_sha256": "59ac8acf19592b1c7595569fc91b840f3bd927a5d0d9b0067dcd4c74ab8c85dc",
+  "gameplay_checks": 7720,
+  "networking_checks": 30455,
+  "limitations": [
+    "PickAmmo checks actual selection and consumption, not complete weapon firing/input or projectile creation",
+    "Ammo consumption checked in local mode; no real multiplayer inventory transport",
+    "No rendered forge UI, combat balance or on-device controls",
+    "No new active skill or Dao route; broader R15 remains incomplete"
+  ],
+  "source_checks": 40,
+  "source_log": ".tml-test/source356.log"
+}

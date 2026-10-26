@@ -23,6 +23,11 @@ public class TalismanCrossbow : ModItem
         Item.shoot = ProjectileID.WoodenArrowFriendly; Item.shootSpeed = 9f;
         Item.useAmmo = AmmoID.Arrow;
     }
+    public override float UseSpeedMultiplier(Player player) => global::XianXia.Common.Items.RefinedArtifact.IsAwakened(Item) ? 1.1f : 1f;
+    public override void ModifyWeaponDamage(Player player, ref StatModifier damage)
+    {
+        if (global::XianXia.Common.Items.RefinedArtifact.IsAwakened(Item)) damage += 0.1f;
+    }
     public override void AddRecipes() => CreateRecipe().AddIngredient<ArtifactBlankShard>(4)
         .AddIngredient<FurnaceSlagIron>(8).AddIngredient<TornTalismanPaper>(6)
         .AddIngredient<LowGradeSpiritStone>(8).AddTile(ModContent.TileType<ArtifactForgeTile>()).Register();

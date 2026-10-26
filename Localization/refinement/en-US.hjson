@@ -11,6 +11,9 @@ Mods: {
    }
   }
   Refinement: {
+   TalismanCrossbowAwakened: "Crafted awakening: +10% weapon damage and +10% use speed. Still consumes native arrows; no spiritual energy or mana cost. Faster firing also uses arrows faster. No active skill or Dao transformation."
+   TalismanCrossbowDormant: "Dormant: retain an inscription at refinement 3, reach Nascent Soul and defeat Medicine King Echo. Spend 1 awakening seal and 24 stones near an artificing station for +10% damage and +10% use speed while keeping native ammunition handling."
+
    WoodgrainAwakened: "Crafted awakening: +10% weapon damage, base spirit cost 3. Keeps Melee damage and its original sword projectile. No active skill or Dao transformation."
    WoodgrainDormant: "Dormant: retain an inscription at refinement 3, reach Nascent Soul and defeat Medicine King Echo. Spend 1 awakening seal and 24 stones near an artificing station for +10% damage and base spirit cost 3."
    SpiritwoodAwakened: "Crafted awakening: +10% weapon damage, base spirit cost 1. Keeps Ranged damage and its original spirit bolt; uses no vanilla arrows. No active skill or Dao transformation."
