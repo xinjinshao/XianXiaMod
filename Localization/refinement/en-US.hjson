@@ -3,7 +3,7 @@ Mods: {
   Items: {
    ArtifactAwakeningSeal: {
     DisplayName: Artifact Awakening Seal
-    Tooltip: "Craft at a Star Pattern Cauldron using 2 artifact shards, 6 tribulation cloud dew, 4 Greenwood Roots and 1 Medicine King Wood Heart\nUse near an artificing station to awaken an inscribed refinement-3 Cloudpiercer Flying Sword, Greenwood Array Plate, Heaven Tablet Ward Seal, Formless Sword Wheel, Black Furnace Warhammer, Thunder Pattern Sword Case, Cinnabar Talisman Flame, Star Eclipse Arbalest, Thunder Talisman Array Plate, Broken Heaven Decree or Moonbone Dharma Sword (Moonbone also requires Tribulation and defeating Moonbone Immortal)\nRequires Nascent Soul and Medicine King Echo; costs 24 extra low-grade stones\nAdds 10% weapon damage and lowers base energy cost; active skills available for Cloudpiercer, Array, Ward, Moonbone, Wheel, Hammer and Thunder Case (Q or right-click; configurable)"
+    Tooltip: "Craft at a Star Pattern Cauldron using 2 artifact shards, 6 tribulation cloud dew, 4 Greenwood Roots and 1 Medicine King Wood Heart\nUse near an artificing station to awaken an inscribed refinement-3 Cloudpiercer Flying Sword, Greenwood Array Plate, Heaven Tablet Ward Seal, Formless Sword Wheel, Black Furnace Warhammer, Thunder Pattern Sword Case, Cinnabar Talisman Flame, Star Eclipse Arbalest, Thunder Talisman Array Plate, Broken Heaven Decree, Greenwood Medicine Cauldron or Moonbone Dharma Sword (Moonbone also requires Tribulation and defeating Moonbone Immortal)\nRequires Nascent Soul and Medicine King Echo; costs 24 extra low-grade stones\nAdds 10% weapon damage and lowers base energy cost; active skills available for Cloudpiercer, Array, Ward, Moonbone, Wheel, Hammer and Thunder Case (Q or right-click; configurable)"
    }
    ArtifactQuenchingCrystal: {
     DisplayName: Artifact Quenching Crystal
@@ -11,6 +11,9 @@ Mods: {
    }
   }
   Refinement: {
+   MedicineCauldronAwakened: "Crafted awakening: +10% weapon damage, base deployment cost 26. Still requires Nascent Soul and Plantera progression. Keeps the shared 8-second cooldown, same-array limit, spirit count and cadence. Does not heal or restore spiritual energy. No active skill or Dao transformation."
+   MedicineCauldronDormant: "Dormant: retain an inscription at refinement 3, reach Nascent Soul and defeat Medicine King Echo. Spend 1 awakening seal and 24 stones near an artificing station for +10% damage and base deployment cost 26."
+
    DecreeAwakened: "Crafted awakening: +10% weapon damage, base spirit cost 20. Beam timing is unchanged and sect heritage remains independent. No active skill or Dao transformation."
    DecreeDormant: "Dormant: retain an inscription at refinement 3, reach Nascent Soul and defeat Medicine King Echo. Spend 1 awakening seal and 24 stones near an artificing station for +10% damage and base spirit cost 20."
    DecreeHeritageReady: "Sect heritage active ({0}, reputation {1}): +{3}% damage, current base spirit cost {2}. Crafted awakening is listed separately."
@@ -32,7 +35,7 @@ Mods: {
    FlameHeritageLocked: "Sect heritage needs {0} and reputation {1}: +{3}% damage and unawakened base spirit cost 4. Current base cost {2}. Independent of crafted awakening."
 
    AwakeningCost: Costs 1 awakening seal and 24 low-grade stones; already awakened equipment and failures cost nothing
-   AwakeningChooseTarget: Select an inscribed level-3 Cloudpiercer Flying Sword, Greenwood Array Plate, Heaven Tablet Ward Seal, Formless Sword Wheel, Black Furnace Warhammer, Thunder Pattern Sword Case, Cinnabar Talisman Flame, Star Eclipse Arbalest, Thunder Talisman Array Plate, Broken Heaven Decree or Moonbone Dharma Sword (Moonbone also requires Tribulation and defeating Moonbone Immortal); requires Nascent Soul and defeating Greenwood Medicine King Echo
+   AwakeningChooseTarget: Select an inscribed level-3 Cloudpiercer Flying Sword, Greenwood Array Plate, Heaven Tablet Ward Seal, Formless Sword Wheel, Black Furnace Warhammer, Thunder Pattern Sword Case, Cinnabar Talisman Flame, Star Eclipse Arbalest, Thunder Talisman Array Plate, Broken Heaven Decree, Greenwood Medicine Cauldron or Moonbone Dharma Sword (Moonbone also requires Tribulation and defeating Moonbone Immortal); requires Nascent Soul and defeating Greenwood Medicine King Echo
    AwakeningSelection: "Awaken: {0}; keeps inscription, refinement and prefix"
    AwakeningRow: "Slot {0} · {1} · {2}"
    AwakeState: Awakened

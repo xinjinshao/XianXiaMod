@@ -52,7 +52,7 @@
 | --- | --- | --- |
 | 近战 | [无相剑轮](../../Content/Items/Weapons/FormlessSwordWheel.cs) | 近战剑轮；普通使用、宗门传承强化和材料觉醒各有独立条件。 |
 | 远程 | [宗门机关弩](../Content/Equipment/Entries/Mechanism_Ranged_Weapons.md) | 宗门试炼台；使用须元婴境并满足困难模式/世纪之花进度，每次基础20灵气。 |
-| 魔法 | [青木药王鼎](../Content/Equipment/Entries/Greenwood_Medicine_Cauldron.md) | 元婴境及世纪之花阶段的持续法阵；共享部署冷却。 |
+| 魔法 | [青木药王鼎](../Content/Equipment/Entries/Greenwood_Medicine_Cauldron.md) | 元婴境及世纪之花阶段的持续攻击法阵；药王残影后可材料觉醒（额外10%伤害、基础灵耗26），保留8秒共享部署冷却。 |
 | 召唤 | [元婴分身符](../../Content/Items/HandGenerated/SpiritContracts.cs) | 宗门试炼台：断剑残意8、残卷页12、下品灵石20；召唤要求困难模式及世纪之花，20魔力、1仆从位。名称不额外施加角色元婴境门槛。 |
 
 可选饰品：元婴玉匣、星渊眼。召唤契约装备增益不会替代手持召唤操作。
