@@ -151,7 +151,11 @@ public class InscriptionUIState : UIState
         if (!ToolStillMatches(player)) { Close(); return; }
         if (targetSlot < 0) return;
         if (!TargetStillMatches(player)) { targetSlot = -1; targetChanged = true; Refresh(); return; }
-        if (player.inventory[toolSlot].ModItem is InscriptionToolItem tool && tool.TransformsArtifact)
+        var tool = (InscriptionToolItem)player.inventory[toolSlot].ModItem;
+        string failure = tool.TransformsArtifact ? DaoArtifactTransactions.RequirementFailure(player, player.inventory[targetSlot])
+            : InscriptionTransactions.RequirementFailure(player, tool, player.inventory[targetSlot]);
+        if (failure.Length != 0) { refreshTimer = 20; return; }
+        if (tool.TransformsArtifact)
             DaoArtifactTransactions.Request(player,toolSlot,toolType,targetSlot,targetType,targetPrefix,previousKind,previousLevel,previousAwakened,previousDaoRoute,previousWorldRoute);
         else InscriptionTransactions.Request(player,toolSlot,toolType,targetSlot,targetType,targetPrefix,previousKind,previousLevel,previousAwakened);
         Close();

@@ -1,0 +1,44 @@
+{
+  "round": 357,
+  "date": "2026-10-26",
+  "native_checks": 65603,
+  "new_native_checks": 570,
+  "scenarios": 304,
+  "matrix": "19 registered awakening weapons x single-player/client x ready/low-realm/missing-boss/level-2/no-inscription/23-stones/no-forge/already-awakened",
+  "grouped_checks": {
+    "native valid forge confirmation still applies locally or sends exactly one client request": 38,
+    "native nineteen-weapon forge confirm refuses changed requirements without request or cost": 266,
+    "native blocked forge confirm retains selection and schedules next-frame requirement feedback": 266
+  },
+  "samples": [
+    "native valid forge confirmation still applies locally or sends exactly one client request",
+    "native nineteen-weapon forge confirm refuses changed requirements without request or cost: ArchiveStarCodex/0/1",
+    "native blocked forge confirm retains selection and schedules next-frame requirement feedback",
+    "native nineteen-weapon forge confirm refuses changed requirements without request or cost: ArchiveStarCodex/0/2",
+    "native blocked forge confirm retains selection and schedules next-frame requirement feedback",
+    "native nineteen-weapon forge confirm refuses changed requirements without request or cost: ArchiveStarCodex/0/3",
+    "native blocked forge confirm retains selection and schedules next-frame requirement feedback",
+    "native nineteen-weapon forge confirm refuses changed requirements without request or cost: ArchiveStarCodex/0/4",
+    "native nineteen-weapon forge confirm refuses changed requirements without request or cost: WoodgrainFlyingSword/1/4",
+    "native blocked forge confirm retains selection and schedules next-frame requirement feedback",
+    "native nineteen-weapon forge confirm refuses changed requirements without request or cost: WoodgrainFlyingSword/1/5",
+    "native blocked forge confirm retains selection and schedules next-frame requirement feedback",
+    "native nineteen-weapon forge confirm refuses changed requirements without request or cost: WoodgrainFlyingSword/1/6",
+    "native blocked forge confirm retains selection and schedules next-frame requirement feedback",
+    "native nineteen-weapon forge confirm refuses changed requirements without request or cost: WoodgrainFlyingSword/1/7",
+    "native blocked forge confirm retains selection and schedules next-frame requirement feedback"
+  ],
+  "report": ".tml-test\\summons-13381bf66bf34515b4a212efa046df5f\\save\\XianXia\\summon-audit.json",
+  "report_sha256": "0d1357897c351b8b27ab7048fda976b6d6aa8adf1ecb15d4600389bd3c510d5b",
+  "package": ".tml-test\\run-6425797d0a7a4b5db62df718dd009bde\\save\\Mods\\XianXia.tmod",
+  "package_sha256": "05fec60fff2133d5f9aab887b77972385dcc8643de2951ff379ad88ae106d47d",
+  "source_checks": 40,
+  "source_log": ".tml-test/source357.log",
+  "gameplay_checks": 7720,
+  "limitations": [
+    "Actual private ConfirmSelection entry with field fixtures; graphics are not initialized",
+    "Selection retention and scheduled refresh checked, not actual rendered panel/open state",
+    "Client output captured in memory socket; no real server transport",
+    "New UI confirmation matrix covers awakening; other operation helpers retain existing separate tests"
+  ]
+}
