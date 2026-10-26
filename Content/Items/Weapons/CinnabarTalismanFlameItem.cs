@@ -67,7 +67,10 @@ public class CinnabarTalismanFlameItem : global::XianXia.Common.Items.Cultivatio
 
 
 
-    public override int GetSpiritCost(Player player) => global::XianXia.Common.Items.RefinedArtifact.IsAwakened(Item) ? 3 : HasArtifactAwakening(player) ? 4 : 5;
+    public override int GetSpiritCost(Player player) => global::XianXia.Common.Items.RefinedArtifact.ActiveDaoRoute(Item) is var route
+        && route != global::XianXia.Common.Systems.DownedBossSystem.EndgameRoute.None
+        ? global::XianXia.Common.Systems.DaoArtifactRules.WeaponCost(Name,route)
+        : global::XianXia.Common.Items.RefinedArtifact.IsAwakened(Item) ? 3 : HasArtifactAwakening(player) ? 4 : 5;
 
 
     private static bool HasArtifactAwakening(Player player)

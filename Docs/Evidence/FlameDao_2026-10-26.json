@@ -1,0 +1,32 @@
+{
+  "round": 359,
+  "date": "2026-10-26",
+  "native_checks": 67472,
+  "new_native_checks": 933,
+  "route_matrix": "2 authority modes x 3 stored item routes x 4 world routes (including none) x core false/true = 48 activation states",
+  "native_groups": {
+    "native cinnabar Dao consumes one seal and thirty-six stones for each actual route": 6,
+    "native repeated cinnabar Dao never repeats cost or replaces equipment": 6,
+    "native cinnabar full save and clone keep Dao awakening refinement inscription and prefix": 12,
+    "native cinnabar Dao costs activate only for matching world and defeated core": 48,
+    "native cinnabar cross-world Dao damage reverts without losing record or independent heritage": 48,
+    "native cinnabar Dao rejects insufficient current-route energy": 48,
+    "native cinnabar Dao accepts exact current-route energy": 48,
+    "native cinnabar Dao tooltip resolves recorded route without inventing an active skill": 48,
+    "native transformed cinnabar actually fires its magic flame at route cost and computed weapon damage": 6
+  },
+  "additional_coverage": "Cinnabar included in Dao authority requirement/replay and actual panel confirmation matrices; actual transformed flame creation, ItemIO/clone and additive heritage",
+  "report": ".tml-test\\summons-ae52f30709c04b6eaac28569a978993f\\save\\XianXia\\summon-audit.json",
+  "report_sha256": "ddd5197040fa8bfccf8a93ad617a9ee7726b53fb66ba3b697867ef2d8c1b18d2",
+  "package": ".tml-test\\run-bc6464d394504370af31ae7aa84690a6\\save\\Mods\\XianXia.tmod",
+  "package_sha256": "9e5b1c7d6ea052bcb76f05d9017f40f7c4f1a7e2db94a45ce61e189f8b07c14e",
+  "gameplay_checks": 7720,
+  "networking_checks": 30455,
+  "limitations": [
+    "No complete projectile movement or real combat balance",
+    "No rendered UI, real multiplayer transport or full input sequence",
+    "No Cinnabar active skill, route-specific healing or per-shot pressure effect added"
+  ],
+  "source_checks": 40,
+  "source_log": ".tml-test/source359.log"
+}
