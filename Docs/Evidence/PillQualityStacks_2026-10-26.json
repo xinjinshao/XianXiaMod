@@ -1,0 +1,52 @@
+{
+  "round": 343,
+  "date": "2026-10-26",
+  "native_checks": 55230,
+  "new_native_checks": 2560,
+  "scenarios": 512,
+  "dimensions": {
+    "registered_pill_types": 8,
+    "destination_grades": 4,
+    "source_grades": 4,
+    "destination_crafted_flags": 2,
+    "source_crafted_flags": 2
+  },
+  "grouped_checks": {
+    "native eight-pill stack gates preserve grade boundaries in inventory and world": 512,
+    "native actual item loader transfers only fitting equal-grade pills and merges provenance": 512,
+    "native pill clone keeps independent quality metadata after stack transfer": 512,
+    "native full ItemIO roundtrip preserves stacked pill grade amount and provenance": 512,
+    "native split hook copies source pill quality onto independent destination": 512
+  },
+  "report": ".tml-test\\summons-cdb66325b68f4f3c899960ca6ae50b17\\save\\XianXia\\summon-audit.json",
+  "report_sha256": "ecb715792c6e7b09ba3a19a8d810070aa56c1d348068d5c99a54e354231d1cab",
+  "package": ".tml-test\\run-16de3ada29664fe9b42422624447b79d\\save\\Mods\\XianXia.tmod",
+  "package_sha256": "5b745abde43a9251befdf3f1da70f954646d6e7db088ddb5bd19976ba107e1c2",
+  "samples": [
+    "native eight-pill stack gates preserve grade boundaries in inventory and world: QiCondensingPill/Coarse/Coarse/False/False",
+    "native actual item loader transfers only fitting equal-grade pills and merges provenance",
+    "native pill clone keeps independent quality metadata after stack transfer",
+    "native full ItemIO roundtrip preserves stacked pill grade amount and provenance",
+    "native split hook copies source pill quality onto independent destination",
+    "native eight-pill stack gates preserve grade boundaries in inventory and world: QiCondensingPill/Coarse/Coarse/False/True",
+    "native actual item loader transfers only fitting equal-grade pills and merges provenance",
+    "native pill clone keeps independent quality metadata after stack transfer",
+    "native full ItemIO roundtrip preserves stacked pill grade amount and provenance",
+    "native split hook copies source pill quality onto independent destination",
+    "native eight-pill stack gates preserve grade boundaries in inventory and world: ThunderBurstPill/Spirit/Spirit/True/False",
+    "native actual item loader transfers only fitting equal-grade pills and merges provenance",
+    "native pill clone keeps independent quality metadata after stack transfer",
+    "native full ItemIO roundtrip preserves stacked pill grade amount and provenance",
+    "native split hook copies source pill quality onto independent destination",
+    "native eight-pill stack gates preserve grade boundaries in inventory and world: ThunderBurstPill/Spirit/Spirit/True/True",
+    "native actual item loader transfers only fitting equal-grade pills and merges provenance",
+    "native pill clone keeps independent quality metadata after stack transfer",
+    "native full ItemIO roundtrip preserves stacked pill grade amount and provenance",
+    "native split hook copies source pill quality onto independent destination"
+  ],
+  "limitations": [
+    "Actual ItemLoader stack transfer and split hook; no mouse inventory input or full split operation",
+    "ItemIO tag roundtrip, no on-disk save/reload in this audit",
+    "No actual world pickup, network item transfer or rendered quality acceptance"
+  ]
+}
