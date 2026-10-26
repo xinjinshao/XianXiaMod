@@ -1,0 +1,43 @@
+{
+  "round": 348,
+  "date": "2026-10-26",
+  "mod_version": "0.1.5",
+  "native_checks": 60177,
+  "new_native_checks": 499,
+  "effect_matrix": "3 modes x 4 realms x reputation 43/44 x dormant/awakened",
+  "native_groups": {
+    "native thunder array fixture imports valid authority state": 14,
+    "native thunder array keeps native combat prefix": 14,
+    "native thunder array authority spends one seal and exactly twenty-four stones": 2,
+    "native thunder array awakening retains actual equipment inscription prefix and refinement": 2,
+    "native thunder array server emits authoritative inventory/reply output to captured socket": 2,
+    "native repeated thunder array awakening spends nothing": 2,
+    "native thunder array full save and clone preserve awakening without automatically granting a Dao route": 4,
+    "native thunder array uses unchanged three-byte growth payload with no Dao route": 2,
+    "native awakened thunder array deploys for sixteen energy with fixed eight-second deployment cooldown": 2,
+    "native awakened thunder array shared cooldown refuses a second deployment without cost": 2,
+    "native awakened thunder array still rejects an existing same-type field": 2,
+    "native thunder array invalid realm boss level inscription stones or station preserves resources": 12,
+    "native thunder array crafted sixteen-energy cost independent of preserved twenty/twenty-four-energy heritage": 48,
+    "native thunder array refinement awakening and heritage damage hooks remain additive": 48,
+    "native thunder array rejects one below current energy cost": 48,
+    "native thunder array accepts exact current energy cost": 48,
+    "native thunder array does not expose an undefined active skill or Dao transformation": 48,
+    "native thunder array heritage and crafted-awakening tooltips resolve independently": 48,
+    "native thunder array explicit state fixture awakened": 24
+  },
+  "additional_coverage": "Shared forge gate/authority matrix and no-active-skill UI preview; actual prepared deployment and shared cooldown; same-array count refusal",
+  "report": ".tml-test\\summons-a6e6ad49e8564cc288b780854264e4fb\\save\\XianXia\\summon-audit.json",
+  "report_sha256": "8b548cf4fe797c5e9c7075e7f7e172a57502068c6f514c466d5ddf0ea8edabd3",
+  "package": ".tml-test\\run-a4f69e1fe93749d7ac8be12aef5c804c\\save\\Mods\\XianXia.tmod",
+  "package_sha256": "0995c9afcf3fe058282bc3ff8e0d9eb63518324b75ccfc12e1194d8d2091798c",
+  "gameplay_checks": 7720,
+  "networking_checks": 30455,
+  "limitations": [
+    "Direct registered hooks and prepared deployment; no full array lifecycle or combat balance",
+    "Same-type deployment refusal tested with ownedProjectileCounts fixture",
+    "No rendered forge UI, actual multiplayer transport or full input acceptance"
+  ],
+  "source_checks": 40,
+  "source_log": ".tml-test/source348-final.log"
+}

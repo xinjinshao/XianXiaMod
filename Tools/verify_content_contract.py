@@ -140,7 +140,7 @@ def main() -> None:
     )
     require_text("Content/Items/Materials/FoundationPill.cs", "AlchemyInsightBuff", "ReduceSpiritPressure")
     require_text("Content/Items/Accessories/StarAbyssEye.cs", "spiritualEnergyCostMultiplier *= 1.08f")
-    require_text("Content/Items/Weapons/ThunderTalismanArrayPlate.cs", "HasArtifactAwakening", "ArtifactAwakeningReady", "DownedBossSystem.SectReputation")
+    require_text("Content/Items/Weapons/ThunderTalismanArrayPlate.cs", "HasArtifactAwakening", "ThunderArrayHeritageReady", "RefinedArtifact.IsAwakened(Item)", "CanDeployArray(Item.shoot, GetSpiritCost(player))", "DownedBossSystem.SectReputation")
     require_text(
         "Common/Players/XianXiaPlayer.cs",
         "tribulationComprehension",

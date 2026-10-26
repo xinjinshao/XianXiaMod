@@ -938,6 +938,7 @@ public partial class SummonAuditSystem : ModSystem
             AuditBiomeScans(Check);
             AuditCinnabarAwakening(Check);
             AuditArbalestAwakening(Check);
+            AuditThunderArrayAwakening(Check);
             AuditPillBuffs(Check);
             AuditPillQualityStacks(Check);
             AuditPillQualityPickup(Check);

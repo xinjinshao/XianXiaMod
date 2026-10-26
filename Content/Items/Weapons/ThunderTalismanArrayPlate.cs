@@ -61,13 +61,13 @@ public class ThunderTalismanArrayPlate : global::XianXia.Common.Items.Cultivatio
 
         return player.GetModPlayer<global::XianXia.Common.Players.XianXiaPlayer>()
 
-            .CanDeployArray(Item.shoot, HasArtifactAwakening(player) ? 20 : 24);
+            .CanDeployArray(Item.shoot, GetSpiritCost(player));
 
     }
 
 
 
-    public override int GetSpiritCost(Player player) => HasArtifactAwakening(player) ? 20 : 24;
+    public override int GetSpiritCost(Player player) => global::XianXia.Common.Items.RefinedArtifact.IsAwakened(Item) ? 16 : HasArtifactAwakening(player) ? 20 : 24;
     public override bool DeploysArray => true;
 
 
@@ -89,6 +89,7 @@ public class ThunderTalismanArrayPlate : global::XianXia.Common.Items.Cultivatio
 
     {
 
+        if (global::XianXia.Common.Items.RefinedArtifact.IsAwakened(Item)) damage += 0.1f;
         if (HasArtifactAwakening(player))
 
             damage += 0.12f;
@@ -105,9 +106,9 @@ public class ThunderTalismanArrayPlate : global::XianXia.Common.Items.Cultivatio
 
         string key = HasArtifactAwakening(player)
 
-            ? "Mods.XianXia.Progression.ArtifactAwakeningReady"
+            ? "Mods.XianXia.Refinement.ThunderArrayHeritageReady"
 
-            : "Mods.XianXia.Progression.ArtifactAwakeningLocked";
+            : "Mods.XianXia.Refinement.ThunderArrayHeritageLocked";
 
         tooltips.Add(new TooltipLine(
 
@@ -115,7 +116,7 @@ public class ThunderTalismanArrayPlate : global::XianXia.Common.Items.Cultivatio
 
             "XianXiaArtifactAwakening",
 
-            Terraria.Localization.Language.GetTextValue(key, global::XianXia.Common.Players.CultivationStatusText.StageName(global::XianXia.Common.Players.CultivationStage.GoldenCore), 44, 20, 12)));
+            Terraria.Localization.Language.GetTextValue(key, global::XianXia.Common.Players.CultivationStatusText.StageName(global::XianXia.Common.Players.CultivationStage.GoldenCore), 44, GetSpiritCost(player), 12)));
 
     }
 
