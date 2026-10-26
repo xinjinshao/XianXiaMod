@@ -1,0 +1,43 @@
+{
+  "date": "2026-10-26",
+  "round": 331,
+  "mod_version": "0.1.5",
+  "package": ".tml-test\\run-6d66cc1c72994a4fa59bdd3f3dc7d36e\\save\\Mods\\XianXia.tmod",
+  "package_sha256": "bc9f45b1e8c22245752e66d5a4c8d7be44b1c1101d2fbf26e41ff680a178c4c1",
+  "native_report": ".tml-test\\summons-31e9b23aa4cf49dfb4d6ce27d143478c\\save\\XianXia\\summon-audit.json",
+  "report_sha256": "dbbc2173c5ddc330dd28ce0cf0ff9ddfc0eada92aae1fdad6f736e8a27c68557",
+  "native_checks": 49670,
+  "new_native_checks": 100,
+  "grouped_checks": {
+    "native client rune requests authority without local buff or item consumption": 13,
+    "native rune client emits existing held-slot and item-type request": 13,
+    "native rune authority fixture imports canonical character state": 13,
+    "native rune authority consumes once only for a new or refreshed thirty-second effect": 13,
+    "native rune preserves authority revision and reentry guard without pill quality classification": 13,
+    "native rune sends one changed resistance buff and no effect packet on refusal": 13,
+    "native rune success sends one owner correction with no fatigue or quality side effect": 2,
+    "official rune owner decoder accepts actual authority buff packet": 4,
+    "official rune owner replay converges to one remaining item and exact thirty-second resistance": 2,
+    "native rune repeated request neither consumes again nor resends effects": 13,
+    "native rune audit restores owner connection and broadcast context": 1
+  },
+  "before_fix_report": ".tml-test\\summons-3f1d548fa7a44eaf8c0d8dee1c1a1e64\\save\\XianXia\\summon-audit.json",
+  "before_fix_sha256": "5e7895f24bad7d1f01663534dfb4ffdddf3c8b9c0b25cab4764821cad7f88b4f",
+  "before_fix_error": "System.InvalidOperationException: native client rune waits for server without local buff or consumption: buff=1800 consumes=True\r\n   at XianXia.Common.Systems.SummonAuditSystem.<>c__DisplayClass25_0.<RunOnce>g__Check|2(Boolean value, String name) in XianXiaMod\\Common\\Systems\\SummonAuditSystem.cs:line 67\r\n   at XianXia.Common.Systems.SummonAuditSystem.AuditLightningRune(Action`2 check) in XianXiaMod\\Common\\Systems\\SummonAuditSystem.LightningRune.cs:line 21\r\n   at XianXia.Common.Systems.SummonAuditSystem.RunOnce() in XianXiaMod\\Common\\Systems\\SummonAuditSystem.cs:line 979",
+  "authority_scenarios": 13,
+  "source_checks": 40,
+  "dotnet_source_projects": 30,
+  "networking_source_assertions": 30262,
+  "new_networking_assertions": 34,
+  "gameplay_assertions": 7720,
+  "limits": [
+    "Client request comes from actual ModItem.UseItem and captured existing opcode 5 packet; server uses actual mod HandlePacket.",
+    "Success buff 55 uses official MessageBuffer; owner slot correction 13 uses actual mod decoder twice.",
+    "Cases cover fresh/short/exact/long duration, immunity, death, noItems, frozen, changed slot/type, zero stack, uninitialized and inactive requester.",
+    "No full ItemCheck animation/input/consumption loop, rendered clients, actual network transport or combat balance.",
+    "Rune is not classified as a pill and gains no quality or shared fatigue effects.",
+    "Original effect duration remains 1800 ticks; old bilingual 30-minute tooltip corrected to 30 seconds.",
+    "Test identity stub added for resistance buff in portable tests; native fixture uses actually registered buff.",
+    "No generation, new packet layout or save changes."
+  ]
+}

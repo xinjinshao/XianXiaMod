@@ -1913,6 +1913,27 @@ EpochPacket(256,104);Check(Game.player[0].State.TribulationSession==104,"Replace
 Game.netMode=NetmodeID.Server;EpochPacket(0,long.MaxValue);Check(Game.player[0].State.TribulationSession==104,"Server never imports client trial identity");
 Console.WriteLine($"Including trial metadata dispatch/replay: {assertions} assertions; runtime player transport mocked.");
 
+// Real rune hooks share the existing authority transaction, without pill quality effects.
+foreach(int existing in new[]{0,1799,1800,5400})foreach(bool immune in new[]{false,true}) {
+ Game.netMode=NetmodeID.Server;Game.myPlayer=255;var actor=new Terraria.Player{whoAmI=0,selectedItem=0};Game.player[0]=actor;actor.State.NetworkInitialized=true;
+ var rune=new XianXia.Content.Items.HandGenerated.LightningAvoidanceRune{Mod=mod,Name="LightningAvoidanceRune"};rune.SetDefaults();rune.Item.type=952;rune.Item.stack=2;rune.Item.ModItem=rune;actor.inventory[0]=rune.Item;
+ int buff=ModContent.BuffType<XianXia.Content.Buffs.TribulationResistanceBuff>();if(existing>0)actor.AddBuff(buff,existing);actor.buffImmune[buff]=immune;
+ bool ready=existing<1800&&!immune;
+ Check(CultivationItemTransactions.IsProgressionItem(rune.Item)&&!PillQualitySystem.IsPill(rune.Item),"Rune uses authority inventory path without receiving pill quality bonuses");
+ Check(rune.CanUseItem(actor)==ready,"Rune avoids wasting material on long existing resistance or immunity");
+ CultivationItemTransactions.HandleRequest(actor,0,952);
+ Check(rune.Item.stack==(ready?1:2)&&actor.buffTime[buff]==(ready?1800:existing),"Actual rune server use consumes once only for a new or extended effect");
+ int stack=rune.Item.stack;CultivationItemTransactions.HandleRequest(actor,0,952);Check(rune.Item.stack==stack,"Rune replay does not consume another item");
+}
+{
+ Game.netMode=NetmodeID.MultiplayerClient;Game.myPlayer=0;var actor=new Terraria.Player{whoAmI=0,selectedItem=0};Game.player[0]=actor;
+ var rune=new XianXia.Content.Items.HandGenerated.LightningAvoidanceRune{Mod=mod,Name="LightningAvoidanceRune"};rune.SetDefaults();rune.Item.type=952;rune.Item.stack=2;rune.Item.ModItem=rune;actor.inventory[0]=rune.Item;
+ int sent=ModPacket.Sent.Count;rune.UseItem(actor);
+ Check(!actor.HasBuff(ModContent.BuffType<XianXia.Content.Buffs.TribulationResistanceBuff>())&&rune.Item.stack==2&&!new CultivationItemTransactions().ConsumeItem(rune.Item,actor),"Actual client rune waits without local effect or item consumption");
+ Check(ModPacket.Sent.Count==sent+1&&ModPacket.Sent.Last().Data.SequenceEqual(new byte[]{5,0,184,3,0,0}),"Actual client rune sends held slot and item type in existing request");
+}
+Console.WriteLine($"Including authoritative lightning rune hooks: {assertions} assertions; engine boundaries mocked.");
+
 sealed class TestBossSummon : XianXia.Common.Items.CultivationBossSummonItem
 {
     public override int BossType => 100;

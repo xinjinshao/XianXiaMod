@@ -11,7 +11,7 @@ public class CultivationItemTransactions : GlobalItem
     public static bool IsProgressionItem(Item item) => item.ModItem?.Mod is global::XianXia.XianXia
         && item.ModItem.Name is "QiDrawingTalisman" or "QiCondensingPill" or "FoundationPill"
             or "StarEclipseCrystal" or "OldHeavenDaoScroll" or "HeavenDaoFragment"
-            or "Moonbone" or "DaoSeveringDust" or "TribulationTrainingToken"
+            or "Moonbone" or "DaoSeveringDust" or "TribulationTrainingToken" or "LightningAvoidanceRune"
             or "ThunderBurstPill" or "WindStepPill" or "FurnaceGuardPill" or "QiRecoveryPill" or "SpringReturnPill" or "TribulationResistingPill" or "StarAbyssForbiddenTalisman";
 
     public override bool ConsumeItem(Item item, Player player) =>

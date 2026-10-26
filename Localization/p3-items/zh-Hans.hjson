@@ -51,7 +51,7 @@ Mods: {
 			}
 			LightningAvoidanceRune: {
 				DisplayName: "避雷符"
-				Tooltip: "获得30分钟的抗劫状态。"
+				Tooltip: "获得30秒抗劫状态；已有至少30秒同类效果或对此增益免疫时不消耗。"
 			}
 			TribulationTrainingToken: {
 				DisplayName: "天劫训练令"

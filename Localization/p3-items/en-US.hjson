@@ -51,7 +51,7 @@ Mods: {
 			}
 			LightningAvoidanceRune: {
 				DisplayName: "Lightning Avoidance Rune"
-				Tooltip: "Grants temporary tribulation resistance for 30 minutes."
+				Tooltip: "Grants tribulation resistance for 30 seconds. Not consumed while at least 30 seconds of this effect remain, or while immune to it."
 			}
 			TribulationTrainingToken: {
 				DisplayName: "Tribulation Training Token"

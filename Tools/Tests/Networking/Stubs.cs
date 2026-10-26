@@ -71,6 +71,7 @@ namespace Terraria
         public ref float GetCritChance(Terraria.ModLoader.DamageClass damage)=>ref critChance;
         public ref Terraria.ModLoader.StatModifier GetDamage(Terraria.ModLoader.DamageClass damage)=>ref damageModifier;
         public ref Terraria.ModLoader.StatModifier GetKnockback(Terraria.ModLoader.DamageClass damage)=>ref knockbackModifier;
+        public bool[] buffImmune = new bool[22];
         public int[] buffType = new int[22], buffTime = new int[22], ownedProjectileCounts = new int[16];
         public int FindBuffIndex(int type)=>buffTime[type]>0?type:-1;
         public void AddBuff(int type, int time) {buffType[type]=type;buffTime[type]=time;} public bool HasBuff(int type)=>buffTime[type]>0;
@@ -425,7 +426,7 @@ namespace XianXia.Content.Tiles.Stations { public class AlchemyCauldronTile {} p
 namespace XianXia.Content.Items.HandGenerated { public class RouteMaterial { } }
 namespace XianXia.Content.Items.Accessories { public class LightningWardJade { } }
 namespace XianXia.Content.Projectiles { public class CloudpiercerSwordProjectile { } }
-namespace XianXia.Content.Buffs { public class QiRecoveryCooldownBuff {} public class ArtifactWardBuff { } }
+namespace XianXia.Content.Buffs { public class TribulationResistanceBuff {} public class QiRecoveryCooldownBuff {} public class ArtifactWardBuff { } }
 
 namespace Terraria {
  public class Condition {public Condition(){} public Condition(object description,Func<bool> predicate){} public static Condition DownedMoonLord=new(),DownedPlantera=new(),DownedGolem=new();}

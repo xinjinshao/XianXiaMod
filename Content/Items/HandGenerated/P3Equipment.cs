@@ -41,7 +41,6 @@ public class InscriptionRemovalStone : global::XianXia.Common.Items.InscriptionT
 // ---- Summon / Minion Equipment ----
 
 // ---- Utility Items ----
-public class LightningAvoidanceRune : ModItem { public override void SetStaticDefaults() => Item.ResearchUnlockCount = 25; public override void SetDefaults() { Item.width = 32; Item.height = 32; Item.maxStack = 30; Item.useStyle = ItemUseStyleID.DrinkLiquid; Item.useTime = 20; Item.useAnimation = 20; Item.UseSound = SoundID.Item4; Item.consumable = true; Item.value = Item.buyPrice(silver: 30); Item.rare = ItemRarityID.White; } public override bool? UseItem(Player player) { player.AddBuff(ModContent.BuffType<global::XianXia.Content.Buffs.TribulationResistanceBuff>(), 60 * 30); return true; } }
 public class BlankSectScroll : ModItem { public override void SetStaticDefaults() => Item.ResearchUnlockCount = 25; public override void SetDefaults() { Item.width = 32; Item.height = 32; Item.maxStack = 999; Item.value = Item.buyPrice(silver: 20); Item.rare = ItemRarityID.White; } }
 public class SpiritHerbSeeds : ModItem
 {
