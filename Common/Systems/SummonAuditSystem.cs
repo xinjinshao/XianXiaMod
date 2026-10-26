@@ -950,6 +950,7 @@ public partial class SummonAuditSystem : ModSystem
             AuditForgeConfirm(Check);
             AuditForgeOtherConfirm(Check);
             AuditFlameDao(Check);
+            AuditWoodgrainDao(Check);
             AuditPillBuffs(Check);
             AuditPillQualityStacks(Check);
             AuditPillQualityPickup(Check);

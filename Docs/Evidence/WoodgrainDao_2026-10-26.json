@@ -1,0 +1,45 @@
+{
+  "round": 361,
+  "date": "2026-10-26",
+  "weapon": "WoodgrainFlyingSword",
+  "passed": true,
+  "nativeChecks": 68597,
+  "addedChecks": 1029,
+  "nominalDamage": 140,
+  "baseCosts": {
+    "normal": 16,
+    "starAbyss": 12,
+    "inactiveAwakened": 3
+  },
+  "verification": [
+    "Native SP and server Dao transactions on all three routes, exact material costs and duplicate refusal",
+    "Full ItemIO and clone preserve prefix inscription refinement awakening route",
+    "48 world activation states: actual damage, eligibility, unaffordable rejection, exact-energy firing and record retention",
+    "Shared requirement and forge confirm matrices include new weapon",
+    "Official build, package and dedicated server load",
+    "Source 40 checks and Gameplay 7720 assertions"
+  ],
+  "artifacts": [
+    {
+      "path": "C:\\Users\\Shao\\Desktop\\Coding\\XianXiaMod\\.tml-test\\summons-6939544df56a4619b163772011a7fd9f\\save\\XianXia\\summon-audit.json",
+      "sha256": "b89ca85f0882ba147888a3b7f40ac2eb45d1e901fa19983f50847bb5b9e01b4d"
+    },
+    {
+      "path": "C:\\Users\\Shao\\Desktop\\Coding\\XianXiaMod\\.tml-test\\run-c29ce04814734b309a4c1e12fe7ffe90\\save\\Mods\\XianXia.tmod",
+      "sha256": "09c8c5d881c285d7ad4a9e38c18c9cdb63ebe427b0c24cc30c791459e7732aa9"
+    },
+    {
+      "path": "C:\\Users\\Shao\\Desktop\\Coding\\XianXiaMod\\.tml-test\\source361.log",
+      "sha256": "16aa7e49fda6c51cabdc192360028bb9a49891ec413f6cec8e6f9e527c13ffb0"
+    },
+    {
+      "path": "C:\\Users\\Shao\\Desktop\\Coding\\XianXiaMod\\.tml-test\\gameplay361.log",
+      "sha256": "0fcd04c021a7ba3d42c1615a42eabca84b8e187b90d93ac2d8e377c690367771"
+    }
+  ],
+  "limitations": [
+    "Direct native hooks and transactions do not prove full engine playthrough",
+    "No real client transport or rendered UI acceptance",
+    "Damage and energy balance require combat playtesting; no active skill added"
+  ]
+}
