@@ -1,0 +1,33 @@
+{
+  "round": 338,
+  "date": "2026-10-26",
+  "native_checks": 52058,
+  "new_checks": 16,
+  "report": ".tml-test\\summons-f9c6cadbb23442b5a1e9efc2bc17b2f8\\save\\XianXia\\summon-audit.json",
+  "report_sha256": "e3843b39df4050003f1557e1ac71c71d6f66bdb3abc32617fcad9ced288e391b",
+  "package": ".tml-test\\run-36b4b3ecdf3d4810be8c74e6e938ae02\\save\\Mods\\XianXia.tmod",
+  "package_sha256": "5dddd9a23bac4773732fe09fb88c63aad16a2fd291e862bbf61a816bbc1722c5",
+  "samples": [
+    "native herb growth emits exactly one actual tile packet per transition: stage=1 frame=18 packets=1",
+    "official herb owner decoder accepts actual growth packet",
+    "official herb tile replay converges frame map and maturity without extra growth: stage=1/0",
+    "native client cannot grow or rebroadcast a received herb stage",
+    "official herb owner decoder accepts actual growth packet",
+    "official herb tile replay converges frame map and maturity without extra growth: stage=1/1",
+    "native client cannot grow or rebroadcast a received herb stage",
+    "native herb growth emits exactly one actual tile packet per transition: stage=2 frame=36 packets=1",
+    "official herb owner decoder accepts actual growth packet",
+    "official herb tile replay converges frame map and maturity without extra growth: stage=2/0",
+    "native client cannot grow or rebroadcast a received herb stage",
+    "official herb owner decoder accepts actual growth packet",
+    "official herb tile replay converges frame map and maturity without extra growth: stage=2/1",
+    "native client cannot grow or rebroadcast a received herb stage",
+    "native mature herb emits no unchanged tile traffic",
+    "native herb transport audit restores engine context"
+  ],
+  "limitations": [
+    "Memory socket and official MessageBuffer, no real clients",
+    "No full random world updates, map rendering or actual network delay",
+    "WorldGen random generator advances as in existing growth audit"
+  ]
+}

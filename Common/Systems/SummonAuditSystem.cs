@@ -992,6 +992,7 @@ public partial class SummonAuditSystem : ModSystem
             AuditProtectedObjectPlacement(Check);
             AuditHerbMap(Check);
             AuditHerbGrowth(Check);
+            AuditHerbGrowthPackets(Check);
             AuditHerbPlacement(Check);
             AuditSpiritweaveArmor(Check);
             AuditSpiritweaveFrames(Check);
