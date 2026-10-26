@@ -73,7 +73,7 @@
 | 职业 | 装备选择 | 获得入口与定位 |
 | --- | --- | --- |
 | 近战 | [月骸法剑](../../Content/Items/Weapons/MoonboneDharmaSword.cs) | 基础攻击、宗门传承、材料觉醒和三路线道化分开；跨世界时需重新核对世界路线。 |
-| 远程 | [星灾机关匣](../Content/Equipment/Entries/Mechanism_Ranged_Weapons.md) | 斩道台；渡劫境及月亮领主世界进度，基础36灵气。 |
+| 远程 | [星灾机关匣](../Content/Equipment/Entries/Mechanism_Ranged_Weapons.md) | 斩道台；渡劫境及月亮领主世界进度，未觉醒基础36灵气；可材料觉醒获得额外10%伤害、基础灵耗28，保留四次命中和两次反弹。 |
 | 魔法 | [归星道典](../Content/Equipment/Entries/Archive_Star_Codex.md) | 斩道台；渡劫境及月亮领主进度，蓄能后激活穿透法弹。旧天道残卷是突破物品。 |
 | 召唤 | [归档仙魂契](../../Content/Items/HandGenerated/SpiritContracts.cs) | 斩道台：月骸20、归档残光8、下品灵石36；召唤要求困难模式及月亮领主，30魔力、**2仆从位**。 |
 

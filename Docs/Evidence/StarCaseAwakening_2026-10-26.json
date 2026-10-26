@@ -1,0 +1,43 @@
+{
+  "round": 353,
+  "date": "2026-10-26",
+  "mod_version": "0.1.5",
+  "native_checks": 63255,
+  "new_native_checks": 776,
+  "effect_matrix": "3 modes x SpiritSevering/Tribulation/DaoSevering x 5 cumulative world stages through Moon Lord x dormant/awakened = 90 combinations",
+  "native_groups": {
+    "native star calamity case fixture imports valid authority state": 14,
+    "native star calamity case keeps native combat prefix": 14,
+    "native star calamity case authority spends one seal and exactly twenty-four stones": 2,
+    "native star calamity case awakening retains actual equipment inscription prefix and refinement": 2,
+    "native star calamity case server emits authoritative inventory/reply output to captured socket": 2,
+    "native repeated star calamity case awakening spends nothing": 2,
+    "native star calamity case full save and clone preserve awakening without automatically granting a Dao route": 4,
+    "native star calamity case uses unchanged three-byte growth payload with no Dao route": 2,
+    "native awakened star calamity case deploys for twenty-eight energy without array cooldown": 2,
+    "native awakened star calamity case retains four-hit ranged bolt terrain collision and resource identity": 2,
+    "native awakened star calamity case keeps two reflected collisions then requests destruction": 6,
+    "native star calamity case invalid realm boss level inscription stones or station preserves resources": 12,
+    "native star calamity case awakening changes only intended base deployment cost": 90,
+    "native star calamity case refinement and awakening damage hooks remain additive": 90,
+    "native star calamity case rejects one below current energy cost": 90,
+    "native star calamity case exact-energy use retains realm hardmode Plantera Golem and Moon Lord gates": 90,
+    "native star calamity case awakening does not expose undefined active skill or Dao route": 90,
+    "native star calamity case crafted-awakening tooltips resolve for each state": 90,
+    "native star calamity case explicit state fixture awakened": 45
+  },
+  "additional_coverage": "Shared forge authority matrix, actual prepared shot and four-hit bolt defaults, three OnTileCollide calls, ItemIO and clone",
+  "report": ".tml-test\\summons-ab3acfee36de4611bcb68025e2b46e66\\save\\XianXia\\summon-audit.json",
+  "report_sha256": "aaf5f957cb01e4124221a2df2f32ff41125321a786afd9d834ac5a081560768b",
+  "package": ".tml-test\\run-a4ce7319e1c14f3fa837960950f2951b\\save\\Mods\\XianXia.tmod",
+  "package_sha256": "712f0455e1dc5e4413cc6cf06cf8a53e8ce93887aed2cb88cbb9740073b2cff0",
+  "source_checks": 40,
+  "source_log": ".tml-test/source353.log",
+  "gameplay_checks": 7720,
+  "networking_checks": 30455,
+  "limitations": [
+    "Bounce checked through actual OnTileCollide with collision velocity fixtures; no full terrain movement/destruction frames",
+    "No rendered forge UI, full input, actual multiplayer or combat balance",
+    "No new active skill or Dao route"
+  ]
+}
