@@ -96,9 +96,24 @@ public class PillQualitySystem : GlobalItem
         tooltips.Add(new TooltipLine(item.ModItem.Mod, "PillUsefulness", Language.GetTextValue(lowersPressure ? "Mods.XianXia.PillQuality.Usefulness" : "Mods.XianXia.PillQuality.CombatUsefulness")));
     }
 
+    public static void AddBreakthroughRequirement(Item item, Player player, List<TooltipLine> tooltips)
+    {
+        if (item.ModItem?.Name is not ("QiCondensingPill" or "FoundationPill")) return;
+        var target = item.ModItem.Name == "QiCondensingPill"
+            ? global::XianXia.Common.Players.CultivationStage.QiCondensation : global::XianXia.Common.Players.CultivationStage.Foundation;
+        string failure = player.GetModPlayer<global::XianXia.Common.Players.XianXiaPlayer>().GetBreakthroughFailure(target);
+        string reason = failure.Length == 0 ? Language.GetTextValue("Mods.XianXia.PillQuality.BreakthroughReady")
+            : Language.GetTextValue("Mods.XianXia.Progression." + failure,
+                failure == "BreakthroughRequiresTrial" ? Language.GetTextValue("Mods.XianXia.Progression.TrialNames."
+                    + global::XianXia.Common.Players.CultivationRules.GetRequiredBoss(target)) : "");
+        tooltips.Add(new TooltipLine(item.ModItem.Mod, "PillBreakthroughRequirement", reason));
+    }
+
     public override void ModifyTooltips(Item item, List<TooltipLine> tooltips)
     {
         if (!IsPill(item)) return;
+        if (Main.myPlayer >= 0 && Main.myPlayer < Main.maxPlayers && Main.LocalPlayer.active)
+            AddBreakthroughRequirement(item, Main.LocalPlayer, tooltips);
         string nameKey = Quality switch
         {
             PillQuality.Coarse => "Mods.XianXia.PillQuality.Coarse",

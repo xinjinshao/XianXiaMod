@@ -71,6 +71,24 @@ public partial class SummonAuditSystem
                     var state=player.GetModPlayer<XianXiaPlayer>();state.cultivationStage=(CultivationStage)(target-1);state.discoveredSpiritualEnergy=true;state.ResetEffects();state.TryInitializeNetwork(state.CaptureSnapshot());
                     player.inventory[0]=new Item(type,2);player.inventory[0].GetGlobalItem<PillQualitySystem>().LoadData(player.inventory[0],new TagCompound {["quality"]=(int)quality,["crafted"]=true});return player;
                 }
+                var preview = Progression(NetmodeID.SinglePlayer);
+                var previewState = preview.GetModPlayer<XianXiaPlayer>();
+                foreach (int scenario in new[] {0, 1, 2, 3}) {
+                    previewState.cultivationStage = scenario == 1 ? (CultivationStage)target : (CultivationStage)(target - 1);
+                    previewState.tribulationTimer = scenario == 2 ? 120 : 0;
+                    if (scenario == 3) DownedBossSystem.DownedBosses.Remove("tribulation_cloud_avatar");
+                    var beforePreview = previewState.CaptureSnapshot();
+                    var tips = new System.Collections.Generic.List<TooltipLine>();
+                    PillQualitySystem.AddBreakthroughRequirement(preview.inventory[0], preview, tips);
+                    string failure = previewState.GetBreakthroughFailure((CultivationStage)target);
+                    string expectedText = failure.Length == 0 ? Terraria.Localization.Language.GetTextValue("Mods.XianXia.PillQuality.BreakthroughReady")
+                        : Terraria.Localization.Language.GetTextValue("Mods.XianXia.Progression." + failure, failure == "BreakthroughRequiresTrial"
+                            ? Terraria.Localization.Language.GetTextValue("Mods.XianXia.Progression.TrialNames.tribulation_cloud_avatar") : "");
+                    check(tips.Single(tip => tip.Name == "PillBreakthroughRequirement").Text == expectedText
+                        && previewState.CaptureSnapshot().Equals(beforePreview) && preview.inventory[0].stack == 2,
+                        "native breakthrough pill preview matches current gate without mutation: " + target + "/" + quality + "/" + scenario + " " + expectedText);
+                    DownedBossSystem.MarkDowned("tribulation_cloud_avatar");
+                }
                 var authority=Progression(NetmodeID.Server);CultivationItemTransactions.HandleRequest(authority,0,type);var authoritative=authority.GetModPlayer<XianXiaPlayer>();var effects=AuthoritativeBuffSync.Capture(authority);
                 check((int)authoritative.cultivationStage==target&&authority.inventory[0].stack==1,"native progression pill authority advances and consumes once with quality reward");
                 var single=Progression(NetmodeID.SinglePlayer);bool? used=ItemLoader.UseItem(single.inventory[0],single);var singleState=single.GetModPlayer<XianXiaPlayer>();var singleBuffs=AuthoritativeBuffSync.Capture(single);

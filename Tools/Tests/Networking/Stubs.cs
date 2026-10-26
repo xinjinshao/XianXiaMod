@@ -338,6 +338,8 @@ namespace XianXia.Common.Players
         public int spiritPressure,spiritualEnergyRegenBonus;
         public float spiritualEnergyCostMultiplier=1f;
         public CultivationStage cultivationStage;
+        // Presentation-only fixture: no world milestones or cleared trials are installed.
+        public string GetBreakthroughFailure(CultivationStage target) => CultivationRules.GetFailure(cultivationStage, target, 0, false, false, false, false, false, _ => false);
         public int maxSpiritualEnergy = 40, arrayDeploymentCooldown;
         public bool discoveredSpiritualEnergy=true; public bool NetworkInitialized, ApplyingProgressionItem, NetworkWasActive;
         public void ResetNetworkSession() { artifactOwnerSession=0; NetworkInitialized = NetworkWasActive = false; ProgressionItemCooldown = BossSummonCooldown = 0; }

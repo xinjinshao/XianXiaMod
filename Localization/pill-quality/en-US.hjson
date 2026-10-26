@@ -1,6 +1,7 @@
 Mods: {
  XianXia: {
   PillQuality: {
+   BreakthroughReady: "Current breakthrough requirements met. Using this pill advances your realm."
    RecoveryAmounts: "At this quality: restore {0} spiritual energy + {1} quality bonus (capped at your maximum); +{2} spirit pressure (maximum 100), {3} seconds of shared fatigue."
    CombatUsefulness: "Requires a useful main effect or quality bonus. Realm, mutual-exclusion and fatigue limits still apply. Does not lower spirit pressure."
    Usefulness: "Consumed only when it can extend the main effect, lower spirit pressure, or grant a useful quality bonus. Main-effect immunity does not block other benefits."
