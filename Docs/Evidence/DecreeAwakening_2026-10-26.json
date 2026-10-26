@@ -1,0 +1,43 @@
+{
+  "round": 349,
+  "date": "2026-10-26",
+  "mod_version": "0.1.5",
+  "native_checks": 60744,
+  "new_native_checks": 567,
+  "effect_matrix": "3 modes x 4 realms x reputation 71/72 x dormant/awakened",
+  "native_groups": {
+    "native heaven decree fixture imports valid authority state": 14,
+    "native heaven decree keeps native combat prefix": 14,
+    "native heaven decree authority spends one seal and exactly twenty-four stones": 2,
+    "native heaven decree awakening retains actual equipment inscription prefix and refinement": 2,
+    "native heaven decree server emits authoritative inventory/reply output to captured socket": 2,
+    "native repeated heaven decree awakening spends nothing": 2,
+    "native heaven decree full save and clone preserve awakening without automatically granting a Dao route": 4,
+    "native heaven decree uses unchanged three-byte growth payload with no Dao route": 2,
+    "native awakened heaven decree creates its registered beam for twenty energy without touching shared skill cooldown": 2,
+    "native awakened decree retains complete beam warning and seventeen-frame damage window": 72,
+    "native heaven decree invalid realm boss level inscription stones or station preserves resources": 12,
+    "native heaven decree crafted twenty-energy cost independent of preserved twenty-five/thirty-two-energy heritage": 48,
+    "native heaven decree refinement awakening and heritage damage hooks remain additive": 48,
+    "native heaven decree rejects one below current energy cost": 48,
+    "native heaven decree accepts exact current energy cost": 48,
+    "native heaven decree does not expose an undefined active skill or Dao transformation": 48,
+    "native heaven decree heritage and crafted-awakening tooltips resolve independently": 48,
+    "native heaven decree explicit state fixture awakened": 24
+  },
+  "additional_coverage": "Shared forge authority requirements; prepared shot creates actual beam; CanDamage checked for each remaining lifetime 36..1 in SP and server contexts",
+  "report": ".tml-test\\summons-5f230da1be9c42b6bb15c13799f94c7a\\save\\XianXia\\summon-audit.json",
+  "report_sha256": "7dd615ce1eed30241baff6eb63ba10395ff2bf69a2391c0655b0cf47930593dd",
+  "package": ".tml-test\\run-63eaadfde316497abb0866c8a48d2c30\\save\\Mods\\XianXia.tmod",
+  "package_sha256": "4239686b43c00ed11ea034c326269728fb3038c742460d3f3523ec00fdae2237",
+  "gameplay_checks": 7720,
+  "networking_checks": 30455,
+  "limitations": [
+    "Beam window checked by setting actual lifetime and calling CanDamage, not complete Projectile.Update frames",
+    "No rendered forge UI or real multiplayer transport",
+    "No actual combat balance or full input sequence",
+    "No new active skill or Dao route for this weapon"
+  ],
+  "source_checks": 40,
+  "source_log": ".tml-test/source349.log"
+}

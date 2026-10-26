@@ -61,13 +61,13 @@ public class BrokenHeavenDecree : global::XianXia.Common.Items.CultivationWeapon
 
         return player.GetModPlayer<global::XianXia.Common.Players.XianXiaPlayer>()
 
-            .CanConsumeSpiritualEnergy(HasArtifactAwakening(player) ? 25 : 32);
+            .CanConsumeSpiritualEnergy(GetSpiritCost(player));
 
     }
 
 
 
-    public override int GetSpiritCost(Player player) => HasArtifactAwakening(player) ? 25 : 32;
+    public override int GetSpiritCost(Player player) => global::XianXia.Common.Items.RefinedArtifact.IsAwakened(Item) ? 20 : HasArtifactAwakening(player) ? 25 : 32;
 
 
     private static bool HasArtifactAwakening(Player player)
@@ -88,6 +88,7 @@ public class BrokenHeavenDecree : global::XianXia.Common.Items.CultivationWeapon
 
     {
 
+        if (global::XianXia.Common.Items.RefinedArtifact.IsAwakened(Item)) damage += 0.1f;
         if (HasArtifactAwakening(player))
 
             damage += 0.16f;
@@ -104,9 +105,9 @@ public class BrokenHeavenDecree : global::XianXia.Common.Items.CultivationWeapon
 
         string key = HasArtifactAwakening(player)
 
-            ? "Mods.XianXia.Progression.ArtifactAwakeningReady"
+            ? "Mods.XianXia.Refinement.DecreeHeritageReady"
 
-            : "Mods.XianXia.Progression.ArtifactAwakeningLocked";
+            : "Mods.XianXia.Refinement.DecreeHeritageLocked";
 
         tooltips.Add(new TooltipLine(
 
@@ -114,7 +115,7 @@ public class BrokenHeavenDecree : global::XianXia.Common.Items.CultivationWeapon
 
             "XianXiaArtifactAwakening",
 
-            Terraria.Localization.Language.GetTextValue(key, global::XianXia.Common.Players.CultivationStatusText.StageName(global::XianXia.Common.Players.CultivationStage.NascentSoul), 72, 25, 16)));
+            Terraria.Localization.Language.GetTextValue(key, global::XianXia.Common.Players.CultivationStatusText.StageName(global::XianXia.Common.Players.CultivationStage.NascentSoul), 72, GetSpiritCost(player), 16)));
 
     }
 
