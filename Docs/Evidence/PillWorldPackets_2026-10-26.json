@@ -1,0 +1,56 @@
+{
+  "round": 345,
+  "date": "2026-10-26",
+  "native_checks": 58688,
+  "new_native_checks": 385,
+  "scenarios": 64,
+  "dimensions": {
+    "registered_pill_types": 8,
+    "stored_grades": 4,
+    "crafted_flags": 2
+  },
+  "grouped_checks": {
+    "native eight-pill world quality fixture captures one actual item packet": 64,
+    "official pill world decoder accepts actual server item packet": 128,
+    "official pill world replay preserves one stack grade and provenance": 128,
+    "native pickup of officially decoded world pill preserves wire quality and provenance": 64,
+    "native pill world packet audit restores items participant and connection": 1
+  },
+  "report": ".tml-test\\summons-049ae2fdabe9462eae2f76ace9b40002\\save\\XianXia\\summon-audit.json",
+  "report_sha256": "c5bd5f314797a42f6ffb169421a8ff0e90b9b11e9e41e9ce2c83ba71b1a95fe3",
+  "package": ".tml-test\\run-30e53922273f4fd0a15232c40df895e9\\save\\Mods\\XianXia.tmod",
+  "package_sha256": "3b6d510ff1e9d128f2c85b9378270603e48e3a2b62a088242cc0d8e17ca73f6b",
+  "samples": [
+    "native eight-pill world quality fixture captures one actual item packet",
+    "official pill world decoder accepts actual server item packet",
+    "official pill world replay preserves one stack grade and provenance: QiCondensingPill/Coarse/False/0",
+    "official pill world decoder accepts actual server item packet",
+    "official pill world replay preserves one stack grade and provenance: QiCondensingPill/Coarse/False/1",
+    "native pickup of officially decoded world pill preserves wire quality and provenance",
+    "native eight-pill world quality fixture captures one actual item packet",
+    "official pill world decoder accepts actual server item packet",
+    "official pill world replay preserves one stack grade and provenance: QiCondensingPill/Coarse/True/0",
+    "official pill world decoder accepts actual server item packet",
+    "official pill world replay preserves one stack grade and provenance: QiCondensingPill/Coarse/True/1",
+    "native pickup of officially decoded world pill preserves wire quality and provenance",
+    "native eight-pill world quality fixture captures one actual item packet",
+    "official pill world decoder accepts actual server item packet",
+    "official pill world replay preserves one stack grade and provenance: ThunderBurstPill/Spirit/False/0",
+    "official pill world decoder accepts actual server item packet",
+    "official pill world replay preserves one stack grade and provenance: ThunderBurstPill/Spirit/False/1",
+    "native pickup of officially decoded world pill preserves wire quality and provenance",
+    "native eight-pill world quality fixture captures one actual item packet",
+    "official pill world decoder accepts actual server item packet",
+    "official pill world replay preserves one stack grade and provenance: ThunderBurstPill/Spirit/True/0",
+    "official pill world decoder accepts actual server item packet",
+    "official pill world replay preserves one stack grade and provenance: ThunderBurstPill/Spirit/True/1",
+    "native pickup of officially decoded world pill preserves wire quality and provenance",
+    "native pill world packet audit restores items participant and connection"
+  ],
+  "limitations": [
+    "Actual server NetMessage.SyncItem and official client MessageBuffer; memory socket only",
+    "Ownership is assigned in pickup fixture, not part of this item metadata transport check",
+    "No real clients, packet loss/reordering across different item lifetimes or item save to disk",
+    "No full player update or rendered pickup acceptance"
+  ]
+}
