@@ -41,7 +41,7 @@ public partial class SummonAuditSystem
                 check(pill.stack == 1, "native authority pill transaction consumes exactly one");
                 int index = actor.FindBuffIndex(entry.Item2), expected = entry.Item4 ? PillQualityRules.Scale(entry.Item3, quality) : entry.Item3;
                 check(index >= 0 && actor.buffTime[index] == expected, "native authority pill applies expected quality-scaled primary buff");
-                if (pill.ModItem.Name is "SpringReturnPill" or "TribulationResistingPill") {
+                if (pill.ModItem.Name is "SpringReturnPill" or "TribulationResistingPill" or "FurnaceGuardPill" or "WindStepPill" or "ThunderBurstPill") {
                     var tips = new System.Collections.Generic.List<TooltipLine>(); pill.ModItem.ModifyTooltips(tips);
                     string key = "Mods.XianXia.PillQuality.EffectDuration", text = tips.Single(tip => tip.Name == "PillEffectDuration").Text;
                     check(Terraria.Localization.Language.GetTextValue(key) != key && text == Terraria.Localization.Language.GetTextValue(key, actor.buffTime[index] / 60f),

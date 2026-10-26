@@ -1963,6 +1963,16 @@ foreach(PillQuality grade in Enum.GetValues<PillQuality>())foreach(int scenario 
 }
 Console.WriteLine($"Including multi-benefit buff pills: {assertions} assertions; engine boundaries mocked.");
 
+foreach(string name in new[]{"FurnaceGuardPill","WindStepPill","ThunderBurstPill"})foreach(PillQuality grade in Enum.GetValues<PillQuality>())foreach(bool immune in new[]{false,true}) {
+ Game.netMode=NetmodeID.Server;Game.myPlayer=255;var actor=new Terraria.Player{whoAmI=0,selectedItem=0};Game.player[0]=actor;actor.State.NetworkInitialized=true;actor.State.cultivationStage=CultivationStage.Foundation;actor.State.maxSpiritualEnergy=120;actor.State.spiritualEnergy=120;actor.State.spiritPressure=50;actor.buffImmune[Terraria.ID.BuffID.Regeneration]=true;
+ ModItem combatPill=name switch{"FurnaceGuardPill"=>new XianXia.Content.Items.Materials.FurnaceGuardPill(),"WindStepPill"=>new XianXia.Content.Items.Materials.WindStepPill(),_=>new XianXia.Content.Items.Materials.ThunderBurstPill()};combatPill.Mod=mod;combatPill.Name=name;combatPill.SetDefaults();combatPill.Item.type=956;combatPill.Item.stack=2;combatPill.Item.ModItem=combatPill;actor.inventory[0]=combatPill.Item;combatPill.Item.GetGlobalItem<PillQualitySystem>().LoadData(combatPill.Item,new Terraria.ModLoader.IO.TagCompound{{"quality",(int)grade},{"crafted",true}});
+ int main=name=="FurnaceGuardPill"?3:name=="WindStepPill"?4:5;actor.buffImmune[main]=immune;
+ Check(combatPill.CanUseItem(actor)==!immune,"Combat pills cannot count pressure as a benefit when primary and quality benefits are unavailable");
+ CultivationItemTransactions.HandleRequest(actor,0,956);
+ Check(combatPill.Item.stack==(immune?2:1)&&actor.HasBuff(2)==!immune&&actor.HasBuff(main)==!immune&&actor.State.spiritPressure==50,"Combat pill immunity refusal avoids item and fatigue while preserving pressure");
+}
+Console.WriteLine($"Including useful combat pill gates: {assertions} assertions; engine boundaries mocked.");
+
 sealed class TestBossSummon : XianXia.Common.Items.CultivationBossSummonItem
 {
     public override int BossType => 100;

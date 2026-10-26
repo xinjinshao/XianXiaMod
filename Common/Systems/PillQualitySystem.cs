@@ -32,12 +32,12 @@ public class PillQualitySystem : GlobalItem
         int index = player.FindBuffIndex(buff);
         return index < 0 || player.buffTime[index] < ticks;
     }
-    public static bool CanBenefitFromBuffPill(Item item, Player player, int buff, int baseTicks)
+    public static bool CanBenefitFromBuffPill(Item item, Player player, int buff, int baseTicks, bool lowersPressure = true)
     {
         if (!player.active || player.dead || player.noItems || player.CCed) return false;
         var state = player.GetModPlayer<global::XianXia.Common.Players.XianXiaPlayer>();
         PillQuality quality = GetQuality(item);
-        return CanExtendBuff(player, buff, Scale(item, baseTicks)) || state.spiritPressure > 0
+        return CanExtendBuff(player, buff, Scale(item, baseTicks)) || lowersPressure && state.spiritPressure > 0
             || PillQualityRules.BonusEnergy(quality) > 0 && (!state.discoveredSpiritualEnergy || state.spiritualEnergy < state.maxSpiritualEnergy)
             || CanExtendBuff(player, BuffID.Regeneration, PillQualityRules.RegenerationTicks(quality));
     }
@@ -89,11 +89,11 @@ public class PillQualitySystem : GlobalItem
         Crafted = crafted;
     }
 
-    public static void AddDurationTooltip(Item item, List<TooltipLine> tooltips, int baseTicks)
+    public static void AddDurationTooltip(Item item, List<TooltipLine> tooltips, int baseTicks, bool lowersPressure = true)
     {
         tooltips.Add(new TooltipLine(item.ModItem.Mod, "PillEffectDuration",
             Language.GetTextValue("Mods.XianXia.PillQuality.EffectDuration", Scale(item, baseTicks) / 60f)));
-        tooltips.Add(new TooltipLine(item.ModItem.Mod, "PillUsefulness", Language.GetTextValue("Mods.XianXia.PillQuality.Usefulness")));
+        tooltips.Add(new TooltipLine(item.ModItem.Mod, "PillUsefulness", Language.GetTextValue(lowersPressure ? "Mods.XianXia.PillQuality.Usefulness" : "Mods.XianXia.PillQuality.CombatUsefulness")));
     }
 
     public override void ModifyTooltips(Item item, List<TooltipLine> tooltips)

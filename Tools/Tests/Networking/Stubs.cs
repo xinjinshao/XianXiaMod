@@ -74,7 +74,7 @@ namespace Terraria
         public bool[] buffImmune = new bool[22];
         public int[] buffType = new int[22], buffTime = new int[22], ownedProjectileCounts = new int[16];
         public int FindBuffIndex(int type)=>buffTime[type]>0?type:-1;
-        public void AddBuff(int type, int time) {buffType[type]=type;buffTime[type]=time;} public bool HasBuff(int type)=>buffTime[type]>0;
+        public void AddBuff(int type, int time) {if(buffImmune[type])return;buffType[type]=type;buffTime[type]=Math.Max(buffTime[type],time);} public bool HasBuff(int type)=>buffTime[type]>0;
         public Microsoft.Xna.Framework.Rectangle Hitbox => new((int)Center.X-10,(int)Center.Y-20,20,40);
         public Microsoft.Xna.Framework.Vector2 MountedCenter => Center;
         public Microsoft.Xna.Framework.Vector2 RotatedRelativePoint(Microsoft.Xna.Framework.Vector2 value) => value;

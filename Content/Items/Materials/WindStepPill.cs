@@ -18,12 +18,15 @@ public class WindStepPill : ModItem
         Item.useStyle = ItemUseStyleID.DrinkLiquid; Item.useTime = Item.useAnimation = 20;
         Item.UseSound = SoundID.Item3; Item.consumable = true;
     }
+    public override void ModifyTooltips(System.Collections.Generic.List<TooltipLine> tooltips) =>
+        PillQualitySystem.AddDurationTooltip(Item, tooltips, BaseDuration, lowersPressure: false);
     public override bool CanUseItem(Player player) => player.active && !player.dead
         && player.GetModPlayer<XianXiaPlayer>().cultivationStage >= CultivationStage.QiCondensation
         && !player.HasBuff(ModContent.BuffType<WindStepBuff>())
         && !player.HasBuff(ModContent.BuffType<FurnaceGuardBuff>())
         && !player.HasBuff(ModContent.BuffType<ThunderBurstBuff>())
-        && !player.HasBuff(ModContent.BuffType<QiRecoveryCooldownBuff>());
+        && !player.HasBuff(ModContent.BuffType<QiRecoveryCooldownBuff>())
+        && PillQualitySystem.CanBenefitFromBuffPill(Item, player, ModContent.BuffType<WindStepBuff>(), BaseDuration, lowersPressure: false);
     public override bool? UseItem(Player player)
     {
         if (CultivationItemTransactions.RequestIfMultiplayer(player, Item)) return true;
