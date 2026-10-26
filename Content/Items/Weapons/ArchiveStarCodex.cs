@@ -28,7 +28,11 @@ public class ArchiveStarCodex : global::XianXia.Common.Items.CultivationWeaponIt
         Item.shoot = ModContent.ProjectileType<global::XianXia.Content.Projectiles.ArchiveStarOrb>();
         Item.shootSpeed = 10f;
     }
-    public override int GetSpiritCost(Player player) => 36;
+    public override int GetSpiritCost(Player player) => global::XianXia.Common.Items.RefinedArtifact.IsAwakened(Item) ? 28 : 36;
+    public override void ModifyWeaponDamage(Player player, ref StatModifier damage)
+    {
+        if (global::XianXia.Common.Items.RefinedArtifact.IsAwakened(Item)) damage += 0.1f;
+    }
     public override bool CanUseItem(Player player)
     {
         XianXiaPlayer state = player.GetModPlayer<XianXiaPlayer>();

@@ -1,0 +1,43 @@
+{
+  "round": 354,
+  "date": "2026-10-26",
+  "mod_version": "0.1.5",
+  "native_checks": 64063,
+  "new_native_checks": 808,
+  "effect_matrix": "3 modes x SpiritSevering/Tribulation/DaoSevering x 5 cumulative world stages through Moon Lord x dormant/awakened = 90 combinations",
+  "native_groups": {
+    "native archive codex fixture imports valid authority state": 14,
+    "native archive codex keeps native combat prefix": 14,
+    "native archive codex authority spends one seal and exactly twenty-four stones": 2,
+    "native archive codex awakening retains actual equipment inscription prefix and refinement": 2,
+    "native archive codex server emits authoritative inventory/reply output to captured socket": 2,
+    "native repeated archive codex awakening spends nothing": 2,
+    "native archive codex full save and clone preserve awakening without automatically granting a Dao route": 4,
+    "native archive codex uses unchanged three-byte growth payload with no Dao route": 2,
+    "native awakened archive codex deploys for twenty-eight energy without array cooldown": 2,
+    "native awakened archive codex retains four-hit magic bolt terrain collision and resource identity": 2,
+    "native awakened archive codex keeps full eighteen-AI charge before enabling damage": 38,
+    "native archive codex invalid realm boss level inscription stones or station preserves resources": 12,
+    "native archive codex awakening changes only intended base deployment cost": 90,
+    "native archive codex refinement and awakening damage hooks remain additive": 90,
+    "native archive codex rejects one below current energy cost": 90,
+    "native archive codex exact-energy use retains realm hardmode Plantera Golem and Moon Lord gates": 90,
+    "native archive codex awakening does not expose undefined active skill or Dao route": 90,
+    "native archive codex crafted-awakening tooltips resolve for each state": 90,
+    "native archive codex explicit state fixture awakened": 45
+  },
+  "additional_coverage": "Shared forge authority matrix, actual prepared orb creation, successive real AI calls through charge age 18, ItemIO and clone",
+  "report": ".tml-test\\summons-e9dba0705659428395fe1ebd4e708dcd\\save\\XianXia\\summon-audit.json",
+  "report_sha256": "c41b2a823d89138b5ce3ca80fc1e731d6bec5bebcf36e75951454797fedd441f",
+  "package": ".tml-test\\run-2a42e8fd176443e188d0cb647d370ab8\\save\\Mods\\XianXia.tmod",
+  "package_sha256": "f093ccc218cd2f3f599e989eb0e5342e5991a296d76c092195dae919a5815532",
+  "gameplay_checks": 7720,
+  "networking_checks": 30455,
+  "limitations": [
+    "Charge checked through actual AI with manual lifetime decrement, no complete Projectile.Update movement/collision frames",
+    "No rendered forge UI, full input, actual multiplayer or combat balance",
+    "No new active skill or Dao route"
+  ],
+  "source_checks": 40,
+  "source_log": ".tml-test/source354.log"
+}
