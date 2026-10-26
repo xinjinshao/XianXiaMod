@@ -1,0 +1,45 @@
+{
+  "round": 364,
+  "date": "2026-10-26",
+  "weapon": "BrokenHeavenDecree",
+  "passed": true,
+  "nativeChecks": 71756,
+  "addedChecks": 1077,
+  "nominalDamage": 240,
+  "baseCosts": {
+    "normal": 28,
+    "starAbyss": 22,
+    "inactiveAwakened": 20
+  },
+  "verification": [
+    "Native SP and server Dao transactions on all three routes, exact material costs and duplicate refusal",
+    "Full ItemIO and clone preserve prefix inscription refinement awakening route",
+    "48 world activation states: damage with independent heritage, eligibility, unaffordable rejection, exact-energy firing and record retention",
+    "48 actual created beams: manually set remaining lifetime 36 through 1 and invoke AI/CanDamage; verify inactive 36..18 and active 17..1, unchanged computed damage, Magic class, penetration 8 and local NPC immunity 8",
+    "Shared requirement and forge confirm matrices include new weapon",
+    "Official build package dedicated server load, source 40 checks, Gameplay 7720 assertions"
+  ],
+  "artifacts": [
+    {
+      "path": "C:\\Users\\Shao\\Desktop\\Coding\\XianXiaMod\\.tml-test\\summons-6230a295701c44dfa45d80f0502a14d5\\save\\XianXia\\summon-audit.json",
+      "sha256": "8d4dd61f6bd05ffa2d8d4bdc5cd086b4212c14b8dc1a7ee8da557d69302c7318"
+    },
+    {
+      "path": "C:\\Users\\Shao\\Desktop\\Coding\\XianXiaMod\\.tml-test\\run-581c752eeda04c0d9c6b37a68b742e52\\save\\Mods\\XianXia.tmod",
+      "sha256": "2a23cfd49f391bf1852aa5909cef4b23a0420ff71b3f9cf058ea53af7c6da6b6"
+    },
+    {
+      "path": "C:\\Users\\Shao\\Desktop\\Coding\\XianXiaMod\\.tml-test\\source364.log",
+      "sha256": "9af99110a02348ddf8c8d7fe669643c2de11432f3c9e9de9769a4448277efdd5"
+    },
+    {
+      "path": "C:\\Users\\Shao\\Desktop\\Coding\\XianXiaMod\\.tml-test\\gameplay364.log",
+      "sha256": "0fcd04c021a7ba3d42c1615a42eabca84b8e187b90d93ac2d8e377c690367771"
+    }
+  ],
+  "limitations": [
+    "Manual AI/lifetime advancement is not complete engine frames or actual NPC hits",
+    "No real client transport or rendered UI acceptance",
+    "Damage and energy balance require combat playtesting; no active skill added"
+  ]
+}

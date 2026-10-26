@@ -46,7 +46,7 @@ public partial class SummonAuditSystem
                 actor.GetModPlayer<InscriptionPlayer>().Initialize(); Submit(actor,3,true);
                 check(actor.inventory[0].stack == 1 && actor.inventory[2].IsAir,"native repeated heaven decree awakening spends nothing");
                 foreach (Item copy in new[] { target.Clone(),ItemIO.Load(ItemIO.Save(target)) })
-                    check(copy.type == target.type && copy.prefix == prefix && RefinedArtifact.IsAwakened(copy) && RefinedArtifact.GetLevel(copy) == 3 && InscribedEquipment.GetKind(copy) == InscriptionKind.Greenwood && !RefinedArtifact.SupportsDaoTransformation(copy),"native heaven decree full save and clone preserve awakening without automatically granting a Dao route");
+                    check(copy.type == target.type && copy.prefix == prefix && RefinedArtifact.IsAwakened(copy) && RefinedArtifact.GetLevel(copy) == 3 && InscribedEquipment.GetKind(copy) == InscriptionKind.Greenwood && RefinedArtifact.SupportsDaoTransformation(copy) && RefinedArtifact.GetDaoRoute(copy) == DownedBossSystem.EndgameRoute.None,"native heaven decree full save and clone preserve awakening without automatically granting a Dao route");
                 using var bytes = new MemoryStream(); target.GetGlobalItem<RefinedArtifact>().NetSend(target,new BinaryWriter(bytes));
                 check(bytes.ToArray().AsSpan().SequenceEqual(new byte[] { 3,1,0 }),"native heaven decree uses unchanged three-byte growth payload with no Dao route");
                 actor.selectedItem = 1; var castState = actor.GetModPlayer<XianXiaPlayer>(); castState.spiritualEnergy = 20; castState.activeSkillCooldown = 1200;
@@ -86,7 +86,7 @@ public partial class SummonAuditSystem
                     var damage = StatModifier.Default; weapon.ModifyWeaponDamage(actor,ref damage); growth.ModifyWeaponDamage(item,actor,ref damage);
                     check(Math.Abs(damage.ApplyTo(100) - (112 + (heritage ? 16 : 0) + (awakened ? 10 : 0))) < .001f,"native heaven decree refinement awakening and heritage damage hooks remain additive");
                     state.spiritualEnergy = cost - 1; check(!weapon.CanUseItem(actor),"native heaven decree rejects one below current energy cost"); state.spiritualEnergy = cost; check(weapon.CanUseItem(actor),"native heaven decree accepts exact current energy cost");
-                    check(!weapon.AltFunctionUse(actor) && ArtifactSkillTransactions.HeldSkill(item) == null && !RefinedArtifact.SupportsDaoTransformation(item),"native heaven decree does not expose an undefined active skill or Dao transformation");
+                    check(!weapon.AltFunctionUse(actor) && ArtifactSkillTransactions.HeldSkill(item) == null && RefinedArtifact.SupportsDaoTransformation(item),"native heaven decree supports Dao eligibility without an undefined active skill");
                     var lines = new List<TooltipLine>(); weapon.ModifyTooltips(lines); growth.ModifyTooltips(item,lines);
                     check(lines.Count == 3 && lines.TrueForAll(line => !line.Text.Contains("Mods.XianXia.") && !line.Text.Contains("{0}")),"native heaven decree heritage and crafted-awakening tooltips resolve independently");
                 }

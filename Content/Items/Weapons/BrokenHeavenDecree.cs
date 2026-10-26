@@ -67,7 +67,10 @@ public class BrokenHeavenDecree : global::XianXia.Common.Items.CultivationWeapon
 
 
 
-    public override int GetSpiritCost(Player player) => global::XianXia.Common.Items.RefinedArtifact.IsAwakened(Item) ? 20 : HasArtifactAwakening(player) ? 25 : 32;
+    public override int GetSpiritCost(Player player) => global::XianXia.Common.Items.RefinedArtifact.ActiveDaoRoute(Item) is var route
+        && route != global::XianXia.Common.Systems.DownedBossSystem.EndgameRoute.None
+        ? global::XianXia.Common.Systems.DaoArtifactRules.WeaponCost(Name, route)
+        : global::XianXia.Common.Items.RefinedArtifact.IsAwakened(Item) ? 20 : HasArtifactAwakening(player) ? 25 : 32;
 
 
     private static bool HasArtifactAwakening(Player player)
