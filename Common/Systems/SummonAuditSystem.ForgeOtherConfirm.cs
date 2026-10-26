@@ -30,7 +30,7 @@ public partial class SummonAuditSystem
         foreach (string needle in needles) ops.Add((needle,"CloudpiercerFlyingSword",0,InscriptionKind.None,3,0,3));
         ops.Add(("InscriptionRemovalStone","CloudpiercerFlyingSword",2,InscriptionKind.Greenwood,0,0,3));
         for (byte level = 0; level < 3; level++) ops.Add(("ArtifactQuenchingCrystal","CloudpiercerFlyingSword",level,InscriptionKind.Greenwood,6 + level * 6,0,7));
-        foreach (string weapon in new[] { "CloudpiercerFlyingSword","GreenwoodArrayPlate","HeavenTabletWardSeal","MoonboneDharmaSword","FormlessSwordWheel","BlackFurnaceWarhammer","ThunderPatternSwordCase","CinnabarTalismanFlameItem","WoodgrainFlyingSword" })
+        foreach (string weapon in new[] { "CloudpiercerFlyingSword","GreenwoodArrayPlate","HeavenTabletWardSeal","MoonboneDharmaSword","FormlessSwordWheel","BlackFurnaceWarhammer","ThunderPatternSwordCase","CinnabarTalismanFlameItem","WoodgrainFlyingSword","SpiritwoodCrossbow" })
             for (int route = 1; route <= 3; route++) ops.Add(("DaoTransformationSeal",weapon,3,InscriptionKind.Greenwood,36,route,10));
         const BindingFlags flags = BindingFlags.Instance | BindingFlags.NonPublic;
         try {

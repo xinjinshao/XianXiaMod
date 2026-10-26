@@ -11,6 +11,7 @@ public static class DaoArtifactRules
         CultivationStage stage, int worldRoute, bool defeatedCore) => level == 3 && awakened && inscribed
         && previousRoute == 0 && stage == CultivationStage.DaoSevering && Normalize(worldRoute) != DownedBossSystem.EndgameRoute.None && defeatedCore;
     public static float DamageScale(string name) => name switch {
+        "SpiritwoodCrossbow" => 120f / 12f,
         "WoodgrainFlyingSword" => 140f / 14f,
         "CinnabarTalismanFlameItem" => 120f / 24f,
         "CloudpiercerFlyingSword" => 150f / 28f,
@@ -23,6 +24,7 @@ public static class DaoArtifactRules
         _ => 1f
     };
     public static int WeaponCost(string name, DownedBossSystem.EndgameRoute route) => name switch {
+        "SpiritwoodCrossbow" => route == DownedBossSystem.EndgameRoute.AcceptStarAbyss ? 9 : 12,
         "WoodgrainFlyingSword" => route == DownedBossSystem.EndgameRoute.AcceptStarAbyss ? 12 : 16,
         "CinnabarTalismanFlameItem" => route == DownedBossSystem.EndgameRoute.AcceptStarAbyss ? 9 : 12,
         "CloudpiercerFlyingSword" => route == DownedBossSystem.EndgameRoute.AcceptStarAbyss ? 16 : 20,

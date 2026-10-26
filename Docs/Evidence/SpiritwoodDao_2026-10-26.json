@@ -1,0 +1,45 @@
+{
+  "round": 362,
+  "date": "2026-10-26",
+  "weapon": "SpiritwoodCrossbow",
+  "passed": true,
+  "nativeChecks": 69626,
+  "addedChecks": 1029,
+  "nominalDamage": 120,
+  "baseCosts": {
+    "normal": 12,
+    "starAbyss": 9,
+    "inactiveAwakened": 1
+  },
+  "verification": [
+    "Native SP and server Dao transactions on all three routes, exact material costs and duplicate refusal",
+    "Full ItemIO and clone preserve prefix inscription refinement awakening route",
+    "48 world activation states: actual damage, eligibility, unaffordable rejection, exact-energy firing, ranged class, no vanilla ammo and record retention",
+    "Shared requirement and forge confirm matrices include new weapon",
+    "Official build, package and dedicated server load",
+    "Source 40 checks and Gameplay 7720 assertions"
+  ],
+  "artifacts": [
+    {
+      "path": "C:\\Users\\Shao\\Desktop\\Coding\\XianXiaMod\\.tml-test\\summons-e76326085c6144b8af0c084c24f2478c\\save\\XianXia\\summon-audit.json",
+      "sha256": "682f3aea7991190d9c58e9538f91a98fc6192ad1d57a6cf25d9a8e008ac8b050"
+    },
+    {
+      "path": "C:\\Users\\Shao\\Desktop\\Coding\\XianXiaMod\\.tml-test\\run-b38624743ce94fef9f8f4a97afa3b2c2\\save\\Mods\\XianXia.tmod",
+      "sha256": "b185bf8411f01a41b4d73706566a8f76d3971d9cf259198b87daa97c479e2d03"
+    },
+    {
+      "path": "C:\\Users\\Shao\\Desktop\\Coding\\XianXiaMod\\.tml-test\\source362.log",
+      "sha256": "65583495093058826c24c52e07057a1a4b4515d17aea63417f507cb3e9481e8a"
+    },
+    {
+      "path": "C:\\Users\\Shao\\Desktop\\Coding\\XianXiaMod\\.tml-test\\gameplay362.log",
+      "sha256": "0fcd04c021a7ba3d42c1615a42eabca84b8e187b90d93ac2d8e377c690367771"
+    }
+  ],
+  "limitations": [
+    "Direct native hooks and transactions do not prove full engine playthrough",
+    "No real client transport or rendered UI acceptance",
+    "Damage and energy balance require combat playtesting; no active skill added"
+  ]
+}

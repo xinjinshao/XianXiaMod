@@ -36,7 +36,10 @@ public class SpiritwoodCrossbow : global::XianXia.Common.Items.CultivationWeapon
         return player.GetModPlayer<XianXiaPlayer>().CanConsumeSpiritualEnergy(GetSpiritCost(player));
     }
 
-    public override int GetSpiritCost(Player player) => global::XianXia.Common.Items.RefinedArtifact.IsAwakened(Item) ? 1 : SpiritCost;
+    public override int GetSpiritCost(Player player) => global::XianXia.Common.Items.RefinedArtifact.ActiveDaoRoute(Item) is var route
+        && route != global::XianXia.Common.Systems.DownedBossSystem.EndgameRoute.None
+        ? global::XianXia.Common.Systems.DaoArtifactRules.WeaponCost(Name, route)
+        : global::XianXia.Common.Items.RefinedArtifact.IsAwakened(Item) ? 1 : SpiritCost;
     public override void ModifyWeaponDamage(Player player, ref StatModifier damage)
     {
         if (global::XianXia.Common.Items.RefinedArtifact.IsAwakened(Item)) damage += 0.1f;
