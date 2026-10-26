@@ -1,0 +1,46 @@
+{
+  "round": 358,
+  "date": "2026-10-26",
+  "native_checks": 66539,
+  "new_native_checks": 936,
+  "scenarios": 498,
+  "operation_definitions": 30,
+  "matrix": {
+    "needles_and_removal": "6 operations x 3 states x 2 modes",
+    "refinement": "3 tiers x 7 states x 2 modes",
+    "dao": "7 weapons x 3 routes x 10 states x 2 modes"
+  },
+  "grouped_checks": {
+    "native ready inscription refinement Dao UI confirm applies exact local materials and intended result": 30,
+    "native inscription refinement Dao UI confirm refuses unmet requirements without packet or inventory changes": 438,
+    "native blocked non-awakening forge confirm retains selection and schedules feedback": 438,
+    "native ready non-awakening forge client confirm sends one request without speculative item changes": 30
+  },
+  "samples": [
+    "native ready inscription refinement Dao UI confirm applies exact local materials and intended result",
+    "native inscription refinement Dao UI confirm refuses unmet requirements without packet or inventory changes: GreenwoodInscriptionNeedle/CloudpiercerFlyingSword/0/0/0/1",
+    "native blocked non-awakening forge confirm retains selection and schedules feedback",
+    "native inscription refinement Dao UI confirm refuses unmet requirements without packet or inventory changes: GreenwoodInscriptionNeedle/CloudpiercerFlyingSword/0/0/0/2",
+    "native blocked non-awakening forge confirm retains selection and schedules feedback",
+    "native ready non-awakening forge client confirm sends one request without speculative item changes",
+    "native inscription refinement Dao UI confirm refuses unmet requirements without packet or inventory changes: GreenwoodInscriptionNeedle/CloudpiercerFlyingSword/0/0/1/1",
+    "native blocked non-awakening forge confirm retains selection and schedules feedback",
+    "native inscription refinement Dao UI confirm refuses unmet requirements without packet or inventory changes: DaoTransformationSeal/ThunderPatternSwordCase/3/3/1/6",
+    "native blocked non-awakening forge confirm retains selection and schedules feedback",
+    "native inscription refinement Dao UI confirm refuses unmet requirements without packet or inventory changes: DaoTransformationSeal/ThunderPatternSwordCase/3/3/1/7",
+    "native blocked non-awakening forge confirm retains selection and schedules feedback",
+    "native inscription refinement Dao UI confirm refuses unmet requirements without packet or inventory changes: DaoTransformationSeal/ThunderPatternSwordCase/3/3/1/8",
+    "native blocked non-awakening forge confirm retains selection and schedules feedback",
+    "native inscription refinement Dao UI confirm refuses unmet requirements without packet or inventory changes: DaoTransformationSeal/ThunderPatternSwordCase/3/3/1/9",
+    "native blocked non-awakening forge confirm retains selection and schedules feedback"
+  ],
+  "report": ".tml-test\\summons-b897dcacd2e049c7a44857bc07f3100f\\save\\XianXia\\summon-audit.json",
+  "report_sha256": "b26855b02ae0733a7c44733ef2a4aabbdb5620a050b97b3e107ae8d30cf5c687",
+  "package": ".tml-test\\run-6969f27a0cbc4107855bf315b21406b6\\save\\Mods\\XianXia.tmod",
+  "package_sha256": "bdf34fa20781b6d1fcf455e98debd1928e8dc2b49e5196cb070f6a04544647b3",
+  "limits": [
+    "Private real ConfirmSelection invoked with field fixtures, no window rendering or full input events",
+    "Client output uses captured memory socket; no real server transport",
+    "This round only adds native audit and documentation; no new gameplay changes or repeated portable suite"
+  ]
+}
