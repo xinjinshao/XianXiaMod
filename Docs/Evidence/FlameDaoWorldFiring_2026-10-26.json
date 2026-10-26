@@ -1,0 +1,39 @@
+{
+  "round": 360,
+  "date": "2026-10-26",
+  "scope": "Cinnabar Dao actual firing across active and fallback worlds",
+  "passed": true,
+  "nativeChecks": 67568,
+  "addedChecks": 96,
+  "matrix": {
+    "authorityModes": 2,
+    "itemRoutes": 3,
+    "worldRoutes": 4,
+    "coreStates": 2,
+    "states": 48
+  },
+  "assertions": [
+    "Insufficient energy rejects actual FirePrepared with no spend, cooldown change or projectile",
+    "Exact energy creates exactly one owned flame with computed weapon damage and consumes active or fallback cost",
+    "Stored Dao route survives each actual shot"
+  ],
+  "artifacts": [
+    {
+      "path": "C:\\Users\\Shao\\Desktop\\Coding\\XianXiaMod\\.tml-test\\summons-b56f9b0c47bd49f5b29004b2407a303a\\save\\XianXia\\summon-audit.json",
+      "sha256": "e45d8660ca774c66896b65f22fdb7e0042c031152d836b4029ea6f9b8754d762"
+    },
+    {
+      "path": "C:\\Users\\Shao\\Desktop\\Coding\\XianXiaMod\\.tml-test\\run-c884691d02064127b1145e99ace56849\\save\\Mods\\XianXia.tmod",
+      "sha256": "6b0608b92dad36c3e806f3dab700e65ee5e196fa3722c65968f38b36f642437a"
+    }
+  ],
+  "validation": [
+    "Official build, package and dedicated-server load passed",
+    "Registered native audit passed",
+    "Source and Gameplay suites not repeated: production behavior unchanged"
+  ],
+  "limitations": [
+    "Direct native transaction invocation, not full engine frames",
+    "No real client transport, rendered UI or combat balance acceptance"
+  ]
+}

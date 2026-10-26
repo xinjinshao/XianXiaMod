@@ -64,6 +64,19 @@ public partial class SummonAuditSystem
                         "native cinnabar cross-world Dao damage reverts without losing record or independent heritage");
                     state.spiritualEnergy = cost - 1; check(!weapon.CanUseItem(actor), "native cinnabar Dao rejects insufficient current-route energy");
                     state.spiritualEnergy = cost; check(weapon.CanUseItem(actor), "native cinnabar Dao accepts exact current-route energy");
+                    actor.selectedItem = 1; state.activeSkillCooldown = 1200;
+                    int actualDamage = actor.GetWeaponDamage(item);
+                    bool Fire() => WeaponShotTransactions.FirePrepared(actor,weapon,new Terraria.DataStructures.EntitySource_ItemUse_WithAmmo(actor,item,0),actor.Center,Vector2.UnitX * item.shootSpeed,item.shoot,actualDamage,2,authority == NetmodeID.Server);
+                    state.spiritualEnergy = cost - 1;
+                    check(!Fire() && state.spiritualEnergy == cost - 1 && state.activeSkillCooldown == 1200
+                        && !Main.projectile.Any(p => p.active && !priorShots.Contains(p)),
+                        "native cinnabar every world state rejects unaffordable actual shot without energy cooldown or projectile changes");
+                    state.spiritualEnergy = cost;
+                    check(Fire() && state.spiritualEnergy == 0 && state.activeSkillCooldown == 1200
+                        && Main.projectile.Count(p => p.active && !priorShots.Contains(p) && p.type == item.shoot && p.owner == 0 && p.damage == actualDamage) == 1
+                        && RefinedArtifact.GetDaoRoute(item) == (DownedBossSystem.EndgameRoute)route,
+                        "native cinnabar every world state fires exactly one flame at active or fallback cost and retains Dao record");
+                    foreach (var entity in Main.projectile.Where(p => p.active && !priorShots.Contains(p))) entity.active = false;
                     var tips = new List<TooltipLine>(); weapon.ModifyTooltips(tips); growth.ModifyTooltips(item,tips);
                     check(tips.Count == 4 && tips.All(tip => !tip.Text.Contains("Mods.XianXia.") && !tip.Text.Contains("{0}"))
                         && ArtifactSkillTransactions.HeldSkill(item) == null && !weapon.AltFunctionUse(actor),
