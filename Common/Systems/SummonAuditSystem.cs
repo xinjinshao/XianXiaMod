@@ -938,6 +938,7 @@ public partial class SummonAuditSystem : ModSystem
             AuditBiomeScans(Check);
             AuditPillBuffs(Check);
             AuditPillQualityStacks(Check);
+            AuditPillQualityPickup(Check);
             AuditFailureBuffs(Check);
             AuditEnemyBuffs(Check, owned);
             AuditPacketDispatch(Check);

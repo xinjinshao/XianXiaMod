@@ -1,0 +1,56 @@
+{
+  "round": 344,
+  "date": "2026-10-26",
+  "native_checks": 58303,
+  "new_native_checks": 3073,
+  "scenarios": 768,
+  "dimensions": {
+    "registered_pill_types": 8,
+    "inventory_grades": 4,
+    "world_grades": 4,
+    "inventory_layouts": 3,
+    "modes": 2
+  },
+  "layouts": [
+    "Closed inventory, existing stack 28",
+    "One empty slot and existing stack 28",
+    "Closed inventory, existing stack 30"
+  ],
+  "provenance": "Inventory starts uncrafted; world stack starts crafted",
+  "grouped_checks": {
+    "native pill GrabItems picks only available equal-grade capacity or an empty slot": 768,
+    "native pill pickup keeps separate grades and merges only actual crafting provenance": 768,
+    "native pill pickup preserves every unaccepted world pill and its quality metadata": 768,
+    "native repeated pill pickup cannot duplicate rewards or consume a blocked remainder": 768,
+    "native pill pickup audit restores participant world items and engine context": 1
+  },
+  "report": ".tml-test\\summons-bedb8065436b42caba065bf512f3e5cf\\save\\XianXia\\summon-audit.json",
+  "report_sha256": "ae43496b6d31d819ea7e27abf4d748ccb35abf75c16a609190e107417a81e2b5",
+  "package": ".tml-test\\run-f29b0f5f8ad44703bf9474e255a3462f\\save\\Mods\\XianXia.tmod",
+  "package_sha256": "ec37a973b61d357e5d81cec86dbb335eee9f847c3ed9e5ffa25c24c94c7fbbd0",
+  "samples": [
+    "native pill GrabItems picks only available equal-grade capacity or an empty slot: QiCondensingPill/Coarse/Coarse/0/0",
+    "native pill pickup keeps separate grades and merges only actual crafting provenance",
+    "native pill pickup preserves every unaccepted world pill and its quality metadata",
+    "native repeated pill pickup cannot duplicate rewards or consume a blocked remainder",
+    "native pill GrabItems picks only available equal-grade capacity or an empty slot: QiCondensingPill/Coarse/Coarse/0/1",
+    "native pill pickup keeps separate grades and merges only actual crafting provenance",
+    "native pill pickup preserves every unaccepted world pill and its quality metadata",
+    "native repeated pill pickup cannot duplicate rewards or consume a blocked remainder",
+    "native pill GrabItems picks only available equal-grade capacity or an empty slot: ThunderBurstPill/Spirit/Spirit/2/0",
+    "native pill pickup keeps separate grades and merges only actual crafting provenance",
+    "native pill pickup preserves every unaccepted world pill and its quality metadata",
+    "native repeated pill pickup cannot duplicate rewards or consume a blocked remainder",
+    "native pill GrabItems picks only available equal-grade capacity or an empty slot: ThunderBurstPill/Spirit/Spirit/2/1",
+    "native pill pickup keeps separate grades and merges only actual crafting provenance",
+    "native pill pickup preserves every unaccepted world pill and its quality metadata",
+    "native repeated pill pickup cannot duplicate rewards or consume a blocked remainder",
+    "native pill pickup audit restores participant world items and engine context"
+  ],
+  "limitations": [
+    "Actual private Player.GrabItems at one world tick; no full player update/input",
+    "Client mode is an in-process replica with no real server or item transport",
+    "World quality is installed in the fixture, not decoded from a network packet",
+    "No rendered pickups, on-disk character save or long-running inventory acceptance"
+  ]
+}
