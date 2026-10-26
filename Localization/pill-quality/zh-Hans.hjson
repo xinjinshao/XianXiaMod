@@ -1,6 +1,7 @@
 Mods: {
  XianXia: {
   PillQuality: {
+   RecoveryAmounts: "当前品质：恢复{0}灵气＋{1}品质额外灵气（不超过灵气上限）；增加{2}灵压（最高100），共享药滞{3}秒"
    CombatUsefulness: "可获得主增益或有效品质奖励时才消耗；仍受境界、互斥和药滞限制，不会降低灵压"
    Usefulness: "可延长主效果、降低灵压或获得有效品质奖励时才消耗；免疫主效果不影响其他收益"
    EffectDuration: "当前品质持续：{0:0.##}秒"

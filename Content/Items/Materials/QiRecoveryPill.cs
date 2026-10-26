@@ -18,6 +18,11 @@ public class QiRecoveryPill : ModItem
         Item.useStyle = ItemUseStyleID.DrinkLiquid; Item.useTime = Item.useAnimation = 20;
         Item.UseSound = SoundID.Item3; Item.consumable = true;
     }
+    public override void ModifyTooltips(System.Collections.Generic.List<TooltipLine> tooltips) =>
+        tooltips.Add(new TooltipLine(Mod, "QiRecoveryAmounts", Terraria.Localization.Language.GetTextValue(
+            "Mods.XianXia.PillQuality.RecoveryAmounts", PillQualitySystem.Scale(Item, QiRecoveryRules.BaseRecovery),
+            PillQualityRules.BonusEnergy(PillQualitySystem.GetQuality(Item)), QiRecoveryRules.PressureCost,
+            QiRecoveryRules.CooldownTicks / 60)));
     public override bool CanUseItem(Player player)
     {
         var state = player.GetModPlayer<XianXiaPlayer>();

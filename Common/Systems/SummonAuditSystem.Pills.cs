@@ -47,6 +47,16 @@ public partial class SummonAuditSystem
                     check(Terraria.Localization.Language.GetTextValue(key) != key && text == Terraria.Localization.Language.GetTextValue(key, actor.buffTime[index] / 60f),
                         "native quality duration tooltip matches actual applied buff: " + pill.ModItem.Name + "/" + quality + " ticks=" + actor.buffTime[index] + " text=" + text);
                 }
+                if (pill.ModItem is QiRecoveryPill) {
+                    var tips = new System.Collections.Generic.List<TooltipLine>(); pill.ModItem.ModifyTooltips(tips);
+                    string key = "Mods.XianXia.PillQuality.RecoveryAmounts";
+                    int recovery = PillQualityRules.Scale(QiRecoveryRules.BaseRecovery, quality), bonus = PillQualityRules.BonusEnergy(quality);
+                    string text = tips.Single(tip => tip.Name == "QiRecoveryAmounts").Text;
+                    check(Terraria.Localization.Language.GetTextValue(key) != key
+                        && text == Terraria.Localization.Language.GetTextValue(key, recovery, bonus, QiRecoveryRules.PressureCost, QiRecoveryRules.CooldownTicks / 60)
+                        && state.spiritualEnergy == recovery + bonus && state.spiritPressure == 60 && actor.buffTime[index] == 1800,
+                        "native recovery pill tooltip matches actual energy pressure and fixed fatigue: " + quality + " energy=" + state.spiritualEnergy + " text=" + text);
+                }
                 if (entry.Item5) check(actor.HasBuff(ModContent.BuffType<QiRecoveryCooldownBuff>()) && actor.buffTime[actor.FindBuffIndex(ModContent.BuffType<QiRecoveryCooldownBuff>())] == 1800,
                     "native combat pill also applies fixed shared fatigue");
                 int regeneration = PillQualityRules.RegenerationTicks(quality);

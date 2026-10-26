@@ -1,0 +1,25 @@
+{
+  "round": 336,
+  "date": "2026-10-26",
+  "native_checks": 52010,
+  "report": ".tml-test\\summons-08ae66e55a97498eb698a558b244352f\\save\\XianXia\\summon-audit.json",
+  "report_sha256": "a36bfb3b6d13d156f5276a55b2066ad565547dbd767e027665d00d0610e160c8",
+  "package": ".tml-test\\run-57f3e7d8f6ed4ea0a87c319f9611dc72\\save\\Mods\\XianXia.tmod",
+  "package_sha256": "8b647a1675848e6f22b657e1d4a6535e99ebcefd641eca9355bff826ea52fda8",
+  "samples": [
+    "native recovery pill tooltip matches actual energy pressure and fixed fatigue: Coarse energy=30 text=At this quality: restore 30 spiritual energy + 0 quality bonus (capped at your maximum); +10 spirit pressure (maximum 100), 30 seconds of shared fatigue.",
+    "native recovery pill tooltip matches actual energy pressure and fixed fatigue: Standard energy=40 text=At this quality: restore 40 spiritual energy + 0 quality bonus (capped at your maximum); +10 spirit pressure (maximum 100), 30 seconds of shared fatigue.",
+    "native recovery pill tooltip matches actual energy pressure and fixed fatigue: Fine energy=64 text=At this quality: restore 50 spiritual energy + 14 quality bonus (capped at your maximum); +10 spirit pressure (maximum 100), 30 seconds of shared fatigue.",
+    "native recovery pill tooltip matches actual energy pressure and fixed fatigue: Spirit energy=76 text=At this quality: restore 60 spiritual energy + 16 quality bonus (capped at your maximum); +10 spirit pressure (maximum 100), 30 seconds of shared fatigue."
+  ],
+  "verification": [
+    "native build/package/dedicated server load",
+    "localization keys",
+    "Networking: 30455 checks"
+  ],
+  "limits": [
+    "No rendered client tooltip verification",
+    "No complete input/animation or real network acceptance",
+    "No balance change"
+  ]
+}
