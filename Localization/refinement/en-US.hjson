@@ -19,7 +19,7 @@ Mods: {
    SpiritwoodAwakened: "Crafted awakening: +10% weapon damage, pre-Dao base spirit cost 1. Keeps Ranged damage and its original spirit bolt; uses no vanilla arrows. No active skill; Dao transformation available at Dao Severing with a chosen route and defeated core."
    SpiritwoodDormant: "Dormant: retain an inscription at refinement 3, reach Nascent Soul and defeat Medicine King Echo. Spend 1 awakening seal and 24 stones near an artificing station for +10% damage and base spirit cost 1."
 
-   CodexAwakened: "Crafted awakening: +10% weapon damage, base spirit cost 28. Ordinary use still requires Tribulation and Moon Lord progression. Keeps the 18-tick charge, four-hit limit and terrain collision. No active skill or Dao transformation."
+   CodexAwakened: "Crafted awakening: +10% weapon damage, pre-Dao base spirit cost 28. Ordinary use still requires Tribulation and Moon Lord progression. Keeps the 18-tick charge, four-hit limit and terrain collision. No active skill; Dao transformation available at Dao Severing with a chosen route and defeated core."
    CodexDormant: "Dormant: retain an inscription at refinement 3, reach Nascent Soul and defeat Medicine King Echo. Spend 1 awakening seal and 24 stones near an artificing station for +10% damage and base spirit cost 28. Ordinary use additionally requires Tribulation and Moon Lord progression."
 
    CalamityCaseAwakened: "Crafted awakening: +10% weapon damage, base spirit cost 28. Ordinary use still requires Tribulation and Moon Lord progression. Keeps the four-hit limit, two bounces and destruction on the third collision. No active skill or Dao transformation."

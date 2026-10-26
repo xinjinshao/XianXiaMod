@@ -1,0 +1,48 @@
+{
+  "round": 365,
+  "date": "2026-10-26",
+  "weapon": "ArchiveStarCodex",
+  "passed": true,
+  "nativeChecks": 72863,
+  "addedChecks": 1107,
+  "nominalDamage": 300,
+  "baseCosts": {
+    "normal": 36,
+    "starAbyss": 28,
+    "inactiveAwakened": 28
+  },
+  "verification": [
+    "Native SP and server Dao transactions on all three routes, exact material costs and duplicate refusal",
+    "Full ItemIO and clone preserve prefix inscription refinement awakening route",
+    "48 world activation states: actual damage, eligibility, unaffordable rejection, exact-energy firing and record retention",
+    "48 created orbs: manually advance AI/lifetime 18 steps; ai 0..17 harmless, ai 18 enables damage; Magic class, penetration 4, terrain collision, local NPC immunity 20 retained",
+    "Five missing realm/world requirements per authority and item route: CombinedHooks.CanUseItem rejects; server HandleRequest reaches request cooldown and creates no projectile or energy spend",
+    "Shared requirement and forge confirm matrices include new weapon",
+    "Official build package dedicated server load, source 40 checks, Gameplay 7720 assertions"
+  ],
+  "artifacts": [
+    {
+      "path": "C:\\Users\\Shao\\Desktop\\Coding\\XianXiaMod\\.tml-test\\summons-b7e22055fca24e76a8cfe458c4625bf6\\save\\XianXia\\summon-audit.json",
+      "sha256": "e9a2485cda4c6a432e9f0749bbba52589ddf5195e6f9355f8b1d6fd471cf0d8c"
+    },
+    {
+      "path": "C:\\Users\\Shao\\Desktop\\Coding\\XianXiaMod\\.tml-test\\run-118f38fc8b2e4ae9a5587e6f67c95800\\save\\Mods\\XianXia.tmod",
+      "sha256": "4422be25a27be026de327badc34ef89d0b7dcbafb5de9d1fb381b4a1a978aabf"
+    },
+    {
+      "path": "C:\\Users\\Shao\\Desktop\\Coding\\XianXiaMod\\.tml-test\\source365.log",
+      "sha256": "3fad8ae217e372191e377a252f9d69b780c399ed6aa903d8f161eca6c3fc884e"
+    },
+    {
+      "path": "C:\\Users\\Shao\\Desktop\\Coding\\XianXiaMod\\.tml-test\\gameplay365.log",
+      "sha256": "0fcd04c021a7ba3d42c1615a42eabca84b8e187b90d93ac2d8e377c690367771"
+    }
+  ],
+  "limitations": [
+    "Manual AI/lifetime advancement is not complete engine frames or actual NPC hits",
+    "Single-player progression refusal checks qualification hook; server refusal invokes actual request entry, no real network",
+    "Initial audit incorrectly treated FirePrepared as use gate; fixture corrected to actual qualification/request entry, production gate unchanged",
+    "Source suite passed before audit-only gate fixture correction; final package/native passed afterward. Gameplay passed with corrected audit before unrelated localization cleanup",
+    "No rendered UI acceptance or combat balance playtesting; no active skill added"
+  ]
+}

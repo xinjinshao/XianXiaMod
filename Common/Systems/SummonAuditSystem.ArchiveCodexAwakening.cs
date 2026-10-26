@@ -48,7 +48,7 @@ public partial class SummonAuditSystem
                 actor.GetModPlayer<InscriptionPlayer>().Initialize(); Submit(actor,3,true);
                 check(actor.inventory[0].stack == 1 && actor.inventory[2].IsAir,"native repeated archive codex awakening spends nothing");
                 foreach (Item copy in new[] { target.Clone(),ItemIO.Load(ItemIO.Save(target)) })
-                    check(copy.type == target.type && copy.prefix == prefix && RefinedArtifact.IsAwakened(copy) && RefinedArtifact.GetLevel(copy) == 3 && InscribedEquipment.GetKind(copy) == InscriptionKind.Greenwood && !RefinedArtifact.SupportsDaoTransformation(copy),"native archive codex full save and clone preserve awakening without automatically granting a Dao route");
+                    check(copy.type == target.type && copy.prefix == prefix && RefinedArtifact.IsAwakened(copy) && RefinedArtifact.GetLevel(copy) == 3 && InscribedEquipment.GetKind(copy) == InscriptionKind.Greenwood && RefinedArtifact.SupportsDaoTransformation(copy) && RefinedArtifact.GetDaoRoute(copy) == DownedBossSystem.EndgameRoute.None,"native archive codex full save and clone preserve awakening without automatically granting a Dao route");
                 using var bytes = new MemoryStream(); target.GetGlobalItem<RefinedArtifact>().NetSend(target,new BinaryWriter(bytes));
                 check(bytes.ToArray().AsSpan().SequenceEqual(new byte[] { 3,1,0 }),"native archive codex uses unchanged three-byte growth payload with no Dao route");
                 actor.selectedItem = 1; var castState = actor.GetModPlayer<XianXiaPlayer>(); castState.spiritualEnergy = 28; castState.activeSkillCooldown = 1200;
@@ -98,7 +98,7 @@ public partial class SummonAuditSystem
                 state.spiritualEnergy = cost;
                 check(weapon.CanUseItem(actor) == (stage >= CultivationStage.Tribulation && worldStage == 4),
                     "native archive codex exact-energy use retains realm hardmode Plantera Golem and Moon Lord gates");
-                check(!weapon.AltFunctionUse(actor) && ArtifactSkillTransactions.HeldSkill(item) == null && !RefinedArtifact.SupportsDaoTransformation(item),
+                check(!weapon.AltFunctionUse(actor) && ArtifactSkillTransactions.HeldSkill(item) == null && RefinedArtifact.SupportsDaoTransformation(item),
                     "native archive codex awakening does not expose undefined active skill or Dao route");
                 var lines = new List<TooltipLine>(); growth.ModifyTooltips(item,lines);
                 check(lines.Count == 2 && lines.TrueForAll(line => !line.Text.Contains("Mods.XianXia.") && !line.Text.Contains("{0}")),
