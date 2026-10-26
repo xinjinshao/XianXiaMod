@@ -955,6 +955,7 @@ public partial class SummonAuditSystem : ModSystem
             AuditArbalestDao(Check);
             AuditDecreeDao(Check);
             AuditCodexDao(Check);
+            AuditCalamityCaseDao(Check);
             AuditPillBuffs(Check);
             AuditPillQualityStacks(Check);
             AuditPillQualityPickup(Check);

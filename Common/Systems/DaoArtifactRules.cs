@@ -11,6 +11,7 @@ public static class DaoArtifactRules
         CultivationStage stage, int worldRoute, bool defeatedCore) => level == 3 && awakened && inscribed
         && previousRoute == 0 && stage == CultivationStage.DaoSevering && Normalize(worldRoute) != DownedBossSystem.EndgameRoute.None && defeatedCore;
     public static float DamageScale(string name) => name switch {
+        "StarCalamityMechanismCase" => 340f / 260f,
         "ArchiveStarCodex" => 300f / 230f,
         "BrokenHeavenDecree" => 240f / 165f,
         "StarEclipseArbalest" => 180f / 68f,
@@ -27,6 +28,7 @@ public static class DaoArtifactRules
         _ => 1f
     };
     public static int WeaponCost(string name, DownedBossSystem.EndgameRoute route) => name switch {
+        "StarCalamityMechanismCase" => route == DownedBossSystem.EndgameRoute.AcceptStarAbyss ? 28 : 36,
         "ArchiveStarCodex" => route == DownedBossSystem.EndgameRoute.AcceptStarAbyss ? 28 : 36,
         "BrokenHeavenDecree" => route == DownedBossSystem.EndgameRoute.AcceptStarAbyss ? 22 : 28,
         "StarEclipseArbalest" => route == DownedBossSystem.EndgameRoute.AcceptStarAbyss ? 14 : 18,

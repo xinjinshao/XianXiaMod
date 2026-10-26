@@ -1,0 +1,45 @@
+{
+  "round": 366,
+  "date": "2026-10-26",
+  "weapon": "StarCalamityMechanismCase",
+  "passed": true,
+  "nativeChecks": 73970,
+  "addedChecks": 1107,
+  "nominalDamage": 340,
+  "baseCosts": {
+    "normal": 36,
+    "starAbyss": 28,
+    "inactiveAwakened": 28
+  },
+  "verification": [
+    "SP/server three-route material transactions, full save clone, duplicate refusal, shared forge requirements and confirmation matrices",
+    "48 world states: actual damage, energy rejection, exact-energy firing and stored route retention",
+    "48 created bolts invoke OnTileCollide three times: two reflected velocities with netUpdate then destruction return; ranged class four hits terrain collision and damage retained",
+    "Five missing realm/world requirements per authority and item route: CombinedHooks.CanUseItem rejects; server HandleRequest reaches request cooldown and creates no projectile or energy spend",
+    "Official build package dedicated server load, source 40 checks, Gameplay 7720 assertions"
+  ],
+  "artifacts": [
+    {
+      "path": "C:\\Users\\Shao\\Desktop\\Coding\\XianXiaMod\\.tml-test\\summons-be1aad7d79784e21a89ebdba991b89e5\\save\\XianXia\\summon-audit.json",
+      "sha256": "312c7bf2d951bdbacf6e4c7c9eb8e112d02788b5e3982432978eba3b12fd82ee"
+    },
+    {
+      "path": "C:\\Users\\Shao\\Desktop\\Coding\\XianXiaMod\\.tml-test\\run-ecbebcbd4c49445996994c86518fe03a\\save\\Mods\\XianXia.tmod",
+      "sha256": "8e92ef2ed8e43c2a17fe8700de7a90c4ccc1f9f54e867c3eb124c5363291b012"
+    },
+    {
+      "path": "C:\\Users\\Shao\\Desktop\\Coding\\XianXiaMod\\.tml-test\\source366.log",
+      "sha256": "07c8c1328e97f51428a0c9c4c7fb879f464ac6bb87f54f52766c737a259f36a7"
+    },
+    {
+      "path": "C:\\Users\\Shao\\Desktop\\Coding\\XianXiaMod\\.tml-test\\gameplay366.log",
+      "sha256": "0fcd04c021a7ba3d42c1615a42eabca84b8e187b90d93ac2d8e377c690367771"
+    }
+  ],
+  "limitations": [
+    "Collision callbacks invoked directly; not actual terrain collision or complete engine frames",
+    "Single-player use gate via CombinedHooks; server gate via actual request entry, no real network",
+    "Source suite started before final Chinese tooltip correction; final build native and Gameplay passed afterward",
+    "No rendered UI or combat balance acceptance; no active skill added"
+  ]
+}
