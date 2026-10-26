@@ -286,3 +286,19 @@ foreach(int mode in new[]{0,NetmodeID.Server,NetmodeID.MultiplayerClient}) forea
 }
 Main.dedServ=true;
 Console.WriteLine($"Including warning geometry boundaries: {assertions} assertions; engine boundaries mocked.");
+
+foreach(bool lightning in new[]{false,true}) foreach(int axis in new[]{0,1,2,3}) foreach(float invalid in new[]{float.NaN,float.PositiveInfinity,float.NegativeInfinity}) {
+ Main.netMode=NetmodeID.Server;Terraria.ModLoader.ModProjectile sender=lightning?new TribulationLightningProjectile():new TribulationWarningLineProjectile();sender.SetDefaults();
+ byte[] Write(Terraria.ModLoader.ModProjectile shot){using var stream=new MemoryStream();shot.SendExtraAI(new BinaryWriter(stream));return stream.ToArray();}
+ byte[] stale=Write(sender);
+ sender.Projectile.Center=axis==0?new(invalid,100):axis==1?new(100,invalid):new(100,100);
+ sender.Projectile.velocity=axis==2?new(invalid,0):axis==3?new(0,invalid):Microsoft.Xna.Framework.Vector2.Zero;
+ byte[] cancelled=Write(sender);Check(cancelled.Length==27&&cancelled[2]==1,"Serialization before AI publishes geometry cancellation without protocol changes");
+ sender.Projectile.Center=new(100,100);sender.Projectile.velocity=Microsoft.Xna.Framework.Vector2.Zero;
+ Check(Write(sender)[2]==1,"Repair cannot clear cancellation latched during serialization");
+ Main.netMode=NetmodeID.MultiplayerClient;Terraria.ModLoader.ModProjectile receiver=lightning?new TribulationLightningProjectile():new TribulationWarningLineProjectile();receiver.SetDefaults();
+ foreach(byte[] payload in new[]{cancelled,stale,cancelled}){using var stream=new MemoryStream(payload);receiver.ReceiveExtraAI(new BinaryReader(stream));}
+ Main.netMode=NetmodeID.Server;int before=Projectile.Spawned;receiver.OnKill(0);
+ Check(lightning?receiver.CanDamage()==false:Projectile.Spawned==before,"Cancelled receiver cannot revive attack after older valid payload replay");
+}
+Console.WriteLine($"Including geometry cancellation wire replay: {assertions} assertions; engine boundaries mocked.");

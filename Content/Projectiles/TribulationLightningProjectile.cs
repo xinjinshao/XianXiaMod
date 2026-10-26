@@ -17,7 +17,7 @@ public class TribulationLightningProjectile : ModProjectile
     private readonly HostileSourceBinding sourceBinding = new();
     private bool invalidAge, invalidGeometry;
     public override void OnSpawn(IEntitySource source) => sourceBinding.Capture(source);
-    public override void SendExtraAI(BinaryWriter writer) => sourceBinding.Write(writer, Projectile, Lifetime);
+    public override void SendExtraAI(BinaryWriter writer) { RejectInvalidGeometry(); sourceBinding.Write(writer, Projectile, Lifetime); }
     public override void ReceiveExtraAI(BinaryReader reader) { if (!sourceBinding.Read(reader, Projectile, Lifetime)) invalidAge = true; }
     public override bool? CanDamage() => !invalidAge && !invalidGeometry && Projectile.timeLeft > 0 && Projectile.timeLeft <= Lifetime
         && float.IsFinite(Projectile.Center.X) && float.IsFinite(Projectile.Center.Y)
@@ -39,13 +39,18 @@ public class TribulationLightningProjectile : ModProjectile
         Projectile.ignoreWater = true;
     }
 
-    public override void AI()
+    private void RejectInvalidGeometry()
     {
         if (!float.IsFinite(Projectile.Center.X) || !float.IsFinite(Projectile.Center.Y)
             || !float.IsFinite(Projectile.velocity.X) || !float.IsFinite(Projectile.velocity.Y)) {
             invalidGeometry = true;
             sourceBinding.CancelOnAuthority(Projectile, CancellationFade);
         }
+    }
+
+    public override void AI()
+    {
+        RejectInvalidGeometry();
         sourceBinding.CancelIfInvalid(Projectile, CancellationFade, Lifetime);
         if (invalidAge || invalidGeometry || !sourceBinding.IsValid()) {
             Projectile.velocity = Vector2.Zero;

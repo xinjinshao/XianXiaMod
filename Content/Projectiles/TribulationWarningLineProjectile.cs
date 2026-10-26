@@ -20,7 +20,7 @@ public class TribulationWarningLineProjectile : ModProjectile
     public override void OnSpawn(IEntitySource source) => sourceBinding.Capture(source);
     public override bool? CanDamage() => false;
     public override bool CanHitPlayer(Player target) => false;
-    public override void SendExtraAI(BinaryWriter writer) => sourceBinding.Write(writer, Projectile, Lifetime);
+    public override void SendExtraAI(BinaryWriter writer) { RejectInvalidGeometry(); sourceBinding.Write(writer, Projectile, Lifetime); }
     public override void ReceiveExtraAI(BinaryReader reader) { if (!sourceBinding.Read(reader, Projectile, Lifetime)) strikeReleased = true; }
 
     public override void SetDefaults()
