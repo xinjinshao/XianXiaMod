@@ -272,3 +272,17 @@ Main.netMode=0;Main.dedServ=false;Terraria.Audio.SoundEngine.Calls=0;
 var normalCue=new TribulationWarningLineProjectile();normalCue.SetDefaults();normalCue.AI();normalCue.AI();Check(Terraria.Audio.SoundEngine.Calls==1,"Single player environmental warning plays once");
 Main.dedServ=true;
 Console.WriteLine($"Including warning audio boundaries: {assertions} assertions; audio engine mocked.");
+
+foreach(int mode in new[]{0,NetmodeID.Server,NetmodeID.MultiplayerClient}) foreach(int axis in new[]{0,1,2,3}) foreach(float invalid in new[]{float.NaN,float.PositiveInfinity,float.NegativeInfinity}) {
+ Main.netMode=mode;Main.dedServ=false;var marker=new TribulationWarningLineProjectile();marker.SetDefaults();
+ marker.Projectile.Center=axis==0?new(invalid,100):axis==1?new(100,invalid):new(100,100);
+ marker.Projectile.velocity=axis==2?new(invalid,0):axis==3?new(0,invalid):Microsoft.Xna.Framework.Vector2.Zero;
+ int before=Projectile.Spawned,lights=Lighting.Calls,dust=Dust.Calls,sounds=Terraria.Audio.SoundEngine.Calls;
+ marker.OnKill(0);Check(Projectile.Spawned==before,"Bad warning geometry cannot release even before AI");
+ marker.AI();Check(Lighting.Calls==lights&&Dust.Calls==dust&&Terraria.Audio.SoundEngine.Calls==sounds,"Bad warning geometry cannot reach visuals or audio");
+ marker.Projectile.Center=new(100,100);marker.Projectile.velocity=Microsoft.Xna.Framework.Vector2.Zero;marker.OnKill(0);
+ Check(Projectile.Spawned==before,"Repaired coordinates cannot revive rejected warning");
+ if(mode!=NetmodeID.MultiplayerClient) Check(marker.Projectile.timeLeft<=6&&marker.Projectile.netUpdate,"Authority retires and synchronizes bad warning");
+}
+Main.dedServ=true;
+Console.WriteLine($"Including warning geometry boundaries: {assertions} assertions; engine boundaries mocked.");

@@ -14,7 +14,7 @@ public class TribulationWarningLineProjectile : ModProjectile
     public const int Lifetime = 36;
     public const int CancellationFade = 6;
     private readonly HostileSourceBinding sourceBinding = new();
-    private bool strikeReleased;
+    private bool strikeReleased, invalidGeometry;
     private bool cueResolved;
     public const int CueWindow = 6;
     public override void OnSpawn(IEntitySource source) => sourceBinding.Capture(source);
@@ -37,8 +37,19 @@ public class TribulationWarningLineProjectile : ModProjectile
         Projectile.hide = false;
     }
 
+    private bool RejectInvalidGeometry()
+    {
+        invalidGeometry |= !float.IsFinite(Projectile.Center.X) || !float.IsFinite(Projectile.Center.Y)
+            || !float.IsFinite(Projectile.velocity.X) || !float.IsFinite(Projectile.velocity.Y);
+        if (!invalidGeometry) return false;
+        strikeReleased = cueResolved = true;
+        sourceBinding.CancelOnAuthority(Projectile, CancellationFade);
+        return true;
+    }
+
     public override void AI()
     {
+        if (RejectInvalidGeometry()) { Projectile.velocity = Vector2.Zero; return; }
         Projectile.velocity = Vector2.Zero;
         sourceBinding.CancelIfInvalid(Projectile, CancellationFade, Lifetime);
         Projectile.alpha = sourceBinding.IsCancelled
@@ -66,7 +77,7 @@ public class TribulationWarningLineProjectile : ModProjectile
 
     public override void OnKill(int timeLeft)
     {
-        if (Main.netMode == NetmodeID.MultiplayerClient || timeLeft != 0 || strikeReleased || !sourceBinding.IsValid())
+        if (RejectInvalidGeometry() || Main.netMode == NetmodeID.MultiplayerClient || timeLeft != 0 || strikeReleased || !sourceBinding.IsValid())
         {
             return;
         }
