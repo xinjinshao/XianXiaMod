@@ -22,7 +22,11 @@ public class SectMechanismCrossbow : global::XianXia.Common.Items.CultivationWea
         Item.shoot = ModContent.ProjectileType<global::XianXia.Content.Projectiles.SectMechanismBolt>();
         Item.shootSpeed = 14f;
     }
-    public override int GetSpiritCost(Player player) => 20;
+    public override int GetSpiritCost(Player player) => global::XianXia.Common.Items.RefinedArtifact.IsAwakened(Item) ? 16 : 20;
+    public override void ModifyWeaponDamage(Player player, ref StatModifier damage)
+    {
+        if (global::XianXia.Common.Items.RefinedArtifact.IsAwakened(Item)) damage += 0.1f;
+    }
     public override bool CanUseItem(Player player)
     {
         XianXiaPlayer state = player.GetModPlayer<XianXiaPlayer>();

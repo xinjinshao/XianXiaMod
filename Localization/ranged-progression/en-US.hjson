@@ -4,7 +4,7 @@
       "Items": {
         "SectMechanismCrossbow": {
           "DisplayName": "Sect Mechanism Crossbow",
-          "Tooltip": "Base cost: 20 spiritual energy; requires Nascent Soul, Hardmode and Plantera\nHits up to 3 times; collides with terrain"
+          "Tooltip": "Base cost: 20 spiritual energy before crafted awakening, 16 afterward; requires Nascent Soul, Hardmode and Plantera\nHits up to 3 times; collides with terrain"
         },
         "HeavenLawArbalest": {
           "DisplayName": "Heaven Law Arbalest",

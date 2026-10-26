@@ -4,7 +4,7 @@
       "Items": {
         "SectMechanismCrossbow": {
           "DisplayName": "宗门机关弩",
-          "Tooltip": "基础消耗20灵气；需要元婴境及困难模式、世纪之花进度\n机关弹最多命中3次，碰撞地形"
+          "Tooltip": "未觉醒基础消耗20灵气，材料觉醒后16；需要元婴境及困难模式、世纪之花进度\n机关弹最多命中3次，碰撞地形"
         },
         "HeavenLawArbalest": {
           "DisplayName": "天律弩阵",

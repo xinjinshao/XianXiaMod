@@ -1,0 +1,42 @@
+{
+  "round": 351,
+  "date": "2026-10-26",
+  "mod_version": "0.1.5",
+  "native_checks": 61818,
+  "new_native_checks": 536,
+  "effect_matrix": "3 modes x 3 realms x (pre-Hardmode / Hardmode before Plantera / Hardmode after Plantera) x dormant/awakened = 54 combinations",
+  "native_groups": {
+    "native sect crossbow fixture imports valid authority state": 14,
+    "native sect crossbow keeps native combat prefix": 14,
+    "native sect crossbow authority spends one seal and exactly twenty-four stones": 2,
+    "native sect crossbow awakening retains actual equipment inscription prefix and refinement": 2,
+    "native sect crossbow server emits authoritative inventory/reply output to captured socket": 2,
+    "native repeated sect crossbow awakening spends nothing": 2,
+    "native sect crossbow full save and clone preserve awakening without automatically granting a Dao route": 4,
+    "native sect crossbow uses unchanged three-byte growth payload with no Dao route": 2,
+    "native awakened sect crossbow deploys for sixteen energy without array cooldown": 2,
+    "native awakened sect crossbow retains three-hit ranged bolt terrain collision and resource identity": 2,
+    "native sect crossbow invalid realm boss level inscription stones or station preserves resources": 12,
+    "native sect crossbow awakening changes only intended base deployment cost": 54,
+    "native sect crossbow refinement and awakening damage hooks remain additive": 54,
+    "native sect crossbow rejects one below current energy cost": 54,
+    "native sect crossbow exact-energy use retains realm hardmode and Plantera gates": 54,
+    "native sect crossbow awakening does not expose undefined active skill or Dao route": 54,
+    "native sect crossbow crafted-awakening tooltips resolve for each state": 54,
+    "native sect crossbow explicit state fixture awakened": 27
+  },
+  "additional_coverage": "Shared forge authority matrix, prepared shot, actual registered ranged bolt defaults, ItemIO and clone",
+  "report": ".tml-test\\summons-4bc11f9f237d44dc901b5fd7d74e7b79\\save\\XianXia\\summon-audit.json",
+  "report_sha256": "8a7b4bf196ced64b86ef6a5a09008bd92c8c1d5964fdf876416b02396b899d49",
+  "package": ".tml-test\\run-08699807fe0c4d5ba34d043649632560\\save\\Mods\\XianXia.tmod",
+  "package_sha256": "fb37b178ede98699637dfae51ba966fd826fa8861f7787eb3a4382758c851114",
+  "gameplay_checks": 7720,
+  "networking_checks": 30455,
+  "limitations": [
+    "Actual prepared shot and registered bolt defaults; no full penetration/terrain battle in this audit",
+    "No rendered forge UI, full input or real multiplayer transport",
+    "No new active skill or Dao route"
+  ],
+  "source_checks": 40,
+  "source_log": ".tml-test/source351.log"
+}
