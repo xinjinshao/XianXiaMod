@@ -43,12 +43,19 @@ public class StarAbyssForbiddenTalisman : ModItem
 
 
 
+    public override bool CanUseItem(Player player)
+    {
+        var state = player.GetModPlayer<XianXiaPlayer>();
+        return player.active && !player.dead && !player.noItems && !player.CCed
+            && state.maxSpiritualEnergy > 0 && state.spiritualEnergy >= 0 && state.spiritualEnergy < state.maxSpiritualEnergy;
+    }
+
     public override bool? UseItem(Player player)
 
     {
         if (global::XianXia.Common.Systems.CultivationItemTransactions.RequestIfMultiplayer(player, Item))
             return true;
-
+        if (!CanUseItem(player)) return false;
 
         global::XianXia.Common.Players.XianXiaPlayer cultivation = player.GetModPlayer<global::XianXia.Common.Players.XianXiaPlayer>();
 

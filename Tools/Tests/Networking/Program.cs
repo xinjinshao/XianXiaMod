@@ -1934,6 +1934,17 @@ foreach(int existing in new[]{0,1799,1800,5400})foreach(bool immune in new[]{fal
 }
 Console.WriteLine($"Including authoritative lightning rune hooks: {assertions} assertions; engine boundaries mocked.");
 
+foreach(int energy in new[]{-1,0,40,119,120,121})foreach(int pressure in new[]{0,54,55,100}) {
+ Game.netMode=NetmodeID.Server;Game.myPlayer=255;var actor=new Terraria.Player{whoAmI=0,selectedItem=0};Game.player[0]=actor;actor.State.NetworkInitialized=true;actor.State.maxSpiritualEnergy=120;actor.State.spiritualEnergy=energy;actor.State.spiritPressure=pressure;
+ var talisman=new XianXia.Content.Items.Materials.StarAbyssForbiddenTalisman{Mod=mod,Name="StarAbyssForbiddenTalisman"};talisman.SetDefaults();talisman.Item.type=953;talisman.Item.stack=2;talisman.Item.ModItem=talisman;actor.inventory[0]=talisman.Item;
+ bool ready=energy>=0&&energy<120;Check(talisman.CanUseItem(actor)==ready,"Forbidden talisman requires a valid energy deficit");
+ CultivationItemTransactions.HandleRequest(actor,0,953);
+ Check(talisman.Item.stack==(ready?1:2)&&actor.State.spiritualEnergy==(ready?Math.Min(120,energy+80):energy)&&actor.State.spiritPressure==(ready?Math.Min(100,pressure+25):pressure),"Forbidden talisman grants capped recovery and charges pressure only on useful use");
+ Check(actor.HasBuff(ModContent.BuffType<XianXia.Content.Buffs.SpiritualPressureDisorderBuff>())==(ready&&pressure+25>=80),"Forbidden talisman preserves exact disorder threshold");
+ int stack=talisman.Item.stack;CultivationItemTransactions.HandleRequest(actor,0,953);Check(talisman.Item.stack==stack,"Forbidden talisman repeat request does not consume twice");
+}
+Console.WriteLine($"Including useful forbidden talisman hooks: {assertions} assertions; engine boundaries mocked.");
+
 sealed class TestBossSummon : XianXia.Common.Items.CultivationBossSummonItem
 {
     public override int BossType => 100;

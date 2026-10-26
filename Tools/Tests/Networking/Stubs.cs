@@ -433,7 +433,7 @@ namespace Terraria {
  public class Recipe {public Recipe AddIngredient<T>(int amount=1)=>this;public Recipe AddIngredient(int type,int amount=1)=>this;public Recipe AddTile(int tile)=>this;public Recipe AddCondition(Condition condition)=>this;public void Register(){}}
  public static class Lighting {public static int Calls;public static void AddLight(Microsoft.Xna.Framework.Vector2 center,float r,float g,float b)=>Calls++;}
 }
-namespace Terraria.ID {public static class ItemRarityID {public const int White=0,Red=10,Lime=8,Yellow=9,Green=2,Blue=1;}}
+namespace Terraria.ID {public static class ItemRarityID { public const int LightRed=4;public const int White=0,Red=10,Lime=8,Yellow=9,Green=2,Blue=1;}}
 namespace Terraria.ModLoader {
  public class ModProjectile {public Mod Mod;public Terraria.Projectile Projectile=new();public ModProjectile(){Projectile.ModProjectile=this;}public virtual string Texture=>"";public virtual void SetDefaults(){}public virtual bool? CanDamage()=>null;public virtual void AI(){} public virtual void OnSpawn(Terraria.DataStructures.IEntitySource source){} public virtual void SendExtraAI(System.IO.BinaryWriter writer){} public virtual void ReceiveExtraAI(System.IO.BinaryReader reader){} public virtual void OnKill(int timeLeft){} public virtual bool? CanHitNPC(Terraria.NPC target)=>null;public virtual bool OnTileCollide(Microsoft.Xna.Framework.Vector2 velocity)=>true;public virtual void OnHitNPC(Terraria.NPC npc,Terraria.NPC.HitInfo hit,int damage){}}
 }
@@ -477,3 +477,7 @@ namespace Terraria.GameInput { public class TriggersSet {} }
 namespace Terraria.ModLoader { public class ModKeybind { public bool JustPressed; } public static class KeybindLoader { public static readonly Dictionary<string,ModKeybind> Keys=new(); public static ModKeybind RegisterKeybind(Mod mod,string name,string binding){var key=new ModKeybind();Keys[name]=key;return key;} } }
 
 namespace XianXia.Common.Systems { public static class TribulationEpochSystem { internal static readonly long[] ClientLastSeen=new long[Terraria.Main.maxPlayers]; } }
+
+namespace XianXia.Content.Buffs { public class SpiritualPressureDisorderBuff {} }
+namespace XianXia.Content.Items.Materials { public class StarEclipseCrystal {} public class StarAbyssMembrane {} }
+namespace Terraria.ID { public static class TileID { public const int DemonAltar=26; } }

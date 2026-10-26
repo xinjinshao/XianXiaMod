@@ -119,7 +119,7 @@ Mods: {
 			}
 			StarAbyssForbiddenTalisman: {
 				DisplayName: "Star Abyss Forbidden Talisman"
-				Tooltip: "A forbidden talisman from the star abyss. Restores 80 spiritual energy instantly but increases spirit pressure by 25. Risk of spiritual pressure disorder."
+				Tooltip: "A forbidden talisman from the star abyss. Use below maximum spiritual energy to restore up to 80 energy, at a cost of 25 spirit pressure. Risk of spiritual pressure disorder."
 			}
 			StarAbyssMembrane: {
 				DisplayName: "Star Abyss Membrane"

@@ -1,0 +1,43 @@
+{
+  "date": "2026-10-26",
+  "round": 333,
+  "mod_version": "0.1.5",
+  "package": ".tml-test\\run-1d5d7fd9568e41958966629d9a272ac9\\save\\Mods\\XianXia.tmod",
+  "package_sha256": "9b345c4038559dcdc1a8eb0b6c9b73d7def52095fd1c1038ebd5edbc76848c3e",
+  "native_report": ".tml-test\\summons-1a4ad3e19df645caab2240fdadd0646e\\save\\XianXia\\summon-audit.json",
+  "report_sha256": "671877cbf32e73b5cd9ffac209ea1e67b10dd6b10049f13a3c79f64de33d3715",
+  "native_checks": 50076,
+  "new_native_checks": 398,
+  "grouped_checks": {
+    "native forbidden talisman fixture imports valid resource state": 40,
+    "native client forbidden talisman sends request without local recovery pressure or consumption": 40,
+    "native forbidden talisman restores capped energy and charges item and pressure only for useful use": 40,
+    "native forbidden talisman preserves exact eighty-pressure boundary and eight-second disorder": 40,
+    "native forbidden talisman updates resource revision once without pill bonuses or stuck reentry": 40,
+    "native forbidden talisman sends disorder only when useful recovery crosses or retains risk threshold": 40,
+    "native forbidden talisman success and full-energy refusal both return canonical item and resources": 40,
+    "actual owner packet replay converges forbidden talisman inventory resources and risk effect without duplication": 40,
+    "native forbidden talisman repeated request cannot duplicate recovery cost or risk effects": 40,
+    "official forbidden talisman owner decodes actual disorder buff packet": 36,
+    "native forbidden talisman retains original first-use discovery without adding a realm gate": 1,
+    "native forbidden talisman audit restores owner connection and engine context": 1
+  },
+  "before_fix_report": ".tml-test\\summons-7263b61e23224237ba5f49c51bc90736\\save\\XianXia\\summon-audit.json",
+  "before_fix_sha256": "028fde734e662b9be9644d528637583ec68c761279e02ddbb0242b67a5097693",
+  "before_fix_error": "System.InvalidOperationException: native full-energy forbidden talisman refuses wasted item and pressure penalty: stack=1 pressure=25\r\n   at XianXia.Common.Systems.SummonAuditSystem.<>c__DisplayClass25_0.<RunOnce>g__Check|2(Boolean value, String name) in XianXiaMod\\Common\\Systems\\SummonAuditSystem.cs:line 67\r\n   at XianXia.Common.Systems.SummonAuditSystem.AuditForbiddenTalisman(Action`2 check) in XianXiaMod\\Common\\Systems\\SummonAuditSystem.ForbiddenTalisman.cs:line 21\r\n   at XianXia.Common.Systems.SummonAuditSystem.RunOnce() in XianXiaMod\\Common\\Systems\\SummonAuditSystem.cs:line 980",
+  "authority_matrix_cases": 40,
+  "source_checks": 40,
+  "dotnet_source_projects": 30,
+  "networking_source_assertions": 30358,
+  "new_networking_assertions": 96,
+  "gameplay_assertions": 7720,
+  "limits": [
+    "Existing 80 energy recovery, +25 pressure and 80-pressure/480-tick disorder unchanged.",
+    "Only adds positive energy deficit and actor usability gates; no realm/discovery prerequisite introduced.",
+    "Actual client request and server HandlePacket, resource/inventory mod corrections replayed twice, official buff decoder.",
+    "Four energies, five initial pressure values, one/two item stacks; source additionally covers negative and over-cap energy.",
+    "Single-player first-use discovery uses actual ModItem hooks, not full ItemCheck consumption animation.",
+    "No rendered UI, real transport, full combat/balance or world generation.",
+    "Generated tooltip source and owned translations updated together; unrelated bestiary formatting restored."
+  ]
+}

@@ -119,7 +119,7 @@ Mods: {
 			}
 			StarAbyssForbiddenTalisman: {
 				DisplayName: "星渊禁符"
-				Tooltip: "星渊的禁忌符箓。立即恢复80点灵气，但灵压增加25。有灵压紊乱的风险。"
+				Tooltip: "星渊的禁忌符箓。灵气未满时使用，恢复至多80点灵气，灵压增加25。有灵压紊乱的风险。"
 			}
 			StarAbyssMembrane: {
 				DisplayName: "星渊胎膜"
