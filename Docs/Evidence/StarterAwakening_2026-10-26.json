@@ -1,0 +1,41 @@
+{
+  "round": 355,
+  "date": "2026-10-26",
+  "mod_version": "0.1.5",
+  "native_checks": 64741,
+  "new_native_checks": 678,
+  "effect_matrix": "2 weapons x 3 modes x QiAwakening/Foundation/NascentSoul/DaoSevering x dormant/awakened = 48 combinations",
+  "native_groups": {
+    "native starter weapon fixture imports valid authority state": 28,
+    "native starter weapon keeps native combat prefix": 28,
+    "native starter weapon authority spends one seal and exactly twenty-four stones": 4,
+    "native starter weapon awakening retains actual equipment inscription prefix and refinement": 4,
+    "native starter weapon server emits authoritative inventory/reply output to captured socket": 4,
+    "native repeated starter weapon awakening spends nothing": 4,
+    "native starter weapon full save and clone preserve awakening without automatically granting a Dao route": 8,
+    "native starter weapon uses unchanged three-byte growth payload with no Dao route": 4,
+    "native awakened starter weapon fires its registered projectile at exact reduced energy without skill cooldown": 4,
+    "native starter weapon invalid realm boss level inscription stones or station preserves resources": 24,
+    "native starter weapon uses its own awake and dormant energy costs": 48,
+    "native starter weapon refinement and awakening damage hooks remain additive": 48,
+    "native starter weapon cannot cast for free below current energy cost": 48,
+    "native starter weapon accepts exact current energy without adding an ordinary-use realm gate": 48,
+    "native starter weapon preserves damage class without undefined skill or Dao route": 48,
+    "native starter weapon awakening tooltips resolve for each state": 48,
+    "native starter weapon explicit state fixture awakened": 24
+  },
+  "additional_coverage": "Shared forge authority matrix, actual prepared sword/bolt creation at exact reduced energy, failed realm/boss/level/inscription/material/station gates, ItemIO and clone",
+  "report": ".tml-test\\summons-5b1535a731a4442d94229289099e9e97\\save\\XianXia\\summon-audit.json",
+  "report_sha256": "3bfabc59e88fc636712b8cb49e2284d4ba0690c1a551ef9508f87bca95653369",
+  "package": ".tml-test\\run-77b13fc74b6b484c87bcdc588d1fae60\\save\\Mods\\XianXia.tmod",
+  "package_sha256": "4d1cbab314fa7abd91d1bb444e3dfe24e0c73a0bb4d2eeb658a1cc04ebc99e2b",
+  "source_checks": 40,
+  "source_log": ".tml-test/source355.log",
+  "gameplay_checks": 7720,
+  "networking_checks": 30455,
+  "limitations": [
+    "No complete projectile movement/collision or new combat balance",
+    "No rendered target panel/tooltip or real multiplayer transport",
+    "No new active skill or Dao route; Talisman Crossbow still lacks awakening"
+  ]
+}

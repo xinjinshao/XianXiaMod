@@ -19,8 +19,8 @@
 
 | 职业 | 装备选择 | 获得入口与定位 |
 | --- | --- | --- |
-| 近战 | [木纹飞剑](../../Content/Items/Weapons/WoodgrainFlyingSword.cs) | 工作台：任意木材12、下品灵石6、灵胶10；灵气飞剑。 |
-| 远程 | [灵木短弩](../../Content/Items/Weapons/SpiritwoodCrossbow.cs) | 器胚炉：任意木材16、下品灵石4；使用灵气，不装箭。 |
+| 近战 | [木纹飞剑](../../Content/Items/Weapons/WoodgrainFlyingSword.cs) | 工作台：任意木材12、下品灵石6、灵气凝胶10；基础4灵气，后续材料觉醒为3灵气并额外+10%伤害。 |
+| 远程 | [灵木短弩](../../Content/Items/Weapons/SpiritwoodCrossbow.cs) | 器胚炉：任意木材16、下品灵石4；基础2灵气，后续材料觉醒为1灵气并额外+10%伤害，不装箭。 |
 | 魔法 | [朱砂符火](../../Content/Items/Weapons/CinnabarTalismanFlameItem.cs) | 简易符案：器胚碎片2、炉渣铁6、下品灵石12；基础每次5灵气，材料未齐时沿用原版魔法武器。 |
 | 召唤 | [小器灵坠](../../Content/Items/HandGenerated/SmallArtifactPendant.cs) | 器胚炉：下品灵石8、坠落之星3；召唤10魔力，占1仆从位；装备提供额外回气。 |
 

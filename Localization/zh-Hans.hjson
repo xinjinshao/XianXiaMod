@@ -19,12 +19,12 @@ Mods: {
 
 			WoodgrainFlyingSword: {
 				DisplayName: 木纹飞剑
-				Tooltip: 消耗 4 点灵气，放出一柄会折返的木纹飞剑。
+				Tooltip: 未觉醒基础消耗4灵气，材料觉醒后3；放出一柄会折返的木纹飞剑。
 			}
 
 			SpiritwoodCrossbow: {
 				DisplayName: 灵木短弩
-				Tooltip: 消耗 2 点灵气，射出一枚灵气弹。
+				Tooltip: 未觉醒基础消耗2灵气，材料觉醒后1；射出一枚灵气弹，不消耗原版箭矢。
 			}
 
 			SpiritVeinIncense: {

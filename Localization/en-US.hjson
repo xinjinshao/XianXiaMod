@@ -19,12 +19,12 @@ Mods: {
 
 			WoodgrainFlyingSword: {
 				DisplayName: Woodgrain Flying Sword
-				Tooltip: Costs 4 spiritual energy to release a returning wooden flying sword.
+				Tooltip: Base cost: 4 spiritual energy before crafted awakening, 3 afterward. Releases a returning wooden flying sword.
 			}
 
 			SpiritwoodCrossbow: {
 				DisplayName: Spiritwood Crossbow
-				Tooltip: Costs 2 spiritual energy to fire a spirit bolt.
+				Tooltip: Base cost: 2 spiritual energy before crafted awakening, 1 afterward. Fires a spirit bolt without using vanilla arrows.
 			}
 
 			SpiritVeinIncense: {

@@ -3,7 +3,7 @@ Mods: {
   Items: {
    ArtifactAwakeningSeal: {
     DisplayName: Artifact Awakening Seal
-    Tooltip: "Craft at a Star Pattern Cauldron using 2 artifact shards, 6 tribulation cloud dew, 4 Greenwood Roots and 1 Medicine King Wood Heart\nUse near an artificing station to awaken an inscribed refinement-3 Cloudpiercer Flying Sword, Greenwood Array Plate, Heaven Tablet Ward Seal, Formless Sword Wheel, Black Furnace Warhammer, Thunder Pattern Sword Case, Cinnabar Talisman Flame, Star Eclipse Arbalest, Thunder Talisman Array Plate, Broken Heaven Decree, Greenwood Medicine Cauldron, Sect Mechanism Crossbow, Heaven Law Arbalest, Star Calamity Mechanism Case, Archive Star Codex or Moonbone Dharma Sword (Moonbone also requires Tribulation and defeating Moonbone Immortal)\nRequires Nascent Soul and Medicine King Echo; costs 24 extra low-grade stones\nAdds 10% weapon damage and lowers base energy cost; active skills available for Cloudpiercer, Array, Ward, Moonbone, Wheel, Hammer and Thunder Case (Q or right-click; configurable)"
+    Tooltip: "Craft at a Star Pattern Cauldron using 2 artifact shards, 6 tribulation cloud dew, 4 Greenwood Roots and 1 Medicine King Wood Heart\nUse near an artificing station and select a supported, inscribed refinement-3 weapon from the panel\nRequires Nascent Soul and Medicine King Echo; costs 1 awakening seal and 24 low-grade stones. Moonbone also requires Tribulation and defeating Moonbone Immortal\nSee each weapon for awakening effects and ordinary-use requirements. Right-click and artifact hotkeys apply only to weapons with an active skill"
    }
    ArtifactQuenchingCrystal: {
     DisplayName: Artifact Quenching Crystal
@@ -11,6 +11,11 @@ Mods: {
    }
   }
   Refinement: {
+   WoodgrainAwakened: "Crafted awakening: +10% weapon damage, base spirit cost 3. Keeps Melee damage and its original sword projectile. No active skill or Dao transformation."
+   WoodgrainDormant: "Dormant: retain an inscription at refinement 3, reach Nascent Soul and defeat Medicine King Echo. Spend 1 awakening seal and 24 stones near an artificing station for +10% damage and base spirit cost 3."
+   SpiritwoodAwakened: "Crafted awakening: +10% weapon damage, base spirit cost 1. Keeps Ranged damage and its original spirit bolt; uses no vanilla arrows. No active skill or Dao transformation."
+   SpiritwoodDormant: "Dormant: retain an inscription at refinement 3, reach Nascent Soul and defeat Medicine King Echo. Spend 1 awakening seal and 24 stones near an artificing station for +10% damage and base spirit cost 1."
+
    CodexAwakened: "Crafted awakening: +10% weapon damage, base spirit cost 28. Ordinary use still requires Tribulation and Moon Lord progression. Keeps the 18-tick charge, four-hit limit and terrain collision. No active skill or Dao transformation."
    CodexDormant: "Dormant: retain an inscription at refinement 3, reach Nascent Soul and defeat Medicine King Echo. Spend 1 awakening seal and 24 stones near an artificing station for +10% damage and base spirit cost 28. Ordinary use additionally requires Tribulation and Moon Lord progression."
 
@@ -47,7 +52,7 @@ Mods: {
    FlameHeritageLocked: "Sect heritage needs {0} and reputation {1}: +{3}% damage and unawakened base spirit cost 4. Current base cost {2}. Independent of crafted awakening."
 
    AwakeningCost: Costs 1 awakening seal and 24 low-grade stones; already awakened equipment and failures cost nothing
-   AwakeningChooseTarget: Select an inscribed level-3 Cloudpiercer Flying Sword, Greenwood Array Plate, Heaven Tablet Ward Seal, Formless Sword Wheel, Black Furnace Warhammer, Thunder Pattern Sword Case, Cinnabar Talisman Flame, Star Eclipse Arbalest, Thunder Talisman Array Plate, Broken Heaven Decree, Greenwood Medicine Cauldron, Sect Mechanism Crossbow, Heaven Law Arbalest, Star Calamity Mechanism Case, Archive Star Codex or Moonbone Dharma Sword (Moonbone also requires Tribulation and defeating Moonbone Immortal); requires Nascent Soul and defeating Greenwood Medicine King Echo
+   AwakeningChooseTarget: "Select a supported, inscribed refinement-3 weapon. Requires Nascent Soul and Medicine King Echo; Moonbone also needs Tribulation and Moonbone Immortal. See each weapon for effects and ordinary-use requirements."
    AwakeningSelection: "Awaken: {0}; keeps inscription, refinement and prefix"
    AwakeningRow: "Slot {0} · {1} · {2}"
    AwakeState: Awakened

@@ -35,10 +35,14 @@ public class WoodgrainFlyingSword : global::XianXia.Common.Items.CultivationWeap
 
     public override bool CanUseItem(Player player)
     {
-        return player.GetModPlayer<XianXiaPlayer>().CanConsumeSpiritualEnergy(SpiritCost);
+        return player.GetModPlayer<XianXiaPlayer>().CanConsumeSpiritualEnergy(GetSpiritCost(player));
     }
 
-    public override int GetSpiritCost(Player player) => SpiritCost;
+    public override int GetSpiritCost(Player player) => global::XianXia.Common.Items.RefinedArtifact.IsAwakened(Item) ? 3 : SpiritCost;
+    public override void ModifyWeaponDamage(Player player, ref StatModifier damage)
+    {
+        if (global::XianXia.Common.Items.RefinedArtifact.IsAwakened(Item)) damage += 0.1f;
+    }
 
 
     public override void AddRecipes()
