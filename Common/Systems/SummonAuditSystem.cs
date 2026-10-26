@@ -936,6 +936,7 @@ public partial class SummonAuditSystem : ModSystem
                 && wheelActor.ownedProjectileCounts.SequenceEqual(wheelOldCounts) && Main.netMode == wheelOldMode && Main.myPlayer == wheelOldLocal && Main.combatText == wheelOldText,
                 "registered wheel fixture restores inventory resource snapshot owner counts and engine context");
             AuditBiomeScans(Check);
+            AuditCinnabarAwakening(Check);
             AuditPillBuffs(Check);
             AuditPillQualityStacks(Check);
             AuditPillQualityPickup(Check);

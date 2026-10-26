@@ -61,13 +61,13 @@ public class CinnabarTalismanFlameItem : global::XianXia.Common.Items.Cultivatio
 
         return player.GetModPlayer<global::XianXia.Common.Players.XianXiaPlayer>()
 
-            .CanConsumeSpiritualEnergy(HasArtifactAwakening(player) ? 4 : 5);
+            .CanConsumeSpiritualEnergy(GetSpiritCost(player));
 
     }
 
 
 
-    public override int GetSpiritCost(Player player) => HasArtifactAwakening(player) ? 4 : 5;
+    public override int GetSpiritCost(Player player) => global::XianXia.Common.Items.RefinedArtifact.IsAwakened(Item) ? 3 : HasArtifactAwakening(player) ? 4 : 5;
 
 
     private static bool HasArtifactAwakening(Player player)
@@ -88,6 +88,7 @@ public class CinnabarTalismanFlameItem : global::XianXia.Common.Items.Cultivatio
 
     {
 
+        if (global::XianXia.Common.Items.RefinedArtifact.IsAwakened(Item)) damage += 0.1f;
         if (HasArtifactAwakening(player))
 
             damage += 0.1f;
@@ -104,9 +105,9 @@ public class CinnabarTalismanFlameItem : global::XianXia.Common.Items.Cultivatio
 
         string key = HasArtifactAwakening(player)
 
-            ? "Mods.XianXia.Progression.ArtifactAwakeningReady"
+            ? "Mods.XianXia.Refinement.FlameHeritageReady"
 
-            : "Mods.XianXia.Progression.ArtifactAwakeningLocked";
+            : "Mods.XianXia.Refinement.FlameHeritageLocked";
 
         tooltips.Add(new TooltipLine(
 
@@ -114,7 +115,7 @@ public class CinnabarTalismanFlameItem : global::XianXia.Common.Items.Cultivatio
 
             "XianXiaArtifactAwakening",
 
-            Terraria.Localization.Language.GetTextValue(key, global::XianXia.Common.Players.CultivationStatusText.StageName(global::XianXia.Common.Players.CultivationStage.Foundation), 24, 4, 10)));
+            Terraria.Localization.Language.GetTextValue(key, global::XianXia.Common.Players.CultivationStatusText.StageName(global::XianXia.Common.Players.CultivationStage.Foundation), 24, GetSpiritCost(player), 10)));
 
     }
 

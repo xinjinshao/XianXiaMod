@@ -12,7 +12,7 @@ public abstract class CultivationWeaponItem : ModItem
     public override void SetStaticDefaults() => Item.ResearchUnlockCount = 1;
     public abstract int GetSpiritCost(Player player);
     public virtual bool DeploysArray => false;
-    public override bool AltFunctionUse(Player player) => Common.Items.RefinedArtifact.IsAwakened(Item);
+    public override bool AltFunctionUse(Player player) => Common.Items.RefinedArtifact.IsAwakened(Item) && ArtifactSkillTransactions.HeldSkill(Item).HasValue;
 
     public sealed override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source,
         Vector2 position, Vector2 velocity, int type, int damage, float knockback)
