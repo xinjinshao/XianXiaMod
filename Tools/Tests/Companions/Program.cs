@@ -202,3 +202,16 @@ Console.WriteLine($"Including exact failed-call count and wide damage: {assertio
 
 var sizedSpiritBolt=new SpiritBolt();sizedSpiritBolt.SetDefaults();Check(sizedSpiritBolt.Projectile.width==20&&sizedSpiritBolt.Projectile.height==12,"Generic ranged spirit bolt preserves original 20 by 12 hitbox");
 Console.WriteLine($"Including spirit bolt dimension contract: {assertions} assertions.");
+
+foreach(var summon in new ModItem[]{new SmallArtifactPendant(),new FurnaceAshSpiritContract(),new StarAbyssLarvaContract(),new NascentSoulCloneTalisman(),new CelestialPuppetToken(),new ArchivedImmortalSoulContract()}) {
+ foreach(int scenario in Enumerable.Range(0,8)) {
+  Setup();Game.hardMode=NPC.downedPlantBoss=NPC.downedGolemBoss=NPC.downedMoonlord=true;
+  summon.SetDefaults();var actor=Game.player[0];actor.maxMinions=2;
+  string expected="";
+  switch(scenario){case 1:actor.dead=true;expected="Unavailable";break;case 2:actor.active=false;expected="Unavailable";break;case 3:actor.noItems=true;expected="Unavailable";break;case 4:actor.CCed=true;expected="Unavailable";break;case 5:actor.slotsMinions=2;expected="SlotsFull";break;case 6:Game.projectile[0]=new Projectile{active=true,owner=0,type=summon.Item.shoot};expected="AlreadySummoned";break;case 7:foreach(var occupiedShot in Game.projectile){occupiedShot.active=true;occupiedShot.owner=-1;occupiedShot.type=-1;}expected="ProjectilesFull";break;}
+  Check(summon.CanUseItem(actor)==(expected.Length==0),"Six summon items share current eligibility gate");
+  var tips=new System.Collections.Generic.List<TooltipLine>();summon.ModifyTooltips(tips);
+  Check(tips.Single(tip=>tip.Name=="SpiritSummonRequirement").Text=="Mods.XianXia.SpiritSummon."+(expected.Length==0?"Ready":expected),"Six summon item tooltips match actual rejection reason");
+ }
+}
+Console.WriteLine($"Including shared spirit summon feedback: {assertions} assertions; engine boundaries mocked.");

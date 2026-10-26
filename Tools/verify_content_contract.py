@@ -301,7 +301,9 @@ def main() -> None:
     require_text("Content/Projectiles/CloudWispProjectile.cs", "DamageClass.Melee")
     require_text("Content/Projectiles/SpiritBolt.cs", "DamageClass.Ranged")
     require_text("Content/Projectiles/MinorThunderboltProjectile.cs", "EntitySource_Parent", "origin.DamageType", "SendExtraAI", "ReceiveExtraAI")
-    require_text("Content/Items/HandGenerated/SmallArtifactPendant.cs", "DamageClass.Summon", "slotsMinions+1", "ActiveProjectiles", "originalDamage", "AddBuff", "maxProjectiles")
+    require_text("Content/Items/HandGenerated/SmallArtifactPendant.cs", "DamageClass.Summon", "SpiritSummonRequirements.GetFailure", "SpiritSummonRequirements.AddTooltip", "originalDamage", "AddBuff", "maxProjectiles")
+    require_text("Content/Items/HandGenerated/SpiritContracts.cs", "SpiritSummonRequirements.GetFailure(player, Item.shoot, Slots, Ready)", "SpiritSummonRequirements.AddTooltip")
+    require_text("Common/Systems/SpiritSummonRequirements.cs", "player.slotsMinions + slots > player.maxMinions", "Main.ActiveProjectiles", "projectile.owner == player.whoAmI", "projectile.type == projectileType", "Main.maxProjectiles", "!worldReady", "player.dead", "player.noItems", "player.CCed")
     require_text("Content/Projectiles/SmallArtifactSpirit.cs", "minionSlots = 1", "DamageClass.Summon", "MinionContactDamage", "MinionSacrificable", "HasMinionAttackTargetNPC", "Collision.CanHitLine", "1600*1600", "netUpdate = true", "Projectile.friendly = target != null")
     require_text("Content/Buffs/SmallArtifactSpiritBuff.cs", "ownedProjectileCounts", "buffNoSave", "DelBuff")
     for language in ("zh-Hans", "en-US"):

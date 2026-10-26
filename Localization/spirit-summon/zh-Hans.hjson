@@ -1,0 +1,14 @@
+{
+  "Mods": {
+    "XianXia": {
+      "SpiritSummon": {
+        "Unavailable": "当前角色状态无法召唤",
+        "WorldLocked": "当前世界尚未解锁此契约；所需进度见物品说明",
+        "SlotsFull": "剩余仆从位不足，无法容纳此器灵",
+        "AlreadySummoned": "已有同类器灵；需先取消对应Buff才能再次召唤",
+        "ProjectilesFull": "当前弹幕数量已满；请待有空位时再召唤",
+        "Ready": "召唤条件已满足；施放仍需足够魔力"
+      }
+    }
+  }
+}

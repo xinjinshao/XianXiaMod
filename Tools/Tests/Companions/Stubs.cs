@@ -17,14 +17,14 @@ namespace Terraria {
   public static int myPlayer=0,netMode,maxPlayers=2,maxNPCs=4,maxProjectiles=8;
   public static bool dedServ,hardMode; public static RandomStub rand=new();
   public static bool[] projPet=new bool[16],buffNoSave=new bool[16],buffNoTimeDisplay=new bool[16],vanityPet=new bool[16];
-  public static Player[] player=new Player[2];
+  public static Player[] player=new Player[2]; public static Player LocalPlayer => player[myPlayer];
   public static NPC[] npc=Enumerable.Range(0,4).Select(_=>new NPC()).ToArray();
   public static Projectile[] projectile=Enumerable.Range(0,8).Select(_=>new Projectile()).ToArray();
   public static IEnumerable<NPC> ActiveNPCs=>npc.Where(n=>n.active);
   public static IEnumerable<Projectile> ActiveProjectiles=>projectile.Where(p=>p.active);
  }
  public class Player {
-  public bool active=true,dead,HasMinionAttackTargetNPC;
+  public bool active=true,dead,noItems,CCed,HasMinionAttackTargetNPC;
   public int whoAmI,direction=1,MinionAttackTargetNPC,maxMinions=1,itemTime;
   public object GetSource_Buff(int index)=>null;
   public float slotsMinions; public float SummonBonus; public ref float GetDamage(object damage)=>ref SummonBonus;
@@ -81,6 +81,7 @@ namespace Terraria.ModLoader {
  public class ModBuff {public int Type=2;public virtual string Texture=>"";public virtual void SetStaticDefaults(){}public virtual void Update(Terraria.Player player,ref int index){} }
  public class ModItem {
   public int Type=1;public Terraria.Item Item=new();public virtual void SetStaticDefaults(){}public virtual void SetDefaults(){}
+  public object Mod => null; public virtual void ModifyTooltips(System.Collections.Generic.List<TooltipLine> tips){}
   public virtual void UpdateAccessory(Terraria.Player p,bool hide){}public virtual bool CanUseItem(Terraria.Player p)=>true;
   public virtual bool Shoot(Terraria.Player p,Terraria.DataStructures.EntitySource_ItemUse_WithAmmo s,Microsoft.Xna.Framework.Vector2 position,Microsoft.Xna.Framework.Vector2 velocity,int type,int damage,float knockback)=>true;
   public virtual void UseStyle(Terraria.Player player,Microsoft.Xna.Framework.Rectangle frame){}
@@ -112,3 +113,6 @@ namespace XianXia.Content.Items.Materials {public class HeavenDaoFragment{} publ
 namespace XianXia.Content.Tiles.Stations {public class SectTrialAltarTile{} public class HeavenFireFurnaceTile{} public class DaoSeveringAltarTile{}}
 
 namespace Terraria.ID {public static class NetmodeID {public const int SinglePlayer=0,MultiplayerClient=1,Server=2;}}
+
+namespace Terraria.ModLoader { public class TooltipLine { public string Name,Text; public TooltipLine(object mod,string name,string text){Name=name;Text=text;} } }
+namespace Terraria.Localization { public static class Language { public static string GetTextValue(string key)=>key; } }

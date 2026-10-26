@@ -29,16 +29,10 @@ public abstract class SpiritContractItem : ModItem
         Item.useStyle = ItemUseStyleID.HoldUp; Item.useTime = Item.useAnimation = 30;
         Item.shoot = projectile; Item.buffType = buff;
     }
-    public override bool CanUseItem(Player player)
-    {
-        if (!Ready || !player.active || player.dead || player.slotsMinions + Slots > player.maxMinions) return false;
-        bool capacity = false;
-        for (int i = 0; i < Main.maxProjectiles; i++) if (!Main.projectile[i].active) { capacity = true; break; }
-        if (!capacity) return false;
-        foreach (Projectile projectile in Main.ActiveProjectiles)
-            if (projectile.owner == player.whoAmI && projectile.type == Item.shoot) return false;
-        return true;
-    }
+    public override bool CanUseItem(Player player) =>
+        global::XianXia.Common.Systems.SpiritSummonRequirements.GetFailure(player, Item.shoot, Slots, Ready).Length == 0;
+    public override void ModifyTooltips(System.Collections.Generic.List<TooltipLine> tooltips) =>
+        global::XianXia.Common.Systems.SpiritSummonRequirements.AddTooltip(this, tooltips, Slots, Ready);
     public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position,
         Vector2 velocity, int type, int damage, float knockback)
     {

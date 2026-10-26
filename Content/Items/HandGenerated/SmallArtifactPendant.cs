@@ -22,16 +22,10 @@ public class SmallArtifactPendant : ModItem
         Item.buffType = ModContent.BuffType<SmallArtifactSpiritBuff>(); Item.shoot = ModContent.ProjectileType<SmallArtifactSpirit>();
     }
     public override void UpdateAccessory(Player player,bool hideVisual) => player.GetModPlayer<XianXiaPlayer>().spiritualEnergyRegenBonus += 1;
-    public override bool CanUseItem(Player player)
-    {
-        if (player.slotsMinions+1 > player.maxMinions) return false;
-        bool capacity = false;
-        for (int i = 0; i < Main.maxProjectiles; i++) if (!Main.projectile[i].active) { capacity = true; break; }
-        if (!capacity) return false;
-        foreach (Projectile projectile in Main.ActiveProjectiles)
-            if (projectile.owner == player.whoAmI && projectile.type == Item.shoot) return false;
-        return true;
-    }
+    public override bool CanUseItem(Player player) =>
+        global::XianXia.Common.Systems.SpiritSummonRequirements.GetFailure(player, Item.shoot, 1f).Length == 0;
+    public override void ModifyTooltips(System.Collections.Generic.List<TooltipLine> tooltips) =>
+        global::XianXia.Common.Systems.SpiritSummonRequirements.AddTooltip(this, tooltips, 1f);
     public override bool Shoot(Player player,EntitySource_ItemUse_WithAmmo source,Vector2 position,Vector2 velocity,int type,int damage,float knockback)
     {
         if (player.whoAmI != Main.myPlayer || !player.active || player.dead || !CanUseItem(player)) return false;

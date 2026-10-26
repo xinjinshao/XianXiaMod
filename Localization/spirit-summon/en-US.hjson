@@ -1,0 +1,14 @@
+{
+  "Mods": {
+    "XianXia": {
+      "SpiritSummon": {
+        "Unavailable": "Cannot summon in your current player state.",
+        "WorldLocked": "This world has not unlocked this contract yet; see its progression requirement above.",
+        "SlotsFull": "Not enough free minion slots for this spirit.",
+        "AlreadySummoned": "You already have this type of spirit; cancel its buff before summoning again.",
+        "ProjectilesFull": "The projectile limit is full. Try again when a slot is available.",
+        "Ready": "Summoning conditions met; casting still requires sufficient mana."
+      }
+    }
+  }
+}
