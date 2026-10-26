@@ -978,6 +978,7 @@ public partial class SummonAuditSystem : ModSystem
             AuditCommissionOwners(Check);
             AuditLightningRune(Check);
             AuditForbiddenTalisman(Check);
+            AuditPillBenefits(Check);
             AuditSectRuinHalls(Check);
             AuditSectRuinPaths(Check);
             AuditThunderShrines(Check);

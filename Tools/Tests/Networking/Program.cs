@@ -1056,7 +1056,7 @@ Check(recoveryPlayer.State.spiritualEnergy==noEffectEnergy&&realPill.Item.stack=
 Check(ModPacket.Sent.Count==beforeRecoveryPackets+1&&ModPacket.Sent.Last().Data[0]==5,"Actual client pill sends canonical inventory request");
 recoveryPlayer.dead=true;Check(!realPill.CanUseItem(recoveryPlayer),"Dead owner cannot use recovery pill");recoveryPlayer.dead=false;recoveryPlayer.active=false;Check(!realPill.CanUseItem(recoveryPlayer),"Inactive owner cannot use recovery pill");recoveryPlayer.active=true;
 Game.netMode=NetmodeID.SinglePlayer;recoveryPlayer.State.spiritPressure=0;recoveryPlayer.buffTime=new int[22];realPill.UseItem(recoveryPlayer);
-Check(recoveryPlayer.State.spiritualEnergy==60&&recoveryPlayer.State.spiritPressure==10&&recoveryPlayer.buffTime[2]==1800,"Actual singleplayer ModItem applies stored spirit quality, pressure and cooldown");
+Check(recoveryPlayer.State.spiritualEnergy==76&&recoveryPlayer.State.spiritPressure==10&&recoveryPlayer.buffTime[2]==1800&&recoveryPlayer.buffTime[1]==1200,"Actual singleplayer ModItem applies stored spirit primary and one quality bonus after effects, pressure and cooldown");
 // Actual defensive pill and effect hooks, sharing the recovery fatigue.
 var guardPill=new XianXia.Content.Items.Materials.FurnaceGuardPill{Mod=mod,Name="FurnaceGuardPill"};guardPill.SetDefaults();guardPill.Item.type=952;guardPill.Item.stack=10;guardPill.Item.ModItem=guardPill;recoveryPlayer.inventory[0]=guardPill.Item;
 Game.netMode=NetmodeID.Server;Game.myPlayer=255;recoveryPlayer.buffTime=new int[22];
@@ -1944,6 +1944,24 @@ foreach(int energy in new[]{-1,0,40,119,120,121})foreach(int pressure in new[]{0
  int stack=talisman.Item.stack;CultivationItemTransactions.HandleRequest(actor,0,953);Check(talisman.Item.stack==stack,"Forbidden talisman repeat request does not consume twice");
 }
 Console.WriteLine($"Including useful forbidden talisman hooks: {assertions} assertions; engine boundaries mocked.");
+
+foreach(PillQuality grade in Enum.GetValues<PillQuality>())foreach(int scenario in Enumerable.Range(0,6)) {
+ Game.netMode=NetmodeID.Server;Game.myPlayer=255;var actor=new Terraria.Player{whoAmI=0,selectedItem=0};Game.player[0]=actor;actor.State.NetworkInitialized=true;actor.State.maxSpiritualEnergy=120;actor.State.spiritualEnergy=120;
+ var item=new Terraria.Item{type=954,stack=2,consumable=true,ModItem=new ModItem{Mod=mod,Name="SpringReturnPill"}};item.ModItem.Item=item;actor.inventory[0]=item;item.GetGlobalItem<PillQualitySystem>().LoadData(item,new Terraria.ModLoader.IO.TagCompound{{"quality",(int)grade},{"crafted",true}});
+ int ticks=PillQualityRules.Scale(3600,grade);if(scenario!=0)actor.AddBuff(6,ticks+600);actor.AddBuff(Terraria.ID.BuffID.Regeneration,2000);
+ if(scenario==2)actor.buffImmune[6]=true;if(scenario==3)actor.State.spiritPressure=10;if(scenario==4)actor.State.spiritualEnergy=100;if(scenario==5)actor.buffTime[Terraria.ID.BuffID.Regeneration]=0;
+ bool high=grade is PillQuality.Fine or PillQuality.Spirit,ready=scenario==0||scenario==3||high&&(scenario==4||scenario==5);
+ int energy=actor.State.spiritualEnergy,pressure=actor.State.spiritPressure,stack=item.stack;int[] times=(int[])actor.buffTime.Clone();
+ Check(PillQualitySystem.CanBenefitFromBuffPill(item,actor,6,3600)==ready,"Buff pill predicate preserves main pressure and quality-only benefits");
+ Check(actor.State.spiritualEnergy==energy&&actor.State.spiritPressure==pressure&&item.stack==stack&&actor.buffTime.SequenceEqual(times),"Pill benefit preview is read-only");
+}
+{
+ Game.netMode=NetmodeID.Server;Game.myPlayer=255;var actor=new Terraria.Player{whoAmI=0,selectedItem=0};Game.player[0]=actor;actor.State.NetworkInitialized=true;actor.State.maxSpiritualEnergy=120;actor.State.spiritualEnergy=100;
+ var item=new Terraria.Item{type=955,stack=2,consumable=true,ModItem=new ModItem{Mod=mod,Name="SpringReturnPill"}};item.ModItem.Item=item;actor.inventory[0]=item;item.GetGlobalItem<PillQualitySystem>().LoadData(item,new Terraria.ModLoader.IO.TagCompound{{"quality",(int)PillQuality.Fine},{"crafted",true}});
+ CultivationItemTransactions.HandleRequest(actor,0,955);
+ Check(item.stack==1&&actor.State.spiritualEnergy==114&&actor.buffTime[Terraria.ID.BuffID.Regeneration]==900,"Actual authority pipeline accounts for quality bonus before deciding whether use changed state");
+}
+Console.WriteLine($"Including multi-benefit buff pills: {assertions} assertions; engine boundaries mocked.");
 
 sealed class TestBossSummon : XianXia.Common.Items.CultivationBossSummonItem
 {

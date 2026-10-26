@@ -32,6 +32,7 @@ public class QiRecoveryPill : ModItem
         state.RestoreSpiritualEnergy(PillQualitySystem.Scale(Item, QiRecoveryRules.BaseRecovery));
         state.spiritPressure = Math.Min(100, state.spiritPressure + QiRecoveryRules.PressureCost);
         player.AddBuff(ModContent.BuffType<QiRecoveryCooldownBuff>(), QiRecoveryRules.CooldownTicks);
+        global::XianXia.Common.Systems.PillQualitySystem.ApplySinglePlayerBonus(Item, player);
         return true;
     }
     public override void AddRecipes() => CreateRecipe(2).AddIngredient<GreenwoodRoot>(2)

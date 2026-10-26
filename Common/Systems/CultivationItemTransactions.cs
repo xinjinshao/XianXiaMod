@@ -49,13 +49,14 @@ public class CultivationItemTransactions : GlobalItem
             int[] oldBuffTimes = (int[])player.buffTime.Clone();
             int[] oldBuffTypes = (int[])player.buffType.Clone();
             var oldBuffs = AuthoritativeBuffSync.Capture(player);
+            bool? used;
             state.ApplyingProgressionItem = true;
-            try { item.ModItem.UseItem(player); }
+            try { used = item.ModItem.UseItem(player); }
             finally { state.ApplyingProgressionItem = false; }
+            if (used != false) PillQualitySystem.ApplyUseBonus(item, player);
             if (state.CaptureSnapshot() != before || !System.Linq.Enumerable.SequenceEqual(oldBuffTimes, player.buffTime)
                 || !System.Linq.Enumerable.SequenceEqual(oldBuffTypes, player.buffType))
             {
-                PillQualitySystem.ApplyUseBonus(item, player);
                 AuthoritativeBuffSync.SendChanges(player, oldBuffs);
                 state.AdvanceResourceRevision();
                 if (item.consumable)

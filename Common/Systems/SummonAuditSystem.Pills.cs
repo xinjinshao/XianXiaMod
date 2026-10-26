@@ -67,6 +67,14 @@ public partial class SummonAuditSystem
                     check(receivedBuffs.Count == authorityBuffs.Count && authorityBuffs.All(pair => receivedBuffs.TryGetValue(pair.Key, out int time) && time == pair.Value),
                         "official owner receiver matches every pill effect fatigue and quality duration");
                 } finally { Main.player[0] = actor; Main.netMode = NetmodeID.Server; Main.myPlayer = Main.maxPlayers; Netplay.Connection = oldConnection; }
+                Main.netMode = NetmodeID.SinglePlayer; Main.myPlayer = Main.maxPlayers;
+                var single = new Player { whoAmI = 0, active = true, selectedItem = 0 }; Main.player[0] = single;
+                var singleState = single.GetModPlayer<XianXiaPlayer>(); singleState.cultivationStage = CultivationStage.DaoSevering; singleState.discoveredSpiritualEnergy = true; singleState.ResetEffects(); singleState.spiritualEnergy = 0; singleState.spiritPressure = 50;
+                var singlePill = new Item(entry.Item1,2); single.inventory[0] = singlePill; singlePill.GetGlobalItem<PillQualitySystem>().LoadData(singlePill,new TagCompound { ["quality"] = (int)quality, ["crafted"] = true });
+                bool? singleUsed = ItemLoader.UseItem(singlePill,single); var singleBuffs = AuthoritativeBuffSync.Capture(single);
+                check(singleUsed == true && (singleState.CaptureSnapshot() with { Revision = 0 }).Equals(state.CaptureSnapshot() with { Revision = 0 }) && singleBuffs.Count == authorityBuffs.Count && authorityBuffs.All(kv => singleBuffs.TryGetValue(kv.Key,out int time) && time == kv.Value),
+                    "native six-pills single-player item loader matches authority recovery pressure fatigue and quality effects");
+                Main.player[0] = actor; Main.netMode = NetmodeID.Server; Main.myPlayer = Main.maxPlayers;
                 int sentBeforeReplay = output.Sent.Count;
                 CultivationItemTransactions.HandleRequest(actor, 0, pill.type);
                 check(pill.stack == 1 && output.Sent.Count == sentBeforeReplay, "native duplicate pill request neither consumes nor resends buffs");

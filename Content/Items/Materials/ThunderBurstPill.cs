@@ -30,6 +30,7 @@ public class ThunderBurstPill : ModItem
         if (!CanUseItem(player)) return false;
         player.AddBuff(ModContent.BuffType<ThunderBurstBuff>(), PillQualitySystem.Scale(Item, BaseDuration));
         player.AddBuff(ModContent.BuffType<QiRecoveryCooldownBuff>(), QiRecoveryRules.CooldownTicks);
+        global::XianXia.Common.Systems.PillQualitySystem.ApplySinglePlayerBonus(Item, player);
         return true;
     }
     public override void AddRecipes() => CreateRecipe(2).AddIngredient<TribulationCloudDew>(2)

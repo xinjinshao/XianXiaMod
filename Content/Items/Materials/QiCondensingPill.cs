@@ -65,13 +65,11 @@ public class QiCondensingPill : ModItem
 
         global::XianXia.Common.Players.XianXiaPlayer cultivation = player.GetModPlayer<global::XianXia.Common.Players.XianXiaPlayer>();
 
-        if (cultivation.TryAdvanceCultivation(global::XianXia.Common.Players.CultivationStage.QiCondensation,
-                global::XianXia.Common.Systems.PillQualitySystem.BenefitMultiplier(Item))
-
-            && player.HasBuff(ModContent.BuffType<global::XianXia.Content.Buffs.AlchemyInsightBuff>()))
-
+        if (!cultivation.TryAdvanceCultivation(global::XianXia.Common.Players.CultivationStage.QiCondensation,
+                global::XianXia.Common.Systems.PillQualitySystem.BenefitMultiplier(Item))) return false;
+        if (player.HasBuff(ModContent.BuffType<global::XianXia.Content.Buffs.AlchemyInsightBuff>()))
             cultivation.ReduceSpiritPressure(global::XianXia.Common.Systems.PillQualitySystem.Scale(Item, 6));
-
+        global::XianXia.Common.Systems.PillQualitySystem.ApplySinglePlayerBonus(Item, player);
         return true;
 
     }

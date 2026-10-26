@@ -1,6 +1,7 @@
 Mods: {
  XianXia: {
   PillQuality: {
+   Usefulness: "Consumed only when it can extend the main effect, lower spirit pressure, or grant a useful quality bonus. Main-effect immunity does not block other benefits."
    EffectDuration: "Duration at this quality: {0:0.##} seconds"
    Coarse: Coarse
    Standard: Standard

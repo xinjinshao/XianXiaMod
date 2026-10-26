@@ -47,12 +47,16 @@ public class SpringReturnPill : ModItem
 
 
 
+    public override bool CanUseItem(Player player) =>
+        global::XianXia.Common.Systems.PillQualitySystem.CanBenefitFromBuffPill(Item, player,
+            ModContent.BuffType<global::XianXia.Content.Buffs.SpringReturnBuff>(), DurationTicks);
+
     public override bool? UseItem(Player player)
 
     {
         if (global::XianXia.Common.Systems.CultivationItemTransactions.RequestIfMultiplayer(player, Item))
             return true;
-
+        if (!CanUseItem(player)) return false;
 
         global::XianXia.Common.Players.XianXiaPlayer cultivation = player.GetModPlayer<global::XianXia.Common.Players.XianXiaPlayer>();
 
@@ -60,6 +64,7 @@ public class SpringReturnPill : ModItem
 
         cultivation.ReduceSpiritPressure(global::XianXia.Common.Systems.PillQualitySystem.Scale(Item, player.HasBuff(ModContent.BuffType<global::XianXia.Content.Buffs.AlchemyInsightBuff>()) ? 8 : 4));
 
+        global::XianXia.Common.Systems.PillQualitySystem.ApplySinglePlayerBonus(Item, player);
         return true;
 
     }

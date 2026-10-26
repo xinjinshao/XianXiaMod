@@ -26,6 +26,22 @@ public class PillQualitySystem : GlobalItem
     public static float BenefitMultiplier(Item item) => PillQualityRules.Multiplier(GetQuality(item));
     public static int Scale(Item item, int amount) => PillQualityRules.Scale(amount, GetQuality(item));
 
+    private static bool CanExtendBuff(Player player, int buff, int ticks)
+    {
+        if (ticks <= 0 || player.buffImmune[buff]) return false;
+        int index = player.FindBuffIndex(buff);
+        return index < 0 || player.buffTime[index] < ticks;
+    }
+    public static bool CanBenefitFromBuffPill(Item item, Player player, int buff, int baseTicks)
+    {
+        if (!player.active || player.dead || player.noItems || player.CCed) return false;
+        var state = player.GetModPlayer<global::XianXia.Common.Players.XianXiaPlayer>();
+        PillQuality quality = GetQuality(item);
+        return CanExtendBuff(player, buff, Scale(item, baseTicks)) || state.spiritPressure > 0
+            || PillQualityRules.BonusEnergy(quality) > 0 && (!state.discoveredSpiritualEnergy || state.spiritualEnergy < state.maxSpiritualEnergy)
+            || CanExtendBuff(player, BuffID.Regeneration, PillQualityRules.RegenerationTicks(quality));
+    }
+
     public override void OnCreated(Item item, ItemCreationContext context)
     {
         // tModLoader crafts on the owning client, like prefixes. The result's
@@ -77,6 +93,7 @@ public class PillQualitySystem : GlobalItem
     {
         tooltips.Add(new TooltipLine(item.ModItem.Mod, "PillEffectDuration",
             Language.GetTextValue("Mods.XianXia.PillQuality.EffectDuration", Scale(item, baseTicks) / 60f)));
+        tooltips.Add(new TooltipLine(item.ModItem.Mod, "PillUsefulness", Language.GetTextValue("Mods.XianXia.PillQuality.Usefulness")));
     }
 
     public override void ModifyTooltips(Item item, List<TooltipLine> tooltips)
@@ -101,11 +118,9 @@ public class PillQualitySystem : GlobalItem
             tooltips.Add(new TooltipLine(Mod, "PillQualityBreakthrough", Language.GetTextValue("Mods.XianXia.PillQuality.Breakthrough")));
     }
 
-    public override bool? UseItem(Item item, Player player)
+    public static void ApplySinglePlayerBonus(Item item, Player player)
     {
-        if (Main.netMode != NetmodeID.SinglePlayer && CultivationItemTransactions.IsProgressionItem(item)) return null;
-        ApplyUseBonus(item, player);
-        return null;
+        if (Main.netMode == NetmodeID.SinglePlayer) ApplyUseBonus(item, player);
     }
     public static void ApplyUseBonus(Item item, Player player)
     {

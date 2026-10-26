@@ -1,6 +1,7 @@
 Mods: {
  XianXia: {
   PillQuality: {
+   Usefulness: "可延长主效果、降低灵压或获得有效品质奖励时才消耗；免疫主效果不影响其他收益"
    EffectDuration: "当前品质持续：{0:0.##}秒"
    Coarse: 粗丹
    Standard: 成丹
