@@ -73,6 +73,12 @@ public class PillQualitySystem : GlobalItem
         Crafted = crafted;
     }
 
+    public static void AddDurationTooltip(Item item, List<TooltipLine> tooltips, int baseTicks)
+    {
+        tooltips.Add(new TooltipLine(item.ModItem.Mod, "PillEffectDuration",
+            Language.GetTextValue("Mods.XianXia.PillQuality.EffectDuration", Scale(item, baseTicks) / 60f)));
+    }
+
     public override void ModifyTooltips(Item item, List<TooltipLine> tooltips)
     {
         if (!IsPill(item)) return;

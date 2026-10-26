@@ -1,0 +1,41 @@
+{
+  "date": "2026-10-26",
+  "round": 332,
+  "mod_version": "0.1.5",
+  "package": ".tml-test\\run-b32259f0bc5d4402a9d710e1339ab09c\\save\\Mods\\XianXia.tmod",
+  "package_sha256": "877d5ce95c10add2ceea569033ce5d4c167a31446fbff759008e36dd1772e19b",
+  "native_report": ".tml-test\\summons-6198cc365c004f72abfa4c9c7db42651\\save\\XianXia\\summon-audit.json",
+  "report_sha256": "b7318365ff3d0ae7ef8cbcb258f76d8970d54c19fe01236b351d458dbd0e10da",
+  "native_checks": 49678,
+  "new_native_checks": 8,
+  "duration_samples": [
+    "native quality duration tooltip matches actual applied buff: SpringReturnPill/Coarse ticks=2700 text=Duration at this quality: 45 seconds",
+    "native quality duration tooltip matches actual applied buff: SpringReturnPill/Standard ticks=3600 text=Duration at this quality: 60 seconds",
+    "native quality duration tooltip matches actual applied buff: SpringReturnPill/Fine ticks=4500 text=Duration at this quality: 75 seconds",
+    "native quality duration tooltip matches actual applied buff: SpringReturnPill/Spirit ticks=5400 text=Duration at this quality: 90 seconds",
+    "native quality duration tooltip matches actual applied buff: TribulationResistingPill/Coarse ticks=4050 text=Duration at this quality: 67.5 seconds",
+    "native quality duration tooltip matches actual applied buff: TribulationResistingPill/Standard ticks=5400 text=Duration at this quality: 90 seconds",
+    "native quality duration tooltip matches actual applied buff: TribulationResistingPill/Fine ticks=6750 text=Duration at this quality: 112.5 seconds",
+    "native quality duration tooltip matches actual applied buff: TribulationResistingPill/Spirit ticks=8100 text=Duration at this quality: 135 seconds"
+  ],
+  "before_text_commit": "7b77a83cc99ddcb82231929e88d2f78f6ef69d7f",
+  "before_text": {
+    "SpringReturnPill": "60 minutes / 60分钟",
+    "TribulationResistingPill": "90 minutes / 90分钟"
+  },
+  "base_duration_ticks_unchanged": {
+    "SpringReturnPill": 3600,
+    "TribulationResistingPill": 5400
+  },
+  "source_checks": 40,
+  "dotnet_source_projects": 30,
+  "gameplay_assertions": 7720,
+  "generator_freshness": "passed; four owned outputs only; unrelated bestiary blank-line normalization discarded",
+  "limits": [
+    "Dynamic tooltip comes from same base duration constant used by actual buff application and existing pill quality scaling.",
+    "Native text samples are from current English server culture; Chinese templates and keys updated, not graphical Chinese acceptance.",
+    "Eight quality/item combinations compare real tooltip hook output with actual server-applied buff duration.",
+    "No rendered tooltips, line wrapping, complete client input, real transport or combat balance acceptance.",
+    "No changes to item duration values, scaling, inventory protocol, saves or world generation."
+  ]
+}

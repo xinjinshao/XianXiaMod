@@ -1,6 +1,7 @@
 Mods: {
  XianXia: {
   PillQuality: {
+   EffectDuration: "当前品质持续：{0:0.##}秒"
    Coarse: 粗丹
    Standard: 成丹
    Fine: 良丹

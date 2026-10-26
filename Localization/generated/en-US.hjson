@@ -111,7 +111,7 @@ Mods: {
 			}
 			SpringReturnPill: {
 				DisplayName: "Spring Return Pill"
-				Tooltip: "A pill that brings the body back to spring. Greatly increases life regen and spiritual energy recovery for 60 minutes. Also reduces spirit pressure."
+				Tooltip: "A pill that brings the body back to spring. Increases life regeneration and spiritual energy recovery. Base duration: 60 seconds, scaled by pill quality. Also reduces spirit pressure."
 			}
 			StarAbyssEye: {
 				DisplayName: "Star Abyss Eye"
@@ -195,7 +195,7 @@ Mods: {
 			}
 			TribulationResistingPill: {
 				DisplayName: "Tribulation Resisting Pill"
-				Tooltip: "A pill that helps resist heavenly tribulation. Grants Tribulation Resistance for 90 minutes and reduces spirit pressure."
+				Tooltip: "A pill that helps resist heavenly tribulation. Grants Tribulation Resistance for a base 90 seconds, scaled by pill quality, and reduces spirit pressure."
 			}
 		}
 		NPCs: {

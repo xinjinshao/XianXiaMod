@@ -10,6 +10,10 @@ namespace XianXia.Content.Items.Materials;
 public class SpringReturnPill : ModItem
 
 {
+    public const int DurationTicks = 3600;
+    public override void ModifyTooltips(System.Collections.Generic.List<TooltipLine> tooltips) =>
+        global::XianXia.Common.Systems.PillQualitySystem.AddDurationTooltip(Item, tooltips, DurationTicks);
+
 
     public override void SetStaticDefaults() => Item.ResearchUnlockCount = 25;
 
@@ -52,7 +56,7 @@ public class SpringReturnPill : ModItem
 
         global::XianXia.Common.Players.XianXiaPlayer cultivation = player.GetModPlayer<global::XianXia.Common.Players.XianXiaPlayer>();
 
-        player.AddBuff(ModContent.BuffType<global::XianXia.Content.Buffs.SpringReturnBuff>(), global::XianXia.Common.Systems.PillQualitySystem.Scale(Item, 60 * 60));
+        player.AddBuff(ModContent.BuffType<global::XianXia.Content.Buffs.SpringReturnBuff>(), global::XianXia.Common.Systems.PillQualitySystem.Scale(Item, DurationTicks));
 
         cultivation.ReduceSpiritPressure(global::XianXia.Common.Systems.PillQualitySystem.Scale(Item, player.HasBuff(ModContent.BuffType<global::XianXia.Content.Buffs.AlchemyInsightBuff>()) ? 8 : 4));
 

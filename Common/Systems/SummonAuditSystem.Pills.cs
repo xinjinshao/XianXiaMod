@@ -41,6 +41,12 @@ public partial class SummonAuditSystem
                 check(pill.stack == 1, "native authority pill transaction consumes exactly one");
                 int index = actor.FindBuffIndex(entry.Item2), expected = entry.Item4 ? PillQualityRules.Scale(entry.Item3, quality) : entry.Item3;
                 check(index >= 0 && actor.buffTime[index] == expected, "native authority pill applies expected quality-scaled primary buff");
+                if (pill.ModItem.Name is "SpringReturnPill" or "TribulationResistingPill") {
+                    var tips = new System.Collections.Generic.List<TooltipLine>(); pill.ModItem.ModifyTooltips(tips);
+                    string key = "Mods.XianXia.PillQuality.EffectDuration", text = tips.Single(tip => tip.Name == "PillEffectDuration").Text;
+                    check(Terraria.Localization.Language.GetTextValue(key) != key && text == Terraria.Localization.Language.GetTextValue(key, actor.buffTime[index] / 60f),
+                        "native quality duration tooltip matches actual applied buff: " + pill.ModItem.Name + "/" + quality + " ticks=" + actor.buffTime[index] + " text=" + text);
+                }
                 if (entry.Item5) check(actor.HasBuff(ModContent.BuffType<QiRecoveryCooldownBuff>()) && actor.buffTime[actor.FindBuffIndex(ModContent.BuffType<QiRecoveryCooldownBuff>())] == 1800,
                     "native combat pill also applies fixed shared fatigue");
                 int regeneration = PillQualityRules.RegenerationTicks(quality);

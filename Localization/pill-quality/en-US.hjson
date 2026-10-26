@@ -1,6 +1,7 @@
 Mods: {
  XianXia: {
   PillQuality: {
+   EffectDuration: "Duration at this quality: {0:0.##} seconds"
    Coarse: Coarse
    Standard: Standard
    Fine: Fine

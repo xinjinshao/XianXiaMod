@@ -111,7 +111,7 @@ Mods: {
 			}
 			SpringReturnPill: {
 				DisplayName: "回春丹"
-				Tooltip: "让身体重回春天的丹药。大幅提升生命与灵气恢复，持续60分钟，并降低灵压。"
+				Tooltip: "让身体重回春天的丹药。提升生命与灵气恢复，基础持续60秒（随丹药品质变化），并降低灵压。"
 			}
 			StarAbyssEye: {
 				DisplayName: "星渊眼"
@@ -195,7 +195,7 @@ Mods: {
 			}
 			TribulationResistingPill: {
 				DisplayName: "抗劫丹"
-				Tooltip: "抵抗天劫的丹药。获得90分钟的抗劫状态，并降低灵压。"
+				Tooltip: "抵抗天劫的丹药。获得抗劫状态，基础持续90秒（随丹药品质变化），并降低灵压。"
 			}
 		}
 		NPCs: {
