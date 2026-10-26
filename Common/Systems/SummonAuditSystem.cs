@@ -942,6 +942,7 @@ public partial class SummonAuditSystem : ModSystem
             AuditDecreeAwakening(Check);
             AuditMedicineCauldronAwakening(Check);
             AuditSectCrossbowAwakening(Check);
+            AuditHeavenLawAwakening(Check);
             AuditPillBuffs(Check);
             AuditPillQualityStacks(Check);
             AuditPillQualityPickup(Check);

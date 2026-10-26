@@ -62,7 +62,7 @@
 | 职业 | 装备选择 | 获得入口与定位 |
 | --- | --- | --- |
 | 近战 | [天碑御印](../Content/Equipment/Entries/Heaven_Tablet_Ward_Seal.md) | 天火炉；使用须化神境及石巨人世界进度，基础28灵气；手持附近的御印提供非叠加防御。 |
-| 远程 | [天律弩阵](../Content/Equipment/Entries/Mechanism_Ranged_Weapons.md) | 天火炉；化神境及石巨人进度，基础28灵气。 |
+| 远程 | [天律弩阵](../Content/Equipment/Entries/Mechanism_Ranged_Weapons.md) | 天火炉；化神境及石巨人进度，未觉醒基础28灵气；可材料觉醒获得额外10%伤害、基础灵耗22，保留2秒灵液。 |
 | 魔法 | [残天法令](../../Content/Items/Weapons/BrokenHeavenDecree.cs) | 高消耗灵气法术；元婴及药王残影后可材料觉醒（额外10%伤害、基础灵耗20），保留独立传承与光束生效时序。 |
 | 召唤 | [仙傀令](../../Content/Items/HandGenerated/SpiritContracts.cs) | 天火炉：天碑印1、天道碎片12、下品灵石24；召唤要求困难模式及石巨人，24魔力、1仆从位。 |
 

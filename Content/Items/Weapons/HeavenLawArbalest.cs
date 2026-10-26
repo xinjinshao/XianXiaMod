@@ -22,7 +22,11 @@ public class HeavenLawArbalest : global::XianXia.Common.Items.CultivationWeaponI
         Item.shoot = ModContent.ProjectileType<global::XianXia.Content.Projectiles.HeavenLawBolt>();
         Item.shootSpeed = 16f;
     }
-    public override int GetSpiritCost(Player player) => 28;
+    public override int GetSpiritCost(Player player) => global::XianXia.Common.Items.RefinedArtifact.IsAwakened(Item) ? 22 : 28;
+    public override void ModifyWeaponDamage(Player player, ref StatModifier damage)
+    {
+        if (global::XianXia.Common.Items.RefinedArtifact.IsAwakened(Item)) damage += 0.1f;
+    }
     public override bool CanUseItem(Player player)
     {
         XianXiaPlayer state = player.GetModPlayer<XianXiaPlayer>();
