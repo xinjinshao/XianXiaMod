@@ -51,7 +51,7 @@
 | 职业 | 装备选择 | 获得入口与定位 |
 | --- | --- | --- |
 | 近战 | [无相剑轮](../../Content/Items/Weapons/FormlessSwordWheel.cs) | 近战剑轮；普通使用、宗门传承强化和材料觉醒各有独立条件。 |
-| 远程 | [宗门机关弩](../Content/Equipment/Entries/Mechanism_Ranged_Weapons.md) | 宗门试炼台；使用须元婴境并满足困难模式/世纪之花进度，每次基础20灵气；药王残影后可材料觉醒（额外10%伤害、基础灵耗16），仍须原使用门槛。 |
+| 远程 | [宗门机关弩](../Content/Equipment/Entries/Mechanism_Ranged_Weapons.md) | 宗门试炼台；使用须元婴境并满足困难模式/世纪之花进度，每次基础20灵气；药王残影后可材料觉醒（额外10%伤害、基础灵耗16），仍须原使用门槛；后期道化名义基础伤害220、灵耗24/星渊18，须路线匹配且核心已击败。 |
 | 魔法 | [青木药王鼎](../Content/Equipment/Entries/Greenwood_Medicine_Cauldron.md) | 元婴境及世纪之花阶段的持续攻击法阵；药王残影后可材料觉醒（额外10%伤害、基础灵耗26），保留8秒共享部署冷却。 |
 | 召唤 | [元婴分身符](../../Content/Items/HandGenerated/SpiritContracts.cs) | 宗门试炼台：断剑残意8、残卷页12、下品灵石20；召唤要求困难模式及世纪之花，20魔力、1仆从位。名称不额外施加角色元婴境门槛。 |
 
@@ -62,7 +62,7 @@
 | 职业 | 装备选择 | 获得入口与定位 |
 | --- | --- | --- |
 | 近战 | [天碑御印](../Content/Equipment/Entries/Heaven_Tablet_Ward_Seal.md) | 天火炉；使用须化神境及石巨人世界进度，基础28灵气；手持附近的御印提供非叠加防御。 |
-| 远程 | [天律弩阵](../Content/Equipment/Entries/Mechanism_Ranged_Weapons.md) | 天火炉；化神境及石巨人进度，未觉醒基础28灵气；可材料觉醒获得额外10%伤害、基础灵耗22，保留2秒灵液。 |
+| 远程 | [天律弩阵](../Content/Equipment/Entries/Mechanism_Ranged_Weapons.md) | 天火炉；化神境及石巨人进度，未觉醒基础28灵气；可材料觉醒获得额外10%伤害、基础灵耗22，保留2秒灵液；后期道化名义基础伤害260、灵耗30/星渊24，须路线匹配且核心已击败，仍须原使用门槛。 |
 | 魔法 | [残天法令](../../Content/Items/Weapons/BrokenHeavenDecree.cs) | 高消耗灵气法术；元婴及药王残影后可材料觉醒（额外10%伤害、基础灵耗20），保留独立传承与光束生效时序；后期道化名义基础伤害240、灵耗28/星渊22，须路线匹配且核心已击败。 |
 | 召唤 | [仙傀令](../../Content/Items/HandGenerated/SpiritContracts.cs) | 天火炉：天碑印1、天道碎片12、下品灵石24；召唤要求困难模式及石巨人，24魔力、1仆从位。 |
 

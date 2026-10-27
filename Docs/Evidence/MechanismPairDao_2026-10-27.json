@@ -1,0 +1,51 @@
+{
+  "round": 367,
+  "date": "2026-10-27",
+  "weapons": {
+    "SectMechanismCrossbow": {
+      "nominalDamage": 220,
+      "cost": 24,
+      "starCost": 18,
+      "fallbackCost": 16
+    },
+    "HeavenLawArbalest": {
+      "nominalDamage": 260,
+      "cost": 30,
+      "starCost": 24,
+      "fallbackCost": 22
+    }
+  },
+  "passed": true,
+  "nativeChecks": 76214,
+  "addedChecks": 2244,
+  "verification": [
+    "SP/server three-route material transactions full save clone duplicate refusal shared forge requirement/confirmation matrices for both weapons",
+    "96 combined world states: actual damage energy rejection exact-energy firing record retention ranged class hit limits terrain collision local immunity and no vanilla ammo",
+    "Relevant missing world requirements and character realm: CombinedHooks qualification rejects; actual server HandleRequest reaches cooldown without resource spend or projectiles",
+    "Heaven Law 24 single-player world combinations times immune/unimmune: actual OnHitNPC on fresh native Zombie verifies Ichor 120 or no buff for immune target",
+    "Official build package dedicated server load, source 40 checks, Gameplay 7720 assertions"
+  ],
+  "artifacts": [
+    {
+      "path": "C:\\Users\\Shao\\Desktop\\Coding\\XianXiaMod\\.tml-test\\summons-28857c15f090435b98e61c66a9a6842d\\save\\XianXia\\summon-audit.json",
+      "sha256": "e7185e7c568982cd1d99cb7d66b8e7bf66ce593ef0001e574b54f99c5eacc869"
+    },
+    {
+      "path": "C:\\Users\\Shao\\Desktop\\Coding\\XianXiaMod\\.tml-test\\run-32ff25ce52bd45cf9640d8a4fb224c8d\\save\\Mods\\XianXia.tmod",
+      "sha256": "efa6796c2b35b912c140a0243f7fac35b9c13c42675142b9a1ec42628d48ade9"
+    },
+    {
+      "path": "C:\\Users\\Shao\\Desktop\\Coding\\XianXiaMod\\.tml-test\\source367.log",
+      "sha256": "d47b862005eb4206f9db31473b1710befb5a63cde8909ec203ec542283fb3d8a"
+    },
+    {
+      "path": "C:\\Users\\Shao\\Desktop\\Coding\\XianXiaMod\\.tml-test\\gameplay367.log",
+      "sha256": "0fcd04c021a7ba3d42c1615a42eabca84b8e187b90d93ac2d8e377c690367771"
+    }
+  ],
+  "limitations": [
+    "Direct callbacks and prepared shots are not full engine frames or actual hit collisions",
+    "No real client transport rendered UI or combat balance acceptance",
+    "No active skills added"
+  ]
+}
