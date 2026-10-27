@@ -11,6 +11,7 @@ Mods: {
    }
   }
   Refinement: {
+   Preview: "Awakening benefits preview (not yet applied; requirements above still apply)\n{0}"
    TalismanCrossbowAwakened: "Crafted awakening: +10% weapon damage and +10% use speed. Still consumes native arrows; no spiritual energy or mana cost. Faster firing also uses arrows faster. No active skill; Dao transformation available at Dao Severing with a chosen route and defeated core."
    TalismanCrossbowDormant: "Dormant: retain an inscription at refinement 3, reach Nascent Soul and defeat Medicine King Echo. Spend 1 awakening seal and 24 stones near an artificing station for +10% damage and +10% use speed while keeping native ammunition handling."
 

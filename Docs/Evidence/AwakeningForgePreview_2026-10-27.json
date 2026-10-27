@@ -1,0 +1,38 @@
+{
+  "round": 372,
+  "date": "2026-10-27",
+  "feature": "Read-only awakening benefits before forge confirmation",
+  "passed": true,
+  "nativeChecks": 80509,
+  "addedChecks": 154,
+  "verification": [
+    "19 registered refinable weapons x 4 growth states: preview equals localized preview header plus actual awakened clone ArtifactAwakening tooltip",
+    "Complete ItemIO serialized target bytes identical before and after preview, including existing Dao record",
+    "Null and unsupported targets produce no preview",
+    "UI source appends awakening preview for selected matching target after requirement feedback; confirmation code unchanged",
+    "Official build package dedicated server load, source 40 checks, Gameplay 7720 assertions"
+  ],
+  "artifacts": [
+    {
+      "path": "C:\\Users\\Shao\\Desktop\\Coding\\XianXiaMod\\.tml-test\\summons-8b53f7bab1e942eea718af4b62aa2b8d\\save\\XianXia\\summon-audit.json",
+      "sha256": "fa6b29abf0eae23588dce3c6db4053cfd4ae59dc4f08032f92165b6c550bbe17"
+    },
+    {
+      "path": "C:\\Users\\Shao\\Desktop\\Coding\\XianXiaMod\\.tml-test\\run-df939caef30248c89adca6aff2dfc8c7\\save\\Mods\\XianXia.tmod",
+      "sha256": "db3ecb671b642fd19927ec7157fcc6985c6c36f40aad470d8897c38cb21a0487"
+    },
+    {
+      "path": "C:\\Users\\Shao\\Desktop\\Coding\\XianXiaMod\\.tml-test\\source372.log",
+      "sha256": "edcb8946918f60333414936968fd6e37a21918250cb250ed7adf7895c7d8991b"
+    },
+    {
+      "path": "C:\\Users\\Shao\\Desktop\\Coding\\XianXiaMod\\.tml-test\\gameplay372.log",
+      "sha256": "0fcd04c021a7ba3d42c1615a42eabca84b8e187b90d93ac2d8e377c690367771"
+    }
+  ],
+  "limitations": [
+    "Native checks invoke description generator and GlobalItem tooltip hook, not actual font-dependent UI",
+    "Shared localization comparison does not independently prove combat values or balance",
+    "Rendered text heights narrow screens scale scrolling actual clicks and real networking remain unverified"
+  ]
+}
