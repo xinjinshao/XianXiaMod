@@ -1,0 +1,33 @@
+{
+  "round": 376,
+  "date": "2026-10-27",
+  "feature": "Flame Fan actual projectile flight terrain collision and NPC hit lifecycle",
+  "passed": true,
+  "nativeChecks": 82142,
+  "addedChecks": 41,
+  "verification": [
+    "SP and server actual skill-created three flames each run 180 native Projectile.Update calls to natural expiry; per-step lifetime active state and finite positions checked",
+    "Actual solid tile wall blocks all three real flight paths in both authority modes",
+    "Owner death suppresses damage immediately then six real updates remove all three flames",
+    "Six native Zombie collision updates: each fan member separately against burn immune and nonimmune target; damage sole penetration consumption and OnFire3 180 verified",
+    "Temporary wall fields saved by value restored and clear terrain checked; player clients text random and world progress restored",
+    "Official build package dedicated server load; source/Gameplay not repeated for audit-only change"
+  ],
+  "artifacts": [
+    {
+      "path": "C:\\Users\\Shao\\Desktop\\Coding\\XianXiaMod\\.tml-test\\summons-97382eaf9a4b463ebcdb596e577a44bf\\save\\XianXia\\summon-audit.json",
+      "sha256": "8b7445538abe6386f13cf8c357a2277068f8a86cf84ec115d2e74b1eba43a8f1"
+    },
+    {
+      "path": "C:\\Users\\Shao\\Desktop\\Coding\\XianXiaMod\\.tml-test\\run-6b6ba8a700f645c5bedc50f47e51a014\\save\\Mods\\XianXia.tmod",
+      "sha256": "45f86be1d8b0b5a89a66381d46a6531b9be71656ee267814c10fab142bd3b981"
+    }
+  ],
+  "limitations": [
+    "Projectile.Update is complete for projectiles but no full player NPC Buff or world tick loop",
+    "OnFire3 duration verified at collision; no 180-tick damage-over-time statistics",
+    "Combat text slots occupied for headless engine hit path",
+    "Temporary geometry at clear corridor; no real graphics or multiplayer transport balance acceptance",
+    "Initial wall Tile.Clone fixture did not isolate prior tile fields; replaced with explicit value snapshots and restoration check"
+  ]
+}
