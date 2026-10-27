@@ -1,0 +1,44 @@
+{
+  "round": 368,
+  "date": "2026-10-27",
+  "weapon": "ThunderTalismanArrayPlate",
+  "passed": true,
+  "nativeChecks": 77387,
+  "addedChecks": 1173,
+  "nominalDamage": 120,
+  "baseCosts": {
+    "normal": 30,
+    "starAbyss": 24,
+    "inactiveAwakened": 16
+  },
+  "verification": [
+    "SP/server three-route material transactions full save clone duplicate refusal shared forge requirement/confirmation matrices",
+    "48 world states: damage with independent heritage energy rejection exact-energy field creation and stored route retention",
+    "All 48 deployments retain 480 shared cooldown; repeat shot rejected with no energy spend; then cooldown zero and ownedProjectileCounts one rejects same-field shot without cost or cooldown",
+    "Official build package dedicated server load, source 40 checks, Gameplay 7720 assertions"
+  ],
+  "artifacts": [
+    {
+      "path": "C:\\Users\\Shao\\Desktop\\Coding\\XianXiaMod\\.tml-test\\summons-ea2fb0a79ff341deb3bf0e093e8ab8d9\\save\\XianXia\\summon-audit.json",
+      "sha256": "5222601f43f264c408642689ab0b1873affc3e1e7ad7391a70f60a03c32a0df6"
+    },
+    {
+      "path": "C:\\Users\\Shao\\Desktop\\Coding\\XianXiaMod\\.tml-test\\run-7ad9c89eb17c4c818a2a25a9aac9fa91\\save\\Mods\\XianXia.tmod",
+      "sha256": "255b901632cd85216a682d11f07f27376a7ab1c5610ba231fa382f31c038ec16"
+    },
+    {
+      "path": "C:\\Users\\Shao\\Desktop\\Coding\\XianXiaMod\\.tml-test\\source368.log",
+      "sha256": "6a1fbc3526773f187e876bb1c39e18f561eccac2af7c2d4a8822e8e704be42db"
+    },
+    {
+      "path": "C:\\Users\\Shao\\Desktop\\Coding\\XianXiaMod\\.tml-test\\gameplay368.log",
+      "sha256": "0fcd04c021a7ba3d42c1615a42eabca84b8e187b90d93ac2d8e377c690367771"
+    }
+  ],
+  "limitations": [
+    "Existing-field fixture sets native ownedProjectileCounts; no full engine recount",
+    "Prepared deployment is not complete array lifecycle or world/player frames",
+    "No real client transport rendered UI or combat balance acceptance",
+    "No active skill added"
+  ]
+}

@@ -67,7 +67,10 @@ public class ThunderTalismanArrayPlate : global::XianXia.Common.Items.Cultivatio
 
 
 
-    public override int GetSpiritCost(Player player) => global::XianXia.Common.Items.RefinedArtifact.IsAwakened(Item) ? 16 : HasArtifactAwakening(player) ? 20 : 24;
+    public override int GetSpiritCost(Player player) => global::XianXia.Common.Items.RefinedArtifact.ActiveDaoRoute(Item) is var route
+        && route != global::XianXia.Common.Systems.DownedBossSystem.EndgameRoute.None
+        ? global::XianXia.Common.Systems.DaoArtifactRules.WeaponCost(Name, route)
+        : global::XianXia.Common.Items.RefinedArtifact.IsAwakened(Item) ? 16 : HasArtifactAwakening(player) ? 20 : 24;
     public override bool DeploysArray => true;
 
 

@@ -12,6 +12,7 @@ public static class DaoArtifactRules
         && previousRoute == 0 && stage == CultivationStage.DaoSevering && Normalize(worldRoute) != DownedBossSystem.EndgameRoute.None && defeatedCore;
     public static float DamageScale(string name) => name switch {
         "SectMechanismCrossbow" => 220f / 110f,
+        "ThunderTalismanArrayPlate" => 120f / 46f,
         "HeavenLawArbalest" => 260f / 170f,
         "StarCalamityMechanismCase" => 340f / 260f,
         "ArchiveStarCodex" => 300f / 230f,
@@ -31,6 +32,7 @@ public static class DaoArtifactRules
     };
     public static int WeaponCost(string name, DownedBossSystem.EndgameRoute route) => name switch {
         "SectMechanismCrossbow" => route == DownedBossSystem.EndgameRoute.AcceptStarAbyss ? 18 : 24,
+        "ThunderTalismanArrayPlate" => route == DownedBossSystem.EndgameRoute.AcceptStarAbyss ? 24 : 30,
         "HeavenLawArbalest" => route == DownedBossSystem.EndgameRoute.AcceptStarAbyss ? 24 : 30,
         "StarCalamityMechanismCase" => route == DownedBossSystem.EndgameRoute.AcceptStarAbyss ? 28 : 36,
         "ArchiveStarCodex" => route == DownedBossSystem.EndgameRoute.AcceptStarAbyss ? 28 : 36,
