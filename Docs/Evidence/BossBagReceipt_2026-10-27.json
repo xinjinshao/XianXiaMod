@@ -1,0 +1,41 @@
+{
+  "round": 374,
+  "date": "2026-10-27",
+  "feature": "Instanced boss bag official receipt and native inventory pickup",
+  "passed": true,
+  "nativeChecks": 81471,
+  "addedChecks": 481,
+  "matrix": {
+    "bosses": 12,
+    "difficulties": 2,
+    "recipients": 2,
+    "inventoryLayouts": 2,
+    "receiverCases": 96
+  },
+  "verification": [
+    "Registered boss loot solver emits one actual InstancedItem packet per participant",
+    "Official MessageBuffer decoder invoked twice before pickup for each isolated receiver fixture; one active openable bag of correct type and stack 1",
+    "Native Player.GrabItems fills empty inventory once and clears actual world item slot",
+    "Full inventory preserves world bag; clearing one slot then repeating GrabItems collects one bag",
+    "Players full world item references connection clients broadcast difficulty random and showItemText restored",
+    "Official build package and dedicated server load; source and Gameplay not repeated for audit-only change"
+  ],
+  "artifacts": [
+    {
+      "path": "C:\\Users\\Shao\\Desktop\\Coding\\XianXiaMod\\.tml-test\\summons-0c6cb9dd116b445b9959d55594cd0098\\save\\XianXia\\summon-audit.json",
+      "sha256": "0d0205dfda7728694f4c1eb5363c405cb5352a3be23084e9090d79ae7c3f5c56"
+    },
+    {
+      "path": "C:\\Users\\Shao\\Desktop\\Coding\\XianXiaMod\\.tml-test\\run-b3b7430d2f8345b7b88b90c1d95a58d4\\save\\Mods\\XianXia.tmod",
+      "sha256": "47d78d06d8d87c51c1f98aae12496a5fbf2e8be8f061858870b9337235ce6c50"
+    }
+  ],
+  "limitations": [
+    "Captured bytes injected into isolated receiver, not real transport or graphical clients",
+    "Receiver positioned on item and noGrabDelay cleared to bypass waiting/distance",
+    "Participant flags configured explicitly; no combat participation or fatal NPCLoot chain",
+    "Pre-pickup replay only; no claim of protection against post-pickup packet replay",
+    "Initial fixture inspected stale Item reference after native pickup replaced world slot; corrected to inspect Main.item slot",
+    "No art or balance acceptance; R01 and R09 remain incomplete"
+  ]
+}
