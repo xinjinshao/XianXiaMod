@@ -3,7 +3,7 @@ Mods: {
   Items: {
    DaoTransformationSeal: {
     DisplayName: Artifact Dao Transformation Seal
-    Tooltip: "Use near a Dao Severing Altar to bind a supported, inscribed refinement-3 awakened weapon to the current world route. Requires Dao Severing and defeating the Old Heaven Dao Core; confirmation costs 1 seal and 36 low-grade stones. See each target for its effects."
+    Tooltip: "Craft at a Dao Severing Altar with 1 Route Material, 8 Heaven Dao Fragments and 8 Moonbone. Route Material comes from the Old Heaven Dao Core normal drop or its expert/master treasure bag.\nUse near a Dao Severing Altar to bind a supported, inscribed refinement-3 awakened weapon to the current world route. Requires Dao Severing and defeating the Old Heaven Dao Core; confirmation costs 1 seal and 36 low-grade stones. See each target for its effects.\nChoosing an unselected world route consumes a separate Route Material; crafting this seal does not choose the route. Preview target benefits in the panel before confirming."
    }
   }
   DaoArtifacts: {

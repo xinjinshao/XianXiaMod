@@ -1,0 +1,47 @@
+{
+  "round": 378,
+  "date": "2026-10-27",
+  "feature": "Bilingual Dao seal crafting and route material acquisition guide",
+  "verification": [
+    "Source-reviewed actual seal recipe: route material 1 fragments 8 moonbone 8 at Dao altar",
+    "Source-reviewed normal core and expert/master bag RouteMaterial drops, and separate EndgameRouteTransactions consumption",
+    "Checked formal Chinese generated item names HeavenDaoFragment and Moonbone",
+    "Localization key verifier and content contract passed",
+    "Official build package and dedicated server load passed"
+  ],
+  "artifacts": [
+    {
+      "path": "C:\\Users\\Shao\\Desktop\\Coding\\XianXiaMod\\Content\\Items\\HandGenerated\\DaoTransformationSeal.cs",
+      "sha256": "5e45206d2634e06cfa36f43c82a213cc8bb2b0f1c60032bea6ce6181e23b6931"
+    },
+    {
+      "path": "C:\\Users\\Shao\\Desktop\\Coding\\XianXiaMod\\Content\\NPCs\\Bosses\\OldHeavenDaoCore.cs",
+      "sha256": "3475856376eaa4942dc3213407cd3a0937f82dae6c27677f5e26b5214c80a51a"
+    },
+    {
+      "path": "C:\\Users\\Shao\\Desktop\\Coding\\XianXiaMod\\Content\\Items\\TreasureBags\\OldHeavenDaoCoreBag.cs",
+      "sha256": "13e9ed61b2d2f0c3b78ce37cb91c18a09ab6d3b2052ed7f844ea5c8297d0f84c"
+    },
+    {
+      "path": "C:\\Users\\Shao\\Desktop\\Coding\\XianXiaMod\\Common\\Systems\\EndgameRouteTransactions.cs",
+      "sha256": "86ee34fd3161890235c52c2a2d9ab9bd32ff42887ccc268c10bc0687cf604737"
+    },
+    {
+      "path": "C:\\Users\\Shao\\Desktop\\Coding\\XianXiaMod\\.tml-test\\localization378.log",
+      "sha256": "c2a4ace845d06a216da2d1f5dcd0a14d0073767e79f8800cc75ad2f78746281a"
+    },
+    {
+      "path": "C:\\Users\\Shao\\Desktop\\Coding\\XianXiaMod\\.tml-test\\contract378.log",
+      "sha256": "71c6441dbc9f9d1557d768cf018d71ed4c2c7f0a5683c57f8321bae2eea51092"
+    },
+    {
+      "path": "C:\\Users\\Shao\\Desktop\\Coding\\XianXiaMod\\.tml-test\\run-6e481582ea5c482a96c9c91ebbc49aab\\save\\Mods\\XianXia.tmod",
+      "sha256": "edf9ba8b333cf18dda6254537428cb08f69d7f4ae76913d0e578c2a806d86b7a"
+    }
+  ],
+  "limitations": [
+    "Text/documentation change only, recipes loot and resource transactions unchanged",
+    "No added mirrored tests; existing source Gameplay and native behavior suites not repeated",
+    "No rendered long tooltip complete acquisition playthrough or economy balance acceptance"
+  ]
+}
