@@ -1,0 +1,65 @@
+{
+  "round": 373,
+  "date": "2026-10-27",
+  "feature": "Expert/master instanced boss bag eligibility",
+  "passed": true,
+  "nativeChecks": 80990,
+  "addedChecks": 481,
+  "matrix": {
+    "bosses": 12,
+    "difficulties": 2,
+    "scenarios": 5,
+    "players": 3,
+    "dropAttempts": 120
+  },
+  "scenarios": [
+    {
+      "interacted": 1,
+      "active": 7,
+      "dead": 0
+    },
+    {
+      "interacted": 3,
+      "active": 5,
+      "dead": 0
+    },
+    {
+      "interacted": 3,
+      "active": 7,
+      "dead": 2
+    },
+    {
+      "interacted": 7,
+      "active": 7,
+      "dead": 0
+    },
+    {
+      "interacted": 0,
+      "active": 7,
+      "dead": 0
+    }
+  ],
+  "verification": [
+    "Actual registered NPC loot rules via Main.ItemDropSolver.TryDropping",
+    "Per-peer captured native InstancedItem packets: one for each active interacted player, including dead active participants; zero for others",
+    "No extra active shared world boss bag",
+    "Final player references and active item/NPC sets restored; networking difficulty random source restored in finally",
+    "Official build package and dedicated server load passed; source and Gameplay not repeated for audit-only change"
+  ],
+  "artifacts": [
+    {
+      "path": "C:\\Users\\Shao\\Desktop\\Coding\\XianXiaMod\\.tml-test\\summons-d7e49dc33b004257986b7088e624542e\\save\\XianXia\\summon-audit.json",
+      "sha256": "2900d09248ea50b8f9d146071c2bf36eec5d86bbb56bce858dd04f1c8627eb6f"
+    },
+    {
+      "path": "C:\\Users\\Shao\\Desktop\\Coding\\XianXiaMod\\.tml-test\\run-64cb05cfa2b34208a2acb8eece51c7c4\\save\\Mods\\XianXia.tmod",
+      "sha256": "d8b77241faa7f4fa5bdab08ab344c5d32e0faf5853bd4c6fba4e7b25f4ad71f7"
+    }
+  ],
+  "limitations": [
+    "Participation flags explicitly configured; no actual combat contribution or fatal NPCLoot path",
+    "Captured socket writes are not real transport or client receipt pickup",
+    "InstancedItem identification reads referenced native item type; no full packet receiver execution in this audit",
+    "No balance or independent art acceptance; R01 and R09 remain incomplete"
+  ]
+}
