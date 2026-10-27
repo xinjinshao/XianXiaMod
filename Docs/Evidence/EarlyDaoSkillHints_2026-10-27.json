@@ -1,0 +1,37 @@
+{
+  "round": 381,
+  "date": "2026-10-27",
+  "feature": "Sword and array Dao descriptions in actual skill panel tooltip",
+  "passed": true,
+  "nativeChecks": 82570,
+  "addedChecks": 384,
+  "matrix": {
+    "weapons": 2,
+    "networkModes": 3,
+    "itemRoutes": 4,
+    "worldRoutes": 4,
+    "coreStates": 2,
+    "cases": 192
+  },
+  "verification": [
+    "Actual private ArtifactSkillUIState.SkillTooltip invocation selects planned Dao requirement only for active matching-world item route",
+    "No unresolved localization keys/placeholders; ordinary fallback otherwise",
+    "Player resource snapshot and item awakening/route remain unchanged",
+    "Official build package dedicated server load, localization keys and content contract passed"
+  ],
+  "artifacts": [
+    {
+      "path": "C:\\Users\\Shao\\Desktop\\Coding\\XianXiaMod\\.tml-test\\summons-437456d72397421fb4ea5242a5fd3e80\\save\\XianXia\\summon-audit.json",
+      "sha256": "5255d7708566a734dcc15b6e15603113b874fdd8b4a3176d6d0850b0a3f4ea6a"
+    },
+    {
+      "path": "C:\\Users\\Shao\\Desktop\\Coding\\XianXiaMod\\.tml-test\\run-4d4f75ddbc774d1ab3d66311323a867d\\save\\Mods\\XianXia.tmod",
+      "sha256": "00bb6e42334104af02cde15142b56332864c50768437eb7085fd2533a230fb2f"
+    }
+  ],
+  "limitations": [
+    "No actual UI drawing hover clicks physical controller or real network transport",
+    "Damage healing fees unchanged; this validates description selection, not new combat balance",
+    "Full source/Gameplay suites not repeated for localized tooltip-only change"
+  ]
+}

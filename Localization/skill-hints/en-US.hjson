@@ -8,7 +8,9 @@
         "WardDaoRequirement": "Hold a matching-world Dao Heaven Tablet Ward Seal and meet Spirit Severing/Golem gates; Rebuild heals up to 20, Star Abyss adds 8 pressure; keeps 3 seconds, 35% reduction and 12 defense; jade ward cannot inherit another held weapon route",
         "WardRequirement": "Guard: equip Lightning Ward Jade in an unlocked functional accessory slot, or hold an awakened Heaven Tablet Ward Seal at Spirit Severing with Golem progression.",
         "SkillNumbers": "Current energy cost: {0} | Shared cooldown after casting: {1}s",
-        "AssignedControls": "Keyboard: {0} | Gamepad: {1}\nRebind in Mod Controls. The artifact skill key selects a skill from your held artifact."
+        "AssignedControls": "Keyboard: {0} | Gamepad: {1}\nRebind in Mod Controls. The artifact skill key selects a skill from your held artifact.",
+        "SwordDaoRequirement": "Hold the transformed Cloudpiercer in a matching-route world with its core defeated: three 200% weapon-damage swords, or 300% for Sever. Rebuild heals the owner up to 20; Star Abyss adds 8 pressure on success. Current cost is shown below; the shared skill cooldown still applies.",
+        "ArrayDaoRequirement": "Hold the transformed Greenwood Array in a matching-route world with its core defeated, near your own valid array and injured friendly targets. Rebuild restores up to 40 per eligible target; Sever and Star Abyss restore up to 20. Star Abyss adds 8 pressure per successful cast. Current cost is shown below."
       }
     }
   }

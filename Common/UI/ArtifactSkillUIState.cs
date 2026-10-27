@@ -80,8 +80,8 @@ public class ArtifactSkillUIState : UIState
         int cost = state.GetSpiritualEnergyCost(DaoArtifactRules.SkillCost(skill, route));
         string requirement = skill switch
         {
-            ArtifactSkill.SwordBurst => Text("SwordRequirement"),
-            ArtifactSkill.ArrayPulse => Text("ArrayRequirement"),
+            ArtifactSkill.SwordBurst => Text(route == DownedBossSystem.EndgameRoute.None ? "SwordRequirement" : "SwordDaoRequirement"),
+            ArtifactSkill.ArrayPulse => Text(route == DownedBossSystem.EndgameRoute.None ? "ArrayRequirement" : "ArrayDaoRequirement"),
             ArtifactSkill.MoonCrescent => Text(route == DownedBossSystem.EndgameRoute.None ? "MoonRequirement" : "MoonDaoRequirement"),
             ArtifactSkill.WheelFormation => Text(route == DownedBossSystem.EndgameRoute.None ? "WheelRequirement" : "WheelDaoRequirement"),
             ArtifactSkill.HammerVolley => Text(route == DownedBossSystem.EndgameRoute.None ? "HammerRequirement" : "HammerDaoRequirement"),

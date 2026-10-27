@@ -962,6 +962,7 @@ public partial class SummonAuditSystem : ModSystem
             AuditDaoPreview(Check);
             AuditRouteConfirm(Check);
             AuditAwakeningPreview(Check);
+            AuditEarlySkillHints(Check);
             AuditHeavenLawDao(Check);
             AuditSectDao(Check);
             AuditPillBuffs(Check);
