@@ -20,6 +20,7 @@ Mods: {
    WoodgrainTooltip: "Dao transformation: {0}\nOnly active in matching-route worlds after defeating the Old Heaven Dao Core\nNominal base damage grows from 14 to 140; prefix, inscription, refinement and awakening remain\nNormal base cost 16, or 12 for Star Abyss; Sever adds 15% damage\nInactive routes retain their record and revert to awakened damage and base cost 3. Keeps Melee class and original sword flight. Player cost modifiers apply; no active skill."
    FlameTooltip: "Dao transformation: {0}\nActive only in a matching-route world after defeating the Old Heaven Dao Core\nNominal base damage grows from 24 to 120; keeps prefix, inscription, refinement, awakening and sect heritage\nBase ordinary cost 12, or 9 for Star Abyss; Sever Heaven adds 15% damage\nInactive routes keep their record but revert to awakened base cost 3 and original damage. Player cost modifiers still apply. No active skill."
 
+   Preview: "Planned effects (not yet applied; requirements above still apply)"
    AlreadyTransformed: This item already has a Dao transformation and cannot change routes. No materials spent.
    NeedAwakening: Refine this item to level 3 and awaken it first. No materials spent.
    NeedInscription: The item must retain an inscription. No materials spent.

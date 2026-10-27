@@ -1,0 +1,39 @@
+{
+  "round": 371,
+  "date": "2026-10-27",
+  "feature": "Read-only Dao benefits before forge confirmation",
+  "passed": true,
+  "nativeChecks": 80355,
+  "addedChecks": 762,
+  "verification": [
+    "19 registered refinable weapons x 4 growth states x 5 planned routes: description resolves actual weapon benefits for valid routes and hides invalid routes",
+    "Complete ItemIO serialized bytes identical before and after description generation, including existing transformed records",
+    "Null and unsupported target descriptions empty",
+    "UI source appends preview only for matching selected target and Dao tool, after requirement result; confirmation code unchanged",
+    "Official build package dedicated server load, source 40 checks, Gameplay 7720 assertions"
+  ],
+  "artifacts": [
+    {
+      "path": "C:\\Users\\Shao\\Desktop\\Coding\\XianXiaMod\\.tml-test\\summons-127b60ff009845faa4c83f123c4db4b7\\save\\XianXia\\summon-audit.json",
+      "sha256": "071813ae1726dbb515a98bdd9f23967d9545c9c6a1d703188468b18f577589c3"
+    },
+    {
+      "path": "C:\\Users\\Shao\\Desktop\\Coding\\XianXiaMod\\.tml-test\\run-604eba8086cf467d90c78cbff4e87dee\\save\\Mods\\XianXia.tmod",
+      "sha256": "d7806833de7e12ea5892cd6664ec41543bdee36eb865874ddded57c6a756e9a5"
+    },
+    {
+      "path": "C:\\Users\\Shao\\Desktop\\Coding\\XianXiaMod\\.tml-test\\source371.log",
+      "sha256": "fe837336b8f9a7cdb3fbcb39297632c4dbb59c0aee9bbb400524a3f5f6df2104"
+    },
+    {
+      "path": "C:\\Users\\Shao\\Desktop\\Coding\\XianXiaMod\\.tml-test\\gameplay371.log",
+      "sha256": "0fcd04c021a7ba3d42c1615a42eabca84b8e187b90d93ac2d8e377c690367771"
+    }
+  ],
+  "limitations": [
+    "Native checks invoke description generator, not font-dependent UIText or actual rendered panel",
+    "Shared description equality checks reuse formal localization source; not independent proof of balance numbers",
+    "Long text height, narrow screens, scale, scrolling and actual UI interaction require graphics acceptance",
+    "No real client transport or combat balance testing"
+  ]
+}

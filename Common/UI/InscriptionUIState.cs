@@ -85,6 +85,10 @@ public class InscriptionUIState : UIState
             string failure = tool.TransformsArtifact ? DaoArtifactTransactions.RequirementFailure(player, player.inventory[targetSlot])
                 : InscriptionTransactions.RequirementFailure(player, tool, player.inventory[targetSlot]);
             summary.SetText(summary.Text + "\n" + (failure.Length == 0 ? Text("ReadyToConfirm") : Language.GetTextValue(failure)));
+            if (tool.TransformsArtifact) {
+                string preview = DaoArtifactPreview.Describe(player.inventory[targetSlot], DownedBossSystem.ChosenRoute);
+                if (preview.Length > 0) summary.SetText(summary.Text + "\n\n" + preview);
+            }
         }
         if (targetChanged) summary.SetText(Text("TargetChanged"));
         eligibleSlots.Clear(); selectTargetActions.Clear();
