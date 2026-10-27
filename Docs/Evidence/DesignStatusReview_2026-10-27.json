@@ -1,0 +1,62 @@
+{
+  "round": 380,
+  "date": "2026-10-27",
+  "scope": "Documentation status reconciliation, no runtime change",
+  "verification": [
+    "Cross-reviewed source and existing dated evidence for current implementation versus acceptance columns",
+    "13 local references in Wiki/Design_Status.md resolve",
+    "Existing verify_cultivation_weapons.py passes 18 energy weapons and 3 arrays",
+    "git diff --check passed"
+  ],
+  "reviewedArtifacts": [
+    {
+      "path": "C:\\Users\\Shao\\Desktop\\Coding\\XianXiaMod\\Common\\Systems\\ArtifactSkillRules.cs",
+      "sha256": "b90c3786c9bde1cd743dc2641829b716ce5d8df1b47215f22aaee42082b568c0"
+    },
+    {
+      "path": "C:\\Users\\Shao\\Desktop\\Coding\\XianXiaMod\\Common\\Systems\\CalamityRecipeSystem.cs",
+      "sha256": "86a1cb38f62e349971c16e0c8c56414a869da81c7153c588b599006b1d20b24a"
+    },
+    {
+      "path": "C:\\Users\\Shao\\Desktop\\Coding\\XianXiaMod\\Common\\Systems\\BossChecklistIntegrationSystem.cs",
+      "sha256": "d7f64c392fd4438a2f7983dd4f1c3683fc6b332e86f9924450f7fa3fd153cb76"
+    },
+    {
+      "path": "C:\\Users\\Shao\\Desktop\\Coding\\XianXiaMod\\Content\\NPCs\\Town\\CultivationTownNPCs.cs",
+      "sha256": "4db8e10d37b543aaadb056bc79a9cc15f21b93d395e1f1101846f51d7f14fd11"
+    },
+    {
+      "path": "C:\\Users\\Shao\\Desktop\\Coding\\XianXiaMod\\Content\\Items\\HandGenerated\\BossRareDrops.cs",
+      "sha256": "1dbe561259b592ccdcfaff03b77e3c776c46319427f0a79f0d9194b483f64370"
+    },
+    {
+      "path": "C:\\Users\\Shao\\Desktop\\Coding\\XianXiaMod\\Content\\Items\\HandGenerated\\FlightRewards.cs",
+      "sha256": "ca2c03afa8159f65e8c7ba3aa796a4e27a98465b02fdafa0d0ef51c5543420e1"
+    },
+    {
+      "path": "C:\\Users\\Shao\\Desktop\\Coding\\XianXiaMod\\Docs\\Evidence\\TalismanCrossbowDao_2026-10-27.json",
+      "sha256": "fbef429d7ff8c6be525cb1d750bff4b6ea368e34a675c1c9a76730bdf84b7328"
+    },
+    {
+      "path": "C:\\Users\\Shao\\Desktop\\Coding\\XianXiaMod\\Docs\\Evidence\\FlameFan_2026-10-27.json",
+      "sha256": "b33b29ea24565394940435fea49c57c98b1b2561cf776b6a1766cc26151c91e6"
+    },
+    {
+      "path": "C:\\Users\\Shao\\Desktop\\Coding\\XianXiaMod\\Docs\\Evidence\\BossBagReceipt_2026-10-27.json",
+      "sha256": "37ebf69b2092e961a64a982bb8657dce7f6786e036c06f89d2a5362d93ea1aa6"
+    },
+    {
+      "path": "C:\\Users\\Shao\\Desktop\\Coding\\XianXiaMod\\Docs\\Evidence\\RouteConfirm_2026-10-27.json",
+      "sha256": "33565b2db7575cb63a11db2fb37d09c4def010adbb9b87e346298a3b1df294a7"
+    },
+    {
+      "path": "C:\\Users\\Shao\\Desktop\\Coding\\XianXiaMod\\Wiki\\Design_Status.md",
+      "sha256": "927d37aa4dfe940f09b48b6494dcd79e79ffabf80016af9bbe1fb97e3d32df9c"
+    }
+  ],
+  "limitations": [
+    "Did not rerun full source native or graphics tests for documentation-only change",
+    "Existing evidence retains its actual limitations; no new gameplay or multiplayer acceptance claimed",
+    "R08 and overall project objective remain incomplete"
+  ]
+}
