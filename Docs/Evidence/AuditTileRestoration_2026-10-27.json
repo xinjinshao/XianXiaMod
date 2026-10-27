@@ -1,0 +1,38 @@
+{
+  "round": 377,
+  "date": "2026-10-27",
+  "feature": "Independent native Tile data value snapshots for audit restoration",
+  "passed": true,
+  "nativeChecks": 82150,
+  "addedChecks": 8,
+  "dataTypes": [
+    "TileTypeData",
+    "WallTypeData",
+    "LiquidData",
+    "TileWallWireStateData",
+    "TileWallBrightnessInvisibilityData"
+  ],
+  "verification": [
+    "Public pinned SDK Tile.Get<T>() ref-return API compiled and used by value snapshot helper",
+    "Three rich tile scenarios: snapshot differs after ClearEverything, all five structures equal after restore including private packed fields; original loaded tile restored",
+    "Herb TileSquare actual growth and official client decoder audit now asserts complete original crop and ground contents restored",
+    "Flame actual wall collision audit uses same helper and existing clear-terrain checks still pass",
+    "No remaining Tile.Clone/CopyFrom patterns in native SummonAudit sources",
+    "Official build package and dedicated server load; source/Gameplay not repeated for audit-only change"
+  ],
+  "artifacts": [
+    {
+      "path": "C:\\Users\\Shao\\Desktop\\Coding\\XianXiaMod\\.tml-test\\summons-4a516a8b28ee4534b96b2d56381c39f4\\save\\XianXia\\summon-audit.json",
+      "sha256": "3702658cd6668191ba0f7340e407f09c112334d9402cbe130866efd89116bdb7"
+    },
+    {
+      "path": "C:\\Users\\Shao\\Desktop\\Coding\\XianXiaMod\\.tml-test\\run-41d4d10f8a144fc797aca0b0e1ebe31f\\save\\Mods\\XianXia.tmod",
+      "sha256": "6ef4bc15f40319fb4d4aefdbbd567864c9b92d44e75ec781f656ffb1b5909a4d"
+    }
+  ],
+  "limitations": [
+    "Five built-in data structures for pinned SDK; future SDK or third-party tile data require review",
+    "No complete world liquid/framing loop graphics or real network acceptance",
+    "Normal herb growth and combat behavior unchanged; this fixes audit isolation only"
+  ]
+}

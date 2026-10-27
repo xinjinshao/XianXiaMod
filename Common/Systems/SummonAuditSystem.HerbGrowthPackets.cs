@@ -17,7 +17,7 @@ public partial class SummonAuditSystem
         var connection = Netplay.Connection;
         bool broadcast = NetMessage.buffer[0].broadcast;
         var crop = Main.tile[x, y]; var ground = Main.tile[x, y + 1];
-        var savedCrop = (Tile)crop.Clone(); var savedGround = (Tile)ground.Clone();
+        var savedCrop = AuditTileSnapshot.Capture(crop); var savedGround = AuditTileSnapshot.Capture(ground);
         var herb = ModContent.GetInstance<CultivatedSpiritHerbTile>();
         try {
             var output = new AuditOutputSocket(true);
@@ -56,11 +56,12 @@ public partial class SummonAuditSystem
             int before = output.Sent.Count; herb.RandomUpdate(x, y);
             check(crop.TileFrameX == 36 && output.Sent.Count == before, "native mature herb emits no unchanged tile traffic");
         } finally {
-            crop.CopyFrom(savedCrop); ground.CopyFrom(savedGround);
+            savedCrop.Restore(crop); savedGround.Restore(ground);
             clients.CopyTo(Netplay.Clients, 0); Netplay.Connection = connection;
             Main.netMode = mode; Main.myPlayer = local;
             NetMessage.buffer[0].broadcast = broadcast;
         }
+        check(savedCrop.Matches(crop) && savedGround.Matches(ground), "native herb transport restores complete crop and ground tile data");
         check(Main.netMode == mode && Main.myPlayer == local
             && ReferenceEquals(Netplay.Connection, connection), "native herb transport audit restores engine context");
     }

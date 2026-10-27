@@ -19,9 +19,9 @@ public partial class SummonAuditSystem
         Player previous = Main.player[0]; var clients = (RemoteClient[])Netplay.Clients.Clone(); int mode = Main.netMode,local = Main.myPlayer;
         var text = Main.combatText; var random = Main.rand; var before = Main.projectile.Where(p => p.active).ToHashSet();
         var world = ModContent.GetInstance<DownedBossSystem>(); var saved = new TagCompound(); world.SaveWorldData(saved);
-        var tiles = new List<(int X,int Y,bool Has,ushort Type,bool Half,Terraria.ID.SlopeType Slope,bool Actuated)>(); NPC victim = null;
+        var tiles = new List<(int X,int Y,AuditTileSnapshot Saved)>(); NPC victim = null;
         void Clear() { foreach (var p in Main.projectile.Where(p => p.active && !before.Contains(p))) { p.damage = 0; p.active = false; } }
-        void RestoreTiles() { foreach (var prior in tiles) { Tile tile = Main.tile[prior.X,prior.Y]; tile.HasTile = prior.Has; tile.TileType = prior.Type; tile.IsHalfBlock = prior.Half; tile.Slope = prior.Slope; tile.IsActuated = prior.Actuated; } tiles.Clear(); }
+        void RestoreTiles() { foreach (var prior in tiles) prior.Saved.Restore(Main.tile[prior.X,prior.Y]); tiles.Clear(); }
         try {
             Main.rand = new UnifiedRandom(376); Main.combatText = Enumerable.Range(0,100).Select(_ => new CombatText { active = true }).ToArray();
             world.LoadWorldData(new TagCompound());
@@ -55,7 +55,7 @@ public partial class SummonAuditSystem
                 check(flight,"native Flame Fan three projectiles complete 180 real updates to natural expiry in SP and server authority: " + firstFailure);
                 cast = Cast(authority); int wx = (int)(corridor.X + 100) / 16, wy = (int)corridor.Y / 16;
                 for (int x = wx; x < wx + 2; x++) for (int y = wy - 4; y <= wy + 4; y++) {
-                    Tile wall = Main.tile[x,y]; tiles.Add((x,y,wall.HasTile,wall.TileType,wall.IsHalfBlock,wall.Slope,wall.IsActuated)); wall.HasTile = true; wall.TileType = TileID.Stone; wall.IsHalfBlock = false; wall.Slope = Terraria.ID.SlopeType.Solid; wall.IsActuated = false;
+                    Tile wall = Main.tile[x,y]; tiles.Add((x,y,AuditTileSnapshot.Capture(wall))); wall.HasTile = true; wall.TileType = TileID.Stone; wall.IsHalfBlock = false; wall.Slope = Terraria.ID.SlopeType.Solid; wall.IsActuated = false;
                 }
                 for (int tick = 0; tick < 12; tick++) foreach (var flame in cast.Flames) if (flame.active) flame.Update(flame.whoAmI);
                 check(cast.Flames.All(p => !p.active),"native Flame Fan three real flight paths collide with solid tiles and stop instead of passing through walls"); RestoreTiles();

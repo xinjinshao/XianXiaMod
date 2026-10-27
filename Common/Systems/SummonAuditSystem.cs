@@ -1026,6 +1026,7 @@ public partial class SummonAuditSystem : ModSystem
             AuditSpiritSummonFeedback(Check);
             AuditWarningGeometry(Check);
             AuditHerbGrowth(Check);
+            AuditTileSnapshotRestoration(Check);
             AuditHerbGrowthPackets(Check);
             AuditHerbPlacement(Check);
             AuditSpiritweaveArmor(Check);
