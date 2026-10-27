@@ -25,7 +25,7 @@ public partial class SummonAuditSystem
         try {
             for(int i=0;i<Netplay.Clients.Length;i++)Netplay.Clients[i]=new RemoteClient {Id=i,Socket=i==0?output:new AuditOutputSocket(),State=i==0?10:0,IsActive=i==0};NetMessage.buffer[0].broadcast=true;
             foreach(int netMode in new[]{NetmodeID.SinglePlayer,NetmodeID.Server})foreach(int route in new[]{1,2,3})
-            foreach(string name in new[]{"CloudpiercerFlyingSword","GreenwoodArrayPlate","MoonboneDharmaSword","FormlessSwordWheel","BlackFurnaceWarhammer","ThunderPatternSwordCase","HeavenTabletWardSeal","CinnabarTalismanFlameItem","WoodgrainFlyingSword","SpiritwoodCrossbow","StarEclipseArbalest","BrokenHeavenDecree","ArchiveStarCodex","SectMechanismCrossbow","ThunderTalismanArrayPlate","HeavenLawArbalest","StarCalamityMechanismCase"})
+            foreach(string name in new[]{"CloudpiercerFlyingSword","GreenwoodArrayPlate","MoonboneDharmaSword","FormlessSwordWheel","BlackFurnaceWarhammer","ThunderPatternSwordCase","HeavenTabletWardSeal","CinnabarTalismanFlameItem","WoodgrainFlyingSword","SpiritwoodCrossbow","StarEclipseArbalest","BrokenHeavenDecree","ArchiveStarCodex","SectMechanismCrossbow","GreenwoodMedicineCauldron","ThunderTalismanArrayPlate","HeavenLawArbalest","StarCalamityMechanismCase"})
             for(int scenario=0;scenario<12;scenario++) {
                 Main.netMode=netMode;Main.myPlayer=Main.maxPlayers;Main.rand=new Terraria.Utilities.UnifiedRandom(327);
                 world.LoadWorldData(new TagCompound {["chosenRoute"]=route});DownedBossSystem.DownedBosses.Add("old_heaven_dao_core");

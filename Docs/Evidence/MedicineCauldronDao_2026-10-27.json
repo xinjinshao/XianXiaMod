@@ -1,0 +1,45 @@
+{
+  "round": 369,
+  "date": "2026-10-27",
+  "weapon": "GreenwoodMedicineCauldron",
+  "passed": true,
+  "nativeChecks": 78578,
+  "addedChecks": 1191,
+  "nominalDamage": 180,
+  "baseCosts": {
+    "normal": 36,
+    "starAbyss": 28,
+    "inactiveAwakened": 26
+  },
+  "verification": [
+    "SP/server three-route material transactions full save clone duplicate refusal shared forge requirement/confirmation matrices",
+    "48 world states: damage energy rejection exact-energy field creation and stored route retention",
+    "All 48 deployments retain 480 shared cooldown; repeat shot rejected without spending; cooldown zero and ownedProjectileCounts one rejects same-field shot without cost or cooldown",
+    "Missing hardmode Plantera or Nascent Soul rejects CombinedHooks qualification; actual server HandleRequest reaches cooldown without resource spend or projectiles",
+    "Official build package dedicated server load, source 40 checks, Gameplay 7720 assertions"
+  ],
+  "artifacts": [
+    {
+      "path": "C:\\Users\\Shao\\Desktop\\Coding\\XianXiaMod\\.tml-test\\summons-50e87df9a6364193ab2370d8ebdc539d\\save\\XianXia\\summon-audit.json",
+      "sha256": "5d7cbbe6affb345c0bb26be7f1d7a5aa9a73515d02819d0adb689c8b65b157aa"
+    },
+    {
+      "path": "C:\\Users\\Shao\\Desktop\\Coding\\XianXiaMod\\.tml-test\\run-5383d4bc49ac4973ac0d71ddfa752ebd\\save\\Mods\\XianXia.tmod",
+      "sha256": "52db6db0e5a450da1af6cbcfca3af11a3a098fdd27dc3ba79f094d572ff22331"
+    },
+    {
+      "path": "C:\\Users\\Shao\\Desktop\\Coding\\XianXiaMod\\.tml-test\\source369.log",
+      "sha256": "14f876f624df8537ebf660771eaaca2e4feb1ea584659c18bdd6be1310ebbae7"
+    },
+    {
+      "path": "C:\\Users\\Shao\\Desktop\\Coding\\XianXiaMod\\.tml-test\\gameplay369.log",
+      "sha256": "0fcd04c021a7ba3d42c1615a42eabca84b8e187b90d93ac2d8e377c690367771"
+    }
+  ],
+  "limitations": [
+    "Existing-field fixture sets native ownedProjectileCounts; no full engine recount",
+    "No full field or child spirit lifecycle; projectile behavior unchanged",
+    "No real client transport rendered UI or combat balance acceptance",
+    "No active skill healing or energy restoration added"
+  ]
+}

@@ -23,7 +23,10 @@ public class GreenwoodMedicineCauldron : global::XianXia.Common.Items.Cultivatio
         Item.shoot = ModContent.ProjectileType<global::XianXia.Content.Projectiles.MedicineCauldronField>();
         Item.shootSpeed = 0f;
     }
-    public override int GetSpiritCost(Player player) => global::XianXia.Common.Items.RefinedArtifact.IsAwakened(Item) ? 26 : 32;
+    public override int GetSpiritCost(Player player) => global::XianXia.Common.Items.RefinedArtifact.ActiveDaoRoute(Item) is var route
+        && route != global::XianXia.Common.Systems.DownedBossSystem.EndgameRoute.None
+        ? global::XianXia.Common.Systems.DaoArtifactRules.WeaponCost(Name, route)
+        : global::XianXia.Common.Items.RefinedArtifact.IsAwakened(Item) ? 26 : 32;
     public override void ModifyWeaponDamage(Player player, ref StatModifier damage)
     {
         if (global::XianXia.Common.Items.RefinedArtifact.IsAwakened(Item)) damage += 0.1f;

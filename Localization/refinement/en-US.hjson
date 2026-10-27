@@ -31,7 +31,7 @@ Mods: {
    SectCrossbowAwakened: "Crafted awakening: +10% weapon damage, pre-Dao base spirit cost 16. Still requires Nascent Soul and Plantera progression. Keeps the three-hit limit and terrain collision. Uses no vanilla ammo. No active skill; Dao transformation available at Dao Severing with a chosen route and defeated core."
    SectCrossbowDormant: "Dormant: retain an inscription at refinement 3, reach Nascent Soul and defeat Medicine King Echo. Spend 1 awakening seal and 24 stones near an artificing station for +10% damage and base spirit cost 16."
 
-   MedicineCauldronAwakened: "Crafted awakening: +10% weapon damage, base deployment cost 26. Still requires Nascent Soul and Plantera progression. Keeps the shared 8-second cooldown, same-array limit, spirit count and cadence. Does not heal or restore spiritual energy. No active skill or Dao transformation."
+   MedicineCauldronAwakened: "Crafted awakening: +10% weapon damage, pre-Dao base deployment cost 26. Still requires Nascent Soul and Plantera progression. Keeps the shared 8-second cooldown, same-array limit, spirit count and cadence. Does not heal or restore spiritual energy. No active skill; Dao transformation available at Dao Severing with a chosen route and defeated core."
    MedicineCauldronDormant: "Dormant: retain an inscription at refinement 3, reach Nascent Soul and defeat Medicine King Echo. Spend 1 awakening seal and 24 stones near an artificing station for +10% damage and base deployment cost 26."
 
    DecreeAwakened: "Crafted awakening: +10% weapon damage, pre-Dao base spirit cost 20. Beam timing is unchanged and sect heritage remains independent. No active skill; Dao transformation available at Dao Severing with a chosen route and defeated core."
