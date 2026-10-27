@@ -88,6 +88,7 @@ public class EndgameRouteUIState : UIState
     private void ConfirmSelection()
     {
         if (DaoArtifactRules.Normalize((int)selected) == DownedBossSystem.EndgameRoute.None || !ValidSelection() || DownedBossSystem.ChosenRoute != DownedBossSystem.EndgameRoute.None) return;
+        if (EndgameRouteTransactions.RequirementFailure(Main.LocalPlayer).Length != 0) { requirementRefreshTimer = 30; return; }
         EndgameRouteTransactions.Request(Main.LocalPlayer,slot,selected);
         ModContent.GetInstance<EndgameRouteUISystem>().Close();
     }
