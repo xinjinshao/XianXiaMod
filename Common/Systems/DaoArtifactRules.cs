@@ -55,6 +55,7 @@ public static class DaoArtifactRules
     public static int SkillCost(ArtifactSkill skill, DownedBossSystem.EndgameRoute route) => route == DownedBossSystem.EndgameRoute.None
         ? ArtifactSkillRules.Cost(skill)
         : skill == ArtifactSkill.WardGuard ? route == DownedBossSystem.EndgameRoute.AcceptStarAbyss ? 20 : route == DownedBossSystem.EndgameRoute.SeverHeaven ? 30 : 24
+        : skill == ArtifactSkill.WoodgrainRecall ? route == DownedBossSystem.EndgameRoute.AcceptStarAbyss ? 18 : route == DownedBossSystem.EndgameRoute.SeverHeaven ? 28 : 22
         : skill == ArtifactSkill.FlameFan ? route == DownedBossSystem.EndgameRoute.AcceptStarAbyss ? 20 : route == DownedBossSystem.EndgameRoute.SeverHeaven ? 30 : 24
         : skill == ArtifactSkill.ThunderVolley ? route == DownedBossSystem.EndgameRoute.AcceptStarAbyss ? 30 : route == DownedBossSystem.EndgameRoute.SeverHeaven ? 48 : 36
         : skill == ArtifactSkill.HammerVolley ? route == DownedBossSystem.EndgameRoute.AcceptStarAbyss ? 34 : route == DownedBossSystem.EndgameRoute.SeverHeaven ? 54 : 40
@@ -62,6 +63,7 @@ public static class DaoArtifactRules
         : skill == ArtifactSkill.MoonCrescent ? route == DownedBossSystem.EndgameRoute.AcceptStarAbyss ? 30 : route == DownedBossSystem.EndgameRoute.SeverHeaven ? 48 : 36
         : skill == ArtifactSkill.SwordBurst ? route == DownedBossSystem.EndgameRoute.AcceptStarAbyss ? 40 : route == DownedBossSystem.EndgameRoute.SeverHeaven ? 60 : 48
         : route == DownedBossSystem.EndgameRoute.AcceptStarAbyss ? 26 : 32;
+    public static float WoodgrainBurstMultiplier(DownedBossSystem.EndgameRoute route) => route == DownedBossSystem.EndgameRoute.None ? 1.25f : route == DownedBossSystem.EndgameRoute.SeverHeaven ? 2.25f : 1.75f;
     public static float FlameBurstMultiplier(DownedBossSystem.EndgameRoute route) => route == DownedBossSystem.EndgameRoute.None ? 1.5f : route == DownedBossSystem.EndgameRoute.SeverHeaven ? 2.5f : 2f;
     public static float MoonBurstMultiplier(DownedBossSystem.EndgameRoute route) => route == DownedBossSystem.EndgameRoute.None
         ? 1.5f : route == DownedBossSystem.EndgameRoute.SeverHeaven ? 2.5f : 2f;

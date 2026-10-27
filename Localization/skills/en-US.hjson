@@ -63,6 +63,9 @@ Mods: {
    }
   }
   Skills: {
+   Woodgrain: "Woodgrain Recall"
+   WoodgrainRequirement: "Hold the awakened Woodgrain Flying Sword: three 125% melee swords with returning flight, 16 base energy and shared 20-second cooldown."
+   WoodgrainDaoRequirement: "Matching Dao world: three 175% returning swords (225% for Sever). Rebuild costs 22 and heals up to 20; Sever costs 28; Star Abyss costs 18 and adds 8 pressure. Shared 20-second cooldown; player cost modifiers apply."
    Flame: "Flame Fan"
    FlameRequirement: "Hold an awakened Cinnabar Talisman Flame; three 150% magic flames, shared 20-second cooldown."
    FlameDaoRequirement: "Hold the transformed awakened Cinnabar Talisman Flame in a matching world: three 200% flames (250% for Sever); Rebuild heals up to 20, Star Abyss adds 8 pressure. Shared 20-second cooldown."

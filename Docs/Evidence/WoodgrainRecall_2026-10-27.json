@@ -1,0 +1,75 @@
+{
+  "round": 383,
+  "date": "2026-10-27",
+  "feature": "Woodgrain Recall active skill, identifier 9",
+  "passed": true,
+  "nativeChecks": 83273,
+  "addedChecks": 694,
+  "matrix": {
+    "authorityModes": 2,
+    "itemRoutes": 4,
+    "worldRoutes": 4,
+    "coreStates": 2,
+    "cases": 64
+  },
+  "baseSkill": {
+    "energy": 16,
+    "cooldownTicks": 1200,
+    "projectiles": 3,
+    "damageMultiplier": 1.25,
+    "speed": 12,
+    "fanStepRadians": 0.28
+  },
+  "dao": {
+    "rebuild": {
+      "energy": 22,
+      "damageMultiplier": 1.75,
+      "selfHealCap": 20
+    },
+    "sever": {
+      "energy": 28,
+      "damageMultiplier": 2.25
+    },
+    "starAbyss": {
+      "energy": 18,
+      "damageMultiplier": 1.75,
+      "pressure": 8
+    }
+  },
+  "verification": [
+    "64 native authority and world states: route cost, actual three melee projectiles, fan geometry, damage, shared cooldown, duplicate refusal, return steering and owner-death cancellation",
+    "Unawakened item, wrong weapon and nonfinite aim refused without spending",
+    "Networking 30515 includes packet dispatcher and mocked partial-spawn cleanup/rollback",
+    "Gameplay 7724 includes nine-way reversible panel navigation",
+    "Official build package dedicated-server load and all 40 source checks passed"
+  ],
+  "artifacts": [
+    {
+      "path": "C:\\Users\\Shao\\Desktop\\Coding\\XianXiaMod\\.tml-test\\summons-2d84fd8a755249e282c77fb6a91263e9\\save\\XianXia\\summon-audit.json",
+      "sha256": "25e8eaf3a18b56b4835fd7ace2b9c9739454a97b53094e4178ba2f766a016edc"
+    },
+    {
+      "path": "C:\\Users\\Shao\\Desktop\\Coding\\XianXiaMod\\.tml-test\\run-ddcb1020f82d4a789c6a444fb022e20a\\save\\Mods\\XianXia.tmod",
+      "sha256": "1c1d25b22953a6bdcbaece29189e19d939ecc1363af3fa2d695eff30318a24e6"
+    },
+    {
+      "path": "C:\\Users\\Shao\\Desktop\\Coding\\XianXiaMod\\.tml-test\\source383.log",
+      "sha256": "6ca2e00c290307291d647ba8380457d0ec362243f592099ae3ebdd9767c8cbd7"
+    },
+    {
+      "path": "C:\\Users\\Shao\\Desktop\\Coding\\XianXiaMod\\.tml-test\\network383.log",
+      "sha256": "72dc79662a9c4b5dad6411d37429a02329c958539d76f5c3398fea46d6a2571c"
+    },
+    {
+      "path": "C:\\Users\\Shao\\Desktop\\Coding\\XianXiaMod\\.tml-test\\gameplay383.log",
+      "sha256": "23d161aea97e03a0803191742090a66321c2b54886b70824823f993b5cf84c9f"
+    }
+  ],
+  "limitations": [
+    "Source suite passed before final audit-only steering assertion and added protocol regression; final native package, Networking and Gameplay passed afterward",
+    "Return steering invoked directly at the return threshold, not a full engine flight or actual combat test",
+    "Partial spawn failure uses mocked allocation; no real concurrent capacity race",
+    "No graphical button/alternate-use/physical-controller or real two-client acceptance",
+    "Reuses existing Woodgrain projectile art; damage and cost require combat balance testing"
+  ]
+}
