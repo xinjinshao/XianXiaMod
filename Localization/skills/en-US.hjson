@@ -63,6 +63,9 @@ Mods: {
    }
   }
   Skills: {
+   Flame: "Flame Fan"
+   FlameRequirement: "Hold an awakened Cinnabar Talisman Flame; three 150% magic flames, shared 20-second cooldown."
+   FlameDaoRequirement: "Hold the transformed awakened Cinnabar Talisman Flame in a matching world: three 200% flames (250% for Sever); Rebuild heals up to 20, Star Abyss adds 8 pressure. Shared 20-second cooldown."
    WardTooltip: Equip in a usable accessory slot to cast guard (default V, configurable): base cost 18 spiritual energy, 3-second duration, 20-second shared cooldown
    Capacity: Not enough projectile capacity; nothing spent
    Sword: Burst

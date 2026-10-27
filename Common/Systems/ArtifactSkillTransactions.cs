@@ -16,7 +16,7 @@ namespace XianXia.Common.Systems;
 public static class ArtifactSkillTransactions
 {
     public static ArtifactSkill? HeldSkill(Item item) => RefinedArtifact.SupportsAwakening(item) ? item.ModItem.Name switch
-    { "CloudpiercerFlyingSword" => ArtifactSkill.SwordBurst, "GreenwoodArrayPlate" => ArtifactSkill.ArrayPulse, "HeavenTabletWardSeal" => ArtifactSkill.WardGuard, "MoonboneDharmaSword" => ArtifactSkill.MoonCrescent, "FormlessSwordWheel" => ArtifactSkill.WheelFormation, "BlackFurnaceWarhammer" => ArtifactSkill.HammerVolley, "ThunderPatternSwordCase" => ArtifactSkill.ThunderVolley, _ => null } : null;
+    { "CloudpiercerFlyingSword" => ArtifactSkill.SwordBurst, "GreenwoodArrayPlate" => ArtifactSkill.ArrayPulse, "HeavenTabletWardSeal" => ArtifactSkill.WardGuard, "MoonboneDharmaSword" => ArtifactSkill.MoonCrescent, "FormlessSwordWheel" => ArtifactSkill.WheelFormation, "BlackFurnaceWarhammer" => ArtifactSkill.HammerVolley, "ThunderPatternSwordCase" => ArtifactSkill.ThunderVolley, "CinnabarTalismanFlameItem" => ArtifactSkill.FlameFan, _ => null } : null;
     public static bool CanUseAlternative(Player player, Item item) => RefinedArtifact.IsAwakened(item)
         && HeldSkill(item) is ArtifactSkill skill && player.GetModPlayer<XianXiaPlayer>().activeSkillCooldown == 0
         && (skill != ArtifactSkill.HammerVolley || HammerRealmAllowed(player))
@@ -108,7 +108,7 @@ public static class ArtifactSkillTransactions
         Reply(player, "Mods.XianXia.Skills.Success");
     }
     private static bool Friendly(Player owner, Player target) => owner == target || !owner.hostile || !target.hostile || (owner.team > 0 && owner.team == target.team);
-    private static bool IsBurst(ArtifactSkill skill) => skill is ArtifactSkill.SwordBurst or ArtifactSkill.MoonCrescent or ArtifactSkill.WheelFormation or ArtifactSkill.HammerVolley or ArtifactSkill.ThunderVolley;
+    private static bool IsBurst(ArtifactSkill skill) => skill is ArtifactSkill.SwordBurst or ArtifactSkill.MoonCrescent or ArtifactSkill.WheelFormation or ArtifactSkill.HammerVolley or ArtifactSkill.ThunderVolley or ArtifactSkill.FlameFan;
     private static Projectile FindArray(Player player)
     {
         int type = ModContent.ProjectileType<GreenwoodArrayField>();
@@ -125,12 +125,13 @@ public static class ArtifactSkillTransactions
         if (HeldSkill(item) == ArtifactSkill.ThunderVolley) return ThunderBurst(player,item,aim);
         Vector2 position = player.RotatedRelativePoint(player.MountedCenter), delta = aim - position;
         if (!Finite(position) || !Finite(delta) || !float.IsFinite(delta.LengthSquared())) return false;
+        bool flame = HeldSkill(item) == ArtifactSkill.FlameFan;
         bool moon = HeldSkill(item) == ArtifactSkill.MoonCrescent;
         bool wheel = HeldSkill(item) == ArtifactSkill.WheelFormation;
         bool hammer = HeldSkill(item) == ArtifactSkill.HammerVolley;
         Vector2 velocity = delta.SafeNormalize(Vector2.UnitX * player.direction) * (hammer ? 9f : 14f);
-        int damage = hammer ? (int)(player.GetWeaponDamage(item) * DaoArtifactRules.HammerBurstMultiplier(RefinedArtifact.ActiveDaoRoute(item))) : wheel ? (int)(player.GetWeaponDamage(item) * DaoArtifactRules.WheelBurstMultiplier(RefinedArtifact.ActiveDaoRoute(item))) : moon ? (int)(player.GetWeaponDamage(item) * DaoArtifactRules.MoonBurstMultiplier(RefinedArtifact.ActiveDaoRoute(item))) : player.GetWeaponDamage(item) * DaoArtifactRules.BurstMultiplier(RefinedArtifact.ActiveDaoRoute(item));
-        int type = hammer ? ModContent.ProjectileType<FurnaceHammerProjectile>() : wheel ? ModContent.ProjectileType<FormlessSwordWheelProjectile>() : moon ? ModContent.ProjectileType<MoonboneShardProjectile>() : ModContent.ProjectileType<CloudpiercerSwordProjectile>();
+        int damage = flame ? Math.Max(1,(int)(player.GetWeaponDamage(item) * DaoArtifactRules.FlameBurstMultiplier(RefinedArtifact.ActiveDaoRoute(item)))) : hammer ? (int)(player.GetWeaponDamage(item) * DaoArtifactRules.HammerBurstMultiplier(RefinedArtifact.ActiveDaoRoute(item))) : wheel ? (int)(player.GetWeaponDamage(item) * DaoArtifactRules.WheelBurstMultiplier(RefinedArtifact.ActiveDaoRoute(item))) : moon ? (int)(player.GetWeaponDamage(item) * DaoArtifactRules.MoonBurstMultiplier(RefinedArtifact.ActiveDaoRoute(item))) : player.GetWeaponDamage(item) * DaoArtifactRules.BurstMultiplier(RefinedArtifact.ActiveDaoRoute(item));
+        int type = flame ? ModContent.ProjectileType<CinnabarTalismanFlame>() : hammer ? ModContent.ProjectileType<FurnaceHammerProjectile>() : wheel ? ModContent.ProjectileType<FormlessSwordWheelProjectile>() : moon ? ModContent.ProjectileType<MoonboneShardProjectile>() : ModContent.ProjectileType<CloudpiercerSwordProjectile>();
         var created = new List<int>();
         var source = new EntitySource_ItemUse_WithAmmo(player, item, 0);
         int halfCount = wheel ? 2 : 1;

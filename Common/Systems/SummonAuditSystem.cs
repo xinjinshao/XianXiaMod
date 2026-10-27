@@ -1039,6 +1039,7 @@ public partial class SummonAuditSystem : ModSystem
             AuditThunderCaseAwakening(Check);
             AuditThunderHitProc(Check);
             AuditThunderSkill(Check);
+            AuditFlameSkill(Check);
             AuditWardDao(Check);
             AuditInscriptionNavigation(Check);
             AuditRouteNavigation(Check);

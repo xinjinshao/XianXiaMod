@@ -79,8 +79,8 @@ public partial class SummonAuditSystem
                     foreach (var entity in Main.projectile.Where(p => p.active && !priorShots.Contains(p))) entity.active = false;
                     var tips = new List<TooltipLine>(); weapon.ModifyTooltips(tips); growth.ModifyTooltips(item,tips);
                     check(tips.Count == 4 && tips.All(tip => !tip.Text.Contains("Mods.XianXia.") && !tip.Text.Contains("{0}"))
-                        && ArtifactSkillTransactions.HeldSkill(item) == null && !weapon.AltFunctionUse(actor),
-                        "native cinnabar Dao tooltip resolves recorded route without inventing an active skill");
+                        && ArtifactSkillTransactions.HeldSkill(item) == ArtifactSkill.FlameFan && weapon.AltFunctionUse(actor),
+                        "native cinnabar Dao tooltip resolves recorded route with the supported Flame Fan skill");
                 }
                 World(route,true); actor.selectedItem = 1; int firingCost = route == 3 ? 9 : 12; state.spiritualEnergy = firingCost; state.activeSkillCooldown = 1200;
                 int hitDamage = actor.GetWeaponDamage(item);

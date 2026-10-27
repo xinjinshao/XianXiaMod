@@ -22,7 +22,7 @@ public class ArtifactInputPlayer : ModPlayer
             if (next || previous) {
                 SelectedPanelSkill = SelectedPanelSkill is ArtifactSkill selected
                     ? ArtifactSkillRules.StepPanelSkill(selected,previous)
-                    : ArtifactSkillTransactions.HeldSkill(Player.HeldItem) ?? (previous ? ArtifactSkill.ThunderVolley : ArtifactSkill.SwordBurst);
+                    : ArtifactSkillTransactions.HeldSkill(Player.HeldItem) ?? (previous ? ArtifactSkill.FlameFan : ArtifactSkill.SwordBurst);
                 return;
             }
             if (ArtifactKeybindSystem.PanelCastKey?.JustPressed == true && SelectedPanelSkill is ArtifactSkill panelSkill) {

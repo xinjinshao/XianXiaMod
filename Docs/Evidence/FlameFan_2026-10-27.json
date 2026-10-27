@@ -1,0 +1,77 @@
+{
+  "round": 375,
+  "date": "2026-10-27",
+  "feature": "Cinnabar Flame Fan active skill, identifier 8",
+  "passed": true,
+  "nativeChecks": 82101,
+  "addedChecks": 630,
+  "matrix": {
+    "authorityModes": 2,
+    "itemRoutes": 4,
+    "worldRoutes": 4,
+    "coreStates": 2,
+    "casts": 64
+  },
+  "baseSkill": {
+    "energy": 18,
+    "cooldown": 1200,
+    "projectiles": 3,
+    "damageMultiplier": 1.5,
+    "speed": 14,
+    "fanStepRadians": 0.18
+  },
+  "Dao": {
+    "rebuild": {
+      "energy": 24,
+      "damageMultiplier": 2,
+      "selfHealCap": 20
+    },
+    "sever": {
+      "energy": 30,
+      "damageMultiplier": 2.5
+    },
+    "starAbyss": {
+      "energy": 20,
+      "damageMultiplier": 2,
+      "pressure": 8
+    }
+  },
+  "verification": [
+    "64 native registered SP/server casts validate actual flame count damage class lifetime penetration collision fan geometry cost cooldown route heal/pressure and inactive-world fallback",
+    "Insufficient energy no projectile/cooldown/spend; repeat blocked by shared cooldown; owner death immediately stops damage then AI sticky cancellation",
+    "Unawakened wrong held item and nonfinite aim rejected",
+    "Expanded native current-weapon tooltip checks include Flame Fan route and player cost modifiers",
+    "Networking 30485 including actual packet dispatcher Flame Fan and simulated partial spawn failure cleanup/rollback",
+    "Gameplay 7722 including eight-way reversible panel navigation",
+    "Official build package dedicated server load and all 40 source checks"
+  ],
+  "artifacts": [
+    {
+      "path": "C:\\Users\\Shao\\Desktop\\Coding\\XianXiaMod\\.tml-test\\summons-b6aefeda180c454697556501120a24be\\save\\XianXia\\summon-audit.json",
+      "sha256": "cc6814d1c992380c12ef8e9381fe9880a99ab55af8eb12587268649c77270087"
+    },
+    {
+      "path": "C:\\Users\\Shao\\Desktop\\Coding\\XianXiaMod\\.tml-test\\run-f66b3fda18d945e891b383f000ffe88b\\save\\Mods\\XianXia.tmod",
+      "sha256": "30651d51ed46c77aaaca374311d1491eea0428a6ca963625b436bc5bb64742fe"
+    },
+    {
+      "path": "C:\\Users\\Shao\\Desktop\\Coding\\XianXiaMod\\.tml-test\\source375.log",
+      "sha256": "2535bd787ffb9367be6b8924d7a4c0ae8f5fbd6d63c346528641fbe3e48633e8"
+    },
+    {
+      "path": "C:\\Users\\Shao\\Desktop\\Coding\\XianXiaMod\\.tml-test\\network375.log",
+      "sha256": "9a83def5fd3b6e8166dcfe3d1abaee865126d2334d20ac043e35e5e08a205e01"
+    },
+    {
+      "path": "C:\\Users\\Shao\\Desktop\\Coding\\XianXiaMod\\.tml-test\\gameplay375.log",
+      "sha256": "6e15aafd79113b05b9bd03025ec3eb2a486827e09c210fdadfabf29b8d336d3c"
+    }
+  ],
+  "limitations": [
+    "Native casts and cancellation hooks invoked directly; not complete engine frames or combat burn statistics",
+    "Partial spawn failure uses source harness mocked allocation; no claim of actual concurrent capacity race",
+    "Skill panel/right-click/physical controller and real two-client transport not accepted",
+    "Reuses existing Cinnabar projectile visuals; no new independent animation or balance acceptance",
+    "Existing skill identifiers 1..7 and packet layout retained; new identifier 8 requires updated build on participating peers"
+  ]
+}

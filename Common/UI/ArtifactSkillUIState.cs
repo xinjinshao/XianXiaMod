@@ -29,6 +29,7 @@ public class ArtifactSkillUIState : UIState
         AddButton("Wheel",92,ArtifactSkill.WheelFormation,64);
         AddButton("Hammer",184,ArtifactSkill.HammerVolley,64);
         AddButton("Thunder",0,ArtifactSkill.ThunderVolley,100);
+        AddButton("Flame",92,ArtifactSkill.FlameFan,100);
     }
     private void AddButton(string key,float left,ArtifactSkill skill,float top=28)
     {
@@ -84,6 +85,7 @@ public class ArtifactSkillUIState : UIState
             ArtifactSkill.MoonCrescent => Text(route == DownedBossSystem.EndgameRoute.None ? "MoonRequirement" : "MoonDaoRequirement"),
             ArtifactSkill.WheelFormation => Text(route == DownedBossSystem.EndgameRoute.None ? "WheelRequirement" : "WheelDaoRequirement"),
             ArtifactSkill.HammerVolley => Text(route == DownedBossSystem.EndgameRoute.None ? "HammerRequirement" : "HammerDaoRequirement"),
+            ArtifactSkill.FlameFan => Text(route == DownedBossSystem.EndgameRoute.None ? "FlameRequirement" : "FlameDaoRequirement"),
             ArtifactSkill.ThunderVolley => Text(route == DownedBossSystem.EndgameRoute.None ? "ThunderRequirement" : "ThunderDaoRequirement"),
             _ => Text(route == DownedBossSystem.EndgameRoute.None ? "WardRequirement" : "WardDaoRequirement")
         };
