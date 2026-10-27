@@ -1,0 +1,35 @@
+{
+  "round": 382,
+  "date": "2026-10-27",
+  "feature": "Native herb seed use growth harvest pickup and replant cycle",
+  "passed": true,
+  "nativeChecks": 82579,
+  "addedChecks": 9,
+  "verification": [
+    "Actual Player.ItemCheck places seedling and consumes held seeds 2 to 1 without manual stack decrement",
+    "Wet tile unsupported stone anchor and existing crop refuse use without seed loss",
+    "Actual RandomUpdate advances planted crop to mature frame 36",
+    "WorldGen.KillTile creates one GreenwoodRoot and one to three seeds; Item.FindOwner and Player.GrabItems collect both",
+    "Actual ItemCheck uses collected inventory to replant for one seed",
+    "Complete original 7x7 Tile snapshots and world item pool restored; other modified player/input state restored",
+    "Official build package dedicated server load; no source/Gameplay repeat for audit-only change"
+  ],
+  "artifacts": [
+    {
+      "path": "C:\\Users\\Shao\\Desktop\\Coding\\XianXiaMod\\.tml-test\\summons-2fd21cee5fe84df2aebaa4efecedad1f\\save\\XianXia\\summon-audit.json",
+      "sha256": "f753146e46e5caf422086d114e0d0020bf1298b26f137625d2d72d695da5a22f"
+    },
+    {
+      "path": "C:\\Users\\Shao\\Desktop\\Coding\\XianXiaMod\\.tml-test\\run-423eff8be4814912bf631b0e69e6ce32\\save\\Mods\\XianXia.tmod",
+      "sha256": "d84ca65fddc49670401edf7a09c0eacb4a6ce1550576831f21ad8da24c887917"
+    }
+  ],
+  "headlessBoundary": "Scoped MonoMod RuntimeDetour suppresses only ItemCheck_PlayInstruments, which dereferences unavailable audio state in dedicated server. Detour disposed automatically; native tile placement consumption drops ownership and pickup are not replaced.",
+  "referenceConsulted": "https://github.com/tModLoader/tModLoader/blob/1.4.4/patches/tModLoader/Terraria/Player.cs.patch",
+  "limitations": [
+    "Single-player native use path in isolated headless fixture, not a graphical client or actual mouse inputs",
+    "Growth RandomUpdate invoked manually to maturity, no complete world/player update loop",
+    "Pickup delay cleared; random generator advances; audio branch not accepted",
+    "No real multiplayer crop transport economy or timing balance acceptance"
+  ]
+}
