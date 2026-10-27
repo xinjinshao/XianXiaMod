@@ -50,7 +50,7 @@ public partial class SummonAuditSystem
                 actor.GetModPlayer<InscriptionPlayer>().Initialize(); Submit(actor,3,true);
                 check(actor.inventory[0].stack == 1 && actor.inventory[2].IsAir,"native repeated talisman crossbow awakening spends nothing");
                 foreach (Item copy in new[] { target.Clone(),ItemIO.Load(ItemIO.Save(target)) })
-                    check(copy.type == target.type && copy.prefix == prefix && RefinedArtifact.IsAwakened(copy) && RefinedArtifact.GetLevel(copy) == 3 && InscribedEquipment.GetKind(copy) == InscriptionKind.Greenwood && !RefinedArtifact.SupportsDaoTransformation(copy),"native talisman crossbow full save and clone preserve awakening without automatically granting a Dao route");
+                    check(copy.type == target.type && copy.prefix == prefix && RefinedArtifact.IsAwakened(copy) && RefinedArtifact.GetLevel(copy) == 3 && InscribedEquipment.GetKind(copy) == InscriptionKind.Greenwood && RefinedArtifact.SupportsDaoTransformation(copy) && RefinedArtifact.GetDaoRoute(copy) == DownedBossSystem.EndgameRoute.None,"native talisman crossbow full save and clone preserve awakening without automatically granting a Dao route");
                 using var bytes = new MemoryStream(); target.GetGlobalItem<RefinedArtifact>().NetSend(target,new BinaryWriter(bytes));
                 check(bytes.ToArray().AsSpan().SequenceEqual(new byte[] { 3,1,0 }),"native talisman crossbow uses unchanged three-byte growth payload with no Dao route");
                 actor.selectedItem = 1;
@@ -96,8 +96,8 @@ public partial class SummonAuditSystem
                 check(Math.Abs(damage.ApplyTo(100) - (112 + (awakened ? 10 : 0))) < .001f,
                     "native talisman crossbow refinement and awakening damage hooks remain additive");
                 check(item.DamageType == DamageClass.Ranged && item.useAmmo == AmmoID.Arrow && item.mana == 0
-                    && !weapon.AltFunctionUse(actor) && ArtifactSkillTransactions.HeldSkill(item) == null && !RefinedArtifact.SupportsDaoTransformation(item),
-                    "native talisman crossbow preserves native ammo identity with no undefined skill or Dao route");
+                    && !weapon.AltFunctionUse(actor) && ArtifactSkillTransactions.HeldSkill(item) == null && RefinedArtifact.SupportsDaoTransformation(item),
+                    "native talisman crossbow preserves native ammo identity with Dao eligibility and no undefined skill");
                 var lines = new List<TooltipLine>(); growth.ModifyTooltips(item,lines);
                 check(lines.Count == 2 && lines.TrueForAll(line => !line.Text.Contains("Mods.XianXia.") && !line.Text.Contains("{0}")),
                     "native talisman crossbow crafted awakening tooltips resolve for each state");

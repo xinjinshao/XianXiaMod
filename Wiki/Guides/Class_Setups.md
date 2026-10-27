@@ -29,7 +29,7 @@
 | 职业 | 装备选择 | 获得入口与定位 |
 | --- | --- | --- |
 | 近战 | [破云飞剑](../../Content/Items/Weapons/CloudpiercerFlyingSword.cs)、[玄炉重锤](../Content/Equipment/Entries/Black_Furnace_Warhammer.md) | 器胚炉；重锤普通使用要求凝气境，消耗玄炉材料制作，飞行锤与冲击提供不同攻击节奏。 |
-| 远程 | [符弩与朱砂符箭](../Content/Equipment/Entries/Talisman_Crossbow.md) | 按条目配方制作；原版箭矢路线，朱砂符箭有燃烧及有限穿透；符弩后续材料觉醒额外+10%伤害、+10%使用速度，每次仍耗箭。 |
+| 远程 | [符弩与朱砂符箭](../Content/Equipment/Entries/Talisman_Crossbow.md) | 按条目配方制作；原版箭矢路线，朱砂符箭有燃烧及有限穿透；符弩后续材料觉醒额外+10%伤害、+10%使用速度，每次仍耗箭；后期道化名义基础伤害160，须路线匹配且核心已击败，仍走原版耗箭，无灵气/魔力费用。 |
 | 魔法 | 朱砂符火、[青木阵盘](../../Content/Items/Weapons/GreenwoodArrayPlate.cs) | 阵盘在器胚炉用器胚碎片2、青木根6、下品灵石12制作；兼顾区域伤害与恢复。 |
 | 召唤 | [炉灰器灵契](../../Content/Items/HandGenerated/SpiritContracts.cs) | 器胚炉：旧炉火种2、炉渣铁8、下品灵石12；召唤12魔力，占1仆从位；装备加召唤伤害。 |
 

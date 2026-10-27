@@ -1,0 +1,45 @@
+{
+  "round": 370,
+  "date": "2026-10-27",
+  "weapon": "TalismanCrossbow",
+  "passed": true,
+  "nativeChecks": 79593,
+  "addedChecks": 1015,
+  "nominalDamage": 160,
+  "resources": "Native arrows on all routes, no spiritual energy or mana cost",
+  "registeredCoverage": {
+    "refinableWeapons": 19,
+    "allSupportAwakening": true,
+    "allSupportDao": true
+  },
+  "verification": [
+    "Native registry enumerates every registered refinable item and asserts count 19 plus awakening and Dao support",
+    "SP/server three-route material transactions full save clone duplicate refusal shared forge requirements/confirmation",
+    "48 world states: Dao damage hooks and recorded route retention, ranged arrow identity zero mana and 1.1 awakened use speed",
+    "For each state temporarily select local single-player ammo context: actual Player.PickAmmo consumes wood and cinnabar arrows 5 to 4, selects ammo projectile, returns damage at least current weapon damage, leaves spirit energy zero and skill cooldown unchanged; missing ammo returns false",
+    "Official build package dedicated server load, source 40 checks, Gameplay 7720 assertions"
+  ],
+  "artifacts": [
+    {
+      "path": "C:\\Users\\Shao\\Desktop\\Coding\\XianXiaMod\\.tml-test\\summons-bd1b7082f7ea4b4094a80e2d192319b9\\save\\XianXia\\summon-audit.json",
+      "sha256": "fb2c9914ea52d86cc07129bd12e9f574bab09a7f2c6361206887bc0e13fbda4c"
+    },
+    {
+      "path": "C:\\Users\\Shao\\Desktop\\Coding\\XianXiaMod\\.tml-test\\run-6f637e0972b34eee88592e127bf2a796\\save\\Mods\\XianXia.tmod",
+      "sha256": "df7033f0602c149c175bdf5644f945bb7e516e57b76c6340bb0b5518bdf3947e"
+    },
+    {
+      "path": "C:\\Users\\Shao\\Desktop\\Coding\\XianXiaMod\\.tml-test\\source370.log",
+      "sha256": "f36660abfad4d418ab871256dde47c33c80252ba26f1d12b8609796852fd5fb4"
+    },
+    {
+      "path": "C:\\Users\\Shao\\Desktop\\Coding\\XianXiaMod\\.tml-test\\gameplay370.log",
+      "sha256": "0fcd04c021a7ba3d42c1615a42eabca84b8e187b90d93ac2d8e377c690367771"
+    }
+  ],
+  "limitations": [
+    "Native PickAmmo invoked directly; does not prove actual player shot projectile creation or full player frames",
+    "Ammo checks use local SP context even after server forging fixture; no real transport",
+    "Seven active skills only; complete UI economy balance campaign and real client acceptance still outstanding"
+  ]
+}

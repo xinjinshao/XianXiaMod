@@ -12,6 +12,7 @@ public static class DaoArtifactRules
         && previousRoute == 0 && stage == CultivationStage.DaoSevering && Normalize(worldRoute) != DownedBossSystem.EndgameRoute.None && defeatedCore;
     public static float DamageScale(string name) => name switch {
         "SectMechanismCrossbow" => 220f / 110f,
+        "TalismanCrossbow" => 160f / 32f,
         "GreenwoodMedicineCauldron" => 180f / 82f,
         "ThunderTalismanArrayPlate" => 120f / 46f,
         "HeavenLawArbalest" => 260f / 170f,

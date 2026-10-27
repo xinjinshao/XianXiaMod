@@ -958,6 +958,7 @@ public partial class SummonAuditSystem : ModSystem
             AuditCalamityCaseDao(Check);
             AuditThunderArrayDao(Check);
             AuditMedicineCauldronDao(Check);
+            AuditTalismanCrossbowDao(Check);
             AuditHeavenLawDao(Check);
             AuditSectDao(Check);
             AuditPillBuffs(Check);
