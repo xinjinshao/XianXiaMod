@@ -44,6 +44,27 @@ class SummonTextTests(unittest.TestCase):
             stages = re.findall(r'CultivationStage\.(\w+)', source)
             self.assertEqual(stages, [required], matching[0].name)
 
+    def test_summons_have_distinct_names_and_ledger_points_to_actual_items(self):
+        output = self.capture()
+        files = list((ROOT / "Content/Items/BossSummons").glob("*.cs"))
+        guide_keys = {"GardenWarden":"GardenWarden", "BlackFurnace":"BlackFurnaceIronGolem", "TribulationCloud":"TribulationCloudAvatar", "ThunderJiao":"ThunderMarshJiao", "StarWomb":"AbyssalStarWomb", "SwordSoul":"FormlessSwordSoul", "MedicineKing":"GreenwoodMedicineKingEcho", "HeavenTablet":"HeavenTabletGuardian", "BrokenInspector":"BrokenHeavenInspector", "MoonboneImmortal":"MoonboneImmortal", "OldHeavenCore":"OldHeavenDaoCore"}
+        for culture in ("zh-Hans", "en-US"):
+            generated = output[f"{culture}.hjson/generated"]
+            names = []
+            for path in files:
+                match = re.search(r'\b' + re.escape(path.stem) + r':\s*\{\s*DisplayName: ("(?:\\.|[^"\\])*")', generated)
+                if match:
+                    names.append(json.loads(match.group(1)))
+            self.assertEqual(len(names), 11)
+            self.assertEqual(len(set(names)), 11)
+            guide = (ROOT / "Localization/guides" / f"{culture}.hjson").read_text(encoding="utf-8")
+            for key, boss in guide_keys.items():
+                match = re.search(r'^\s*' + key + r':.*\[i:XianXia/(\w+)\]', guide, re.MULTILINE)
+                self.assertIsNotNone(match, key)
+                summon = ROOT / "Content/Items/BossSummons" / (match.group(1) + ".cs")
+                self.assertTrue(summon.is_file(), key)
+                self.assertIn("NPCs.Bosses." + boss + ">", summon.read_text(encoding="utf-8"), key)
+
     def test_heaven_tablet_name_is_consistent_in_generated_labels(self):
         output = self.capture()
         self.assertNotIn("天碑守尽", output["zh-Hans.hjson/generated"])

@@ -9,21 +9,21 @@ Mods: {
 					AwakenQi: The ledger points to shallow spirit veins: craft or use a Qi-Drawing Talisman to awaken spiritual energy.
 					SpiritVeinWyrm: The first debt is under the earth: craft Spirit Vein Incense and defeat the Spirit Vein Wyrm.
 					Foundation: Your meridians are open, but your base is loose: refine advancement pills and reach Foundation.
-					GardenWarden: The pages smell of old herbs: explore the Greenwood Herb Garden and challenge the Garden Warden.
-					BlackFurnace: The ink turns hot near ore: enter the Black Furnace Lode and defeat the Black Furnace Iron Golem.
-					TribulationCloud: Storm script gathers above you: use Thunder Calling Jade in the Thunder Marsh Clouds and defeat the Tribulation Cloud Avatar.
-					ThunderJiao: The same jade now calls deeper thunder: return to the Thunder Marsh Clouds and challenge the Thunder Marsh Jiao.
-					StarWomb: A dark star stains the margin: use the Star Abyss Membrane in the Star Abyss Rift at night and defeat the Abyssal Star Womb.
+					GardenWarden: Use [i:XianXia/SummonGardenBrokenKey] in the Greenwood Herb Garden to challenge the Garden Warden.
+					BlackFurnace: Use [i:XianXia/SummonOldFurnaceEmber] in the Sunken Furnace Vein to challenge the Black Furnace Iron Golem.
+					TribulationCloud: Use [i:XianXia/SummonThunderCallingJade] in Thunder Marsh Clouds to challenge the Tribulation Cloud Avatar.
+					ThunderJiao: Use [i:XianXia/SummonThunderCallingJadeThunderMarshJiao] in Thunder Marsh Clouds to challenge the Thunder Marsh Jiao.
+					StarWomb: At night, use [i:XianXia/SummonStarAbyssMembrane] in the Star Abyss Rift to challenge the Abyssal Star Womb.
 					GoldenCore: The ledger circles a star eclipse formula: gather the required core material and form your Golden Core.
-					SwordSoul: The trial seal is awake: use the Sect Trial Token and defeat the Formless Sword Soul.
-					MedicineKing: Old herb smoke curls between the lines: return to the Greenwood Herb Garden and answer the Medicine King Echo.
+					SwordSoul: Use [i:XianXia/SummonSectTrialToken] in Ten Thousand Sects Ruins to challenge the Formless Sword Soul.
+					MedicineKing: Use [i:XianXia/SummonSectTrialTokenGreenwoodMedicineKingEcho] in the Greenwood Herb Garden to challenge the Medicine King Echo.
 					NascentSoul: A torn heavenly decree answers your name: use the Old Heaven Dao Scroll to condense a Nascent Soul.
-					HeavenTablet: Fallen palace dust stains the page: challenge the Heaven Tablet Guardian.
-					BrokenInspector: The tablet has named an inspector: stay within the Fallen Heaven Palace and face the Broken Heaven Inspector.
+					HeavenTablet: Use [i:XianXia/SummonHeavenTabletRubbing] in the Fallen Heaven Palace to challenge the Heaven Tablet Guardian.
+					BrokenInspector: Use [i:XianXia/SummonHeavenTabletRubbingBrokenHeavenInspector] in the Fallen Heaven Palace to challenge the Broken Heaven Inspector.
 					TribulationStage: Gather Moonbone in the Moonbone Abyss, then hold and use it to reach Tribulation.
-					MoonboneImmortal: Moonbone script opens only after dusk: use the Moonbone Ritual Talisman in the Moonbone Abyss at night.
+					MoonboneImmortal: At night, use [i:XianXia/SummonMoonboneRitualTalisman] in the Moonbone Abyss to challenge the Moonbone Immortal.
 					DaoSevering: "Sect reputation: {0}. The Old Heaven Dao Core has fallen. Use Dao Severing Dust, then survive your final breakthrough tribulation."
-					OldHeavenCore: The final line points beyond the moonbone seal: invoke the Old Heaven Dao Core in the Moonbone Abyss at night.
+					OldHeavenCore: At night, use [i:XianXia/SummonMoonboneRitualTalismanOldHeavenDaoCore] in the Moonbone Abyss to challenge the Old Heaven Dao Core.
 					Endgame: "Sect reputation: {0}. The core has fallen and your final tribulation is complete. Your cultivation path has reached Dao Severing."
 					CommissionHerbReady: "Commission available: the Herb Sect Apprentice is ready to settle the garden account."
 					CommissionFurnaceReady: "Commission available: the Wandering Artificer is waiting for the furnace materials account."

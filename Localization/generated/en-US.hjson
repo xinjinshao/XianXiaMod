@@ -134,47 +134,47 @@ Mods: {
 				Tooltip: "A crystal formed during a star eclipse. Use to attempt the breakthrough to Golden Core stage."
 			}
 			SummonGardenBrokenKey: {
-				DisplayName: "Garden Broken Key"
+				DisplayName: "Garden Warden Summoning Seal"
 				Tooltip: "Summons Garden Warden. Requires at least Qi Awakening."
 			}
 			SummonHeavenTabletRubbing: {
-				DisplayName: "Heaven Tablet Rubbing"
+				DisplayName: "Heaven Tablet Guardian Summoning Seal"
 				Tooltip: "Summons Heaven Tablet Guardian. Requires at least Nascent Soul."
 			}
 			SummonHeavenTabletRubbingBrokenHeavenInspector: {
-				DisplayName: "Heaven Tablet Rubbing"
+				DisplayName: "Broken Heaven Inspector Summoning Seal"
 				Tooltip: "Summons Broken Heaven Inspector. Requires at least Nascent Soul."
 			}
 			SummonMoonboneRitualTalisman: {
-				DisplayName: "Moonbone Ritual Talisman"
+				DisplayName: "Moonbone Immortal Summoning Seal"
 				Tooltip: "Summons Moonbone Immortal. Requires at least Tribulation."
 			}
 			SummonMoonboneRitualTalismanOldHeavenDaoCore: {
-				DisplayName: "Moonbone Ritual Talisman"
+				DisplayName: "Old Heaven Dao Core Summoning Seal"
 				Tooltip: "Summons Old Heaven Dao Core. Requires at least Tribulation."
 			}
 			SummonOldFurnaceEmber: {
-				DisplayName: "Old Furnace Ember"
+				DisplayName: "Black Furnace Iron Golem Summoning Seal"
 				Tooltip: "Summons Black Furnace Iron Golem. Requires at least Qi Awakening."
 			}
 			SummonSectTrialToken: {
-				DisplayName: "Sect Trial Token"
+				DisplayName: "Formless Sword Soul Summoning Seal"
 				Tooltip: "Summons Formless Sword Soul. Requires at least Golden Core."
 			}
 			SummonSectTrialTokenGreenwoodMedicineKingEcho: {
-				DisplayName: "Sect Trial Token"
+				DisplayName: "Greenwood Medicine King Echo Summoning Seal"
 				Tooltip: "Summons Greenwood Medicine King Echo. Requires at least Golden Core."
 			}
 			SummonStarAbyssMembrane: {
-				DisplayName: "Star Abyss Membrane"
+				DisplayName: "Abyssal Star Womb Summoning Seal"
 				Tooltip: "Summons Abyssal Star Womb. Requires at least Foundation."
 			}
 			SummonThunderCallingJade: {
-				DisplayName: "Thunder Calling Jade"
+				DisplayName: "Tribulation Cloud Avatar Summoning Seal"
 				Tooltip: "Summons Tribulation Cloud Avatar. Requires at least Qi Condensation."
 			}
 			SummonThunderCallingJadeThunderMarshJiao: {
-				DisplayName: "Thunder Calling Jade"
+				DisplayName: "Thunder Marsh Jiao Summoning Seal"
 				Tooltip: "Summons Thunder Marsh Jiao. Requires at least Foundation."
 			}
 			ThunderCallingJade: {

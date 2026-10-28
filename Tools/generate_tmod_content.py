@@ -2398,11 +2398,11 @@ def generate_localization() -> None:
             class_name = f"{class_name}{pascal(boss_id)}"
         required_stage = BOSS_STAGE_REQUIREMENTS[boss_id]
         item_zh[class_name] = {
-            "DisplayName": f"{ZH_NAMES.get(summon, class_name)}",
+            "DisplayName": f"{ZH_NAMES.get(boss_id, pascal(boss_id))}召唤符",
             "Tooltip": f"召唤 {ZH_NAMES.get(boss_id, pascal(boss_id))}。需要至少{realm_zh[required_stage]}境界。",
         }
         item_en[class_name] = {
-            "DisplayName": f"{EN_NAMES.get(summon, class_name)}",
+            "DisplayName": f"{BOSS_DATA[boss_id][1]} Summoning Seal",
             "Tooltip": f"Summons {EN_NAMES.get(boss_id, pascal(boss_id))}. Requires at least {realm_en[required_stage]}.",
         }
 
