@@ -47,7 +47,7 @@ Mods: {
 			}
 			GardenBrokenKey: {
 				DisplayName: "守园残钥"
-				Tooltip: "药园中寻得的断裂钥匙。与灵石合成可铸造Boss召唤物。"
+				Tooltip: "工作台用4青木根和3下品灵石制作；与灵石合成守园人召唤符。"
 			}
 			GreenwoodArrayPlate: {
 				DisplayName: "青木阵盘"
@@ -63,7 +63,7 @@ Mods: {
 			}
 			HeavenTabletRubbing: {
 				DisplayName: "天碑拓片"
-				Tooltip: "坠天碑文的拓印。与灵石合成可铸造Boss召唤物。"
+				Tooltip: "工作台用4天道碎片和3下品灵石制作，也可从坠天钓鱼匣取得；与灵石合成召唤符。"
 			}
 			LightningWardJade: {
 				DisplayName: "避雷玉佩"
@@ -79,7 +79,7 @@ Mods: {
 			}
 			MoonboneRitualTalisman: {
 				DisplayName: "月骨祭符"
-				Tooltip: "月骨仪式所用的符箓。与灵石合成可铸造Boss召唤物。"
+				Tooltip: "工作台用4月骸和3下品灵石制作；与灵石合成月骸仙君或旧天道核心召唤符。"
 			}
 			NascentSoulJadeBox: {
 				DisplayName: "元婴玉匣"
@@ -87,7 +87,7 @@ Mods: {
 			}
 			OldFurnaceEmber: {
 				DisplayName: "旧炉火种"
-				Tooltip: "古炉中未熄的火种。与灵石合成可铸造Boss召唤物。"
+				Tooltip: "工作台用4炉渣铁和3下品灵石制作；与灵石合成玄炉铁傀召唤符。"
 			}
 			OldHeavenDaoScroll: {
 				DisplayName: "旧天道残卷"
@@ -123,7 +123,7 @@ Mods: {
 			}
 			StarAbyssMembrane: {
 				DisplayName: "星渊胎膜"
-				Tooltip: "星渊生物褪下的膜。与灵石合成可铸造Boss召唤物。"
+				Tooltip: "工作台用4星蚀晶和3下品灵石制作，也可从星渊钓鱼匣取得；与灵石合成召唤符。"
 			}
 			StarEclipseArbalest: {
 				DisplayName: "星蚀弩机"
@@ -179,7 +179,7 @@ Mods: {
 			}
 			ThunderCallingJade: {
 				DisplayName: "引雷玉"
-				Tooltip: "从云中召唤雷电的玉石。与灵石合成可铸造Boss召唤物。"
+				Tooltip: "工作台用8云块、3灵胶和3下品灵石制作；与灵石合成劫云或雷泽蛟召唤符。"
 			}
 			ThunderPatternSwordCase: {
 				DisplayName: "雷纹剑匣"

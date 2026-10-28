@@ -47,7 +47,7 @@ Mods: {
 			}
 			GardenBrokenKey: {
 				DisplayName: "Garden Broken Key"
-				Tooltip: "A broken key found in the herb garden. Combine with spirit stones to forge a boss summoning item."
+				Tooltip: "Craft at a Work Bench with 4 Greenwood Roots and 3 Low-Grade Spirit Stones; combine with spirit stones for the Garden Warden summon."
 			}
 			GreenwoodArrayPlate: {
 				DisplayName: "Greenwood Array Plate"
@@ -63,7 +63,7 @@ Mods: {
 			}
 			HeavenTabletRubbing: {
 				DisplayName: "Heaven Tablet Rubbing"
-				Tooltip: "An ink rubbing of a fallen heaven tablet. Combine with spirit stones to forge a boss summoning item."
+				Tooltip: "Craft at a Work Bench with 4 Heaven Dao Fragments and 3 Low-Grade Spirit Stones, or open a Fallen Heaven fishing crate; combine with spirit stones for a summon."
 			}
 			LightningWardJade: {
 				DisplayName: "Lightning Ward Jade"
@@ -79,7 +79,7 @@ Mods: {
 			}
 			MoonboneRitualTalisman: {
 				DisplayName: "Moonbone Ritual Talisman"
-				Tooltip: "A talisman used in moonbone rituals. Combine with spirit stones to forge a boss summoning item."
+				Tooltip: "Craft at a Work Bench with 4 Moonbone and 3 Low-Grade Spirit Stones; combine with spirit stones for either Moonbone Abyss boss summon."
 			}
 			NascentSoulJadeBox: {
 				DisplayName: "Nascent Soul Jade Box"
@@ -87,7 +87,7 @@ Mods: {
 			}
 			OldFurnaceEmber: {
 				DisplayName: "Old Furnace Ember"
-				Tooltip: "A still-glowing ember from an ancient furnace. Combine with spirit stones to forge a boss summoning item."
+				Tooltip: "Craft at a Work Bench with 4 Furnace Slag Iron and 3 Low-Grade Spirit Stones; combine with spirit stones for the Iron Golem summon."
 			}
 			OldHeavenDaoScroll: {
 				DisplayName: "Old Heaven Dao Scroll"
@@ -123,7 +123,7 @@ Mods: {
 			}
 			StarAbyssMembrane: {
 				DisplayName: "Star Abyss Membrane"
-				Tooltip: "A membrane shed by star abyss creatures. Combine with spirit stones to forge a boss summoning item."
+				Tooltip: "Craft at a Work Bench with 4 Star Eclipse Crystals and 3 Low-Grade Spirit Stones, or open a Star Abyss fishing crate; combine with spirit stones for a summon."
 			}
 			StarEclipseArbalest: {
 				DisplayName: "Star Eclipse Arbalest"
@@ -179,7 +179,7 @@ Mods: {
 			}
 			ThunderCallingJade: {
 				DisplayName: "Thunder Calling Jade"
-				Tooltip: "A jade that calls thunder from the clouds. Combine with spirit stones to forge a boss summoning item."
+				Tooltip: "Craft at a Work Bench with 8 Cloud, 3 Spirit Gel and 3 Low-Grade Spirit Stones; combine with spirit stones for either thunder boss summon."
 			}
 			ThunderPatternSwordCase: {
 				DisplayName: "Thunder Pattern Sword Case"

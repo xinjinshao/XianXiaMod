@@ -1078,6 +1078,7 @@ public partial class SummonAuditSystem : ModSystem
             AuditWorkshopPaths(Check);
             AuditStarSplitHits(Check);
             AuditCalamityRecipes(Check);
+            AuditSummonMaterialRecipes(Check);
             }
         }
         catch (Exception exception) { error = exception.ToString(); }

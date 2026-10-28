@@ -143,7 +143,7 @@ public partial class SummonAuditSystem
             foreach (var entry in new[] {
                 (CultivationStage.GoldenCore, new[] { "AbyssalStarWomb" }), (CultivationStage.NascentSoul, new[] { "ArchiveScrollSpirit" }),
                 (CultivationStage.SpiritSevering, new[] { "HeavenTabletGuardian", "BrokenHeavenInspector" }),
-                (CultivationStage.Tribulation, new[] { "MoonboneImmortal" }), (CultivationStage.DaoSevering, new[] { "MoonboneImmortal", "OldHeavenDaoCore" }) }) {
+                (CultivationStage.Tribulation, new[] { "MoonboneCultivator" }), (CultivationStage.DaoSevering, new[] { "MoonboneImmortal", "OldHeavenDaoCore" }) }) {
                 string source = CultivationStatusText.BreakthroughSource(entry.Item1);
                 foreach (string npc in entry.Item2) {
                     string displayName = ModLoader.GetMod("XianXia").Find<ModNPC>(npc).DisplayName.Value;
