@@ -19,7 +19,7 @@
         "NoActiveTrial": "No trial currently active",
         "Weakness": "Tribulation weakness: {0}s remaining",
         "DragHint": "Hold Shift and drag with the left mouse button for this world session. Save a position through client settings.",
-        "DiscoverySeek": "Find and carry a Low-Grade Spirit Stone to discover energy (spirit-vein enemies or some new-world underground gold chests).",
+        "DiscoverySeek": "Find and carry a Low-Grade Spirit Stone to discover energy (spirit-vein enemies or some new-world underground gold chests). Without natural veins, craft 40 Spirit Vein Moss Bricks at a Work Bench from 40 Stone Blocks and 1 Fallen Star, place them nearby, and defeat the spirit-vein enemies that spawn.",
         "DiscoveryFound": "Energy discovered. Craft and use a Qi-Drawing Talisman for {0} (Work Bench: {1} Low-Grade Spirit Stones + {2} Spirit Gel)."
       }
     }

@@ -52,6 +52,11 @@ public class SectLedger : ModItem
     public override void AddRecipes()
     {
         CreateRecipe()
+            .AddRecipeGroup(RecipeGroupID.Wood, 10)
+            .AddIngredient(ItemID.FallenStar)
+            .AddTile(TileID.WorkBenches)
+            .Register();
+        CreateRecipe()
             .AddIngredient<SectTrialToken>()
             .AddIngredient<LowGradeSpiritStone>(5)
             .AddTile(ModContent.TileType<global::XianXia.Content.Tiles.Stations.ArtifactForgeTile>())
