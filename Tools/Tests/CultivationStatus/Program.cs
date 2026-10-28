@@ -26,10 +26,13 @@ foreach(string culture in new[]{"en-US","zh-Hans"}){
  Check(CultivationStatusText.BreakthroughSource(CultivationStage.Foundation)==Language.GetTextValue("Mods.XianXia.BreakthroughGuide.Sources.Foundation",4,4,10),"Foundation source formats shared recipe quantities");
  foreach(var entry in new[]{(CultivationStage.GoldenCore,new[]{"AbyssalStarWomb"}),(CultivationStage.NascentSoul,new[]{"ArchiveScrollSpirit"}),
   (CultivationStage.SpiritSevering,new[]{"HeavenTabletGuardian","BrokenHeavenInspector"}),
-  (CultivationStage.Tribulation,new[]{"MoonboneImmortal"}),(CultivationStage.DaoSevering,new[]{"MoonboneImmortal","OldHeavenDaoCore"})}) {
+  (CultivationStage.Tribulation,new[]{"MoonboneCultivator"}),(CultivationStage.DaoSevering,new[]{"MoonboneImmortal","OldHeavenDaoCore"})}) {
   string source=CultivationStatusText.BreakthroughSource(entry.Item1);
   foreach(string npc in entry.Item2)Check(source.Contains(Language.NpcPrefix+npc),"Source reads the current NPC display name instead of an independently maintained literal");
  }
+ string tribulationSource=CultivationStatusText.BreakthroughSource(CultivationStage.Tribulation);
+ Check(!tribulationSource.Contains(Language.NpcPrefix+"MoonboneImmortal"),"Tribulation source must not require a boss unlocked by that same breakthrough");
+ Check(tribulationSource.Contains(culture=="zh-Hans" ? "挖掘" : "mine"),"Tribulation source identifies the pre-boss mining route");
  var beginner=new XianXiaPlayer{cultivationStage=CultivationStage.None,maxSpiritualEnergy=40};
  Check(CultivationStatusText.Summary(beginner).EndsWith(Language.GetTextValue("Mods.XianXia.CultivationStatus.DiscoverySeek")),"Undiscovered novice sees material acquisition guidance");
  beginner.discoveredSpiritualEnergy=true;

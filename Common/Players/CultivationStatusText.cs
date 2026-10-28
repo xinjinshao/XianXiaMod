@@ -48,7 +48,7 @@ public static class CultivationStatusText
             CultivationStage.GoldenCore => Language.GetTextValue(key, NpcName("AbyssalStarWomb")),
             CultivationStage.NascentSoul => Language.GetTextValue(key, NpcName("ArchiveScrollSpirit")),
             CultivationStage.SpiritSevering => Language.GetTextValue(key, NpcName("HeavenTabletGuardian"), NpcName("BrokenHeavenInspector")),
-            CultivationStage.Tribulation => Language.GetTextValue(key, NpcName("MoonboneImmortal")),
+            CultivationStage.Tribulation => Language.GetTextValue(key, NpcName("MoonboneCultivator")),
             CultivationStage.DaoSevering => Language.GetTextValue(key, NpcName("MoonboneImmortal"), NpcName("OldHeavenDaoCore")),
             _ => Language.GetTextValue(key)
         };

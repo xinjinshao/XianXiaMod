@@ -9,7 +9,7 @@
           "GoldenCore": "Star Eclipse Crystal: defeat {0}; in Expert/Master, open its treasure bag.",
           "NascentSoul": "Old Heaven Dao Scroll: supplied by the {0} shop and sword-soul commission, subject to their requirements. This is a breakthrough item, not a firing magic weapon.",
           "SpiritSevering": "Heaven Dao Fragment: defeat {0} or {1}; in Expert/Master, open their treasure bags.",
-          "Tribulation": "Moonbone: defeat {0}; in Expert/Master, open its treasure bag.",
+          "Tribulation": "Moonbone: mine Moonbone blocks in the Moonbone Abyss, or defeat {0} there after Moon Lord. Hold and use the Moonbone to advance.",
           "DaoSevering": "Dao Severing Dust: defeat {0} or {1}; in Expert/Master, open their treasure bags."
         },
         "Next": "Next realm: {0} | Hold and use: {1}",
