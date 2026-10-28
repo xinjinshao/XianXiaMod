@@ -5,6 +5,9 @@ Mods: {
 				DisplayName: Sect Ledger
 				Tooltip: Craft at a Work Bench with 10 Wood and 1 Fallen Star. Use to read your realm, energy, pressure, trial status and next cultivation objective. Right-click for biome fishing supplies.
 				Guidance: {
+					Recipe: "{0} recipe: {1}; station: {2}."
+					WorkBench: Work Bench
+					DemonAltar: Demon or Crimson Altar
 					SectReputation: "Sect reputation: {0}."
 					AwakenQi: The ledger points to shallow spirit veins: craft or use a Qi-Drawing Talisman to awaken spiritual energy.
 					SpiritVeinWyrm: The first debt is under the earth: craft Spirit Vein Incense and defeat the Spirit Vein Wyrm.

@@ -4,8 +4,11 @@ using System.Linq;
 using Terraria;
 using Terraria.Localization;
 using Terraria.ModLoader.IO;
+using Terraria.ModLoader;
 using XianXia.Common.Players;
 using XianXia.Content.Items.Guides;
+using XianXia.Content.Items.BossSummons;
+using XianXia.Content.Items.HandGenerated;
 
 namespace XianXia.Common.Systems;
 
@@ -17,6 +20,23 @@ public partial class SummonAuditSystem
         bool oldWyrm = DownedBossSystem.DownedSpiritVeinWyrm;
         var oldBosses = DownedBossSystem.DownedBosses.ToArray();
         try {
+            int[] items = { ModContent.ItemType<SpiritVeinIncense>(), ModContent.ItemType<SummonGardenBrokenKey>(),
+                ModContent.ItemType<SummonOldFurnaceEmber>(), ModContent.ItemType<SummonThunderCallingJade>(),
+                ModContent.ItemType<SummonThunderCallingJadeThunderMarshJiao>(), ModContent.ItemType<SummonStarAbyssMembrane>(),
+                ModContent.ItemType<SummonSectTrialToken>(), ModContent.ItemType<SummonSectTrialTokenGreenwoodMedicineKingEcho>(),
+                ModContent.ItemType<SummonHeavenTabletRubbing>(), ModContent.ItemType<SummonHeavenTabletRubbingBrokenHeavenInspector>(),
+                ModContent.ItemType<SummonMoonboneRitualTalisman>(), ModContent.ItemType<SummonMoonboneRitualTalismanOldHeavenDaoCore>(),
+                ModContent.ItemType<TribulationTrainingToken>() };
+            foreach (int type in items) {
+                var recipe = Main.recipe.Take(Recipe.numRecipes).First(r => !r.Disabled && r.createItem.type == type && r.Conditions.Count == 0);
+                string text = SectLedger.RecipeGuidance(type);
+                check(text.Contains(Lang.GetItemNameValue(type)) && recipe.requiredItem.All(ingredient => text.Contains(Lang.GetItemNameValue(ingredient.type) + " ×" + ingredient.stack))
+                    && !text.Contains("{0}") && !text.Contains("Mods.XianXia."),
+                    "native ledger formats every actual summon and retry recipe with registered names and quantities");
+            }
+            string gardenRecipe = SectLedger.RecipeGuidance(ModContent.ItemType<SummonGardenBrokenKey>());
+            check(gardenRecipe.Contains(Lang.GetItemNameValue(ModContent.ItemType<Content.Items.Materials.GreenwoodRoot>()) + " ×4"),
+                "native ledger also shows the preceding craftable garden key recipe");
             var actor = new Player { active = true };
             actor.GetModPlayer<XianXiaPlayer>().LoadData(new TagCompound {
                 ["cultivationStage"] = (int)CultivationStage.DaoSevering,

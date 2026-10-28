@@ -7,6 +7,8 @@ using XianXia.Common.Systems;
 using XianXia.Content.Items.Weapons;
 using XianXia.Content.Items.Accessories;
 using XianXia.Content.Items.Materials;
+using XianXia.Content.Items.BossSummons;
+using XianXia.Content.Items.HandGenerated;
 
 namespace XianXia.Content.Items.Guides;
 
@@ -101,7 +103,7 @@ public class SectLedger : ModItem
         if (cultivation.tribulationTimer > 0)
             return WithCommission(player, $"{reputation} {GuidanceValue("ActiveTribulation")}");
         if (cultivation.CanRetryTribulation())
-            return WithCommission(player, $"{reputation} {GuidanceValue("RetryTribulation")}");
+            return WithCommission(player, $"{reputation} {GuidanceValue("RetryTribulation")}" + RecipeGuidance(ModContent.ItemType<TribulationTrainingToken>()));
         if (cultivation.cultivationStage < CultivationStage.QiAwakening)
         {
             return WithCommission(player, $"{reputation} {GuidanceValue("AwakenQi")}");
@@ -109,7 +111,7 @@ public class SectLedger : ModItem
 
         if (!DownedBossSystem.DownedSpiritVeinWyrm)
         {
-            return WithCommission(player, $"{reputation} {GuidanceValue("SpiritVeinWyrm")}");
+            return WithCommission(player, $"{reputation} {GuidanceValue("SpiritVeinWyrm")}" + RecipeGuidance(ModContent.ItemType<SpiritVeinIncense>()));
         }
 
         if (cultivation.cultivationStage < CultivationStage.QiCondensation)
@@ -119,17 +121,17 @@ public class SectLedger : ModItem
 
         if (!DownedBossSystem.DownedBosses.Contains("garden_warden"))
         {
-            return WithCommission(player, $"{reputation} {GuidanceValue("GardenWarden")}");
+            return WithCommission(player, $"{reputation} {GuidanceValue("GardenWarden")}" + RecipeGuidance(ModContent.ItemType<SummonGardenBrokenKey>()));
         }
 
         if (!DownedBossSystem.DownedBosses.Contains("black_furnace_iron_golem"))
         {
-            return WithCommission(player, $"{reputation} {GuidanceValue("BlackFurnace")}");
+            return WithCommission(player, $"{reputation} {GuidanceValue("BlackFurnace")}" + RecipeGuidance(ModContent.ItemType<SummonOldFurnaceEmber>()));
         }
 
         if (!DownedBossSystem.DownedBosses.Contains("tribulation_cloud_avatar"))
         {
-            return WithCommission(player, $"{reputation} {GuidanceValue("TribulationCloud")}");
+            return WithCommission(player, $"{reputation} {GuidanceValue("TribulationCloud")}" + RecipeGuidance(ModContent.ItemType<SummonThunderCallingJade>()));
         }
 
         if (cultivation.cultivationStage < CultivationStage.Foundation)
@@ -142,12 +144,12 @@ public class SectLedger : ModItem
 
         if (!DownedBossSystem.DownedBosses.Contains("thunder_marsh_jiao"))
         {
-            return WithCommission(player, $"{reputation} {GuidanceValue("ThunderJiao")}");
+            return WithCommission(player, $"{reputation} {GuidanceValue("ThunderJiao")}" + RecipeGuidance(ModContent.ItemType<SummonThunderCallingJadeThunderMarshJiao>()));
         }
 
         if (!DownedBossSystem.DownedBosses.Contains("abyssal_star_womb"))
         {
-            return WithCommission(player, $"{reputation} {GuidanceValue("StarWomb")}");
+            return WithCommission(player, $"{reputation} {GuidanceValue("StarWomb")}" + RecipeGuidance(ModContent.ItemType<SummonStarAbyssMembrane>()));
         }
 
         if (cultivation.cultivationStage < CultivationStage.GoldenCore)
@@ -162,12 +164,12 @@ public class SectLedger : ModItem
 
         if (!DownedBossSystem.DownedBosses.Contains("formless_sword_soul"))
         {
-            return WithCommission(player, $"{reputation} {GuidanceValue("SwordSoul")}");
+            return WithCommission(player, $"{reputation} {GuidanceValue("SwordSoul")}" + RecipeGuidance(ModContent.ItemType<SummonSectTrialToken>()));
         }
 
         if (!DownedBossSystem.DownedBosses.Contains("greenwood_medicine_king_echo"))
         {
-            return WithCommission(player, $"{reputation} {GuidanceValue("MedicineKing")}");
+            return WithCommission(player, $"{reputation} {GuidanceValue("MedicineKing")}" + RecipeGuidance(ModContent.ItemType<SummonSectTrialTokenGreenwoodMedicineKingEcho>()));
         }
 
         if (cultivation.cultivationStage < CultivationStage.NascentSoul)
@@ -182,12 +184,12 @@ public class SectLedger : ModItem
 
         if (!DownedBossSystem.DownedBosses.Contains("heaven_tablet_guardian"))
         {
-            return WithCommission(player, $"{reputation} {GuidanceValue("HeavenTablet")}");
+            return WithCommission(player, $"{reputation} {GuidanceValue("HeavenTablet")}" + RecipeGuidance(ModContent.ItemType<SummonHeavenTabletRubbing>()));
         }
 
         if (!DownedBossSystem.DownedBosses.Contains("broken_heaven_inspector"))
         {
-            return WithCommission(player, $"{reputation} {GuidanceValue("BrokenInspector")}");
+            return WithCommission(player, $"{reputation} {GuidanceValue("BrokenInspector")}" + RecipeGuidance(ModContent.ItemType<SummonHeavenTabletRubbingBrokenHeavenInspector>()));
         }
 
         if (cultivation.cultivationStage < CultivationStage.SpiritSevering)
@@ -205,12 +207,12 @@ public class SectLedger : ModItem
 
         if (!DownedBossSystem.DownedBosses.Contains("moonbone_immortal"))
         {
-            return WithCommission(player, $"{reputation} {GuidanceValue("MoonboneImmortal")}");
+            return WithCommission(player, $"{reputation} {GuidanceValue("MoonboneImmortal")}" + RecipeGuidance(ModContent.ItemType<SummonMoonboneRitualTalisman>()));
         }
 
         if (!DownedBossSystem.DownedBosses.Contains("old_heaven_dao_core"))
         {
-            return WithCommission(player, $"{reputation} {GuidanceValue("OldHeavenCore")}");
+            return WithCommission(player, $"{reputation} {GuidanceValue("OldHeavenCore")}" + RecipeGuidance(ModContent.ItemType<SummonMoonboneRitualTalismanOldHeavenDaoCore>()));
         }
 
         if (cultivation.cultivationStage < CultivationStage.DaoSevering)
@@ -219,6 +221,39 @@ public class SectLedger : ModItem
         }
 
         return WithCommission(player, $"{reputation} {Guidance("Endgame").Format(DownedBossSystem.SectReputation)}");
+    }
+
+    internal static string RecipeGuidance(int itemType)
+    {
+        string result = FormatRecipe(itemType, out Recipe recipe);
+        if (recipe == null) return result;
+        foreach (Item ingredient in recipe.requiredItem) {
+            if (ingredient.type == ModContent.ItemType<GardenBrokenKey>() || ingredient.type == ModContent.ItemType<OldFurnaceEmber>()
+                || ingredient.type == ModContent.ItemType<ThunderCallingJade>() || ingredient.type == ModContent.ItemType<StarAbyssMembrane>()
+                || ingredient.type == ModContent.ItemType<HeavenTabletRubbing>() || ingredient.type == ModContent.ItemType<MoonboneRitualTalisman>()) {
+                result += FormatRecipe(ingredient.type, out _);
+                break;
+            }
+        }
+        return result;
+    }
+
+    private static string FormatRecipe(int itemType, out Recipe found)
+    {
+        found = null;
+        for (int i = 0; i < Recipe.numRecipes; i++) {
+            Recipe recipe = Main.recipe[i];
+            if (recipe.Disabled || recipe.createItem.type != itemType || recipe.Conditions.Count != 0) continue;
+            bool workbench = recipe.requiredTile.Contains(TileID.WorkBenches);
+            if (!workbench && !recipe.requiredTile.Contains(TileID.DemonAltar)) continue;
+            found = recipe;
+            var ingredients = new System.Collections.Generic.List<string>();
+            foreach (Item item in recipe.requiredItem)
+                ingredients.Add($"{Lang.GetItemNameValue(item.type)} ×{item.stack}");
+            string station = GuidanceValue(workbench ? "WorkBench" : "DemonAltar");
+            return "\n" + Guidance("Recipe").Format(Lang.GetItemNameValue(itemType), string.Join(", ", ingredients), station);
+        }
+        return "";
     }
 
     private static string WithCommission(Player player, string guidance)
