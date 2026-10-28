@@ -44,14 +44,33 @@ public partial class SummonAuditSystem
                 check(ArtifactSkillTransactions.UnavailableReason(actor,ArtifactSkill.WardGuard) == "Mods.XianXia.Skills.CoolingDown","native panel readiness follows actual Dao ward cooldown");
                 check(state.spiritualEnergy == 100 - cost && state.wardGuardTimer == 180 && state.activeSkillCooldown == 1200
                     && actor.statLife == (route == 1 ? 70 : 50) && state.spiritPressure == (route == 3 ? 8 : 0),"native ward Dao authoritative protection route cost healing and pressure");
-                actor.statDefense = Player.DefenseStat.Default; int buffIndex = 0; float oldEndurance = actor.endurance; int oldDefense = actor.statDefense;
-                ModContent.GetInstance<global::XianXia.Content.Buffs.ArtifactWardBuff>().Update(actor,ref buffIndex);
-                check(Math.Abs(actor.endurance - oldEndurance - .35f) < .001f && (int)actor.statDefense == oldDefense + 12,"native ward Dao preserves actual thirty-five-percent and twelve-defense buff: endurance=" + actor.endurance + " before=" + oldEndurance + "; defense=" + (int)actor.statDefense + " before=" + oldDefense + "; timer=" + state.wardGuardTimer);
+                actor.statDefense = Player.DefenseStat.Default; float oldEndurance = actor.endurance; int oldDefense = actor.statDefense;
+                state.PostUpdateEquips();
+                check(Math.Abs(actor.endurance - oldEndurance - .35f) < .001f && (int)actor.statDefense == oldDefense + 12,"native ward Dao timer grants thirty-five-percent and twelve-defense protection");
+                actor.statDefense = Player.DefenseStat.Default; actor.endurance = 0;
+                actor.buffImmune[ModContent.BuffType<global::XianXia.Content.Buffs.ArtifactWardBuff>()] = true;
+                Array.Clear(actor.buffType); Array.Clear(actor.buffTime); state.PostUpdateEquips();
+                check(Math.Abs(actor.endurance - .35f) < .001f && (int)actor.statDefense == 12,"native ward protection survives icon immunity or removal while timer is active");
+                var probe = new Player { whoAmI = 0, active = true }; Main.player[0] = probe;
+                var probeState = probe.GetModPlayer<XianXiaPlayer>();
+                void EquipWithFullBuffs(int timer) {
+                    probe.ResetEffects(); probeState.wardGuardTimer = timer; Array.Fill(probe.buffType, BuffID.WellFed); Array.Fill(probe.buffTime, 60);
+                    probe.buffImmune[ModContent.BuffType<global::XianXia.Content.Buffs.ArtifactWardBuff>()] = true;
+                    probe.UpdateEquips(0); PlayerLoader.PostUpdateEquips(probe);
+                }
+                EquipWithFullBuffs(0); float baseEndurance = probe.endurance; int baseDefense = probe.statDefense;
+                EquipWithFullBuffs(180);
+                check(Math.Abs(probe.endurance - baseEndurance - .35f) < .001f && (int)probe.statDefense == baseDefense + 12,
+                    "native equipment and ModPlayer hooks apply ward with full buff slots and icon immunity");
+                Main.player[0] = actor;
+                actor.statDefense = Player.DefenseStat.Default; actor.endurance = 0; state.wardGuardTimer = 0; state.PostUpdateEquips();
+                check(actor.endurance == 0 && (int)actor.statDefense == 0,"native ward cannot grant protection after timer expires"); state.wardGuardTimer = 180;
                 state.skillRequestCooldown = 0; Cast(); check(state.spiritualEnergy == 100 - cost && actor.statLife == (route == 1 ? 70 : 50) && state.spiritPressure == (route == 3 ? 8 : 0),"native ward Dao repeated request cannot repeat success effects");
                 actor.altFunctionUse = 0; state.spiritualEnergy = 100;
                 check(weapon.GetSpiritCost(actor) == (route == 3 ? 24 : 30),"native ward Dao ordinary fee follows active world route");
-                check(WeaponShotTransactions.FirePrepared(actor,weapon,new Terraria.DataStructures.EntitySource_ItemUse_WithAmmo(actor,item,0),actor.Center,Vector2.UnitY * 7,item.shoot,156,7,netMode == NetmodeID.Server)
-                    && state.spiritualEnergy == 100 - (route == 3 ? 24 : 30) && state.activeSkillCooldown == 1200,"native ward Dao ordinary shot remains separate from shared skill cooldown");
+                bool ordinary = WeaponShotTransactions.FirePrepared(actor,weapon,new Terraria.DataStructures.EntitySource_ItemUse_WithAmmo(actor,item,0),actor.Center,Vector2.UnitY * 7,item.shoot,156,7,netMode == NetmodeID.Server);
+                check(ordinary && state.spiritualEnergy == 100 - (route == 3 ? 24 : 30) && state.activeSkillCooldown == 1200,
+                    "native ward Dao ordinary shot remains separate from shared skill cooldown: shot=" + ordinary + " energy=" + state.spiritualEnergy + " cooldown=" + state.activeSkillCooldown);
                 Clear(); state.skillRequestCooldown = state.activeSkillCooldown = state.wardGuardTimer = 0; state.spiritualEnergy = 100; state.spiritPressure = 0; actor.statLife = 50;
                 DownedBossSystem.DownedBosses.Remove("old_heaven_dao_core"); Cast();
                 check(state.spiritualEnergy == 82 && state.wardGuardTimer == 180 && actor.statLife == 50 && state.spiritPressure == 0 && weapon.GetSpiritCost(actor) == 24
@@ -63,6 +82,14 @@ public partial class SummonAuditSystem
                 ArtifactSkillTransactions.HandleRequest(actor,ArtifactSkill.WardGuard,0,actor.HeldItem.type,actor.Center);
                 check(state.spiritualEnergy == 82 && state.wardGuardTimer == 180 && actor.statLife == 50 && state.spiritPressure == 0,"native jade ward cannot borrow another held artifact Dao route");
             }
+            Main.netMode = NetmodeID.MultiplayerClient; Main.myPlayer = 0;
+            var replica = new Player { whoAmI = 0, active = true }; Main.player[0] = replica;
+            var replicaState = replica.GetModPlayer<XianXiaPlayer>(); replicaState.wardGuardTimer = 180;
+            replica.ResetEffects(); PlayerLoader.PostUpdateEquips(replica);
+            check(Math.Abs(replica.endurance - .35f) < .001f && (int)replica.statDefense == 12,
+                "native client replica recomputes protection from synced ward timer without relying on an icon");
+            replica.ResetEffects(); replica.dead = true; PlayerLoader.PostUpdateEquips(replica);
+            check(replica.endurance == 0 && (int)replica.statDefense == 0,"native dead replica cannot retain ward protection");
         } finally { Clear(); world.LoadWorldData(saved); Main.player[0] = previous; Main.netMode = mode; Main.myPlayer = local; Main.hardMode = hard; NPC.downedPlantBoss = plant; NPC.downedGolemBoss = golem; clients.CopyTo(Netplay.Clients,0); Main.combatText = text; }
         check(ReferenceEquals(Main.player[0],previous) && Main.netMode == mode && Main.combatText == text,"native ward Dao fixture restores authority and rendering context");
     }

@@ -140,6 +140,13 @@ public class XianXiaPlayer : ModPlayer
         SyncServerChanges();
     }
 
+    public override void PostUpdateEquips()
+    {
+        if (!Player.active || Player.dead || wardGuardTimer <= 0) return;
+        Player.endurance += 0.35f;
+        Player.statDefense += 12;
+    }
+
     public override void PostUpdate()
     {
         if (skillRequestCooldown > 0) skillRequestCooldown--;
