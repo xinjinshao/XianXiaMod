@@ -93,7 +93,7 @@ public class SectLedger : ModItem
             + "\n" + availability + "\n" + CultivationStatusText.BreakthroughSource(target);
     }
 
-    private static string GetNextGuidance(Player player)
+    internal static string GetNextGuidance(Player player)
     {
         XianXiaPlayer cultivation = player.GetModPlayer<XianXiaPlayer>();
         string reputation = Guidance("SectReputation").Format(DownedBossSystem.SectReputation);
@@ -102,13 +102,6 @@ public class SectLedger : ModItem
             return WithCommission(player, $"{reputation} {GuidanceValue("ActiveTribulation")}");
         if (cultivation.CanRetryTribulation())
             return WithCommission(player, $"{reputation} {GuidanceValue("RetryTribulation")}");
-        string worldFailure = CultivationRules.GetWorldFailure(
-            (CultivationStage)((int)cultivation.cultivationStage + 1), Main.hardMode,
-            NPC.downedPlantBoss, NPC.downedGolemBoss, NPC.downedMoonlord);
-        if (cultivation.cultivationStage >= CultivationStage.Foundation
-            && cultivation.cultivationStage < CultivationStage.DaoSevering && worldFailure.Length > 0)
-            return WithCommission(player, $"{reputation} {Language.GetTextValue($"Mods.XianXia.Progression.{worldFailure}")}");
-
         if (cultivation.cultivationStage < CultivationStage.QiAwakening)
         {
             return WithCommission(player, $"{reputation} {GuidanceValue("AwakenQi")}");
@@ -142,6 +135,11 @@ public class SectLedger : ModItem
         if (cultivation.cultivationStage < CultivationStage.Foundation)
             return WithCommission(player, $"{reputation} {GuidanceValue("Foundation")}");
 
+        string worldFailure = CultivationRules.GetWorldFailure(CultivationStage.GoldenCore, Main.hardMode,
+            NPC.downedPlantBoss, NPC.downedGolemBoss, NPC.downedMoonlord);
+        if (worldFailure.Length > 0)
+            return WithCommission(player, $"{reputation} {Language.GetTextValue($"Mods.XianXia.Progression.{worldFailure}")}");
+
         if (!DownedBossSystem.DownedBosses.Contains("thunder_marsh_jiao"))
         {
             return WithCommission(player, $"{reputation} {GuidanceValue("ThunderJiao")}");
@@ -156,6 +154,11 @@ public class SectLedger : ModItem
         {
             return WithCommission(player, $"{reputation} {GuidanceValue("GoldenCore")}");
         }
+
+        worldFailure = CultivationRules.GetWorldFailure(CultivationStage.NascentSoul, Main.hardMode,
+            NPC.downedPlantBoss, NPC.downedGolemBoss, NPC.downedMoonlord);
+        if (worldFailure.Length > 0)
+            return WithCommission(player, $"{reputation} {Language.GetTextValue($"Mods.XianXia.Progression.{worldFailure}")}");
 
         if (!DownedBossSystem.DownedBosses.Contains("formless_sword_soul"))
         {
@@ -172,6 +175,11 @@ public class SectLedger : ModItem
             return WithCommission(player, $"{reputation} {GuidanceValue("NascentSoul")}");
         }
 
+        worldFailure = CultivationRules.GetWorldFailure(CultivationStage.SpiritSevering, Main.hardMode,
+            NPC.downedPlantBoss, NPC.downedGolemBoss, NPC.downedMoonlord);
+        if (worldFailure.Length > 0)
+            return WithCommission(player, $"{reputation} {Language.GetTextValue($"Mods.XianXia.Progression.{worldFailure}")}");
+
         if (!DownedBossSystem.DownedBosses.Contains("heaven_tablet_guardian"))
         {
             return WithCommission(player, $"{reputation} {GuidanceValue("HeavenTablet")}");
@@ -184,6 +192,11 @@ public class SectLedger : ModItem
 
         if (cultivation.cultivationStage < CultivationStage.SpiritSevering)
             return WithCommission(player, $"{reputation} {GuidanceValue("SpiritSevering")}");
+
+        worldFailure = CultivationRules.GetWorldFailure(CultivationStage.Tribulation, Main.hardMode,
+            NPC.downedPlantBoss, NPC.downedGolemBoss, NPC.downedMoonlord);
+        if (worldFailure.Length > 0)
+            return WithCommission(player, $"{reputation} {Language.GetTextValue($"Mods.XianXia.Progression.{worldFailure}")}");
 
         if (cultivation.cultivationStage < CultivationStage.Tribulation)
         {

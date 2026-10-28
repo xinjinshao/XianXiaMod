@@ -973,6 +973,7 @@ public partial class SummonAuditSystem : ModSystem
             AuditEnemyBuffs(Check, owned);
             AuditPacketDispatch(Check);
             AuditChestSupplies(Check);
+            AuditLedgerProgress(Check);
             AuditQiAwakening(Check);
             AuditBossScaling(Check);
             AuditCompanionContact(Check);
