@@ -58,6 +58,7 @@ public class CinnabarTalismanFlameItem : global::XianXia.Common.Items.Cultivatio
     public override bool CanUseItem(Player player)
 
     {
+        if (player.altFunctionUse == 2) return global::XianXia.Common.Systems.ArtifactSkillTransactions.CanUseAlternative(player, Item);
 
         return player.GetModPlayer<global::XianXia.Common.Players.XianXiaPlayer>()
 

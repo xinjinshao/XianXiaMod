@@ -35,6 +35,7 @@ public class WoodgrainFlyingSword : global::XianXia.Common.Items.CultivationWeap
 
     public override bool CanUseItem(Player player)
     {
+        if (player.altFunctionUse == 2) return global::XianXia.Common.Systems.ArtifactSkillTransactions.CanUseAlternative(player, Item);
         return player.GetModPlayer<XianXiaPlayer>().CanConsumeSpiritualEnergy(GetSpiritCost(player));
     }
 

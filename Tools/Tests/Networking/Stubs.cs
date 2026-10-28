@@ -106,7 +106,7 @@ namespace Terraria
         public int type, stack, shoot = 2, damage = 20, useTime = 30;
         public int maxStack=1,useAmmo,ammo,prefix,width,height,value,rare,useStyle,useAnimation,ResearchUnlockCount;
         public object UseSound;
-        public bool accessory,vanity,noMelee,autoReuse,favorited; public int crit; public object DamageType;
+        public bool accessory,vanity,noMelee,noUseGraphic,autoReuse,favorited; public int crit; public object DamageType;
         public static int buyPrice(int gold=0,int silver=0)=>gold*10000+silver*100;
         public bool IsAir=>type==0||stack<=0;
         public float shootSpeed = 10f, knockBack = 2f;
@@ -184,7 +184,7 @@ namespace Terraria
 namespace Terraria.ID
 {
     public static class ItemUseStyleID { public const int HoldUp=1,Shoot=2,Swing=3,DrinkLiquid=4; }
-    public static class SoundID { public const int Item4=1,Item20=2,Item5=3,Item3=4; }
+    public static class SoundID { public const int Item4=1,Item20=2,Item5=3,Item3=4,Item1=5; }
     public static class BuffID { public const int Regeneration = 1,Ichor=2,OnFire3=3; }
     public static class NetmodeID { public const int SinglePlayer = 0, MultiplayerClient = 1, Server = 2; }
     public static class MessageID { public const int AddPlayerBuff=55; public const int WorldData = 7, SyncEquipment = 5,SpiritHeal=66,KillProjectile=29,SyncProjectile=27; }
@@ -424,7 +424,7 @@ namespace Terraria.DataStructures
 }
 
 namespace XianXia.Common.Systems { public class InscriptionUISystem { public static bool OpenState; public bool IsOpen=>OpenState; public void Open(int slot) { } } public class EndgameRouteUISystem { public static bool OpenState; public bool IsOpen=>OpenState; } }
-namespace XianXia.Content.Items.Materials { public class LowGradeSpiritStone { } }
+namespace XianXia.Content.Items.Materials { public class LowGradeSpiritStone { } public class SpiritGel { } }
 namespace XianXia.Content.Tiles.Stations { public class AlchemyCauldronTile {} public class ArtifactForgeTile { } public class ThunderPatternForgeTile { } public class HeavenFireFurnaceTile { } public class DaoSeveringAltarTile { } }
 namespace XianXia.Content.Items.HandGenerated { public class RouteMaterial { } }
 namespace XianXia.Content.Items.Accessories { public class LightningWardJade { } }
@@ -433,7 +433,7 @@ namespace XianXia.Content.Buffs { public class TribulationResistanceBuff {} publ
 
 namespace Terraria {
  public class Condition {public Condition(){} public Condition(object description,Func<bool> predicate){} public static Condition DownedMoonLord=new(),DownedPlantera=new(),DownedGolem=new();}
- public class Recipe {public Recipe AddIngredient<T>(int amount=1)=>this;public Recipe AddIngredient(int type,int amount=1)=>this;public Recipe AddTile(int tile)=>this;public Recipe AddCondition(Condition condition)=>this;public void Register(){}}
+ public class Recipe {public Recipe AddIngredient<T>(int amount=1)=>this;public Recipe AddIngredient(int type,int amount=1)=>this;public Recipe AddRecipeGroup(int group,int amount=1)=>this;public Recipe AddTile(int tile)=>this;public Recipe AddCondition(Condition condition)=>this;public void Register(){}}
  public static class Lighting {public static int Calls;public static void AddLight(Microsoft.Xna.Framework.Vector2 center,float r,float g,float b)=>Calls++;}
 }
 namespace Terraria.ID {public static class ItemRarityID { public const int LightRed=4;public const int White=0,Red=10,Lime=8,Yellow=9,Green=2,Blue=1;}}
@@ -483,4 +483,4 @@ namespace XianXia.Common.Systems { public static class TribulationEpochSystem { 
 
 namespace XianXia.Content.Buffs { public class SpiritualPressureDisorderBuff {} }
 namespace XianXia.Content.Items.Materials { public class StarEclipseCrystal {} public class StarAbyssMembrane {} }
-namespace Terraria.ID { public static class TileID { public const int DemonAltar=26; } }
+namespace Terraria.ID { public static class TileID { public const int DemonAltar=26,WorkBenches=18; } public static class RecipeGroupID { public const int Wood=1; } }

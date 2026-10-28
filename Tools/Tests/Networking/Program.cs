@@ -1988,6 +1988,21 @@ SetupSkill("WoodgrainFlyingSword");world.ClearWorld();Terraria.Projectile.SpawnB
 Check(!Game.projectile.Any(p=>p.active)&&Game.player[0].State.spiritualEnergy==100&&Game.player[0].State.activeSkillCooldown==0,"Partial Woodgrain Recall creation cleans up and rolls back energy");
 Console.WriteLine($"Including Woodgrain Recall packet and rollback: {assertions} assertions.");
 
+// Ordinary attacks and alternative skills have independent costs and cooldowns.
+foreach (int mode in new[] { 0, 1, 2 }) foreach (string name in new[] { "WoodgrainFlyingSword", "CinnabarTalismanFlameItem" }) {
+ SetupSkill(name); world.ClearWorld(); Game.netMode=mode; var actor=Game.player[0];
+ ModItem inputWeapon=name=="WoodgrainFlyingSword" ? new XianXia.Content.Items.Weapons.WoodgrainFlyingSword() : new XianXia.Content.Items.Weapons.CinnabarTalismanFlameItem();
+ inputWeapon.Mod=mod; inputWeapon.Name=name; inputWeapon.SetDefaults(); inputWeapon.Item.type=601; inputWeapon.Item.stack=1; inputWeapon.Item.ModItem=inputWeapon;
+ var refinement=inputWeapon.Item.GetGlobalItem<XianXia.Common.Items.RefinedArtifact>(); refinement.SetLevel(3); refinement.TryAwaken(); actor.inventory[1]=inputWeapon.Item; actor.selectedItem=1;
+ int skillCost=name=="WoodgrainFlyingSword" ? 16 : 18;
+ actor.altFunctionUse=2; actor.State.spiritualEnergy=skillCost-1; Check(!inputWeapon.CanUseItem(actor),"Actual right-click refuses less than active skill cost");
+ actor.State.spiritualEnergy=skillCost; Check(inputWeapon.CanUseItem(actor),"Actual right-click accepts exact active skill cost");
+ actor.State.activeSkillCooldown=1; Check(!inputWeapon.CanUseItem(actor),"Actual right-click respects shared skill cooldown");
+ actor.altFunctionUse=0; Check(inputWeapon.CanUseItem(actor),"Ordinary attack remains usable during active skill cooldown");
+ refinement.SetLevel(2); actor.altFunctionUse=2; Check(!inputWeapon.CanUseItem(actor),"Dormant artifact cannot use alternative skill");
+}
+Console.WriteLine($"Including woodgrain and cinnabar alternative input gates: {assertions} assertions.");
+
 sealed class TestBossSummon : XianXia.Common.Items.CultivationBossSummonItem
 {
     public override int BossType => 100;
