@@ -16,7 +16,7 @@
         },
         "ThunderBiomeBlock": {
           "DisplayName": "劫云凝砖",
-          "Tooltip": "放置在附近形成对应生态（需要100块）\n拆除返还地块，不产出天然材料"
+          "Tooltip": "困难模式前即可在工作台制作；附近放置100块形成雷泽生态，可用于挑战劫云化身\n雷泽蛟与普通雷泽敌怪仍需困难模式\n拆除返还地块，不产出天然材料"
         },
         "StarAbyssBiomeBlock": {
           "DisplayName": "星渊晶砖",

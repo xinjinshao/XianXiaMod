@@ -12,7 +12,7 @@ var domains=new (ConstructedBiomeBlock Block,ConstructedBiomeTile Tile,ModBiome 
  (new SpiritVeinBiomeBlock(),new SpiritVeinConstructedTile(),new ShallowSpiritVeinsBiome(),40,0),
  (new GreenwoodBiomeBlock(),new GreenwoodConstructedTile(),new GreenwoodHerbGardenBiome(),120,0),
  (new FurnaceBiomeBlock(),new FurnaceConstructedTile(),new SunkenFurnaceVeinBiome(),120,0),
- (new ThunderBiomeBlock(),new ThunderConstructedTile(),new ThunderMarshCloudsBiome(),100,1),
+ (new ThunderBiomeBlock(),new ThunderConstructedTile(),new ThunderMarshCloudsBiome(),100,0),
  (new StarAbyssBiomeBlock(),new StarAbyssConstructedTile(),new StarAbyssRiftBiome(),140,1),
  (new SectRuinBiomeBlock(),new SectRuinConstructedTile(),new TenThousandSectsRuinsBiome(),180,2),
  (new FallenHeavenBiomeBlock(),new FallenHeavenConstructedTile(),new FallenHeavenPalaceBiome(),160,3),

@@ -16,7 +16,7 @@
         },
         "ThunderBiomeBlock": {
           "DisplayName": "Tribulation Cloud Brick",
-          "Tooltip": "Place 100 nearby blocks to form the corresponding biome\nMining returns this block, not natural materials"
+          "Tooltip": "Craft at a Work Bench before Hardmode; place 100 nearby to form Thunder Marsh Clouds for the Tribulation Cloud Avatar\nThe Thunder Marsh Jiao and ordinary thunder enemies still require Hardmode\nMining returns this block, not natural materials"
         },
         "StarAbyssBiomeBlock": {
           "DisplayName": "Star Abyss Crystal Brick",

@@ -62,7 +62,6 @@ public class ThunderBiomeBlock : ConstructedBiomeBlock
     protected override int Tile => ModContent.TileType<ThunderConstructedTile>();
     protected override int Ingredient => ItemID.Cloud;
     protected override int Amount => 100;
-    protected override Condition Gate => Condition.Hardmode;
 }
 
 public class StarAbyssBiomeBlock : ConstructedBiomeBlock
