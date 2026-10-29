@@ -1647,7 +1647,7 @@ foreach(int mode in new[]{0,2}) foreach(byte route in new byte[]{1,2,3}) {
 }
 // Read-only panel readiness uses the same evaluator as authority casting in every network mode.
 foreach(int mode in new[]{0,1,2}) foreach(ArtifactSkill skill in Enum.GetValues<ArtifactSkill>()) {
- string name=skill switch{ArtifactSkill.SwordBurst=>"CloudpiercerFlyingSword",ArtifactSkill.ArrayPulse=>"GreenwoodArrayPlate",ArtifactSkill.WardGuard=>"HeavenTabletWardSeal",ArtifactSkill.MoonCrescent=>"MoonboneDharmaSword",ArtifactSkill.WheelFormation=>"FormlessSwordWheel",ArtifactSkill.HammerVolley=>"BlackFurnaceWarhammer",ArtifactSkill.WoodgrainRecall=>"WoodgrainFlyingSword",ArtifactSkill.FlameFan=>"CinnabarTalismanFlameItem",ArtifactSkill.SpiritwoodVolley=>"SpiritwoodCrossbow",ArtifactSkill.StarSplitVolley=>"StarEclipseArbalest",_=>"ThunderPatternSwordCase"};
+ string name=skill switch{ArtifactSkill.SwordBurst=>"CloudpiercerFlyingSword",ArtifactSkill.ArrayPulse=>"GreenwoodArrayPlate",ArtifactSkill.WardGuard=>"HeavenTabletWardSeal",ArtifactSkill.MoonCrescent=>"MoonboneDharmaSword",ArtifactSkill.WheelFormation=>"FormlessSwordWheel",ArtifactSkill.HammerVolley=>"BlackFurnaceWarhammer",ArtifactSkill.WoodgrainRecall=>"WoodgrainFlyingSword",ArtifactSkill.FlameFan=>"CinnabarTalismanFlameItem",ArtifactSkill.SpiritwoodVolley=>"SpiritwoodCrossbow",ArtifactSkill.StarSplitVolley=>"StarEclipseArbalest",ArtifactSkill.SectVolley=>"SectMechanismCrossbow",_=>"ThunderPatternSwordCase"};
  SetupSkill(name);Game.netMode=mode;var actor=Game.player[0];actor.State.cultivationStage=CultivationStage.DaoSevering;Game.hardMode=true;Terraria.NPC.downedPlantBoss=Terraria.NPC.downedGolemBoss=true;actor.statLife=50;
  if(skill==ArtifactSkill.ArrayPulse)Game.projectile[0]=CreatePulseField(actor);
  var snapshot=actor.State.CaptureSnapshot();int requestTimer=actor.State.skillRequestCooldown,life=actor.statLife,active=Game.projectile.Count(p=>p.active),panelPackets=ModPacket.Sent.Count;var item=actor.HeldItem;
@@ -1657,7 +1657,7 @@ foreach(int mode in new[]{0,1,2}) foreach(ArtifactSkill skill in Enum.GetValues<
  actor.State.spiritualEnergy=0;Check(ArtifactSkillTransactions.UnavailableReason(actor,skill)=="Mods.XianXia.Skills.NeedEnergy","Panel readiness checks actual spirit cost");actor.State.spiritualEnergy=100;
  actor.dead=true;Check(ArtifactSkillTransactions.UnavailableReason(actor,skill)=="Mods.XianXia.Skills.Unavailable","Dead player cannot request via readiness preview");actor.dead=false;
  if(skill==ArtifactSkill.ArrayPulse){Game.projectile[0].active=false;Check(ArtifactSkillTransactions.UnavailableReason(actor,skill)=="Mods.XianXia.Skills.NeedArray","Panel identifies missing usable array");Game.projectile[0].active=true;actor.statLife=actor.statLifeMax2;Check(ArtifactSkillTransactions.UnavailableReason(actor,skill)=="Mods.XianXia.Skills.NoHealing","Panel identifies no actual injured friendly target");actor.statLife=50;}
- else if(skill!=ArtifactSkill.WardGuard){int required=skill==ArtifactSkill.WheelFormation?5:3;for(int i=0;i<Game.maxProjectiles-required+1;i++)Game.projectile[i].active=true;Check(ArtifactSkillTransactions.UnavailableReason(actor,skill)=="Mods.XianXia.Skills.Capacity","Panel identifies insufficient whole-burst capacity");foreach(var p in Game.projectile)p.active=false;}
+ else if(skill!=ArtifactSkill.WardGuard){int required=skill is ArtifactSkill.WheelFormation or ArtifactSkill.SectVolley?5:3;for(int i=0;i<Game.maxProjectiles-required+1;i++)Game.projectile[i].active=true;Check(ArtifactSkillTransactions.UnavailableReason(actor,skill)=="Mods.XianXia.Skills.Capacity","Panel identifies insufficient whole-burst capacity");foreach(var p in Game.projectile)p.active=false;}
  item.GetGlobalItem<XianXia.Common.Items.RefinedArtifact>().SetLevel(2);Check(ArtifactSkillTransactions.UnavailableReason(actor,skill)=="Mods.XianXia.Skills.Unavailable","Panel refuses dormant held artifact");
 }
 Check(ArtifactSkillTransactions.UnavailableReason(null,ArtifactSkill.WardGuard)=="Mods.XianXia.Skills.Unavailable","Readiness rejects absent player without side effects");
@@ -1770,8 +1770,8 @@ foreach(int mode in new[]{0,1}) {
  SetupSkill();Game.netMode=mode;Game.myPlayer=0;Game.MouseWorld=new(100,100);Game.gameMenu=Game.blockInput=Game.drawingPlayerChat=Game.playerInventory=false;var actor=Game.player[0];var input=new XianXia.Common.Players.ArtifactInputPlayer{Player=actor};input.Initialize();
  void PressPanel(params string[] names){foreach(var key in KeybindLoader.Keys.Values)key.JustPressed=false;foreach(string name in names)KeybindLoader.Keys[name].JustPressed=true;input.ProcessTriggers(new Terraria.GameInput.TriggersSet());}
  int count=ModPacket.Sent.Count;var snapshot=actor.State.CaptureSnapshot();PressPanel("SkillPanelNext");Check(input.SelectedPanelSkill==ArtifactSkill.SwordBurst,"Panel navigation begins at held artifact");
- var visited=new HashSet<ArtifactSkill>();for(int i=0;i<11;i++){visited.Add(input.SelectedPanelSkill.Value);PressPanel("SkillPanelNext");}
- Check(visited.Count==11&&input.SelectedPanelSkill==ArtifactSkill.SwordBurst,"Panel navigation reaches all eleven skills and wraps");PressPanel("SkillPanelPrevious");Check(input.SelectedPanelSkill==ArtifactSkill.StarSplitVolley,"Previous wraps across first skill");PressPanel("SkillPanelNext");
+ var visited=new HashSet<ArtifactSkill>();for(int i=0;i<12;i++){visited.Add(input.SelectedPanelSkill.Value);PressPanel("SkillPanelNext");}
+ Check(visited.Count==12&&input.SelectedPanelSkill==ArtifactSkill.SwordBurst,"Panel navigation reaches all twelve skills and wraps");PressPanel("SkillPanelPrevious");Check(input.SelectedPanelSkill==ArtifactSkill.SectVolley,"Previous wraps across first skill");PressPanel("SkillPanelNext");
  Check(actor.State.CaptureSnapshot()==snapshot&&ModPacket.Sent.Count==count&&!Game.projectile.Any(p=>p.active),"Navigation never spends casts or transmits");
  PressPanel("SkillPanelCancel","SkillPanelCast");Check(input.SelectedPanelSkill==null&&ModPacket.Sent.Count==count&&actor.State.CaptureSnapshot()==snapshot,"Cancel takes priority over confirmation");
  PressPanel("SkillPanelNext","SkillPanelCast");Check(input.SelectedPanelSkill==ArtifactSkill.SwordBurst&&ModPacket.Sent.Count==count&&actor.State.CaptureSnapshot()==snapshot,"Selection change cannot also cast in same input frame");
@@ -1995,6 +1995,11 @@ SetupSkill("SpiritwoodCrossbow"); world.ClearWorld(); Terraria.Projectile.SpawnB
 Check(!Game.projectile.Any(p=>p.active)&&Game.player[0].State.spiritualEnergy==100&&Game.player[0].State.activeSkillCooldown==0,"Partial spiritwood volley creation rolls back all bolts and energy");
 
 // Ordinary attacks and alternative skills have independent costs and cooldowns.
+SetupSkill("SectMechanismCrossbow"); world.ClearWorld(); Game.hardMode=Terraria.NPC.downedPlantBoss=true; Skill(ArtifactSkill.SectVolley);
+Check(Game.projectile.Count(p=>p.active)==5 && Game.projectile.Where(p=>p.active).All(p=>p.type==ModContent.ProjectileType<XianXia.Content.Projectiles.SectMechanismBolt>()&&p.damage==37),"Sect Volley packet creates five canonical mechanism bolts");
+Check(Game.player[0].State.spiritualEnergy==60&&Game.player[0].State.activeSkillCooldown==1200,"Sect Volley consumes forty energy and shared cooldown");
+SetupSkill("SectMechanismCrossbow"); Game.hardMode=Terraria.NPC.downedPlantBoss=true; Terraria.Projectile.SpawnBudget=3; Skill(ArtifactSkill.SectVolley);
+Check(!Game.projectile.Any(p=>p.active)&&Game.player[0].State.spiritualEnergy==100&&Game.player[0].State.activeSkillCooldown==0,"Partial Sect Volley removes all three created bolts and refunds energy");
 SetupSkill("StarEclipseArbalest"); world.ClearWorld(); Skill(ArtifactSkill.StarSplitVolley);
 Check(Game.projectile.Count(p=>p.active)==3 && Game.projectile.Where(p=>p.active).All(p=>p.type==ModContent.ProjectileType<XianXia.Content.Projectiles.StarEclipseSplitBolt>()&&p.damage==31),"Star split skill packet creates three canonical parent bolts");
 Check(Game.player[0].State.spiritualEnergy==70&&Game.player[0].State.activeSkillCooldown==1200,"Star split skill consumes thirty energy and shared cooldown");

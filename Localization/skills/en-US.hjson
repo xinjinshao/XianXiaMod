@@ -63,6 +63,9 @@ Mods: {
    }
   }
   Skills: {
+   Sect: "Five Bolts"
+   SectRequirement: "Reach Nascent Soul in a Hardmode world with Plantera defeated, and hold an awakened Sect Mechanism Crossbow: five 150% ranged bolts at speed 18 and 0.1-radian spacing, each with three-hit penetration. Base cost 40 energy, shared 20-second cooldown."
+   SectDaoRequirement: "Same realm/world gates; matching Dao route gives five 200% bolts (250% for Sever). Rebuild costs 52 and heals up to 20; Sever costs 64; Star Abyss costs 44 and adds 8 pressure. Shared 20-second cooldown; player cost modifiers apply."
    StarSplit: "Star Fan"
    StarSplitRequirement: "Hold an awakened Star Eclipse Arbalest: three 125% ranged split bolts, speed 14 and 0.2-radian spacing; each parent retains two-hit penetration and creates two half-damage child bolts per hit. Base cost 30 energy, shared 20-second cooldown."
    StarSplitDaoRequirement: "Matching Dao world: three 175% split bolts (225% for Sever). Rebuild costs 40 and heals up to 20; Sever costs 48; Star Abyss costs 34 and adds 8 pressure. Shared 20-second cooldown; player cost modifiers apply."

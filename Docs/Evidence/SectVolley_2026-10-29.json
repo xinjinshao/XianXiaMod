@@ -1,0 +1,13 @@
+{
+  "round": 396,
+  "skill": "SectVolley",
+  "packageSha256": "5C186A9F5FFFE3D76B3C74C2557EF5D905902782CBB5B97E7058AE4D3CA7A20C",
+  "nativeReportSha256": "C7B20B6495F2803D29443672F1E37485EE841656CC369AC17348017C05B710FD",
+  "nativeChecks": 85956,
+  "previousNativeChecks": 85128,
+  "routeAuthorityCombinations": 64,
+  "networkSimulationChecks": 30635,
+  "gameplayChecks": 7730,
+  "scope": "Five registered mechanism bolts, active/fallback Dao costs and damage, alternative input energy boundaries, fan geometry, local immunity and penetration defaults, progression rejection, shared cooldown, death cancellation, tooltips and twelve-skill navigation. Partial-spawn rollback is tested with a mocked engine boundary.",
+  "limitations": "No real peer transport, full player/world frames, rendered mouse/gamepad acceptance, late join or combat/energy balance. Existing mechanism projectile behavior and assets are reused."
+}
