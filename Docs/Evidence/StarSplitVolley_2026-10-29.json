@@ -1,0 +1,13 @@
+{
+  "round": 395,
+  "skill": "StarSplitVolley",
+  "packageSha256": "CF8EF7308DCC0881E20D80C1CC38EDF8A8A3ACF2CFDF5D90C9A064EC00E45A05",
+  "nativeReportSha256": "A1F6BD4F70EFAD2552F7ED6EB4B74BCC66C658E5623970D436D046DD12474D67",
+  "nativeChecks": 85128,
+  "previousNativeChecks": 84242,
+  "routeAuthorityCombinations": 64,
+  "networkSimulationChecks": 30605,
+  "gameplayChecks": 7728,
+  "scope": "Registered parent projectile creation, route/fallback fees and damage, alternate input, fan geometry, shared cooldown, owner-hit child creation and nonrecursive child callbacks, invalid requests and owner death. Packet dispatch and partial-spawn rollback use mocked engine boundaries.",
+  "limitations": "Hit callbacks are invoked directly; no full combat frames, graphical input/layout, real network peers, late join or damage/energy balance acceptance. Existing split projectile assets and behavior are reused."
+}

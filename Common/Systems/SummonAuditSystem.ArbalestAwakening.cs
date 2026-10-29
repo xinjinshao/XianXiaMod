@@ -80,7 +80,7 @@ public partial class SummonAuditSystem
                     var damage = StatModifier.Default; weapon.ModifyWeaponDamage(actor,ref damage); growth.ModifyWeaponDamage(item,actor,ref damage);
                     check(Math.Abs(damage.ApplyTo(100) - (112 + (heritage ? 12 : 0) + (awakened ? 10 : 0))) < .001f,"native star arbalest refinement awakening and heritage damage hooks remain additive");
                     state.spiritualEnergy = cost - 1; check(!weapon.CanUseItem(actor),"native star arbalest rejects one below current energy cost"); state.spiritualEnergy = cost; check(weapon.CanUseItem(actor),"native star arbalest accepts exact current energy cost");
-                    check(!weapon.AltFunctionUse(actor) && ArtifactSkillTransactions.HeldSkill(item) == null && RefinedArtifact.SupportsDaoTransformation(item),"native star arbalest supports Dao eligibility without an undefined active skill");
+                    check(weapon.AltFunctionUse(actor) == awakened && ArtifactSkillTransactions.HeldSkill(item) == ArtifactSkill.StarSplitVolley && RefinedArtifact.SupportsDaoTransformation(item),"native star arbalest supports Dao eligibility and its defined active skill only after awakening");
                     var lines = new List<TooltipLine>(); weapon.ModifyTooltips(lines); growth.ModifyTooltips(item,lines);
                     check(lines.Count == 3 && lines.TrueForAll(line => !line.Text.Contains("Mods.XianXia.") && !line.Text.Contains("{0}")),"native star arbalest heritage and crafted-awakening tooltips resolve independently");
                 }
