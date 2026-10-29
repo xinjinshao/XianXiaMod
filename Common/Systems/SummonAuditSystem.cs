@@ -1081,6 +1081,7 @@ public partial class SummonAuditSystem : ModSystem
             AuditCalamityRecipes(Check);
             AuditSummonMaterialRecipes(Check);
             AuditEarlyThunderBiome(Check);
+            AuditRetryItem(Check);
             }
         }
         catch (Exception exception) { error = exception.ToString(); }
