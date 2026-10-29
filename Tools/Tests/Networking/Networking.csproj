@@ -47,6 +47,7 @@
   <Compile Include="../../../Content/Projectiles/CinnabarArrowProjectile.cs" Link="CinnabarArrowProjectile.cs" />
   <Compile Include="../../../Content/Items/Weapons/HeavenTabletWardSeal.cs" Link="HeavenTabletWardSeal.cs" />
   <Compile Include="../../../Content/Items/Weapons/WoodgrainFlyingSword.cs" Link="WoodgrainFlyingSword.cs" />
+  <Compile Include="../../../Content/Items/Weapons/SpiritwoodCrossbow.cs" Link="SpiritwoodCrossbow.cs" />
   <Compile Include="../../../Content/Items/Weapons/CinnabarTalismanFlameItem.cs" Link="CinnabarTalismanFlameItem.cs" />
   <Compile Include="../../../Content/Projectiles/HeavenTabletWardProjectile.cs" Link="HeavenTabletWardProjectile.cs" />
   <Compile Include="../../../Common/Players/HeavenTabletWardPlayer.cs" Link="HeavenTabletWardPlayer.cs" />

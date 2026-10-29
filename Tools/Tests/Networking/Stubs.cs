@@ -428,7 +428,7 @@ namespace XianXia.Content.Items.Materials { public class LowGradeSpiritStone { }
 namespace XianXia.Content.Tiles.Stations { public class AlchemyCauldronTile {} public class ArtifactForgeTile { } public class ThunderPatternForgeTile { } public class HeavenFireFurnaceTile { } public class DaoSeveringAltarTile { } }
 namespace XianXia.Content.Items.HandGenerated { public class RouteMaterial { } }
 namespace XianXia.Content.Items.Accessories { public class LightningWardJade { } }
-namespace XianXia.Content.Projectiles { public class CloudpiercerSwordProjectile { } }
+namespace XianXia.Content.Projectiles { public class CloudpiercerSwordProjectile { } public class SpiritBoltProjectile { } }
 namespace XianXia.Content.Buffs { public class TribulationResistanceBuff {} public class QiRecoveryCooldownBuff {} public class ArtifactWardBuff { } }
 
 namespace Terraria {

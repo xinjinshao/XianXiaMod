@@ -89,7 +89,7 @@ public partial class SummonAuditSystem
                 state.spiritualEnergy = cost - 1; check(!weapon.CanUseItem(actor), "native starter weapon cannot cast for free below current energy cost");
                 state.spiritualEnergy = cost; check(weapon.CanUseItem(actor), "native starter weapon accepts exact current energy without adding an ordinary-use realm gate");
                 check(item.DamageType == (sword ? DamageClass.Melee : DamageClass.Ranged)
-                    && weapon.AltFunctionUse(actor) == (sword && awakened) && ArtifactSkillTransactions.HeldSkill(item) == (sword ? ArtifactSkill.WoodgrainRecall : (ArtifactSkill?)null) && RefinedArtifact.SupportsDaoTransformation(item),
+                    && weapon.AltFunctionUse(actor) == awakened && ArtifactSkillTransactions.HeldSkill(item) == (sword ? ArtifactSkill.WoodgrainRecall : ArtifactSkill.SpiritwoodVolley) && RefinedArtifact.SupportsDaoTransformation(item),
                     "native starter weapon preserves damage class and Dao eligibility without an undefined skill");
                 var lines = new List<TooltipLine>(); growth.ModifyTooltips(item,lines);
                 check(lines.Count == 2 && lines.TrueForAll(line => !line.Text.Contains("Mods.XianXia.") && !line.Text.Contains("{0}")),

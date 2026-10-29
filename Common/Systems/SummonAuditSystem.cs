@@ -1046,6 +1046,7 @@ public partial class SummonAuditSystem : ModSystem
             AuditThunderSkill(Check);
             AuditFlameSkill(Check);
             AuditWoodgrainSkill(Check);
+            AuditSpiritwoodSkill(Check);
             AuditFlameLifecycle(Check);
             AuditWardDao(Check);
             AuditInscriptionNavigation(Check);

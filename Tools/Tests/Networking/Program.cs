@@ -1647,7 +1647,7 @@ foreach(int mode in new[]{0,2}) foreach(byte route in new byte[]{1,2,3}) {
 }
 // Read-only panel readiness uses the same evaluator as authority casting in every network mode.
 foreach(int mode in new[]{0,1,2}) foreach(ArtifactSkill skill in Enum.GetValues<ArtifactSkill>()) {
- string name=skill switch{ArtifactSkill.SwordBurst=>"CloudpiercerFlyingSword",ArtifactSkill.ArrayPulse=>"GreenwoodArrayPlate",ArtifactSkill.WardGuard=>"HeavenTabletWardSeal",ArtifactSkill.MoonCrescent=>"MoonboneDharmaSword",ArtifactSkill.WheelFormation=>"FormlessSwordWheel",ArtifactSkill.HammerVolley=>"BlackFurnaceWarhammer",ArtifactSkill.WoodgrainRecall=>"WoodgrainFlyingSword",ArtifactSkill.FlameFan=>"CinnabarTalismanFlameItem",_=>"ThunderPatternSwordCase"};
+ string name=skill switch{ArtifactSkill.SwordBurst=>"CloudpiercerFlyingSword",ArtifactSkill.ArrayPulse=>"GreenwoodArrayPlate",ArtifactSkill.WardGuard=>"HeavenTabletWardSeal",ArtifactSkill.MoonCrescent=>"MoonboneDharmaSword",ArtifactSkill.WheelFormation=>"FormlessSwordWheel",ArtifactSkill.HammerVolley=>"BlackFurnaceWarhammer",ArtifactSkill.WoodgrainRecall=>"WoodgrainFlyingSword",ArtifactSkill.FlameFan=>"CinnabarTalismanFlameItem",ArtifactSkill.SpiritwoodVolley=>"SpiritwoodCrossbow",_=>"ThunderPatternSwordCase"};
  SetupSkill(name);Game.netMode=mode;var actor=Game.player[0];actor.State.cultivationStage=CultivationStage.DaoSevering;Game.hardMode=true;Terraria.NPC.downedPlantBoss=Terraria.NPC.downedGolemBoss=true;actor.statLife=50;
  if(skill==ArtifactSkill.ArrayPulse)Game.projectile[0]=CreatePulseField(actor);
  var snapshot=actor.State.CaptureSnapshot();int requestTimer=actor.State.skillRequestCooldown,life=actor.statLife,active=Game.projectile.Count(p=>p.active),panelPackets=ModPacket.Sent.Count;var item=actor.HeldItem;
@@ -1770,8 +1770,8 @@ foreach(int mode in new[]{0,1}) {
  SetupSkill();Game.netMode=mode;Game.myPlayer=0;Game.MouseWorld=new(100,100);Game.gameMenu=Game.blockInput=Game.drawingPlayerChat=Game.playerInventory=false;var actor=Game.player[0];var input=new XianXia.Common.Players.ArtifactInputPlayer{Player=actor};input.Initialize();
  void PressPanel(params string[] names){foreach(var key in KeybindLoader.Keys.Values)key.JustPressed=false;foreach(string name in names)KeybindLoader.Keys[name].JustPressed=true;input.ProcessTriggers(new Terraria.GameInput.TriggersSet());}
  int count=ModPacket.Sent.Count;var snapshot=actor.State.CaptureSnapshot();PressPanel("SkillPanelNext");Check(input.SelectedPanelSkill==ArtifactSkill.SwordBurst,"Panel navigation begins at held artifact");
- var visited=new HashSet<ArtifactSkill>();for(int i=0;i<9;i++){visited.Add(input.SelectedPanelSkill.Value);PressPanel("SkillPanelNext");}
- Check(visited.Count==9&&input.SelectedPanelSkill==ArtifactSkill.SwordBurst,"Panel navigation reaches all nine skills and wraps");PressPanel("SkillPanelPrevious");Check(input.SelectedPanelSkill==ArtifactSkill.WoodgrainRecall,"Previous wraps across first skill");PressPanel("SkillPanelNext");
+ var visited=new HashSet<ArtifactSkill>();for(int i=0;i<10;i++){visited.Add(input.SelectedPanelSkill.Value);PressPanel("SkillPanelNext");}
+ Check(visited.Count==10&&input.SelectedPanelSkill==ArtifactSkill.SwordBurst,"Panel navigation reaches all ten skills and wraps");PressPanel("SkillPanelPrevious");Check(input.SelectedPanelSkill==ArtifactSkill.SpiritwoodVolley,"Previous wraps across first skill");PressPanel("SkillPanelNext");
  Check(actor.State.CaptureSnapshot()==snapshot&&ModPacket.Sent.Count==count&&!Game.projectile.Any(p=>p.active),"Navigation never spends casts or transmits");
  PressPanel("SkillPanelCancel","SkillPanelCast");Check(input.SelectedPanelSkill==null&&ModPacket.Sent.Count==count&&actor.State.CaptureSnapshot()==snapshot,"Cancel takes priority over confirmation");
  PressPanel("SkillPanelNext","SkillPanelCast");Check(input.SelectedPanelSkill==ArtifactSkill.SwordBurst&&ModPacket.Sent.Count==count&&actor.State.CaptureSnapshot()==snapshot,"Selection change cannot also cast in same input frame");
@@ -1987,6 +1987,12 @@ Check(Game.player[0].State.spiritualEnergy==84&&Game.player[0].State.activeSkill
 SetupSkill("WoodgrainFlyingSword");world.ClearWorld();Terraria.Projectile.SpawnBudget=1;Skill(ArtifactSkill.WoodgrainRecall);
 Check(!Game.projectile.Any(p=>p.active)&&Game.player[0].State.spiritualEnergy==100&&Game.player[0].State.activeSkillCooldown==0,"Partial Woodgrain Recall creation cleans up and rolls back energy");
 Console.WriteLine($"Including Woodgrain Recall packet and rollback: {assertions} assertions.");
+
+SetupSkill("SpiritwoodCrossbow"); world.ClearWorld(); Skill(ArtifactSkill.SpiritwoodVolley);
+Check(Game.projectile.Count(p=>p.active)==3 && Game.projectile.Where(p=>p.active).All(p=>p.type==ModContent.ProjectileType<XianXia.Content.Projectiles.SpiritBoltProjectile>()&&p.damage==37),"Spiritwood volley packet dispatch creates three canonical ranged bolts");
+Check(Game.player[0].State.spiritualEnergy==82&&Game.player[0].State.activeSkillCooldown==1200,"Spiritwood volley consumes eighteen energy and shared cooldown");
+SetupSkill("SpiritwoodCrossbow"); world.ClearWorld(); Terraria.Projectile.SpawnBudget=1; Skill(ArtifactSkill.SpiritwoodVolley);
+Check(!Game.projectile.Any(p=>p.active)&&Game.player[0].State.spiritualEnergy==100&&Game.player[0].State.activeSkillCooldown==0,"Partial spiritwood volley creation rolls back all bolts and energy");
 
 // Ordinary attacks and alternative skills have independent costs and cooldowns.
 foreach (int mode in new[] { 0, 1, 2 }) foreach (string name in new[] { "WoodgrainFlyingSword", "CinnabarTalismanFlameItem" }) {

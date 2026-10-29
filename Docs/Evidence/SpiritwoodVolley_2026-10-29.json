@@ -1,0 +1,14 @@
+{
+  "round": 394,
+  "skill": "SpiritwoodVolley",
+  "packageSha256": "1A040835B4E677867E79DBFBA9A78FC91C97EA68B9056AF977F95232BA8B45D1",
+  "nativeReportSha256": "65EAD3365E435A46A3CA96A9F1BF066FD29D51B910D1F67C80FF159A59616804",
+  "nativeChecks": 84242,
+  "previousNativeChecks": 83420,
+  "routeAuthorityCombinations": 64,
+  "sourceCheckSteps": 40,
+  "networkSimulationChecks": 30575,
+  "gameplayChecks": 7726,
+  "scope": "Registered skill creation, current/fallback Dao costs and damage, right-click energy boundaries, three-bolt geometry and projectile defaults, shared cooldown, owner death, invalid requests, tooltips and navigation. Partial creation rollback uses a mocked spawn boundary.",
+  "limitations": "No rendered client, actual mouse/gamepad, real peer transport, full player/world frames or combat balance acceptance. Existing SpiritBoltProjectile assets and behavior are reused."
+}
