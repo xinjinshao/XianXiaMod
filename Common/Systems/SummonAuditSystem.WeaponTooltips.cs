@@ -33,12 +33,6 @@ public partial class SummonAuditSystem
                     var refined = item.GetGlobalItem<RefinedArtifact>(); refined.SetLevel(3); check(refined.TryAwaken(), "native skill tooltip fixture uses actual awakening state");
                     if (route != 0) check(refined.TryTransform((DownedBossSystem.EndgameRoute)route), "native skill tooltip fixture uses actual matching-world Dao state");
                     var selectedSkill = ArtifactSkillTransactions.HeldSkill(item);
-                    if (item.ModItem is ThunderTalismanArrayPlate ) {
-                        var flameLines = new List<TooltipLine>(); item.GetGlobalItem<CultivationDamageClassHelp>().ModifyTooltips(item, flameLines);
-                        check(!selectedSkill.HasValue && !item.ModItem.AltFunctionUse(actor)
-                            && flameLines.All(line => line.Name != "CurrentArtifactSkill"), "native awakened passive-growth weapon does not advertise an undefined active skill");
-                        continue;
-                    }
                     if (item.ModItem is ThunderPatternSwordCase)
                         check(selectedSkill == ArtifactSkill.ThunderVolley && item.ModItem.AltFunctionUse(actor) && RefinedArtifact.SupportsDaoTransformation(item),
                             "native awakened thunder case exposes its active skill with supported Dao transformation");
@@ -50,7 +44,7 @@ public partial class SummonAuditSystem
                         string preview = lines.Single(line => line.Name == "CurrentArtifactSkill").Text;
                         int cost = state.GetSpiritualEnergyCost(DaoArtifactRules.SkillCost(skill, RefinedArtifact.ActiveDaoRoute(item)));
                         string name = skill switch { ArtifactSkill.SwordBurst => "Sword", ArtifactSkill.ArrayPulse => "Array", ArtifactSkill.MoonCrescent => "Moon",
-                            ArtifactSkill.WheelFormation => "Wheel", ArtifactSkill.HammerVolley => "Hammer", ArtifactSkill.WoodgrainRecall => "Woodgrain", ArtifactSkill.SpiritwoodVolley => "Spiritwood", ArtifactSkill.StarSplitVolley => "StarSplit", ArtifactSkill.SectVolley => "Sect", ArtifactSkill.HeavenLawVolley => "HeavenLaw", ArtifactSkill.CalamityVolley => "Calamity", ArtifactSkill.CodexConstellation => "Codex", ArtifactSkill.DecreeTriad => "Decree", ArtifactSkill.CauldronBloom => "Cauldron", ArtifactSkill.FlameFan => "Flame", ArtifactSkill.ThunderVolley => "Thunder", _ => "Ward" };
+                            ArtifactSkill.WheelFormation => "Wheel", ArtifactSkill.HammerVolley => "Hammer", ArtifactSkill.WoodgrainRecall => "Woodgrain", ArtifactSkill.SpiritwoodVolley => "Spiritwood", ArtifactSkill.StarSplitVolley => "StarSplit", ArtifactSkill.SectVolley => "Sect", ArtifactSkill.HeavenLawVolley => "HeavenLaw", ArtifactSkill.CalamityVolley => "Calamity", ArtifactSkill.CodexConstellation => "Codex", ArtifactSkill.DecreeTriad => "Decree", ArtifactSkill.CauldronBloom => "Cauldron", ArtifactSkill.ArrayDischarge => "Discharge", ArtifactSkill.FlameFan => "Flame", ArtifactSkill.ThunderVolley => "Thunder", _ => "Ward" };
                         string expected = Terraria.Localization.Language.GetTextValue("Mods.XianXia.DamageClasses.CurrentSkillCost",
                             Terraria.Localization.Language.GetTextValue("Mods.XianXia.Skills." + name), cost, ArtifactSkillRules.Cooldown(skill) / 60, cooldown == 0 ? 0 : 2);
                         check(preview == expected && !preview.Contains("{0}") && !preview.Contains("Mods.XianXia."), "native active skill preview resolves matching route costs and rounded remaining shared cooldown");

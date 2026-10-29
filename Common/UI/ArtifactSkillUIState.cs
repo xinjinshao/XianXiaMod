@@ -39,6 +39,7 @@ public class ArtifactSkillUIState : UIState
         AddButton("Codex",184,ArtifactSkill.CodexConstellation,172);
         AddButton("Decree",0,ArtifactSkill.DecreeTriad,208);
         AddButton("Cauldron",92,ArtifactSkill.CauldronBloom,208);
+        AddButton("Discharge",184,ArtifactSkill.ArrayDischarge,208);
     }
     private void AddButton(string key,float left,ArtifactSkill skill,float top=28)
     {
@@ -103,6 +104,7 @@ public class ArtifactSkillUIState : UIState
             ArtifactSkill.CodexConstellation => Text(route == DownedBossSystem.EndgameRoute.None ? "CodexRequirement" : "CodexDaoRequirement"),
             ArtifactSkill.DecreeTriad => Text(route == DownedBossSystem.EndgameRoute.None ? "DecreeRequirement" : "DecreeDaoRequirement"),
             ArtifactSkill.CauldronBloom => Text(route == DownedBossSystem.EndgameRoute.None ? "CauldronRequirement" : "CauldronDaoRequirement"),
+            ArtifactSkill.ArrayDischarge => Text(route == DownedBossSystem.EndgameRoute.None ? "DischargeRequirement" : "DischargeDaoRequirement"),
             ArtifactSkill.FlameFan => Text(route == DownedBossSystem.EndgameRoute.None ? "FlameRequirement" : "FlameDaoRequirement"),
             ArtifactSkill.ThunderVolley => Text(route == DownedBossSystem.EndgameRoute.None ? "ThunderRequirement" : "ThunderDaoRequirement"),
             _ => Text(route == DownedBossSystem.EndgameRoute.None ? "WardRequirement" : "WardDaoRequirement")

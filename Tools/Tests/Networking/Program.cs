@@ -688,6 +688,9 @@ Terraria.Projectile CreatePulseField(Terraria.Player owner) {
 Terraria.Projectile CreateBloomField(Terraria.Player owner) {
  var field=new XianXia.Content.Projectiles.MedicineCauldronField{Mod=mod};field.SetDefaults();field.Projectile.active=true;field.Projectile.owner=owner.whoAmI;field.OnSpawn(new Terraria.DataStructures.EntitySource_Parent(owner));field.Projectile.type=ModContent.ProjectileType<XianXia.Content.Projectiles.MedicineCauldronField>();field.Projectile.Center=owner.Center;return field.Projectile;
 }
+Terraria.Projectile CreateDischargeField(Terraria.Player owner) {
+ var field=new XianXia.Content.Projectiles.ThunderTalismanArray{Mod=mod};field.SetDefaults();field.Projectile.active=true;field.Projectile.owner=owner.whoAmI;field.OnSpawn(new Terraria.DataStructures.EntitySource_Parent(owner));field.Projectile.type=ModContent.ProjectileType<XianXia.Content.Projectiles.ThunderTalismanArray>();field.Projectile.Center=owner.Center;return field.Projectile;
+}
 void SetupSkill(string name="CloudpiercerFlyingSword") {
  SetupAwakening(name);Game.player[0].inventory[1].GetGlobalItem<XianXia.Common.Items.RefinedArtifact>().TryAwaken();
  Game.player[0].selectedItem=1;Game.player[0].State.spiritualEnergy=100;
@@ -1650,10 +1653,11 @@ foreach(int mode in new[]{0,2}) foreach(byte route in new byte[]{1,2,3}) {
 }
 // Read-only panel readiness uses the same evaluator as authority casting in every network mode.
 foreach(int mode in new[]{0,1,2}) foreach(ArtifactSkill skill in Enum.GetValues<ArtifactSkill>()) {
- string name=skill switch{ArtifactSkill.SwordBurst=>"CloudpiercerFlyingSword",ArtifactSkill.ArrayPulse=>"GreenwoodArrayPlate",ArtifactSkill.WardGuard=>"HeavenTabletWardSeal",ArtifactSkill.MoonCrescent=>"MoonboneDharmaSword",ArtifactSkill.WheelFormation=>"FormlessSwordWheel",ArtifactSkill.HammerVolley=>"BlackFurnaceWarhammer",ArtifactSkill.WoodgrainRecall=>"WoodgrainFlyingSword",ArtifactSkill.FlameFan=>"CinnabarTalismanFlameItem",ArtifactSkill.SpiritwoodVolley=>"SpiritwoodCrossbow",ArtifactSkill.StarSplitVolley=>"StarEclipseArbalest",ArtifactSkill.SectVolley=>"SectMechanismCrossbow",ArtifactSkill.HeavenLawVolley=>"HeavenLawArbalest",ArtifactSkill.CalamityVolley=>"StarCalamityMechanismCase",ArtifactSkill.CodexConstellation=>"ArchiveStarCodex",ArtifactSkill.DecreeTriad=>"BrokenHeavenDecree",ArtifactSkill.CauldronBloom=>"GreenwoodMedicineCauldron",_=>"ThunderPatternSwordCase"};
+ string name=skill switch{ArtifactSkill.SwordBurst=>"CloudpiercerFlyingSword",ArtifactSkill.ArrayPulse=>"GreenwoodArrayPlate",ArtifactSkill.WardGuard=>"HeavenTabletWardSeal",ArtifactSkill.MoonCrescent=>"MoonboneDharmaSword",ArtifactSkill.WheelFormation=>"FormlessSwordWheel",ArtifactSkill.HammerVolley=>"BlackFurnaceWarhammer",ArtifactSkill.WoodgrainRecall=>"WoodgrainFlyingSword",ArtifactSkill.FlameFan=>"CinnabarTalismanFlameItem",ArtifactSkill.SpiritwoodVolley=>"SpiritwoodCrossbow",ArtifactSkill.StarSplitVolley=>"StarEclipseArbalest",ArtifactSkill.SectVolley=>"SectMechanismCrossbow",ArtifactSkill.HeavenLawVolley=>"HeavenLawArbalest",ArtifactSkill.CalamityVolley=>"StarCalamityMechanismCase",ArtifactSkill.CodexConstellation=>"ArchiveStarCodex",ArtifactSkill.DecreeTriad=>"BrokenHeavenDecree",ArtifactSkill.CauldronBloom=>"GreenwoodMedicineCauldron",ArtifactSkill.ArrayDischarge=>"ThunderTalismanArrayPlate",_=>"ThunderPatternSwordCase"};
  SetupSkill(name);Game.netMode=mode;var actor=Game.player[0];actor.State.cultivationStage=CultivationStage.DaoSevering;Game.hardMode=true;Terraria.NPC.downedPlantBoss=Terraria.NPC.downedGolemBoss=Terraria.NPC.downedMoonlord=true;actor.statLife=50;
  if(skill==ArtifactSkill.ArrayPulse)Game.projectile[0]=CreatePulseField(actor);
  if(skill==ArtifactSkill.CauldronBloom)Game.projectile[0]=CreateBloomField(actor);
+ if(skill==ArtifactSkill.ArrayDischarge)Game.projectile[0]=CreateDischargeField(actor);
  var snapshot=actor.State.CaptureSnapshot();int requestTimer=actor.State.skillRequestCooldown,life=actor.statLife,active=Game.projectile.Count(p=>p.active),panelPackets=ModPacket.Sent.Count;var item=actor.HeldItem;
  for(int repeat=0;repeat<3;repeat++)Check(ArtifactSkillTransactions.UnavailableReason(actor,skill)==null,"All nine skill prerequisites permit read-only requests in SP client and server modes");
  Check(actor.State.CaptureSnapshot()==snapshot&&actor.State.skillRequestCooldown==requestTimer&&actor.statLife==life&&actor.HeldItem==item&&Game.projectile.Count(p=>p.active)==active&&ModPacket.Sent.Count==panelPackets,"Repeated panel preview does not consume resources heal alter inventory throttle or transmit");
@@ -1774,8 +1778,8 @@ foreach(int mode in new[]{0,1}) {
  SetupSkill();Game.netMode=mode;Game.myPlayer=0;Game.MouseWorld=new(100,100);Game.gameMenu=Game.blockInput=Game.drawingPlayerChat=Game.playerInventory=false;var actor=Game.player[0];var input=new XianXia.Common.Players.ArtifactInputPlayer{Player=actor};input.Initialize();
  void PressPanel(params string[] names){foreach(var key in KeybindLoader.Keys.Values)key.JustPressed=false;foreach(string name in names)KeybindLoader.Keys[name].JustPressed=true;input.ProcessTriggers(new Terraria.GameInput.TriggersSet());}
  int count=ModPacket.Sent.Count;var snapshot=actor.State.CaptureSnapshot();PressPanel("SkillPanelNext");Check(input.SelectedPanelSkill==ArtifactSkill.SwordBurst,"Panel navigation begins at held artifact");
- var visited=new HashSet<ArtifactSkill>();for(int i=0;i<17;i++){visited.Add(input.SelectedPanelSkill.Value);PressPanel("SkillPanelNext");}
- Check(visited.Count==17&&input.SelectedPanelSkill==ArtifactSkill.SwordBurst,"Panel navigation reaches all seventeen skills and wraps");PressPanel("SkillPanelPrevious");Check(input.SelectedPanelSkill==ArtifactSkill.CauldronBloom,"Previous wraps across first skill");PressPanel("SkillPanelNext");
+ var visited=new HashSet<ArtifactSkill>();for(int i=0;i<18;i++){visited.Add(input.SelectedPanelSkill.Value);PressPanel("SkillPanelNext");}
+ Check(visited.Count==18&&input.SelectedPanelSkill==ArtifactSkill.SwordBurst,"Panel navigation reaches all eighteen skills and wraps");PressPanel("SkillPanelPrevious");Check(input.SelectedPanelSkill==ArtifactSkill.ArrayDischarge,"Previous wraps across first skill");PressPanel("SkillPanelNext");
  Check(actor.State.CaptureSnapshot()==snapshot&&ModPacket.Sent.Count==count&&!Game.projectile.Any(p=>p.active),"Navigation never spends casts or transmits");
  PressPanel("SkillPanelCancel","SkillPanelCast");Check(input.SelectedPanelSkill==null&&ModPacket.Sent.Count==count&&actor.State.CaptureSnapshot()==snapshot,"Cancel takes priority over confirmation");
  PressPanel("SkillPanelNext","SkillPanelCast");Check(input.SelectedPanelSkill==ArtifactSkill.SwordBurst&&ModPacket.Sent.Count==count&&actor.State.CaptureSnapshot()==snapshot,"Selection change cannot also cast in same input frame");
@@ -1999,6 +2003,11 @@ SetupSkill("SpiritwoodCrossbow"); world.ClearWorld(); Terraria.Projectile.SpawnB
 Check(!Game.projectile.Any(p=>p.active)&&Game.player[0].State.spiritualEnergy==100&&Game.player[0].State.activeSkillCooldown==0,"Partial spiritwood volley creation rolls back all bolts and energy");
 
 // Ordinary attacks and alternative skills have independent costs and cooldowns.
+SetupSkill("ThunderTalismanArrayPlate"); world.ClearWorld(); Game.player[0].Center=new(400,400); Game.projectile[0]=CreateDischargeField(Game.player[0]); Skill(ArtifactSkill.ArrayDischarge);
+Check(Game.projectile.Count(p=>p.active)==4 && Game.projectile.Count(p=>p.active&&p.type==ModContent.ProjectileType<XianXia.Content.Projectiles.MinorThunderboltProjectile>()&&p.damage==43)==3,"Array Discharge packet creates three canonical magic bolts and preserves field");
+Check(Game.player[0].State.spiritualEnergy==70&&Game.player[0].State.activeSkillCooldown==1200,"Array Discharge consumes thirty energy and shared cooldown");
+SetupSkill("ThunderTalismanArrayPlate"); Game.player[0].Center=new(400,400); Game.projectile[0]=CreateDischargeField(Game.player[0]); Terraria.Projectile.SpawnBudget=1; Skill(ArtifactSkill.ArrayDischarge);
+Check(Game.projectile.Count(p=>p.active)==1&&Game.player[0].State.spiritualEnergy==100&&Game.player[0].State.activeSkillCooldown==0,"Partial Array Discharge preserves field and refunds energy");
 SetupSkill("GreenwoodMedicineCauldron"); world.ClearWorld(); Game.hardMode=Terraria.NPC.downedPlantBoss=true; Game.player[0].statLife=50; Game.projectile[0]=CreateBloomField(Game.player[0]); Skill(ArtifactSkill.CauldronBloom);
 Check(Game.player[0].statLife==80&&Game.player[0].State.spiritualEnergy==70&&Game.player[0].State.activeSkillCooldown==1200,"Cauldron Bloom packet heals thirty with exact energy and shared cooldown");
 SetupSkill("GreenwoodMedicineCauldron"); Game.hardMode=Terraria.NPC.downedPlantBoss=true; Game.player[0].statLife=50; Skill(ArtifactSkill.CauldronBloom);

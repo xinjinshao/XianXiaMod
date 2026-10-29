@@ -1,0 +1,13 @@
+{
+  "round": 402,
+  "skill": "ArrayDischarge",
+  "packageSha256": "CA55F4E8BC714DFC7572D7403F91744141CF7A2C0E5A71D7819FB2402F5394DD",
+  "nativeReportSha256": "EABA355D33690E8E0FF3881B8600BEDD269BE720037C731BF65A160F5C3AD733",
+  "nativeChecks": 91667,
+  "previousNativeChecks": 90571,
+  "routeAuthorityCombinations": 64,
+  "networkSimulationChecks": 30818,
+  "gameplayChecks": 7742,
+  "scope": "Registered owner-bound field and three magic strikes, route/fallback fees and damage, alternate input, strike geometry, invalid field rejection, retained field/deployment cooldown, exactly one subsequent normal array wave, actual solid headroom rejection and death cancellation. Partial creation rollback uses a mocked spawn boundary.",
+  "limitations": "Normal wave boundaries and collision checks are invoked in a controlled fixture. No full player/world ticks, physical targeting input, rendered UI, live peers, late join or combat/energy balance. Existing array and lightning assets/behavior are reused."
+}

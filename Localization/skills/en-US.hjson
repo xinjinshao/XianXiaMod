@@ -63,6 +63,10 @@ Mods: {
    }
   }
   Skills: {
+   Discharge: "Array Storm"
+   DischargeRequirement: "Hold an awakened Thunder Talisman Array Plate within 200 pixels of your own valid array: three 175% magic bolts descend from 220 pixels above it, spaced 64 pixels at speed 13. Clear spawn/fall paths required. Base cost 30 energy, shared 20-second cooldown; normal array waves remain."
+   DischargeDaoRequirement: "Same field and terrain requirements. Matching Dao route: Rebuild strikes for 225%, costs 40 and heals up to 20; Sever strikes for 275% and costs 48; Star Abyss strikes for 225%, costs 34 and adds 8 pressure. Shared 20-second cooldown; player cost modifiers apply."
+   NeedThunderArray: Stand within 200 pixels of your own valid Thunder Talisman array
    Cauldron: "Bloom"
    CauldronRequirement: "Reach Nascent Soul with Hardmode and Plantera cleared; hold an awakened Greenwood Medicine Cauldron within 200 pixels of your own valid cauldron field. Heal injured friendly players within 200 pixels of it by up to 30. Base cost 30 energy, shared 20-second cooldown; no healing target spends nothing."
    CauldronDaoRequirement: "Same field and progression requirements. Matching Dao route: Rebuild heals up to 60 for 40 energy; Sever heals up to 45 for 40; Star Abyss heals up to 40 for 34 and adds 8 pressure. Shared 20-second cooldown; player cost modifiers apply."

@@ -87,7 +87,7 @@ public partial class SummonAuditSystem
                     var damage = StatModifier.Default; weapon.ModifyWeaponDamage(actor,ref damage); growth.ModifyWeaponDamage(item,actor,ref damage);
                     check(Math.Abs(damage.ApplyTo(100) - (112 + (heritage ? 12 : 0) + (awakened ? 10 : 0))) < .001f,"native thunder array refinement awakening and heritage damage hooks remain additive");
                     state.spiritualEnergy = cost - 1; check(!weapon.CanUseItem(actor),"native thunder array rejects one below current energy cost"); state.spiritualEnergy = cost; check(weapon.CanUseItem(actor),"native thunder array accepts exact current energy cost");
-                    check(!weapon.AltFunctionUse(actor) && ArtifactSkillTransactions.HeldSkill(item) == null && RefinedArtifact.SupportsDaoTransformation(item),"native thunder array supports Dao without an undefined active skill");
+                    check(weapon.AltFunctionUse(actor) == awakened && ArtifactSkillTransactions.HeldSkill(item) == ArtifactSkill.ArrayDischarge && RefinedArtifact.SupportsDaoTransformation(item),"native thunder array supports Dao with its defined active skill only when awakened");
                     var lines = new List<TooltipLine>(); weapon.ModifyTooltips(lines); growth.ModifyTooltips(item,lines);
                     check(lines.Count == 3 && lines.TrueForAll(line => !line.Text.Contains("Mods.XianXia.") && !line.Text.Contains("{0}")),"native thunder array heritage and crafted-awakening tooltips resolve independently");
                 }

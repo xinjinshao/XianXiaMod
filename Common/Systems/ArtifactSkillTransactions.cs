@@ -16,7 +16,7 @@ namespace XianXia.Common.Systems;
 public static class ArtifactSkillTransactions
 {
     public static ArtifactSkill? HeldSkill(Item item) => RefinedArtifact.SupportsAwakening(item) ? item.ModItem.Name switch
-    { "CloudpiercerFlyingSword" => ArtifactSkill.SwordBurst, "GreenwoodArrayPlate" => ArtifactSkill.ArrayPulse, "HeavenTabletWardSeal" => ArtifactSkill.WardGuard, "MoonboneDharmaSword" => ArtifactSkill.MoonCrescent, "FormlessSwordWheel" => ArtifactSkill.WheelFormation, "BlackFurnaceWarhammer" => ArtifactSkill.HammerVolley, "ThunderPatternSwordCase" => ArtifactSkill.ThunderVolley, "CinnabarTalismanFlameItem" => ArtifactSkill.FlameFan, "WoodgrainFlyingSword" => ArtifactSkill.WoodgrainRecall, "SpiritwoodCrossbow" => ArtifactSkill.SpiritwoodVolley, "StarEclipseArbalest" => ArtifactSkill.StarSplitVolley, "SectMechanismCrossbow" => ArtifactSkill.SectVolley, "HeavenLawArbalest" => ArtifactSkill.HeavenLawVolley, "StarCalamityMechanismCase" => ArtifactSkill.CalamityVolley, "ArchiveStarCodex" => ArtifactSkill.CodexConstellation, "BrokenHeavenDecree" => ArtifactSkill.DecreeTriad, "GreenwoodMedicineCauldron" => ArtifactSkill.CauldronBloom, _ => null } : null;
+    { "CloudpiercerFlyingSword" => ArtifactSkill.SwordBurst, "GreenwoodArrayPlate" => ArtifactSkill.ArrayPulse, "HeavenTabletWardSeal" => ArtifactSkill.WardGuard, "MoonboneDharmaSword" => ArtifactSkill.MoonCrescent, "FormlessSwordWheel" => ArtifactSkill.WheelFormation, "BlackFurnaceWarhammer" => ArtifactSkill.HammerVolley, "ThunderPatternSwordCase" => ArtifactSkill.ThunderVolley, "CinnabarTalismanFlameItem" => ArtifactSkill.FlameFan, "WoodgrainFlyingSword" => ArtifactSkill.WoodgrainRecall, "SpiritwoodCrossbow" => ArtifactSkill.SpiritwoodVolley, "StarEclipseArbalest" => ArtifactSkill.StarSplitVolley, "SectMechanismCrossbow" => ArtifactSkill.SectVolley, "HeavenLawArbalest" => ArtifactSkill.HeavenLawVolley, "StarCalamityMechanismCase" => ArtifactSkill.CalamityVolley, "ArchiveStarCodex" => ArtifactSkill.CodexConstellation, "BrokenHeavenDecree" => ArtifactSkill.DecreeTriad, "GreenwoodMedicineCauldron" => ArtifactSkill.CauldronBloom, "ThunderTalismanArrayPlate" => ArtifactSkill.ArrayDischarge, _ => null } : null;
     public static bool CanUseAlternative(Player player, Item item) => RefinedArtifact.IsAwakened(item)
         && HeldSkill(item) is ArtifactSkill skill && player.GetModPlayer<XianXiaPlayer>().activeSkillCooldown == 0
         && (skill != ArtifactSkill.HammerVolley || HammerRealmAllowed(player))
@@ -77,6 +77,7 @@ public static class ArtifactSkillTransactions
         if (!eligible) return "Mods.XianXia.Skills.Unavailable";
         var state = player.GetModPlayer<XianXiaPlayer>();
         if (state.activeSkillCooldown > 0) return "Mods.XianXia.Skills.CoolingDown";
+        if (skill == ArtifactSkill.ArrayDischarge && FindThunderArray(player) == null) return "Mods.XianXia.Skills.NeedThunderArray";
         if (IsBurst(skill) && Main.maxProjectiles - CountActive() < (skill is ArtifactSkill.WheelFormation or ArtifactSkill.SectVolley or ArtifactSkill.CalamityVolley ? 5 : 3)) return "Mods.XianXia.Skills.Capacity";
         if (skill is ArtifactSkill.ArrayPulse or ArtifactSkill.CauldronBloom) {
             bool cauldron = skill == ArtifactSkill.CauldronBloom;
@@ -125,7 +126,7 @@ public static class ArtifactSkillTransactions
         Reply(player, "Mods.XianXia.Skills.Success");
     }
     private static bool Friendly(Player owner, Player target) => owner == target || !owner.hostile || !target.hostile || (owner.team > 0 && owner.team == target.team);
-    private static bool IsBurst(ArtifactSkill skill) => skill is ArtifactSkill.SwordBurst or ArtifactSkill.MoonCrescent or ArtifactSkill.WheelFormation or ArtifactSkill.HammerVolley or ArtifactSkill.ThunderVolley or ArtifactSkill.FlameFan or ArtifactSkill.WoodgrainRecall or ArtifactSkill.SpiritwoodVolley or ArtifactSkill.StarSplitVolley or ArtifactSkill.SectVolley or ArtifactSkill.HeavenLawVolley or ArtifactSkill.CalamityVolley or ArtifactSkill.CodexConstellation or ArtifactSkill.DecreeTriad;
+    private static bool IsBurst(ArtifactSkill skill) => skill is ArtifactSkill.SwordBurst or ArtifactSkill.MoonCrescent or ArtifactSkill.WheelFormation or ArtifactSkill.HammerVolley or ArtifactSkill.ThunderVolley or ArtifactSkill.FlameFan or ArtifactSkill.WoodgrainRecall or ArtifactSkill.SpiritwoodVolley or ArtifactSkill.StarSplitVolley or ArtifactSkill.SectVolley or ArtifactSkill.HeavenLawVolley or ArtifactSkill.CalamityVolley or ArtifactSkill.CodexConstellation or ArtifactSkill.DecreeTriad or ArtifactSkill.ArrayDischarge;
     private static Projectile FindArray(Player player)
     {
         int type = ModContent.ProjectileType<GreenwoodArrayField>();
@@ -146,9 +147,20 @@ public static class ArtifactSkillTransactions
         }
         return null;
     }
+    private static Projectile FindThunderArray(Player player)
+    {
+        int type = ModContent.ProjectileType<ThunderTalismanArray>();
+        for (int i = 0; i < Main.maxProjectiles; i++) {
+            Projectile p = Main.projectile[i];
+            if (p != null && p.active && p.owner == player.whoAmI && p.type == type
+                && p.ModProjectile is ThunderTalismanArray field && field.CanDischarge(player)) return p;
+        }
+        return null;
+    }
     private static int CountActive() { int count = 0; for (int i = 0; i < Main.maxProjectiles; i++) if (Main.projectile[i].active) count++; return count; }
     private static bool Burst(Player player, Item item, Vector2 aim)
     {
+        if (HeldSkill(item) == ArtifactSkill.ArrayDischarge) return ArrayDischargeBurst(player,item);
         if (HeldSkill(item) == ArtifactSkill.DecreeTriad) return DecreeBurst(player,item,aim);
         if (HeldSkill(item) == ArtifactSkill.ThunderVolley) return ThunderBurst(player,item,aim);
         Vector2 position = player.RotatedRelativePoint(player.MountedCenter), delta = aim - position;
@@ -181,6 +193,29 @@ public static class ArtifactSkillTransactions
         PublishCreated(created);
         return true;
     }
+    private static bool ArrayDischargeBurst(Player player,Item item)
+    {
+        Projectile field = FindThunderArray(player);
+        if (field == null) return false;
+        var positions = new Vector2[3];
+        for (int side = -1; side <= 1; side++) {
+            Vector2 spawn = field.Center + new Vector2(side * 64,-220);
+            if (spawn.X < 12 || spawn.Y < 40 || spawn.X > Main.maxTilesX * 16f - 12 || spawn.Y > Main.maxTilesY * 16f - 40
+                || Collision.SolidCollision(spawn - new Vector2(12,40),24,80)
+                || !Collision.CanHitLine(spawn,1,1,field.Center + new Vector2(side * 64,0),1,1)) return false;
+            positions[side + 1] = spawn;
+        }
+        int damage = Math.Max(1,(int)(player.GetWeaponDamage(item) * DaoArtifactRules.ArrayDischargeMultiplier(RefinedArtifact.ActiveDaoRoute(item))));
+        var created = new List<int>();
+        foreach (Vector2 spawn in positions) {
+            int index = Projectile.NewProjectile(field.GetSource_FromAI(),spawn,Vector2.UnitY * 13,
+                ModContent.ProjectileType<MinorThunderboltProjectile>(),damage,player.GetWeaponKnockback(item,item.knockBack),player.whoAmI);
+            if (index < 0 || index >= Main.maxProjectiles) { RemoveCreated(created); return false; }
+            created.Add(index);
+        }
+        PublishCreated(created); return true;
+    }
+
     private static bool DecreeBurst(Player player,Item item,Vector2 aim)
     {
         Vector2 position = player.RotatedRelativePoint(player.MountedCenter), delta = aim - position;

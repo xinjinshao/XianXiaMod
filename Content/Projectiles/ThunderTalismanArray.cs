@@ -23,6 +23,8 @@ public class ThunderTalismanArray : ModProjectile
     private bool invalidState;
     private byte attemptedWaves;
     private Player LivingOwner => global::XianXia.Common.Projectiles.FriendlyFieldOwner.Find(Projectile, 240,ownerBinding);
+    internal bool CanDischarge(Player player) => player != null && Projectile.active && !invalidState
+        && ReferenceEquals(LivingOwner,player) && Vector2.DistanceSquared(player.Center,Projectile.Center) <= 200f * 200f;
     public override bool? CanDamage() => invalidState || LivingOwner == null ? false : null;
     public override void AI()
     {
