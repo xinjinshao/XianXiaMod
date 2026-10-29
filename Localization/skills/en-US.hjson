@@ -63,6 +63,9 @@ Mods: {
    }
   }
   Skills: {
+   Codex: "Three Stars"
+   CodexRequirement: "Reach Tribulation with Hardmode, Plantera, Golem and Moon Lord cleared; hold an awakened Archive Star Codex: three 175% magic orbs, speed 10 and 0.24-radian spacing, each charging for 18 frames before damage with four-hit penetration. Base cost 60 energy, shared 20-second cooldown."
+   CodexDaoRequirement: "Same realm/world gates; matching Dao route gives three 225% orbs (275% for Sever). Rebuild costs 76 and heals up to 20; Sever costs 90; Star Abyss costs 68 and adds 8 pressure. The 18-frame charge remains. Shared 20-second cooldown; player cost modifiers apply."
    Calamity: "Star Return"
    CalamityRequirement: "Reach Tribulation with Hardmode, Plantera, Golem and Moon Lord cleared; hold an awakened Star Calamity Mechanism Case: five 150% ranged bolts, speed 18 and 0.18-radian spacing, four-hit penetration and up to two wall bounces. Base cost 60 energy, shared 20-second cooldown."
    CalamityDaoRequirement: "Same realm/world gates; matching Dao route gives five 200% bolts (250% for Sever). Rebuild costs 76 and heals up to 20; Sever costs 90; Star Abyss costs 68 and adds 8 pressure. Shared 20-second cooldown; player cost modifiers apply."

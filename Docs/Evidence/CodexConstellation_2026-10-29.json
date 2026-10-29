@@ -1,0 +1,13 @@
+{
+  "round": 399,
+  "skill": "CodexConstellation",
+  "packageSha256": "2C4BAE6987C6719F2CDF2561503BFA4636DDA876F482579BB9099FBC01DA4B47",
+  "nativeReportSha256": "7195757EFEEAED121C9F77A2374884D5EACA4F3255E096F484F160B1F47A9482",
+  "nativeChecks": 89154,
+  "previousNativeChecks": 88322,
+  "routeAuthorityCombinations": 64,
+  "networkSimulationChecks": 30725,
+  "gameplayChecks": 7736,
+  "scope": "Three registered magic orbs, route/fallback fees and damage, alternate input, fan geometry and projectile defaults, all eighteen manual charge updates and damage eligibility, progression rejection, shared cooldown and death cancellation. Packet dispatch and partial-spawn rollback use mocked engine boundaries.",
+  "limitations": "Direct projectile AI calls do not cover full terrain flight or player/world frames. No live peers, late join, rendered mouse/gamepad acceptance or combat/energy balance. Existing orb assets and behavior are reused."
+}
