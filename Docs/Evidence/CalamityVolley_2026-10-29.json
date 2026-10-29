@@ -1,0 +1,13 @@
+{
+  "round": 398,
+  "skill": "CalamityVolley",
+  "packageSha256": "BED68978DBAC3AE13E93A1DEC0356CDC2642E62560F1DEB0B1994775F2A4B26C",
+  "nativeReportSha256": "52661B49A20283347E228D63DEFA0AF84C2F7D35D359D1D051F43A3DCFD7B6DE",
+  "nativeChecks": 88322,
+  "previousNativeChecks": 86850,
+  "routeAuthorityCombinations": 64,
+  "networkSimulationChecks": 30695,
+  "gameplayChecks": 7734,
+  "scope": "Five registered bouncing bolts, route/fallback costs and damage, input energy boundaries, fan geometry, penetration/local immunity defaults, two direct collision callbacks and terminal third collision, progression rejection, shared cooldown and death cancellation. Partial-spawn rollback uses mocked engine boundaries.",
+  "limitations": "Collision callbacks are invoked directly, without full terrain flight. No complete player/world frames, live network peers, graphical mouse/gamepad acceptance, late join or combat/energy balance. Existing projectile behavior and assets are reused."
+}

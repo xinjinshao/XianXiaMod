@@ -63,6 +63,9 @@ Mods: {
    }
   }
   Skills: {
+   Calamity: "Star Return"
+   CalamityRequirement: "Reach Tribulation with Hardmode, Plantera, Golem and Moon Lord cleared; hold an awakened Star Calamity Mechanism Case: five 150% ranged bolts, speed 18 and 0.18-radian spacing, four-hit penetration and up to two wall bounces. Base cost 60 energy, shared 20-second cooldown."
+   CalamityDaoRequirement: "Same realm/world gates; matching Dao route gives five 200% bolts (250% for Sever). Rebuild costs 76 and heals up to 20; Sever costs 90; Star Abyss costs 68 and adds 8 pressure. Shared 20-second cooldown; player cost modifiers apply."
    HeavenLaw: "Law Volley"
    HeavenLawRequirement: "Reach Spirit Severing with Hardmode, Plantera and Golem cleared; hold an awakened Heaven Law Arbalest: three 175% ranged bolts, speed 20 and 0.08-radian spacing, two-hit penetration and 2-second Ichor on hit. Base cost 48 energy, shared 20-second cooldown."
    HeavenLawDaoRequirement: "Same realm/world gates; matching Dao route gives three 225% bolts (275% for Sever). Rebuild costs 60 and heals up to 20; Sever costs 72; Star Abyss costs 52 and adds 8 pressure. Shared 20-second cooldown; player cost modifiers apply."

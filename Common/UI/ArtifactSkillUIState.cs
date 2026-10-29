@@ -35,6 +35,7 @@ public class ArtifactSkillUIState : UIState
         AddButton("StarSplit",92,ArtifactSkill.StarSplitVolley,136);
         AddButton("Sect",184,ArtifactSkill.SectVolley,136);
         AddButton("HeavenLaw",0,ArtifactSkill.HeavenLawVolley,172);
+        AddButton("Calamity",92,ArtifactSkill.CalamityVolley,172);
     }
     private void AddButton(string key,float left,ArtifactSkill skill,float top=28)
     {
@@ -95,6 +96,7 @@ public class ArtifactSkillUIState : UIState
             ArtifactSkill.StarSplitVolley => Text(route == DownedBossSystem.EndgameRoute.None ? "StarSplitRequirement" : "StarSplitDaoRequirement"),
             ArtifactSkill.SectVolley => Text(route == DownedBossSystem.EndgameRoute.None ? "SectRequirement" : "SectDaoRequirement"),
             ArtifactSkill.HeavenLawVolley => Text(route == DownedBossSystem.EndgameRoute.None ? "HeavenLawRequirement" : "HeavenLawDaoRequirement"),
+            ArtifactSkill.CalamityVolley => Text(route == DownedBossSystem.EndgameRoute.None ? "CalamityRequirement" : "CalamityDaoRequirement"),
             ArtifactSkill.FlameFan => Text(route == DownedBossSystem.EndgameRoute.None ? "FlameRequirement" : "FlameDaoRequirement"),
             ArtifactSkill.ThunderVolley => Text(route == DownedBossSystem.EndgameRoute.None ? "ThunderRequirement" : "ThunderDaoRequirement"),
             _ => Text(route == DownedBossSystem.EndgameRoute.None ? "WardRequirement" : "WardDaoRequirement")

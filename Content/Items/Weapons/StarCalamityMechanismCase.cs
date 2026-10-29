@@ -32,6 +32,7 @@ public class StarCalamityMechanismCase : global::XianXia.Common.Items.Cultivatio
     }
     public override bool CanUseItem(Player player)
     {
+        if (player.altFunctionUse == 2) return global::XianXia.Common.Systems.ArtifactSkillTransactions.CanUseAlternative(player, Item);
         XianXiaPlayer state = player.GetModPlayer<XianXiaPlayer>();
         return state.cultivationStage >= CultivationStage.Tribulation
             && CultivationRules.GetWorldFailure(CultivationStage.Tribulation, Main.hardMode,
