@@ -1,0 +1,13 @@
+{
+  "round": 401,
+  "skill": "CauldronBloom",
+  "packageSha256": "34D10F418DB70BAAB22BB5C9A451E76958D5C42CC55C224AC574359C22B5CD0C",
+  "nativeReportSha256": "4B89F672DA3664732481E66822C9271EA6CC0DF99AAAD14AA6BE6053C34CA7DF",
+  "nativeChecks": 90571,
+  "previousNativeChecks": 89984,
+  "routeAuthorityCombinations": 64,
+  "networkSimulationChecks": 30788,
+  "gameplayChecks": 7740,
+  "scope": "Registered field and actual authority skill transactions: route/fallback costs and healing, owner/team/boundary eligibility, capped healing, invalid field and progression rejection, duplicates, existing-field deployment cooldown and alternate input independence. Field and player contexts are restored.",
+  "limitations": "No full player/world frames, new skill-specific live healing packet receipt, real peers, graphical mouse/gamepad acceptance or combat/energy balance. Existing field assets and shared authoritative healing are reused."
+}

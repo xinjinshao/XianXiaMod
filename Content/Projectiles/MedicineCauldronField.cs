@@ -21,13 +21,16 @@ public class MedicineCauldronField : ModProjectile
         Projectile.netImportant = true;
     }
     private bool invalidState;
+    private bool ValidClock => float.IsFinite(Projectile.ai[0]) && Projectile.ai[0] >= 0f
+        && Projectile.ai[0] < 60f && Projectile.ai[0] == System.MathF.Truncate(Projectile.ai[0]);
+    internal bool CanBloom(Player player) => player != null && Projectile.active && !invalidState && ValidClock
+        && ReferenceEquals(global::XianXia.Common.Projectiles.FriendlyFieldOwner.Find(Projectile,300,ownerBinding),player)
+        && Vector2.DistanceSquared(player.Center,Projectile.Center) <= 200f * 200f;
     public override bool? CanDamage() => false;
     public override void AI()
     {
         Player owner = global::XianXia.Common.Projectiles.FriendlyFieldOwner.Find(Projectile, 300,ownerBinding);
-        bool validClock = float.IsFinite(Projectile.ai[0]) && Projectile.ai[0] >= 0f
-            && Projectile.ai[0] < 60f && Projectile.ai[0] == System.MathF.Truncate(Projectile.ai[0]);
-        invalidState |= !global::XianXia.Common.Projectiles.FriendlyFieldOwner.HasValidState(Projectile, 300) || !validClock;
+        invalidState |= !global::XianXia.Common.Projectiles.FriendlyFieldOwner.HasValidState(Projectile, 300) || !ValidClock;
         Projectile.velocity = Vector2.Zero;
         if (owner == null || invalidState)
         {

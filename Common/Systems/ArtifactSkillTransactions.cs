@@ -16,11 +16,11 @@ namespace XianXia.Common.Systems;
 public static class ArtifactSkillTransactions
 {
     public static ArtifactSkill? HeldSkill(Item item) => RefinedArtifact.SupportsAwakening(item) ? item.ModItem.Name switch
-    { "CloudpiercerFlyingSword" => ArtifactSkill.SwordBurst, "GreenwoodArrayPlate" => ArtifactSkill.ArrayPulse, "HeavenTabletWardSeal" => ArtifactSkill.WardGuard, "MoonboneDharmaSword" => ArtifactSkill.MoonCrescent, "FormlessSwordWheel" => ArtifactSkill.WheelFormation, "BlackFurnaceWarhammer" => ArtifactSkill.HammerVolley, "ThunderPatternSwordCase" => ArtifactSkill.ThunderVolley, "CinnabarTalismanFlameItem" => ArtifactSkill.FlameFan, "WoodgrainFlyingSword" => ArtifactSkill.WoodgrainRecall, "SpiritwoodCrossbow" => ArtifactSkill.SpiritwoodVolley, "StarEclipseArbalest" => ArtifactSkill.StarSplitVolley, "SectMechanismCrossbow" => ArtifactSkill.SectVolley, "HeavenLawArbalest" => ArtifactSkill.HeavenLawVolley, "StarCalamityMechanismCase" => ArtifactSkill.CalamityVolley, "ArchiveStarCodex" => ArtifactSkill.CodexConstellation, "BrokenHeavenDecree" => ArtifactSkill.DecreeTriad, _ => null } : null;
+    { "CloudpiercerFlyingSword" => ArtifactSkill.SwordBurst, "GreenwoodArrayPlate" => ArtifactSkill.ArrayPulse, "HeavenTabletWardSeal" => ArtifactSkill.WardGuard, "MoonboneDharmaSword" => ArtifactSkill.MoonCrescent, "FormlessSwordWheel" => ArtifactSkill.WheelFormation, "BlackFurnaceWarhammer" => ArtifactSkill.HammerVolley, "ThunderPatternSwordCase" => ArtifactSkill.ThunderVolley, "CinnabarTalismanFlameItem" => ArtifactSkill.FlameFan, "WoodgrainFlyingSword" => ArtifactSkill.WoodgrainRecall, "SpiritwoodCrossbow" => ArtifactSkill.SpiritwoodVolley, "StarEclipseArbalest" => ArtifactSkill.StarSplitVolley, "SectMechanismCrossbow" => ArtifactSkill.SectVolley, "HeavenLawArbalest" => ArtifactSkill.HeavenLawVolley, "StarCalamityMechanismCase" => ArtifactSkill.CalamityVolley, "ArchiveStarCodex" => ArtifactSkill.CodexConstellation, "BrokenHeavenDecree" => ArtifactSkill.DecreeTriad, "GreenwoodMedicineCauldron" => ArtifactSkill.CauldronBloom, _ => null } : null;
     public static bool CanUseAlternative(Player player, Item item) => RefinedArtifact.IsAwakened(item)
         && HeldSkill(item) is ArtifactSkill skill && player.GetModPlayer<XianXiaPlayer>().activeSkillCooldown == 0
         && (skill != ArtifactSkill.HammerVolley || HammerRealmAllowed(player))
-        && (skill != ArtifactSkill.SectVolley || SectRealmAllowed(player))
+        && (skill is not (ArtifactSkill.SectVolley or ArtifactSkill.CauldronBloom) || NascentRealmAllowed(player))
         && (skill != ArtifactSkill.HeavenLawVolley || HeavenLawRealmAllowed(player))
         && (skill is not (ArtifactSkill.CalamityVolley or ArtifactSkill.CodexConstellation) || EndgameRealmAllowed(player))
         && player.GetModPlayer<XianXiaPlayer>().CanConsumeSpiritualEnergy(DaoArtifactRules.SkillCost(skill,SkillDaoRoute(player,skill)));
@@ -43,7 +43,7 @@ public static class ArtifactSkillTransactions
     private static bool HeavenLawRealmAllowed(Player player) => player.GetModPlayer<XianXiaPlayer>().cultivationStage >= CultivationStage.SpiritSevering
         && player.GetModPlayer<XianXiaPlayer>().cultivationStage <= CultivationStage.DaoSevering
         && CultivationRules.GetWorldFailure(CultivationStage.SpiritSevering,Main.hardMode,NPC.downedPlantBoss,NPC.downedGolemBoss,NPC.downedMoonlord).Length == 0;
-    private static bool SectRealmAllowed(Player player) => player.GetModPlayer<XianXiaPlayer>().cultivationStage >= CultivationStage.NascentSoul
+    private static bool NascentRealmAllowed(Player player) => player.GetModPlayer<XianXiaPlayer>().cultivationStage >= CultivationStage.NascentSoul
         && player.GetModPlayer<XianXiaPlayer>().cultivationStage <= CultivationStage.DaoSevering
         && CultivationRules.GetWorldFailure(CultivationStage.NascentSoul,Main.hardMode,NPC.downedPlantBoss,NPC.downedGolemBoss,NPC.downedMoonlord).Length == 0;
     private static bool HammerRealmAllowed(Player player) => player.GetModPlayer<XianXiaPlayer>().cultivationStage >= CultivationStage.QiCondensation
@@ -71,20 +71,22 @@ public static class ArtifactSkillTransactions
         bool eligible = skill == ArtifactSkill.WardGuard ? HasWard(player) || HasAwakenedWardSeal(player)
             : item.stack == 1 && HeldSkill(item) == skill && RefinedArtifact.IsAwakened(item)
                 && (skill != ArtifactSkill.HammerVolley || HammerRealmAllowed(player))
-                && (skill != ArtifactSkill.SectVolley || SectRealmAllowed(player))
+                && (skill is not (ArtifactSkill.SectVolley or ArtifactSkill.CauldronBloom) || NascentRealmAllowed(player))
                 && (skill != ArtifactSkill.HeavenLawVolley || HeavenLawRealmAllowed(player))
                 && (skill is not (ArtifactSkill.CalamityVolley or ArtifactSkill.CodexConstellation) || EndgameRealmAllowed(player));
         if (!eligible) return "Mods.XianXia.Skills.Unavailable";
         var state = player.GetModPlayer<XianXiaPlayer>();
         if (state.activeSkillCooldown > 0) return "Mods.XianXia.Skills.CoolingDown";
         if (IsBurst(skill) && Main.maxProjectiles - CountActive() < (skill is ArtifactSkill.WheelFormation or ArtifactSkill.SectVolley or ArtifactSkill.CalamityVolley ? 5 : 3)) return "Mods.XianXia.Skills.Capacity";
-        if (skill == ArtifactSkill.ArrayPulse) {
-            Projectile field = FindArray(player);
-            if (field == null) return "Mods.XianXia.Skills.NeedArray";
+        if (skill is ArtifactSkill.ArrayPulse or ArtifactSkill.CauldronBloom) {
+            bool cauldron = skill == ArtifactSkill.CauldronBloom;
+            Projectile field = cauldron ? FindCauldron(player) : FindArray(player);
+            if (field == null) return cauldron ? "Mods.XianXia.Skills.NeedCauldron" : "Mods.XianXia.Skills.NeedArray";
+            int radius = cauldron ? 200 : 160;
             healTargets = new List<Player>();
             foreach (Player target in Main.ActivePlayers)
                 if (!target.dead && target.statLife > 0 && target.statLife < target.statLifeMax2 && Finite(target.Center) && Friendly(player,target)
-                    && Vector2.DistanceSquared(target.Center,field.Center) <= 160 * 160) healTargets.Add(target);
+                    && Vector2.DistanceSquared(target.Center,field.Center) <= radius * radius) healTargets.Add(target);
             if (healTargets.Count == 0) return "Mods.XianXia.Skills.NoHealing";
         }
         return state.CanConsumeSpiritualEnergy(DaoArtifactRules.SkillCost(skill,SkillDaoRoute(player,skill))) ? null : "Mods.XianXia.Skills.NeedEnergy";
@@ -107,8 +109,8 @@ public static class ArtifactSkillTransactions
         if (IsBurst(skill) && !Burst(player, item, aim)) {
             state.ApplySnapshot(before); state.SyncPlayer(player.whoAmI, -1, false); return;
         }
-        if (skill == ArtifactSkill.ArrayPulse) foreach (Player target in healTargets) {
-            AuthoritativeHealing.Apply(target,DaoArtifactRules.PulseHeal(daoRoute));
+        if (skill is ArtifactSkill.ArrayPulse or ArtifactSkill.CauldronBloom) foreach (Player target in healTargets) {
+            AuthoritativeHealing.Apply(target,skill == ArtifactSkill.CauldronBloom ? DaoArtifactRules.CauldronHeal(daoRoute) : DaoArtifactRules.PulseHeal(daoRoute));
         }
         if (IsBurst(skill) && daoRoute == DownedBossSystem.EndgameRoute.RebuildHeaven) AuthoritativeHealing.Apply(player,20);
         if (skill == ArtifactSkill.WardGuard) {
@@ -131,6 +133,16 @@ public static class ArtifactSkillTransactions
             Projectile p = Main.projectile[i];
             if (p != null && p.active && p.owner == player.whoAmI && p.type == type
                 && p.ModProjectile is GreenwoodArrayField field && field.CanPulse(player)) return p;
+        }
+        return null;
+    }
+    private static Projectile FindCauldron(Player player)
+    {
+        int type = ModContent.ProjectileType<MedicineCauldronField>();
+        for (int i = 0; i < Main.maxProjectiles; i++) {
+            Projectile p = Main.projectile[i];
+            if (p != null && p.active && p.owner == player.whoAmI && p.type == type
+                && p.ModProjectile is MedicineCauldronField field && field.CanBloom(player)) return p;
         }
         return null;
     }

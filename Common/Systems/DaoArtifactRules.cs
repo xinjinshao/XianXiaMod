@@ -63,6 +63,7 @@ public static class DaoArtifactRules
         : skill == ArtifactSkill.CalamityVolley ? route == DownedBossSystem.EndgameRoute.AcceptStarAbyss ? 68 : route == DownedBossSystem.EndgameRoute.SeverHeaven ? 90 : 76
         : skill == ArtifactSkill.CodexConstellation ? route == DownedBossSystem.EndgameRoute.AcceptStarAbyss ? 68 : route == DownedBossSystem.EndgameRoute.SeverHeaven ? 90 : 76
         : skill == ArtifactSkill.DecreeTriad ? route == DownedBossSystem.EndgameRoute.AcceptStarAbyss ? 40 : route == DownedBossSystem.EndgameRoute.SeverHeaven ? 60 : 48
+        : skill == ArtifactSkill.CauldronBloom ? route == DownedBossSystem.EndgameRoute.AcceptStarAbyss ? 34 : 40
         : skill == ArtifactSkill.FlameFan ? route == DownedBossSystem.EndgameRoute.AcceptStarAbyss ? 20 : route == DownedBossSystem.EndgameRoute.SeverHeaven ? 30 : 24
         : skill == ArtifactSkill.ThunderVolley ? route == DownedBossSystem.EndgameRoute.AcceptStarAbyss ? 30 : route == DownedBossSystem.EndgameRoute.SeverHeaven ? 48 : 36
         : skill == ArtifactSkill.HammerVolley ? route == DownedBossSystem.EndgameRoute.AcceptStarAbyss ? 34 : route == DownedBossSystem.EndgameRoute.SeverHeaven ? 54 : 40
@@ -84,6 +85,8 @@ public static class DaoArtifactRules
     public static float ThunderBurstMultiplier(DownedBossSystem.EndgameRoute route) => route == DownedBossSystem.EndgameRoute.None
         ? ArtifactSkillRules.ThunderDamageMultiplier : route == DownedBossSystem.EndgameRoute.SeverHeaven ? 2.5f : 2f;
     public static int PulseHeal(DownedBossSystem.EndgameRoute route) => route == DownedBossSystem.EndgameRoute.RebuildHeaven ? 40 : 20;
+    public static int CauldronHeal(DownedBossSystem.EndgameRoute route) => route == DownedBossSystem.EndgameRoute.RebuildHeaven ? 60
+        : route == DownedBossSystem.EndgameRoute.SeverHeaven ? 45 : route == DownedBossSystem.EndgameRoute.AcceptStarAbyss ? 40 : 30;
     public static float HammerBurstMultiplier(DownedBossSystem.EndgameRoute route) => route == DownedBossSystem.EndgameRoute.None
         ? ArtifactSkillRules.HammerDamageMultiplier : route == DownedBossSystem.EndgameRoute.SeverHeaven ? 2.75f : 2.25f;
     public static float WheelBurstMultiplier(DownedBossSystem.EndgameRoute route) => route == DownedBossSystem.EndgameRoute.None
