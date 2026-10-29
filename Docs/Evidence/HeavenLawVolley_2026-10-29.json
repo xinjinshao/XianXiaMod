@@ -1,0 +1,13 @@
+{
+  "round": 397,
+  "skill": "HeavenLawVolley",
+  "packageSha256": "0FBEBCB94EB6F304315A5E7FD8BFFF4A4798C9D5CC1D334E8EAF9530FB6981EB",
+  "nativeReportSha256": "E2A7E400203F5DB6CF8B094EFF655F0E049B45471B8C2AA64CDDDD89B9288598",
+  "nativeChecks": 86850,
+  "previousNativeChecks": 85956,
+  "routeAuthorityCombinations": 64,
+  "networkSimulationChecks": 30665,
+  "gameplayChecks": 7732,
+  "scope": "Three registered HeavenLawBolt projectiles, active/fallback Dao costs and damage, alternate input, geometry, penetration/local immunity defaults, direct Ichor hit callbacks, world/realm rejection, shared cooldown and death cancellation. Packet dispatch and partial-spawn rollback use mocked engine boundaries.",
+  "limitations": "No full player/world frames, live peer transport, physical input or graphical layout acceptance, late join or combat/energy balance. Existing mechanism projectile assets and hit behavior are reused."
+}

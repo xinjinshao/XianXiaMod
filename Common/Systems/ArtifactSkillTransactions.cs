@@ -16,11 +16,12 @@ namespace XianXia.Common.Systems;
 public static class ArtifactSkillTransactions
 {
     public static ArtifactSkill? HeldSkill(Item item) => RefinedArtifact.SupportsAwakening(item) ? item.ModItem.Name switch
-    { "CloudpiercerFlyingSword" => ArtifactSkill.SwordBurst, "GreenwoodArrayPlate" => ArtifactSkill.ArrayPulse, "HeavenTabletWardSeal" => ArtifactSkill.WardGuard, "MoonboneDharmaSword" => ArtifactSkill.MoonCrescent, "FormlessSwordWheel" => ArtifactSkill.WheelFormation, "BlackFurnaceWarhammer" => ArtifactSkill.HammerVolley, "ThunderPatternSwordCase" => ArtifactSkill.ThunderVolley, "CinnabarTalismanFlameItem" => ArtifactSkill.FlameFan, "WoodgrainFlyingSword" => ArtifactSkill.WoodgrainRecall, "SpiritwoodCrossbow" => ArtifactSkill.SpiritwoodVolley, "StarEclipseArbalest" => ArtifactSkill.StarSplitVolley, "SectMechanismCrossbow" => ArtifactSkill.SectVolley, _ => null } : null;
+    { "CloudpiercerFlyingSword" => ArtifactSkill.SwordBurst, "GreenwoodArrayPlate" => ArtifactSkill.ArrayPulse, "HeavenTabletWardSeal" => ArtifactSkill.WardGuard, "MoonboneDharmaSword" => ArtifactSkill.MoonCrescent, "FormlessSwordWheel" => ArtifactSkill.WheelFormation, "BlackFurnaceWarhammer" => ArtifactSkill.HammerVolley, "ThunderPatternSwordCase" => ArtifactSkill.ThunderVolley, "CinnabarTalismanFlameItem" => ArtifactSkill.FlameFan, "WoodgrainFlyingSword" => ArtifactSkill.WoodgrainRecall, "SpiritwoodCrossbow" => ArtifactSkill.SpiritwoodVolley, "StarEclipseArbalest" => ArtifactSkill.StarSplitVolley, "SectMechanismCrossbow" => ArtifactSkill.SectVolley, "HeavenLawArbalest" => ArtifactSkill.HeavenLawVolley, _ => null } : null;
     public static bool CanUseAlternative(Player player, Item item) => RefinedArtifact.IsAwakened(item)
         && HeldSkill(item) is ArtifactSkill skill && player.GetModPlayer<XianXiaPlayer>().activeSkillCooldown == 0
         && (skill != ArtifactSkill.HammerVolley || HammerRealmAllowed(player))
         && (skill != ArtifactSkill.SectVolley || SectRealmAllowed(player))
+        && (skill != ArtifactSkill.HeavenLawVolley || HeavenLawRealmAllowed(player))
         && player.GetModPlayer<XianXiaPlayer>().CanConsumeSpiritualEnergy(DaoArtifactRules.SkillCost(skill,SkillDaoRoute(player,skill)));
     public static DownedBossSystem.EndgameRoute SkillDaoRoute(Player player, ArtifactSkill skill) => HeldSkill(player.HeldItem) == skill
         && (skill != ArtifactSkill.WardGuard || HasAwakenedWardSeal(player)) ? RefinedArtifact.ActiveDaoRoute(player.HeldItem) : DownedBossSystem.EndgameRoute.None;
@@ -35,6 +36,9 @@ public static class ArtifactSkillTransactions
         packet.Write(Main.MouseWorld.X); packet.Write(Main.MouseWorld.Y); packet.Send();
     }
     private static bool Finite(Vector2 value) => float.IsFinite(value.X) && float.IsFinite(value.Y);
+    private static bool HeavenLawRealmAllowed(Player player) => player.GetModPlayer<XianXiaPlayer>().cultivationStage >= CultivationStage.SpiritSevering
+        && player.GetModPlayer<XianXiaPlayer>().cultivationStage <= CultivationStage.DaoSevering
+        && CultivationRules.GetWorldFailure(CultivationStage.SpiritSevering,Main.hardMode,NPC.downedPlantBoss,NPC.downedGolemBoss,NPC.downedMoonlord).Length == 0;
     private static bool SectRealmAllowed(Player player) => player.GetModPlayer<XianXiaPlayer>().cultivationStage >= CultivationStage.NascentSoul
         && player.GetModPlayer<XianXiaPlayer>().cultivationStage <= CultivationStage.DaoSevering
         && CultivationRules.GetWorldFailure(CultivationStage.NascentSoul,Main.hardMode,NPC.downedPlantBoss,NPC.downedGolemBoss,NPC.downedMoonlord).Length == 0;
@@ -63,7 +67,8 @@ public static class ArtifactSkillTransactions
         bool eligible = skill == ArtifactSkill.WardGuard ? HasWard(player) || HasAwakenedWardSeal(player)
             : item.stack == 1 && HeldSkill(item) == skill && RefinedArtifact.IsAwakened(item)
                 && (skill != ArtifactSkill.HammerVolley || HammerRealmAllowed(player))
-                && (skill != ArtifactSkill.SectVolley || SectRealmAllowed(player));
+                && (skill != ArtifactSkill.SectVolley || SectRealmAllowed(player))
+                && (skill != ArtifactSkill.HeavenLawVolley || HeavenLawRealmAllowed(player));
         if (!eligible) return "Mods.XianXia.Skills.Unavailable";
         var state = player.GetModPlayer<XianXiaPlayer>();
         if (state.activeSkillCooldown > 0) return "Mods.XianXia.Skills.CoolingDown";
@@ -113,7 +118,7 @@ public static class ArtifactSkillTransactions
         Reply(player, "Mods.XianXia.Skills.Success");
     }
     private static bool Friendly(Player owner, Player target) => owner == target || !owner.hostile || !target.hostile || (owner.team > 0 && owner.team == target.team);
-    private static bool IsBurst(ArtifactSkill skill) => skill is ArtifactSkill.SwordBurst or ArtifactSkill.MoonCrescent or ArtifactSkill.WheelFormation or ArtifactSkill.HammerVolley or ArtifactSkill.ThunderVolley or ArtifactSkill.FlameFan or ArtifactSkill.WoodgrainRecall or ArtifactSkill.SpiritwoodVolley or ArtifactSkill.StarSplitVolley or ArtifactSkill.SectVolley;
+    private static bool IsBurst(ArtifactSkill skill) => skill is ArtifactSkill.SwordBurst or ArtifactSkill.MoonCrescent or ArtifactSkill.WheelFormation or ArtifactSkill.HammerVolley or ArtifactSkill.ThunderVolley or ArtifactSkill.FlameFan or ArtifactSkill.WoodgrainRecall or ArtifactSkill.SpiritwoodVolley or ArtifactSkill.StarSplitVolley or ArtifactSkill.SectVolley or ArtifactSkill.HeavenLawVolley;
     private static Projectile FindArray(Player player)
     {
         int type = ModContent.ProjectileType<GreenwoodArrayField>();
@@ -130,6 +135,7 @@ public static class ArtifactSkillTransactions
         if (HeldSkill(item) == ArtifactSkill.ThunderVolley) return ThunderBurst(player,item,aim);
         Vector2 position = player.RotatedRelativePoint(player.MountedCenter), delta = aim - position;
         if (!Finite(position) || !Finite(delta) || !float.IsFinite(delta.LengthSquared())) return false;
+        bool heavenLaw = HeldSkill(item) == ArtifactSkill.HeavenLawVolley;
         bool sect = HeldSkill(item) == ArtifactSkill.SectVolley;
         bool starSplit = HeldSkill(item) == ArtifactSkill.StarSplitVolley;
         bool spiritwood = HeldSkill(item) == ArtifactSkill.SpiritwoodVolley;
@@ -138,14 +144,14 @@ public static class ArtifactSkillTransactions
         bool moon = HeldSkill(item) == ArtifactSkill.MoonCrescent;
         bool wheel = HeldSkill(item) == ArtifactSkill.WheelFormation;
         bool hammer = HeldSkill(item) == ArtifactSkill.HammerVolley;
-        Vector2 velocity = delta.SafeNormalize(Vector2.UnitX * player.direction) * (sect ? 18f : starSplit ? 14f : spiritwood ? 16f : woodgrain ? 12f : hammer ? 9f : 14f);
-        int damage = sect ? Math.Max(1,(int)(player.GetWeaponDamage(item) * DaoArtifactRules.SectBurstMultiplier(RefinedArtifact.ActiveDaoRoute(item)))) : starSplit ? Math.Max(1,(int)(player.GetWeaponDamage(item) * DaoArtifactRules.StarSplitBurstMultiplier(RefinedArtifact.ActiveDaoRoute(item)))) : spiritwood ? Math.Max(1,(int)(player.GetWeaponDamage(item) * DaoArtifactRules.SpiritwoodBurstMultiplier(RefinedArtifact.ActiveDaoRoute(item)))) : woodgrain ? Math.Max(1,(int)(player.GetWeaponDamage(item) * DaoArtifactRules.WoodgrainBurstMultiplier(RefinedArtifact.ActiveDaoRoute(item)))) : flame ? Math.Max(1,(int)(player.GetWeaponDamage(item) * DaoArtifactRules.FlameBurstMultiplier(RefinedArtifact.ActiveDaoRoute(item)))) : hammer ? (int)(player.GetWeaponDamage(item) * DaoArtifactRules.HammerBurstMultiplier(RefinedArtifact.ActiveDaoRoute(item))) : wheel ? (int)(player.GetWeaponDamage(item) * DaoArtifactRules.WheelBurstMultiplier(RefinedArtifact.ActiveDaoRoute(item))) : moon ? (int)(player.GetWeaponDamage(item) * DaoArtifactRules.MoonBurstMultiplier(RefinedArtifact.ActiveDaoRoute(item))) : player.GetWeaponDamage(item) * DaoArtifactRules.BurstMultiplier(RefinedArtifact.ActiveDaoRoute(item));
-        int type = sect ? ModContent.ProjectileType<SectMechanismBolt>() : starSplit ? ModContent.ProjectileType<StarEclipseSplitBolt>() : spiritwood ? ModContent.ProjectileType<SpiritBoltProjectile>() : woodgrain ? ModContent.ProjectileType<WoodgrainSwordProjectile>() : flame ? ModContent.ProjectileType<CinnabarTalismanFlame>() : hammer ? ModContent.ProjectileType<FurnaceHammerProjectile>() : wheel ? ModContent.ProjectileType<FormlessSwordWheelProjectile>() : moon ? ModContent.ProjectileType<MoonboneShardProjectile>() : ModContent.ProjectileType<CloudpiercerSwordProjectile>();
+        Vector2 velocity = delta.SafeNormalize(Vector2.UnitX * player.direction) * (heavenLaw ? 20f : sect ? 18f : starSplit ? 14f : spiritwood ? 16f : woodgrain ? 12f : hammer ? 9f : 14f);
+        int damage = heavenLaw ? Math.Max(1,(int)(player.GetWeaponDamage(item) * DaoArtifactRules.HeavenLawBurstMultiplier(RefinedArtifact.ActiveDaoRoute(item)))) : sect ? Math.Max(1,(int)(player.GetWeaponDamage(item) * DaoArtifactRules.SectBurstMultiplier(RefinedArtifact.ActiveDaoRoute(item)))) : starSplit ? Math.Max(1,(int)(player.GetWeaponDamage(item) * DaoArtifactRules.StarSplitBurstMultiplier(RefinedArtifact.ActiveDaoRoute(item)))) : spiritwood ? Math.Max(1,(int)(player.GetWeaponDamage(item) * DaoArtifactRules.SpiritwoodBurstMultiplier(RefinedArtifact.ActiveDaoRoute(item)))) : woodgrain ? Math.Max(1,(int)(player.GetWeaponDamage(item) * DaoArtifactRules.WoodgrainBurstMultiplier(RefinedArtifact.ActiveDaoRoute(item)))) : flame ? Math.Max(1,(int)(player.GetWeaponDamage(item) * DaoArtifactRules.FlameBurstMultiplier(RefinedArtifact.ActiveDaoRoute(item)))) : hammer ? (int)(player.GetWeaponDamage(item) * DaoArtifactRules.HammerBurstMultiplier(RefinedArtifact.ActiveDaoRoute(item))) : wheel ? (int)(player.GetWeaponDamage(item) * DaoArtifactRules.WheelBurstMultiplier(RefinedArtifact.ActiveDaoRoute(item))) : moon ? (int)(player.GetWeaponDamage(item) * DaoArtifactRules.MoonBurstMultiplier(RefinedArtifact.ActiveDaoRoute(item))) : player.GetWeaponDamage(item) * DaoArtifactRules.BurstMultiplier(RefinedArtifact.ActiveDaoRoute(item));
+        int type = heavenLaw ? ModContent.ProjectileType<HeavenLawBolt>() : sect ? ModContent.ProjectileType<SectMechanismBolt>() : starSplit ? ModContent.ProjectileType<StarEclipseSplitBolt>() : spiritwood ? ModContent.ProjectileType<SpiritBoltProjectile>() : woodgrain ? ModContent.ProjectileType<WoodgrainSwordProjectile>() : flame ? ModContent.ProjectileType<CinnabarTalismanFlame>() : hammer ? ModContent.ProjectileType<FurnaceHammerProjectile>() : wheel ? ModContent.ProjectileType<FormlessSwordWheelProjectile>() : moon ? ModContent.ProjectileType<MoonboneShardProjectile>() : ModContent.ProjectileType<CloudpiercerSwordProjectile>();
         var created = new List<int>();
         var source = new EntitySource_ItemUse_WithAmmo(player, item, 0);
         int halfCount = wheel || sect ? 2 : 1;
         for (int i = -halfCount; i <= halfCount; i++) {
-            int index = Projectile.NewProjectile(source, position, velocity.RotatedBy(i * (sect ? 0.1 : starSplit ? 0.2 : spiritwood ? 0.12 : woodgrain ? 0.28 : hammer ? 0.24 : wheel ? 0.3 : 0.18)), type, damage, player.GetWeaponKnockback(item, item.knockBack), player.whoAmI);
+            int index = Projectile.NewProjectile(source, position, velocity.RotatedBy(i * (heavenLaw ? 0.08 : sect ? 0.1 : starSplit ? 0.2 : spiritwood ? 0.12 : woodgrain ? 0.28 : hammer ? 0.24 : wheel ? 0.3 : 0.18)), type, damage, player.GetWeaponKnockback(item, item.knockBack), player.whoAmI);
             if (index < 0 || index >= Main.maxProjectiles) {
                 RemoveCreated(created);
                 return false;

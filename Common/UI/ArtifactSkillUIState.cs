@@ -15,7 +15,7 @@ namespace XianXia.Common.UI;
 
 public class ArtifactSkillUIState : UIState
 {
-    private const float PanelHeight = 192f;
+    private const float PanelHeight = 228f;
     private UIPanel panel;
     private UIText status;
     private readonly List<(UITextPanel<string> Button, ArtifactSkill Skill)> skillButtons = new();
@@ -34,6 +34,7 @@ public class ArtifactSkillUIState : UIState
         AddButton("Spiritwood",0,ArtifactSkill.SpiritwoodVolley,136);
         AddButton("StarSplit",92,ArtifactSkill.StarSplitVolley,136);
         AddButton("Sect",184,ArtifactSkill.SectVolley,136);
+        AddButton("HeavenLaw",0,ArtifactSkill.HeavenLawVolley,172);
     }
     private void AddButton(string key,float left,ArtifactSkill skill,float top=28)
     {
@@ -93,6 +94,7 @@ public class ArtifactSkillUIState : UIState
             ArtifactSkill.SpiritwoodVolley => Text(route == DownedBossSystem.EndgameRoute.None ? "SpiritwoodRequirement" : "SpiritwoodDaoRequirement"),
             ArtifactSkill.StarSplitVolley => Text(route == DownedBossSystem.EndgameRoute.None ? "StarSplitRequirement" : "StarSplitDaoRequirement"),
             ArtifactSkill.SectVolley => Text(route == DownedBossSystem.EndgameRoute.None ? "SectRequirement" : "SectDaoRequirement"),
+            ArtifactSkill.HeavenLawVolley => Text(route == DownedBossSystem.EndgameRoute.None ? "HeavenLawRequirement" : "HeavenLawDaoRequirement"),
             ArtifactSkill.FlameFan => Text(route == DownedBossSystem.EndgameRoute.None ? "FlameRequirement" : "FlameDaoRequirement"),
             ArtifactSkill.ThunderVolley => Text(route == DownedBossSystem.EndgameRoute.None ? "ThunderRequirement" : "ThunderDaoRequirement"),
             _ => Text(route == DownedBossSystem.EndgameRoute.None ? "WardRequirement" : "WardDaoRequirement")

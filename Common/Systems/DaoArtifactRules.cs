@@ -59,6 +59,7 @@ public static class DaoArtifactRules
         : skill == ArtifactSkill.SpiritwoodVolley ? route == DownedBossSystem.EndgameRoute.AcceptStarAbyss ? 20 : route == DownedBossSystem.EndgameRoute.SeverHeaven ? 30 : 24
         : skill == ArtifactSkill.StarSplitVolley ? route == DownedBossSystem.EndgameRoute.AcceptStarAbyss ? 34 : route == DownedBossSystem.EndgameRoute.SeverHeaven ? 48 : 40
         : skill == ArtifactSkill.SectVolley ? route == DownedBossSystem.EndgameRoute.AcceptStarAbyss ? 44 : route == DownedBossSystem.EndgameRoute.SeverHeaven ? 64 : 52
+        : skill == ArtifactSkill.HeavenLawVolley ? route == DownedBossSystem.EndgameRoute.AcceptStarAbyss ? 52 : route == DownedBossSystem.EndgameRoute.SeverHeaven ? 72 : 60
         : skill == ArtifactSkill.FlameFan ? route == DownedBossSystem.EndgameRoute.AcceptStarAbyss ? 20 : route == DownedBossSystem.EndgameRoute.SeverHeaven ? 30 : 24
         : skill == ArtifactSkill.ThunderVolley ? route == DownedBossSystem.EndgameRoute.AcceptStarAbyss ? 30 : route == DownedBossSystem.EndgameRoute.SeverHeaven ? 48 : 36
         : skill == ArtifactSkill.HammerVolley ? route == DownedBossSystem.EndgameRoute.AcceptStarAbyss ? 34 : route == DownedBossSystem.EndgameRoute.SeverHeaven ? 54 : 40
@@ -70,6 +71,7 @@ public static class DaoArtifactRules
     public static float SpiritwoodBurstMultiplier(DownedBossSystem.EndgameRoute route) => route == DownedBossSystem.EndgameRoute.None ? 1.5f : route == DownedBossSystem.EndgameRoute.SeverHeaven ? 2.5f : 2f;
     public static float StarSplitBurstMultiplier(DownedBossSystem.EndgameRoute route) => route == DownedBossSystem.EndgameRoute.None ? 1.25f : route == DownedBossSystem.EndgameRoute.SeverHeaven ? 2.25f : 1.75f;
     public static float SectBurstMultiplier(DownedBossSystem.EndgameRoute route) => route == DownedBossSystem.EndgameRoute.None ? 1.5f : route == DownedBossSystem.EndgameRoute.SeverHeaven ? 2.5f : 2f;
+    public static float HeavenLawBurstMultiplier(DownedBossSystem.EndgameRoute route) => route == DownedBossSystem.EndgameRoute.None ? 1.75f : route == DownedBossSystem.EndgameRoute.SeverHeaven ? 2.75f : 2.25f;
     public static float FlameBurstMultiplier(DownedBossSystem.EndgameRoute route) => route == DownedBossSystem.EndgameRoute.None ? 1.5f : route == DownedBossSystem.EndgameRoute.SeverHeaven ? 2.5f : 2f;
     public static float MoonBurstMultiplier(DownedBossSystem.EndgameRoute route) => route == DownedBossSystem.EndgameRoute.None
         ? 1.5f : route == DownedBossSystem.EndgameRoute.SeverHeaven ? 2.5f : 2f;

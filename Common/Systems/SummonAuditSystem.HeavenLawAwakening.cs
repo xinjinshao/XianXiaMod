@@ -106,8 +106,8 @@ public partial class SummonAuditSystem
                 state.spiritualEnergy = cost;
                 check(weapon.CanUseItem(actor) == (stage >= CultivationStage.SpiritSevering && worldStage == 3),
                     "native heaven law exact-energy use retains realm hardmode Plantera and Golem gates");
-                check(!weapon.AltFunctionUse(actor) && ArtifactSkillTransactions.HeldSkill(item) == null && RefinedArtifact.SupportsDaoTransformation(item),
-                    "native heaven law awakening does not expose undefined active skill or Dao route");
+                check(weapon.AltFunctionUse(actor) == awakened && ArtifactSkillTransactions.HeldSkill(item) == ArtifactSkill.HeavenLawVolley && RefinedArtifact.SupportsDaoTransformation(item),
+                    "native heaven law awakening exposes its defined active skill only when awakened");
                 var lines = new List<TooltipLine>(); growth.ModifyTooltips(item,lines);
                 check(lines.Count == 2 && lines.TrueForAll(line => !line.Text.Contains("Mods.XianXia.") && !line.Text.Contains("{0}")),
                     "native heaven law crafted-awakening tooltips resolve for each state");

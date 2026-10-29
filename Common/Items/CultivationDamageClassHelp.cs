@@ -23,7 +23,7 @@ public class CultivationDamageClassHelp : GlobalItem
             "Mods.XianXia.DamageClasses." + (weapon.DeploysArray ? "CurrentArrayCost" : "CurrentCastCost"), cost)));
         if (RefinedArtifact.IsAwakened(item) && ArtifactSkillTransactions.HeldSkill(item) is ArtifactSkill skill) {
             string name = skill switch { ArtifactSkill.SwordBurst => "Sword", ArtifactSkill.ArrayPulse => "Array", ArtifactSkill.MoonCrescent => "Moon",
-                ArtifactSkill.WheelFormation => "Wheel", ArtifactSkill.HammerVolley => "Hammer", ArtifactSkill.WoodgrainRecall => "Woodgrain", ArtifactSkill.SpiritwoodVolley => "Spiritwood", ArtifactSkill.StarSplitVolley => "StarSplit", ArtifactSkill.SectVolley => "Sect", ArtifactSkill.FlameFan => "Flame", ArtifactSkill.ThunderVolley => "Thunder", _ => "Ward" };
+                ArtifactSkill.WheelFormation => "Wheel", ArtifactSkill.HammerVolley => "Hammer", ArtifactSkill.WoodgrainRecall => "Woodgrain", ArtifactSkill.SpiritwoodVolley => "Spiritwood", ArtifactSkill.StarSplitVolley => "StarSplit", ArtifactSkill.SectVolley => "Sect", ArtifactSkill.HeavenLawVolley => "HeavenLaw", ArtifactSkill.FlameFan => "Flame", ArtifactSkill.ThunderVolley => "Thunder", _ => "Ward" };
             int skillCost = state.GetSpiritualEnergyCost(DaoArtifactRules.SkillCost(skill, RefinedArtifact.ActiveDaoRoute(item)));
             int remaining = (int)System.Math.Ceiling(System.Math.Max(0, state.activeSkillCooldown) / 60d);
             tooltips.Add(new TooltipLine(Mod, "CurrentArtifactSkill", Language.GetTextValue("Mods.XianXia.DamageClasses.CurrentSkillCost",

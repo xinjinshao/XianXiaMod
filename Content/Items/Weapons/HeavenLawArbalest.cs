@@ -32,6 +32,7 @@ public class HeavenLawArbalest : global::XianXia.Common.Items.CultivationWeaponI
     }
     public override bool CanUseItem(Player player)
     {
+        if (player.altFunctionUse == 2) return global::XianXia.Common.Systems.ArtifactSkillTransactions.CanUseAlternative(player, Item);
         XianXiaPlayer state = player.GetModPlayer<XianXiaPlayer>();
         return state.cultivationStage >= CultivationStage.SpiritSevering
             && CultivationRules.GetWorldFailure(CultivationStage.SpiritSevering, Main.hardMode,

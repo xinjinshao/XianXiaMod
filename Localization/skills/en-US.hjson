@@ -63,6 +63,9 @@ Mods: {
    }
   }
   Skills: {
+   HeavenLaw: "Law Volley"
+   HeavenLawRequirement: "Reach Spirit Severing with Hardmode, Plantera and Golem cleared; hold an awakened Heaven Law Arbalest: three 175% ranged bolts, speed 20 and 0.08-radian spacing, two-hit penetration and 2-second Ichor on hit. Base cost 48 energy, shared 20-second cooldown."
+   HeavenLawDaoRequirement: "Same realm/world gates; matching Dao route gives three 225% bolts (275% for Sever). Rebuild costs 60 and heals up to 20; Sever costs 72; Star Abyss costs 52 and adds 8 pressure. Shared 20-second cooldown; player cost modifiers apply."
    Sect: "Five Bolts"
    SectRequirement: "Reach Nascent Soul in a Hardmode world with Plantera defeated, and hold an awakened Sect Mechanism Crossbow: five 150% ranged bolts at speed 18 and 0.1-radian spacing, each with three-hit penetration. Base cost 40 energy, shared 20-second cooldown."
    SectDaoRequirement: "Same realm/world gates; matching Dao route gives five 200% bolts (250% for Sever). Rebuild costs 52 and heals up to 20; Sever costs 64; Star Abyss costs 44 and adds 8 pressure. Shared 20-second cooldown; player cost modifiers apply."
