@@ -63,6 +63,9 @@ Mods: {
    }
   }
   Skills: {
+   Decree: "Three Edicts"
+   DecreeRequirement: "Hold an awakened Broken Heaven Decree: three stationary 150% magic pillars spaced 80 pixels around the aimed focus, clamped to 520 pixels; every pillar must be visible, unobstructed and within 600 pixels. Damage begins below 18 remaining ticks, with eight-hit penetration. Base cost 36 energy, shared 20-second cooldown."
+   DecreeDaoRequirement: "Matching Dao route gives three 200% pillars (250% for Sever). Rebuild costs 48 and heals up to 20; Sever costs 60; Star Abyss costs 40 and adds 8 pressure. Placement checks and damage delay remain; shared 20-second cooldown and player cost modifiers apply."
    Codex: "Three Stars"
    CodexRequirement: "Reach Tribulation with Hardmode, Plantera, Golem and Moon Lord cleared; hold an awakened Archive Star Codex: three 175% magic orbs, speed 10 and 0.24-radian spacing, each charging for 18 frames before damage with four-hit penetration. Base cost 60 energy, shared 20-second cooldown."
    CodexDaoRequirement: "Same realm/world gates; matching Dao route gives three 225% orbs (275% for Sever). Rebuild costs 76 and heals up to 20; Sever costs 90; Star Abyss costs 68 and adds 8 pressure. The 18-frame charge remains. Shared 20-second cooldown; player cost modifiers apply."

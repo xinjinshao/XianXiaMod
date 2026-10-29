@@ -1,0 +1,13 @@
+{
+  "round": 400,
+  "skill": "DecreeTriad",
+  "packageSha256": "4B7B8B9707CA56F9AD6E3EE9E6279448AFD6B1190BC35FAD68900C20BCF07609",
+  "nativeReportSha256": "6DF693AC60A68E3609D4B592E7B79ED61FBBF1D21E0884DABB261D3389306C92",
+  "nativeChecks": 89984,
+  "previousNativeChecks": 89154,
+  "routeAuthorityCombinations": 64,
+  "networkSimulationChecks": 30756,
+  "gameplayChecks": 7738,
+  "scope": "Registered stationary pillars, route/fallback costs and damage, placement geometry, full lifetime damage eligibility, real solid-tile rejection, distant-aim clamp, invalid requests and death cancellation. Partial creation rollback and blocked visibility are also covered by mocked protocol tests. Temporary tile fields are restored.",
+  "limitations": "Lifetime is assigned manually rather than advanced by complete world frames. No rendered targeting/physical input, live peers, late join or combat/energy balance. Existing pillar assets and damage behavior are reused."
+}

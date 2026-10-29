@@ -86,7 +86,7 @@ public partial class SummonAuditSystem
                     var damage = StatModifier.Default; weapon.ModifyWeaponDamage(actor,ref damage); growth.ModifyWeaponDamage(item,actor,ref damage);
                     check(Math.Abs(damage.ApplyTo(100) - (112 + (heritage ? 16 : 0) + (awakened ? 10 : 0))) < .001f,"native heaven decree refinement awakening and heritage damage hooks remain additive");
                     state.spiritualEnergy = cost - 1; check(!weapon.CanUseItem(actor),"native heaven decree rejects one below current energy cost"); state.spiritualEnergy = cost; check(weapon.CanUseItem(actor),"native heaven decree accepts exact current energy cost");
-                    check(!weapon.AltFunctionUse(actor) && ArtifactSkillTransactions.HeldSkill(item) == null && RefinedArtifact.SupportsDaoTransformation(item),"native heaven decree supports Dao eligibility without an undefined active skill");
+                    check(weapon.AltFunctionUse(actor) == awakened && ArtifactSkillTransactions.HeldSkill(item) == ArtifactSkill.DecreeTriad && RefinedArtifact.SupportsDaoTransformation(item),"native heaven decree supports Dao eligibility and its defined active skill only when awakened");
                     var lines = new List<TooltipLine>(); weapon.ModifyTooltips(lines); growth.ModifyTooltips(item,lines);
                     check(lines.Count == 3 && lines.TrueForAll(line => !line.Text.Contains("Mods.XianXia.") && !line.Text.Contains("{0}")),"native heaven decree heritage and crafted-awakening tooltips resolve independently");
                 }

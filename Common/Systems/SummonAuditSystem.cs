@@ -1052,6 +1052,7 @@ public partial class SummonAuditSystem : ModSystem
             AuditHeavenLawSkill(Check);
             AuditCalamitySkill(Check);
             AuditCodexSkill(Check);
+            AuditDecreeSkill(Check);
             AuditFlameLifecycle(Check);
             AuditWardDao(Check);
             AuditInscriptionNavigation(Check);
