@@ -1,0 +1,14 @@
+{
+  "round": 404,
+  "feature": "Moonbone Pact summoning armor",
+  "packageSha256": "226E315A5505A5DD81BEC1618CD9984AA29A6BD5AA5FEEA9F7B65C470BCCA9BF",
+  "nativeReportSha256": "84E5F3438D63DA24FB7A3029EBC1644081785795C14466A3387B34C758A11AE2",
+  "nativeChecks": 93678,
+  "previousNativeChecks": 93588,
+  "newNativeChecks": 90,
+  "portableSourceSteps": 40,
+  "gameplayChecks": 7744,
+  "equipmentModeMaskCombinations": 24,
+  "scope": "Registered head/body/legs defaults, native equip slots, exact recipes and Moon Lord condition, localized set preview, ItemIO save/load and clone. Real ResetEffects, UpdateEquips and UpdateArmorSets repeated twice for all eight equipment masks in single-player/client/server calculation modes. Checks defense, summon-only damage, minion capacity, unchanged sentry capacity and generic damage, spirit cost, removal and vanity reset.",
+  "limitations": "Controlled equipment method sequence, no complete player ticks, actual crafting, summoned-minion combat or excess-minion cleanup, rendered equipment or live network delivery. Vanilla Spooky armor item/equip visuals are temporary. Balance and original artwork remain pending."
+}

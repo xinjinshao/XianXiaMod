@@ -8,6 +8,7 @@
 - [玄炉守御套装](Entries/Furnaceguard_Set.md)：器胚炉制作；完整套装以机动和灵气效率换取防护。
 
 - [雷纹行云套装](Entries/Stormstride_Set.md)：困难模式雷纹炉制作；完整套装以防御换取移动速度与灵气效率。
+- [月骸役灵套装](Entries/MoonbonePact_Set.md)：月亮领主后斩道台制作；完整套装以灵气效率换取召唤栏位与召唤伤害。
 
 ## 飞剑
 

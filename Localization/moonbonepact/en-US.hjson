@@ -1,0 +1,21 @@
+{
+  Mods: {
+    XianXia: {
+      Items: {
+        MoonbonePactCrown: {
+          DisplayName: "Moonbone Pact Crown"
+          Tooltip: "Post-Moon Lord summoning cultivation armor; equip all three pieces for the set bonus"
+          SetBonus: "+{0} minion slots and +{1}% summon damage\nSpiritual energy costs increased by {2}%"
+        }
+        MoonbonePactRobe: {
+          DisplayName: "Moonbone Pact Robe"
+          Tooltip: "Part of the Moonbone Pact set; the full set trades energy efficiency for summoning power"
+        }
+        MoonbonePactLeggings: {
+          DisplayName: "Moonbone Pact Leggings"
+          Tooltip: "Part of the Moonbone Pact set; the full set trades energy efficiency for summoning power"
+        }
+      }
+    }
+  }
+}

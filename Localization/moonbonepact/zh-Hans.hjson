@@ -1,0 +1,21 @@
+{
+  Mods: {
+    XianXia: {
+      Items: {
+        MoonbonePactCrown: {
+          DisplayName: "月骸役灵冠"
+          Tooltip: "月亮领主后的召唤型修行护甲；穿齐三件获得套装效果"
+          SetBonus: "召唤栏位增加{0}，召唤伤害提高{1}%\n灵气消耗提高{2}%"
+        }
+        MoonbonePactRobe: {
+          DisplayName: "月骸役灵袍"
+          Tooltip: "月骸役灵套装部件；完整套装以灵气效率换取召唤能力"
+        }
+        MoonbonePactLeggings: {
+          DisplayName: "月骸役灵护腿"
+          Tooltip: "月骸役灵套装部件；完整套装以灵气效率换取召唤能力"
+        }
+      }
+    }
+  }
+}
