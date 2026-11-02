@@ -1,0 +1,14 @@
+{
+  Mods: {
+    XianXia: {
+      BossSources: {
+        Scope: "Boss reward sources (other acquisition paths may exist):"
+        Direct: "Dropped by {0}; difficulty and drop conditions still apply."
+        Bag: "Defeat {0} for {1}, then open the treasure bag."
+        Conditions: "Drop conditions: {0}"
+        More: "{0} more boss reward sources; hold Shift to expand."
+        Caution: "A source does not guarantee a drop or current availability. Expert/Master bags require participation eligibility; check the Bestiary for chances."
+      }
+    }
+  }
+}

@@ -1,0 +1,18 @@
+{
+  "round": 408,
+  "feature": "Boss and treasure bag reward source tooltips",
+  "packageSha256": "1EA3320CD3A7B22336D655396B2E64AFBD544811A5A00C4F0E7BE3A259270E98",
+  "nativeReportSha256": "2E33DEF236436D7DE95888D7532467E07CFAB3DB92177D7EA62A72ED5670ACF3",
+  "nativeChecks": 98217,
+  "previousNativeChecks": 96348,
+  "newNativeChecks": 1869,
+  "bosses": 12,
+  "treasureBags": 12,
+  "modRewardItems": 69,
+  "modRewardSourceEntries": 174,
+  "rewardDifficultyCombinations": 207,
+  "portableSourceSteps": 40,
+  "gameplayChecks": 7744,
+  "scope": "Runtime NPC and item drop-rate reports establish direct boss rewards and actual associated bag contents. Actual registered reward instances have the global tooltip. Normal/Expert/Master calculation modes verify expanded source names, nonempty native condition descriptions, default four-row truncation and expansion notice. Mixed ordinary-enemy/boss/bag provenance, unrelated-item exclusion, world-cache rebuild and absence of spawned loot/projectiles are checked.",
+  "limitations": "Drop-rate reporting and direct tooltip hooks, not actual boss kills, bag-opening rolls, physical Shift input, graphic tooltip layout or live reward transport. Source descriptions are not guarantees of availability or drops. Other acquisition paths remain outside this index."
+}

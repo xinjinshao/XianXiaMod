@@ -1042,6 +1042,7 @@ public partial class SummonAuditSystem : ModSystem
             AuditClassPaths(Check);
             AuditClassPathShops(Check);
             AuditMaterialSources(Check);
+            AuditBossSources(Check);
             AuditArmorPreview(Check);
             AuditWeaponCostTooltips(Check);
             AuditSkillTooltips(Check);
