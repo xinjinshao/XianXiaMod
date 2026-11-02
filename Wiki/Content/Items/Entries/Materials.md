@@ -13,11 +13,13 @@
 | 天道碎片 | <img src="../../../../Assets/Final/heaven_dao_fragment/heaven_dao_fragment__item_icon__v01.png" width="32"> | Post-Golem | 坠天宫阙 | 天道+突破 |
 | 月骨 | <img src="../../../../Assets/Final/moonbone/moonbone__item_icon__v01.png" width="32"> | Post-ML | 月骸天渊 | 终局+突破 |
 | 斩道尘 | <img src="../../../../Assets/Final/dao_severing_dust/dao_severing_dust__item_icon__v01.png" width="32"> | Endgame | 月骸敌怪 | 终局装备 |
-## 代码: ✅ 11/11材料全部实现
+## 游戏内来源提示
 
-## 代码实现
+普通敌怪掉落的材料现在会在物品提示中列出敌怪、生态、所需世界阶段和本世界是否已解锁。关系来自实际注册掉落表；当前覆盖17种普通敌怪的24种物品、33条敌怪—物品关系。
 
-- ✅ 全部物品实现
+提示仅列普通敌怪来源，不穷举Boss、宝藏袋、委托、商店、制作、种植或钓鱼途径，也不承诺每次击杀都会掉落。召唤援军的无奖励清理规则仍适用。四艺兵录的配方材料带有物品图标，可通过原版聊天物品悬停查看提示。
+
+本页表格是部分基础材料目录，不代表全部材料或已完成通关/经济验收。实际刷怪、掉率平衡、提示排版和联机显示仍待验证。
 
 ## 非战斗补充来源
 

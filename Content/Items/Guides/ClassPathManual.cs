@@ -66,7 +66,7 @@ public class ClassPathManual : ModItem
         foreach (Recipe recipe in Main.recipe.Take(Recipe.numRecipes).Where(r => !r.Disabled && r.createItem.type == type)) {
             var ingredients = recipe.requiredItem.Where(i => !i.IsAir).Select(i => {
                 int group = recipe.acceptedGroups.FirstOrDefault(id => RecipeGroup.recipeGroups[id].ValidItems.Contains(i.type),-1);
-                return (group < 0 ? Lang.GetItemNameValue(i.type) : RecipeGroup.recipeGroups[group].GetText()) + " ×" + i.stack;
+                return "[i:" + i.type + "] " + (group < 0 ? Lang.GetItemNameValue(i.type) : RecipeGroup.recipeGroups[group].GetText()) + " ×" + i.stack;
             });
             string stations = string.Join(", ",recipe.requiredTile.Select(StationName));
             yield return Text("Recipe",string.Join(", ",ingredients),stations.Length == 0 ? Text("ByHand") : stations);

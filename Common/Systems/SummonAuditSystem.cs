@@ -1041,6 +1041,7 @@ public partial class SummonAuditSystem : ModSystem
             AuditMoonbonePactArmor(Check);
             AuditClassPaths(Check);
             AuditClassPathShops(Check);
+            AuditMaterialSources(Check);
             AuditArmorPreview(Check);
             AuditWeaponCostTooltips(Check);
             AuditSkillTooltips(Check);

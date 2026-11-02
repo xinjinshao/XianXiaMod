@@ -2,6 +2,17 @@ namespace XianXia.Common.Systems;
 
 public static class EnemySpawnRules
 {
+    public static string BiomeName(string enemy) => enemy switch {
+        "WanderingSpiritSlime" or "ShatteredJadeWorm" or "TalismanBat" => "ShallowSpiritVeinsBiome",
+        "HerbGardenVineSpirit" or "MiasmaFlowerMoth" => "GreenwoodHerbGardenBiome",
+        "IronShardSpirit" or "FurnaceAshGolem" => "SunkenFurnaceVeinBiome",
+        "ThunderPatternHawk" or "TribulationCloudling" => "ThunderMarshCloudsBiome",
+        "StarAbyssLarva" or "StarEclipsedCultivator" => "StarAbyssRiftBiome",
+        "ObsessedSwordCultivator" or "ScriptureArchiveEcho" => "TenThousandSectsRuinsBiome",
+        "HeavenTabletGuard" or "CelestialPuppet" => "FallenHeavenPalaceBiome",
+        "MoonboneCultivator" or "ArchivedImmortalSoul" => "MoonboneAbyssBiome",
+        _ => ""
+    };
     public static int RequiredTier(string enemy) => enemy switch {
         "WanderingSpiritSlime" or "ShatteredJadeWorm" or "TalismanBat" or "HerbGardenVineSpirit"
             or "MiasmaFlowerMoth" or "IronShardSpirit" or "FurnaceAshGolem" => 0,

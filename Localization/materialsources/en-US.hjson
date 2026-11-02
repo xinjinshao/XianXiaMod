@@ -1,0 +1,17 @@
+{
+  Mods: {
+    XianXia: {
+      MaterialSources: {
+        Scope: "Ordinary enemy sources (other acquisition paths may exist):"
+        Source: "{0} · {1} · {2} ({3})"
+        Tier0: "No world progression required"
+        Tier1: "Hardmode"
+        Tier2: "Hardmode and post-Plantera"
+        Tier3: "Hardmode, post-Plantera and post-Golem"
+        Tier4: "Hardmode, post-Plantera, post-Golem and post-Moon Lord"
+        Unlocked: "Unlocked in this world"
+        Locked: "Locked in this world"
+      }
+    }
+  }
+}

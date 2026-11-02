@@ -1,0 +1,17 @@
+{
+  "round": 407,
+  "feature": "Ordinary enemy material source tooltips",
+  "packageSha256": "5D1D4BC96441BA8678FB8E4D0E1DE9439D6A2A625A44147CD02C82B28AEF64F3",
+  "nativeReportSha256": "5FED2AFDCF3893BED1D4AE2BB7AEFA9F34793FDF71B7B8AA04C677AF820B3BE1",
+  "nativeChecks": 96348,
+  "previousNativeChecks": 95013,
+  "newNativeChecks": 1335,
+  "ordinaryEnemies": 17,
+  "sourceItems": 24,
+  "enemyItemRelations": 33,
+  "itemWorldFlagCombinations": 384,
+  "portableSourceSteps": 40,
+  "gameplayChecks": 7744,
+  "scope": "Runtime ItemDropDatabase reports build ordinary enemy/item relationships. Actual registered item instances receive the global tooltip. Checks every eligible enemy's reported drops, unique source pairs, registered biome names, multi-source early materials, late archive material, unrelated-item exclusion, all sixteen world-flag combinations per material, resolved source text and world load/unload cache rebuild. Manual recipe text includes vanilla item chat tags.",
+  "limitations": "Direct tooltip hooks and drop-rate reporting, not actual spawn/kill/drop rolls. Biome association follows the existing SpawnChance definitions; natural biome detection and access are not newly tested. No graphical chat-tag hover, tooltip layout, live peers, acquisition-chain or economy balance acceptance. Ordinary-enemy hints intentionally omit other acquisition paths."
+}
