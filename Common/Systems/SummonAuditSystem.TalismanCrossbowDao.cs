@@ -85,8 +85,8 @@ public partial class SummonAuditSystem
                     } finally { Main.netMode = ammoMode; Main.myPlayer = ammoLocal; }
                     var tips = new List<TooltipLine>(); weapon.ModifyTooltips(tips); growth.ModifyTooltips(item,tips);
                     check(tips.Count == 3 && tips.All(tip => !tip.Text.Contains("Mods.XianXia.") && !tip.Text.Contains("{0}"))
-                        && ArtifactSkillTransactions.HeldSkill(item) == null && !weapon.AltFunctionUse(actor),
-                        "native talisman crossbow Dao tooltip resolves recorded route without inventing an active skill");
+                        && ArtifactSkillTransactions.HeldSkill(item) == ArtifactSkill.TalismanShot && weapon.AltFunctionUse(actor),
+                        "native talisman crossbow Dao tooltip resolves recorded route with its own active skill");
                 }
 
             }

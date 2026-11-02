@@ -96,8 +96,8 @@ public partial class SummonAuditSystem
                 check(Math.Abs(damage.ApplyTo(100) - (112 + (awakened ? 10 : 0))) < .001f,
                     "native talisman crossbow refinement and awakening damage hooks remain additive");
                 check(item.DamageType == DamageClass.Ranged && item.useAmmo == AmmoID.Arrow && item.mana == 0
-                    && !weapon.AltFunctionUse(actor) && ArtifactSkillTransactions.HeldSkill(item) == null && RefinedArtifact.SupportsDaoTransformation(item),
-                    "native talisman crossbow preserves native ammo identity with Dao eligibility and no undefined skill");
+                    && weapon.AltFunctionUse(actor) == awakened && ArtifactSkillTransactions.HeldSkill(item) == ArtifactSkill.TalismanShot && RefinedArtifact.SupportsDaoTransformation(item),
+                    "native talisman crossbow preserves native ammo identity with Dao eligibility and its defined active skill");
                 var lines = new List<TooltipLine>(); growth.ModifyTooltips(item,lines);
                 check(lines.Count == 2 && lines.TrueForAll(line => !line.Text.Contains("Mods.XianXia.") && !line.Text.Contains("{0}")),
                     "native talisman crossbow crafted awakening tooltips resolve for each state");

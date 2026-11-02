@@ -17,6 +17,7 @@
     <Compile Include="../../../Common/Players/CultivationRules.cs" Link="CultivationRules.cs" />
     <Compile Include="../../../Common/Items/CultivationWeaponItem.cs" Link="CultivationWeaponItem.cs" />
     <Compile Include="../../../Common/Systems/WeaponShotTransactions.cs" Link="WeaponShotTransactions.cs" />
+    <Compile Include="../../../Common/Systems/TalismanSkillShot.cs" Link="TalismanSkillShot.cs" />
     <Compile Include="../../../Common/Systems/PillQualitySystem.cs" Link="PillQualitySystem.cs" />
     <Compile Include="../../../Common/Systems/PillQualityRules.cs" Link="PillQualityRules.cs" />
     <Compile Include="../../../Common/Systems/InscriptionRules.cs" Link="InscriptionRules.cs" />

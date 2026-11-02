@@ -16,7 +16,7 @@ namespace XianXia.Common.Systems;
 public static class ArtifactSkillTransactions
 {
     public static ArtifactSkill? HeldSkill(Item item) => RefinedArtifact.SupportsAwakening(item) ? item.ModItem.Name switch
-    { "CloudpiercerFlyingSword" => ArtifactSkill.SwordBurst, "GreenwoodArrayPlate" => ArtifactSkill.ArrayPulse, "HeavenTabletWardSeal" => ArtifactSkill.WardGuard, "MoonboneDharmaSword" => ArtifactSkill.MoonCrescent, "FormlessSwordWheel" => ArtifactSkill.WheelFormation, "BlackFurnaceWarhammer" => ArtifactSkill.HammerVolley, "ThunderPatternSwordCase" => ArtifactSkill.ThunderVolley, "CinnabarTalismanFlameItem" => ArtifactSkill.FlameFan, "WoodgrainFlyingSword" => ArtifactSkill.WoodgrainRecall, "SpiritwoodCrossbow" => ArtifactSkill.SpiritwoodVolley, "StarEclipseArbalest" => ArtifactSkill.StarSplitVolley, "SectMechanismCrossbow" => ArtifactSkill.SectVolley, "HeavenLawArbalest" => ArtifactSkill.HeavenLawVolley, "StarCalamityMechanismCase" => ArtifactSkill.CalamityVolley, "ArchiveStarCodex" => ArtifactSkill.CodexConstellation, "BrokenHeavenDecree" => ArtifactSkill.DecreeTriad, "GreenwoodMedicineCauldron" => ArtifactSkill.CauldronBloom, "ThunderTalismanArrayPlate" => ArtifactSkill.ArrayDischarge, _ => null } : null;
+    { "CloudpiercerFlyingSword" => ArtifactSkill.SwordBurst, "GreenwoodArrayPlate" => ArtifactSkill.ArrayPulse, "HeavenTabletWardSeal" => ArtifactSkill.WardGuard, "MoonboneDharmaSword" => ArtifactSkill.MoonCrescent, "FormlessSwordWheel" => ArtifactSkill.WheelFormation, "BlackFurnaceWarhammer" => ArtifactSkill.HammerVolley, "ThunderPatternSwordCase" => ArtifactSkill.ThunderVolley, "CinnabarTalismanFlameItem" => ArtifactSkill.FlameFan, "WoodgrainFlyingSword" => ArtifactSkill.WoodgrainRecall, "SpiritwoodCrossbow" => ArtifactSkill.SpiritwoodVolley, "StarEclipseArbalest" => ArtifactSkill.StarSplitVolley, "SectMechanismCrossbow" => ArtifactSkill.SectVolley, "HeavenLawArbalest" => ArtifactSkill.HeavenLawVolley, "StarCalamityMechanismCase" => ArtifactSkill.CalamityVolley, "ArchiveStarCodex" => ArtifactSkill.CodexConstellation, "BrokenHeavenDecree" => ArtifactSkill.DecreeTriad, "GreenwoodMedicineCauldron" => ArtifactSkill.CauldronBloom, "ThunderTalismanArrayPlate" => ArtifactSkill.ArrayDischarge, "TalismanCrossbow" => ArtifactSkill.TalismanShot, _ => null } : null;
     public static bool CanUseAlternative(Player player, Item item) => RefinedArtifact.IsAwakened(item)
         && HeldSkill(item) is ArtifactSkill skill && player.GetModPlayer<XianXiaPlayer>().activeSkillCooldown == 0
         && (skill != ArtifactSkill.HammerVolley || HammerRealmAllowed(player))
@@ -77,8 +77,9 @@ public static class ArtifactSkillTransactions
         if (!eligible) return "Mods.XianXia.Skills.Unavailable";
         var state = player.GetModPlayer<XianXiaPlayer>();
         if (state.activeSkillCooldown > 0) return "Mods.XianXia.Skills.CoolingDown";
+        if (skill == ArtifactSkill.TalismanShot && !player.HasAmmo(item)) return "Mods.XianXia.Skills.NeedAmmo";
         if (skill == ArtifactSkill.ArrayDischarge && FindThunderArray(player) == null) return "Mods.XianXia.Skills.NeedThunderArray";
-        if (IsBurst(skill) && Main.maxProjectiles - CountActive() < (skill is ArtifactSkill.WheelFormation or ArtifactSkill.SectVolley or ArtifactSkill.CalamityVolley ? 5 : 3)) return "Mods.XianXia.Skills.Capacity";
+        if (IsBurst(skill) && Main.maxProjectiles - CountActive() < (skill == ArtifactSkill.TalismanShot ? 1 : skill is ArtifactSkill.WheelFormation or ArtifactSkill.SectVolley or ArtifactSkill.CalamityVolley ? 5 : 3)) return "Mods.XianXia.Skills.Capacity";
         if (skill is ArtifactSkill.ArrayPulse or ArtifactSkill.CauldronBloom) {
             bool cauldron = skill == ArtifactSkill.CauldronBloom;
             Projectile field = cauldron ? FindCauldron(player) : FindArray(player);
@@ -126,7 +127,7 @@ public static class ArtifactSkillTransactions
         Reply(player, "Mods.XianXia.Skills.Success");
     }
     private static bool Friendly(Player owner, Player target) => owner == target || !owner.hostile || !target.hostile || (owner.team > 0 && owner.team == target.team);
-    private static bool IsBurst(ArtifactSkill skill) => skill is ArtifactSkill.SwordBurst or ArtifactSkill.MoonCrescent or ArtifactSkill.WheelFormation or ArtifactSkill.HammerVolley or ArtifactSkill.ThunderVolley or ArtifactSkill.FlameFan or ArtifactSkill.WoodgrainRecall or ArtifactSkill.SpiritwoodVolley or ArtifactSkill.StarSplitVolley or ArtifactSkill.SectVolley or ArtifactSkill.HeavenLawVolley or ArtifactSkill.CalamityVolley or ArtifactSkill.CodexConstellation or ArtifactSkill.DecreeTriad or ArtifactSkill.ArrayDischarge;
+    private static bool IsBurst(ArtifactSkill skill) => skill is ArtifactSkill.SwordBurst or ArtifactSkill.MoonCrescent or ArtifactSkill.WheelFormation or ArtifactSkill.HammerVolley or ArtifactSkill.ThunderVolley or ArtifactSkill.FlameFan or ArtifactSkill.WoodgrainRecall or ArtifactSkill.SpiritwoodVolley or ArtifactSkill.StarSplitVolley or ArtifactSkill.SectVolley or ArtifactSkill.HeavenLawVolley or ArtifactSkill.CalamityVolley or ArtifactSkill.CodexConstellation or ArtifactSkill.DecreeTriad or ArtifactSkill.ArrayDischarge or ArtifactSkill.TalismanShot;
     private static Projectile FindArray(Player player)
     {
         int type = ModContent.ProjectileType<GreenwoodArrayField>();
@@ -160,6 +161,7 @@ public static class ArtifactSkillTransactions
     private static int CountActive() { int count = 0; for (int i = 0; i < Main.maxProjectiles; i++) if (Main.projectile[i].active) count++; return count; }
     private static bool Burst(Player player, Item item, Vector2 aim)
     {
+        if (HeldSkill(item) == ArtifactSkill.TalismanShot) return TalismanSkillShot.TryFire(player,item,aim);
         if (HeldSkill(item) == ArtifactSkill.ArrayDischarge) return ArrayDischargeBurst(player,item);
         if (HeldSkill(item) == ArtifactSkill.DecreeTriad) return DecreeBurst(player,item,aim);
         if (HeldSkill(item) == ArtifactSkill.ThunderVolley) return ThunderBurst(player,item,aim);

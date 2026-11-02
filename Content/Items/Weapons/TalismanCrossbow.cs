@@ -24,6 +24,18 @@ public class TalismanCrossbow : ModItem
         Item.useAmmo = AmmoID.Arrow;
     }
     public override float UseSpeedMultiplier(Player player) => global::XianXia.Common.Items.RefinedArtifact.IsAwakened(Item) ? 1.1f : 1f;
+    public override bool AltFunctionUse(Player player) => global::XianXia.Common.Items.RefinedArtifact.IsAwakened(Item);
+    public override bool CanUseItem(Player player) => player.altFunctionUse != 2
+        || global::XianXia.Common.Systems.ArtifactSkillTransactions.CanUseAlternative(player,Item);
+    public override bool CanConsumeAmmo(Item ammo,Player player) => player.altFunctionUse != 2
+        || player.GetModPlayer<global::XianXia.Common.Players.XianXiaPlayer>().ApplyingArtifactAmmo;
+    public override bool Shoot(Player player,Terraria.DataStructures.EntitySource_ItemUse_WithAmmo source,
+        Microsoft.Xna.Framework.Vector2 position,Microsoft.Xna.Framework.Vector2 velocity,int type,int damage,float knockback)
+    {
+        if (player.altFunctionUse != 2) return true;
+        global::XianXia.Common.Systems.ArtifactSkillTransactions.Request(player,global::XianXia.Common.Systems.ArtifactSkill.TalismanShot);
+        return false;
+    }
     public override void ModifyWeaponDamage(Player player, ref StatModifier damage)
     {
         if (global::XianXia.Common.Items.RefinedArtifact.IsAwakened(Item)) damage += 0.1f;

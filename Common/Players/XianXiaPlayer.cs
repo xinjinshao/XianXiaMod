@@ -60,6 +60,7 @@ public class XianXiaPlayer : ModPlayer
     public int BossSummonCooldown { get; set; }
     public int WeaponShotCooldown { get; set; }
     public bool ApplyingWeaponShot { get; set; }
+    public bool ApplyingArtifactAmmo { get; set; }
     public bool IsResourceAuthority { get; private set; } = true;
     public int tribulationWeakness;
     public uint ResourceRevision { get; private set; }
@@ -99,6 +100,7 @@ public class XianXiaPlayer : ModPlayer
         ProgressionItemCooldown = 0;
         BossSummonCooldown = WeaponShotCooldown = 0;
         ApplyingWeaponShot = false;
+        ApplyingArtifactAmmo = false;
         tribulationWeakness = 0;
         networkSyncTimer = 0;
         lastSentSnapshot = default;
@@ -818,6 +820,7 @@ public class XianXiaPlayer : ModPlayer
         ProgressionItemCooldown = networkSyncTimer = 0;
         BossSummonCooldown = WeaponShotCooldown = 0;
         ApplyingWeaponShot = false;
+        ApplyingArtifactAmmo = false;
         lastSentSnapshot = default;
     }
 

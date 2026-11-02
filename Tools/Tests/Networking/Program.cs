@@ -694,6 +694,7 @@ Terraria.Projectile CreateDischargeField(Terraria.Player owner) {
 void SetupSkill(string name="CloudpiercerFlyingSword") {
  SetupAwakening(name);Game.player[0].inventory[1].GetGlobalItem<XianXia.Common.Items.RefinedArtifact>().TryAwaken();
  Game.player[0].selectedItem=1;Game.player[0].State.spiritualEnergy=100;
+ if(name=="TalismanCrossbow"){Game.player[0].HeldItem.useAmmo=Terraria.ID.AmmoID.Arrow;Game.player[0].inventory[54]=new Terraria.Item{type=810,stack=5,ammo=Terraria.ID.AmmoID.Arrow,shoot=2,shootSpeed=0,damage=0,consumable=true};}
  foreach(var projectile in Game.projectile) projectile.active=false;
  Terraria.Projectile.AllowSpawn=true;Terraria.Projectile.SpawnBudget=-1;
 }
@@ -1653,7 +1654,7 @@ foreach(int mode in new[]{0,2}) foreach(byte route in new byte[]{1,2,3}) {
 }
 // Read-only panel readiness uses the same evaluator as authority casting in every network mode.
 foreach(int mode in new[]{0,1,2}) foreach(ArtifactSkill skill in Enum.GetValues<ArtifactSkill>()) {
- string name=skill switch{ArtifactSkill.SwordBurst=>"CloudpiercerFlyingSword",ArtifactSkill.ArrayPulse=>"GreenwoodArrayPlate",ArtifactSkill.WardGuard=>"HeavenTabletWardSeal",ArtifactSkill.MoonCrescent=>"MoonboneDharmaSword",ArtifactSkill.WheelFormation=>"FormlessSwordWheel",ArtifactSkill.HammerVolley=>"BlackFurnaceWarhammer",ArtifactSkill.WoodgrainRecall=>"WoodgrainFlyingSword",ArtifactSkill.FlameFan=>"CinnabarTalismanFlameItem",ArtifactSkill.SpiritwoodVolley=>"SpiritwoodCrossbow",ArtifactSkill.StarSplitVolley=>"StarEclipseArbalest",ArtifactSkill.SectVolley=>"SectMechanismCrossbow",ArtifactSkill.HeavenLawVolley=>"HeavenLawArbalest",ArtifactSkill.CalamityVolley=>"StarCalamityMechanismCase",ArtifactSkill.CodexConstellation=>"ArchiveStarCodex",ArtifactSkill.DecreeTriad=>"BrokenHeavenDecree",ArtifactSkill.CauldronBloom=>"GreenwoodMedicineCauldron",ArtifactSkill.ArrayDischarge=>"ThunderTalismanArrayPlate",_=>"ThunderPatternSwordCase"};
+ string name=skill switch{ArtifactSkill.SwordBurst=>"CloudpiercerFlyingSword",ArtifactSkill.ArrayPulse=>"GreenwoodArrayPlate",ArtifactSkill.WardGuard=>"HeavenTabletWardSeal",ArtifactSkill.MoonCrescent=>"MoonboneDharmaSword",ArtifactSkill.WheelFormation=>"FormlessSwordWheel",ArtifactSkill.HammerVolley=>"BlackFurnaceWarhammer",ArtifactSkill.WoodgrainRecall=>"WoodgrainFlyingSword",ArtifactSkill.FlameFan=>"CinnabarTalismanFlameItem",ArtifactSkill.SpiritwoodVolley=>"SpiritwoodCrossbow",ArtifactSkill.StarSplitVolley=>"StarEclipseArbalest",ArtifactSkill.SectVolley=>"SectMechanismCrossbow",ArtifactSkill.HeavenLawVolley=>"HeavenLawArbalest",ArtifactSkill.CalamityVolley=>"StarCalamityMechanismCase",ArtifactSkill.CodexConstellation=>"ArchiveStarCodex",ArtifactSkill.DecreeTriad=>"BrokenHeavenDecree",ArtifactSkill.CauldronBloom=>"GreenwoodMedicineCauldron",ArtifactSkill.ArrayDischarge=>"ThunderTalismanArrayPlate",ArtifactSkill.TalismanShot=>"TalismanCrossbow",_=>"ThunderPatternSwordCase"};
  SetupSkill(name);Game.netMode=mode;var actor=Game.player[0];actor.State.cultivationStage=CultivationStage.DaoSevering;Game.hardMode=true;Terraria.NPC.downedPlantBoss=Terraria.NPC.downedGolemBoss=Terraria.NPC.downedMoonlord=true;actor.statLife=50;
  if(skill==ArtifactSkill.ArrayPulse)Game.projectile[0]=CreatePulseField(actor);
  if(skill==ArtifactSkill.CauldronBloom)Game.projectile[0]=CreateBloomField(actor);
@@ -1665,7 +1666,7 @@ foreach(int mode in new[]{0,1,2}) foreach(ArtifactSkill skill in Enum.GetValues<
  actor.State.spiritualEnergy=0;Check(ArtifactSkillTransactions.UnavailableReason(actor,skill)=="Mods.XianXia.Skills.NeedEnergy","Panel readiness checks actual spirit cost");actor.State.spiritualEnergy=100;
  actor.dead=true;Check(ArtifactSkillTransactions.UnavailableReason(actor,skill)=="Mods.XianXia.Skills.Unavailable","Dead player cannot request via readiness preview");actor.dead=false;
  if(skill is ArtifactSkill.ArrayPulse or ArtifactSkill.CauldronBloom){Game.projectile[0].active=false;Check(ArtifactSkillTransactions.UnavailableReason(actor,skill)==(skill==ArtifactSkill.ArrayPulse?"Mods.XianXia.Skills.NeedArray":"Mods.XianXia.Skills.NeedCauldron"),"Panel identifies missing usable array");Game.projectile[0].active=true;actor.statLife=actor.statLifeMax2;Check(ArtifactSkillTransactions.UnavailableReason(actor,skill)=="Mods.XianXia.Skills.NoHealing","Panel identifies no actual injured friendly target");actor.statLife=50;}
- else if(skill!=ArtifactSkill.WardGuard){int required=skill is ArtifactSkill.WheelFormation or ArtifactSkill.SectVolley or ArtifactSkill.CalamityVolley?5:3;for(int i=0;i<Game.maxProjectiles-required+1;i++)Game.projectile[i].active=true;Check(ArtifactSkillTransactions.UnavailableReason(actor,skill)=="Mods.XianXia.Skills.Capacity","Panel identifies insufficient whole-burst capacity");foreach(var p in Game.projectile)p.active=false;}
+ else if(skill!=ArtifactSkill.WardGuard){int required=skill==ArtifactSkill.TalismanShot?1:skill is ArtifactSkill.WheelFormation or ArtifactSkill.SectVolley or ArtifactSkill.CalamityVolley?5:3;for(int i=0;i<Game.maxProjectiles-required+1;i++)Game.projectile[i].active=true;Check(ArtifactSkillTransactions.UnavailableReason(actor,skill)=="Mods.XianXia.Skills.Capacity","Panel identifies insufficient whole-burst capacity");foreach(var p in Game.projectile)p.active=false;}
  item.GetGlobalItem<XianXia.Common.Items.RefinedArtifact>().SetLevel(2);Check(ArtifactSkillTransactions.UnavailableReason(actor,skill)=="Mods.XianXia.Skills.Unavailable","Panel refuses dormant held artifact");
 }
 Check(ArtifactSkillTransactions.UnavailableReason(null,ArtifactSkill.WardGuard)=="Mods.XianXia.Skills.Unavailable","Readiness rejects absent player without side effects");
@@ -1778,8 +1779,8 @@ foreach(int mode in new[]{0,1}) {
  SetupSkill();Game.netMode=mode;Game.myPlayer=0;Game.MouseWorld=new(100,100);Game.gameMenu=Game.blockInput=Game.drawingPlayerChat=Game.playerInventory=false;var actor=Game.player[0];var input=new XianXia.Common.Players.ArtifactInputPlayer{Player=actor};input.Initialize();
  void PressPanel(params string[] names){foreach(var key in KeybindLoader.Keys.Values)key.JustPressed=false;foreach(string name in names)KeybindLoader.Keys[name].JustPressed=true;input.ProcessTriggers(new Terraria.GameInput.TriggersSet());}
  int count=ModPacket.Sent.Count;var snapshot=actor.State.CaptureSnapshot();PressPanel("SkillPanelNext");Check(input.SelectedPanelSkill==ArtifactSkill.SwordBurst,"Panel navigation begins at held artifact");
- var visited=new HashSet<ArtifactSkill>();for(int i=0;i<18;i++){visited.Add(input.SelectedPanelSkill.Value);PressPanel("SkillPanelNext");}
- Check(visited.Count==18&&input.SelectedPanelSkill==ArtifactSkill.SwordBurst,"Panel navigation reaches all eighteen skills and wraps");PressPanel("SkillPanelPrevious");Check(input.SelectedPanelSkill==ArtifactSkill.ArrayDischarge,"Previous wraps across first skill");PressPanel("SkillPanelNext");
+ var visited=new HashSet<ArtifactSkill>();for(int i=0;i<19;i++){visited.Add(input.SelectedPanelSkill.Value);PressPanel("SkillPanelNext");}
+ Check(visited.Count==19&&input.SelectedPanelSkill==ArtifactSkill.SwordBurst,"Panel navigation reaches all nineteen skills and wraps");PressPanel("SkillPanelPrevious");Check(input.SelectedPanelSkill==ArtifactSkill.TalismanShot,"Previous wraps across first skill");PressPanel("SkillPanelNext");
  Check(actor.State.CaptureSnapshot()==snapshot&&ModPacket.Sent.Count==count&&!Game.projectile.Any(p=>p.active),"Navigation never spends casts or transmits");
  PressPanel("SkillPanelCancel","SkillPanelCast");Check(input.SelectedPanelSkill==null&&ModPacket.Sent.Count==count&&actor.State.CaptureSnapshot()==snapshot,"Cancel takes priority over confirmation");
  PressPanel("SkillPanelNext","SkillPanelCast");Check(input.SelectedPanelSkill==ArtifactSkill.SwordBurst&&ModPacket.Sent.Count==count&&actor.State.CaptureSnapshot()==snapshot,"Selection change cannot also cast in same input frame");
@@ -1980,6 +1981,15 @@ foreach(string name in new[]{"FurnaceGuardPill","WindStepPill","ThunderBurstPill
  Check(combatPill.Item.stack==(immune?2:1)&&actor.HasBuff(2)==!immune&&actor.HasBuff(main)==!immune&&actor.State.spiritPressure==50,"Combat pill immunity refusal avoids item and fatigue while preserving pressure");
 }
 Console.WriteLine($"Including useful combat pill gates: {assertions} assertions; engine boundaries mocked.");
+
+foreach (bool fail in new[] { false,true }) foreach (int count in new[] { 1,5 }) {
+ SetupSkill("TalismanCrossbow"); world.ClearWorld(); Game.player[0].inventory[54].stack=count; Terraria.Projectile.AllowSpawn=!fail;
+ Skill(ArtifactSkill.TalismanShot);
+ Check(Game.player[0].inventory[54].stack==(fail?count:count-1),"Rune Shot packet consumes one native arrow or restores last-arrow inventory on spawn failure");
+ Check(Game.player[0].State.spiritualEnergy==(fail?100:82)&&Game.player[0].State.activeSkillCooldown==(fail?0:1200)&&!Game.player[0].State.ApplyingArtifactAmmo,"Rune Shot spawn outcome commits or rolls back spirit cooldown and transient ammo guard");
+}
+SetupSkill("TalismanCrossbow"); world.ClearWorld(); Game.player[0].inventory[54].TurnToAir(); Skill(ArtifactSkill.TalismanShot);
+Check(Game.player[0].State.spiritualEnergy==100&&!Game.projectile.Any(p=>p.active),"Rune Shot rejects missing arrows without spending spirit");
 
 // New Flame Fan identifier passes the actual skill packet dispatcher; native creation is audited separately.
 SetupSkill("CinnabarTalismanFlameItem");world.ClearWorld();Skill(ArtifactSkill.FlameFan);

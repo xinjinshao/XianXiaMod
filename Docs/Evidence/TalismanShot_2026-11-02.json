@@ -1,0 +1,14 @@
+{
+  "round": 403,
+  "skill": "TalismanShot",
+  "packageSha256": "ED7BADC6B96A594987EA21FF6B0C4CE586F75FB13F648D83B582BADA9A25F9DF",
+  "nativeReportSha256": "473B5818A69A0BC70DE5A038B33A6DEAE1984D2CB64FB641912AFA8C011401D4",
+  "nativeChecks": 93588,
+  "previousNativeChecks": 91667,
+  "ammoRouteAuthorityCombinations": 192,
+  "networkSimulationChecks": 30854,
+  "gameplayChecks": 7744,
+  "portableSourceSteps": 40,
+  "scope": "Native PickAmmo with wood arrows, cinnabar arrows and infinite quiver across all route/core/authority combinations; selected projectile type, boosted damage and speed; native consumption, alternate animation suppression, exact fees, cooldown, missing ammo and duplicate refusal. Mocked projectile allocation failure verifies ammo and spirit rollback including the last arrow. Registered enumeration verifies nineteen refinable weapons map to active skills.",
+  "limitations": "Controlled direct hooks, no complete player shooting frame, rendered UI, live clients, actual network delivery or combat balance. Allocation failure uses a mocked engine boundary. Inventory rollback does not reverse arbitrary side effects of other mods' ammunition hooks. Selected native projectile lifecycle is retained."
+}

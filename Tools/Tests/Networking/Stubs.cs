@@ -79,6 +79,14 @@ namespace Terraria
         public Microsoft.Xna.Framework.Vector2 MountedCenter => Center;
         public Microsoft.Xna.Framework.Vector2 RotatedRelativePoint(Microsoft.Xna.Framework.Vector2 value) => value;
         public int GetWeaponDamage(Item item) => item.damage + 5;
+        public bool HasAmmo(Item weapon) => inventory.Any(item => item.type > 0 && item.stack > 0 && item.ammo == weapon.useAmmo && weapon.useAmmo > 0);
+        public bool PickAmmo(Item weapon,out int type,out float speed,out int damage,out float knockback,out int ammo,bool dontConsume=false) {
+            var selected = inventory.FirstOrDefault(item => item.type > 0 && item.stack > 0 && item.ammo == weapon.useAmmo && weapon.useAmmo > 0);
+            type=selected?.shoot??0; speed=weapon.shootSpeed+(selected?.shootSpeed??0); damage=GetWeaponDamage(weapon)+(selected?.damage??0); knockback=weapon.knockBack; ammo=selected?.type??0;
+            if(selected==null)return false;
+            if(!dontConsume&&selected.consumable&&weapon.ModItem.CanConsumeAmmo(selected,this)){selected.stack--;if(selected.stack<=0)selected.TurnToAir();}
+            return true;
+        }
         public float GetWeaponKnockback(Item item, float value) => value + 1;
 
         public Item[] inventory = Enumerable.Range(0, 59).Select(_ => new Item()).ToArray();
@@ -118,6 +126,7 @@ namespace Terraria
             return (T)value;
         }
         public void TurnToAir() { type = stack = 0; }
+        public Item Clone() => (Item)MemberwiseClone();
     }
     public class Tile { public bool HasTile; public ushort TileType; }
     public class Projectile
@@ -205,6 +214,7 @@ namespace Terraria.ModLoader
         public virtual void SetStaticDefaults() { }
         public virtual void ModifyTooltips(List<TooltipLine> tips) { }
         public virtual bool ConsumeItem(Terraria.Player player) => true;
+        public virtual bool CanConsumeAmmo(Terraria.Item ammo,Terraria.Player player) => true;
         public virtual bool AltFunctionUse(Terraria.Player player)=>false;
         public virtual float UseSpeedMultiplier(Player player) => 1f;
         public virtual void ModifyWeaponDamage(Terraria.Player player, ref StatModifier damage) {}
@@ -346,6 +356,7 @@ namespace XianXia.Common.Players
         public void ResetNetworkSession() { artifactOwnerSession=0; NetworkInitialized = NetworkWasActive = false; ProgressionItemCooldown = BossSummonCooldown = 0; }
         public int ProgressionItemCooldown, BossSummonCooldown, WeaponShotCooldown;
         public bool ApplyingWeaponShot;
+        public bool ApplyingArtifactAmmo;
         public void RestoreSpiritualEnergy(int amount) => spiritualEnergy = Math.Clamp(spiritualEnergy + amount, 0, maxSpiritualEnergy);
         public bool TryConsumeSpiritualEnergy(int amount) { if (spiritualEnergy < amount) return false; spiritualEnergy -= amount; return true; }
         private ulong lastRecoveryTick=ulong.MaxValue; public bool TryArrayRecovery(ulong tick){if(Terraria.Main.netMode==Terraria.ID.NetmodeID.MultiplayerClient||tick==lastRecoveryTick)return false;lastRecoveryTick=tick;return true;}
