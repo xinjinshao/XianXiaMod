@@ -1,0 +1,15 @@
+{
+  "round": 405,
+  "feature": "Four Paths in-game equipment manual",
+  "packageSha256": "9ED740CCA6E9F77D23664EB10C60EF0DDC761C2E1C38F658950B6F1E16479514",
+  "nativeReportSha256": "1D4A49D684CD6697BE1B0AEB18A854CB856ACDA08ED8553C984B890E1C078C05",
+  "nativeChecks": 94605,
+  "previousNativeChecks": 93678,
+  "newNativeChecks": 927,
+  "worldFlagCombinations": 32,
+  "candidateRealmModeCombinations": 216,
+  "portableSourceSteps": 40,
+  "gameplayChecks": 7744,
+  "scope": "Registered reusable guide and pre-boss recipe, ItemIO save/load and clone. Six stages by four classes, three realm values and three engine calculation modes; actual damage-class identity, registered recipe quantities and conditions, resolved station names without graphical map tables, localized output and read-only inventory/cultivation/health/projectile state. World-stage selection covers all combinations of relevant flags.",
+  "limitations": "Direct read-only guide calls, not physical left/right click or client chat rendering. No live client transport, real crafting, complete acquisition chain, localization layout or full playthrough. Class selection is transient; candidate suggestions do not assert use readiness or balance. Existing ledger icon is reused."
+}

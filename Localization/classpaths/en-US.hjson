@@ -1,0 +1,33 @@
+{
+  Mods: {
+    XianXia: {
+      Items: {
+        ClassPathManual: {
+          DisplayName: "Four Paths Manual"
+          Tooltip: "Left-click to read a class equipment candidate and recipe for this world's stage\nRight-click to cycle melee, ranged, magic and summoning\nCandidates still require materials and their own use conditions"
+        }
+      }
+      ClassPaths: {
+        Header: "Four Paths · {0} · {1}: {2}"
+        Stage0: "Early exploration"
+        Stage1: "Pre-Hardmode trials"
+        Stage2: "Hardmode"
+        Stage3: "Post-Plantera"
+        Stage4: "Post-Golem"
+        Stage5: "Post-Moon Lord"
+        Path0: "Melee"
+        Path1: "Ranged"
+        Path2: "Magic"
+        Path3: "Summoning"
+        Recipe: "Materials: {0}; station: {1}"
+        Conditions: "Crafting conditions: {0}"
+        ByHand: "By hand"
+        SpecialStation: "Special crafting station (ask the Guide)"
+        Spirit: "Current energy per use for a newly crafted item: {0} (includes character modifiers and heritage; check upgraded equipment tooltips)"
+        Arrows: "Ordinary attacks use native arrows without spiritual energy; awakened active skills have a separate energy cost."
+        Summon: "Base summoning mana: {0}; minion slots: {1}. Equipping a contract does not summon it; use it from your hand."
+        Caution: "A stage candidate is not guaranteed usable: its realm, world and resource requirements still apply. Keep using vanilla equipment while gathering materials."
+      }
+    }
+  }
+}

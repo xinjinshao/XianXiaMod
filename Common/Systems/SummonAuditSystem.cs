@@ -1039,6 +1039,7 @@ public partial class SummonAuditSystem : ModSystem
             AuditArmorDamageBaseline(Check);
             AuditStormstrideArmor(Check);
             AuditMoonbonePactArmor(Check);
+            AuditClassPaths(Check);
             AuditArmorPreview(Check);
             AuditWeaponCostTooltips(Check);
             AuditSkillTooltips(Check);
