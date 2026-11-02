@@ -18,6 +18,7 @@ public partial class SummonAuditSystem
     {
         bool oldHard = Main.hardMode, oldPlant = NPC.downedPlantBoss, oldGolem = NPC.downedGolemBoss, oldMoon = NPC.downedMoonlord;
         bool oldWyrm = DownedBossSystem.DownedSpiritVeinWyrm;
+        var oldCulture = Language.ActiveCulture;
         var oldBosses = DownedBossSystem.DownedBosses.ToArray();
         try {
             int[] items = { ModContent.ItemType<SpiritVeinIncense>(), ModContent.ItemType<SummonGardenBrokenKey>(),
@@ -63,8 +64,34 @@ public partial class SummonAuditSystem
             check(SectLedger.GetNextGuidance(actor).Contains(Language.GetTextValue("Mods.XianXia.Progression.BreakthroughRequiresMoonLord")), "native ledger asks for Moon Lord after guardian and inspector");
             NPC.downedMoonlord = true;
             check(SectLedger.GetNextGuidance(actor).Contains("[i:XianXia/SummonMoonboneRitualTalisman]"), "native ledger returns to moonbone boss after Moon Lord");
+            var targets = new[] {
+                ("spirit_vein_wyrm","SpiritVeinWyrm"), ("garden_warden","GardenWarden"),
+                ("black_furnace_iron_golem","BlackFurnaceIronGolem"), ("tribulation_cloud_avatar","TribulationCloudAvatar"),
+                ("thunder_marsh_jiao","ThunderMarshJiao"), ("abyssal_star_womb","AbyssalStarWomb"),
+                ("formless_sword_soul","FormlessSwordSoul"), ("greenwood_medicine_king_echo","GreenwoodMedicineKingEcho"),
+                ("heaven_tablet_guardian","HeavenTabletGuardian"), ("broken_heaven_inspector","BrokenHeavenInspector"),
+                ("moonbone_immortal","MoonboneImmortal"), ("old_heaven_dao_core","OldHeavenDaoCore")
+            };
+            foreach (var culture in new[] { GameCulture.CultureName.English,GameCulture.CultureName.Chinese }) {
+                LanguageManager.Instance.SetLanguage(GameCulture.FromCultureName(culture));
+                check(Language.ActiveCulture == GameCulture.FromCultureName(culture),"native ledger localization audit switches the actual engine culture");
+                check(culture != GameCulture.CultureName.Chinese || Lang.GetNPCNameValue(ModLoader.GetMod("XianXia").Find<ModNPC>("SpiritVeinWyrm").Type) == "灵脉蠕虫",
+                    "native ledger localization audit loads Chinese NPC text rather than English fallback");
+                DownedBossSystem.DownedBosses.Clear(); DownedBossSystem.DownedSpiritVeinWyrm = false;
+                foreach (var target in targets) {
+                    var snapshot = actor.GetModPlayer<XianXiaPlayer>().CaptureSnapshot();
+                    string current = SectLedger.GetNextGuidance(actor);
+                    int npcType = ModLoader.GetMod("XianXia").Find<ModNPC>(target.Item2).Type;
+                    check(current.Contains(Lang.GetNPCNameValue(npcType)) && !current.Contains("{0}") && !current.Contains("Mods.XianXia."),
+                        "native ledger target branch uses the registered localized boss name: " + target.Item2);
+                    check(snapshot == actor.GetModPlayer<XianXiaPlayer>().CaptureSnapshot(),"native localized ledger target remains read-only");
+                    DownedBossSystem.DownedBosses.Add(target.Item1);
+                    if (target.Item1 == "spirit_vein_wyrm") DownedBossSystem.DownedSpiritVeinWyrm = true;
+                }
+            }
         }
         finally {
+            LanguageManager.Instance.SetLanguage(oldCulture);
             Main.hardMode = oldHard; NPC.downedPlantBoss = oldPlant; NPC.downedGolemBoss = oldGolem; NPC.downedMoonlord = oldMoon;
             DownedBossSystem.DownedSpiritVeinWyrm = oldWyrm; DownedBossSystem.DownedBosses.Clear(); DownedBossSystem.DownedBosses.UnionWith(oldBosses);
         }

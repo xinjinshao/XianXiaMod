@@ -305,6 +305,14 @@ public class SectLedger : ModItem
 
     private static string GuidanceValue(string key)
     {
-        return Guidance(key).Value;
+        string boss = key switch {
+            "SpiritVeinWyrm" => "SpiritVeinWyrm", "GardenWarden" => "GardenWarden",
+            "BlackFurnace" => "BlackFurnaceIronGolem", "TribulationCloud" => "TribulationCloudAvatar",
+            "ThunderJiao" => "ThunderMarshJiao", "StarWomb" => "AbyssalStarWomb",
+            "SwordSoul" => "FormlessSwordSoul", "MedicineKing" => "GreenwoodMedicineKingEcho",
+            "HeavenTablet" => "HeavenTabletGuardian", "BrokenInspector" => "BrokenHeavenInspector",
+            "MoonboneImmortal" => "MoonboneImmortal", "OldHeavenCore" => "OldHeavenDaoCore", _ => null
+        };
+        return boss == null ? Guidance(key).Value : Guidance(key).Format(Language.GetTextValue("Mods.XianXia.NPCs." + boss + ".DisplayName"));
     }
 }

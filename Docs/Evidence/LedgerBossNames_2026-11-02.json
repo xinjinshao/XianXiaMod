@@ -1,0 +1,14 @@
+{
+  "round": 409,
+  "feature": "Registered localized boss names in Sect Ledger targets",
+  "packageSha256": "699456791C5735089AC92A9036B124B88D56E34BFD130C5AC3DC1CC4CF7C4EA8",
+  "nativeReportSha256": "CD88CDCE8FE2A6EA8C95900544377CAEB0CDF1EC79A14F8542C3401C570BA960",
+  "nativeChecks": 98269,
+  "previousNativeChecks": 98217,
+  "newNativeChecks": 52,
+  "targetCultureCombinations": 24,
+  "portableSourceSteps": 40,
+  "gameplayChecks": 7744,
+  "scope": "Official LanguageManager switches between English and Chinese and verifies active culture and loaded Chinese NPC text. Actual GetNextGuidance runs sequentially for all twelve boss targets in each language; results contain the registered NPC name, no unresolved key or format placeholder, and preserve cultivation snapshots. Original culture and world progress are restored.",
+  "limitations": "Controlled direct guide calls with advanced player/world prerequisites; no physical guide use, client chat rendering, complete playthrough or live network delivery. Other hardcoded names outside these twelve target templates remain outside this change."
+}
