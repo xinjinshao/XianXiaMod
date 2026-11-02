@@ -24,7 +24,8 @@ public partial class SummonAuditSystem
 
             Main.rand=new Terraria.Utilities.UnifiedRandom(319);
             var mod=ModContent.GetInstance<global::XianXia.XianXia>();
-            var sellers=new[]{("HerbSectApprentice","AlchemyCauldron"),("WanderingArtificer","ArtifactForge"),("TribulationObserver","TribulationGauge"),("ArchiveScrollSpirit","SectLedger"),("FallenHeavenMessenger","HeavenDaoFragment")};
+            var sellers=new[]{("HerbSectApprentice","AlchemyCauldron"),("WanderingArtificer","ArtifactForge"),("TribulationObserver","TribulationGauge"),("ArchiveScrollSpirit","SectLedger"),("FallenHeavenMessenger","HeavenDaoFragment"),
+                ("HerbSectApprentice","ClassPathManual"),("ArchiveScrollSpirit","ClassPathManual")};
             foreach(var seller in sellers)foreach(var profile in new[]{(Adjustment:1.0,Discount:false),(Adjustment:0.75,Discount:false),(Adjustment:0.75,Discount:true)})foreach(int wallet in new[]{0,1,2,3}) {
                 var npc=new NPC { whoAmI=npcSlot };npc.SetDefaults(mod.Find<ModNPC>(seller.Item1).Type);npc.active=true;npc.Center=new Microsoft.Xna.Framework.Vector2(Main.maxTilesX*8,100);Main.npc[npcSlot]=npc;
                 NPCShop shop=NPCShopDatabase.AllShops.OfType<NPCShop>().Single(s=>s.FullName=="XianXia/"+seller.Item1+"/Shop");

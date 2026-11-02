@@ -60,7 +60,7 @@ namespace XianXia.Content.Items.Weapons {public class OldHeavenDaoScroll : Terra
 namespace XianXia.Content.Items.Materials {public class QiCondensingPill : Terraria.ModLoader.ModItem{}}
 namespace XianXia.Content.Items.Accessories {public class QiGatheringPendant : Terraria.ModLoader.ModItem{}}
 namespace XianXia.Content.Items.Materials {public class QiRecoveryPill : Terraria.ModLoader.ModItem{}}
-namespace XianXia.Content.Items.Guides {public class SectLedger : Terraria.ModLoader.ModItem{}}
+namespace XianXia.Content.Items.Guides {public class SectLedger : Terraria.ModLoader.ModItem{} public class ClassPathManual : Terraria.ModLoader.ModItem{}}
 namespace XianXia.Content.Items.Materials {public class SectTrialToken : Terraria.ModLoader.ModItem{}}
 namespace XianXia.Content.Items.HandGenerated {public class SpiritHerbSeeds : Terraria.ModLoader.ModItem{}}
 namespace XianXia.Content.Items.Accessories {public class SpiritwoodCharm : Terraria.ModLoader.ModItem{}}

@@ -268,6 +268,7 @@ public class HerbSectApprentice : CultivationTownNPC
         shop.Add<BlankSectScroll>();
         shop.Add<LightningAvoidanceRune>();
         shop.Add<SectLedger>();
+        shop.Add<ClassPathManual>();
         shop.Register();
     }
 
@@ -540,6 +541,7 @@ public class ArchiveScrollSpirit : CultivationTownNPC
     {
         NPCShop shop = new(Type);
         shop.Add<SectLedger>();
+        shop.Add<ClassPathManual>();
         shop.Add<SectTrialToken>();
         shop.Add<OldHeavenDaoScroll>();
         shop.Add<FormlessSwordWheel>();

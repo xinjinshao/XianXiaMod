@@ -1,0 +1,15 @@
+{
+  "round": 406,
+  "feature": "Four Paths Manual town services and purchase path",
+  "packageSha256": "9227E8E0C1763E63A460B166E33C67F1670F352E1FB05530D10B55F7249631CD",
+  "nativeReportSha256": "F20F97B8D906C2F1A26CAC94639EDA73A26E629D8720BB1E3BE5CB4D9B45C7BB",
+  "nativeChecks": 95013,
+  "previousNativeChecks": 94605,
+  "newNativeChecks": 408,
+  "sellerRouteRealmViewerModeCombinations": 96,
+  "manualPurchaseCases": 24,
+  "portableSourceSteps": 40,
+  "gameplayChecks": 7744,
+  "scope": "Actual registered shops, FillShop and ModifyActiveShop, both viewer slots, single-player/client calculation modes, no route and three selected routes, three realms. Both sellers retain exactly one manual at its base value and advertise its localized name through actual GetChat without changing inventory or cultivation. Official ItemSlot purchase calls cover both manual sellers, three price/discount profiles, zero/short/exact/change wallet boundaries, cursor delivery, exact coin debit, unlimited stock, repeated click suppression and no duplicate world item.",
+  "limitations": "Controlled official engine shop/purchase contexts; no NPC arrival, rendered dialogue or shop, live network transport, dedicated-server purchase authorization or full player interaction. Native vanilla inventory and purchasing remain the existing trust model."
+}
